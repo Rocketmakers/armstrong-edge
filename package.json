@@ -1,0 +1,26 @@
+{
+  "name": "armstrong-rewrite",
+  "version": "0.0.1",
+  "description": "Initial stating project for the 2021 Armstrong rewrite.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "start": "(cd playground && npm start)",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "(cd module && npm i) && (cd playground && npm i) && npm run link-armstrong-rewrite",
+    "link-armstrong-rewrite": "(cd module && npm run build && npm run link) && (cd playground && npm run link-armstrong-rewrite)",
+    "check-versions": "ncu && (cd module && ncu) && (cd playground && ncu)",
+    "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rocketmakers/armstrong-rewrite.git"
+  },
+  "author": "developers@rocketmakers.com",
+  "license": "MIT",
+  "devDependencies": {
+    "npm-check-updates": "^11.5.10"
+  }
+}

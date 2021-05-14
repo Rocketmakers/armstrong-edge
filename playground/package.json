@@ -1,0 +1,42 @@
+{
+  "name": "armstrong-rewrite-playground",
+  "version": "0.0.1",
+  "description": "Front-end React playground area for testing the API Hooks library",
+  "main": "./src/index.tsx",
+  "scripts": {
+    "start": "webpack serve",
+    "postinstall": "npm run link-react",
+    "link-react": "npm link ../module/node_modules/react && npm link ../module/node_modules/react-dom",
+    "link-armstrong-rewrite": "npm link armstrong-rewrite-test"
+  },
+  "author": "Rocketmakers",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@rocketmakers/api-hooks": "^1.1.5",
+    "@rocketmakers/armstrong": "0.0.1-alpha.69",
+    "history": "^5.0.0",
+    "react-router-dom": "^5.2.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/uuid": "^8.3.0",
+    "autoprefixer": "^10.2.5",
+    "css-loader": "^5.2.4",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "node-sass": "^6.0.0",
+    "postcss-loader": "^5.2.0",
+    "rimraf": "^3.0.2",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^9.1.2",
+    "typescript": "^4.2.4",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
