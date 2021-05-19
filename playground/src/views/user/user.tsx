@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput } from "armstrong-rewrite-test"
+import { Form, TextInput, NumberInput, EmailInput } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"

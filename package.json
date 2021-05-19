@@ -1,16 +1,18 @@
 {
-  "name": "armstrong-rewrite",
+  "name": "@rocketmakers/armstrong-edge",
   "version": "0.0.1",
-  "description": "Initial stating project for the 2021 Armstrong rewrite.",
+  "description": "Initial stating project for the 2021 Armstrong rewrite. Will be integrated into the Armstrong repo.",
   "main": "index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "start": "(cd playground && npm start)",
+    "start-playground": "(cd playground && npm start)",
+    "start": "npm-run-all start-playground watch-link-module",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "(cd module && npm i) && (cd playground && npm i) && npm run link-armstrong-rewrite",
-    "link-armstrong-rewrite": "(cd module && npm run build && npm run link) && (cd playground && npm run link-armstrong-rewrite)",
+    "postinstall": "(cd module && npm i) && (cd playground && npm i) && npm run link-module",
+    "link-module": "(cd module && npm run build && npm run link) && (cd playground && npm run link-module)",
+    "watch-link-module": "watch 'npm run link-module' ./module/src",
     "check-versions": "ncu && (cd module && ncu) && (cd playground && ncu)",
     "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i"
   },
@@ -21,6 +23,8 @@
   "author": "developers@rocketmakers.com",
   "license": "MIT",
   "devDependencies": {
-    "npm-check-updates": "^11.5.10"
+    "npm-check-updates": "^11.5.10",
+    "npm-run-all": "^4.1.5",
+    "watch": "^1.0.2"
   }
 }

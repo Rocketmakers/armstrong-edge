@@ -29,4 +29,5 @@ export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputBasePro
 });
 export const EmailInput = React.forwardRef<HTMLInputElement, Omit<IInputBaseProps<string>, 'type'>>((props, ref) => {
   return <InputBase ref={ref} type="email" {...props} />;
+  
 });

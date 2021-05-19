@@ -7,7 +7,7 @@
     "start": "webpack serve",
     "postinstall": "npm run link-react",
     "link-react": "npm link ../module/node_modules/react && npm link ../module/node_modules/react-dom",
-    "link-armstrong-rewrite": "npm link armstrong-rewrite-test"
+    "link-module": "npm link @rocketmakers/armstrong-edge"
   },
   "author": "Rocketmakers",
   "license": "MIT",

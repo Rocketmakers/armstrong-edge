@@ -1,4 +1,4 @@
-const path = require("path")
+const path = require('path');
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-useless-computed-key */
@@ -7,7 +7,7 @@ const off = 0;
 const warn = 1;
 const error = 2;
 
-const projects = path.resolve(__dirname, "src", "tsconfig.json");
+const projects = path.resolve(__dirname, 'src', 'tsconfig.json');
 
 module.exports = {
   env: {
@@ -32,14 +32,8 @@ module.exports = {
     },
   },
   globals: {
-    window: true,
-    document: true,
-    localStorage: true,
-    IntersectionObserver: true,
-    MutationObserver: true,
-    AppConfig: true,
-    alert: true,
-    location: true,
+    // use wrappers for accessing these to not break SSR
+    // should use utils/globals
   },
   rules: {
     ['@typescript-eslint/no-floating-promises']: error,
@@ -75,7 +69,8 @@ module.exports = {
 
     ['no-case-declarations']: off,
 
-    ['no-only-tests/no-only-tests']: 'error',
+    ['no-only-tests/no-only-tests']: error,
+    'simple-import-sort/sort': error,
 
     // React
     ['react/jsx-props-no-spreading']: off,

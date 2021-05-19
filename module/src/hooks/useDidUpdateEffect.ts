@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export function useDidUpdateEffect(fn: React.EffectCallback, deps?: React.DependencyList) {
+export function useDidUpdateEffect(callback: React.EffectCallback, deps?: React.DependencyList) {
   const didMountRef = React.useRef(false);
 
   React.useEffect(() => {
@@ -8,11 +8,11 @@ export function useDidUpdateEffect(fn: React.EffectCallback, deps?: React.Depend
       didMountRef.current = true;
       return;
     }
-    return fn();
+    return callback();
   }, deps);
 }
 
-export function useDidUpdateLayoutEffect(fn: React.EffectCallback, deps?: React.DependencyList) {
+export function useDidUpdateLayoutEffect(callback: React.EffectCallback, deps?: React.DependencyList) {
   const didMountRef = React.useRef(false);
 
   React.useLayoutEffect(() => {
@@ -20,6 +20,6 @@ export function useDidUpdateLayoutEffect(fn: React.EffectCallback, deps?: React.
       didMountRef.current = true;
       return;
     }
-    return fn();
+    return callback();
   }, deps);
 }
