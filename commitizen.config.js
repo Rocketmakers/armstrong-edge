@@ -5,7 +5,7 @@ module.exports = {
     { value: "docs", name: "docs:     Documentation only changes" },
     {
       value: "style",
-      name: "style:    Changes that do not affect the meaning of the code\n            (white-space, formatting, missing semi-colons, etc)",
+      name: "style:    Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)",
     },
     {
       value: "refactor",
@@ -13,17 +13,19 @@ module.exports = {
     },
     {
       value: "chore",
-      name: "chore:    Changes to the build process or auxiliary tools\n            and libraries such as documentation generation",
+      name: "chore:    Changes to the build process or auxiliary tools and libraries such as documentation generation",
     },
     { value: "revert", name: "revert:   Revert to a commit" },
     { value: "WIP", name: "WIP:      Work in progress" },
   ],
 
-  scopes: [{ name: "module" }, { name: "ci" }, { name: "repo" }],
-
   allowTicketNumber: true,
   isTicketNumberRequired: false,
-  ticketNumberPrefix: "RMW-",
+  ticketNumberPrefix: "ARM-",
+  allowCustomScopes: true,
+  allowBreakingChanges: ["feat", "fix"],
+  skipQuestions: ["body", "footer", "scope", "breaking"],
+  subjectLimit: 200,
 
   messages: {
     type: "Select the type of change that you're committing:",
@@ -34,11 +36,6 @@ module.exports = {
     breaking: "List any BREAKING CHANGES (optional):\n",
     footer:
       "List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n",
-    confirmCommit: "Are you sure you want to proceed with the commit above?",
+    confirmCommit: "Have you documented all of your changes?",
   },
-
-  allowCustomScopes: true,
-  allowBreakingChanges: ["feat", "fix"],
-  skipQuestions: ["body", "footer"],
-  subjectLimit: 200,
 };
