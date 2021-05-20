@@ -7,14 +7,13 @@
   "scripts": {
     "copy-readme": "shx cp ../README.md .",
     "build-ts": "tsc --pretty --extendedDiagnostics -p src -d",
-    "build": "npm run build-ts && npm run build-sass && npm run build-sass-variables && npm run copy-readme",
+    "build": "npm run build-ts && npm run build-sass && npm run copy-readme",
     "link": "npm link",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --max-warnings=0 \"**/*.ts{,?}\" --cache --ignore-path .eslintignore --ext ts --ext tsx",
     "lint-fix": "npm run lint -- --fix",
     "prepublishOnly": "npm run lint && npm run build",
     "build-sass": "cd build && ts-node ./run/concatSass.ts",
-    "build-sass-variables": "cd build && ts-node ./run/generateSassVariables.ts",
     "start-sass": "cd build && ts-node ./run/concatSass.ts -w"
   },
   "private": true,
