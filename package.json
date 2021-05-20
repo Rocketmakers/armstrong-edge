@@ -23,8 +23,21 @@
   "author": "developers@rocketmakers.com",
   "license": "MIT",
   "devDependencies": {
+    "commitizen": "^4.2.4",
+    "cz-customizable": "^6.3.0",
+    "husky": "^6.0.0",
     "npm-check-updates": "^11.5.10",
     "npm-run-all": "^4.1.5",
     "watch": "^1.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
   }
 }
