@@ -25,7 +25,6 @@ module.exports = {
   isTicketNumberRequired: false,
   ticketNumberPrefix: "RMW-",
 
-  // override the messages, defaults are as follows
   messages: {
     type: "Select the type of change that you're committing:",
     scope: "\nWhat is the SCOPE of this change (optional):",
@@ -41,6 +40,5 @@ module.exports = {
   allowCustomScopes: true,
   allowBreakingChanges: ["feat", "fix"],
   skipQuestions: ["body", "footer"],
-  // limit subject length
   subjectLimit: 200,
 };
