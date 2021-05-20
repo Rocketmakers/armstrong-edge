@@ -1,0 +1,8 @@
+.arm-input {
+  box-shadow: $shadow-small;
+  border-radius: $spacing-xxsmall;
+
+  + .arm-input {
+    margin-top: $spacing-small;
+  }
+}

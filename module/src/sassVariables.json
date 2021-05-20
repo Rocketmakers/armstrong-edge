@@ -1,0 +1,29 @@
+{
+  "colors": {
+    "white": "#ffffff",
+    "brand-primary": "#cd3939",
+    "brand-secondary": "#3d4144",
+    "gray-base": "#4f5c69",
+    "gray-very-dark": "darken($gray-base-default, 20%)",
+    "gray-dark": "darken($gray-base-default, 15%)",
+    "gray-medium": "$gray-base-default",
+    "gray-light": "lighten($gray-base-default, 50%)",
+    "gray-very-light": "lighten($gray-base-default, 60%)",
+    "color-positive": "#00a388",
+    "color-warning": "#f78e52",
+    "color-negative": "#df5a49",
+    "color-info": "#3498d8"
+  },
+  "layout": {
+    "spacing-xxsmall": "0.25rem",
+    "spacing-xsmall": "0.5rem",
+    "spacing-small": "1rem",
+    "spacing-medium": "2rem",
+    "spacing-large": "3rem",
+    "spacing-xlarge": "4rem"
+  },
+  "visual": {
+    "shadow-color": "rgba(0, 0, 0, 0.25)",
+    "shadow-small": "2px 2px 5px var(--shadow-color)"
+  }
+}

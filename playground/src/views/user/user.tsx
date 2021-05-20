@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput } from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"
@@ -56,7 +56,7 @@ export const UserEdit: React.FC = () => {
       <fieldset>
         <h2>Basic Info</h2>
         <TextInput bind={formProp("firstName").bind()} />
-        <TextInput bind={formProp("lastName").bind()} />
+        <TextAreaInput bind={formProp("lastName").bind()} />
         <EmailInput bind={formProp("email").bind()} />
         <NumberInput bind={formProp("points").bind()} />
       </fieldset>

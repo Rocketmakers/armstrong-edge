@@ -1,7 +1,7 @@
-/********************************************************
+/** ******************************************************
  * FORM - Utilities file.
  * A set of helper functions to support the form logic.
- ********************************************************/
+ ******************************************************* */
 
 import { IBindingProps, IValidationError, KeyChain } from './form.types';
 
@@ -14,10 +14,10 @@ import { IBindingProps, IValidationError, KeyChain } from './form.types';
  * @returns The result of the additional `onChange` method if passed, else `undefined`.
  */
 export function bindInputChangeEvent<TValue>(
-  event: React.ChangeEvent<HTMLInputElement>,
+  event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   binding?: IBindingProps<TValue>,
-  onChangeProp?: React.ChangeEventHandler<HTMLInputElement>,
-  formatter?: (value: React.ChangeEvent<HTMLInputElement>['currentTarget']['value']) => TValue
+  onChangeProp?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
+  formatter?: (value: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>['currentTarget']['value']) => TValue
 ) {
   const targetValue = event.currentTarget.value;
   const newValue = formatter?.(targetValue) ?? targetValue;
@@ -40,7 +40,8 @@ export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], 
   const keyChainAttrStringSquareArray = keyChain.reduce<string>((attrString, key) => {
     if (typeof key === 'string') {
       return `${attrString}${attrString ? `.` : ''}${key}`;
-    } else if (typeof key === 'number') {
+    }
+    if (typeof key === 'number') {
       return `${attrString}[${key}]`;
     }
     return attrString;

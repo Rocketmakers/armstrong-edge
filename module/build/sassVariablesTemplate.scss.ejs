@@ -1,0 +1,10 @@
+<% variables.map((variable) => { %>$<%= variable.name %>-default: <%= variable.value %>;
+<% }) %>
+html {
+
+    <% variables.map((variable) => { %>--<%= variable.name %>: #{$<%= variable.name %>-default};
+    <% }) %>
+}   
+
+<% variables.map((variable) => { %>$<%= variable.name %> : var(--<%= variable.name%>, #{$<%= variable.name %>-default});
+<% }) %>

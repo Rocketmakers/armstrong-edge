@@ -1,13 +1,17 @@
-// FONTS
+// import font styles
 @import "./shared/fonts";
 @import "./shared/icomoon";
 
-// // ARMSTRONG LIBRARY IMPORT (don't move or delete!)
-// @import "~@rocketmakers/armstrong/dist/imports";
-// @import "~@rocketmakers/armstrong/dist/core";
-// @import "~@rocketmakers/armstrong/dist/form";
-// @import "~@rocketmakers/armstrong/dist/navigation";
-// @import "~@rocketmakers/armstrong/dist/animation";
+// ARMSTRONG IMPORTs
+
+// import variables
+@import "~@rocketmakers/armstrong-edge/dist/colors.variables.scss";
+@import "~@rocketmakers/armstrong-edge/dist/spacing.variables.scss";
+@import "~@rocketmakers/armstrong-edge/dist/visual.variables.scss";
+// import base component styles
+@import "~@rocketmakers/armstrong-edge/dist/basic.scss";
+// import styled component styles
+@import "~@rocketmakers/armstrong-edge/dist/prototyping.scss";
 
 *,
 *:before,
