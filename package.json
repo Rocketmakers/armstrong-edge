@@ -14,7 +14,8 @@
     "link-module": "(cd module && npm run build && npm run link) && (cd playground && npm run link-module)",
     "watch-link-module": "watch 'npm run link-module' ./module/src",
     "check-versions": "ncu && (cd module && ncu) && (cd playground && ncu)",
-    "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i"
+    "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,7 @@
       "path": "./node_modules/cz-customizable"
     },
     "cz-customizable": {
-      "config": "./.commitizen.config.js"
+      "config": "./commitizen.config.js"
     }
   }
 }
