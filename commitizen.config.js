@@ -40,7 +40,7 @@ module.exports = {
 
   allowCustomScopes: true,
   allowBreakingChanges: ["feat", "fix"],
-  skipQuestions: ["body", "footer", "scope"],
+  skipQuestions: ["body", "footer"],
   // limit subject length
   subjectLimit: 200,
 };
