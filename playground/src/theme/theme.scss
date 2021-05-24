@@ -1,11 +1,14 @@
 // import font styles
 @import "./shared/fonts";
-@import "./shared/icomoon";
 
 // ARMSTRONG IMPORTs
 
 // import variables
 @import "~@rocketmakers/armstrong-edge/dist/variables.scss";
+
+// import chosen icon font
+@import "~@rocketmakers/armstrong-edge/dist/icomoon.scss";
+@import "~@rocketmakers/armstrong-edge/dist/linearicons.scss";
 
 // import base component styles
 @import "~@rocketmakers/armstrong-edge/dist/basic.scss";

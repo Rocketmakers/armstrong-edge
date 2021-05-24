@@ -3,6 +3,7 @@ import { Form, TextInput, NumberInput, EmailInput, TextAreaInput } from "@rocket
 import { useParams } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"
+import { IcomoonIcon } from "@rocketmakers/armstrong"
 
 type Role = MemoryServer.IUserRole
 

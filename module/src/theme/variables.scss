@@ -1,48 +1,48 @@
 // colors
 
-$white: #ffffff;
-$brand-primary: #cd3939;
-$brand-secondary: #3d4144;
+$white: #ffffff !default;
+$brand-primary: #cd3939 !default;
+$brand-secondary: #3d4144 !default;
 
-$gray-base: #4f5c69;
-$gray-very-dark: darken($gray-base, 20%);
-$gray-dark: darken($gray-base, 15%);
-$gray-medium: $gray-base;
-$gray-light: lighten($gray-base, 50%);
-$gray-very-light: lighten($gray-base, 60%);
+$gray-base: #4f5c69 !default;
+$gray-very-dark: darken($gray-base, 20%) !default;
+$gray-dark: darken($gray-base, 15%) !default;
+$gray-medium: $gray-base !default;
+$gray-light: lighten($gray-base, 50%) !default;
+$gray-very-light: lighten($gray-base, 60%) !default;
 
-$color-positive: #00a388;
-$color-warning: #f78e52;
-$color-negative: #df5a49;
-$color-info: #3498d8;
+$color-positive: #00a388 !default;
+$color-warning: #f78e52 !default;
+$color-negative: #df5a49 !default;
+$color-info: #3498d8 !default;
 
 // spacing
 
-$spacing-xxsmall: 0.25rem;
-$spacing-xsmall: 0.5rem;
-$spacing-small: 1rem;
-$spacing-medium: 2rem;
-$spacing-large: 3rem;
-$spacing-xlarge: 4rem;
+$spacing-xxsmall: 0.25rem !default;
+$spacing-xsmall: 0.5rem !default;
+$spacing-small: 1rem !default;
+$spacing-medium: 2rem !default;
+$spacing-large: 3rem !default;
+$spacing-xlarge: 4rem !default;
 
 // border radiuses
 
-$border-radius-small: $spacing-xxsmall;
-$border-radius-medium: $spacing-small;
-$border-radius-large: $spacing-medium;
+$border-radius-small: $spacing-xxsmall !default;
+$border-radius-medium: $spacing-small !default;
+$border-radius-large: $spacing-medium !default;
 
 // shadows
 
-$shadow-opacity: 0.25;
-$shadow-color: rgba($gray-very-dark, $shadow-opacity);
+$shadow-opacity: 0.25 !default;
+$shadow-color: rgba($gray-very-dark, $shadow-opacity) !default;
 
-$shadow-size-small: 0.5rem;
-$shadow-size-medium: 1rem;
-$shadow-size-large: 2rem;
-$shadow-offset-small: 0.25rem 0.25rem;
-$shadow-offset-medium: 0.5rem 0.5rem;
-$shadow-offset-large: 1rem 1rem;
+$shadow-size-small: 0.5rem !default;
+$shadow-size-medium: 1rem !default;
+$shadow-size-large: 2rem !default;
+$shadow-offset-small: 0.25rem 0.25rem !default;
+$shadow-offset-medium: 0.5rem 0.5rem !default;
+$shadow-offset-large: 1rem 1rem !default;
 
-$shadow-small: $shadow-offset-small $shadow-size-small $shadow-color;
-$shadow-medium: $shadow-offset-medium $shadow-size-medium $shadow-color;
-$shadow-large: $shadow-offset-large $shadow-size-large $shadow-color;
+$shadow-small: $shadow-offset-small $shadow-size-small $shadow-color !default;
+$shadow-medium: $shadow-offset-medium $shadow-size-medium $shadow-color !default;
+$shadow-large: $shadow-offset-large $shadow-size-large $shadow-color !default;

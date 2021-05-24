@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { IBindingProps } from '../hooks/form/form.types';
-import { bindInputChangeEvent } from '../hooks/form/form.utils';
-import { ClassUtils } from '../utils/classNames';
-import { InputWrapper } from './inputWrapper.component';
+import { IBindingProps } from '../../hooks/form/form.types';
+import { bindInputChangeEvent } from '../../hooks/form/form.utils';
+import { ClassUtils } from '../../utils/classNames';
+import { InputWrapper } from '../inputWrapper/inputWrapper.component';
 
 export interface ITextAreaInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
   bind?: IBindingProps<string>;

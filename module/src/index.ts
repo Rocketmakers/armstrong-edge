@@ -5,10 +5,10 @@
 import * as Form from './hooks/form/index';
 
 export { Form };
-
-export { EmailInput } from './components/emailInput.component';
-export { InputBase } from './components/inputBase.component';
-export { InputWrapper } from './components/inputWrapper.component';
-export { NumberInput } from './components/numberInput.component';
-export { TextAreaInput } from './components/textAreaInput.component';
-export { TextInput } from './components/textInput.component';
+export { EmailInput } from './components/emailInput';
+export { IcomoonIcon, Icon, IconName, Icons, IconSet, IIcon, IIconProps, LinearIcon } from './components/icon';
+export { IInputBaseProps, InputBase } from './components/inputBase';
+export { IInputWrapperProps, InputWrapper } from './components/inputWrapper';
+export { NumberInput } from './components/numberInput';
+export { ITextAreaInputProps, TextAreaInput } from './components/textAreaInput';
+export { TextInput } from './components/textInput';

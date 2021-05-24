@@ -31,6 +31,9 @@ export const concatSass = async () => {
   /** dictionary of output files keyed by their name */
   const filesDictionary: Record<string, string> = {};
 
+  // eslint-disable-next-line no-console
+  console.log('Get sass files');
+
   for (const filePath of paths) {
     // read file at path
     const fileBuffer = await FileSystem.readFileAsync(filePath);
@@ -47,6 +50,9 @@ export const concatSass = async () => {
     // concat to the existing key on the dictionary
     filesDictionary[outputFileName] = `${filesDictionary[outputFileName] || ''}// ${fileName}\n\n${fileContents}\n`;
   }
+
+  // eslint-disable-next-line no-console
+  console.log('Write output sass files');
 
   // write to files
   for (const fileName of Object.keys(filesDictionary)) {

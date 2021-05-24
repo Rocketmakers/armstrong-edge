@@ -1,5 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ArgTypes as RootArgTypes, Meta, Story } from '@storybook/react';
 import * as React from 'react';
-import { Meta, Story, ArgTypes as RootArgTypes } from '@storybook/react';
 
 export namespace StoryUtils {
   /** TYPES */
@@ -21,42 +22,46 @@ export namespace StoryUtils {
   export const disabledArgTypes = {
     formProps: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     dataPayload: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     question: {
       table: {
-        disable: true
-      }
-    }
+        disable: true,
+      },
+    },
   };
 
   /** ORGANISATION */
 
   const Folder = {
-    Interactions: 'Interactions',
-    Data: 'Data Visualisation',
-    Layout: 'Layout',
-    PainChart: 'Pain Chart'
+    Form: 'Form',
+    FormUtils: 'Form Utils',
+    Display: 'Display',
   };
 
   /** SCAFFOLD */
 
-  export function createMeta<TComponent extends React.FC>(component: TComponent, folder: keyof typeof Folder, title: string, argTypes?: ArgTypes<React.ComponentProps<TComponent>>): Meta {
+  export function createMeta<TComponent extends React.FC>(
+    component: TComponent,
+    folder: keyof typeof Folder,
+    title: string,
+    argTypes?: ArgTypes<React.ComponentProps<TComponent>>
+  ): Meta {
     return {
       title: `${folder}/${title}`,
       component,
-      argTypes: argTypes as RootArgTypes
+      argTypes: argTypes as RootArgTypes,
     };
   }
 
   export function createTemplate<TComponent extends React.FC<any>>(Component: TComponent, template?: Story<React.ComponentProps<TComponent>>) {
-    return template ?? (props => <Component {...props} />);
+    return template ?? ((props) => <Component {...props} />);
   }
 
   export function cloneTemplate<TProps>(template: Story<TProps>, props: TProps) {

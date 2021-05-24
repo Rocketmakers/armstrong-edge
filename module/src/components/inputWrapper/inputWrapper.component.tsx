@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { ClassUtils } from '../utils/classNames';
+import { ClassUtils } from '../../utils/classNames';
 
-interface IInputWrapperProps {
+export interface IInputWrapperProps {
   className?: string;
 }
 
