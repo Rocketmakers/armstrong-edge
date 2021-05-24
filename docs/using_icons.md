@@ -39,15 +39,13 @@ Finally, you must import the SCSS file for the font you're using into your own S
 @import "~@rocketmakers/armstrong-edge/dist/linearicons.scss";
 ```
 
-This includes all the definitions which are used to tell the icon component what to render
+This includes all the definitions which are used to tell the icon component what to render. Alternatively, you can copy the file you're using, remove all unused icons manually, and import that instead as these files are pretty big. We are considering ways of automating this in future.
 
 From here, icons can be used as follows:
 
 ```tsx
 <Icon iconSet="IcoMoon" iconName="heart2" />
 ```
-
-The icon definition files are all pretty massive, so there are ongoing discussions about how to get the sizes of these things down.
 
 **see storybook page for icons for more instructions on use**
 
