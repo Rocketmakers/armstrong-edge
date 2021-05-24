@@ -5,6 +5,9 @@ Armstrong uses SCSS which isn't compiled down before build, allowing the consumi
 To use SCSS from Armstrong, it must be imported into your app's SCSS:
 
 ```scss
+// variables - required for the reset of armstrong to work
+@import "~@rocketmakers/armstrong-edge/dist/variables.scss";
+
 // basic theme - includes only functional and layout styling
 @import "~@rocketmakers/armstrong-edge/dist/basic.scss";
 
@@ -13,7 +16,7 @@ To use SCSS from Armstrong, it must be imported into your app's SCSS:
 @import "~@rocketmakers/armstrong-edge/dist/prototyping.scss";
 ```
 
-### SCSS concatenation
+### SCSS concatenation implementation
 
 SCSS files can be used anywhere inside src/ and will be automatically concatenated during build based on a naming convention: `inputName.outputName.scss`
 

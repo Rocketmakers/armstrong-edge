@@ -9,7 +9,7 @@ export interface IInputBaseProps<TValue> extends React.DetailedHTMLProps<React.I
   bind?: IBindingProps<TValue>;
 }
 
-export const InputBase: React.FC<IInputBaseProps<any>> = ({ bind, onChange, value, className, ...nativeProps }) => {
+export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>>(({ bind, onChange, value, className, ...nativeProps }, ref) => {
   const onChangeEvent = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       return bindInputChangeEvent(event, bind, onChange);
@@ -19,7 +19,7 @@ export const InputBase: React.FC<IInputBaseProps<any>> = ({ bind, onChange, valu
 
   return (
     <InputWrapper className={ClassUtils.concat(className, 'arm-input-base')}>
-      <input className={'arm-input-base-input'} {...nativeProps} onChange={onChangeEvent} value={bind?.value ?? value ?? ''} />
+      <input ref={ref} className={'arm-input-base-input'} {...nativeProps} onChange={onChangeEvent} value={bind?.value ?? value ?? ''} />
     </InputWrapper>
   );
-};
+});
