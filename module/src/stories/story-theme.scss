@@ -1,7 +1,7 @@
 /** STORY BOOK SPECIFIC GENERAL STYLES **/
 
 // import variables
-@import '../../dist/variables.scss';
+@import '../../dist/imports.scss';
 
 // import chosen icon font
 @import '../../dist/icomoon.scss';
@@ -12,4 +12,4 @@
 // import styled component styles
 @import '../../dist/prototyping.scss';
 
-@import './theme/fonts.scss';
+@import './theme/fonts';

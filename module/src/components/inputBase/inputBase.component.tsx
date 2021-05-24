@@ -9,6 +9,8 @@ export interface IInputBaseProps<TValue> extends React.DetailedHTMLProps<React.I
   bind?: IBindingProps<TValue>;
 }
 
+/** A component which wraps up a native input element with some binding logic and some common logic for components which only contain a single input element. */
+
 export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>>(({ bind, onChange, value, className, ...nativeProps }, ref) => {
   const onChangeEvent = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

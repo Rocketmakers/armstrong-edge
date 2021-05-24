@@ -5,9 +5,9 @@ import * as path from 'path';
 
 import { Paths } from '../paths';
 
-const globAsync = async (searchString: string) => {
+const globAsync = async (searchString: string, options?: glob.IOptions) => {
   return new Promise<string[]>((resolve, reject) => {
-    glob(searchString, (error, matches) => {
+    glob(searchString, options, (error, matches) => {
       if (error) {
         reject(error);
       }
@@ -26,7 +26,7 @@ const globAsync = async (searchString: string) => {
 
 export const concatSass = async () => {
   // get paths that match the searchString glob
-  const paths = await globAsync(Paths.sassGlob);
+  const paths = await globAsync(Paths.sassGlob, { ignore: '**/*/stories/**/*' });
 
   /** dictionary of output files keyed by their name */
   const filesDictionary: Record<string, string> = {};

@@ -1,2717 +1,2713 @@
 /**
- * This is a dictionary of all icon names in Armstrong
- *
- * They are namespaces rather than defined as consts to allow webpack tree shaking to remove unused icons from the bundle
+ * This is a dictionary of all icon names in Armstrong, stored as a type so that it doesn't massively inflate the bundle size
  */
 
-export namespace Icons {
-  export namespace Icomoon {
-    export const accessibility = 'icon-accessibility';
-    export const accessibility2 = 'icon-accessibility2';
-    export const addressBook = 'icon-address-book';
-    export const addressBook2 = 'icon-address-book2';
-    export const addressBook3 = 'icon-address-book3';
-    export const aidKit = 'icon-aid-kit';
-    export const aidKit2 = 'icon-aid-kit2';
-    export const airplane = 'icon-airplane';
-    export const airplane2 = 'icon-airplane2';
-    export const airplane3 = 'icon-airplane3';
-    export const airplane4 = 'icon-airplane4';
-    export const alarm = 'icon-alarm';
-    export const alarmAdd = 'icon-alarm-add';
-    export const alarmCancel = 'icon-alarm-cancel';
-    export const alarmCheck = 'icon-alarm-check';
-    export const alarm2 = 'icon-alarm2';
-    export const album = 'icon-album';
-    export const alignBottom = 'icon-align-bottom';
-    export const alignCenterHorizontal = 'icon-align-center-horizontal';
-    export const alignCenterVertical = 'icon-align-center-vertical';
-    export const alignLeft = 'icon-align-left';
-    export const alignRight = 'icon-align-right';
-    export const alignTop = 'icon-align-top';
-    export const ambulance = 'icon-ambulance';
-    export const ammo = 'icon-ammo';
-    export const ampersand = 'icon-ampersand';
-    export const anchor = 'icon-anchor';
-    export const android = 'icon-android';
-    export const angle = 'icon-angle';
-    export const angry = 'icon-angry';
-    export const angry2 = 'icon-angry2';
-    export const antenna = 'icon-antenna';
-    export const antenna2 = 'icon-antenna2';
-    export const apple = 'icon-apple';
-    export const apple2 = 'icon-apple2';
-    export const archery = 'icon-archery';
-    export const archive = 'icon-archive';
-    export const arrowDown = 'icon-arrow-down';
-    export const arrowDownLeft = 'icon-arrow-down-left';
-    export const arrowDownLeft2 = 'icon-arrow-down-left2';
-    export const arrowDownLeft3 = 'icon-arrow-down-left3';
-    export const arrowDownLeft4 = 'icon-arrow-down-left4';
-    export const arrowDownLeft5 = 'icon-arrow-down-left5';
-    export const arrowDownRight = 'icon-arrow-down-right';
-    export const arrowDownRight2 = 'icon-arrow-down-right2';
-    export const arrowDownRight3 = 'icon-arrow-down-right3';
-    export const arrowDownRight4 = 'icon-arrow-down-right4';
-    export const arrowDownRight5 = 'icon-arrow-down-right5';
-    export const arrowDown10 = 'icon-arrow-down10';
-    export const arrowDown11 = 'icon-arrow-down11';
-    export const arrowDown12 = 'icon-arrow-down12';
-    export const arrowDown13 = 'icon-arrow-down13';
-    export const arrowDown14 = 'icon-arrow-down14';
-    export const arrowDown15 = 'icon-arrow-down15';
-    export const arrowDown16 = 'icon-arrow-down16';
-    export const arrowDown2 = 'icon-arrow-down2';
-    export const arrowDown3 = 'icon-arrow-down3';
-    export const arrowDown4 = 'icon-arrow-down4';
-    export const arrowDown5 = 'icon-arrow-down5';
-    export const arrowDown6 = 'icon-arrow-down6';
-    export const arrowDown7 = 'icon-arrow-down7';
-    export const arrowDown8 = 'icon-arrow-down8';
-    export const arrowDown9 = 'icon-arrow-down9';
-    export const arrowLeft = 'icon-arrow-left';
-    export const arrowLeft10 = 'icon-arrow-left10';
-    export const arrowLeft11 = 'icon-arrow-left11';
-    export const arrowLeft12 = 'icon-arrow-left12';
-    export const arrowLeft13 = 'icon-arrow-left13';
-    export const arrowLeft14 = 'icon-arrow-left14';
-    export const arrowLeft15 = 'icon-arrow-left15';
-    export const arrowLeft16 = 'icon-arrow-left16';
-    export const arrowLeft2 = 'icon-arrow-left2';
-    export const arrowLeft3 = 'icon-arrow-left3';
-    export const arrowLeft4 = 'icon-arrow-left4';
-    export const arrowLeft5 = 'icon-arrow-left5';
-    export const arrowLeft6 = 'icon-arrow-left6';
-    export const arrowLeft7 = 'icon-arrow-left7';
-    export const arrowLeft8 = 'icon-arrow-left8';
-    export const arrowLeft9 = 'icon-arrow-left9';
-    export const arrowResize = 'icon-arrow-resize';
-    export const arrowResize2 = 'icon-arrow-resize2';
-    export const arrowResize3 = 'icon-arrow-resize3';
-    export const arrowResize4 = 'icon-arrow-resize4';
-    export const arrowResize5 = 'icon-arrow-resize5';
-    export const arrowResize6 = 'icon-arrow-resize6';
-    export const arrowResize7 = 'icon-arrow-resize7';
-    export const arrowResize8 = 'icon-arrow-resize8';
-    export const arrowRight = 'icon-arrow-right';
-    export const arrowRight10 = 'icon-arrow-right10';
-    export const arrowRight11 = 'icon-arrow-right11';
-    export const arrowRight12 = 'icon-arrow-right12';
-    export const arrowRight13 = 'icon-arrow-right13';
-    export const arrowRight14 = 'icon-arrow-right14';
-    export const arrowRight15 = 'icon-arrow-right15';
-    export const arrowRight16 = 'icon-arrow-right16';
-    export const arrowRight2 = 'icon-arrow-right2';
-    export const arrowRight3 = 'icon-arrow-right3';
-    export const arrowRight4 = 'icon-arrow-right4';
-    export const arrowRight5 = 'icon-arrow-right5';
-    export const arrowRight6 = 'icon-arrow-right6';
-    export const arrowRight7 = 'icon-arrow-right7';
-    export const arrowRight8 = 'icon-arrow-right8';
-    export const arrowRight9 = 'icon-arrow-right9';
-    export const arrowUp = 'icon-arrow-up';
-    export const arrowUpLeft = 'icon-arrow-up-left';
-    export const arrowUpLeft2 = 'icon-arrow-up-left2';
-    export const arrowUpLeft3 = 'icon-arrow-up-left3';
-    export const arrowUpLeft4 = 'icon-arrow-up-left4';
-    export const arrowUpLeft5 = 'icon-arrow-up-left5';
-    export const arrowUpRight = 'icon-arrow-up-right';
-    export const arrowUpRight2 = 'icon-arrow-up-right2';
-    export const arrowUpRight3 = 'icon-arrow-up-right3';
-    export const arrowUpRight4 = 'icon-arrow-up-right4';
-    export const arrowUpRight5 = 'icon-arrow-up-right5';
-    export const arrowUp10 = 'icon-arrow-up10';
-    export const arrowUp11 = 'icon-arrow-up11';
-    export const arrowUp12 = 'icon-arrow-up12';
-    export const arrowUp13 = 'icon-arrow-up13';
-    export const arrowUp14 = 'icon-arrow-up14';
-    export const arrowUp15 = 'icon-arrow-up15';
-    export const arrowUp16 = 'icon-arrow-up16';
-    export const arrowUp2 = 'icon-arrow-up2';
-    export const arrowUp3 = 'icon-arrow-up3';
-    export const arrowUp4 = 'icon-arrow-up4';
-    export const arrowUp5 = 'icon-arrow-up5';
-    export const arrowUp6 = 'icon-arrow-up6';
-    export const arrowUp7 = 'icon-arrow-up7';
-    export const arrowUp8 = 'icon-arrow-up8';
-    export const arrowUp9 = 'icon-arrow-up9';
-    export const atSign = 'icon-at-sign';
-    export const atom = 'icon-atom';
-    export const atom2 = 'icon-atom2';
-    export const attachment = 'icon-attachment';
-    export const attachment2 = 'icon-attachment2';
-    export const backspace = 'icon-backspace';
-    export const backspace2 = 'icon-backspace2';
-    export const backward = 'icon-backward';
-    export const backward2 = 'icon-backward2';
-    export const baffled = 'icon-baffled';
-    export const baffled2 = 'icon-baffled2';
-    export const bag = 'icon-bag';
-    export const bag2 = 'icon-bag2';
-    export const balance = 'icon-balance';
-    export const balloon = 'icon-balloon';
-    export const barcode = 'icon-barcode';
-    export const barcode2 = 'icon-barcode2';
-    export const baseball = 'icon-baseball';
-    export const basket = 'icon-basket';
-    export const basketball = 'icon-basketball';
-    export const battery0 = 'icon-battery-0';
-    export const battery1 = 'icon-battery-1';
-    export const battery2 = 'icon-battery-2';
-    export const battery3 = 'icon-battery-3';
-    export const battery4 = 'icon-battery-4';
-    export const battery5 = 'icon-battery-5';
-    export const battery6 = 'icon-battery-6';
-    export const batteryCharging = 'icon-battery-charging';
-    export const bed = 'icon-bed';
-    export const bed2 = 'icon-bed2';
-    export const bell = 'icon-bell';
-    export const bellCheck = 'icon-bell-check';
-    export const bellCross = 'icon-bell-cross';
-    export const bellMinus = 'icon-bell-minus';
-    export const bellPlus = 'icon-bell-plus';
-    export const bell2 = 'icon-bell2';
-    export const bell3 = 'icon-bell3';
-    export const bike = 'icon-bike';
-    export const bin = 'icon-bin';
-    export const bin2 = 'icon-bin2';
-    export const bin3 = 'icon-bin3';
-    export const bin4 = 'icon-bin4';
-    export const bin5 = 'icon-bin5';
-    export const binoculars = 'icon-binoculars';
-    export const binoculars2 = 'icon-binoculars2';
-    export const blocked = 'icon-blocked';
-    export const blog = 'icon-blog';
-    export const blog2 = 'icon-blog2';
-    export const blogger = 'icon-blogger';
-    export const blogger2 = 'icon-blogger2';
-    export const boat = 'icon-boat';
-    export const bold = 'icon-bold';
-    export const bold2 = 'icon-bold2';
-    export const bomb = 'icon-bomb';
-    export const book = 'icon-book';
-    export const bookPlay = 'icon-book-play';
-    export const book2 = 'icon-book2';
-    export const book3 = 'icon-book3';
-    export const bookmark = 'icon-bookmark';
-    export const bookmark2 = 'icon-bookmark2';
-    export const bookmark3 = 'icon-bookmark3';
-    export const bookmark4 = 'icon-bookmark4';
-    export const bookmarks = 'icon-bookmarks';
-    export const books = 'icon-books';
-    export const bottle = 'icon-bottle';
-    export const bottle2 = 'icon-bottle2';
-    export const bottle3 = 'icon-bottle3';
-    export const bottle4 = 'icon-bottle4';
-    export const bow = 'icon-bow';
-    export const bowling = 'icon-bowling';
-    export const bowling2 = 'icon-bowling2';
-    export const bowtie = 'icon-bowtie';
-    export const box = 'icon-box';
-    export const boxAdd = 'icon-box-add';
-    export const boxRemove = 'icon-box-remove';
-    export const brain = 'icon-brain';
-    export const bread = 'icon-bread';
-    export const briefcase = 'icon-briefcase';
-    export const briefcase2 = 'icon-briefcase2';
-    export const briefcase3 = 'icon-briefcase3';
-    export const brightnessContrast = 'icon-brightness-contrast';
-    export const brightnessHigh = 'icon-brightness-high';
-    export const brightnessLow = 'icon-brightness-low';
-    export const brightnessMedium = 'icon-brightness-medium';
-    export const broom = 'icon-broom';
-    export const brush = 'icon-brush';
-    export const bubble = 'icon-bubble';
-    export const bubbleBlocked = 'icon-bubble-blocked';
-    export const bubbleCancel = 'icon-bubble-cancel';
-    export const bubbleCheck = 'icon-bubble-check';
-    export const bubbleDots = 'icon-bubble-dots';
-    export const bubbleDots2 = 'icon-bubble-dots2';
-    export const bubbleDots3 = 'icon-bubble-dots3';
-    export const bubbleDots4 = 'icon-bubble-dots4';
-    export const bubbleFirst = 'icon-bubble-first';
-    export const bubbleForward = 'icon-bubble-forward';
-    export const bubbleForward2 = 'icon-bubble-forward2';
-    export const bubbleHeart = 'icon-bubble-heart';
-    export const bubbleLast = 'icon-bubble-last';
-    export const bubbleLeft = 'icon-bubble-left';
-    export const bubbleLines = 'icon-bubble-lines';
-    export const bubbleLines2 = 'icon-bubble-lines2';
-    export const bubbleLines3 = 'icon-bubble-lines3';
-    export const bubbleLines4 = 'icon-bubble-lines4';
-    export const bubbleLink = 'icon-bubble-link';
-    export const bubbleLock = 'icon-bubble-lock';
-    export const bubbleMinus = 'icon-bubble-minus';
-    export const bubbleNotification = 'icon-bubble-notification';
-    export const bubbleNotification2 = 'icon-bubble-notification2';
-    export const bubblePaperclip = 'icon-bubble-paperclip';
-    export const bubblePlus = 'icon-bubble-plus';
-    export const bubbleQuote = 'icon-bubble-quote';
-    export const bubbleReply = 'icon-bubble-reply';
-    export const bubbleReply2 = 'icon-bubble-reply2';
-    export const bubbleRight = 'icon-bubble-right';
-    export const bubbleSmiley = 'icon-bubble-smiley';
-    export const bubbleStar = 'icon-bubble-star';
-    export const bubbleUser = 'icon-bubble-user';
-    export const bubbleVideo = 'icon-bubble-video';
-    export const bubble2 = 'icon-bubble2';
-    export const bubble3 = 'icon-bubble3';
-    export const bubble4 = 'icon-bubble4';
-    export const bubble5 = 'icon-bubble5';
-    export const bubble6 = 'icon-bubble6';
-    export const bubble7 = 'icon-bubble7';
-    export const bubble8 = 'icon-bubble8';
-    export const bubble9 = 'icon-bubble9';
-    export const bubbles = 'icon-bubbles';
-    export const bubbles10 = 'icon-bubbles10';
-    export const bubbles2 = 'icon-bubbles2';
-    export const bubbles3 = 'icon-bubbles3';
-    export const bubbles4 = 'icon-bubbles4';
-    export const bubbles5 = 'icon-bubbles5';
-    export const bubbles6 = 'icon-bubbles6';
-    export const bubbles7 = 'icon-bubbles7';
-    export const bubbles8 = 'icon-bubbles8';
-    export const bubbles9 = 'icon-bubbles9';
-    export const bucket = 'icon-bucket';
-    export const bucket2 = 'icon-bucket2';
-    export const bug = 'icon-bug';
-    export const bug2 = 'icon-bug2';
-    export const bullhorn = 'icon-bullhorn';
-    export const bus = 'icon-bus';
-    export const cabinet = 'icon-cabinet';
-    export const cactus = 'icon-cactus';
-    export const cake = 'icon-cake';
-    export const calculator = 'icon-calculator';
-    export const calculator2 = 'icon-calculator2';
-    export const calculator3 = 'icon-calculator3';
-    export const calendar = 'icon-calendar';
-    export const calendar2 = 'icon-calendar2';
-    export const calendar3 = 'icon-calendar3';
-    export const calendar4 = 'icon-calendar4';
-    export const calendar5 = 'icon-calendar5';
-    export const camera = 'icon-camera';
-    export const camera2 = 'icon-camera2';
-    export const camera3 = 'icon-camera3';
-    export const cancel = 'icon-cancel';
-    export const cancelCircle = 'icon-cancel-circle';
-    export const cancelCircle2 = 'icon-cancel-circle2';
-    export const cancelSquare = 'icon-cancel-square';
-    export const cancelSquare2 = 'icon-cancel-square2';
-    export const car = 'icon-car';
-    export const car2 = 'icon-car2';
-    export const cart = 'icon-cart';
-    export const cartAdd = 'icon-cart-add';
-    export const cartAdd2 = 'icon-cart-add2';
-    export const cartRemove = 'icon-cart-remove';
-    export const cart2 = 'icon-cart2';
-    export const cart3 = 'icon-cart3';
-    export const cart4 = 'icon-cart4';
-    export const cart5 = 'icon-cart5';
-    export const cash = 'icon-cash';
-    export const cash2 = 'icon-cash2';
-    export const cash3 = 'icon-cash3';
-    export const cash4 = 'icon-cash4';
-    export const cassette = 'icon-cassette';
-    export const cc = 'icon-cc';
-    export const certificate = 'icon-certificate';
-    export const chair = 'icon-chair';
-    export const chart = 'icon-chart';
-    export const checkboxChecked = 'icon-checkbox-checked';
-    export const checkboxChecked2 = 'icon-checkbox-checked2';
-    export const checkboxPartial = 'icon-checkbox-partial';
-    export const checkboxPartial2 = 'icon-checkbox-partial2';
-    export const checkboxUnchecked = 'icon-checkbox-unchecked';
-    export const checkboxUnchecked2 = 'icon-checkbox-unchecked2';
-    export const checkmark = 'icon-checkmark';
-    export const checkmarkCircle = 'icon-checkmark-circle';
-    export const checkmark2 = 'icon-checkmark2';
-    export const checkmark3 = 'icon-checkmark3';
-    export const checkmark4 = 'icon-checkmark4';
-    export const checkmark5 = 'icon-checkmark5';
-    export const cheese = 'icon-cheese';
-    export const cherry = 'icon-cherry';
-    export const chess = 'icon-chess';
-    export const chessBishop = 'icon-chess-bishop';
-    export const chessKing = 'icon-chess-king';
-    export const chessKnight = 'icon-chess-knight';
-    export const chessPawn = 'icon-chess-pawn';
-    export const chessQueen = 'icon-chess-queen';
-    export const chessRock = 'icon-chess-rock';
-    export const chicken = 'icon-chicken';
-    export const chip = 'icon-chip';
-    export const chopper = 'icon-chopper';
-    export const chopper2 = 'icon-chopper2';
-    export const chrome = 'icon-chrome';
-    export const circle = 'icon-circle';
-    export const circleCode = 'icon-circle-code';
-    export const circleCss = 'icon-circle-css';
-    export const circleDown = 'icon-circle-down';
-    export const circleDownLeft = 'icon-circle-down-left';
-    export const circleDownLeft2 = 'icon-circle-down-left2';
-    export const circleDownRight = 'icon-circle-down-right';
-    export const circleDownRight2 = 'icon-circle-down-right2';
-    export const circleDown2 = 'icon-circle-down2';
-    export const circleDown3 = 'icon-circle-down3';
-    export const circleDown4 = 'icon-circle-down4';
-    export const circleDown5 = 'icon-circle-down5';
-    export const circleDown6 = 'icon-circle-down6';
-    export const circleLeft = 'icon-circle-left';
-    export const circleLeft2 = 'icon-circle-left2';
-    export const circleLeft3 = 'icon-circle-left3';
-    export const circleLeft4 = 'icon-circle-left4';
-    export const circleLeft5 = 'icon-circle-left5';
-    export const circleLeft6 = 'icon-circle-left6';
-    export const circleRight = 'icon-circle-right';
-    export const circleRight2 = 'icon-circle-right2';
-    export const circleRight3 = 'icon-circle-right3';
-    export const circleRight4 = 'icon-circle-right4';
-    export const circleRight5 = 'icon-circle-right5';
-    export const circleRight6 = 'icon-circle-right6';
-    export const circleSmall = 'icon-circle-small';
-    export const circleUp = 'icon-circle-up';
-    export const circleUpLeft = 'icon-circle-up-left';
-    export const circleUpLeft2 = 'icon-circle-up-left2';
-    export const circleUpRight = 'icon-circle-up-right';
-    export const circleUpRight2 = 'icon-circle-up-right2';
-    export const circleUp2 = 'icon-circle-up2';
-    export const circleUp3 = 'icon-circle-up3';
-    export const circleUp4 = 'icon-circle-up4';
-    export const circleUp5 = 'icon-circle-up5';
-    export const circleUp6 = 'icon-circle-up6';
-    export const circle2 = 'icon-circle2';
-    export const circles = 'icon-circles';
-    export const circles2 = 'icon-circles2';
-    export const city = 'icon-city';
-    export const clapboard = 'icon-clapboard';
-    export const clapboardPlay = 'icon-clapboard-play';
-    export const clearFormatting = 'icon-clear-formatting';
-    export const clipboard = 'icon-clipboard';
-    export const clipboard2 = 'icon-clipboard2';
-    export const clipboard3 = 'icon-clipboard3';
-    export const clipboard4 = 'icon-clipboard4';
-    export const clipboard5 = 'icon-clipboard5';
-    export const clipboard6 = 'icon-clipboard6';
-    export const clock = 'icon-clock';
-    export const clock2 = 'icon-clock2';
-    export const clock3 = 'icon-clock3';
-    export const clock4 = 'icon-clock4';
-    export const cloud = 'icon-cloud';
-    export const cloudCheck = 'icon-cloud-check';
-    export const cloudCheck2 = 'icon-cloud-check2';
-    export const cloudDownload = 'icon-cloud-download';
-    export const cloudDownload2 = 'icon-cloud-download2';
-    export const cloudUpload = 'icon-cloud-upload';
-    export const cloudUpload2 = 'icon-cloud-upload2';
-    export const cloud2 = 'icon-cloud2';
-    export const clubs = 'icon-clubs';
-    export const code = 'icon-code';
-    export const codepen = 'icon-codepen';
-    export const coffee = 'icon-coffee';
-    export const coffeeBaen = 'icon-coffee-baen';
-    export const cog = 'icon-cog';
-    export const cog2 = 'icon-cog2';
-    export const cog3 = 'icon-cog3';
-    export const cog4 = 'icon-cog4';
-    export const cog5 = 'icon-cog5';
-    export const cog6 = 'icon-cog6';
-    export const cog7 = 'icon-cog7';
-    export const cogs = 'icon-cogs';
-    export const coinDollar = 'icon-coin-dollar';
-    export const coinEuro = 'icon-coin-euro';
-    export const coinPound = 'icon-coin-pound';
-    export const coinYen = 'icon-coin-yen';
-    export const coins = 'icon-coins';
-    export const collaboration = 'icon-collaboration';
-    export const colorClear = 'icon-color-clear';
-    export const colorSampler = 'icon-color-sampler';
-    export const comb = 'icon-comb';
-    export const command = 'icon-command';
-    export const compass = 'icon-compass';
-    export const compass2 = 'icon-compass2';
-    export const compass3 = 'icon-compass3';
-    export const compass4 = 'icon-compass4';
-    export const compass5 = 'icon-compass5';
-    export const compass6 = 'icon-compass6';
-    export const confused = 'icon-confused';
-    export const confused2 = 'icon-confused2';
-    export const connection = 'icon-connection';
-    export const connection2 = 'icon-connection2';
-    export const connection3 = 'icon-connection3';
-    export const connection4 = 'icon-connection4';
-    export const construction = 'icon-construction';
-    export const contrast = 'icon-contrast';
-    export const cook = 'icon-cook';
-    export const cool = 'icon-cool';
-    export const cool2 = 'icon-cool2';
-    export const copy = 'icon-copy';
-    export const copy2 = 'icon-copy2';
-    export const copy3 = 'icon-copy3';
-    export const copy4 = 'icon-copy4';
-    export const creditCard = 'icon-credit-card';
-    export const creditCard2 = 'icon-credit-card2';
-    export const crop = 'icon-crop';
-    export const crop2 = 'icon-crop2';
-    export const cross = 'icon-cross';
-    export const cross2 = 'icon-cross2';
-    export const cross3 = 'icon-cross3';
-    export const crown = 'icon-crown';
-    export const crying = 'icon-crying';
-    export const crying2 = 'icon-crying2';
-    export const css3 = 'icon-css3';
-    export const ctrl = 'icon-ctrl';
-    export const cube = 'icon-cube';
-    export const cube2 = 'icon-cube2';
-    export const cube3 = 'icon-cube3';
-    export const cube4 = 'icon-cube4';
-    export const cup = 'icon-cup';
-    export const cup2 = 'icon-cup2';
-    export const cursor = 'icon-cursor';
-    export const cursor2 = 'icon-cursor2';
-    export const database = 'icon-database';
-    export const databaseAdd = 'icon-database-add';
-    export const databaseArrow = 'icon-database-arrow';
-    export const databaseCheck = 'icon-database-check';
-    export const databaseDiff = 'icon-database-diff';
-    export const databaseEdit = 'icon-database-edit';
-    export const databaseEdit2 = 'icon-database-edit2';
-    export const databaseExport = 'icon-database-export';
-    export const databaseInsert = 'icon-database-insert';
-    export const databaseMenu = 'icon-database-menu';
-    export const databaseRefresh = 'icon-database-refresh';
-    export const databaseRemove = 'icon-database-remove';
-    export const databaseTime = 'icon-database-time';
-    export const databaseTime2 = 'icon-database-time2';
-    export const databaseUpload = 'icon-database-upload';
-    export const database2 = 'icon-database2';
-    export const database3 = 'icon-database3';
-    export const database4 = 'icon-database4';
-    export const dayNight = 'icon-day-night';
-    export const dayNight2 = 'icon-day-night2';
-    export const delicious = 'icon-delicious';
-    export const design = 'icon-design';
-    export const deviantart = 'icon-deviantart';
-    export const deviantart2 = 'icon-deviantart2';
-    export const diamond = 'icon-diamond';
-    export const diamond2 = 'icon-diamond2';
-    export const diamond3 = 'icon-diamond3';
-    export const diamond4 = 'icon-diamond4';
-    export const diamonds = 'icon-diamonds';
-    export const dice = 'icon-dice';
-    export const direction = 'icon-direction';
-    export const disk = 'icon-disk';
-    export const disk2 = 'icon-disk2';
-    export const display = 'icon-display';
-    export const display2 = 'icon-display2';
-    export const display3 = 'icon-display3';
-    export const display4 = 'icon-display4';
-    export const dots = 'icon-dots';
-    export const download = 'icon-download';
-    export const download10 = 'icon-download10';
-    export const download2 = 'icon-download2';
-    export const download3 = 'icon-download3';
-    export const download4 = 'icon-download4';
-    export const download5 = 'icon-download5';
-    export const download6 = 'icon-download6';
-    export const download7 = 'icon-download7';
-    export const download8 = 'icon-download8';
-    export const download9 = 'icon-download9';
-    export const dragLeft = 'icon-drag-left';
-    export const dragLeftRight = 'icon-drag-left-right';
-    export const dragRight = 'icon-drag-right';
-    export const drawer = 'icon-drawer';
-    export const drawerIn = 'icon-drawer-in';
-    export const drawerOut = 'icon-drawer-out';
-    export const drawer2 = 'icon-drawer2';
-    export const drawer3 = 'icon-drawer3';
-    export const dribbble = 'icon-dribbble';
-    export const dribbble2 = 'icon-dribbble2';
-    export const dribbble3 = 'icon-dribbble3';
-    export const drive = 'icon-drive';
-    export const dropbox = 'icon-dropbox';
-    export const droplet = 'icon-droplet';
-    export const dropletContrast = 'icon-droplet-contrast';
-    export const droplet2 = 'icon-droplet2';
-    export const dumbbell = 'icon-dumbbell';
-    export const earth = 'icon-earth';
-    export const earth2 = 'icon-earth2';
-    export const earth3 = 'icon-earth3';
-    export const eightBall = 'icon-eight-ball';
-    export const eject = 'icon-eject';
-    export const ello = 'icon-ello';
-    export const embed = 'icon-embed';
-    export const embed2 = 'icon-embed2';
-    export const enlarge = 'icon-enlarge';
-    export const enlarge2 = 'icon-enlarge2';
-    export const enlarge3 = 'icon-enlarge3';
-    export const enlarge4 = 'icon-enlarge4';
-    export const enlarge5 = 'icon-enlarge5';
-    export const enlarge6 = 'icon-enlarge6';
-    export const enlarge7 = 'icon-enlarge7';
-    export const enter = 'icon-enter';
-    export const enter2 = 'icon-enter2';
-    export const enter3 = 'icon-enter3';
-    export const enter4 = 'icon-enter4';
-    export const enter5 = 'icon-enter5';
-    export const enter6 = 'icon-enter6';
-    export const envelop = 'icon-envelop';
-    export const envelop2 = 'icon-envelop2';
-    export const envelop3 = 'icon-envelop3';
-    export const envelop4 = 'icon-envelop4';
-    export const envelop5 = 'icon-envelop5';
-    export const equalizer = 'icon-equalizer';
-    export const equalizer2 = 'icon-equalizer2';
-    export const equalizer3 = 'icon-equalizer3';
-    export const equalizer4 = 'icon-equalizer4';
-    export const eraser = 'icon-eraser';
-    export const eraser2 = 'icon-eraser2';
-    export const eraser3 = 'icon-eraser3';
-    export const esc = 'icon-esc';
-    export const evil = 'icon-evil';
-    export const evil2 = 'icon-evil2';
-    export const exclude = 'icon-exclude';
-    export const exit = 'icon-exit';
-    export const exit2 = 'icon-exit2';
-    export const exit3 = 'icon-exit3';
-    export const eye = 'icon-eye';
-    export const eyeBlocked = 'icon-eye-blocked';
-    export const eyeBlocked2 = 'icon-eye-blocked2';
-    export const eyeBlocked3 = 'icon-eye-blocked3';
-    export const eyeMinus = 'icon-eye-minus';
-    export const eyePlus = 'icon-eye-plus';
-    export const eye2 = 'icon-eye2';
-    export const eye3 = 'icon-eye3';
-    export const eye4 = 'icon-eye4';
-    export const eyedropper = 'icon-eyedropper';
-    export const eyedropper2 = 'icon-eyedropper2';
-    export const eyedropper3 = 'icon-eyedropper3';
-    export const facebook = 'icon-facebook';
-    export const facebook2 = 'icon-facebook2';
-    export const facebook3 = 'icon-facebook3';
-    export const factory = 'icon-factory';
-    export const fan = 'icon-fan';
-    export const feed = 'icon-feed';
-    export const feed2 = 'icon-feed2';
-    export const feed3 = 'icon-feed3';
-    export const feed4 = 'icon-feed4';
-    export const female = 'icon-female';
-    export const fence = 'icon-fence';
-    export const fileCheck = 'icon-file-check';
-    export const fileCheck2 = 'icon-file-check2';
-    export const fileCss = 'icon-file-css';
-    export const fileCss2 = 'icon-file-css2';
-    export const fileDownload = 'icon-file-download';
-    export const fileDownload2 = 'icon-file-download2';
-    export const fileEmpty = 'icon-file-empty';
-    export const fileEmpty2 = 'icon-file-empty2';
-    export const fileExcel = 'icon-file-excel';
-    export const fileEye = 'icon-file-eye';
-    export const fileEye2 = 'icon-file-eye2';
-    export const fileLocked = 'icon-file-locked';
-    export const fileLocked2 = 'icon-file-locked2';
-    export const fileMinus = 'icon-file-minus';
-    export const fileMinus2 = 'icon-file-minus2';
-    export const fileMusic = 'icon-file-music';
-    export const fileMusic2 = 'icon-file-music2';
-    export const fileOpenoffice = 'icon-file-openoffice';
-    export const filePdf = 'icon-file-pdf';
-    export const filePicture = 'icon-file-picture';
-    export const filePicture2 = 'icon-file-picture2';
-    export const filePlay = 'icon-file-play';
-    export const filePlay2 = 'icon-file-play2';
-    export const filePlus = 'icon-file-plus';
-    export const filePlus2 = 'icon-file-plus2';
-    export const filePresentation = 'icon-file-presentation';
-    export const filePresentation2 = 'icon-file-presentation2';
-    export const fileSpreadsheet = 'icon-file-spreadsheet';
-    export const fileSpreadsheet2 = 'icon-file-spreadsheet2';
-    export const fileStats = 'icon-file-stats';
-    export const fileStats2 = 'icon-file-stats2';
-    export const fileText = 'icon-file-text';
-    export const fileText2 = 'icon-file-text2';
-    export const fileText3 = 'icon-file-text3';
-    export const fileUpload = 'icon-file-upload';
-    export const fileUpload2 = 'icon-file-upload2';
-    export const fileVideo = 'icon-file-video';
-    export const fileVideo2 = 'icon-file-video2';
-    export const fileWord = 'icon-file-word';
-    export const fileXml = 'icon-file-xml';
-    export const fileXml2 = 'icon-file-xml2';
-    export const fileZip = 'icon-file-zip';
-    export const fileZip2 = 'icon-file-zip2';
-    export const filesEmpty = 'icon-files-empty';
-    export const filesEmpty2 = 'icon-files-empty2';
-    export const film = 'icon-film';
-    export const film2 = 'icon-film2';
-    export const film3 = 'icon-film3';
-    export const film4 = 'icon-film4';
-    export const filter = 'icon-filter';
-    export const filter2 = 'icon-filter2';
-    export const filter3 = 'icon-filter3';
-    export const filter4 = 'icon-filter4';
-    export const finder = 'icon-finder';
-    export const finish = 'icon-finish';
-    export const fire = 'icon-fire';
-    export const fire2 = 'icon-fire2';
-    export const firefox = 'icon-firefox';
-    export const first = 'icon-first';
-    export const first2 = 'icon-first2';
-    export const fish = 'icon-fish';
-    export const flag = 'icon-flag';
-    export const flag2 = 'icon-flag2';
-    export const flag3 = 'icon-flag3';
-    export const flag4 = 'icon-flag4';
-    export const flag5 = 'icon-flag5';
-    export const flag6 = 'icon-flag6';
-    export const flag7 = 'icon-flag7';
-    export const flag8 = 'icon-flag8';
-    export const flattr = 'icon-flattr';
-    export const flickr = 'icon-flickr';
-    export const flickr2 = 'icon-flickr2';
-    export const flickr3 = 'icon-flickr3';
-    export const flickr4 = 'icon-flickr4';
-    export const flipHorizontal = 'icon-flip-horizontal';
-    export const flipHorizontal2 = 'icon-flip-horizontal2';
-    export const flipVertical = 'icon-flip-vertical';
-    export const flipVertical2 = 'icon-flip-vertical2';
-    export const flipVertical3 = 'icon-flip-vertical3';
-    export const flipVertical4 = 'icon-flip-vertical4';
-    export const floppyDisk = 'icon-floppy-disk';
-    export const floppyDisk2 = 'icon-floppy-disk2';
-    export const floppyDisk3 = 'icon-floppy-disk3';
-    export const floppyDisks = 'icon-floppy-disks';
-    export const floppyDisks2 = 'icon-floppy-disks2';
-    export const flower = 'icon-flower';
-    export const flower2 = 'icon-flower2';
-    export const folder = 'icon-folder';
-    export const folderCheck = 'icon-folder-check';
-    export const folderDownload = 'icon-folder-download';
-    export const folderDownload2 = 'icon-folder-download2';
-    export const folderDownload3 = 'icon-folder-download3';
-    export const folderHeart = 'icon-folder-heart';
-    export const folderMinus = 'icon-folder-minus';
-    export const folderMinus2 = 'icon-folder-minus2';
-    export const folderMinus3 = 'icon-folder-minus3';
-    export const folderMinus4 = 'icon-folder-minus4';
-    export const folderOpen = 'icon-folder-open';
-    export const folderOpen2 = 'icon-folder-open2';
-    export const folderOpen3 = 'icon-folder-open3';
-    export const folderPlus = 'icon-folder-plus';
-    export const folderPlus2 = 'icon-folder-plus2';
-    export const folderPlus3 = 'icon-folder-plus3';
-    export const folderPlus4 = 'icon-folder-plus4';
-    export const folderRemove = 'icon-folder-remove';
-    export const folderSearch = 'icon-folder-search';
-    export const folderUpload = 'icon-folder-upload';
-    export const folderUpload2 = 'icon-folder-upload2';
-    export const folderUpload3 = 'icon-folder-upload3';
-    export const folder2 = 'icon-folder2';
-    export const folder3 = 'icon-folder3';
-    export const folder4 = 'icon-folder4';
-    export const folder5 = 'icon-folder5';
-    export const folder6 = 'icon-folder6';
-    export const font = 'icon-font';
-    export const fontSize = 'icon-font-size';
-    export const fontSize2 = 'icon-font-size2';
-    export const football = 'icon-football';
-    export const footprint = 'icon-footprint';
-    export const forkKnife = 'icon-fork-knife';
-    export const forrst = 'icon-forrst';
-    export const forrst2 = 'icon-forrst2';
-    export const forward = 'icon-forward';
-    export const forward2 = 'icon-forward2';
-    export const forward3 = 'icon-forward3';
-    export const foursquare = 'icon-foursquare';
-    export const frustrated = 'icon-frustrated';
-    export const frustrated2 = 'icon-frustrated2';
-    export const furniture = 'icon-furniture';
-    export const gamepad = 'icon-gamepad';
-    export const gamepad2 = 'icon-gamepad2';
-    export const gamepad3 = 'icon-gamepad3';
-    export const gas = 'icon-gas';
-    export const gift = 'icon-gift';
-    export const gift2 = 'icon-gift2';
-    export const git = 'icon-git';
-    export const github = 'icon-github';
-    export const github2 = 'icon-github2';
-    export const github3 = 'icon-github3';
-    export const github4 = 'icon-github4';
-    export const github5 = 'icon-github5';
-    export const glass = 'icon-glass';
-    export const glass2 = 'icon-glass2';
-    export const glass3 = 'icon-glass3';
-    export const glass4 = 'icon-glass4';
-    export const glasses = 'icon-glasses';
-    export const glasses3d = 'icon-glasses-3d';
-    export const glasses3d2 = 'icon-glasses-3d2';
-    export const glasses2 = 'icon-glasses2';
-    export const golf = 'icon-golf';
-    export const golf2 = 'icon-golf2';
-    export const google = 'icon-google';
-    export const googleDrive = 'icon-google-drive';
-    export const googlePlus = 'icon-google-plus';
-    export const googlePlus2 = 'icon-google-plus2';
-    export const googlePlus3 = 'icon-google-plus3';
-    export const grab = 'icon-grab';
-    export const gradient = 'icon-gradient';
-    export const graduation = 'icon-graduation';
-    export const grapes = 'icon-grapes';
-    export const grid = 'icon-grid';
-    export const grid2 = 'icon-grid2';
-    export const grid3 = 'icon-grid3';
-    export const grid4 = 'icon-grid4';
-    export const grid5 = 'icon-grid5';
-    export const grid6 = 'icon-grid6';
-    export const grid7 = 'icon-grid7';
-    export const grin = 'icon-grin';
-    export const grin2 = 'icon-grin2';
-    export const guitar = 'icon-guitar';
-    export const gun = 'icon-gun';
-    export const gunForbidden = 'icon-gun-forbidden';
-    export const haircut = 'icon-haircut';
-    export const hamburger = 'icon-hamburger';
-    export const hammer = 'icon-hammer';
-    export const hammerWrench = 'icon-hammer-wrench';
-    export const hammer2 = 'icon-hammer2';
-    export const hand = 'icon-hand';
-    export const hanger = 'icon-hanger';
-    export const happy = 'icon-happy';
-    export const happy2 = 'icon-happy2';
-    export const hat = 'icon-hat';
-    export const headphones = 'icon-headphones';
-    export const headset = 'icon-headset';
-    export const heart = 'icon-heart';
-    export const heartBroken = 'icon-heart-broken';
-    export const heartBroken2 = 'icon-heart-broken2';
-    export const heartBroken3 = 'icon-heart-broken3';
-    export const heart2 = 'icon-heart2';
-    export const heart3 = 'icon-heart3';
-    export const heart4 = 'icon-heart4';
-    export const heart5 = 'icon-heart5';
-    export const heart6 = 'icon-heart6';
-    export const heart7 = 'icon-heart7';
-    export const heart8 = 'icon-heart8';
-    export const height = 'icon-height';
-    export const height2 = 'icon-height2';
-    export const highlight = 'icon-highlight';
-    export const hipster = 'icon-hipster';
-    export const hipster2 = 'icon-hipster2';
-    export const history = 'icon-history';
-    export const hockey = 'icon-hockey';
-    export const home = 'icon-home';
-    export const home2 = 'icon-home2';
-    export const home3 = 'icon-home3';
-    export const home4 = 'icon-home4';
-    export const home5 = 'icon-home5';
-    export const home6 = 'icon-home6';
-    export const home7 = 'icon-home7';
-    export const home8 = 'icon-home8';
-    export const home9 = 'icon-home9';
-    export const hourGlass = 'icon-hour-glass';
-    export const hourGlass2 = 'icon-hour-glass2';
-    export const hourGlass3 = 'icon-hour-glass3';
-    export const html5 = 'icon-html5';
-    export const html52 = 'icon-html52';
-    export const icecream = 'icon-icecream';
-    export const icoMoon = 'icon-IcoMoon';
-    export const iE = 'icon-IE';
-    export const image = 'icon-image';
-    export const imageCompare = 'icon-image-compare';
-    export const image2 = 'icon-image2';
-    export const image3 = 'icon-image3';
-    export const image4 = 'icon-image4';
-    export const image5 = 'icon-image5';
-    export const image6 = 'icon-image6';
-    export const images = 'icon-images';
-    export const images2 = 'icon-images2';
-    export const images3 = 'icon-images3';
-    export const import1 = 'icon-import';
-    export const import2 = 'icon-import2';
-    export const indentDecrease = 'icon-indent-decrease';
-    export const indentDecrease2 = 'icon-indent-decrease2';
-    export const indentIncrease = 'icon-indent-increase';
-    export const indentIncrease2 = 'icon-indent-increase2';
-    export const infinite = 'icon-infinite';
-    export const infiniteSquare = 'icon-infinite-square';
-    export const infinite2 = 'icon-infinite2';
-    export const info = 'icon-info';
-    export const info2 = 'icon-info2';
-    export const insertTemplate = 'icon-insert-template';
-    export const instagram = 'icon-instagram';
-    export const interset = 'icon-interset';
-    export const italic = 'icon-italic';
-    export const italic2 = 'icon-italic2';
-    export const joomla = 'icon-joomla';
-    export const key = 'icon-key';
-    export const keyA = 'icon-key-A';
-    export const keyDown = 'icon-key-down';
-    export const keyKeyboard = 'icon-key-keyboard';
-    export const keyLeft = 'icon-key-left';
-    export const keyRight = 'icon-key-right';
-    export const keyUp = 'icon-key-up';
-    export const key2 = 'icon-key2';
-    export const key3 = 'icon-key3';
-    export const key4 = 'icon-key4';
-    export const key5 = 'icon-key5';
-    export const keyboard = 'icon-keyboard';
-    export const keyboard2 = 'icon-keyboard2';
-    export const keyhole = 'icon-keyhole';
-    export const knife = 'icon-knife';
-    export const lab = 'icon-lab';
-    export const ladder = 'icon-ladder';
-    export const lamp = 'icon-lamp';
-    export const lamp2 = 'icon-lamp2';
-    export const lamp3 = 'icon-lamp3';
-    export const lamp4 = 'icon-lamp4';
-    export const lamp5 = 'icon-lamp5';
-    export const lamp6 = 'icon-lamp6';
-    export const lamp7 = 'icon-lamp7';
-    export const lamp8 = 'icon-lamp8';
-    export const lan = 'icon-lan';
-    export const lan2 = 'icon-lan2';
-    export const lan3 = 'icon-lan3';
-    export const lanyrd = 'icon-lanyrd';
-    export const laptop = 'icon-laptop';
-    export const lasso = 'icon-lasso';
-    export const lasso2 = 'icon-lasso2';
-    export const last = 'icon-last';
-    export const last2 = 'icon-last2';
-    export const lastfm = 'icon-lastfm';
-    export const lastfm2 = 'icon-lastfm2';
-    export const laundry = 'icon-laundry';
-    export const leaf = 'icon-leaf';
-    export const leaf2 = 'icon-leaf2';
-    export const library = 'icon-library';
-    export const library2 = 'icon-library2';
-    export const libreoffice = 'icon-libreoffice';
-    export const lifebuoy = 'icon-lifebuoy';
-    export const ligature = 'icon-ligature';
-    export const ligature2 = 'icon-ligature2';
-    export const link = 'icon-link';
-    export const link2 = 'icon-link2';
-    export const link3 = 'icon-link3';
-    export const link4 = 'icon-link4';
-    export const link5 = 'icon-link5';
-    export const linkedin = 'icon-linkedin';
-    export const linkedin2 = 'icon-linkedin2';
-    export const lips = 'icon-lips';
-    export const lips2 = 'icon-lips2';
-    export const list = 'icon-list';
-    export const listNumbered = 'icon-list-numbered';
-    export const list2 = 'icon-list2';
-    export const location = 'icon-location';
-    export const location2 = 'icon-location2';
-    export const location3 = 'icon-location3';
-    export const location4 = 'icon-location4';
-    export const location5 = 'icon-location5';
-    export const location6 = 'icon-location6';
-    export const location7 = 'icon-location7';
-    export const lock = 'icon-lock';
-    export const lock2 = 'icon-lock2';
-    export const lock3 = 'icon-lock3';
-    export const lock4 = 'icon-lock4';
-    export const lock5 = 'icon-lock5';
-    export const loop = 'icon-loop';
-    export const loop2 = 'icon-loop2';
-    export const loop3 = 'icon-loop3';
-    export const loop4 = 'icon-loop4';
-    export const ltr = 'icon-ltr';
-    export const ltr2 = 'icon-ltr2';
-    export const magazine = 'icon-magazine';
-    export const magicWand = 'icon-magic-wand';
-    export const magicWand2 = 'icon-magic-wand2';
-    export const magnet = 'icon-magnet';
-    export const magnet2 = 'icon-magnet2';
-    export const mail = 'icon-mail';
-    export const mail2 = 'icon-mail2';
-    export const mail3 = 'icon-mail3';
-    export const mail4 = 'icon-mail4';
-    export const mailbox = 'icon-mailbox';
-    export const makeGroup = 'icon-make-group';
-    export const male = 'icon-male';
-    export const man = 'icon-man';
-    export const manWoman = 'icon-man-woman';
-    export const map = 'icon-map';
-    export const map2 = 'icon-map2';
-    export const map3 = 'icon-map3';
-    export const map4 = 'icon-map4';
-    export const map5 = 'icon-map5';
-    export const marker = 'icon-marker';
-    export const marker2 = 'icon-marker2';
-    export const markup = 'icon-markup';
-    export const medal = 'icon-medal';
-    export const medalFirst = 'icon-medal-first';
-    export const medalSecond = 'icon-medal-second';
-    export const medalStar = 'icon-medal-star';
-    export const medalThird = 'icon-medal-third';
-    export const medal2 = 'icon-medal2';
-    export const media = 'icon-media';
-    export const megaphone = 'icon-megaphone';
-    export const menu = 'icon-menu';
-    export const menuClose = 'icon-menu-close';
-    export const menuClose2 = 'icon-menu-close2';
-    export const menuOpen = 'icon-menu-open';
-    export const menuOpen2 = 'icon-menu-open2';
-    export const menu10 = 'icon-menu10';
-    export const menu2 = 'icon-menu2';
-    export const menu3 = 'icon-menu3';
-    export const menu4 = 'icon-menu4';
-    export const menu5 = 'icon-menu5';
-    export const menu6 = 'icon-menu6';
-    export const menu7 = 'icon-menu7';
-    export const menu8 = 'icon-menu8';
-    export const menu9 = 'icon-menu9';
-    export const merge = 'icon-merge';
-    export const meter = 'icon-meter';
-    export const meterFast = 'icon-meter-fast';
-    export const meterMedium = 'icon-meter-medium';
-    export const meterSlow = 'icon-meter-slow';
-    export const meter2 = 'icon-meter2';
-    export const meter3 = 'icon-meter3';
-    export const mic = 'icon-mic';
-    export const micOff = 'icon-mic-off';
-    export const micOff2 = 'icon-mic-off2';
-    export const mic2 = 'icon-mic2';
-    export const mic3 = 'icon-mic3';
-    export const mic4 = 'icon-mic4';
-    export const mic5 = 'icon-mic5';
-    export const microscope = 'icon-microscope';
-    export const milk = 'icon-milk';
-    export const minus = 'icon-minus';
-    export const minusCircle = 'icon-minus-circle';
-    export const minusCircle2 = 'icon-minus-circle2';
-    export const minus2 = 'icon-minus2';
-    export const minus3 = 'icon-minus3';
-    export const mobile = 'icon-mobile';
-    export const mobile2 = 'icon-mobile2';
-    export const mobile3 = 'icon-mobile3';
-    export const moon = 'icon-moon';
-    export const more = 'icon-more';
-    export const more2 = 'icon-more2';
-    export const mountains = 'icon-mountains';
-    export const mouse = 'icon-mouse';
-    export const mouseLeft = 'icon-mouse-left';
-    export const mouseRight = 'icon-mouse-right';
-    export const mouse2 = 'icon-mouse2';
-    export const move = 'icon-move';
-    export const moveDown = 'icon-move-down';
-    export const moveUp = 'icon-move-up';
-    export const movie = 'icon-movie';
-    export const mug = 'icon-mug';
-    export const multitouch = 'icon-multitouch';
-    export const music = 'icon-music';
-    export const music2 = 'icon-music2';
-    export const music3 = 'icon-music3';
-    export const music4 = 'icon-music4';
-    export const music5 = 'icon-music5';
-    export const music6 = 'icon-music6';
-    export const mustache = 'icon-mustache';
-    export const mustache2 = 'icon-mustache2';
-    export const nbsp = 'icon-nbsp';
-    export const neutral = 'icon-neutral';
-    export const neutral2 = 'icon-neutral2';
-    export const new1 = 'icon-new';
-    export const newTab = 'icon-new-tab';
-    export const newTab2 = 'icon-new-tab2';
-    export const newspaper = 'icon-newspaper';
-    export const next = 'icon-next';
-    export const next2 = 'icon-next2';
-    export const notebook = 'icon-notebook';
-    export const notification = 'icon-notification';
-    export const notification2 = 'icon-notification2';
-    export const office = 'icon-office';
-    export const omega = 'icon-omega';
-    export const onedrive = 'icon-onedrive';
-    export const opera = 'icon-opera';
-    export const opt = 'icon-opt';
-    export const outlet = 'icon-outlet';
-    export const package1 = 'icon-package';
-    export const pacman = 'icon-pacman';
-    export const pageBreak = 'icon-page-break';
-    export const pageBreak2 = 'icon-page-break2';
-    export const pagebreak = 'icon-pagebreak';
-    export const paintFormat = 'icon-paint-format';
-    export const palette = 'icon-palette';
-    export const palette2 = 'icon-palette2';
-    export const pandage = 'icon-pandage';
-    export const pandage2 = 'icon-pandage2';
-    export const pants = 'icon-pants';
-    export const paperplane = 'icon-paperplane';
-    export const paragraphCenter = 'icon-paragraph-center';
-    export const paragraphCenter2 = 'icon-paragraph-center2';
-    export const paragraphCenter3 = 'icon-paragraph-center3';
-    export const paragraphJustify = 'icon-paragraph-justify';
-    export const paragraphJustify2 = 'icon-paragraph-justify2';
-    export const paragraphJustify3 = 'icon-paragraph-justify3';
-    export const paragraphLeft = 'icon-paragraph-left';
-    export const paragraphLeft2 = 'icon-paragraph-left2';
-    export const paragraphLeft3 = 'icon-paragraph-left3';
-    export const paragraphRight = 'icon-paragraph-right';
-    export const paragraphRight2 = 'icon-paragraph-right2';
-    export const paragraphRight3 = 'icon-paragraph-right3';
-    export const paste = 'icon-paste';
-    export const paste2 = 'icon-paste2';
-    export const paste3 = 'icon-paste3';
-    export const paste4 = 'icon-paste4';
-    export const pause = 'icon-pause';
-    export const pause2 = 'icon-pause2';
-    export const paw = 'icon-paw';
-    export const paypal = 'icon-paypal';
-    export const paypal2 = 'icon-paypal2';
-    export const paypal3 = 'icon-paypal3';
-    export const peace = 'icon-peace';
-    export const pen = 'icon-pen';
-    export const penMinus = 'icon-pen-minus';
-    export const penPlus = 'icon-pen-plus';
-    export const pen2 = 'icon-pen2';
-    export const pen3 = 'icon-pen3';
-    export const pen4 = 'icon-pen4';
-    export const pen5 = 'icon-pen5';
-    export const pen6 = 'icon-pen6';
-    export const pencil = 'icon-pencil';
-    export const pencilRuler = 'icon-pencil-ruler';
-    export const pencil2 = 'icon-pencil2';
-    export const pencil3 = 'icon-pencil3';
-    export const pencil4 = 'icon-pencil4';
-    export const pencil5 = 'icon-pencil5';
-    export const pencil6 = 'icon-pencil6';
-    export const pencil7 = 'icon-pencil7';
-    export const percent = 'icon-percent';
-    export const phone = 'icon-phone';
-    export const phoneHangUp = 'icon-phone-hang-up';
-    export const phoneHangUp2 = 'icon-phone-hang-up2';
-    export const phoneIncoming = 'icon-phone-incoming';
-    export const phoneMinus = 'icon-phone-minus';
-    export const phoneMinus2 = 'icon-phone-minus2';
-    export const phoneOutgoing = 'icon-phone-outgoing';
-    export const phonePlus = 'icon-phone-plus';
-    export const phonePlus2 = 'icon-phone-plus2';
-    export const phoneSlash = 'icon-phone-slash';
-    export const phoneSlash2 = 'icon-phone-slash2';
-    export const phoneWave = 'icon-phone-wave';
-    export const phoneWave2 = 'icon-phone-wave2';
-    export const phone2 = 'icon-phone2';
-    export const phone3 = 'icon-phone3';
-    export const piano = 'icon-piano';
-    export const picassa = 'icon-picassa';
-    export const picassa2 = 'icon-picassa2';
-    export const pieChart = 'icon-pie-chart';
-    export const pieChart2 = 'icon-pie-chart2';
-    export const pieChart3 = 'icon-pie-chart3';
-    export const pieChart4 = 'icon-pie-chart4';
-    export const pieChart5 = 'icon-pie-chart5';
-    export const pieChart6 = 'icon-pie-chart6';
-    export const pieChart7 = 'icon-pie-chart7';
-    export const pieChart8 = 'icon-pie-chart8';
-    export const piggyBank = 'icon-piggy-bank';
-    export const pilcrow = 'icon-pilcrow';
-    export const pill = 'icon-pill';
-    export const pingpong = 'icon-pingpong';
-    export const pinterest = 'icon-pinterest';
-    export const pinterest2 = 'icon-pinterest2';
-    export const pipe = 'icon-pipe';
-    export const pizza = 'icon-pizza';
-    export const planet = 'icon-planet';
-    export const planet2 = 'icon-planet2';
-    export const plate = 'icon-plate';
-    export const play = 'icon-play';
-    export const play2 = 'icon-play2';
-    export const play3 = 'icon-play3';
-    export const play4 = 'icon-play4';
-    export const playlist = 'icon-playlist';
-    export const playlistAdd = 'icon-playlist-add';
-    export const plus = 'icon-plus';
-    export const plusCircle = 'icon-plus-circle';
-    export const plusCircle2 = 'icon-plus-circle2';
-    export const plus2 = 'icon-plus2';
-    export const plus3 = 'icon-plus3';
-    export const podcast = 'icon-podcast';
-    export const podcast2 = 'icon-podcast2';
-    export const podium = 'icon-podium';
-    export const pointDown = 'icon-point-down';
-    export const pointLeft = 'icon-point-left';
-    export const pointRight = 'icon-point-right';
-    export const pointUp = 'icon-point-up';
-    export const pointer = 'icon-pointer';
-    export const popout = 'icon-popout';
-    export const power = 'icon-power';
-    export const powerCord = 'icon-power-cord';
-    export const powerCord2 = 'icon-power-cord2';
-    export const power2 = 'icon-power2';
-    export const power3 = 'icon-power3';
-    export const presentation = 'icon-presentation';
-    export const previous = 'icon-previous';
-    export const previous2 = 'icon-previous2';
-    export const priceTag = 'icon-price-tag';
-    export const priceTag2 = 'icon-price-tag2';
-    export const priceTag3 = 'icon-price-tag3';
-    export const priceTag4 = 'icon-price-tag4';
-    export const priceTag5 = 'icon-price-tag5';
-    export const priceTags = 'icon-price-tags';
-    export const priceTags2 = 'icon-price-tags2';
-    export const priceTags3 = 'icon-price-tags3';
-    export const priceTags4 = 'icon-price-tags4';
-    export const printer = 'icon-printer';
-    export const printer2 = 'icon-printer2';
-    export const printer3 = 'icon-printer3';
-    export const printer4 = 'icon-printer4';
-    export const profile = 'icon-profile';
-    export const pulse = 'icon-pulse';
-    export const pulse2 = 'icon-pulse2';
-    export const pushpin = 'icon-pushpin';
-    export const pushpin2 = 'icon-pushpin2';
-    export const puzzle = 'icon-puzzle';
-    export const puzzle2 = 'icon-puzzle2';
-    export const puzzle3 = 'icon-puzzle3';
-    export const puzzle4 = 'icon-puzzle4';
-    export const pyramid = 'icon-pyramid';
-    export const pyramid2 = 'icon-pyramid2';
-    export const qrcode = 'icon-qrcode';
-    export const question = 'icon-question';
-    export const question2 = 'icon-question2';
-    export const question3 = 'icon-question3';
-    export const question4 = 'icon-question4';
-    export const question5 = 'icon-question5';
-    export const question6 = 'icon-question6';
-    export const quill = 'icon-quill';
-    export const quill2 = 'icon-quill2';
-    export const quill3 = 'icon-quill3';
-    export const quill4 = 'icon-quill4';
-    export const quotesLeft = 'icon-quotes-left';
-    export const quotesLeft2 = 'icon-quotes-left2';
-    export const quotesRight = 'icon-quotes-right';
-    export const quotesRight2 = 'icon-quotes-right2';
-    export const racing = 'icon-racing';
-    export const radio = 'icon-radio';
-    export const radioChecked = 'icon-radio-checked';
-    export const radioChecked2 = 'icon-radio-checked2';
-    export const radioUnchecked = 'icon-radio-unchecked';
-    export const rating = 'icon-rating';
-    export const rating2 = 'icon-rating2';
-    export const rating3 = 'icon-rating3';
-    export const reading = 'icon-reading';
-    export const recording = 'icon-recording';
-    export const reddit = 'icon-reddit';
-    export const redo = 'icon-redo';
-    export const redo2 = 'icon-redo2';
-    export const regexp = 'icon-regexp';
-    export const regexp2 = 'icon-regexp2';
-    export const reminder = 'icon-reminder';
-    export const reply = 'icon-reply';
-    export const replyAll = 'icon-reply-all';
-    export const reset = 'icon-reset';
-    export const road = 'icon-road';
-    export const rocket = 'icon-rocket';
-    export const rotateCcw = 'icon-rotate-ccw';
-    export const rotateCcw2 = 'icon-rotate-ccw2';
-    export const rotateCcw3 = 'icon-rotate-ccw3';
-    export const rotateCw = 'icon-rotate-cw';
-    export const rotateCw2 = 'icon-rotate-cw2';
-    export const rotateCw3 = 'icon-rotate-cw3';
-    export const rtl = 'icon-rtl';
-    export const rtl2 = 'icon-rtl2';
-    export const ruler = 'icon-ruler';
-    export const rulers = 'icon-rulers';
-    export const sad = 'icon-sad';
-    export const sad2 = 'icon-sad2';
-    export const safari = 'icon-safari';
-    export const safe = 'icon-safe';
-    export const satelliteDish = 'icon-satellite-dish';
-    export const satelliteDish2 = 'icon-satellite-dish2';
-    export const scale = 'icon-scale';
-    export const scissors = 'icon-scissors';
-    export const scissors2 = 'icon-scissors2';
-    export const scissors3 = 'icon-scissors3';
-    export const screwdriver = 'icon-screwdriver';
-    export const screwdriver2 = 'icon-screwdriver2';
-    export const search = 'icon-search';
-    export const search2 = 'icon-search2';
-    export const search3 = 'icon-search3';
-    export const search4 = 'icon-search4';
-    export const search5 = 'icon-search5';
-    export const search6 = 'icon-search6';
-    export const section = 'icon-section';
-    export const select = 'icon-select';
-    export const select2 = 'icon-select2';
-    export const server = 'icon-server';
-    export const sevenSegment0 = 'icon-seven-segment-0';
-    export const sevenSegment1 = 'icon-seven-segment-1';
-    export const sevenSegment2 = 'icon-seven-segment-2';
-    export const sevenSegment3 = 'icon-seven-segment-3';
-    export const sevenSegment4 = 'icon-seven-segment-4';
-    export const sevenSegment5 = 'icon-seven-segment-5';
-    export const sevenSegment6 = 'icon-seven-segment-6';
-    export const sevenSegment7 = 'icon-seven-segment-7';
-    export const sevenSegment8 = 'icon-seven-segment-8';
-    export const sevenSegment9 = 'icon-seven-segment-9';
-    export const share = 'icon-share';
-    export const share2 = 'icon-share2';
-    export const share3 = 'icon-share3';
-    export const share4 = 'icon-share4';
-    export const shear = 'icon-shear';
-    export const shield = 'icon-shield';
-    export const shieldCheck = 'icon-shield-check';
-    export const shieldNotice = 'icon-shield-notice';
-    export const shield2 = 'icon-shield2';
-    export const shield3 = 'icon-shield3';
-    export const shield4 = 'icon-shield4';
-    export const shift = 'icon-shift';
-    export const ship = 'icon-ship';
-    export const shocked = 'icon-shocked';
-    export const shocked2 = 'icon-shocked2';
-    export const shorts = 'icon-shorts';
-    export const shredder = 'icon-shredder';
-    export const shrink = 'icon-shrink';
-    export const shrink2 = 'icon-shrink2';
-    export const shrink3 = 'icon-shrink3';
-    export const shrink4 = 'icon-shrink4';
-    export const shrink5 = 'icon-shrink5';
-    export const shrink6 = 'icon-shrink6';
-    export const shrink7 = 'icon-shrink7';
-    export const shuffle = 'icon-shuffle';
-    export const shuffle2 = 'icon-shuffle2';
-    export const shutter = 'icon-shutter';
-    export const sigma = 'icon-sigma';
-    export const skull = 'icon-skull';
-    export const skull2 = 'icon-skull2';
-    export const skype = 'icon-skype';
-    export const sleepy = 'icon-sleepy';
-    export const sleepy2 = 'icon-sleepy2';
-    export const smile = 'icon-smile';
-    export const smile2 = 'icon-smile2';
-    export const snowflake = 'icon-snowflake';
-    export const soccer = 'icon-soccer';
-    export const sock = 'icon-sock';
-    export const sort = 'icon-sort';
-    export const sortAlphaAsc = 'icon-sort-alpha-asc';
-    export const sortAlphaDesc = 'icon-sort-alpha-desc';
-    export const sortAmountAsc = 'icon-sort-amount-asc';
-    export const sortAmountDesc = 'icon-sort-amount-desc';
-    export const sortNumbericDesc = 'icon-sort-numberic-desc';
-    export const sortNumericAsc = 'icon-sort-numeric-asc';
-    export const sortTimeAsc = 'icon-sort-time-asc';
-    export const sortTimeDesc = 'icon-sort-time-desc';
-    export const sort2 = 'icon-sort2';
-    export const soundcloud = 'icon-soundcloud';
-    export const soundcloud2 = 'icon-soundcloud2';
-    export const spades = 'icon-spades';
-    export const spam = 'icon-spam';
-    export const speakerLeft = 'icon-speaker-left';
-    export const speakerRight = 'icon-speaker-right';
-    export const speakers = 'icon-speakers';
-    export const spellCheck = 'icon-spell-check';
-    export const spellCheck2 = 'icon-spell-check2';
-    export const sphere = 'icon-sphere';
-    export const sphere2 = 'icon-sphere2';
-    export const sphere3 = 'icon-sphere3';
-    export const spinner = 'icon-spinner';
-    export const spinner10 = 'icon-spinner10';
-    export const spinner11 = 'icon-spinner11';
-    export const spinner2 = 'icon-spinner2';
-    export const spinner3 = 'icon-spinner3';
-    export const spinner4 = 'icon-spinner4';
-    export const spinner5 = 'icon-spinner5';
-    export const spinner6 = 'icon-spinner6';
-    export const spinner7 = 'icon-spinner7';
-    export const spinner8 = 'icon-spinner8';
-    export const spinner9 = 'icon-spinner9';
-    export const split = 'icon-split';
-    export const spoonKnife = 'icon-spoon-knife';
-    export const spotlight = 'icon-spotlight';
-    export const spotlight2 = 'icon-spotlight2';
-    export const spray = 'icon-spray';
-    export const square = 'icon-square';
-    export const squareDown = 'icon-square-down';
-    export const squareDownLeft = 'icon-square-down-left';
-    export const squareDownRight = 'icon-square-down-right';
-    export const squareLeft = 'icon-square-left';
-    export const squareRight = 'icon-square-right';
-    export const squareUp = 'icon-square-up';
-    export const squareUpLeft = 'icon-square-up-left';
-    export const squareUpRight = 'icon-square-up-right';
-    export const stack = 'icon-stack';
-    export const stackCancel = 'icon-stack-cancel';
-    export const stackCheck = 'icon-stack-check';
-    export const stackClubs = 'icon-stack-clubs';
-    export const stackDiamonds = 'icon-stack-diamonds';
-    export const stackDown = 'icon-stack-down';
-    export const stackEmpty = 'icon-stack-empty';
-    export const stackHearts = 'icon-stack-hearts';
-    export const stackMinus = 'icon-stack-minus';
-    export const stackMusic = 'icon-stack-music';
-    export const stackPicture = 'icon-stack-picture';
-    export const stackPlay = 'icon-stack-play';
-    export const stackPlus = 'icon-stack-plus';
-    export const stackSpades = 'icon-stack-spades';
-    export const stackStar = 'icon-stack-star';
-    export const stackText = 'icon-stack-text';
-    export const stackUp = 'icon-stack-up';
-    export const stackUser = 'icon-stack-user';
-    export const stack2 = 'icon-stack2';
-    export const stack3 = 'icon-stack3';
-    export const stack4 = 'icon-stack4';
-    export const stackoverflow = 'icon-stackoverflow';
-    export const stairs = 'icon-stairs';
-    export const stairsDown = 'icon-stairs-down';
-    export const stairsUp = 'icon-stairs-up';
-    export const stairs2 = 'icon-stairs2';
-    export const stamp = 'icon-stamp';
-    export const star = 'icon-star';
-    export const starEmpty = 'icon-star-empty';
-    export const starEmpty2 = 'icon-star-empty2';
-    export const starEmpty3 = 'icon-star-empty3';
-    export const starFull = 'icon-star-full';
-    export const starFull2 = 'icon-star-full2';
-    export const starHalf = 'icon-star-half';
-    export const starburst = 'icon-starburst';
-    export const stars = 'icon-stars';
-    export const station = 'icon-station';
-    export const station2 = 'icon-station2';
-    export const statsBars = 'icon-stats-bars';
-    export const statsBars2 = 'icon-stats-bars2';
-    export const statsBars3 = 'icon-stats-bars3';
-    export const statsBars4 = 'icon-stats-bars4';
-    export const statsBars5 = 'icon-stats-bars5';
-    export const statsBars6 = 'icon-stats-bars6';
-    export const statsDecline = 'icon-stats-decline';
-    export const statsDecline2 = 'icon-stats-decline2';
-    export const statsDots = 'icon-stats-dots';
-    export const statsGrowth = 'icon-stats-growth';
-    export const statsGrowth2 = 'icon-stats-growth2';
-    export const steak = 'icon-steak';
-    export const steam = 'icon-steam';
-    export const steam2 = 'icon-steam2';
-    export const steeringWheel = 'icon-steering-wheel';
-    export const stethoscope = 'icon-stethoscope';
-    export const stop = 'icon-stop';
-    export const stop2 = 'icon-stop2';
-    export const stopwatch = 'icon-stopwatch';
-    export const store = 'icon-store';
-    export const store2 = 'icon-store2';
-    export const strategy = 'icon-strategy';
-    export const strikethrough = 'icon-strikethrough';
-    export const strikethrough2 = 'icon-strikethrough2';
-    export const strikethrough3 = 'icon-strikethrough3';
-    export const stumbleupon = 'icon-stumbleupon';
-    export const stumbleupon2 = 'icon-stumbleupon2';
-    export const subscript = 'icon-subscript';
-    export const subscript2 = 'icon-subscript2';
-    export const subtract = 'icon-subtract';
-    export const sun = 'icon-sun';
-    export const sun2 = 'icon-sun2';
-    export const sun3 = 'icon-sun3';
-    export const superscript = 'icon-superscript';
-    export const superscript2 = 'icon-superscript2';
-    export const svg = 'icon-svg';
-    export const switch1 = 'icon-switch';
-    export const switch2 = 'icon-switch2';
-    export const sword = 'icon-sword';
-    export const syringe = 'icon-syringe';
-    export const syringe2 = 'icon-syringe2';
-    export const tab = 'icon-tab';
-    export const table = 'icon-table';
-    export const table2 = 'icon-table2';
-    export const tablet = 'icon-tablet';
-    export const tape = 'icon-tape';
-    export const target = 'icon-target';
-    export const target2 = 'icon-target2';
-    export const target3 = 'icon-target3';
-    export const teapot = 'icon-teapot';
-    export const temperature = 'icon-temperature';
-    export const temperature2 = 'icon-temperature2';
-    export const tennis = 'icon-tennis';
-    export const tent = 'icon-tent';
-    export const terminal = 'icon-terminal';
-    export const textColor = 'icon-text-color';
-    export const textHeight = 'icon-text-height';
-    export const textWidth = 'icon-text-width';
-    export const theater = 'icon-theater';
-    export const thumbsDown = 'icon-thumbs-down';
-    export const thumbsDown2 = 'icon-thumbs-down2';
-    export const thumbsDown3 = 'icon-thumbs-down3';
-    export const thumbsUp = 'icon-thumbs-up';
-    export const thumbsUp2 = 'icon-thumbs-up2';
-    export const thumbsUp3 = 'icon-thumbs-up3';
-    export const ticket = 'icon-ticket';
-    export const ticket2 = 'icon-ticket2';
-    export const tie = 'icon-tie';
-    export const toggle = 'icon-toggle';
-    export const toggleOff = 'icon-toggle-off';
-    export const toggleOn = 'icon-toggle-on';
-    export const toiletpaper = 'icon-toiletpaper';
-    export const tongue = 'icon-tongue';
-    export const tongue2 = 'icon-tongue2';
-    export const touch = 'icon-touch';
-    export const touchPinch = 'icon-touch-pinch';
-    export const touchZoom = 'icon-touch-zoom';
-    export const trafficCone = 'icon-traffic-cone';
-    export const trafficLights = 'icon-traffic-lights';
-    export const train = 'icon-train';
-    export const train2 = 'icon-train2';
-    export const transmission = 'icon-transmission';
-    export const transmission2 = 'icon-transmission2';
-    export const tree = 'icon-tree';
-    export const tree2 = 'icon-tree2';
-    export const tree3 = 'icon-tree3';
-    export const tree4 = 'icon-tree4';
-    export const tree5 = 'icon-tree5';
-    export const tree6 = 'icon-tree6';
-    export const tree7 = 'icon-tree7';
-    export const triangle = 'icon-triangle';
-    export const triangle2 = 'icon-triangle2';
-    export const trophy = 'icon-trophy';
-    export const trophy2 = 'icon-trophy2';
-    export const trophy3 = 'icon-trophy3';
-    export const trophy4 = 'icon-trophy4';
-    export const truck = 'icon-truck';
-    export const trumpet = 'icon-trumpet';
-    export const tshirt = 'icon-tshirt';
-    export const tumblr = 'icon-tumblr';
-    export const tumblr2 = 'icon-tumblr2';
-    export const tux = 'icon-tux';
-    export const tv = 'icon-tv';
-    export const twitch = 'icon-twitch';
-    export const twitter = 'icon-twitter';
-    export const twitter2 = 'icon-twitter2';
-    export const twitter3 = 'icon-twitter3';
-    export const typewriter = 'icon-typewriter';
-    export const typography = 'icon-typography';
-    export const umbrella = 'icon-umbrella';
-    export const underline = 'icon-underline';
-    export const underline2 = 'icon-underline2';
-    export const undo = 'icon-undo';
-    export const undo2 = 'icon-undo2';
-    export const ungroup = 'icon-ungroup';
-    export const unicode = 'icon-unicode';
-    export const unite = 'icon-unite';
-    export const unlink = 'icon-unlink';
-    export const unlink2 = 'icon-unlink2';
-    export const unlink3 = 'icon-unlink3';
-    export const unlink4 = 'icon-unlink4';
-    export const unlink5 = 'icon-unlink5';
-    export const unlocked = 'icon-unlocked';
-    export const unlocked2 = 'icon-unlocked2';
-    export const upload = 'icon-upload';
-    export const upload10 = 'icon-upload10';
-    export const upload2 = 'icon-upload2';
-    export const upload3 = 'icon-upload3';
-    export const upload4 = 'icon-upload4';
-    export const upload5 = 'icon-upload5';
-    export const upload6 = 'icon-upload6';
-    export const upload7 = 'icon-upload7';
-    export const upload8 = 'icon-upload8';
-    export const upload9 = 'icon-upload9';
-    export const usbStick = 'icon-usb-stick';
-    export const user = 'icon-user';
-    export const userBlock = 'icon-user-block';
-    export const userBlock2 = 'icon-user-block2';
-    export const userCancel = 'icon-user-cancel';
-    export const userCancel2 = 'icon-user-cancel2';
-    export const userCheck = 'icon-user-check';
-    export const userCheck2 = 'icon-user-check2';
-    export const userLock = 'icon-user-lock';
-    export const userLock2 = 'icon-user-lock2';
-    export const userMinus = 'icon-user-minus';
-    export const userMinus2 = 'icon-user-minus2';
-    export const userPlus = 'icon-user-plus';
-    export const userPlus2 = 'icon-user-plus2';
-    export const userTie = 'icon-user-tie';
-    export const user2 = 'icon-user2';
-    export const user3 = 'icon-user3';
-    export const user4 = 'icon-user4';
-    export const user5 = 'icon-user5';
-    export const user6 = 'icon-user6';
-    export const user7 = 'icon-user7';
-    export const users = 'icon-users';
-    export const users2 = 'icon-users2';
-    export const users3 = 'icon-users3';
-    export const users4 = 'icon-users4';
-    export const users5 = 'icon-users5';
-    export const vcard = 'icon-vcard';
-    export const vector = 'icon-vector';
-    export const vector2 = 'icon-vector2';
-    export const videoCamera = 'icon-video-camera';
-    export const videoCameraSlash = 'icon-video-camera-slash';
-    export const videoCameraSlash2 = 'icon-video-camera-slash2';
-    export const videoCamera2 = 'icon-video-camera2';
-    export const videoCamera3 = 'icon-video-camera3';
-    export const videoCamera4 = 'icon-video-camera4';
-    export const videoCamera5 = 'icon-video-camera5';
-    export const vimeo = 'icon-vimeo';
-    export const vimeo2 = 'icon-vimeo2';
-    export const vimeo3 = 'icon-vimeo3';
-    export const volume0 = 'icon-volume-0';
-    export const volume1 = 'icon-volume-1';
-    export const volume2 = 'icon-volume-2';
-    export const volume3 = 'icon-volume-3';
-    export const volume4 = 'icon-volume-4';
-    export const volume5 = 'icon-volume-5';
-    export const volumeDecrease = 'icon-volume-decrease';
-    export const volumeDecrease2 = 'icon-volume-decrease2';
-    export const volumeDecrease3 = 'icon-volume-decrease3';
-    export const volumeHigh = 'icon-volume-high';
-    export const volumeHigh2 = 'icon-volume-high2';
-    export const volumeIncrease = 'icon-volume-increase';
-    export const volumeIncrease2 = 'icon-volume-increase2';
-    export const volumeLow = 'icon-volume-low';
-    export const volumeLow2 = 'icon-volume-low2';
-    export const volumeMedium = 'icon-volume-medium';
-    export const volumeMedium2 = 'icon-volume-medium2';
-    export const volumeMedium3 = 'icon-volume-medium3';
-    export const volumeMute = 'icon-volume-mute';
-    export const volumeMute2 = 'icon-volume-mute2';
-    export const volumeMute3 = 'icon-volume-mute3';
-    export const volumeMute4 = 'icon-volume-mute4';
-    export const volumeMute5 = 'icon-volume-mute5';
-    export const wall = 'icon-wall';
-    export const wallet = 'icon-wallet';
-    export const warning = 'icon-warning';
-    export const warning2 = 'icon-warning2';
-    export const watch = 'icon-watch';
-    export const watch2 = 'icon-watch2';
-    export const wave = 'icon-wave';
-    export const wave2 = 'icon-wave2';
-    export const weatherCloudSun = 'icon-weather-cloud-sun';
-    export const weatherCloudSun2 = 'icon-weather-cloud-sun2';
-    export const weatherCloudWind = 'icon-weather-cloud-wind';
-    export const weatherCloudWind2 = 'icon-weather-cloud-wind2';
-    export const weatherCloudy = 'icon-weather-cloudy';
-    export const weatherCloudy2 = 'icon-weather-cloudy2';
-    export const weatherLightning = 'icon-weather-lightning';
-    export const weatherLightning2 = 'icon-weather-lightning2';
-    export const weatherRain = 'icon-weather-rain';
-    export const weatherRain2 = 'icon-weather-rain2';
-    export const weatherSnow = 'icon-weather-snow';
-    export const weatherSnow2 = 'icon-weather-snow2';
-    export const weatherSunWind = 'icon-weather-sun-wind';
-    export const weatherSunWind2 = 'icon-weather-sun-wind2';
-    export const weatherWindy = 'icon-weather-windy';
-    export const width = 'icon-width';
-    export const windows = 'icon-windows';
-    export const windows8 = 'icon-windows8';
-    export const wink = 'icon-wink';
-    export const wink2 = 'icon-wink2';
-    export const woman = 'icon-woman';
-    export const wondering = 'icon-wondering';
-    export const wondering2 = 'icon-wondering2';
-    export const wordpress = 'icon-wordpress';
-    export const wordpress2 = 'icon-wordpress2';
-    export const wrench = 'icon-wrench';
-    export const wrench2 = 'icon-wrench2';
-    export const wrench3 = 'icon-wrench3';
-    export const xing = 'icon-xing';
-    export const xing2 = 'icon-xing2';
-    export const yahoo = 'icon-yahoo';
-    export const yelp = 'icon-yelp';
-    export const yinYang = 'icon-yin-yang';
-    export const youtube = 'icon-youtube';
-    export const youtube2 = 'icon-youtube2';
-    export const youtube3 = 'icon-youtube3';
-    export const youtube4 = 'icon-youtube4';
-    export const zoomIn = 'icon-zoom-in';
-    export const zoomIn2 = 'icon-zoom-in2';
-    export const zoomIn3 = 'icon-zoom-in3';
-    export const zoomOut = 'icon-zoom-out';
-    export const zoomOut2 = 'icon-zoom-out2';
-    export const zoomOut3 = 'icon-zoom-out3';
-  }
+export type Icons = {
+  Icomoon:
+    | 'accessibility'
+    | 'accessibility2'
+    | 'address-book'
+    | 'address-book2'
+    | 'address-book3'
+    | 'aid-kit'
+    | 'aid-kit2'
+    | 'airplane'
+    | 'airplane2'
+    | 'airplane3'
+    | 'airplane4'
+    | 'alarm'
+    | 'alarm-add'
+    | 'alarm-cancel'
+    | 'alarm-check'
+    | 'alarm2'
+    | 'album'
+    | 'align-bottom'
+    | 'align-center-horizontal'
+    | 'align-center-vertical'
+    | 'align-left'
+    | 'align-right'
+    | 'align-top'
+    | 'ambulance'
+    | 'ammo'
+    | 'ampersand'
+    | 'anchor'
+    | 'android'
+    | 'angle'
+    | 'angry'
+    | 'angry2'
+    | 'antenna'
+    | 'antenna2'
+    | 'apple'
+    | 'apple2'
+    | 'archery'
+    | 'archive'
+    | 'arrow-down'
+    | 'arrow-down-left'
+    | 'arrow-down-left2'
+    | 'arrow-down-left3'
+    | 'arrow-down-left4'
+    | 'arrow-down-left5'
+    | 'arrow-down-right'
+    | 'arrow-down-right2'
+    | 'arrow-down-right3'
+    | 'arrow-down-right4'
+    | 'arrow-down-right5'
+    | 'arrow-down10'
+    | 'arrow-down11'
+    | 'arrow-down12'
+    | 'arrow-down13'
+    | 'arrow-down14'
+    | 'arrow-down15'
+    | 'arrow-down16'
+    | 'arrow-down2'
+    | 'arrow-down3'
+    | 'arrow-down4'
+    | 'arrow-down5'
+    | 'arrow-down6'
+    | 'arrow-down7'
+    | 'arrow-down8'
+    | 'arrow-down9'
+    | 'arrow-left'
+    | 'arrow-left10'
+    | 'arrow-left11'
+    | 'arrow-left12'
+    | 'arrow-left13'
+    | 'arrow-left14'
+    | 'arrow-left15'
+    | 'arrow-left16'
+    | 'arrow-left2'
+    | 'arrow-left3'
+    | 'arrow-left4'
+    | 'arrow-left5'
+    | 'arrow-left6'
+    | 'arrow-left7'
+    | 'arrow-left8'
+    | 'arrow-left9'
+    | 'arrow-resize'
+    | 'arrow-resize2'
+    | 'arrow-resize3'
+    | 'arrow-resize4'
+    | 'arrow-resize5'
+    | 'arrow-resize6'
+    | 'arrow-resize7'
+    | 'arrow-resize8'
+    | 'arrow-right'
+    | 'arrow-right10'
+    | 'arrow-right11'
+    | 'arrow-right12'
+    | 'arrow-right13'
+    | 'arrow-right14'
+    | 'arrow-right15'
+    | 'arrow-right16'
+    | 'arrow-right2'
+    | 'arrow-right3'
+    | 'arrow-right4'
+    | 'arrow-right5'
+    | 'arrow-right6'
+    | 'arrow-right7'
+    | 'arrow-right8'
+    | 'arrow-right9'
+    | 'arrow-up'
+    | 'arrow-up-left'
+    | 'arrow-up-left2'
+    | 'arrow-up-left3'
+    | 'arrow-up-left4'
+    | 'arrow-up-left5'
+    | 'arrow-up-right'
+    | 'arrow-up-right2'
+    | 'arrow-up-right3'
+    | 'arrow-up-right4'
+    | 'arrow-up-right5'
+    | 'arrow-up10'
+    | 'arrow-up11'
+    | 'arrow-up12'
+    | 'arrow-up13'
+    | 'arrow-up14'
+    | 'arrow-up15'
+    | 'arrow-up16'
+    | 'arrow-up2'
+    | 'arrow-up3'
+    | 'arrow-up4'
+    | 'arrow-up5'
+    | 'arrow-up6'
+    | 'arrow-up7'
+    | 'arrow-up8'
+    | 'arrow-up9'
+    | 'at-sign'
+    | 'atom'
+    | 'atom2'
+    | 'attachment'
+    | 'attachment2'
+    | 'backspace'
+    | 'backspace2'
+    | 'backward'
+    | 'backward2'
+    | 'baffled'
+    | 'baffled2'
+    | 'bag'
+    | 'bag2'
+    | 'balance'
+    | 'balloon'
+    | 'barcode'
+    | 'barcode2'
+    | 'baseball'
+    | 'basket'
+    | 'basketball'
+    | 'battery-0'
+    | 'battery-1'
+    | 'battery-2'
+    | 'battery-3'
+    | 'battery-4'
+    | 'battery-5'
+    | 'battery-6'
+    | 'battery-charging'
+    | 'bed'
+    | 'bed2'
+    | 'bell'
+    | 'bell-check'
+    | 'bell-cross'
+    | 'bell-minus'
+    | 'bell-plus'
+    | 'bell2'
+    | 'bell3'
+    | 'bike'
+    | 'bin'
+    | 'bin2'
+    | 'bin3'
+    | 'bin4'
+    | 'bin5'
+    | 'binoculars'
+    | 'binoculars2'
+    | 'blocked'
+    | 'blog'
+    | 'blog2'
+    | 'blogger'
+    | 'blogger2'
+    | 'boat'
+    | 'bold'
+    | 'bold2'
+    | 'bomb'
+    | 'book'
+    | 'book-play'
+    | 'book2'
+    | 'book3'
+    | 'bookmark'
+    | 'bookmark2'
+    | 'bookmark3'
+    | 'bookmark4'
+    | 'bookmarks'
+    | 'books'
+    | 'bottle'
+    | 'bottle2'
+    | 'bottle3'
+    | 'bottle4'
+    | 'bow'
+    | 'bowling'
+    | 'bowling2'
+    | 'bowtie'
+    | 'box'
+    | 'box-add'
+    | 'box-remove'
+    | 'brain'
+    | 'bread'
+    | 'briefcase'
+    | 'briefcase2'
+    | 'briefcase3'
+    | 'brightness-contrast'
+    | 'brightness-high'
+    | 'brightness-low'
+    | 'brightness-medium'
+    | 'broom'
+    | 'brush'
+    | 'bubble'
+    | 'bubble-blocked'
+    | 'bubble-cancel'
+    | 'bubble-check'
+    | 'bubble-dots'
+    | 'bubble-dots2'
+    | 'bubble-dots3'
+    | 'bubble-dots4'
+    | 'bubble-first'
+    | 'bubble-forward'
+    | 'bubble-forward2'
+    | 'bubble-heart'
+    | 'bubble-last'
+    | 'bubble-left'
+    | 'bubble-lines'
+    | 'bubble-lines2'
+    | 'bubble-lines3'
+    | 'bubble-lines4'
+    | 'bubble-link'
+    | 'bubble-lock'
+    | 'bubble-minus'
+    | 'bubble-notification'
+    | 'bubble-notification2'
+    | 'bubble-paperclip'
+    | 'bubble-plus'
+    | 'bubble-quote'
+    | 'bubble-reply'
+    | 'bubble-reply2'
+    | 'bubble-right'
+    | 'bubble-smiley'
+    | 'bubble-star'
+    | 'bubble-user'
+    | 'bubble-video'
+    | 'bubble2'
+    | 'bubble3'
+    | 'bubble4'
+    | 'bubble5'
+    | 'bubble6'
+    | 'bubble7'
+    | 'bubble8'
+    | 'bubble9'
+    | 'bubbles'
+    | 'bubbles10'
+    | 'bubbles2'
+    | 'bubbles3'
+    | 'bubbles4'
+    | 'bubbles5'
+    | 'bubbles6'
+    | 'bubbles7'
+    | 'bubbles8'
+    | 'bubbles9'
+    | 'bucket'
+    | 'bucket2'
+    | 'bug'
+    | 'bug2'
+    | 'bullhorn'
+    | 'bus'
+    | 'cabinet'
+    | 'cactus'
+    | 'cake'
+    | 'calculator'
+    | 'calculator2'
+    | 'calculator3'
+    | 'calendar'
+    | 'calendar2'
+    | 'calendar3'
+    | 'calendar4'
+    | 'calendar5'
+    | 'camera'
+    | 'camera2'
+    | 'camera3'
+    | 'cancel'
+    | 'cancel-circle'
+    | 'cancel-circle2'
+    | 'cancel-square'
+    | 'cancel-square2'
+    | 'car'
+    | 'car2'
+    | 'cart'
+    | 'cart-add'
+    | 'cart-add2'
+    | 'cart-remove'
+    | 'cart2'
+    | 'cart3'
+    | 'cart4'
+    | 'cart5'
+    | 'cash'
+    | 'cash2'
+    | 'cash3'
+    | 'cash4'
+    | 'cassette'
+    | 'cc'
+    | 'certificate'
+    | 'chair'
+    | 'chart'
+    | 'checkbox-checked'
+    | 'checkbox-checked2'
+    | 'checkbox-partial'
+    | 'checkbox-partial2'
+    | 'checkbox-unchecked'
+    | 'checkbox-unchecked2'
+    | 'checkmark'
+    | 'checkmark-circle'
+    | 'checkmark2'
+    | 'checkmark3'
+    | 'checkmark4'
+    | 'checkmark5'
+    | 'cheese'
+    | 'cherry'
+    | 'chess'
+    | 'chess-bishop'
+    | 'chess-king'
+    | 'chess-knight'
+    | 'chess-pawn'
+    | 'chess-queen'
+    | 'chess-rock'
+    | 'chicken'
+    | 'chip'
+    | 'chopper'
+    | 'chopper2'
+    | 'chrome'
+    | 'circle'
+    | 'circle-code'
+    | 'circle-css'
+    | 'circle-down'
+    | 'circle-down-left'
+    | 'circle-down-left2'
+    | 'circle-down-right'
+    | 'circle-down-right2'
+    | 'circle-down2'
+    | 'circle-down3'
+    | 'circle-down4'
+    | 'circle-down5'
+    | 'circle-down6'
+    | 'circle-left'
+    | 'circle-left2'
+    | 'circle-left3'
+    | 'circle-left4'
+    | 'circle-left5'
+    | 'circle-left6'
+    | 'circle-right'
+    | 'circle-right2'
+    | 'circle-right3'
+    | 'circle-right4'
+    | 'circle-right5'
+    | 'circle-right6'
+    | 'circle-small'
+    | 'circle-up'
+    | 'circle-up-left'
+    | 'circle-up-left2'
+    | 'circle-up-right'
+    | 'circle-up-right2'
+    | 'circle-up2'
+    | 'circle-up3'
+    | 'circle-up4'
+    | 'circle-up5'
+    | 'circle-up6'
+    | 'circle2'
+    | 'circles'
+    | 'circles2'
+    | 'city'
+    | 'clapboard'
+    | 'clapboard-play'
+    | 'clear-formatting'
+    | 'clipboard'
+    | 'clipboard2'
+    | 'clipboard3'
+    | 'clipboard4'
+    | 'clipboard5'
+    | 'clipboard6'
+    | 'clock'
+    | 'clock2'
+    | 'clock3'
+    | 'clock4'
+    | 'cloud'
+    | 'cloud-check'
+    | 'cloud-check2'
+    | 'cloud-download'
+    | 'cloud-download2'
+    | 'cloud-upload'
+    | 'cloud-upload2'
+    | 'cloud2'
+    | 'clubs'
+    | 'code'
+    | 'codepen'
+    | 'coffee'
+    | 'coffee-baen'
+    | 'cog'
+    | 'cog2'
+    | 'cog3'
+    | 'cog4'
+    | 'cog5'
+    | 'cog6'
+    | 'cog7'
+    | 'cogs'
+    | 'coin-dollar'
+    | 'coin-euro'
+    | 'coin-pound'
+    | 'coin-yen'
+    | 'coins'
+    | 'collaboration'
+    | 'color-clear'
+    | 'color-sampler'
+    | 'comb'
+    | 'command'
+    | 'compass'
+    | 'compass2'
+    | 'compass3'
+    | 'compass4'
+    | 'compass5'
+    | 'compass6'
+    | 'confused'
+    | 'confused2'
+    | 'connection'
+    | 'connection2'
+    | 'connection3'
+    | 'connection4'
+    | 'construction'
+    | 'contrast'
+    | 'cook'
+    | 'cool'
+    | 'cool2'
+    | 'copy'
+    | 'copy2'
+    | 'copy3'
+    | 'copy4'
+    | 'credit-card'
+    | 'credit-card2'
+    | 'crop'
+    | 'crop2'
+    | 'cross'
+    | 'cross2'
+    | 'cross3'
+    | 'crown'
+    | 'crying'
+    | 'crying2'
+    | 'css3'
+    | 'ctrl'
+    | 'cube'
+    | 'cube2'
+    | 'cube3'
+    | 'cube4'
+    | 'cup'
+    | 'cup2'
+    | 'cursor'
+    | 'cursor2'
+    | 'database'
+    | 'database-add'
+    | 'database-arrow'
+    | 'database-check'
+    | 'database-diff'
+    | 'database-edit'
+    | 'database-edit2'
+    | 'database-export'
+    | 'database-insert'
+    | 'database-menu'
+    | 'database-refresh'
+    | 'database-remove'
+    | 'database-time'
+    | 'database-time2'
+    | 'database-upload'
+    | 'database2'
+    | 'database3'
+    | 'database4'
+    | 'day-night'
+    | 'day-night2'
+    | 'delicious'
+    | 'design'
+    | 'deviantart'
+    | 'deviantart2'
+    | 'diamond'
+    | 'diamond2'
+    | 'diamond3'
+    | 'diamond4'
+    | 'diamonds'
+    | 'dice'
+    | 'direction'
+    | 'disk'
+    | 'disk2'
+    | 'display'
+    | 'display2'
+    | 'display3'
+    | 'display4'
+    | 'dots'
+    | 'download'
+    | 'download10'
+    | 'download2'
+    | 'download3'
+    | 'download4'
+    | 'download5'
+    | 'download6'
+    | 'download7'
+    | 'download8'
+    | 'download9'
+    | 'drag-left'
+    | 'drag-left-right'
+    | 'drag-right'
+    | 'drawer'
+    | 'drawer-in'
+    | 'drawer-out'
+    | 'drawer2'
+    | 'drawer3'
+    | 'dribbble'
+    | 'dribbble2'
+    | 'dribbble3'
+    | 'drive'
+    | 'dropbox'
+    | 'droplet'
+    | 'droplet-contrast'
+    | 'droplet2'
+    | 'dumbbell'
+    | 'earth'
+    | 'earth2'
+    | 'earth3'
+    | 'eight-ball'
+    | 'eject'
+    | 'ello'
+    | 'embed'
+    | 'embed2'
+    | 'enlarge'
+    | 'enlarge2'
+    | 'enlarge3'
+    | 'enlarge4'
+    | 'enlarge5'
+    | 'enlarge6'
+    | 'enlarge7'
+    | 'enter'
+    | 'enter2'
+    | 'enter3'
+    | 'enter4'
+    | 'enter5'
+    | 'enter6'
+    | 'envelop'
+    | 'envelop2'
+    | 'envelop3'
+    | 'envelop4'
+    | 'envelop5'
+    | 'equalizer'
+    | 'equalizer2'
+    | 'equalizer3'
+    | 'equalizer4'
+    | 'eraser'
+    | 'eraser2'
+    | 'eraser3'
+    | 'esc'
+    | 'evil'
+    | 'evil2'
+    | 'exclude'
+    | 'exit'
+    | 'exit2'
+    | 'exit3'
+    | 'eye'
+    | 'eye-blocked'
+    | 'eye-blocked2'
+    | 'eye-blocked3'
+    | 'eye-minus'
+    | 'eye-plus'
+    | 'eye2'
+    | 'eye3'
+    | 'eye4'
+    | 'eyedropper'
+    | 'eyedropper2'
+    | 'eyedropper3'
+    | 'facebook'
+    | 'facebook2'
+    | 'facebook3'
+    | 'factory'
+    | 'fan'
+    | 'feed'
+    | 'feed2'
+    | 'feed3'
+    | 'feed4'
+    | 'female'
+    | 'fence'
+    | 'file-check'
+    | 'file-check2'
+    | 'file-css'
+    | 'file-css2'
+    | 'file-download'
+    | 'file-download2'
+    | 'file-empty'
+    | 'file-empty2'
+    | 'file-excel'
+    | 'file-eye'
+    | 'file-eye2'
+    | 'file-locked'
+    | 'file-locked2'
+    | 'file-minus'
+    | 'file-minus2'
+    | 'file-music'
+    | 'file-music2'
+    | 'file-openoffice'
+    | 'file-pdf'
+    | 'file-picture'
+    | 'file-picture2'
+    | 'file-play'
+    | 'file-play2'
+    | 'file-plus'
+    | 'file-plus2'
+    | 'file-presentation'
+    | 'file-presentation2'
+    | 'file-spreadsheet'
+    | 'file-spreadsheet2'
+    | 'file-stats'
+    | 'file-stats2'
+    | 'file-text'
+    | 'file-text2'
+    | 'file-text3'
+    | 'file-upload'
+    | 'file-upload2'
+    | 'file-video'
+    | 'file-video2'
+    | 'file-word'
+    | 'file-xml'
+    | 'file-xml2'
+    | 'file-zip'
+    | 'file-zip2'
+    | 'files-empty'
+    | 'files-empty2'
+    | 'film'
+    | 'film2'
+    | 'film3'
+    | 'film4'
+    | 'filter'
+    | 'filter2'
+    | 'filter3'
+    | 'filter4'
+    | 'finder'
+    | 'finish'
+    | 'fire'
+    | 'fire2'
+    | 'firefox'
+    | 'first'
+    | 'first2'
+    | 'fish'
+    | 'flag'
+    | 'flag2'
+    | 'flag3'
+    | 'flag4'
+    | 'flag5'
+    | 'flag6'
+    | 'flag7'
+    | 'flag8'
+    | 'flattr'
+    | 'flickr'
+    | 'flickr2'
+    | 'flickr3'
+    | 'flickr4'
+    | 'flip-horizontal'
+    | 'flip-horizontal2'
+    | 'flip-vertical'
+    | 'flip-vertical2'
+    | 'flip-vertical3'
+    | 'flip-vertical4'
+    | 'floppy-disk'
+    | 'floppy-disk2'
+    | 'floppy-disk3'
+    | 'floppy-disks'
+    | 'floppy-disks2'
+    | 'flower'
+    | 'flower2'
+    | 'folder'
+    | 'folder-check'
+    | 'folder-download'
+    | 'folder-download2'
+    | 'folder-download3'
+    | 'folder-heart'
+    | 'folder-minus'
+    | 'folder-minus2'
+    | 'folder-minus3'
+    | 'folder-minus4'
+    | 'folder-open'
+    | 'folder-open2'
+    | 'folder-open3'
+    | 'folder-plus'
+    | 'folder-plus2'
+    | 'folder-plus3'
+    | 'folder-plus4'
+    | 'folder-remove'
+    | 'folder-search'
+    | 'folder-upload'
+    | 'folder-upload2'
+    | 'folder-upload3'
+    | 'folder2'
+    | 'folder3'
+    | 'folder4'
+    | 'folder5'
+    | 'folder6'
+    | 'font'
+    | 'font-size'
+    | 'font-size2'
+    | 'football'
+    | 'footprint'
+    | 'fork-knife'
+    | 'forrst'
+    | 'forrst2'
+    | 'forward'
+    | 'forward2'
+    | 'forward3'
+    | 'foursquare'
+    | 'frustrated'
+    | 'frustrated2'
+    | 'furniture'
+    | 'gamepad'
+    | 'gamepad2'
+    | 'gamepad3'
+    | 'gas'
+    | 'gift'
+    | 'gift2'
+    | 'git'
+    | 'github'
+    | 'github2'
+    | 'github3'
+    | 'github4'
+    | 'github5'
+    | 'glass'
+    | 'glass2'
+    | 'glass3'
+    | 'glass4'
+    | 'glasses'
+    | 'glasses-3d'
+    | 'glasses-3d2'
+    | 'glasses2'
+    | 'golf'
+    | 'golf2'
+    | 'google'
+    | 'google-drive'
+    | 'google-plus'
+    | 'google-plus2'
+    | 'google-plus3'
+    | 'grab'
+    | 'gradient'
+    | 'graduation'
+    | 'grapes'
+    | 'grid'
+    | 'grid2'
+    | 'grid3'
+    | 'grid4'
+    | 'grid5'
+    | 'grid6'
+    | 'grid7'
+    | 'grin'
+    | 'grin2'
+    | 'guitar'
+    | 'gun'
+    | 'gun-forbidden'
+    | 'haircut'
+    | 'hamburger'
+    | 'hammer'
+    | 'hammer-wrench'
+    | 'hammer2'
+    | 'hand'
+    | 'hanger'
+    | 'happy'
+    | 'happy2'
+    | 'hat'
+    | 'headphones'
+    | 'headset'
+    | 'heart'
+    | 'heart-broken'
+    | 'heart-broken2'
+    | 'heart-broken3'
+    | 'heart2'
+    | 'heart3'
+    | 'heart4'
+    | 'heart5'
+    | 'heart6'
+    | 'heart7'
+    | 'heart8'
+    | 'height'
+    | 'height2'
+    | 'highlight'
+    | 'hipster'
+    | 'hipster2'
+    | 'history'
+    | 'hockey'
+    | 'home'
+    | 'home2'
+    | 'home3'
+    | 'home4'
+    | 'home5'
+    | 'home6'
+    | 'home7'
+    | 'home8'
+    | 'home9'
+    | 'hour-glass'
+    | 'hour-glass2'
+    | 'hour-glass3'
+    | 'html5'
+    | 'html52'
+    | 'icecream'
+    | 'IcoMoon'
+    | 'IE'
+    | 'image'
+    | 'image-compare'
+    | 'image2'
+    | 'image3'
+    | 'image4'
+    | 'image5'
+    | 'image6'
+    | 'images'
+    | 'images2'
+    | 'images3'
+    | 'import'
+    | 'import2'
+    | 'indent-decrease'
+    | 'indent-decrease2'
+    | 'indent-increase'
+    | 'indent-increase2'
+    | 'infinite'
+    | 'infinite-square'
+    | 'infinite2'
+    | 'info'
+    | 'info2'
+    | 'insert-template'
+    | 'instagram'
+    | 'interset'
+    | 'italic'
+    | 'italic2'
+    | 'joomla'
+    | 'key'
+    | 'key-A'
+    | 'key-down'
+    | 'key-keyboard'
+    | 'key-left'
+    | 'key-right'
+    | 'key-up'
+    | 'key2'
+    | 'key3'
+    | 'key4'
+    | 'key5'
+    | 'keyboard'
+    | 'keyboard2'
+    | 'keyhole'
+    | 'knife'
+    | 'lab'
+    | 'ladder'
+    | 'lamp'
+    | 'lamp2'
+    | 'lamp3'
+    | 'lamp4'
+    | 'lamp5'
+    | 'lamp6'
+    | 'lamp7'
+    | 'lamp8'
+    | 'lan'
+    | 'lan2'
+    | 'lan3'
+    | 'lanyrd'
+    | 'laptop'
+    | 'lasso'
+    | 'lasso2'
+    | 'last'
+    | 'last2'
+    | 'lastfm'
+    | 'lastfm2'
+    | 'laundry'
+    | 'leaf'
+    | 'leaf2'
+    | 'library'
+    | 'library2'
+    | 'libreoffice'
+    | 'lifebuoy'
+    | 'ligature'
+    | 'ligature2'
+    | 'link'
+    | 'link2'
+    | 'link3'
+    | 'link4'
+    | 'link5'
+    | 'linkedin'
+    | 'linkedin2'
+    | 'lips'
+    | 'lips2'
+    | 'list'
+    | 'list-numbered'
+    | 'list2'
+    | 'location'
+    | 'location2'
+    | 'location3'
+    | 'location4'
+    | 'location5'
+    | 'location6'
+    | 'location7'
+    | 'lock'
+    | 'lock2'
+    | 'lock3'
+    | 'lock4'
+    | 'lock5'
+    | 'loop'
+    | 'loop2'
+    | 'loop3'
+    | 'loop4'
+    | 'ltr'
+    | 'ltr2'
+    | 'magazine'
+    | 'magic-wand'
+    | 'magic-wand2'
+    | 'magnet'
+    | 'magnet2'
+    | 'mail'
+    | 'mail2'
+    | 'mail3'
+    | 'mail4'
+    | 'mailbox'
+    | 'make-group'
+    | 'male'
+    | 'man'
+    | 'man-woman'
+    | 'map'
+    | 'map2'
+    | 'map3'
+    | 'map4'
+    | 'map5'
+    | 'marker'
+    | 'marker2'
+    | 'markup'
+    | 'medal'
+    | 'medal-first'
+    | 'medal-second'
+    | 'medal-star'
+    | 'medal-third'
+    | 'medal2'
+    | 'media'
+    | 'megaphone'
+    | 'menu'
+    | 'menu-close'
+    | 'menu-close2'
+    | 'menu-open'
+    | 'menu-open2'
+    | 'menu10'
+    | 'menu2'
+    | 'menu3'
+    | 'menu4'
+    | 'menu5'
+    | 'menu6'
+    | 'menu7'
+    | 'menu8'
+    | 'menu9'
+    | 'merge'
+    | 'meter'
+    | 'meter-fast'
+    | 'meter-medium'
+    | 'meter-slow'
+    | 'meter2'
+    | 'meter3'
+    | 'mic'
+    | 'mic-off'
+    | 'mic-off2'
+    | 'mic2'
+    | 'mic3'
+    | 'mic4'
+    | 'mic5'
+    | 'microscope'
+    | 'milk'
+    | 'minus'
+    | 'minus-circle'
+    | 'minus-circle2'
+    | 'minus2'
+    | 'minus3'
+    | 'mobile'
+    | 'mobile2'
+    | 'mobile3'
+    | 'moon'
+    | 'more'
+    | 'more2'
+    | 'mountains'
+    | 'mouse'
+    | 'mouse-left'
+    | 'mouse-right'
+    | 'mouse2'
+    | 'move'
+    | 'move-down'
+    | 'move-up'
+    | 'movie'
+    | 'mug'
+    | 'multitouch'
+    | 'music'
+    | 'music2'
+    | 'music3'
+    | 'music4'
+    | 'music5'
+    | 'music6'
+    | 'mustache'
+    | 'mustache2'
+    | 'nbsp'
+    | 'neutral'
+    | 'neutral2'
+    | 'new'
+    | 'new-tab'
+    | 'new-tab2'
+    | 'newspaper'
+    | 'next'
+    | 'next2'
+    | 'notebook'
+    | 'notification'
+    | 'notification2'
+    | 'office'
+    | 'omega'
+    | 'onedrive'
+    | 'opera'
+    | 'opt'
+    | 'outlet'
+    | 'package'
+    | 'pacman'
+    | 'page-break'
+    | 'page-break2'
+    | 'pagebreak'
+    | 'paint-format'
+    | 'palette'
+    | 'palette2'
+    | 'pandage'
+    | 'pandage2'
+    | 'pants'
+    | 'paperplane'
+    | 'paragraph-center'
+    | 'paragraph-center2'
+    | 'paragraph-center3'
+    | 'paragraph-justify'
+    | 'paragraph-justify2'
+    | 'paragraph-justify3'
+    | 'paragraph-left'
+    | 'paragraph-left2'
+    | 'paragraph-left3'
+    | 'paragraph-right'
+    | 'paragraph-right2'
+    | 'paragraph-right3'
+    | 'paste'
+    | 'paste2'
+    | 'paste3'
+    | 'paste4'
+    | 'pause'
+    | 'pause2'
+    | 'paw'
+    | 'paypal'
+    | 'paypal2'
+    | 'paypal3'
+    | 'peace'
+    | 'pen'
+    | 'pen-minus'
+    | 'pen-plus'
+    | 'pen2'
+    | 'pen3'
+    | 'pen4'
+    | 'pen5'
+    | 'pen6'
+    | 'pencil'
+    | 'pencil-ruler'
+    | 'pencil2'
+    | 'pencil3'
+    | 'pencil4'
+    | 'pencil5'
+    | 'pencil6'
+    | 'pencil7'
+    | 'percent'
+    | 'phone'
+    | 'phone-hang-up'
+    | 'phone-hang-up2'
+    | 'phone-incoming'
+    | 'phone-minus'
+    | 'phone-minus2'
+    | 'phone-outgoing'
+    | 'phone-plus'
+    | 'phone-plus2'
+    | 'phone-slash'
+    | 'phone-slash2'
+    | 'phone-wave'
+    | 'phone-wave2'
+    | 'phone2'
+    | 'phone3'
+    | 'piano'
+    | 'picassa'
+    | 'picassa2'
+    | 'pie-chart'
+    | 'pie-chart2'
+    | 'pie-chart3'
+    | 'pie-chart4'
+    | 'pie-chart5'
+    | 'pie-chart6'
+    | 'pie-chart7'
+    | 'pie-chart8'
+    | 'piggy-bank'
+    | 'pilcrow'
+    | 'pill'
+    | 'pingpong'
+    | 'pinterest'
+    | 'pinterest2'
+    | 'pipe'
+    | 'pizza'
+    | 'planet'
+    | 'planet2'
+    | 'plate'
+    | 'play'
+    | 'play2'
+    | 'play3'
+    | 'play4'
+    | 'playlist'
+    | 'playlist-add'
+    | 'plus'
+    | 'plus-circle'
+    | 'plus-circle2'
+    | 'plus2'
+    | 'plus3'
+    | 'podcast'
+    | 'podcast2'
+    | 'podium'
+    | 'point-down'
+    | 'point-left'
+    | 'point-right'
+    | 'point-up'
+    | 'pointer'
+    | 'popout'
+    | 'power'
+    | 'power-cord'
+    | 'power-cord2'
+    | 'power2'
+    | 'power3'
+    | 'presentation'
+    | 'previous'
+    | 'previous2'
+    | 'price-tag'
+    | 'price-tag2'
+    | 'price-tag3'
+    | 'price-tag4'
+    | 'price-tag5'
+    | 'price-tags'
+    | 'price-tags2'
+    | 'price-tags3'
+    | 'price-tags4'
+    | 'printer'
+    | 'printer2'
+    | 'printer3'
+    | 'printer4'
+    | 'profile'
+    | 'pulse'
+    | 'pulse2'
+    | 'pushpin'
+    | 'pushpin2'
+    | 'puzzle'
+    | 'puzzle2'
+    | 'puzzle3'
+    | 'puzzle4'
+    | 'pyramid'
+    | 'pyramid2'
+    | 'qrcode'
+    | 'question'
+    | 'question2'
+    | 'question3'
+    | 'question4'
+    | 'question5'
+    | 'question6'
+    | 'quill'
+    | 'quill2'
+    | 'quill3'
+    | 'quill4'
+    | 'quotes-left'
+    | 'quotes-left2'
+    | 'quotes-right'
+    | 'quotes-right2'
+    | 'racing'
+    | 'radio'
+    | 'radio-checked'
+    | 'radio-checked2'
+    | 'radio-unchecked'
+    | 'rating'
+    | 'rating2'
+    | 'rating3'
+    | 'reading'
+    | 'recording'
+    | 'reddit'
+    | 'redo'
+    | 'redo2'
+    | 'regexp'
+    | 'regexp2'
+    | 'reminder'
+    | 'reply'
+    | 'reply-all'
+    | 'reset'
+    | 'road'
+    | 'rocket'
+    | 'rotate-ccw'
+    | 'rotate-ccw2'
+    | 'rotate-ccw3'
+    | 'rotate-cw'
+    | 'rotate-cw2'
+    | 'rotate-cw3'
+    | 'rtl'
+    | 'rtl2'
+    | 'ruler'
+    | 'rulers'
+    | 'sad'
+    | 'sad2'
+    | 'safari'
+    | 'safe'
+    | 'satellite-dish'
+    | 'satellite-dish2'
+    | 'scale'
+    | 'scissors'
+    | 'scissors2'
+    | 'scissors3'
+    | 'screwdriver'
+    | 'screwdriver2'
+    | 'search'
+    | 'search2'
+    | 'search3'
+    | 'search4'
+    | 'search5'
+    | 'search6'
+    | 'section'
+    | 'select'
+    | 'select2'
+    | 'server'
+    | 'seven-segment-0'
+    | 'seven-segment-1'
+    | 'seven-segment-2'
+    | 'seven-segment-3'
+    | 'seven-segment-4'
+    | 'seven-segment-5'
+    | 'seven-segment-6'
+    | 'seven-segment-7'
+    | 'seven-segment-8'
+    | 'seven-segment-9'
+    | 'share'
+    | 'share2'
+    | 'share3'
+    | 'share4'
+    | 'shear'
+    | 'shield'
+    | 'shield-check'
+    | 'shield-notice'
+    | 'shield2'
+    | 'shield3'
+    | 'shield4'
+    | 'shift'
+    | 'ship'
+    | 'shocked'
+    | 'shocked2'
+    | 'shorts'
+    | 'shredder'
+    | 'shrink'
+    | 'shrink2'
+    | 'shrink3'
+    | 'shrink4'
+    | 'shrink5'
+    | 'shrink6'
+    | 'shrink7'
+    | 'shuffle'
+    | 'shuffle2'
+    | 'shutter'
+    | 'sigma'
+    | 'skull'
+    | 'skull2'
+    | 'skype'
+    | 'sleepy'
+    | 'sleepy2'
+    | 'smile'
+    | 'smile2'
+    | 'snowflake'
+    | 'soccer'
+    | 'sock'
+    | 'sort'
+    | 'sort-alpha-asc'
+    | 'sort-alpha-desc'
+    | 'sort-amount-asc'
+    | 'sort-amount-desc'
+    | 'sort-numberic-desc'
+    | 'sort-numeric-asc'
+    | 'sort-time-asc'
+    | 'sort-time-desc'
+    | 'sort2'
+    | 'soundcloud'
+    | 'soundcloud2'
+    | 'spades'
+    | 'spam'
+    | 'speaker-left'
+    | 'speaker-right'
+    | 'speakers'
+    | 'spell-check'
+    | 'spell-check2'
+    | 'sphere'
+    | 'sphere2'
+    | 'sphere3'
+    | 'spinner'
+    | 'spinner10'
+    | 'spinner11'
+    | 'spinner2'
+    | 'spinner3'
+    | 'spinner4'
+    | 'spinner5'
+    | 'spinner6'
+    | 'spinner7'
+    | 'spinner8'
+    | 'spinner9'
+    | 'split'
+    | 'spoon-knife'
+    | 'spotlight'
+    | 'spotlight2'
+    | 'spray'
+    | 'square'
+    | 'square-down'
+    | 'square-down-left'
+    | 'square-down-right'
+    | 'square-left'
+    | 'square-right'
+    | 'square-up'
+    | 'square-up-left'
+    | 'square-up-right'
+    | 'stack'
+    | 'stack-cancel'
+    | 'stack-check'
+    | 'stack-clubs'
+    | 'stack-diamonds'
+    | 'stack-down'
+    | 'stack-empty'
+    | 'stack-hearts'
+    | 'stack-minus'
+    | 'stack-music'
+    | 'stack-picture'
+    | 'stack-play'
+    | 'stack-plus'
+    | 'stack-spades'
+    | 'stack-star'
+    | 'stack-text'
+    | 'stack-up'
+    | 'stack-user'
+    | 'stack2'
+    | 'stack3'
+    | 'stack4'
+    | 'stackoverflow'
+    | 'stairs'
+    | 'stairs-down'
+    | 'stairs-up'
+    | 'stairs2'
+    | 'stamp'
+    | 'star'
+    | 'star-empty'
+    | 'star-empty2'
+    | 'star-empty3'
+    | 'star-full'
+    | 'star-full2'
+    | 'star-half'
+    | 'starburst'
+    | 'stars'
+    | 'station'
+    | 'station2'
+    | 'stats-bars'
+    | 'stats-bars2'
+    | 'stats-bars3'
+    | 'stats-bars4'
+    | 'stats-bars5'
+    | 'stats-bars6'
+    | 'stats-decline'
+    | 'stats-decline2'
+    | 'stats-dots'
+    | 'stats-growth'
+    | 'stats-growth2'
+    | 'steak'
+    | 'steam'
+    | 'steam2'
+    | 'steering-wheel'
+    | 'stethoscope'
+    | 'stop'
+    | 'stop2'
+    | 'stopwatch'
+    | 'store'
+    | 'store2'
+    | 'strategy'
+    | 'strikethrough'
+    | 'strikethrough2'
+    | 'strikethrough3'
+    | 'stumbleupon'
+    | 'stumbleupon2'
+    | 'subscript'
+    | 'subscript2'
+    | 'subtract'
+    | 'sun'
+    | 'sun2'
+    | 'sun3'
+    | 'superscript'
+    | 'superscript2'
+    | 'svg'
+    | 'switch'
+    | 'switch2'
+    | 'sword'
+    | 'syringe'
+    | 'syringe2'
+    | 'tab'
+    | 'table'
+    | 'table2'
+    | 'tablet'
+    | 'tape'
+    | 'target'
+    | 'target2'
+    | 'target3'
+    | 'teapot'
+    | 'temperature'
+    | 'temperature2'
+    | 'tennis'
+    | 'tent'
+    | 'terminal'
+    | 'text-color'
+    | 'text-height'
+    | 'text-width'
+    | 'theater'
+    | 'thumbs-down'
+    | 'thumbs-down2'
+    | 'thumbs-down3'
+    | 'thumbs-up'
+    | 'thumbs-up2'
+    | 'thumbs-up3'
+    | 'ticket'
+    | 'ticket2'
+    | 'tie'
+    | 'toggle'
+    | 'toggle-off'
+    | 'toggle-on'
+    | 'toiletpaper'
+    | 'tongue'
+    | 'tongue2'
+    | 'touch'
+    | 'touch-pinch'
+    | 'touch-zoom'
+    | 'traffic-cone'
+    | 'traffic-lights'
+    | 'train'
+    | 'train2'
+    | 'transmission'
+    | 'transmission2'
+    | 'tree'
+    | 'tree2'
+    | 'tree3'
+    | 'tree4'
+    | 'tree5'
+    | 'tree6'
+    | 'tree7'
+    | 'triangle'
+    | 'triangle2'
+    | 'trophy'
+    | 'trophy2'
+    | 'trophy3'
+    | 'trophy4'
+    | 'truck'
+    | 'trumpet'
+    | 'tshirt'
+    | 'tumblr'
+    | 'tumblr2'
+    | 'tux'
+    | 'tv'
+    | 'twitch'
+    | 'twitter'
+    | 'twitter2'
+    | 'twitter3'
+    | 'typewriter'
+    | 'typography'
+    | 'umbrella'
+    | 'underline'
+    | 'underline2'
+    | 'undo'
+    | 'undo2'
+    | 'ungroup'
+    | 'unicode'
+    | 'unite'
+    | 'unlink'
+    | 'unlink2'
+    | 'unlink3'
+    | 'unlink4'
+    | 'unlink5'
+    | 'unlocked'
+    | 'unlocked2'
+    | 'upload'
+    | 'upload10'
+    | 'upload2'
+    | 'upload3'
+    | 'upload4'
+    | 'upload5'
+    | 'upload6'
+    | 'upload7'
+    | 'upload8'
+    | 'upload9'
+    | 'usb-stick'
+    | 'user'
+    | 'user-block'
+    | 'user-block2'
+    | 'user-cancel'
+    | 'user-cancel2'
+    | 'user-check'
+    | 'user-check2'
+    | 'user-lock'
+    | 'user-lock2'
+    | 'user-minus'
+    | 'user-minus2'
+    | 'user-plus'
+    | 'user-plus2'
+    | 'user-tie'
+    | 'user2'
+    | 'user3'
+    | 'user4'
+    | 'user5'
+    | 'user6'
+    | 'user7'
+    | 'users'
+    | 'users2'
+    | 'users3'
+    | 'users4'
+    | 'users5'
+    | 'vcard'
+    | 'vector'
+    | 'vector2'
+    | 'video-camera'
+    | 'video-camera-slash'
+    | 'video-camera-slash2'
+    | 'video-camera2'
+    | 'video-camera3'
+    | 'video-camera4'
+    | 'video-camera5'
+    | 'vimeo'
+    | 'vimeo2'
+    | 'vimeo3'
+    | 'volume-0'
+    | 'volume-1'
+    | 'volume-2'
+    | 'volume-3'
+    | 'volume-4'
+    | 'volume-5'
+    | 'volume-decrease'
+    | 'volume-decrease2'
+    | 'volume-decrease3'
+    | 'volume-high'
+    | 'volume-high2'
+    | 'volume-increase'
+    | 'volume-increase2'
+    | 'volume-low'
+    | 'volume-low2'
+    | 'volume-medium'
+    | 'volume-medium2'
+    | 'volume-medium3'
+    | 'volume-mute'
+    | 'volume-mute2'
+    | 'volume-mute3'
+    | 'volume-mute4'
+    | 'volume-mute5'
+    | 'wall'
+    | 'wallet'
+    | 'warning'
+    | 'warning2'
+    | 'watch'
+    | 'watch2'
+    | 'wave'
+    | 'wave2'
+    | 'weather-cloud-sun'
+    | 'weather-cloud-sun2'
+    | 'weather-cloud-wind'
+    | 'weather-cloud-wind2'
+    | 'weather-cloudy'
+    | 'weather-cloudy2'
+    | 'weather-lightning'
+    | 'weather-lightning2'
+    | 'weather-rain'
+    | 'weather-rain2'
+    | 'weather-snow'
+    | 'weather-snow2'
+    | 'weather-sun-wind'
+    | 'weather-sun-wind2'
+    | 'weather-windy'
+    | 'width'
+    | 'windows'
+    | 'windows8'
+    | 'wink'
+    | 'wink2'
+    | 'woman'
+    | 'wondering'
+    | 'wondering2'
+    | 'wordpress'
+    | 'wordpress2'
+    | 'wrench'
+    | 'wrench2'
+    | 'wrench3'
+    | 'xing'
+    | 'xing2'
+    | 'yahoo'
+    | 'yelp'
+    | 'yin-yang'
+    | 'youtube'
+    | 'youtube2'
+    | 'youtube3'
+    | 'youtube4'
+    | 'zoom-in'
+    | 'zoom-in2'
+    | 'zoom-in3'
+    | 'zoom-out'
+    | 'zoom-out2'
+    | 'zoom-out3';
 
-  export namespace LinearIcons {
-    export const home = 'icon-home';
-    export const home2 = 'icon-home2';
-    export const home3 = 'icon-home3';
-    export const home4 = 'icon-home4';
-    export const home5 = 'icon-home5';
-    export const home6 = 'icon-home6';
-    export const bathtub = 'icon-bathtub';
-    export const toothbrush = 'icon-toothbrush';
-    export const bed = 'icon-bed';
-    export const couch = 'icon-couch';
-    export const chair = 'icon-chair';
-    export const city = 'icon-city';
-    export const apartment = 'icon-apartment';
-    export const pencil = 'icon-pencil';
-    export const pencil2 = 'icon-pencil2';
-    export const pen = 'icon-pen';
-    export const pencil3 = 'icon-pencil3';
-    export const eraser = 'icon-eraser';
-    export const pencil4 = 'icon-pencil4';
-    export const pencil5 = 'icon-pencil5';
-    export const feather = 'icon-feather';
-    export const feather2 = 'icon-feather2';
-    export const feather3 = 'icon-feather3';
-    export const pen2 = 'icon-pen2';
-    export const penAdd = 'icon-pen-add';
-    export const penRemove = 'icon-pen-remove';
-    export const vector = 'icon-vector';
-    export const pen3 = 'icon-pen3';
-    export const blog = 'icon-blog';
-    export const brush = 'icon-brush';
-    export const brush2 = 'icon-brush2';
-    export const spray = 'icon-spray';
-    export const paintRoller = 'icon-paint-roller';
-    export const stamp = 'icon-stamp';
-    export const tape = 'icon-tape';
-    export const deskTape = 'icon-desk-tape';
-    export const texture = 'icon-texture';
-    export const eyeDropper = 'icon-eye-dropper';
-    export const palette = 'icon-palette';
-    export const colorSampler = 'icon-color-sampler';
-    export const bucket = 'icon-bucket';
-    export const gradient = 'icon-gradient';
-    export const gradient2 = 'icon-gradient2';
-    export const magicWand = 'icon-magic-wand';
-    export const magnet = 'icon-magnet';
-    export const pencilRuler = 'icon-pencil-ruler';
-    export const pencilRuler2 = 'icon-pencil-ruler2';
-    export const compass = 'icon-compass';
-    export const aim = 'icon-aim';
-    export const gun = 'icon-gun';
-    export const bottle = 'icon-bottle';
-    export const drop = 'icon-drop';
-    export const dropCrossed = 'icon-drop-crossed';
-    export const drop2 = 'icon-drop2';
-    export const snow = 'icon-snow';
-    export const snow2 = 'icon-snow2';
-    export const fire = 'icon-fire';
-    export const lighter = 'icon-lighter';
-    export const knife = 'icon-knife';
-    export const dagger = 'icon-dagger';
-    export const tissue = 'icon-tissue';
-    export const toiletPaper = 'icon-toilet-paper';
-    export const poop = 'icon-poop';
-    export const umbrella = 'icon-umbrella';
-    export const umbrella2 = 'icon-umbrella2';
-    export const rain = 'icon-rain';
-    export const tornado = 'icon-tornado';
-    export const wind = 'icon-wind';
-    export const fan = 'icon-fan';
-    export const contrast = 'icon-contrast';
-    export const sunSmall = 'icon-sun-small';
-    export const sun = 'icon-sun';
-    export const sun2 = 'icon-sun2';
-    export const moon = 'icon-moon';
-    export const cloud = 'icon-cloud';
-    export const cloudUpload = 'icon-cloud-upload';
-    export const cloudDownload = 'icon-cloud-download';
-    export const cloudRain = 'icon-cloud-rain';
-    export const cloudHailstones = 'icon-cloud-hailstones';
-    export const cloudSnow = 'icon-cloud-snow';
-    export const cloudWindy = 'icon-cloud-windy';
-    export const sunWind = 'icon-sun-wind';
-    export const cloudFog = 'icon-cloud-fog';
-    export const cloudSun = 'icon-cloud-sun';
-    export const cloudLightning = 'icon-cloud-lightning';
-    export const cloudSync = 'icon-cloud-sync';
-    export const cloudLock = 'icon-cloud-lock';
-    export const cloudGear = 'icon-cloud-gear';
-    export const cloudAlert = 'icon-cloud-alert';
-    export const cloudCheck = 'icon-cloud-check';
-    export const cloudCross = 'icon-cloud-cross';
-    export const cloudCrossed = 'icon-cloud-crossed';
-    export const cloudDatabase = 'icon-cloud-database';
-    export const database = 'icon-database';
-    export const databaseAdd = 'icon-database-add';
-    export const databaseRemove = 'icon-database-remove';
-    export const databaseLock = 'icon-database-lock';
-    export const databaseRefresh = 'icon-database-refresh';
-    export const databaseCheck = 'icon-database-check';
-    export const databaseHistory = 'icon-database-history';
-    export const databaseUpload = 'icon-database-upload';
-    export const databaseDownload = 'icon-database-download';
-    export const server = 'icon-server';
-    export const shield = 'icon-shield';
-    export const shieldCheck = 'icon-shield-check';
-    export const shieldAlert = 'icon-shield-alert';
-    export const shieldCross = 'icon-shield-cross';
-    export const lock = 'icon-lock';
-    export const rotationLock = 'icon-rotation-lock';
-    export const unlock = 'icon-unlock';
-    export const key = 'icon-key';
-    export const keyHole = 'icon-key-hole';
-    export const toggleOff = 'icon-toggle-off';
-    export const toggleOn = 'icon-toggle-on';
-    export const cog = 'icon-cog';
-    export const cog2 = 'icon-cog2';
-    export const wrench = 'icon-wrench';
-    export const screwdriver = 'icon-screwdriver';
-    export const hammerWrench = 'icon-hammer-wrench';
-    export const hammer = 'icon-hammer';
-    export const saw = 'icon-saw';
-    export const axe = 'icon-axe';
-    export const axe2 = 'icon-axe2';
-    export const shovel = 'icon-shovel';
-    export const pickaxe = 'icon-pickaxe';
-    export const factory = 'icon-factory';
-    export const factory2 = 'icon-factory2';
-    export const recycle = 'icon-recycle';
-    export const trash = 'icon-trash';
-    export const trash2 = 'icon-trash2';
-    export const trash3 = 'icon-trash3';
-    export const broom = 'icon-broom';
-    export const game = 'icon-game';
-    export const gamepad = 'icon-gamepad';
-    export const joystick = 'icon-joystick';
-    export const dice = 'icon-dice';
-    export const spades = 'icon-spades';
-    export const diamonds = 'icon-diamonds';
-    export const clubs = 'icon-clubs';
-    export const hearts = 'icon-hearts';
-    export const heart = 'icon-heart';
-    export const star = 'icon-star';
-    export const starHalf = 'icon-star-half';
-    export const starEmpty = 'icon-star-empty';
-    export const flag = 'icon-flag';
-    export const flag2 = 'icon-flag2';
-    export const flag3 = 'icon-flag3';
-    export const mailboxFull = 'icon-mailbox-full';
-    export const mailboxEmpty = 'icon-mailbox-empty';
-    export const atSign = 'icon-at-sign';
-    export const envelope = 'icon-envelope';
-    export const envelopeOpen = 'icon-envelope-open';
-    export const paperclip = 'icon-paperclip';
-    export const paperPlane = 'icon-paper-plane';
-    export const reply = 'icon-reply';
-    export const replyAll = 'icon-reply-all';
-    export const inbox = 'icon-inbox';
-    export const inbox2 = 'icon-inbox2';
-    export const outbox = 'icon-outbox';
-    export const box = 'icon-box';
-    export const archive = 'icon-archive';
-    export const archive2 = 'icon-archive2';
-    export const drawers = 'icon-drawers';
-    export const drawers2 = 'icon-drawers2';
-    export const drawers3 = 'icon-drawers3';
-    export const eye = 'icon-eye';
-    export const eyeCrossed = 'icon-eye-crossed';
-    export const eyePlus = 'icon-eye-plus';
-    export const eyeMinus = 'icon-eye-minus';
-    export const binoculars = 'icon-binoculars';
-    export const binoculars2 = 'icon-binoculars2';
-    export const hdd = 'icon-hdd';
-    export const hddDown = 'icon-hdd-down';
-    export const hddUp = 'icon-hdd-up';
-    export const floppyDisk = 'icon-floppy-disk';
-    export const disc = 'icon-disc';
-    export const tape2 = 'icon-tape2';
-    export const printer = 'icon-printer';
-    export const shredder = 'icon-shredder';
-    export const fileEmpty = 'icon-file-empty';
-    export const fileAdd = 'icon-file-add';
-    export const fileCheck = 'icon-file-check';
-    export const fileLock = 'icon-file-lock';
-    export const files = 'icon-files';
-    export const copy = 'icon-copy';
-    export const compare = 'icon-compare';
-    export const folder = 'icon-folder';
-    export const folderSearch = 'icon-folder-search';
-    export const folderPlus = 'icon-folder-plus';
-    export const folderMinus = 'icon-folder-minus';
-    export const folderDownload = 'icon-folder-download';
-    export const folderUpload = 'icon-folder-upload';
-    export const folderStar = 'icon-folder-star';
-    export const folderHeart = 'icon-folder-heart';
-    export const folderUser = 'icon-folder-user';
-    export const folderShared = 'icon-folder-shared';
-    export const folderMusic = 'icon-folder-music';
-    export const folderPicture = 'icon-folder-picture';
-    export const folderFilm = 'icon-folder-film';
-    export const scissors = 'icon-scissors';
-    export const paste = 'icon-paste';
-    export const clipboardEmpty = 'icon-clipboard-empty';
-    export const clipboardPencil = 'icon-clipboard-pencil';
-    export const clipboardText = 'icon-clipboard-text';
-    export const clipboardCheck = 'icon-clipboard-check';
-    export const clipboardDown = 'icon-clipboard-down';
-    export const clipboardLeft = 'icon-clipboard-left';
-    export const clipboardAlert = 'icon-clipboard-alert';
-    export const clipboardUser = 'icon-clipboard-user';
-    export const register = 'icon-register';
-    export const enter = 'icon-enter';
-    export const exit = 'icon-exit';
-    export const papers = 'icon-papers';
-    export const news = 'icon-news';
-    export const reading = 'icon-reading';
-    export const typewriter = 'icon-typewriter';
-    export const document = 'icon-document';
-    export const document2 = 'icon-document2';
-    export const graduationHat = 'icon-graduation-hat';
-    export const license = 'icon-license';
-    export const license2 = 'icon-license2';
-    export const medalEmpty = 'icon-medal-empty';
-    export const medalFirst = 'icon-medal-first';
-    export const medalSecond = 'icon-medal-second';
-    export const medalThird = 'icon-medal-third';
-    export const podium = 'icon-podium';
-    export const trophy = 'icon-trophy';
-    export const trophy2 = 'icon-trophy2';
-    export const musicNote = 'icon-music-note';
-    export const musicNote2 = 'icon-music-note2';
-    export const musicNote3 = 'icon-music-note3';
-    export const playlist = 'icon-playlist';
-    export const playlistAdd = 'icon-playlist-add';
-    export const guitar = 'icon-guitar';
-    export const trumpet = 'icon-trumpet';
-    export const album = 'icon-album';
-    export const shuffle = 'icon-shuffle';
-    export const repeatOne = 'icon-repeat-one';
-    export const repeat = 'icon-repeat';
-    export const headphones = 'icon-headphones';
-    export const headset = 'icon-headset';
-    export const loudspeaker = 'icon-loudspeaker';
-    export const equalizer = 'icon-equalizer';
-    export const theater = 'icon-theater';
-    export const threedGlasses = 'icon-3d-glasses';
-    export const ticket = 'icon-ticket';
-    export const presentation = 'icon-presentation';
-    export const play = 'icon-play';
-    export const filmPlay = 'icon-film-play';
-    export const clapboardPlay = 'icon-clapboard-play';
-    export const media = 'icon-media';
-    export const film = 'icon-film';
-    export const film2 = 'icon-film2';
-    export const surveillance = 'icon-surveillance';
-    export const surveillance2 = 'icon-surveillance2';
-    export const camera = 'icon-camera';
-    export const cameraCrossed = 'icon-camera-crossed';
-    export const cameraPlay = 'icon-camera-play';
-    export const timeLapse = 'icon-time-lapse';
-    export const record = 'icon-record';
-    export const camera2 = 'icon-camera2';
-    export const cameraFlip = 'icon-camera-flip';
-    export const panorama = 'icon-panorama';
-    export const timeLapse2 = 'icon-time-lapse2';
-    export const shutter = 'icon-shutter';
-    export const shutter2 = 'icon-shutter2';
-    export const faceDetection = 'icon-face-detection';
-    export const flare = 'icon-flare';
-    export const convex = 'icon-convex';
-    export const concave = 'icon-concave';
-    export const picture = 'icon-picture';
-    export const picture2 = 'icon-picture2';
-    export const picture3 = 'icon-picture3';
-    export const pictures = 'icon-pictures';
-    export const book = 'icon-book';
-    export const audioBook = 'icon-audio-book';
-    export const book2 = 'icon-book2';
-    export const bookmark = 'icon-bookmark';
-    export const bookmark2 = 'icon-bookmark2';
-    export const label = 'icon-label';
-    export const library = 'icon-library';
-    export const library2 = 'icon-library2';
-    export const contacts = 'icon-contacts';
-    export const profile = 'icon-profile';
-    export const portrait = 'icon-portrait';
-    export const portrait2 = 'icon-portrait2';
-    export const user = 'icon-user';
-    export const userPlus = 'icon-user-plus';
-    export const userMinus = 'icon-user-minus';
-    export const userLock = 'icon-user-lock';
-    export const users = 'icon-users';
-    export const users2 = 'icon-users2';
-    export const usersPlus = 'icon-users-plus';
-    export const usersMinus = 'icon-users-minus';
-    export const groupWork = 'icon-group-work';
-    export const woman = 'icon-woman';
-    export const man = 'icon-man';
-    export const baby = 'icon-baby';
-    export const baby2 = 'icon-baby2';
-    export const baby3 = 'icon-baby3';
-    export const babyBottle = 'icon-baby-bottle';
-    export const walk = 'icon-walk';
-    export const handWaving = 'icon-hand-waving';
-    export const jump = 'icon-jump';
-    export const run = 'icon-run';
-    export const woman2 = 'icon-woman2';
-    export const man2 = 'icon-man2';
-    export const manWoman = 'icon-man-woman';
-    export const height = 'icon-height';
-    export const weight = 'icon-weight';
-    export const scale = 'icon-scale';
-    export const button = 'icon-button';
-    export const bowTie = 'icon-bow-tie';
-    export const tie = 'icon-tie';
-    export const socks = 'icon-socks';
-    export const shoe = 'icon-shoe';
-    export const shoes = 'icon-shoes';
-    export const hat = 'icon-hat';
-    export const pants = 'icon-pants';
-    export const shorts = 'icon-shorts';
-    export const flipFlops = 'icon-flip-flops';
-    export const shirt = 'icon-shirt';
-    export const hanger = 'icon-hanger';
-    export const laundry = 'icon-laundry';
-    export const store = 'icon-store';
-    export const haircut = 'icon-haircut';
-    export const store24 = 'icon-store-24';
-    export const barcode = 'icon-barcode';
-    export const barcode2 = 'icon-barcode2';
-    export const barcode3 = 'icon-barcode3';
-    export const cashier = 'icon-cashier';
-    export const bag = 'icon-bag';
-    export const bag2 = 'icon-bag2';
-    export const cart = 'icon-cart';
-    export const cartEmpty = 'icon-cart-empty';
-    export const cartFull = 'icon-cart-full';
-    export const cartPlus = 'icon-cart-plus';
-    export const cartPlus2 = 'icon-cart-plus2';
-    export const cartAdd = 'icon-cart-add';
-    export const cartRemove = 'icon-cart-remove';
-    export const cartExchange = 'icon-cart-exchange';
-    export const tag = 'icon-tag';
-    export const tags = 'icon-tags';
-    export const receipt = 'icon-receipt';
-    export const wallet = 'icon-wallet';
-    export const creditCard = 'icon-credit-card';
-    export const cashDollar = 'icon-cash-dollar';
-    export const cashEuro = 'icon-cash-euro';
-    export const cashPound = 'icon-cash-pound';
-    export const cashYen = 'icon-cash-yen';
-    export const bagDollar = 'icon-bag-dollar';
-    export const bagEuro = 'icon-bag-euro';
-    export const bagPound = 'icon-bag-pound';
-    export const bagYen = 'icon-bag-yen';
-    export const coinDollar = 'icon-coin-dollar';
-    export const coinEuro = 'icon-coin-euro';
-    export const coinPound = 'icon-coin-pound';
-    export const coinYen = 'icon-coin-yen';
-    export const calculator = 'icon-calculator';
-    export const calculator2 = 'icon-calculator2';
-    export const abacus = 'icon-abacus';
-    export const vault = 'icon-vault';
-    export const telephone = 'icon-telephone';
-    export const phoneLock = 'icon-phone-lock';
-    export const phoneWave = 'icon-phone-wave';
-    export const phonePause = 'icon-phone-pause';
-    export const phoneOutgoing = 'icon-phone-outgoing';
-    export const phoneIncoming = 'icon-phone-incoming';
-    export const phoneInOut = 'icon-phone-in-out';
-    export const phoneError = 'icon-phone-error';
-    export const phoneSip = 'icon-phone-sip';
-    export const phonePlus = 'icon-phone-plus';
-    export const phoneMinus = 'icon-phone-minus';
-    export const voicemail = 'icon-voicemail';
-    export const dial = 'icon-dial';
-    export const telephone2 = 'icon-telephone2';
-    export const pushpin = 'icon-pushpin';
-    export const pushpin2 = 'icon-pushpin2';
-    export const mapMarker = 'icon-map-marker';
-    export const mapMarkerUser = 'icon-map-marker-user';
-    export const mapMarkerDown = 'icon-map-marker-down';
-    export const mapMarkerCheck = 'icon-map-marker-check';
-    export const mapMarkerCrossed = 'icon-map-marker-crossed';
-    export const radar = 'icon-radar';
-    export const compass2 = 'icon-compass2';
-    export const map = 'icon-map';
-    export const map2 = 'icon-map2';
-    export const location = 'icon-location';
-    export const roadSign = 'icon-road-sign';
-    export const calendarEmpty = 'icon-calendar-empty';
-    export const calendarCheck = 'icon-calendar-check';
-    export const calendarCross = 'icon-calendar-cross';
-    export const calendar31 = 'icon-calendar-31';
-    export const calendarFull = 'icon-calendar-full';
-    export const calendarInsert = 'icon-calendar-insert';
-    export const calendarText = 'icon-calendar-text';
-    export const calendarUser = 'icon-calendar-user';
-    export const mouse = 'icon-mouse';
-    export const mouseLeft = 'icon-mouse-left';
-    export const mouseRight = 'icon-mouse-right';
-    export const mouseBoth = 'icon-mouse-both';
-    export const keyboard = 'icon-keyboard';
-    export const keyboardUp = 'icon-keyboard-up';
-    export const keyboardDown = 'icon-keyboard-down';
-    export const delete1 = 'icon-delete';
-    export const spellCheck = 'icon-spell-check';
-    export const escape = 'icon-escape';
-    export const enter2 = 'icon-enter2';
-    export const screen = 'icon-screen';
-    export const aspectRatio = 'icon-aspect-ratio';
-    export const signal = 'icon-signal';
-    export const signalLock = 'icon-signal-lock';
-    export const signal80 = 'icon-signal-80';
-    export const signal60 = 'icon-signal-60';
-    export const signal40 = 'icon-signal-40';
-    export const signal20 = 'icon-signal-20';
-    export const signal0 = 'icon-signal-0';
-    export const signalBlocked = 'icon-signal-blocked';
-    export const sim = 'icon-sim';
-    export const flashMemory = 'icon-flash-memory';
-    export const usbDrive = 'icon-usb-drive';
-    export const phone = 'icon-phone';
-    export const smartphone = 'icon-smartphone';
-    export const smartphoneNotification = 'icon-smartphone-notification';
-    export const smartphoneVibration = 'icon-smartphone-vibration';
-    export const smartphoneEmbed = 'icon-smartphone-embed';
-    export const smartphoneWaves = 'icon-smartphone-waves';
-    export const tablet = 'icon-tablet';
-    export const tablet2 = 'icon-tablet2';
-    export const laptop = 'icon-laptop';
-    export const laptopPhone = 'icon-laptop-phone';
-    export const desktop = 'icon-desktop';
-    export const launch = 'icon-launch';
-    export const newTab = 'icon-new-tab';
-    export const window = 'icon-window';
-    export const cable = 'icon-cable';
-    export const cable2 = 'icon-cable2';
-    export const tv = 'icon-tv';
-    export const radio = 'icon-radio';
-    export const remoteControl = 'icon-remote-control';
-    export const powerSwitch = 'icon-power-switch';
-    export const power = 'icon-power';
-    export const powerCrossed = 'icon-power-crossed';
-    export const flashAuto = 'icon-flash-auto';
-    export const lamp = 'icon-lamp';
-    export const flashlight = 'icon-flashlight';
-    export const lampshade = 'icon-lampshade';
-    export const cord = 'icon-cord';
-    export const outlet = 'icon-outlet';
-    export const batteryPower = 'icon-battery-power';
-    export const batteryEmpty = 'icon-battery-empty';
-    export const batteryAlert = 'icon-battery-alert';
-    export const batteryError = 'icon-battery-error';
-    export const batteryLow1 = 'icon-battery-low1';
-    export const batteryLow2 = 'icon-battery-low2';
-    export const batteryLow3 = 'icon-battery-low3';
-    export const batteryMid1 = 'icon-battery-mid1';
-    export const batteryMid2 = 'icon-battery-mid2';
-    export const batteryMid3 = 'icon-battery-mid3';
-    export const batteryFull = 'icon-battery-full';
-    export const batteryCharging = 'icon-battery-charging';
-    export const batteryCharging2 = 'icon-battery-charging2';
-    export const batteryCharging3 = 'icon-battery-charging3';
-    export const batteryCharging4 = 'icon-battery-charging4';
-    export const batteryCharging5 = 'icon-battery-charging5';
-    export const batteryCharging6 = 'icon-battery-charging6';
-    export const batteryCharging7 = 'icon-battery-charging7';
-    export const chip = 'icon-chip';
-    export const chipX64 = 'icon-chip-x64';
-    export const chipX86 = 'icon-chip-x86';
-    export const bubble = 'icon-bubble';
-    export const bubbles = 'icon-bubbles';
-    export const bubbleDots = 'icon-bubble-dots';
-    export const bubbleAlert = 'icon-bubble-alert';
-    export const bubbleQuestion = 'icon-bubble-question';
-    export const bubbleText = 'icon-bubble-text';
-    export const bubblePencil = 'icon-bubble-pencil';
-    export const bubblePicture = 'icon-bubble-picture';
-    export const bubbleVideo = 'icon-bubble-video';
-    export const bubbleUser = 'icon-bubble-user';
-    export const bubbleQuote = 'icon-bubble-quote';
-    export const bubbleHeart = 'icon-bubble-heart';
-    export const bubbleEmoticon = 'icon-bubble-emoticon';
-    export const bubbleAttachment = 'icon-bubble-attachment';
-    export const phoneBubble = 'icon-phone-bubble';
-    export const quoteOpen = 'icon-quote-open';
-    export const quoteClose = 'icon-quote-close';
-    export const dna = 'icon-dna';
-    export const heartPulse = 'icon-heart-pulse';
-    export const pulse = 'icon-pulse';
-    export const syringe = 'icon-syringe';
-    export const pills = 'icon-pills';
-    export const firstAid = 'icon-first-aid';
-    export const lifebuoy = 'icon-lifebuoy';
-    export const bandage = 'icon-bandage';
-    export const bandages = 'icon-bandages';
-    export const thermometer = 'icon-thermometer';
-    export const microscope = 'icon-microscope';
-    export const brain = 'icon-brain';
-    export const beaker = 'icon-beaker';
-    export const skull = 'icon-skull';
-    export const bone = 'icon-bone';
-    export const construction = 'icon-construction';
-    export const constructionCone = 'icon-construction-cone';
-    export const pieChart = 'icon-pie-chart';
-    export const pieChart2 = 'icon-pie-chart2';
-    export const graph = 'icon-graph';
-    export const chartGrowth = 'icon-chart-growth';
-    export const chartBars = 'icon-chart-bars';
-    export const chartSettings = 'icon-chart-settings';
-    export const cake = 'icon-cake';
-    export const gift = 'icon-gift';
-    export const balloon = 'icon-balloon';
-    export const rank = 'icon-rank';
-    export const rank2 = 'icon-rank2';
-    export const rank3 = 'icon-rank3';
-    export const crown = 'icon-crown';
-    export const lotus = 'icon-lotus';
-    export const diamond = 'icon-diamond';
-    export const diamond2 = 'icon-diamond2';
-    export const diamond3 = 'icon-diamond3';
-    export const diamond4 = 'icon-diamond4';
-    export const linearicons = 'icon-linearicons';
-    export const teacup = 'icon-teacup';
-    export const teapot = 'icon-teapot';
-    export const glass = 'icon-glass';
-    export const bottle2 = 'icon-bottle2';
-    export const glassCocktail = 'icon-glass-cocktail';
-    export const glass2 = 'icon-glass2';
-    export const dinner = 'icon-dinner';
-    export const dinner2 = 'icon-dinner2';
-    export const chef = 'icon-chef';
-    export const scale2 = 'icon-scale2';
-    export const egg = 'icon-egg';
-    export const egg2 = 'icon-egg2';
-    export const eggs = 'icon-eggs';
-    export const platter = 'icon-platter';
-    export const steak = 'icon-steak';
-    export const hamburger = 'icon-hamburger';
-    export const hotdog = 'icon-hotdog';
-    export const pizza = 'icon-pizza';
-    export const sausage = 'icon-sausage';
-    export const chicken = 'icon-chicken';
-    export const fish = 'icon-fish';
-    export const carrot = 'icon-carrot';
-    export const cheese = 'icon-cheese';
-    export const bread = 'icon-bread';
-    export const iceCream = 'icon-ice-cream';
-    export const iceCream2 = 'icon-ice-cream2';
-    export const candy = 'icon-candy';
-    export const lollipop = 'icon-lollipop';
-    export const coffeeBean = 'icon-coffee-bean';
-    export const coffeeCup = 'icon-coffee-cup';
-    export const cherry = 'icon-cherry';
-    export const grapes = 'icon-grapes';
-    export const citrus = 'icon-citrus';
-    export const apple = 'icon-apple';
-    export const leaf = 'icon-leaf';
-    export const landscape = 'icon-landscape';
-    export const pineTree = 'icon-pine-tree';
-    export const tree = 'icon-tree';
-    export const cactus = 'icon-cactus';
-    export const paw = 'icon-paw';
-    export const footprint = 'icon-footprint';
-    export const speedSlow = 'icon-speed-slow';
-    export const speedMedium = 'icon-speed-medium';
-    export const speedFast = 'icon-speed-fast';
-    export const rocket = 'icon-rocket';
-    export const hammer2 = 'icon-hammer2';
-    export const balance = 'icon-balance';
-    export const briefcase = 'icon-briefcase';
-    export const luggageWeight = 'icon-luggage-weight';
-    export const dolly = 'icon-dolly';
-    export const plane = 'icon-plane';
-    export const planeCrossed = 'icon-plane-crossed';
-    export const helicopter = 'icon-helicopter';
-    export const trafficLights = 'icon-traffic-lights';
-    export const siren = 'icon-siren';
-    export const road = 'icon-road';
-    export const engine = 'icon-engine';
-    export const oilPressure = 'icon-oil-pressure';
-    export const coolantTemperature = 'icon-coolant-temperature';
-    export const carBattery = 'icon-car-battery';
-    export const gas = 'icon-gas';
-    export const gallon = 'icon-gallon';
-    export const transmission = 'icon-transmission';
-    export const car = 'icon-car';
-    export const carWash = 'icon-car-wash';
-    export const carWash2 = 'icon-car-wash2';
-    export const bus = 'icon-bus';
-    export const bus2 = 'icon-bus2';
-    export const car2 = 'icon-car2';
-    export const parking = 'icon-parking';
-    export const carLock = 'icon-car-lock';
-    export const taxi = 'icon-taxi';
-    export const carSiren = 'icon-car-siren';
-    export const carWash3 = 'icon-car-wash3';
-    export const carWash4 = 'icon-car-wash4';
-    export const ambulance = 'icon-ambulance';
-    export const truck = 'icon-truck';
-    export const trailer = 'icon-trailer';
-    export const scaleTruck = 'icon-scale-truck';
-    export const train = 'icon-train';
-    export const ship = 'icon-ship';
-    export const ship2 = 'icon-ship2';
-    export const anchor = 'icon-anchor';
-    export const boat = 'icon-boat';
-    export const bicycle = 'icon-bicycle';
-    export const bicycle2 = 'icon-bicycle2';
-    export const dumbbell = 'icon-dumbbell';
-    export const benchPress = 'icon-bench-press';
-    export const swim = 'icon-swim';
-    export const football = 'icon-football';
-    export const baseballBat = 'icon-baseball-bat';
-    export const baseball = 'icon-baseball';
-    export const tennis = 'icon-tennis';
-    export const tennis2 = 'icon-tennis2';
-    export const pingPong = 'icon-ping-pong';
-    export const hockey = 'icon-hockey';
-    export const eightBall = 'icon-8ball';
-    export const bowling = 'icon-bowling';
-    export const bowlingPins = 'icon-bowling-pins';
-    export const golf = 'icon-golf';
-    export const golf2 = 'icon-golf2';
-    export const archery = 'icon-archery';
-    export const slingshot = 'icon-slingshot';
-    export const soccer = 'icon-soccer';
-    export const basketball = 'icon-basketball';
-    export const cube = 'icon-cube';
-    export const threedRotate = 'icon-3d-rotate';
-    export const puzzle = 'icon-puzzle';
-    export const glasses = 'icon-glasses';
-    export const glasses2 = 'icon-glasses2';
-    export const accessibility = 'icon-accessibility';
-    export const wheelchair = 'icon-wheelchair';
-    export const wall = 'icon-wall';
-    export const fence = 'icon-fence';
-    export const wall2 = 'icon-wall2';
-    export const icons = 'icon-icons';
-    export const resizeHandle = 'icon-resize-handle';
-    export const icons2 = 'icon-icons2';
-    export const select = 'icon-select';
-    export const select2 = 'icon-select2';
-    export const siteMap = 'icon-site-map';
-    export const earth = 'icon-earth';
-    export const earthLock = 'icon-earth-lock';
-    export const network = 'icon-network';
-    export const networkLock = 'icon-network-lock';
-    export const planet = 'icon-planet';
-    export const happy = 'icon-happy';
-    export const smile = 'icon-smile';
-    export const grin = 'icon-grin';
-    export const tongue = 'icon-tongue';
-    export const sad = 'icon-sad';
-    export const wink = 'icon-wink';
-    export const dream = 'icon-dream';
-    export const shocked = 'icon-shocked';
-    export const shocked2 = 'icon-shocked2';
-    export const tongue2 = 'icon-tongue2';
-    export const neutral = 'icon-neutral';
-    export const happyGrin = 'icon-happy-grin';
-    export const cool = 'icon-cool';
-    export const mad = 'icon-mad';
-    export const grinEvil = 'icon-grin-evil';
-    export const evil = 'icon-evil';
-    export const wow = 'icon-wow';
-    export const annoyed = 'icon-annoyed';
-    export const wondering = 'icon-wondering';
-    export const confused = 'icon-confused';
-    export const zipped = 'icon-zipped';
-    export const grumpy = 'icon-grumpy';
-    export const mustache = 'icon-mustache';
-    export const tombstoneHipster = 'icon-tombstone-hipster';
-    export const tombstone = 'icon-tombstone';
-    export const ghost = 'icon-ghost';
-    export const ghostHipster = 'icon-ghost-hipster';
-    export const halloween = 'icon-halloween';
-    export const christmas = 'icon-christmas';
-    export const easterEgg = 'icon-easter-egg';
-    export const mustache2 = 'icon-mustache2';
-    export const mustacheGlasses = 'icon-mustache-glasses';
-    export const pipe = 'icon-pipe';
-    export const alarm = 'icon-alarm';
-    export const alarmAdd = 'icon-alarm-add';
-    export const alarmSnooze = 'icon-alarm-snooze';
-    export const alarmRinging = 'icon-alarm-ringing';
-    export const bullhorn = 'icon-bullhorn';
-    export const hearing = 'icon-hearing';
-    export const volumeHigh = 'icon-volume-high';
-    export const volumeMedium = 'icon-volume-medium';
-    export const volumeLow = 'icon-volume-low';
-    export const volume = 'icon-volume';
-    export const mute = 'icon-mute';
-    export const lan = 'icon-lan';
-    export const lan2 = 'icon-lan2';
-    export const wifi = 'icon-wifi';
-    export const wifiLock = 'icon-wifi-lock';
-    export const wifiBlocked = 'icon-wifi-blocked';
-    export const wifiMid = 'icon-wifi-mid';
-    export const wifiLow = 'icon-wifi-low';
-    export const wifiLow2 = 'icon-wifi-low2';
-    export const wifiAlert = 'icon-wifi-alert';
-    export const wifiAlertMid = 'icon-wifi-alert-mid';
-    export const wifiAlertLow = 'icon-wifi-alert-low';
-    export const wifiAlertLow2 = 'icon-wifi-alert-low2';
-    export const stream = 'icon-stream';
-    export const streamCheck = 'icon-stream-check';
-    export const streamError = 'icon-stream-error';
-    export const streamAlert = 'icon-stream-alert';
-    export const communication = 'icon-communication';
-    export const communicationCrossed = 'icon-communication-crossed';
-    export const broadcast = 'icon-broadcast';
-    export const antenna = 'icon-antenna';
-    export const satellite = 'icon-satellite';
-    export const satellite2 = 'icon-satellite2';
-    export const mic = 'icon-mic';
-    export const micMute = 'icon-mic-mute';
-    export const mic2 = 'icon-mic2';
-    export const spotlights = 'icon-spotlights';
-    export const hourglass = 'icon-hourglass';
-    export const loading = 'icon-loading';
-    export const loading2 = 'icon-loading2';
-    export const loading3 = 'icon-loading3';
-    export const refresh = 'icon-refresh';
-    export const refresh2 = 'icon-refresh2';
-    export const undo = 'icon-undo';
-    export const redo = 'icon-redo';
-    export const jump2 = 'icon-jump2';
-    export const undo2 = 'icon-undo2';
-    export const redo2 = 'icon-redo2';
-    export const sync = 'icon-sync';
-    export const repeatOne2 = 'icon-repeat-one2';
-    export const syncCrossed = 'icon-sync-crossed';
-    export const sync2 = 'icon-sync2';
-    export const repeatOne3 = 'icon-repeat-one3';
-    export const syncCrossed2 = 'icon-sync-crossed2';
-    export const return1 = 'icon-return';
-    export const return2 = 'icon-return2';
-    export const refund = 'icon-refund';
-    export const history = 'icon-history';
-    export const history2 = 'icon-history2';
-    export const selfTimer = 'icon-self-timer';
-    export const clock = 'icon-clock';
-    export const clock2 = 'icon-clock2';
-    export const clock3 = 'icon-clock3';
-    export const watch = 'icon-watch';
-    export const alarm2 = 'icon-alarm2';
-    export const alarmAdd2 = 'icon-alarm-add2';
-    export const alarmRemove = 'icon-alarm-remove';
-    export const alarmCheck = 'icon-alarm-check';
-    export const alarmError = 'icon-alarm-error';
-    export const timer = 'icon-timer';
-    export const timerCrossed = 'icon-timer-crossed';
-    export const timer2 = 'icon-timer2';
-    export const timerCrossed2 = 'icon-timer-crossed2';
-    export const download = 'icon-download';
-    export const upload = 'icon-upload';
-    export const download2 = 'icon-download2';
-    export const upload2 = 'icon-upload2';
-    export const enterUp = 'icon-enter-up';
-    export const enterDown = 'icon-enter-down';
-    export const enterLeft = 'icon-enter-left';
-    export const enterRight = 'icon-enter-right';
-    export const exitUp = 'icon-exit-up';
-    export const exitDown = 'icon-exit-down';
-    export const exitLeft = 'icon-exit-left';
-    export const exitRight = 'icon-exit-right';
-    export const enterUp2 = 'icon-enter-up2';
-    export const enterDown2 = 'icon-enter-down2';
-    export const enterVertical = 'icon-enter-vertical';
-    export const enterLeft2 = 'icon-enter-left2';
-    export const enterRight2 = 'icon-enter-right2';
-    export const enterHorizontal = 'icon-enter-horizontal';
-    export const exitUp2 = 'icon-exit-up2';
-    export const exitDown2 = 'icon-exit-down2';
-    export const exitLeft2 = 'icon-exit-left2';
-    export const exitRight2 = 'icon-exit-right2';
-    export const cli = 'icon-cli';
-    export const bug = 'icon-bug';
-    export const code = 'icon-code';
-    export const fileCode = 'icon-file-code';
-    export const fileImage = 'icon-file-image';
-    export const fileZip = 'icon-file-zip';
-    export const fileAudio = 'icon-file-audio';
-    export const fileVideo = 'icon-file-video';
-    export const filePreview = 'icon-file-preview';
-    export const fileCharts = 'icon-file-charts';
-    export const fileStats = 'icon-file-stats';
-    export const fileSpreadsheet = 'icon-file-spreadsheet';
-    export const link = 'icon-link';
-    export const unlink = 'icon-unlink';
-    export const link2 = 'icon-link2';
-    export const unlink2 = 'icon-unlink2';
-    export const thumbsUp = 'icon-thumbs-up';
-    export const thumbsDown = 'icon-thumbs-down';
-    export const thumbsUp2 = 'icon-thumbs-up2';
-    export const thumbsDown2 = 'icon-thumbs-down2';
-    export const thumbsUp3 = 'icon-thumbs-up3';
-    export const thumbsDown3 = 'icon-thumbs-down3';
-    export const share = 'icon-share';
-    export const share2 = 'icon-share2';
-    export const share3 = 'icon-share3';
-    export const magnifier = 'icon-magnifier';
-    export const fileSearch = 'icon-file-search';
-    export const findReplace = 'icon-find-replace';
-    export const zoomIn = 'icon-zoom-in';
-    export const zoomOut = 'icon-zoom-out';
-    export const loupe = 'icon-loupe';
-    export const loupeZoomIn = 'icon-loupe-zoom-in';
-    export const loupeZoomOut = 'icon-loupe-zoom-out';
-    export const cross = 'icon-cross';
-    export const menu = 'icon-menu';
-    export const list = 'icon-list';
-    export const list2 = 'icon-list2';
-    export const list3 = 'icon-list3';
-    export const menu2 = 'icon-menu2';
-    export const list4 = 'icon-list4';
-    export const menu3 = 'icon-menu3';
-    export const exclamation = 'icon-exclamation';
-    export const question = 'icon-question';
-    export const check = 'icon-check';
-    export const cross2 = 'icon-cross2';
-    export const plus = 'icon-plus';
-    export const minus = 'icon-minus';
-    export const percent = 'icon-percent';
-    export const chevronUp = 'icon-chevron-up';
-    export const chevronDown = 'icon-chevron-down';
-    export const chevronLeft = 'icon-chevron-left';
-    export const chevronRight = 'icon-chevron-right';
-    export const chevronsExpandVertical = 'icon-chevrons-expand-vertical';
-    export const chevronsExpandHorizontal = 'icon-chevrons-expand-horizontal';
-    export const chevronsContractVertical = 'icon-chevrons-contract-vertical';
-    export const chevronsContractHorizontal = 'icon-chevrons-contract-horizontal';
-    export const arrowUp = 'icon-arrow-up';
-    export const arrowDown = 'icon-arrow-down';
-    export const arrowLeft = 'icon-arrow-left';
-    export const arrowRight = 'icon-arrow-right';
-    export const arrowUpRight = 'icon-arrow-up-right';
-    export const arrowsMerge = 'icon-arrows-merge';
-    export const arrowsSplit = 'icon-arrows-split';
-    export const arrowDivert = 'icon-arrow-divert';
-    export const arrowReturn = 'icon-arrow-return';
-    export const expand = 'icon-expand';
-    export const contract = 'icon-contract';
-    export const expand2 = 'icon-expand2';
-    export const contract2 = 'icon-contract2';
-    export const move = 'icon-move';
-    export const tab = 'icon-tab';
-    export const arrowWave = 'icon-arrow-wave';
-    export const expand3 = 'icon-expand3';
-    export const expand4 = 'icon-expand4';
-    export const contract3 = 'icon-contract3';
-    export const notification = 'icon-notification';
-    export const warning = 'icon-warning';
-    export const notificationCircle = 'icon-notification-circle';
-    export const questionCircle = 'icon-question-circle';
-    export const menuCircle = 'icon-menu-circle';
-    export const checkmarkCircle = 'icon-checkmark-circle';
-    export const crossCircle = 'icon-cross-circle';
-    export const plusCircle = 'icon-plus-circle';
-    export const circleMinus = 'icon-circle-minus';
-    export const percentCircle = 'icon-percent-circle';
-    export const arrowUpCircle = 'icon-arrow-up-circle';
-    export const arrowDownCircle = 'icon-arrow-down-circle';
-    export const arrowLeftCircle = 'icon-arrow-left-circle';
-    export const arrowRightCircle = 'icon-arrow-right-circle';
-    export const chevronUpCircle = 'icon-chevron-up-circle';
-    export const chevronDownCircle = 'icon-chevron-down-circle';
-    export const chevronLeftCircle = 'icon-chevron-left-circle';
-    export const chevronRightCircle = 'icon-chevron-right-circle';
-    export const backwardCircle = 'icon-backward-circle';
-    export const firstCircle = 'icon-first-circle';
-    export const previousCircle = 'icon-previous-circle';
-    export const stopCircle = 'icon-stop-circle';
-    export const playCircle = 'icon-play-circle';
-    export const pauseCircle = 'icon-pause-circle';
-    export const nextCircle = 'icon-next-circle';
-    export const lastCircle = 'icon-last-circle';
-    export const forwardCircle = 'icon-forward-circle';
-    export const ejectCircle = 'icon-eject-circle';
-    export const crop = 'icon-crop';
-    export const frameExpand = 'icon-frame-expand';
-    export const frameContract = 'icon-frame-contract';
-    export const focus = 'icon-focus';
-    export const transform = 'icon-transform';
-    export const grid = 'icon-grid';
-    export const gridCrossed = 'icon-grid-crossed';
-    export const layers = 'icon-layers';
-    export const layersCrossed = 'icon-layers-crossed';
-    export const toggle = 'icon-toggle';
-    export const rulers = 'icon-rulers';
-    export const ruler = 'icon-ruler';
-    export const funnel = 'icon-funnel';
-    export const flipHorizontal = 'icon-flip-horizontal';
-    export const flipVertical = 'icon-flip-vertical';
-    export const flipHorizontal2 = 'icon-flip-horizontal2';
-    export const flipVertical2 = 'icon-flip-vertical2';
-    export const angle = 'icon-angle';
-    export const angle2 = 'icon-angle2';
-    export const subtract = 'icon-subtract';
-    export const combine = 'icon-combine';
-    export const intersect = 'icon-intersect';
-    export const exclude = 'icon-exclude';
-    export const alignCenterVertical = 'icon-align-center-vertical';
-    export const alignRight = 'icon-align-right';
-    export const alignBottom = 'icon-align-bottom';
-    export const alignLeft = 'icon-align-left';
-    export const alignCenterHorizontal = 'icon-align-center-horizontal';
-    export const alignTop = 'icon-align-top';
-    export const square = 'icon-square';
-    export const plusSquare = 'icon-plus-square';
-    export const minusSquare = 'icon-minus-square';
-    export const percentSquare = 'icon-percent-square';
-    export const arrowUpSquare = 'icon-arrow-up-square';
-    export const arrowDownSquare = 'icon-arrow-down-square';
-    export const arrowLeftSquare = 'icon-arrow-left-square';
-    export const arrowRightSquare = 'icon-arrow-right-square';
-    export const chevronUpSquare = 'icon-chevron-up-square';
-    export const chevronDownSquare = 'icon-chevron-down-square';
-    export const chevronLeftSquare = 'icon-chevron-left-square';
-    export const chevronRightSquare = 'icon-chevron-right-square';
-    export const checkSquare = 'icon-check-square';
-    export const crossSquare = 'icon-cross-square';
-    export const menuSquare = 'icon-menu-square';
-    export const prohibited = 'icon-prohibited';
-    export const circle = 'icon-circle';
-    export const radioButton = 'icon-radio-button';
-    export const ligature = 'icon-ligature';
-    export const textFormat = 'icon-text-format';
-    export const textFormatRemove = 'icon-text-format-remove';
-    export const textSize = 'icon-text-size';
-    export const bold = 'icon-bold';
-    export const italic = 'icon-italic';
-    export const underline = 'icon-underline';
-    export const strikethrough = 'icon-strikethrough';
-    export const highlight = 'icon-highlight';
-    export const textAlignLeft = 'icon-text-align-left';
-    export const textAlignCenter = 'icon-text-align-center';
-    export const textAlignRight = 'icon-text-align-right';
-    export const textAlignJustify = 'icon-text-align-justify';
-    export const lineSpacing = 'icon-line-spacing';
-    export const indentIncrease = 'icon-indent-increase';
-    export const indentDecrease = 'icon-indent-decrease';
-    export const textWrap = 'icon-text-wrap';
-    export const pilcrow = 'icon-pilcrow';
-    export const directionLtr = 'icon-direction-ltr';
-    export const directionRtl = 'icon-direction-rtl';
-    export const pageBreak = 'icon-page-break';
-    export const pageBreak2 = 'icon-page-break2';
-    export const sortAlphaAsc = 'icon-sort-alpha-asc';
-    export const sortAlphaDesc = 'icon-sort-alpha-desc';
-    export const sortNumericAsc = 'icon-sort-numeric-asc';
-    export const sortNumericDesc = 'icon-sort-numeric-desc';
-    export const sortAmountAsc = 'icon-sort-amount-asc';
-    export const sortAmountDesc = 'icon-sort-amount-desc';
-    export const sortTimeAsc = 'icon-sort-time-asc';
-    export const sortTimeDesc = 'icon-sort-time-desc';
-    export const sigma = 'icon-sigma';
-    export const pencilLine = 'icon-pencil-line';
-    export const hand = 'icon-hand';
-    export const pointerUp = 'icon-pointer-up';
-    export const pointerRight = 'icon-pointer-right';
-    export const pointerDown = 'icon-pointer-down';
-    export const pointerLeft = 'icon-pointer-left';
-    export const fingerTap = 'icon-finger-tap';
-    export const fingersTap = 'icon-fingers-tap';
-    export const reminder = 'icon-reminder';
-    export const fingersCrossed = 'icon-fingers-crossed';
-    export const fingersVictory = 'icon-fingers-victory';
-    export const gestureZoom = 'icon-gesture-zoom';
-    export const gesturePinch = 'icon-gesture-pinch';
-    export const fingersScrollHorizontal = 'icon-fingers-scroll-horizontal';
-    export const fingersScrollVertical = 'icon-fingers-scroll-vertical';
-    export const fingersScrollLeft = 'icon-fingers-scroll-left';
-    export const fingersScrollRight = 'icon-fingers-scroll-right';
-    export const hand2 = 'icon-hand2';
-    export const pointerUp2 = 'icon-pointer-up2';
-    export const pointerRight2 = 'icon-pointer-right2';
-    export const pointerDown2 = 'icon-pointer-down2';
-    export const pointerLeft2 = 'icon-pointer-left2';
-    export const fingerTap2 = 'icon-finger-tap2';
-    export const fingersTap2 = 'icon-fingers-tap2';
-    export const reminder2 = 'icon-reminder2';
-    export const gestureZoom2 = 'icon-gesture-zoom2';
-    export const gesturePinch2 = 'icon-gesture-pinch2';
-    export const fingersScrollHorizontal2 = 'icon-fingers-scroll-horizontal2';
-    export const fingersScrollVertical2 = 'icon-fingers-scroll-vertical2';
-    export const fingersScrollLeft2 = 'icon-fingers-scroll-left2';
-    export const fingersScrollRight2 = 'icon-fingers-scroll-right2';
-    export const fingersScrollVertical3 = 'icon-fingers-scroll-vertical3';
-    export const borderStyle = 'icon-border-style';
-    export const borderAll = 'icon-border-all';
-    export const borderOuter = 'icon-border-outer';
-    export const borderInner = 'icon-border-inner';
-    export const borderTop = 'icon-border-top';
-    export const borderHorizontal = 'icon-border-horizontal';
-    export const borderBottom = 'icon-border-bottom';
-    export const borderLeft = 'icon-border-left';
-    export const borderVertical = 'icon-border-vertical';
-    export const borderRight = 'icon-border-right';
-    export const borderNone = 'icon-border-none';
-    export const ellipsis = 'icon-ellipsis';
-    export const uni21 = 'icon-uni21';
-    export const uni22 = 'icon-uni22';
-    export const uni23 = 'icon-uni23';
-    export const uni24 = 'icon-uni24';
-    export const uni25 = 'icon-uni25';
-    export const uni26 = 'icon-uni26';
-    export const uni27 = 'icon-uni27';
-    export const uni28 = 'icon-uni28';
-    export const uni29 = 'icon-uni29';
-    export const uni2a = 'icon-uni2a';
-    export const uni2b = 'icon-uni2b';
-    export const uni2c = 'icon-uni2c';
-    export const uni2d = 'icon-uni2d';
-    export const uni2e = 'icon-uni2e';
-    export const uni2f = 'icon-uni2f';
-    export const uni30 = 'icon-uni30';
-    export const uni31 = 'icon-uni31';
-    export const uni32 = 'icon-uni32';
-    export const uni33 = 'icon-uni33';
-    export const uni34 = 'icon-uni34';
-    export const uni35 = 'icon-uni35';
-    export const uni36 = 'icon-uni36';
-    export const uni37 = 'icon-uni37';
-    export const uni38 = 'icon-uni38';
-    export const uni39 = 'icon-uni39';
-    export const uni3a = 'icon-uni3a';
-    export const uni3b = 'icon-uni3b';
-    export const uni3c = 'icon-uni3c';
-    export const uni3d = 'icon-uni3d';
-    export const uni3e = 'icon-uni3e';
-    export const uni3f = 'icon-uni3f';
-    export const uni40 = 'icon-uni40';
-    export const uni41 = 'icon-uni41';
-    export const uni42 = 'icon-uni42';
-    export const uni43 = 'icon-uni43';
-    export const uni44 = 'icon-uni44';
-    export const uni45 = 'icon-uni45';
-    export const uni46 = 'icon-uni46';
-    export const uni47 = 'icon-uni47';
-    export const uni48 = 'icon-uni48';
-    export const uni49 = 'icon-uni49';
-    export const uni4a = 'icon-uni4a';
-    export const uni4b = 'icon-uni4b';
-    export const uni4c = 'icon-uni4c';
-    export const uni4d = 'icon-uni4d';
-    export const uni4e = 'icon-uni4e';
-    export const uni4f = 'icon-uni4f';
-    export const uni50 = 'icon-uni50';
-    export const uni51 = 'icon-uni51';
-    export const uni52 = 'icon-uni52';
-    export const uni53 = 'icon-uni53';
-    export const uni54 = 'icon-uni54';
-    export const uni55 = 'icon-uni55';
-    export const uni56 = 'icon-uni56';
-    export const uni57 = 'icon-uni57';
-    export const uni58 = 'icon-uni58';
-    export const uni59 = 'icon-uni59';
-    export const uni5a = 'icon-uni5a';
-    export const uni5b = 'icon-uni5b';
-    export const uni5c = 'icon-uni5c';
-    export const uni5d = 'icon-uni5d';
-    export const uni5e = 'icon-uni5e';
-    export const uni5f = 'icon-uni5f';
-    export const uni60 = 'icon-uni60';
-    export const uni61 = 'icon-uni61';
-    export const uni62 = 'icon-uni62';
-    export const uni63 = 'icon-uni63';
-    export const uni64 = 'icon-uni64';
-    export const uni65 = 'icon-uni65';
-    export const uni66 = 'icon-uni66';
-    export const uni67 = 'icon-uni67';
-    export const uni68 = 'icon-uni68';
-    export const uni69 = 'icon-uni69';
-    export const uni6a = 'icon-uni6a';
-    export const uni6b = 'icon-uni6b';
-    export const uni6c = 'icon-uni6c';
-    export const uni6d = 'icon-uni6d';
-    export const uni6e = 'icon-uni6e';
-    export const uni6f = 'icon-uni6f';
-    export const uni70 = 'icon-uni70';
-    export const uni71 = 'icon-uni71';
-    export const uni72 = 'icon-uni72';
-    export const uni73 = 'icon-uni73';
-    export const uni74 = 'icon-uni74';
-    export const uni75 = 'icon-uni75';
-    export const uni76 = 'icon-uni76';
-    export const uni77 = 'icon-uni77';
-    export const uni78 = 'icon-uni78';
-    export const uni79 = 'icon-uni79';
-    export const uni7a = 'icon-uni7a';
-    export const uni7b = 'icon-uni7b';
-    export const uni7c = 'icon-uni7c';
-    export const uni7d = 'icon-uni7d';
-    export const uni7e = 'icon-uni7e';
-    export const copyright = 'icon-copyright';
-  }
-}
+  LinearIcons:
+    | 'home'
+    | 'home2'
+    | 'home3'
+    | 'home4'
+    | 'home5'
+    | 'home6'
+    | 'bathtub'
+    | 'toothbrush'
+    | 'bed'
+    | 'couch'
+    | 'chair'
+    | 'city'
+    | 'apartment'
+    | 'pencil'
+    | 'pencil2'
+    | 'pen'
+    | 'pencil3'
+    | 'eraser'
+    | 'pencil4'
+    | 'pencil5'
+    | 'feather'
+    | 'feather2'
+    | 'feather3'
+    | 'pen2'
+    | 'pen-add'
+    | 'pen-remove'
+    | 'vector'
+    | 'pen3'
+    | 'blog'
+    | 'brush'
+    | 'brush2'
+    | 'spray'
+    | 'paint-roller'
+    | 'stamp'
+    | 'tape'
+    | 'desk-tape'
+    | 'texture'
+    | 'eye-dropper'
+    | 'palette'
+    | 'color-sampler'
+    | 'bucket'
+    | 'gradient'
+    | 'gradient2'
+    | 'magic-wand'
+    | 'magnet'
+    | 'pencil-ruler'
+    | 'pencil-ruler2'
+    | 'compass'
+    | 'aim'
+    | 'gun'
+    | 'bottle'
+    | 'drop'
+    | 'drop-crossed'
+    | 'drop2'
+    | 'snow'
+    | 'snow2'
+    | 'fire'
+    | 'lighter'
+    | 'knife'
+    | 'dagger'
+    | 'tissue'
+    | 'toilet-paper'
+    | 'poop'
+    | 'umbrella'
+    | 'umbrella2'
+    | 'rain'
+    | 'tornado'
+    | 'wind'
+    | 'fan'
+    | 'contrast'
+    | 'sun-small'
+    | 'sun'
+    | 'sun2'
+    | 'moon'
+    | 'cloud'
+    | 'cloud-upload'
+    | 'cloud-download'
+    | 'cloud-rain'
+    | 'cloud-hailstones'
+    | 'cloud-snow'
+    | 'cloud-windy'
+    | 'sun-wind'
+    | 'cloud-fog'
+    | 'cloud-sun'
+    | 'cloud-lightning'
+    | 'cloud-sync'
+    | 'cloud-lock'
+    | 'cloud-gear'
+    | 'cloud-alert'
+    | 'cloud-check'
+    | 'cloud-cross'
+    | 'cloud-crossed'
+    | 'cloud-database'
+    | 'database'
+    | 'database-add'
+    | 'database-remove'
+    | 'database-lock'
+    | 'database-refresh'
+    | 'database-check'
+    | 'database-history'
+    | 'database-upload'
+    | 'database-download'
+    | 'server'
+    | 'shield'
+    | 'shield-check'
+    | 'shield-alert'
+    | 'shield-cross'
+    | 'lock'
+    | 'rotation-lock'
+    | 'unlock'
+    | 'key'
+    | 'key-hole'
+    | 'toggle-off'
+    | 'toggle-on'
+    | 'cog'
+    | 'cog2'
+    | 'wrench'
+    | 'screwdriver'
+    | 'hammer-wrench'
+    | 'hammer'
+    | 'saw'
+    | 'axe'
+    | 'axe2'
+    | 'shovel'
+    | 'pickaxe'
+    | 'factory'
+    | 'factory2'
+    | 'recycle'
+    | 'trash'
+    | 'trash2'
+    | 'trash3'
+    | 'broom'
+    | 'game'
+    | 'gamepad'
+    | 'joystick'
+    | 'dice'
+    | 'spades'
+    | 'diamonds'
+    | 'clubs'
+    | 'hearts'
+    | 'heart'
+    | 'star'
+    | 'star-half'
+    | 'star-empty'
+    | 'flag'
+    | 'flag2'
+    | 'flag3'
+    | 'mailbox-full'
+    | 'mailbox-empty'
+    | 'at-sign'
+    | 'envelope'
+    | 'envelope-open'
+    | 'paperclip'
+    | 'paper-plane'
+    | 'reply'
+    | 'reply-all'
+    | 'inbox'
+    | 'inbox2'
+    | 'outbox'
+    | 'box'
+    | 'archive'
+    | 'archive2'
+    | 'drawers'
+    | 'drawers2'
+    | 'drawers3'
+    | 'eye'
+    | 'eye-crossed'
+    | 'eye-plus'
+    | 'eye-minus'
+    | 'binoculars'
+    | 'binoculars2'
+    | 'hdd'
+    | 'hdd-down'
+    | 'hdd-up'
+    | 'floppy-disk'
+    | 'disc'
+    | 'tape2'
+    | 'printer'
+    | 'shredder'
+    | 'file-empty'
+    | 'file-add'
+    | 'file-check'
+    | 'file-lock'
+    | 'files'
+    | 'copy'
+    | 'compare'
+    | 'folder'
+    | 'folder-search'
+    | 'folder-plus'
+    | 'folder-minus'
+    | 'folder-download'
+    | 'folder-upload'
+    | 'folder-star'
+    | 'folder-heart'
+    | 'folder-user'
+    | 'folder-shared'
+    | 'folder-music'
+    | 'folder-picture'
+    | 'folder-film'
+    | 'scissors'
+    | 'paste'
+    | 'clipboard-empty'
+    | 'clipboard-pencil'
+    | 'clipboard-text'
+    | 'clipboard-check'
+    | 'clipboard-down'
+    | 'clipboard-left'
+    | 'clipboard-alert'
+    | 'clipboard-user'
+    | 'register'
+    | 'enter'
+    | 'exit'
+    | 'papers'
+    | 'news'
+    | 'reading'
+    | 'typewriter'
+    | 'document'
+    | 'document2'
+    | 'graduation-hat'
+    | 'license'
+    | 'license2'
+    | 'medal-empty'
+    | 'medal-first'
+    | 'medal-second'
+    | 'medal-third'
+    | 'podium'
+    | 'trophy'
+    | 'trophy2'
+    | 'music-note'
+    | 'music-note2'
+    | 'music-note3'
+    | 'playlist'
+    | 'playlist-add'
+    | 'guitar'
+    | 'trumpet'
+    | 'album'
+    | 'shuffle'
+    | 'repeat-one'
+    | 'repeat'
+    | 'headphones'
+    | 'headset'
+    | 'loudspeaker'
+    | 'equalizer'
+    | 'theater'
+    | '3d-glasses'
+    | 'ticket'
+    | 'presentation'
+    | 'play'
+    | 'film-play'
+    | 'clapboard-play'
+    | 'media'
+    | 'film'
+    | 'film2'
+    | 'surveillance'
+    | 'surveillance2'
+    | 'camera'
+    | 'camera-crossed'
+    | 'camera-play'
+    | 'time-lapse'
+    | 'record'
+    | 'camera2'
+    | 'camera-flip'
+    | 'panorama'
+    | 'time-lapse2'
+    | 'shutter'
+    | 'shutter2'
+    | 'face-detection'
+    | 'flare'
+    | 'convex'
+    | 'concave'
+    | 'picture'
+    | 'picture2'
+    | 'picture3'
+    | 'pictures'
+    | 'book'
+    | 'audio-book'
+    | 'book2'
+    | 'bookmark'
+    | 'bookmark2'
+    | 'label'
+    | 'library'
+    | 'library2'
+    | 'contacts'
+    | 'profile'
+    | 'portrait'
+    | 'portrait2'
+    | 'user'
+    | 'user-plus'
+    | 'user-minus'
+    | 'user-lock'
+    | 'users'
+    | 'users2'
+    | 'users-plus'
+    | 'users-minus'
+    | 'group-work'
+    | 'woman'
+    | 'man'
+    | 'baby'
+    | 'baby2'
+    | 'baby3'
+    | 'baby-bottle'
+    | 'walk'
+    | 'hand-waving'
+    | 'jump'
+    | 'run'
+    | 'woman2'
+    | 'man2'
+    | 'man-woman'
+    | 'height'
+    | 'weight'
+    | 'scale'
+    | 'button'
+    | 'bow-tie'
+    | 'tie'
+    | 'socks'
+    | 'shoe'
+    | 'shoes'
+    | 'hat'
+    | 'pants'
+    | 'shorts'
+    | 'flip-flops'
+    | 'shirt'
+    | 'hanger'
+    | 'laundry'
+    | 'store'
+    | 'haircut'
+    | 'store-24'
+    | 'barcode'
+    | 'barcode2'
+    | 'barcode3'
+    | 'cashier'
+    | 'bag'
+    | 'bag2'
+    | 'cart'
+    | 'cart-empty'
+    | 'cart-full'
+    | 'cart-plus'
+    | 'cart-plus2'
+    | 'cart-add'
+    | 'cart-remove'
+    | 'cart-exchange'
+    | 'tag'
+    | 'tags'
+    | 'receipt'
+    | 'wallet'
+    | 'credit-card'
+    | 'cash-dollar'
+    | 'cash-euro'
+    | 'cash-pound'
+    | 'cash-yen'
+    | 'bag-dollar'
+    | 'bag-euro'
+    | 'bag-pound'
+    | 'bag-yen'
+    | 'coin-dollar'
+    | 'coin-euro'
+    | 'coin-pound'
+    | 'coin-yen'
+    | 'calculator'
+    | 'calculator2'
+    | 'abacus'
+    | 'vault'
+    | 'telephone'
+    | 'phone-lock'
+    | 'phone-wave'
+    | 'phone-pause'
+    | 'phone-outgoing'
+    | 'phone-incoming'
+    | 'phone-in-out'
+    | 'phone-error'
+    | 'phone-sip'
+    | 'phone-plus'
+    | 'phone-minus'
+    | 'voicemail'
+    | 'dial'
+    | 'telephone2'
+    | 'pushpin'
+    | 'pushpin2'
+    | 'map-marker'
+    | 'map-marker-user'
+    | 'map-marker-down'
+    | 'map-marker-check'
+    | 'map-marker-crossed'
+    | 'radar'
+    | 'compass2'
+    | 'map'
+    | 'map2'
+    | 'location'
+    | 'road-sign'
+    | 'calendar-empty'
+    | 'calendar-check'
+    | 'calendar-cross'
+    | 'calendar-31'
+    | 'calendar-full'
+    | 'calendar-insert'
+    | 'calendar-text'
+    | 'calendar-user'
+    | 'mouse'
+    | 'mouse-left'
+    | 'mouse-right'
+    | 'mouse-both'
+    | 'keyboard'
+    | 'keyboard-up'
+    | 'keyboard-down'
+    | 'delete'
+    | 'spell-check'
+    | 'escape'
+    | 'enter2'
+    | 'screen'
+    | 'aspect-ratio'
+    | 'signal'
+    | 'signal-lock'
+    | 'signal-80'
+    | 'signal-60'
+    | 'signal-40'
+    | 'signal-20'
+    | 'signal-0'
+    | 'signal-blocked'
+    | 'sim'
+    | 'flash-memory'
+    | 'usb-drive'
+    | 'phone'
+    | 'smartphone'
+    | 'smartphone-notification'
+    | 'smartphone-vibration'
+    | 'smartphone-embed'
+    | 'smartphone-waves'
+    | 'tablet'
+    | 'tablet2'
+    | 'laptop'
+    | 'laptop-phone'
+    | 'desktop'
+    | 'launch'
+    | 'new-tab'
+    | 'window'
+    | 'cable'
+    | 'cable2'
+    | 'tv'
+    | 'radio'
+    | 'remote-control'
+    | 'power-switch'
+    | 'power'
+    | 'power-crossed'
+    | 'flash-auto'
+    | 'lamp'
+    | 'flashlight'
+    | 'lampshade'
+    | 'cord'
+    | 'outlet'
+    | 'battery-power'
+    | 'battery-empty'
+    | 'battery-alert'
+    | 'battery-error'
+    | 'battery-low1'
+    | 'battery-low2'
+    | 'battery-low3'
+    | 'battery-mid1'
+    | 'battery-mid2'
+    | 'battery-mid3'
+    | 'battery-full'
+    | 'battery-charging'
+    | 'battery-charging2'
+    | 'battery-charging3'
+    | 'battery-charging4'
+    | 'battery-charging5'
+    | 'battery-charging6'
+    | 'battery-charging7'
+    | 'chip'
+    | 'chip-x64'
+    | 'chip-x86'
+    | 'bubble'
+    | 'bubbles'
+    | 'bubble-dots'
+    | 'bubble-alert'
+    | 'bubble-question'
+    | 'bubble-text'
+    | 'bubble-pencil'
+    | 'bubble-picture'
+    | 'bubble-video'
+    | 'bubble-user'
+    | 'bubble-quote'
+    | 'bubble-heart'
+    | 'bubble-emoticon'
+    | 'bubble-attachment'
+    | 'phone-bubble'
+    | 'quote-open'
+    | 'quote-close'
+    | 'dna'
+    | 'heart-pulse'
+    | 'pulse'
+    | 'syringe'
+    | 'pills'
+    | 'first-aid'
+    | 'lifebuoy'
+    | 'bandage'
+    | 'bandages'
+    | 'thermometer'
+    | 'microscope'
+    | 'brain'
+    | 'beaker'
+    | 'skull'
+    | 'bone'
+    | 'construction'
+    | 'construction-cone'
+    | 'pie-chart'
+    | 'pie-chart2'
+    | 'graph'
+    | 'chart-growth'
+    | 'chart-bars'
+    | 'chart-settings'
+    | 'cake'
+    | 'gift'
+    | 'balloon'
+    | 'rank'
+    | 'rank2'
+    | 'rank3'
+    | 'crown'
+    | 'lotus'
+    | 'diamond'
+    | 'diamond2'
+    | 'diamond3'
+    | 'diamond4'
+    | 'linearicons'
+    | 'teacup'
+    | 'teapot'
+    | 'glass'
+    | 'bottle2'
+    | 'glass-cocktail'
+    | 'glass2'
+    | 'dinner'
+    | 'dinner2'
+    | 'chef'
+    | 'scale2'
+    | 'egg'
+    | 'egg2'
+    | 'eggs'
+    | 'platter'
+    | 'steak'
+    | 'hamburger'
+    | 'hotdog'
+    | 'pizza'
+    | 'sausage'
+    | 'chicken'
+    | 'fish'
+    | 'carrot'
+    | 'cheese'
+    | 'bread'
+    | 'ice-cream'
+    | 'ice-cream2'
+    | 'candy'
+    | 'lollipop'
+    | 'coffee-bean'
+    | 'coffee-cup'
+    | 'cherry'
+    | 'grapes'
+    | 'citrus'
+    | 'apple'
+    | 'leaf'
+    | 'landscape'
+    | 'pine-tree'
+    | 'tree'
+    | 'cactus'
+    | 'paw'
+    | 'footprint'
+    | 'speed-slow'
+    | 'speed-medium'
+    | 'speed-fast'
+    | 'rocket'
+    | 'hammer2'
+    | 'balance'
+    | 'briefcase'
+    | 'luggage-weight'
+    | 'dolly'
+    | 'plane'
+    | 'plane-crossed'
+    | 'helicopter'
+    | 'traffic-lights'
+    | 'siren'
+    | 'road'
+    | 'engine'
+    | 'oil-pressure'
+    | 'coolant-temperature'
+    | 'car-battery'
+    | 'gas'
+    | 'gallon'
+    | 'transmission'
+    | 'car'
+    | 'car-wash'
+    | 'car-wash2'
+    | 'bus'
+    | 'bus2'
+    | 'car2'
+    | 'parking'
+    | 'car-lock'
+    | 'taxi'
+    | 'car-siren'
+    | 'car-wash3'
+    | 'car-wash4'
+    | 'ambulance'
+    | 'truck'
+    | 'trailer'
+    | 'scale-truck'
+    | 'train'
+    | 'ship'
+    | 'ship2'
+    | 'anchor'
+    | 'boat'
+    | 'bicycle'
+    | 'bicycle2'
+    | 'dumbbell'
+    | 'bench-press'
+    | 'swim'
+    | 'football'
+    | 'baseball-bat'
+    | 'baseball'
+    | 'tennis'
+    | 'tennis2'
+    | 'ping-pong'
+    | 'hockey'
+    | '8ball'
+    | 'bowling'
+    | 'bowling-pins'
+    | 'golf'
+    | 'golf2'
+    | 'archery'
+    | 'slingshot'
+    | 'soccer'
+    | 'basketball'
+    | 'cube'
+    | '3d-rotate'
+    | 'puzzle'
+    | 'glasses'
+    | 'glasses2'
+    | 'accessibility'
+    | 'wheelchair'
+    | 'wall'
+    | 'fence'
+    | 'wall2'
+    | 'icons'
+    | 'resize-handle'
+    | 'icons2'
+    | 'select'
+    | 'select2'
+    | 'site-map'
+    | 'earth'
+    | 'earth-lock'
+    | 'network'
+    | 'network-lock'
+    | 'planet'
+    | 'happy'
+    | 'smile'
+    | 'grin'
+    | 'tongue'
+    | 'sad'
+    | 'wink'
+    | 'dream'
+    | 'shocked'
+    | 'shocked2'
+    | 'tongue2'
+    | 'neutral'
+    | 'happy-grin'
+    | 'cool'
+    | 'mad'
+    | 'grin-evil'
+    | 'evil'
+    | 'wow'
+    | 'annoyed'
+    | 'wondering'
+    | 'confused'
+    | 'zipped'
+    | 'grumpy'
+    | 'mustache'
+    | 'tombstone-hipster'
+    | 'tombstone'
+    | 'ghost'
+    | 'ghost-hipster'
+    | 'halloween'
+    | 'christmas'
+    | 'easter-egg'
+    | 'mustache2'
+    | 'mustache-glasses'
+    | 'pipe'
+    | 'alarm'
+    | 'alarm-add'
+    | 'alarm-snooze'
+    | 'alarm-ringing'
+    | 'bullhorn'
+    | 'hearing'
+    | 'volume-high'
+    | 'volume-medium'
+    | 'volume-low'
+    | 'volume'
+    | 'mute'
+    | 'lan'
+    | 'lan2'
+    | 'wifi'
+    | 'wifi-lock'
+    | 'wifi-blocked'
+    | 'wifi-mid'
+    | 'wifi-low'
+    | 'wifi-low2'
+    | 'wifi-alert'
+    | 'wifi-alert-mid'
+    | 'wifi-alert-low'
+    | 'wifi-alert-low2'
+    | 'stream'
+    | 'stream-check'
+    | 'stream-error'
+    | 'stream-alert'
+    | 'communication'
+    | 'communication-crossed'
+    | 'broadcast'
+    | 'antenna'
+    | 'satellite'
+    | 'satellite2'
+    | 'mic'
+    | 'mic-mute'
+    | 'mic2'
+    | 'spotlights'
+    | 'hourglass'
+    | 'loading'
+    | 'loading2'
+    | 'loading3'
+    | 'refresh'
+    | 'refresh2'
+    | 'undo'
+    | 'redo'
+    | 'jump2'
+    | 'undo2'
+    | 'redo2'
+    | 'sync'
+    | 'repeat-one2'
+    | 'sync-crossed'
+    | 'sync2'
+    | 'repeat-one3'
+    | 'sync-crossed2'
+    | 'return'
+    | 'return2'
+    | 'refund'
+    | 'history'
+    | 'history2'
+    | 'self-timer'
+    | 'clock'
+    | 'clock2'
+    | 'clock3'
+    | 'watch'
+    | 'alarm2'
+    | 'alarm-add2'
+    | 'alarm-remove'
+    | 'alarm-check'
+    | 'alarm-error'
+    | 'timer'
+    | 'timer-crossed'
+    | 'timer2'
+    | 'timer-crossed2'
+    | 'download'
+    | 'upload'
+    | 'download2'
+    | 'upload2'
+    | 'enter-up'
+    | 'enter-down'
+    | 'enter-left'
+    | 'enter-right'
+    | 'exit-up'
+    | 'exit-down'
+    | 'exit-left'
+    | 'exit-right'
+    | 'enter-up2'
+    | 'enter-down2'
+    | 'enter-vertical'
+    | 'enter-left2'
+    | 'enter-right2'
+    | 'enter-horizontal'
+    | 'exit-up2'
+    | 'exit-down2'
+    | 'exit-left2'
+    | 'exit-right2'
+    | 'cli'
+    | 'bug'
+    | 'code'
+    | 'file-code'
+    | 'file-image'
+    | 'file-zip'
+    | 'file-audio'
+    | 'file-video'
+    | 'file-preview'
+    | 'file-charts'
+    | 'file-stats'
+    | 'file-spreadsheet'
+    | 'link'
+    | 'unlink'
+    | 'link2'
+    | 'unlink2'
+    | 'thumbs-up'
+    | 'thumbs-down'
+    | 'thumbs-up2'
+    | 'thumbs-down2'
+    | 'thumbs-up3'
+    | 'thumbs-down3'
+    | 'share'
+    | 'share2'
+    | 'share3'
+    | 'magnifier'
+    | 'file-search'
+    | 'find-replace'
+    | 'zoom-in'
+    | 'zoom-out'
+    | 'loupe'
+    | 'loupe-zoom-in'
+    | 'loupe-zoom-out'
+    | 'cross'
+    | 'menu'
+    | 'list'
+    | 'list2'
+    | 'list3'
+    | 'menu2'
+    | 'list4'
+    | 'menu3'
+    | 'exclamation'
+    | 'question'
+    | 'check'
+    | 'cross2'
+    | 'plus'
+    | 'minus'
+    | 'percent'
+    | 'chevron-up'
+    | 'chevron-down'
+    | 'chevron-left'
+    | 'chevron-right'
+    | 'chevrons-expand-vertical'
+    | 'chevrons-expand-horizontal'
+    | 'chevrons-contract-vertical'
+    | 'chevrons-contract-horizontal'
+    | 'arrow-up'
+    | 'arrow-down'
+    | 'arrow-left'
+    | 'arrow-right'
+    | 'arrow-up-right'
+    | 'arrows-merge'
+    | 'arrows-split'
+    | 'arrow-divert'
+    | 'arrow-return'
+    | 'expand'
+    | 'contract'
+    | 'expand2'
+    | 'contract2'
+    | 'move'
+    | 'tab'
+    | 'arrow-wave'
+    | 'expand3'
+    | 'expand4'
+    | 'contract3'
+    | 'notification'
+    | 'warning'
+    | 'notification-circle'
+    | 'question-circle'
+    | 'menu-circle'
+    | 'checkmark-circle'
+    | 'cross-circle'
+    | 'plus-circle'
+    | 'circle-minus'
+    | 'percent-circle'
+    | 'arrow-up-circle'
+    | 'arrow-down-circle'
+    | 'arrow-left-circle'
+    | 'arrow-right-circle'
+    | 'chevron-up-circle'
+    | 'chevron-down-circle'
+    | 'chevron-left-circle'
+    | 'chevron-right-circle'
+    | 'backward-circle'
+    | 'first-circle'
+    | 'previous-circle'
+    | 'stop-circle'
+    | 'play-circle'
+    | 'pause-circle'
+    | 'next-circle'
+    | 'last-circle'
+    | 'forward-circle'
+    | 'eject-circle'
+    | 'crop'
+    | 'frame-expand'
+    | 'frame-contract'
+    | 'focus'
+    | 'transform'
+    | 'grid'
+    | 'grid-crossed'
+    | 'layers'
+    | 'layers-crossed'
+    | 'toggle'
+    | 'rulers'
+    | 'ruler'
+    | 'funnel'
+    | 'flip-horizontal'
+    | 'flip-vertical'
+    | 'flip-horizontal2'
+    | 'flip-vertical2'
+    | 'angle'
+    | 'angle2'
+    | 'subtract'
+    | 'combine'
+    | 'intersect'
+    | 'exclude'
+    | 'align-center-vertical'
+    | 'align-right'
+    | 'align-bottom'
+    | 'align-left'
+    | 'align-center-horizontal'
+    | 'align-top'
+    | 'square'
+    | 'plus-square'
+    | 'minus-square'
+    | 'percent-square'
+    | 'arrow-up-square'
+    | 'arrow-down-square'
+    | 'arrow-left-square'
+    | 'arrow-right-square'
+    | 'chevron-up-square'
+    | 'chevron-down-square'
+    | 'chevron-left-square'
+    | 'chevron-right-square'
+    | 'check-square'
+    | 'cross-square'
+    | 'menu-square'
+    | 'prohibited'
+    | 'circle'
+    | 'radio-button'
+    | 'ligature'
+    | 'text-format'
+    | 'text-format-remove'
+    | 'text-size'
+    | 'bold'
+    | 'italic'
+    | 'underline'
+    | 'strikethrough'
+    | 'highlight'
+    | 'text-align-left'
+    | 'text-align-center'
+    | 'text-align-right'
+    | 'text-align-justify'
+    | 'line-spacing'
+    | 'indent-increase'
+    | 'indent-decrease'
+    | 'text-wrap'
+    | 'pilcrow'
+    | 'direction-ltr'
+    | 'direction-rtl'
+    | 'page-break'
+    | 'page-break2'
+    | 'sort-alpha-asc'
+    | 'sort-alpha-desc'
+    | 'sort-numeric-asc'
+    | 'sort-numeric-desc'
+    | 'sort-amount-asc'
+    | 'sort-amount-desc'
+    | 'sort-time-asc'
+    | 'sort-time-desc'
+    | 'sigma'
+    | 'pencil-line'
+    | 'hand'
+    | 'pointer-up'
+    | 'pointer-right'
+    | 'pointer-down'
+    | 'pointer-left'
+    | 'finger-tap'
+    | 'fingers-tap'
+    | 'reminder'
+    | 'fingers-crossed'
+    | 'fingers-victory'
+    | 'gesture-zoom'
+    | 'gesture-pinch'
+    | 'fingers-scroll-horizontal'
+    | 'fingers-scroll-vertical'
+    | 'fingers-scroll-left'
+    | 'fingers-scroll-right'
+    | 'hand2'
+    | 'pointer-up2'
+    | 'pointer-right2'
+    | 'pointer-down2'
+    | 'pointer-left2'
+    | 'finger-tap2'
+    | 'fingers-tap2'
+    | 'reminder2'
+    | 'gesture-zoom2'
+    | 'gesture-pinch2'
+    | 'fingers-scroll-horizontal2'
+    | 'fingers-scroll-vertical2'
+    | 'fingers-scroll-left2'
+    | 'fingers-scroll-right2'
+    | 'fingers-scroll-vertical3'
+    | 'border-style'
+    | 'border-all'
+    | 'border-outer'
+    | 'border-inner'
+    | 'border-top'
+    | 'border-horizontal'
+    | 'border-bottom'
+    | 'border-left'
+    | 'border-vertical'
+    | 'border-right'
+    | 'border-none'
+    | 'ellipsis'
+    | 'uni21'
+    | 'uni22'
+    | 'uni23'
+    | 'uni24'
+    | 'uni25'
+    | 'uni26'
+    | 'uni27'
+    | 'uni28'
+    | 'uni29'
+    | 'uni2a'
+    | 'uni2b'
+    | 'uni2c'
+    | 'uni2d'
+    | 'uni2e'
+    | 'uni2f'
+    | 'uni30'
+    | 'uni31'
+    | 'uni32'
+    | 'uni33'
+    | 'uni34'
+    | 'uni35'
+    | 'uni36'
+    | 'uni37'
+    | 'uni38'
+    | 'uni39'
+    | 'uni3a'
+    | 'uni3b'
+    | 'uni3c'
+    | 'uni3d'
+    | 'uni3e'
+    | 'uni3f'
+    | 'uni40'
+    | 'uni41'
+    | 'uni42'
+    | 'uni43'
+    | 'uni44'
+    | 'uni45'
+    | 'uni46'
+    | 'uni47'
+    | 'uni48'
+    | 'uni49'
+    | 'uni4a'
+    | 'uni4b'
+    | 'uni4c'
+    | 'uni4d'
+    | 'uni4e'
+    | 'uni4f'
+    | 'uni50'
+    | 'uni51'
+    | 'uni52'
+    | 'uni53'
+    | 'uni54'
+    | 'uni55'
+    | 'uni56'
+    | 'uni57'
+    | 'uni58'
+    | 'uni59'
+    | 'uni5a'
+    | 'uni5b'
+    | 'uni5c'
+    | 'uni5d'
+    | 'uni5e'
+    | 'uni5f'
+    | 'uni60'
+    | 'uni61'
+    | 'uni62'
+    | 'uni63'
+    | 'uni64'
+    | 'uni65'
+    | 'uni66'
+    | 'uni67'
+    | 'uni68'
+    | 'uni69'
+    | 'uni6a'
+    | 'uni6b'
+    | 'uni6c'
+    | 'uni6d'
+    | 'uni6e'
+    | 'uni6f'
+    | 'uni70'
+    | 'uni71'
+    | 'uni72'
+    | 'uni73'
+    | 'uni74'
+    | 'uni75'
+    | 'uni76'
+    | 'uni77'
+    | 'uni78'
+    | 'uni79'
+    | 'uni7a'
+    | 'uni7b'
+    | 'uni7c'
+    | 'uni7d'
+    | 'uni7e'
+    | 'copyright';
+};

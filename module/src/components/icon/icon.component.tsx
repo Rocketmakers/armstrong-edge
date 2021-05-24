@@ -4,10 +4,10 @@ import { ClassUtils } from '../../utils/classNames';
 import { Icons } from './icon.icons';
 
 /** The name of a set of icons */
-export type IconSet = keyof typeof Icons;
+export type IconSet = keyof Icons;
 
 /** The name of an icon in the given set */
-export type IconName<Set extends IconSet> = keyof typeof Icons[Set];
+export type IconName<Set extends IconSet> = Icons[Set];
 
 /** core props for rendering and Armstrong Icon */
 export interface IIcon<TIconSet extends IconSet> {
@@ -25,9 +25,7 @@ export interface IIconProps<TIconSet extends IconSet> extends IIcon<TIconSet> {
 
 /** Render an icon using one of the supported icon sets */
 export const Icon = <TIconSet extends IconSet>({ className, iconSet, icon }: React.PropsWithChildren<IIconProps<TIconSet>>) => {
-  const iconClassName = Icons[iconSet][icon] as any as string;
-
-  return <div data-icon-set={iconSet} className={ClassUtils.concat('arm-icon', iconClassName, className)} />;
+  return <div data-icon-set={iconSet} data-i={icon} className={ClassUtils.concat('arm-icon', className)} />;
 };
 
 type IIconsetIconProps<TIconSet extends IconSet> = Omit<IIconProps<TIconSet>, 'iconSet'>;
@@ -41,3 +39,5 @@ export const IcomoonIcon: React.FunctionComponent<IIconsetIconProps<'Icomoon'>> 
 export const LinearIcon: React.FunctionComponent<IIconsetIconProps<'LinearIcons'>> = ({ icon, ...props }) => (
   <Icon {...props} iconSet="LinearIcons" icon={icon} />
 );
+
+<Icon iconSet="LinearIcons" icon="3d-glasses" />;
