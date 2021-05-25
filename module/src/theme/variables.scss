@@ -46,3 +46,9 @@ $shadow-offset-large: 1rem 1rem !default;
 $shadow-small: $shadow-offset-small $shadow-size-small $shadow-color !default;
 $shadow-medium: $shadow-offset-medium $shadow-size-medium $shadow-color !default;
 $shadow-large: $shadow-offset-large $shadow-size-large $shadow-color !default;
+
+// transitions
+
+$transition-quick: 0.25s;
+$transition-medium: 0.5s;
+$transition-slow: 1s;

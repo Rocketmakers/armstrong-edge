@@ -1,8 +1,6 @@
 .arm-input.arm-input-base {
-  width: 100%;
-  max-width: 240px;
-
   input.arm-input-base-input {
+    flex-grow: 1;
     -webkit-appearance: none;
     border: none;
     background-color: transparent;

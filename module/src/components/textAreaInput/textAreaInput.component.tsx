@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IBindingProps } from '../../hooks/form/form.types';
 import { bindInputChangeEvent } from '../../hooks/form/form.utils';
-import { ClassUtils } from '../../utils/classNames';
+import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
 export interface ITextAreaInputProps
@@ -31,7 +31,7 @@ export const TextAreaInput: React.FC<ITextAreaInputProps> = ({
 
   return (
     <InputWrapper
-      className={ClassUtils.concat('arm-text-area-input', className)}
+      className={ClassNames.concat('arm-text-area-input', className)}
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       leftOverlay={leftOverlay}

@@ -1,0 +1,15 @@
+@keyframes animate-in-validation-errors {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 200px;
+    opacity: 1;
+  }
+}
+
+.arm-validation-errors {
+  padding-bottom: $spacing-small;
+  animation: animate-in-validation-errors $transition-slow forwards;
+}

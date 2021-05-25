@@ -7,7 +7,11 @@ const off = 0;
 const warn = 1;
 const error = 2;
 
-const projects = [path.resolve(__dirname, 'src', 'tsconfig.json'), path.resolve(__dirname, 'build', 'tsconfig.json')];
+const projects = [
+  path.resolve(__dirname, 'src', 'tsconfig.json'),
+  path.resolve(__dirname, 'build', 'tsconfig.json'),
+  path.resolve(__dirname, 'src', 'stories', 'tsconfig.json'),
+];
 
 module.exports = {
   env: {

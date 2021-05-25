@@ -16,4 +16,24 @@
 
 html {
   font-family: sans-serif;
+  height: 100%;
+
+  body {
+    height: 100%;
+
+    #root {
+      height: 100%;
+
+      #host {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .story-wrapper {
+          width: max-content;
+        }
+      }
+    }
+  }
 }

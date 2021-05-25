@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ClassUtils } from '../../utils/classNames';
+import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 
 export interface IErrorMessageProps {
@@ -17,7 +17,7 @@ export interface IErrorMessageProps {
 /** Render a simple error with a message and an icon - mainly used for validation errors in form inputs */
 export const ErrorMessage = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IErrorMessageProps>>(({ className, message, icon }, ref) => {
   return (
-    <div ref={ref} className={ClassUtils.concat('arm-error-message', className)}>
+    <div ref={ref} className={ClassNames.concat('arm-error-message', className)}>
       {icon && <Icon iconSet={icon.iconSet} icon={icon.icon} />} <p>{message}</p>
     </div>
   );

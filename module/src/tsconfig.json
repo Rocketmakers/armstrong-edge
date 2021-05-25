@@ -18,7 +18,8 @@
     "outDir": "../dist",
     "importHelpers": true,
     "moduleResolution": "node",
-    "lib": ["es2016", "dom"]
+    "lib": ["es2016", "dom"],
+    "esModuleInterop": true
   },
-  "exclude": ["node_modules", "stories"]
+  "exclude": ["node_modules", "stories", "**/*.stories.*"]
 }

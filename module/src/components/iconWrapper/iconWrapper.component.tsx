@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-import { Icon, IconSet, IIconDefinition } from '../icon/icon.component';
+import { Icon, IconSet, IIcon } from '../icon/icon.component';
 import { IconUtils } from '../icon/icons.utils';
 
 export interface IIconWrapperProps<TLeftIcon extends IconSet, TRightIcon extends IconSet> {
   /** (IIcon | JSX) icon definition for left icon, optionally uses custom JSX */
-  leftIcon?: IIconDefinition<TLeftIcon> | JSX.Element;
+  leftIcon?: IIcon<TLeftIcon> | JSX.Element;
 
   /** (IIcon | JSX) icon definition for right icon, optionally uses custom JSX */
-  rightIcon?: IIconDefinition<TRightIcon> | JSX.Element;
+  rightIcon?: IIcon<TRightIcon> | JSX.Element;
 }
 
 /** Wraps its children with optional icons on either side */

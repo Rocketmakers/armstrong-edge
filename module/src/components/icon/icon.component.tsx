@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ClassUtils } from '../../utils/classNames';
+import { ClassNames } from '../../utils/classNames';
 import { Icons } from './icon.icons';
 
 /** The name of a set of icons */
@@ -25,7 +25,7 @@ export interface IIconProps<TIconSet extends IconSet> extends IIcon<TIconSet> {
 
 /** Render an icon using one of the supported icon sets */
 export const Icon = <TIconSet extends IconSet>({ className, iconSet, icon }: React.PropsWithChildren<IIconProps<TIconSet>>) => {
-  return <div data-icon-set={iconSet} data-i={icon} className={ClassUtils.concat('arm-icon', className)} />;
+  return <div data-icon-set={iconSet} data-i={icon} className={ClassNames.concat('arm-icon', className)} />;
 };
 
 type IIconsetIconProps<TIconSet extends IconSet> = Omit<IIconProps<TIconSet>, 'iconSet'>;

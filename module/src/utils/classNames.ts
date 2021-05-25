@@ -1,14 +1,14 @@
-export namespace ClassUtils {
+export namespace ClassNames {
   interface ClassNameDictionary {
     [id: string]: boolean | undefined | null;
   }
-  interface ClassNameArray extends Array<ClassNames> {}
-  type ClassNames = string | ClassNameDictionary | ClassNameArray | undefined | null | false;
+  interface ClassNameArray extends Array<ClassName> {}
+  type ClassName = string | ClassNameDictionary | ClassNameArray | undefined | null | false;
 
   /**
-   * Concatenate classnames
+   * Concatenate classnames into a single string
    */
-  export function concat(...args: ClassNames[]) {
+  export function concat(...args: ClassName[]) {
     let classes: string[] = [];
 
     for (const argument of args) {
