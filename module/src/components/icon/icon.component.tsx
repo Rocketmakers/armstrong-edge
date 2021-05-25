@@ -39,5 +39,3 @@ export const IcomoonIcon: React.FunctionComponent<IIconsetIconProps<'Icomoon'>> 
 export const LinearIcon: React.FunctionComponent<IIconsetIconProps<'LinearIcons'>> = ({ icon, ...props }) => (
   <Icon {...props} iconSet="LinearIcons" icon={icon} />
 );
-
-<Icon iconSet="LinearIcons" icon="3d-glasses" />;

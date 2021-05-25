@@ -23,3 +23,4 @@ const Template = StoryUtils.createTemplate(TextAreaInput);
 /** stories */
 
 export const Default = StoryUtils.cloneTemplate(Template, {});
+export const WithIcons = StoryUtils.cloneTemplate(Template, { leftIcon: { iconSet: 'Icomoon', icon: 'certificate' } });

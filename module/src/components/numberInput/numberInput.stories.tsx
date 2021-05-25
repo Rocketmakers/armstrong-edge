@@ -23,3 +23,9 @@ const Template = StoryUtils.createTemplate(NumberInput);
 /** stories */
 
 export const Default = StoryUtils.cloneTemplate(Template, {});
+export const WithIcons = StoryUtils.cloneTemplate(Template, { leftIcon: { icon: 'list-numbered', iconSet: 'Icomoon' } });
+export const WithOverlayText = StoryUtils.cloneTemplate(Template, {
+  leftIcon: { icon: 'cash', iconSet: 'Icomoon' },
+  leftOverlay: '£',
+  rightOverlay: 'GBP',
+});

@@ -5,4 +5,26 @@
   + .arm-input {
     margin-top: $spacing-small;
   }
+
+  .arm-input-overlay {
+    p {
+      color: $gray-light;
+    }
+  }
+
+  &[data-arm-input-pad-left='true'] {
+    padding-left: $spacing-xsmall;
+
+    input {
+      padding-left: 0;
+    }
+  }
+
+  &[data-arm-input-pad-right='true'] {
+    padding-right: $spacing-xsmall;
+
+    input {
+      padding-right: 0;
+    }
+  }
 }
