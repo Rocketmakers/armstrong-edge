@@ -1,12 +1,12 @@
-## SCSS in Armstrong
+# SCSS in Armstrong
 
-Armstrong uses SCSS which isn't compiled down before build, allowing the consuming app to handle compiling.
+Armstrong uses SCSS which isn't compiled down before build, allowing the consuming app to handle compiling and use our exported variables and mixins.
 
 To use SCSS from Armstrong, it must be imported into your app's SCSS:
 
 ```scss
-// variables - required for the reset of armstrong to work
-@import "~@rocketmakers/armstrong-edge/dist/variables.scss";
+// variables and mixins - required for the reset of armstrong to work
+@import "~@rocketmakers/armstrong-edge/dist/imports.scss";
 
 // basic theme - includes only functional and layout styling
 @import "~@rocketmakers/armstrong-edge/dist/basic.scss";
@@ -16,7 +16,14 @@ To use SCSS from Armstrong, it must be imported into your app's SCSS:
 @import "~@rocketmakers/armstrong-edge/dist/prototyping.scss";
 ```
 
-### SCSS concatenation implementation
+## Existing themes
+
+- **basic.scss** — the bare minimum functional SCSS to override some default browser styling and to lay out components - should be imported before other themes
+- **prototyping.scss** — a more advanced stylesheet with decent looking styling, allowing a project to get off the ground a lot more quickly, used in Storybook
+
+# For Armstrong developers
+
+## SCSS concatenation implementation
 
 SCSS files can be used anywhere inside src/ and will be automatically concatenated during build based on a naming convention: `inputName.outputName.scss`
 
