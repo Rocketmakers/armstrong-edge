@@ -14,3 +14,4 @@ ARM-XX
 - [ ] are your changes in Storybook?
 - [ ] are any breaking changes documented in `docs/migrating_from_oldstrong.md`?
 - [ ] does _everything_ have jsdoc?
+- [ ] is everything exported from index.ts?

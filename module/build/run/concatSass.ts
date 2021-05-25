@@ -1,5 +1,6 @@
 import { Args } from '@rocketmakers/shell-commands/lib/args';
-import { sassConcat, sassConcatWatch } from '../common/sassConcat';
+
+import { concatSass, sassConcatWatch } from '../common/concatSass';
 
 const run = async () => {
   const args = await Args.match({
@@ -12,7 +13,7 @@ const run = async () => {
   if (args.watch) {
     await sassConcatWatch();
   } else {
-    await sassConcat();
+    await concatSass();
   }
 };
 

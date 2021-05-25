@@ -1,0 +1,6 @@
+// psuedo elements
+
+@mixin init-pseudo {
+  display: block;
+  content: '';
+}

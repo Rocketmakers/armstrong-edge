@@ -1,0 +1,135 @@
+// CORE
+
+@mixin transform-in($name, $start-transform) {
+  @keyframes #{$name} {
+    from {
+      transform: $start-transform;
+      opacity: 0;
+    }
+
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}
+
+@mixin transform-out($name, $end-transform) {
+  @keyframes #{$name} {
+    from {
+      transform: none;
+      opacity: 1;
+    }
+
+    to {
+      transform: $end-transform;
+      opacity: 0;
+    }
+  }
+}
+
+@mixin transform-continuous($name, $end-transform) {
+  @keyframes #{$name} {
+    from {
+      transform: none;
+    }
+
+    to {
+      transform: $end-transform;
+    }
+  }
+}
+
+// SLIDES
+
+$large-slide-amount: 30px;
+$medium-slide-amount: 20px;
+$small-slide-amount: 10px;
+
+@mixin slide-in-y($name, $amount) {
+  @include transform-in(slide-in-#{$name}, translateY($amount));
+}
+
+@include slide-in-y(up-large, $large-slide-amount);
+@include slide-in-y(up-medium, $medium-slide-amount);
+@include slide-in-y(up-small, $small-slide-amount);
+
+@include slide-in-y(down-large, -$large-slide-amount);
+@include slide-in-y(down-medium, -$medium-slide-amount);
+@include slide-in-y(down-small, -$small-slide-amount);
+
+@mixin slide-in-x($name, $amount) {
+  @include transform-in(slide-in-#{$name}, translateX($amount));
+}
+
+@include slide-in-x(left-large, $large-slide-amount);
+@include slide-in-x(left-medium, $medium-slide-amount);
+@include slide-in-x(left-small, $small-slide-amount);
+
+@include slide-in-x(right-large, -$large-slide-amount);
+@include slide-in-x(right-medium, -$medium-slide-amount);
+@include slide-in-x(right-small, -$small-slide-amount);
+
+// SCALES
+
+$scale-amount-large: 0.3;
+$scale-amount-medium: 0.2;
+$scale-amount-small: 0.05;
+
+@mixin scale-in($name, $amount) {
+  @include transform-in(scale-#{$name}, scale($amount));
+}
+
+@include scale-in(up-large, 1 - $scale-amount-large);
+@include scale-in(up-medium, 1 - $scale-amount-medium);
+@include scale-in(up-small, 1 - $scale-amount-small);
+
+@include scale-in(down-large, $scale-amount-large);
+@include scale-in(down-medium, $scale-amount-medium);
+@include scale-in(down-small, $scale-amount-small);
+
+// ROTATES
+
+$rotate-amount-large: 360deg;
+$rotate-amount-medium: 180deg;
+$rotate-amount-small: 90deg;
+$rotate-amount-very-small: 45deg;
+
+@mixin rotate-in($name, $amount) {
+  @include transform-in(rotate-in-#{$name}, rotate($amount));
+}
+
+@include rotate-in(clockwise-large, -$rotate-amount-large);
+@include rotate-in(clockwise-medium, -$rotate-amount-medium);
+@include rotate-in(clockwise-small, -$rotate-amount-small);
+@include rotate-in(clockwise-very-small, -$rotate-amount-very-small);
+
+@include rotate-in(anticlockwise-large, $rotate-amount-large);
+@include rotate-in(anticlockwise-medium, $rotate-amount-medium);
+@include rotate-in(anticlockwise-small, $rotate-amount-small);
+@include rotate-in(anticlockwise-very-small, $rotate-amount-very-small);
+
+@include transform-continuous(spin-clockwise, rotate(360deg));
+@include transform-continuous(spin-anti-clockwise, rotate(-360deg));
+
+// FADES
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

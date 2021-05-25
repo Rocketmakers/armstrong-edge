@@ -1,0 +1,18 @@
+.arm-input.arm-text-area-input {
+  width: 100%;
+  max-width: 320px;
+
+  textarea {
+    min-height: 70px;
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: transparent;
+    resize: none;
+    font-family: inherit;
+
+    &:focus {
+      outline: none;
+      border: none;
+    }
+  }
+}

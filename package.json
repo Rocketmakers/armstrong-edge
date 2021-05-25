@@ -14,7 +14,9 @@
     "link-module": "(cd module && npm run build && npm run link) && (cd playground && npm run link-module)",
     "watch-link-module": "watch 'npm run link-module' ./module/src",
     "check-versions": "ncu && (cd module && ncu) && (cd playground && ncu)",
-    "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i"
+    "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i",
+    "storybook": "(cd module && npm run storybook)",
+    "build-storybook": "(cd module && npm run build-storybook)"
   },
   "repository": {
     "type": "git",
@@ -23,8 +25,25 @@
   "author": "developers@rocketmakers.com",
   "license": "MIT",
   "devDependencies": {
-    "npm-check-updates": "^11.5.10",
+    "commitizen": "^4.2.4",
+    "cz-customizable": "^6.3.0",
+    "husky": "^4.3.8",
+    "npm-check-updates": "^11.5.13",
     "npm-run-all": "^4.1.5",
+    "standard-version": "^9.3.0",
     "watch": "^1.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
+  "config": {
+    "cz-customizable": {
+      "config": "./commitizen.config.js"
+    },
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
   }
 }

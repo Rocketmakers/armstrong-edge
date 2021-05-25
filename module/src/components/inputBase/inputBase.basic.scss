@@ -1,0 +1,16 @@
+.arm-input.arm-input-base {
+  width: 100%;
+  max-width: 240px;
+
+  input.arm-input-base-input {
+    -webkit-appearance: none;
+    border: none;
+    background-color: transparent;
+    padding: $spacing-xsmall;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+}

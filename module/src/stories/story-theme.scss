@@ -1,0 +1,19 @@
+/** STORY BOOK SPECIFIC GENERAL STYLES **/
+
+// import variables
+@import '../../dist/imports.scss';
+
+// import chosen icon font
+@import '../../dist/icomoon.scss';
+@import '../../dist/linearicons.scss';
+
+// import base component styles
+@import '../../dist/basic.scss';
+// import styled component styles
+@import '../../dist/prototyping.scss';
+
+@import './theme/fonts';
+
+html {
+  font-family: sans-serif;
+}
