@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput } from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"
@@ -68,17 +68,16 @@ export const UserEdit: React.FC = () => {
     <form>
       <fieldset>
         <h2>Basic Info</h2>
-          <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} validationErrorMessages={['no you']} />
-
-          <TextInput bind={formProp("lastName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} />
-
-          <TextAreaInput bind={formProp("bio").bind()} />
-
+        <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} validationErrorMessages={['no you']} />
+        <TextInput bind={formProp("lastName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} />
+        <TextAreaInput bind={formProp("bio").bind()} />
         <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition('LinearIcons', 'envelope')} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]}  />
 
-
+      <div className='loader-test' style={{height: '300px'}}>
+        <Spinner fillContainer={false} />
+      </div>
 
 
       </fieldset>

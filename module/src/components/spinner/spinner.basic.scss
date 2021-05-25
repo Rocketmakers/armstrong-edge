@@ -1,0 +1,21 @@
+.arm-spinner {
+  @include flex-centre;
+
+  &[data-fill-container='true'] {
+    @include fill;
+    flex-grow: 1;
+    align-self: stretch;
+    justify-self: stretch;
+  }
+
+  &[data-fill-container='false'] {
+    width: max-content;
+    height: max-content;
+  }
+
+  .arm-spinner-inner {
+    animation: spin-clockwise $transition-slow linear infinite;
+    width: max-content;
+    height: max-content;
+  }
+}
