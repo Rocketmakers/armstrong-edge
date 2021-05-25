@@ -52,3 +52,10 @@ $shadow-large: $shadow-offset-large $shadow-size-large $shadow-color !default;
 $transition-quick: 0.25s;
 $transition-medium: 0.5s;
 $transition-slow: 1s;
+
+// sizing
+
+$input-width: 240px;
+$input-width-large: 320px;
+$input-height: 32px;
+$input-height-large: 70px;

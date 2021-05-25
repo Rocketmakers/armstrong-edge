@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IBindingProps } from '../../hooks/form/form.types';
+import { FormValidationMode, IBindingProps } from '../../hooks/form/form.types';
 import { bindInputChangeEvent } from '../../hooks/form/form.utils';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
@@ -14,12 +14,31 @@ export interface IInputBaseProps<TValue>
 
   /** (string[]) array of validation errors to render */
   validationErrorMessages?: string[];
+
+  /** (icon|message|both) how to render the validation errors */
+  validationMode?: FormValidationMode;
 }
 
 /** A component which wraps up a native input element with some binding logic and some repeated elements (icons and stuff) for components which only contain a single input element. */
 
 export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>>(
-  ({ bind, onChange, value, className, leftIcon, rightIcon, leftOverlay, rightOverlay, validationErrorMessages, ...nativeProps }, ref) => {
+  (
+    {
+      bind,
+      onChange,
+      value,
+      className,
+      leftIcon,
+      rightIcon,
+      leftOverlay,
+      rightOverlay,
+      validationErrorMessages,
+      validationMode,
+      validationErrorIcon,
+      ...nativeProps
+    },
+    ref
+  ) => {
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         return bindInputChangeEvent(event, bind, onChange);
@@ -37,6 +56,8 @@ export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
         validationErrorMessages={allValidationErrorMessages}
+        validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
+        validationMode={validationMode || bind?.formConfig?.validationMode}
       >
         <input ref={ref} className={'arm-input-base-input'} {...nativeProps} onChange={onChangeEvent} value={bind?.value ?? value ?? ''} />
       </InputWrapper>

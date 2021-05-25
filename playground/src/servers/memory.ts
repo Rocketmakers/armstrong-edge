@@ -18,8 +18,10 @@ export namespace MemoryServer {
     lastName: string
     email: string
     address: IUserAddress
+    favouriteColour?: 'blue' | 'red' | 'something else'
     points: number
     roles: IUserRole[]
+    bio?: string
   }
 
   let users: IUser[] = [
@@ -31,6 +33,7 @@ export namespace MemoryServer {
       address: { line1: "39 St Denys Road", city: "Portsmouth", postcode: "PO5 3XL" },
       roles: [{ name: "admin" }],
       points: 24,
+      favouriteColour:'something else',
     },
     {
       id: "id-2",
@@ -40,6 +43,7 @@ export namespace MemoryServer {
       address: { line1: "18 Crescent Avenue", city: "Drumlithie", postcode: "AB3 4WH" },
       roles: [{ name: "admin" }, { name: "developer" }],
       points: 26,
+      favouriteColour:'blue',
     },
     {
       id: "id-3",
@@ -49,6 +53,7 @@ export namespace MemoryServer {
       address: { line1: "83 Broomfield Place", city: "Stonely", postcode: "PE18 5QQL" },
       roles: [{ name: "developer" }],
       points: 53,
+      favouriteColour: 'blue',
     },
     {
       id: "id-4",
@@ -58,6 +63,7 @@ export namespace MemoryServer {
       address: { line1: "53 Ivy Lane", city: "Warehorne", postcode: "TN26 5QY" },
       roles: [{ name: "tester" }, { name: "admin" }, { name: "developer" }],
       points: 42,
+      favouriteColour: 'red'
     },
     {
       id: "id-5",
@@ -67,6 +73,7 @@ export namespace MemoryServer {
       address: { line1: "42 St Omers Road", city: "Hindley Green", postcode: "WN2 3YS" },
       roles: [{ name: "admin" }, { name: "developer" }],
       points: 71,
+      favouriteColour: 'red'
     },
   ]
 

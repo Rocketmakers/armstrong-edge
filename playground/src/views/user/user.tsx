@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays } from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"
@@ -38,7 +38,8 @@ export const UserEdit: React.FC = () => {
       roles: [],
       ...(data ?? {}),
     },
-    { validationErrors }
+    
+    { validationErrors, validationErrorIcon: IconUtils.getIconDefinition('LinearIcons', 'alarm') }
   )
 
   React.useEffect(() => {
@@ -67,10 +68,19 @@ export const UserEdit: React.FC = () => {
     <form>
       <fieldset>
         <h2>Basic Info</h2>
-        <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} validationErrorMessages={['no you']} />
-        <TextAreaInput bind={formProp("lastName").bind()} className='arm-text-area-input' />
+          <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} validationErrorMessages={['no you']} />
+
+          <TextInput bind={formProp("lastName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} />
+
+          <TextAreaInput bind={formProp("bio").bind()} />
+
         <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition('LinearIcons', 'envelope')} />
-        <NumberInput bind={formProp("points").bind()} />
+        <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
+        <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]}  />
+
+
+
+
       </fieldset>
       <AddressForm bind={formProp("address").bind()} />
       <fieldset>

@@ -56,7 +56,9 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
           </IconWrapper>
         </div>
 
-        {!!validationErrorMessages?.length && shouldShowValidationErrorsList && <ValidationErrors validationErrors={validationErrorMessages} />}
+        {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (
+          <ValidationErrors validationErrors={validationErrorMessages} icon={validationErrorIcon} />
+        )}
       </>
     );
   }

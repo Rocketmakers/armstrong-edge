@@ -1,14 +1,16 @@
 .arm-input.arm-text-area-input {
-  width: 100%;
-  max-width: 320px;
+  width: $input-width-large;
 
   textarea {
-    min-height: 70px;
-    -webkit-appearance: none;
+    min-height: $input-height-large;
     width: 100%;
+
+    -webkit-appearance: none;
     background-color: transparent;
     resize: none;
     font-family: inherit;
+    outline: none;
+    border: none;
 
     &:focus {
       outline: none;

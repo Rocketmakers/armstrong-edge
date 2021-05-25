@@ -1,7 +1,6 @@
 .arm-input {
   box-shadow: $shadow-small;
   border-radius: $spacing-xxsmall;
-  width: 240px;
 
   .arm-icon-wrapper {
     min-height: 1.5rem;
@@ -14,30 +13,14 @@
   .arm-input-overlay {
     p {
       color: $gray-light;
-    }
-  }
-
-  &[data-arm-input-pad-left='true'] {
-    padding-left: $spacing-xsmall;
-
-    input {
-      padding-left: 0;
-    }
-  }
-
-  &[data-arm-input-pad-right='true'] {
-    padding-right: $spacing-xsmall;
-
-    input {
-      padding-right: 0;
+      font-size: 0.75rem;
+      white-space: nowrap;
     }
   }
 
   .arm-icon.arm-input-validation-error-icon {
     color: $color-negative;
-  }
-
-  + .arm-validation-errors {
-    margin-top: $spacing-xsmall;
+    animation: slide-in-left-small $transition-quick;
+    font-size: 0.75rem;
   }
 }

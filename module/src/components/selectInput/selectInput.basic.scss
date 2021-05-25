@@ -1,0 +1,33 @@
+.arm-input.arm-select-input {
+  .arm-select-input-inner {
+    flex-grow: 1;
+    position: relative;
+
+    .arm-icon.arm-select-input-overlay-icon {
+      position: absolute;
+      right: $spacing-xsmall;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+    }
+
+    select {
+      @include fill;
+      height: $input-height;
+      cursor: pointer;
+      padding: $spacing-xsmall;
+
+      -webkit-appearance: none;
+      background-color: transparent;
+      resize: none;
+      font-family: inherit;
+      outline: none;
+      border: none;
+
+      &:focus {
+        outline: none;
+        border: none;
+      }
+    }
+  }
+}

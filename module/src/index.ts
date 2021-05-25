@@ -11,6 +11,7 @@ export { IcomoonIcon, Icon, IconName, Icons, IconSet, IIcon, IIconProps, LinearI
 export { IInputBaseProps, InputBase } from './components/inputBase';
 export { IInputWrapperProps, InputWrapper } from './components/inputWrapper';
 export { NumberInput } from './components/numberInput';
+export { ISelectInputOption, ISelectInputProps, SelectInput } from './components/selectInput';
 export { ITextAreaInputProps, TextAreaInput } from './components/textAreaInput';
 export { TextInput } from './components/textInput';
 export { IValidationErrorsProps, ValidationErrors } from './components/validationErrors';

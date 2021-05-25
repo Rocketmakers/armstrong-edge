@@ -4,3 +4,16 @@
   display: block;
   content: '';
 }
+
+// layout
+
+@mixin fill {
+  height: 100%;
+  width: 100%;
+}
+
+@mixin flex-centre {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
