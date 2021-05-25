@@ -46,6 +46,7 @@ export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], 
     }
     return attrString;
   }, '');
+  console.log({ rootErrors, keyChain, keyChainAttrStringDots, keyChainAttrStringSquareArray });
   return rootErrors.filter((error) => error.key === keyChainAttrStringDots || error.key === keyChainAttrStringSquareArray);
 }
 

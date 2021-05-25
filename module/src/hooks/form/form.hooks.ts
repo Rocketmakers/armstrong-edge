@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { BindingToolMaker, BindingToolsArray, FormDispatcher, HookReturn, IBindConfig, IBindingProps, IFormConfig, KeyChain } from './form.types';
-import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
+
 import { Objects } from '../../utils/objects';
+import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
 import { reducer } from './form.state';
+import { BindingToolMaker, BindingToolsArray, FormDispatcher, HookReturn, IBindConfig, IBindingProps, IFormConfig, KeyChain } from './form.types';
 import { isBindingProps, validationErrorsByKeyChain, valueByKeyChain } from './form.utils';
 
 function useBase<TData extends object>(
@@ -126,6 +127,7 @@ function useBase<TData extends object>(
 }
 
 function useForm<TData extends object>(initialData: TData, formConfig?: IFormConfig): HookReturn<TData> {
+  console.log({ formConfig });
   const [formState, setFormState] = React.useState<TData>(initialData);
 
   const formStateRef = React.useRef<TData>(initialData);
@@ -190,5 +192,5 @@ export function use<TData extends object>(dataOrBinder: TData | IBindingProps<TD
   if (isBindingProps<TData>(dataOrBinder)) {
     return useChild(dataOrBinder, formConfig);
   }
-  return useForm(dataOrBinder);
+  return useForm(dataOrBinder, formConfig);
 }

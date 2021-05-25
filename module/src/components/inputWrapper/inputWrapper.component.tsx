@@ -26,8 +26,7 @@ export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet> 
   validationErrorIcon?: IIcon<IconSet>;
 }
 
-/** Wraps up an input to allow them to be styled consistently */
-
+/** Wrapper for individual input elements, allowing them to be styled consistently] */
 export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IInputWrapperProps>>(
   ({ className, children, leftIcon, rightIcon, leftOverlay, rightOverlay, validationMode, validationErrorMessages, validationErrorIcon }, ref) => {
     const shouldShowValidationErrorsList = React.useMemo(() => validationMode === 'both' || validationMode === 'message', [validationMode]);

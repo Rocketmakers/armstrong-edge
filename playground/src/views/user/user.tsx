@@ -22,6 +22,8 @@ export const UserEdit: React.FC = () => {
     [{key: 'firstName', message: 'uh oh'}]
   )
 
+  console.log(validationErrors)
+
   const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(
     {
       firstName: "",
@@ -65,7 +67,7 @@ export const UserEdit: React.FC = () => {
     <form>
       <fieldset>
         <h2>Basic Info</h2>
-        <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} />
+        <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} validationErrorMessages={['no you']} />
         <TextAreaInput bind={formProp("lastName").bind()} className='arm-text-area-input' />
         <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition('LinearIcons', 'envelope')} />
         <NumberInput bind={formProp("points").bind()} />
