@@ -29,8 +29,6 @@ export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>
 
     const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
 
-    console.log(bind?.myValidationErrors);
-
     return (
       <InputWrapper
         className={ClassNames.concat(className, 'arm-input-base')}
