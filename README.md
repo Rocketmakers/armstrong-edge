@@ -30,7 +30,9 @@ const MyComponent: React.FC = () => {
 See [Storybook](todo.com) for a list of all available components
 
 For details on how to import Armstrong's styling, see [scss.md](./docs/scss.md)
+
 For details on how to make Armstrong icons work, see [using_icons.md](./docs/using_icons.md)
+
 For details on using Armstrong forms, see [forms.md](./docs/forms.md)
 
 ### Issues / bug reports

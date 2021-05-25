@@ -1,8 +1,10 @@
-/********************************************************
+/** ******************************************************
  * FORM - Types file.
  * All of the types specifically associated with the form.
  * No real code in here (TypeScript's not real.)
- ********************************************************/
+ ******************************************************* */
+
+import { IconSet, IIcon } from '../../components/icon';
 
 /**
  * Works out whether some data is an object, and array, or another type.
@@ -79,10 +81,13 @@ export declare abstract class BindingToolMaker<TData extends object> {
   constructor(data: TData);
 
   public getBindingTools<TDataKey extends keyof TData>(key1: TDataKey): BindingTools<TData[TDataKey]>;
+
   public getBindingTools<TDataKey extends keyof TData>(...args: [key1: KeyOrIndex<TData, TDataKey>]): BindingTools<TData[TDataKey]>;
+
   public getBindingTools<TDataKey extends keyof TData, TData2 extends TData[TDataKey], TDataKey2 extends keyof TData2>(
     ...args: [key1: KeyOrIndex<TData, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>]
   ): BindingTools<TData2[TDataKey2]>;
+
   public getBindingTools<
     TDataKey extends keyof TData,
     TData2 extends TData[TDataKey],
@@ -92,6 +97,7 @@ export declare abstract class BindingToolMaker<TData extends object> {
   >(
     ...args: [key1: KeyOrIndex<TData, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>, key3: KeyOrIndex<TData3, TDataKey3>]
   ): BindingTools<TData3[TDataKey3]>;
+
   public getBindingTools<
     TDataKey extends keyof TData,
     TData2 extends TData[TDataKey],
@@ -108,6 +114,7 @@ export declare abstract class BindingToolMaker<TData extends object> {
       key4: KeyOrIndex<TData4, TDataKey4>
     ]
   ): BindingTools<TData4[TDataKey4]>;
+
   public getBindingTools<
     TDataKey extends keyof TData,
     TData2 extends TData[TDataKey],
@@ -179,6 +186,7 @@ export interface IBindConfig<TValue> {
 export interface IFormConfig {
   validationErrors?: IValidationError[];
   validationMode?: FormValidationMode;
+  validationErrorIcon?: IIcon<IconSet>;
 }
 
 export type FormAction<TData, TValue> = IFormSetOneAction<TData, TValue> | IFormSetPathAction<TValue> | IFormResetAction<TData>;
