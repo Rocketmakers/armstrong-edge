@@ -75,6 +75,7 @@ module.exports = {
     ['@typescript-eslint/no-empty-interface']: off,
     ['@typescript-eslint/no-unused-vars']: error,
     ['@typescript-eslint/no-use-before-define']: error,
+    ['@typescript-eslint/ban-types']: off,
   },
   env: {
     mocha: true,

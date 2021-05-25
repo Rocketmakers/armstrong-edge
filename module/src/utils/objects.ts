@@ -4,7 +4,7 @@ export namespace Objects {
    * Can be used as a dependency for hooks which take non-memoized objects as a parameter.
    * @param object The object to create a content dependency for
    */
-  export function contentDependency<TObject>(object?: TObject): string {
+  export function contentDependency<TObject extends object>(object?: TObject): string {
     if (!object) {
       return '';
     }
@@ -22,7 +22,7 @@ export namespace Objects {
     return !!item && typeof item === 'object' && !Array.isArray(item);
   }
 
-  export function mergeDeep<TObject, TValue>(target: TObject, keyChain: Array<string | number>, value: TValue): TObject {
+  export function mergeDeep<TObject extends object, TValue>(target: TObject, keyChain: Array<string | number>, value: TValue): TObject {
     const output = (Array.isArray(target) || Number.isInteger(keyChain?.[0]) ? [...((target || []) as any[])] : { ...(target || {}) }) as TObject;
     let bookmarkRef: any = output;
     for (let i = 0; i < keyChain.length; i += 1) {
