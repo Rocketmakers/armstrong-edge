@@ -6,30 +6,6 @@
 import { IBindingProps, IValidationError, KeyChain } from './form.types';
 
 /**
- * Binds a native input `onChange` event to a set of binding props.
- * @param event The native `onChange` event from the input.
- * @param binding The set of binding props to hook in to.
- * @param onChangeProp An additional `onChange` method to call alongside the binding setValue, useful if the end user has added a `bind` and an `onChange` to the armstrong input.
- * @param formatter An optional formatter to pass the value through before it's sent to the binding.
- * @returns The result of the additional `onChange` method if passed, else `undefined`.
- */
-export function bindInputChangeEvent<TValue>(
-  event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  binding?: IBindingProps<TValue>,
-  onChangeProp?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
-  formatter?: (value: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>['currentTarget']['value']) => TValue
-) {
-  const targetValue = event.currentTarget.value;
-  const newValue = formatter?.(targetValue) ?? targetValue;
-  if (binding?.setValue) {
-    binding.setValue(newValue as TValue);
-  }
-  if (onChangeProp) {
-    return onChangeProp(event);
-  }
-}
-
-/**
  * Filters a set of validation errors based on the `keyChain` of the property.
  * @param rootErrors The root set of validation errors for the entire form.
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.

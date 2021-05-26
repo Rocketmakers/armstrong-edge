@@ -1,8 +1,69 @@
 import * as React from 'react';
 
 import { ClassNames } from '../../utils/classNames';
-import { IInputBaseProps, InputBase } from '../inputBase/inputBase.component';
+import { IInputBaseProps } from '../inputBase/inputBase.component';
+import { InputWrapper } from '../inputWrapper';
+import { useMyValidationErrorMessages } from '../validationErrors';
 
-export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputBaseProps<number>, 'type'>>(({ className, ...props }, ref) => {
-  return <InputBase {...props} className={ClassNames.concat('arm-number-input', className)} ref={ref} type="number" />;
-});
+export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputBaseProps<number>, 'type'>>(
+  (
+    {
+      bind,
+      onChange,
+      value,
+      className,
+      leftIcon,
+      rightIcon,
+      leftOverlay,
+      rightOverlay,
+      validationErrorMessages,
+      validationMode,
+      validationErrorIcon,
+      pending,
+      disabled,
+      ...nativeProps
+    },
+    ref
+  ) => {
+    const onChangeEvent = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange?.(event);
+
+        const currentValue = event.currentTarget.valueAsNumber;
+
+        if (bind) {
+          const formattedValue = bind.bindConfig?.format?.forData?.(currentValue) || currentValue;
+          bind.setValue(formattedValue);
+        }
+      },
+      [bind, onChange]
+    );
+
+    const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
+
+    return (
+      <InputWrapper
+        className={ClassNames.concat(className, 'arm-input-base')}
+        leftIcon={leftIcon}
+        rightIcon={rightIcon}
+        leftOverlay={leftOverlay}
+        rightOverlay={rightOverlay}
+        validationErrorMessages={allValidationErrorMessages}
+        validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
+        validationMode={validationMode || bind?.formConfig?.validationMode}
+        pending={pending}
+        disabled={disabled}
+      >
+        <input
+          {...nativeProps}
+          ref={ref}
+          className={'arm-input-base-input'}
+          onChange={onChangeEvent}
+          value={bind?.value ?? value}
+          disabled={disabled}
+          type="number"
+        />
+      </InputWrapper>
+    );
+  }
+);

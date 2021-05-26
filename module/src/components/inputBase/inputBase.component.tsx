@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { FormValidationMode, IBindingProps } from '../../hooks/form/form.types';
-import { bindInputChangeEvent } from '../../hooks/form/form.utils';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 import { useMyValidationErrorMessages } from '../validationErrors';
@@ -43,7 +42,14 @@ export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>
   ) => {
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        return bindInputChangeEvent(event, bind, onChange);
+        onChange?.(event);
+
+        const currentValue = event.currentTarget.value;
+
+        if (bind) {
+          const formattedValue = bind.bindConfig?.format?.forData?.(currentValue) || currentValue;
+          bind.setValue(formattedValue);
+        }
       },
       [bind, onChange]
     );
@@ -64,9 +70,9 @@ export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>
         disabled={disabled}
       >
         <input
+          {...nativeProps}
           ref={ref}
           className={'arm-input-base-input'}
-          {...nativeProps}
           onChange={onChangeEvent}
           value={bind?.value ?? value}
           disabled={disabled}
