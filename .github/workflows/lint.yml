@@ -15,4 +15,4 @@ jobs:
           version: 14.16.1
 
       - name: npm install and lint
-        run: cd module-react && npm i && npm run lint
+        run: cd module && npm i && npm run lint
