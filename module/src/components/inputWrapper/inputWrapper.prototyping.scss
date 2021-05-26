@@ -28,4 +28,8 @@
   &[data-disabled='true'] {
     opacity: 0.5;
   }
+
+  &[data-has-errors='true'] {
+    border: 1px solid $color-negative;
+  }
 }

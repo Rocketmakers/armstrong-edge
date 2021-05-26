@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { FormValidationMode, IBindingProps } from '../../hooks/form/form.types';
-import { bindInputChangeEvent } from '../../hooks/form/form.utils';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 import { useMyValidationErrorMessages } from '../validationErrors';
@@ -41,7 +40,14 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
   ) => {
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        return bindInputChangeEvent(event, bind, onChange);
+        onChange?.(event);
+
+        const currentValue = event.currentTarget.value;
+
+        if (bind) {
+          const formattedValue = bind.bindConfig?.format?.forData?.(currentValue) || currentValue;
+          bind.setValue(formattedValue);
+        }
       },
       [bind, onChange]
     );

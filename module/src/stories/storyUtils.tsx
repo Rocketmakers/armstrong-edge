@@ -42,6 +42,7 @@ export namespace StoryUtils {
   const Folder = {
     Form: 'Form',
     FormUtils: 'Form Utils',
+    Button: 'Buttons',
     Display: 'Display',
   };
 

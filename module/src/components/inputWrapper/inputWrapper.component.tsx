@@ -62,6 +62,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
           data-arm-input-pad-left={!!leftIcon || !!leftOverlay}
           data-arm-input-pad-right={(validationErrorMessages?.length && shouldShowValidationErorrsIcon) || !!rightIcon || !!rightOverlay || pending}
           data-disabled={disabled || pending}
+          data-has-errors={!!validationErrorMessages?.length}
         >
           <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
             {leftOverlay && (

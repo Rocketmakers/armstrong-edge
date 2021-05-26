@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner } from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"
@@ -81,20 +81,23 @@ export const UserEdit: React.FC = () => {
 
 
       </fieldset>
+
       <AddressForm bind={formProp("address").bind()} />
+
       <fieldset>
         <h2>Roles</h2>
         {formState.roles.map((role, index) => (
           <div key={index}>
             <TextInput bind={formProp("roles", index, "name").bind()} />
-            <button onClick={() => formProp("roles").remove(index)}>Remove</button>
+            <Button onClick={() => formProp("roles").remove(index)}>Remove</Button>
           </div>
         ))}
-        <button onClick={() => swapRoleAtIndex(0, { name: "horse" })}>Add role</button>
+        <Button onClick={() => swapRoleAtIndex(0, { name: "horse" })}>Add role</Button>
       </fieldset>
-      <button type="submit" onClick={submitData}>
+
+      <Button type="submit" onClick={submitData}>
         Submit
-      </button>
+      </Button>
     </form>
   )
 }

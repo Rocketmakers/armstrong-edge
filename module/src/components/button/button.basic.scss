@@ -1,0 +1,19 @@
+.arm-button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  .arm-button-spinner-wrapper {
+    max-width: 0;
+    opacity: 0;
+    transition: max-width $transition-quick, opacity $transition-quick;
+  }
+
+  &[data-pending='true'] {
+    .arm-button-spinner-wrapper {
+      max-width: 2rem;
+      opacity: 1;
+    }
+  }
+}
