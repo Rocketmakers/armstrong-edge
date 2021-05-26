@@ -52,7 +52,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
     ref
   ) => {
     const shouldShowValidationErrorsList = React.useMemo(() => validationMode === 'both' || validationMode === 'message', [validationMode]);
-    const shouldShowValidationErorrsIcon = React.useMemo(() => validationMode === 'both' || validationMode === 'icon', [validationMode]);
+    const shouldShowValidationErrorsIcon = React.useMemo(() => validationMode === 'both' || validationMode === 'icon', [validationMode]);
 
     return (
       <>
@@ -60,7 +60,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
           ref={ref}
           className={ClassNames.concat('arm-input', className)}
           data-arm-input-pad-left={!!leftIcon || !!leftOverlay}
-          data-arm-input-pad-right={(validationErrorMessages?.length && shouldShowValidationErorrsIcon) || !!rightIcon || !!rightOverlay || pending}
+          data-arm-input-pad-right={(validationErrorMessages?.length && shouldShowValidationErrorsIcon) || !!rightIcon || !!rightOverlay || pending}
           data-disabled={disabled || pending}
           data-has-errors={!!validationErrorMessages?.length}
         >
@@ -74,7 +74,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
                 {typeof rightOverlay === 'string' ? <p>{rightOverlay}</p> : rightOverlay}
               </div>
             )}
-            {!!validationErrorMessages?.length && shouldShowValidationErorrsIcon && validationErrorIcon && (
+            {!!validationErrorMessages?.length && shouldShowValidationErrorsIcon && validationErrorIcon && (
               <Icon className="arm-input-validation-error-icon" iconSet={validationErrorIcon.iconSet} icon={validationErrorIcon.icon} />
             )}
             {pending && <Spinner fillContainer={false} />}

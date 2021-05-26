@@ -1,9 +1,21 @@
+/* eslint-disable no-redeclare */
 import * as React from 'react';
 
 import { Objects } from '../../utils/objects';
+import { Typescript } from '../../utils/typescript';
 import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
 import { reducer } from './form.state';
-import { BindingToolMaker, BindingToolsArray, FormDispatcher, HookReturn, IBindConfig, IBindingProps, IFormConfig, KeyChain } from './form.types';
+import {
+  BindingTools,
+  BindingToolsArray,
+  FormDispatcher,
+  FormPropFactory,
+  HookReturn,
+  IBindConfig,
+  IBindingProps,
+  IFormConfig,
+  KeyChain,
+} from './form.types';
 import { isBindingProps, validationErrorsByKeyChain, valueByKeyChain } from './form.utils';
 
 function useBase<TData extends object>(
@@ -77,7 +89,7 @@ function useBase<TData extends object>(
   );
 
   const formProp = React.useCallback(
-    (...keyChain: KeyChain): BindingToolsArray<any[]> => {
+    (...keyChain: KeyChain): BindingTools<TData> => {
       const value = valueByKeyChain(formStateRef.current, keyChain);
       const arrayMethods: BindingToolsArray<any> = {
         bind: (bindConfig?: IBindConfig<any>) => bind(keyChain, bindConfig),
@@ -103,7 +115,7 @@ function useBase<TData extends object>(
           return formProp(...keyChain) as BindingToolsArray<any>;
         },
       };
-      return arrayMethods;
+      return arrayMethods as BindingTools<TData>;
     },
     [bind, set, add, pop, remove, insert, formStateLive]
   );
@@ -123,11 +135,10 @@ function useBase<TData extends object>(
     [dispatch]
   );
 
-  return { formState: formStateLive, formProp: formProp as BindingToolMaker<TData>['getBindingTools'], resetFormData, getFormData, setFormData };
+  return { formState: formStateLive, formProp: formProp as FormPropFactory<TData>['formProp'], resetFormData, getFormData, setFormData };
 }
 
 function useForm<TData extends object>(initialData: TData, formConfig?: IFormConfig): HookReturn<TData> {
-  console.log({ formConfig });
   const [formState, setFormState] = React.useState<TData>(initialData);
 
   const formStateRef = React.useRef<TData>(initialData);
@@ -176,6 +187,9 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
             keyChain: [...(parentBinder.keyChain as any), action.propertyKey],
             value: action.value,
           });
+          break;
+        default:
+          Typescript.assertNever(action);
       }
       formStateRef.current = valueByKeyChain(fullState, parentBinder.keyChain);
       return formStateRef.current;
