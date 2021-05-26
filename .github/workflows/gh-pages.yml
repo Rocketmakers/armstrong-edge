@@ -12,7 +12,7 @@ jobs:
         uses: actions/cache@v2
         id: cache-storybook-npm-build
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-storybook-node-modules
         with:
           path: module/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('module/package-lock.json') }}
@@ -27,11 +27,11 @@ jobs:
          node-version: 14.16.1
 
       - name: npm install
-        if: steps.cache-storybook-npm-build.outputs.cache-hit != 'true'
-        run: (cd module && npm ci)
+        if: steps.cache-storybook-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Build Storybook
-        run: (cd module && npm run build-storybook)
+        run: (cd module && npm run build && npm run build-storybook)
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
