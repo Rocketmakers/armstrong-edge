@@ -5,7 +5,7 @@ import { Button } from './button.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(Button, 'Button', 'Input Base', {});
+export default StoryUtils.createMeta(Button, 'Button', 'Button', {});
 
 /** component template */
 
@@ -29,7 +29,7 @@ export const PendingOnLeft = StoryUtils.cloneTemplate(Template, {
   leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
   children: 'Click me please',
   pending: true,
-  spinnerPosition: 'left',
+  statusPosition: 'left',
 });
 export const PendingAnimation = () => {
   const [pending, setPending] = React.useState(false);
@@ -40,3 +40,8 @@ export const PendingAnimation = () => {
     </Button>
   );
 };
+export const Error = StoryUtils.cloneTemplate(Template, {
+  leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
+  children: 'Click me please',
+  error: true,
+});

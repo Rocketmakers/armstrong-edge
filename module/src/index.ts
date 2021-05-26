@@ -5,7 +5,7 @@
 import * as Form from './hooks/form/index';
 
 export { Form };
-export { Button } from './components/button';
+export { Button, IButtonProps } from './components/button';
 export { EmailInput } from './components/emailInput';
 export { ErrorMessage, IErrorMessageProps } from './components/errorMessage';
 export { IcomoonIcon, Icon, IconName, Icons, IconSet, IIcon, IIconProps, LinearIcon } from './components/icon';
@@ -14,6 +14,7 @@ export { IInputWrapperProps, InputWrapper } from './components/inputWrapper';
 export { NumberInput } from './components/numberInput';
 export { ISelectInputOption, ISelectInputProps, SelectInput } from './components/selectInput';
 export { ISpinnerProps, Spinner } from './components/spinner';
+export { Status } from './components/status';
 export { TelInput } from './components/telInput';
 export { ITextAreaInputProps, TextAreaInput } from './components/textAreaInput';
 export { TextInput } from './components/textInput';

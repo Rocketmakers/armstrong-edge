@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { FormValidationMode } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
-import { Spinner } from '../spinner';
+import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
 export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet> {
@@ -26,11 +26,20 @@ export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet> 
   /** (IIcon) the icon to use for validation errors */
   validationErrorIcon?: IIcon<IconSet>;
 
+  /** (boolean) show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
+  error?: boolean;
+
   /** (boolean) show a spinner and disable */
   pending?: boolean;
 
   /** (boolean) disable use */
   disabled?: boolean;
+
+  /** (left|right) which side of the button to show the spinner on - defaults to 'right' */
+  statusPosition?: 'left' | 'right';
+
+  /** (boolean) hide the icon on the given side if there is an active status - defaults to true */
+  hideIconOnStatus?: boolean;
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
@@ -48,23 +57,28 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       validationErrorIcon,
       disabled,
       pending,
+      error,
+      statusPosition,
+      hideIconOnStatus,
     },
     ref
   ) => {
-    const shouldShowValidationErrorsList = React.useMemo(() => validationMode === 'both' || validationMode === 'message', [validationMode]);
-    const shouldShowValidationErorrsIcon = React.useMemo(() => validationMode === 'both' || validationMode === 'icon', [validationMode]);
+    const shouldShowValidationErrorsList = validationMode === 'both' || validationMode === 'message';
+    const shouldShowErrorIcon = (!!validationErrorMessages?.length && (validationMode === 'both' || validationMode === 'icon')) || error;
+
+    const showLeftIcon = statusPosition !== 'left' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+    const showRightIcon = statusPosition !== 'right' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
 
     return (
       <>
         <div
           ref={ref}
           className={ClassNames.concat('arm-input', className)}
-          data-arm-input-pad-left={!!leftIcon || !!leftOverlay}
-          data-arm-input-pad-right={(validationErrorMessages?.length && shouldShowValidationErorrsIcon) || !!rightIcon || !!rightOverlay || pending}
           data-disabled={disabled || pending}
-          data-has-errors={!!validationErrorMessages?.length}
+          data-error={error || !!validationErrorMessages?.length}
         >
-          <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+          <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
+            {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />}
             {leftOverlay && (
               <div className="arm-input-overlay arm-input-overlay-left">{typeof leftOverlay === 'string' ? <p>{leftOverlay}</p> : leftOverlay}</div>
             )}
@@ -74,10 +88,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
                 {typeof rightOverlay === 'string' ? <p>{rightOverlay}</p> : rightOverlay}
               </div>
             )}
-            {!!validationErrorMessages?.length && shouldShowValidationErorrsIcon && validationErrorIcon && (
-              <Icon className="arm-input-validation-error-icon" iconSet={validationErrorIcon.iconSet} icon={validationErrorIcon.icon} />
-            )}
-            {pending && <Spinner fillContainer={false} />}
+            {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />}
           </IconWrapper>
         </div>
 
@@ -92,4 +103,6 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
 InputWrapper.defaultProps = {
   validationMode: 'both',
   validationErrorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
+  statusPosition: 'right',
+  hideIconOnStatus: true,
 };

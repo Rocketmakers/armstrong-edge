@@ -1,23 +1,9 @@
 .arm-input {
   width: $input-width;
-
-  &[data-arm-input-pad-left='true'] {
-    padding-left: $spacing-xsmall;
-
-    input,
-    select {
-      padding-left: 0;
-    }
-  }
-
-  &[data-arm-input-pad-right='true'] {
-    padding-right: $spacing-xsmall;
-
-    input,
-    select {
-      padding-right: 0;
-    }
-  }
+  padding: 0 $spacing-xsmall;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xsmall;
 
   + .arm-validation-errors {
     margin-top: $spacing-xsmall;

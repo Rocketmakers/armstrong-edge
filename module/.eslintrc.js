@@ -80,6 +80,7 @@ module.exports = {
     ['@typescript-eslint/no-unused-vars']: error,
     ['@typescript-eslint/no-use-before-define']: error,
     ['@typescript-eslint/ban-types']: off,
+    ['@typescript-eslint/no-non-null-assertion']: off,
   },
   env: {
     mocha: true,

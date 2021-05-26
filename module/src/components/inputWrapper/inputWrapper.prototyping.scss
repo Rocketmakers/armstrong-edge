@@ -1,11 +1,8 @@
 .arm-input {
   box-shadow: $shadow-small;
   border-radius: $spacing-xxsmall;
-  transition: opacity $transition-quick;
-
-  .arm-icon-wrapper {
-    min-height: 1.5rem;
-  }
+  transition: opacity $transition-quick, border-color $transition-quick;
+  border: 1px solid transparent;
 
   + .arm-input {
     margin-top: $spacing-small;
@@ -19,17 +16,11 @@
     }
   }
 
-  .arm-icon.arm-input-validation-error-icon {
-    color: $color-negative;
-    animation: slide-in-left-small $transition-quick;
-    font-size: 0.75rem;
-  }
-
   &[data-disabled='true'] {
     opacity: 0.5;
   }
 
-  &[data-has-errors='true'] {
+  &[data-error='true'] {
     border: 1px solid $color-negative;
   }
 }

@@ -19,11 +19,11 @@ export const IconWrapper = <TLeftIcon extends IconSet, TRightIcon extends IconSe
   children,
 }: React.PropsWithChildren<IIconWrapperProps<TLeftIcon, TRightIcon>>) => {
   return (
-    <div className="arm-icon-wrapper">
+    <>
       {leftIcon && (IconUtils.isIconDefinition(leftIcon) ? <Icon iconSet={leftIcon.iconSet} icon={leftIcon.icon} className="left-icon" /> : leftIcon)}
       {children}
       {rightIcon &&
         (IconUtils.isIconDefinition(rightIcon) ? <Icon iconSet={rightIcon.iconSet} icon={rightIcon.icon} className="right-icon" /> : rightIcon)}
-    </div>
+    </>
   );
 };

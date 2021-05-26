@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ClassNames } from '../../utils/classNames';
 import { IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
-import { Spinner } from '../spinner';
+import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
 export interface IButtonProps
@@ -16,13 +16,16 @@ export interface IButtonProps
   validationErrorMessages?: string[];
 
   /** (IIcon) the icon to use for validation errors */
-  validationErrorIcon?: IIcon<IconSet>;
+  errorIcon?: IIcon<IconSet>;
 
   /** (boolean) show a spinner and disable */
   pending?: boolean;
 
   /** (left|right) which side of the button to show the spinner on */
-  spinnerPosition?: 'left' | 'right';
+  statusPosition?: 'left' | 'right';
+
+  /** (boolean) hide the icon on the same side as the status if there is an active status - defaults to true */
+  hideIconOnStatus?: boolean;
 
   /** (boolean) disable use */
   disabled?: boolean;
@@ -34,16 +37,22 @@ export interface IButtonProps
 export const Button: React.FC<IButtonProps> = ({
   className,
   validationErrorMessages,
-  validationErrorIcon,
+  errorIcon,
   pending,
   disabled,
   error,
   leftIcon,
   rightIcon,
   children,
-  spinnerPosition,
+  statusPosition,
+  hideIconOnStatus,
   ...nativeProps
 }) => {
+  const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
+
+  const showLeftIcon = statusPosition !== 'left' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+  const showRightIcon = statusPosition !== 'right' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+
   return (
     <>
       <button
@@ -54,27 +63,20 @@ export const Button: React.FC<IButtonProps> = ({
         data-error={error || validationErrorMessages?.length}
         disabled={disabled || pending}
       >
-        <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-          {spinnerPosition === 'left' && (
-            <div className="arm-button-spinner-wrapper">
-              <Spinner fillContainer={false} />
-            </div>
-          )}
+        <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
+          {statusPosition === 'left' && <Status pending={pending} error={shouldShowErrorIcon} errorIcon={errorIcon} />}
           {children}
-          {spinnerPosition === 'right' && (
-            <div className="arm-button-spinner-wrapper">
-              <Spinner fillContainer={false} />
-            </div>
-          )}
+          {statusPosition === 'right' && <Status pending={pending} error={shouldShowErrorIcon} errorIcon={errorIcon} />}
         </IconWrapper>
       </button>
 
-      {!!validationErrorMessages?.length && <ValidationErrors validationErrors={validationErrorMessages} icon={validationErrorIcon} />}
+      {!!validationErrorMessages?.length && <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} />}
     </>
   );
 };
 
 Button.defaultProps = {
-  validationErrorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
-  spinnerPosition: 'right',
+  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
+  statusPosition: 'right',
+  hideIconOnStatus: true,
 };

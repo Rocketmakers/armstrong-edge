@@ -19,7 +19,6 @@ export interface IInputBaseProps<TValue>
 }
 
 /** A component which wraps up a native input element with some binding logic and some repeated elements (icons and stuff) for components which only contain a single input element. */
-
 export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>>(
   (
     {
