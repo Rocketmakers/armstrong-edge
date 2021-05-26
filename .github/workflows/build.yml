@@ -1,9 +1,9 @@
-name: Lint
+name: Build
 
 on: [push]
 
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,5 +27,5 @@ jobs:
         with:
           node-version: 14.16.1
 
-      - name: npm install and lint
-        run: cd module && npm i && npm run lint
+      - name: npm install and build
+        run: cd module && npm i && npm run build
