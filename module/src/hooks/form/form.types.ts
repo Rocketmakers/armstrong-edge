@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-class-members */
 /** ******************************************************
  * FORM - Types file.
  * All of the types specifically associated with the form.
@@ -73,22 +74,43 @@ export interface BindingToolsArray<TValue extends any[]> extends BindingToolsSta
 }
 
 /**
- *
+ * The set of tools returned from `formProp`.
+ * - This root type detects whether the value is an array and assigns the correct type accordingly.
  */
 export type BindingTools<TValue> = TValue extends any[] ? BindingToolsArray<TValue> : BindingToolsStandard<TValue>;
 
-export declare abstract class BindingToolMaker<TData extends object> {
+/**
+ * This abstract class is used to handle the typings for the args passed to `formProp`.
+ * - Allows `formProp` to receive a strictly typed set of args for targeting nested properties within a complex data object.
+ * - Can also allow targeting objects within an array by requesting an index number rather than a key.
+ * - The args passed to `formProp` form a "key chain" which is then used to access properties within the data object.
+ */
+export declare abstract class FormPropFactory<TData extends object> {
+  /**
+   * A fake initializer for the class, used to provide the type for the form data
+   * @param data provides the typing for the form data
+   */
   constructor(data: TData);
 
-  public getBindingTools<TDataKey extends keyof TData>(key1: TDataKey): BindingTools<TData[TDataKey]>;
+  /**
+   * Used to access a property within the form data.
+   * @param args The key of the property to access.
+   */
+  public formProp<TDataKey extends keyof TData>(...args: [key1: KeyOrIndex<TData, TDataKey>]): BindingTools<TData[TDataKey]>;
 
-  public getBindingTools<TDataKey extends keyof TData>(...args: [key1: KeyOrIndex<TData, TDataKey>]): BindingTools<TData[TDataKey]>;
-
-  public getBindingTools<TDataKey extends keyof TData, TData2 extends TData[TDataKey], TDataKey2 extends keyof TData2>(
+  /**
+   * Used to access a property within the form data.
+   * @param args The keys or indexes used to access a nested property to a depth of 2.
+   */
+  public formProp<TDataKey extends keyof TData, TData2 extends TData[TDataKey], TDataKey2 extends keyof TData2>(
     ...args: [key1: KeyOrIndex<TData, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>]
   ): BindingTools<TData2[TDataKey2]>;
 
-  public getBindingTools<
+  /**
+   * Used to access a property within the form data.
+   * @param args The keys or indexes used to access a nested property to a depth of 3.
+   */
+  public formProp<
     TDataKey extends keyof TData,
     TData2 extends TData[TDataKey],
     TDataKey2 extends keyof TData2,
@@ -98,7 +120,11 @@ export declare abstract class BindingToolMaker<TData extends object> {
     ...args: [key1: KeyOrIndex<TData, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>, key3: KeyOrIndex<TData3, TDataKey3>]
   ): BindingTools<TData3[TDataKey3]>;
 
-  public getBindingTools<
+  /**
+   * Used to access a property within the form data.
+   * @param args The keys or indexes used to access a nested property to a depth of 4.
+   */
+  public formProp<
     TDataKey extends keyof TData,
     TData2 extends TData[TDataKey],
     TDataKey2 extends keyof TData2,
@@ -115,7 +141,11 @@ export declare abstract class BindingToolMaker<TData extends object> {
     ]
   ): BindingTools<TData4[TDataKey4]>;
 
-  public getBindingTools<
+  /**
+   * Used to access a property within the form data.
+   * @param args The keys or indexes used to access a nested property to a depth of 5.
+   */
+  public formProp<
     TDataKey extends keyof TData,
     TData2 extends TData[TDataKey],
     TDataKey2 extends keyof TData2,
@@ -136,64 +166,187 @@ export declare abstract class BindingToolMaker<TData extends object> {
   ): BindingTools<TData5[TDataKey5]>;
 }
 
+/**
+ * Either a `string` key used to index an object or a `number` index used to index an array.
+ */
 export type PropertyKey = string | number;
+
+/**
+ * The array of key strings and array indexes used to target a nested property.
+ */
 export type KeyChain = Array<PropertyKey>;
 
+/**
+ * The tools provided to a component to allow it to bind to a specific property within the form data.
+ */
 export interface IBindingProps<TValue> {
+  /**
+   * The current value of the targeted property within the form data.
+   */
   value: TValue | undefined;
+  /**
+   * Sets a new value for the targeted property within the form data.
+   */
   setValue: (value: TValue) => void;
+  /**
+   * The root dispatcher for all form actions, can be used to send complex state changes to the form binder as a whole.
+   */
   dispatch: FormDispatcher<TValue>;
+  /**
+   * The chain of nesting keys used to access this property from the root of the form data object.
+   */
   keyChain: KeyChain;
+  /**
+   * An array of current validation errors relating to the targeted property within the form data.
+   */
   myValidationErrors: IValidationError[];
+  /**
+   * The root form configuration, these settings should be respected by all bindable components.
+   */
   formConfig?: IFormConfig;
+  /**
+   * The bind config specific to this property binding, these settings should be respected by all bindable components.
+   */
   bindConfig?: IBindConfig<TValue>;
+  /**
+   * The initial value attributed to the targeted property before any user input.
+   */
   initialValue: TValue | undefined;
 }
 
-export interface IFormSetOneAction<TData, TValue> {
+/**
+ * Action used to set a root property to a new value, cannot be a nested value.
+ */
+export interface IFormSetOneAction<TValue> {
+  /**
+   * The type used to detect a `set-one` action
+   */
   type: 'set-one';
+  /**
+   * The key or index used to retrieve the root property from the form data object.
+   */
   propertyKey: PropertyKey;
+  /**
+   * The new value to set.
+   */
   value: TValue;
 }
 
+/**
+ * Action used to set any property to a new value, supports a nested property through the supplied key chain.
+ */
 export interface IFormSetPathAction<TValue> {
+  /**
+   * The type used to detect a `set-path` action
+   */
   type: 'set-path';
+  /**
+   * The chain of keys and/or indexes used to retrieve the property from the form data object.
+   */
   keyChain: KeyChain;
+  /**
+   * The new value to set.
+   */
   value: TValue;
 }
 
-export interface IFormResetAction<TData> {
+/**
+ * Action used to set the entire form data object to a new value
+ */
+export interface IFormSetAllAction<TData> {
+  /**
+   * The type used to detect a `set-all` action
+   */
   type: 'set-all';
-  data?: Partial<TData>;
+  /**
+   * An optional object to set as the entire new state, can be partial, if not passed form data will be reset to empty.
+   */
+  data: Partial<TData>;
 }
 
+/**
+ * A dispatch function used to send an action to the form data reducer.
+ */
 export type FormDispatcher<TData> = (action: FormAction<TData, any>) => TData;
 
+/**
+ * The validation modes supported by form inputs.
+ * - `icon` displays an error icon in the event of a validation error.
+ * - `message` displays a supplied error message in the event of a validation error.
+ * - `both` displays both the icon and the message.
+ */
 export type FormValidationMode = 'icon' | 'message' | 'both';
 
+/**
+ * An individual validation error.
+ */
 export interface IValidationError {
+  /**
+   * The attribute of the form data to apply the error to.
+   * - Should represent a string path to a nested property, or a string key to a root property.
+   * - Two formats are accepted:
+   * @example `rootObject.subObject.subArray.3.field`
+   * @example `rootObject.subObject.subArray[3].field`
+   */
   key: string;
+  /**
+   * The error message
+   */
   message: string;
 }
 
+/**
+ * The optional bind config for a specific property binding.
+ */
 export interface IBindConfig<TValue> {
+  /**
+   * A set of functions to control the format of the value
+   */
   format?: {
-    forScreen?: (value: TValue) => TValue;
-    forData?: (value: TValue) => TValue;
+    /**
+     * Formats the value on its way out of the form data object.
+     */
+    fromData?: (value?: TValue) => TValue;
+    /**
+     * Formats the value on its way into the form data object.
+     */
+    toData?: (value?: TValue) => TValue;
   };
 }
 
+/**
+ * Optional configuration for the form hook
+ */
 export interface IFormConfig {
+  /**
+   * Any current validation errors, usually from an API request.
+   */
   validationErrors?: IValidationError[];
+  /**
+   * How to display validation errors
+   * - `icon` displays an error icon in the event of a validation error.
+   * - `message` displays a supplied error message in the event of a validation error.
+   * - `both` displays both the icon and the message.
+   */
   validationMode?: FormValidationMode;
+  /**
+   * An optional icon to use for validation errors in place of the default.
+   * @default warning
+   */
   validationErrorIcon?: IIcon<IconSet>;
 }
 
-export type FormAction<TData, TValue> = IFormSetOneAction<TData, TValue> | IFormSetPathAction<TValue> | IFormResetAction<TData>;
+/**
+ * The root type for a form action to be dispatched to the reducer.
+ */
+export type FormAction<TData, TValue> = IFormSetOneAction<TValue> | IFormSetPathAction<TValue> | IFormSetAllAction<TData>;
 
+/**
+ * The items returned from the `useForm` hooks.
+ */
 export interface HookReturn<TData extends object> {
   formState: TData | undefined;
-  formProp: BindingToolMaker<TData>['getBindingTools'];
+  formProp: FormPropFactory<TData>['formProp'];
   resetFormData: () => void;
   getFormData: () => TData | undefined;
   setFormData: (newData: TData) => void;

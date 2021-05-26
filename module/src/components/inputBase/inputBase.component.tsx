@@ -47,7 +47,7 @@ export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>
         const currentValue = event.currentTarget.value;
 
         if (bind) {
-          const formattedValue = bind.bindConfig?.format?.forData?.(currentValue) || currentValue;
+          const formattedValue = bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
           bind.setValue(formattedValue);
         }
       },
