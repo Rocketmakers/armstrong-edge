@@ -3,7 +3,7 @@ name: Lint & Build
 on: [push]
 
 jobs:
-  lint:
+  lint-and-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +29,6 @@ jobs:
           node-version: 14.16.1
 
       - name: npm install
-        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm i
 
       - name: lint
