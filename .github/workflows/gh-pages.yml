@@ -1,0 +1,40 @@
+name: Pages
+
+on: [push]
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        id: cache-storybook-npm-build
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: module/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('module/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Set Node.js 14.16.1
+        uses: actions/setup-node@master
+        with:
+         node-version: 14.16.1
+
+      - name: npm install
+        if: steps.cache-storybook-npm-build.outputs.cache-hit != 'true'
+        run: (cd module && npm ci)
+
+      - name: Build Storybook
+        run: (cd module && npm run build-storybook)
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./module/storybook-static

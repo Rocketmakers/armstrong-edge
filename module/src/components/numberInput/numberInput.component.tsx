@@ -32,7 +32,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputBasePro
         const currentValue = event.currentTarget.valueAsNumber;
 
         if (bind) {
-          const formattedValue = bind.bindConfig?.format?.forData?.(currentValue) || currentValue;
+          const formattedValue = bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
           bind.setValue(formattedValue);
         }
       },
@@ -59,7 +59,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputBasePro
           ref={ref}
           className={'arm-input-base-input'}
           onChange={onChangeEvent}
-          value={bind?.value ?? value}
+          value={bind?.bindConfig?.format?.fromData?.(bind?.value) ?? bind?.value ?? value}
           disabled={disabled}
           type="number"
         />

@@ -71,7 +71,7 @@ export const SelectInput = React.forwardRef(
             onSelectOption(selectedOption);
           }
           if (bind) {
-            const selectedOptionId = bind.bindConfig?.format?.forData?.(selectedOption.id) || selectedOption.id;
+            const selectedOptionId = bind.bindConfig?.format?.toData?.(selectedOption.id) || selectedOption.id;
             bind.setValue(selectedOptionId);
           }
         }

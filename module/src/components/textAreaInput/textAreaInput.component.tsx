@@ -45,7 +45,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
         const currentValue = event.currentTarget.value;
 
         if (bind) {
-          const formattedValue = bind.bindConfig?.format?.forData?.(currentValue) || currentValue;
+          const formattedValue = bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
           bind.setValue(formattedValue);
         }
       },
