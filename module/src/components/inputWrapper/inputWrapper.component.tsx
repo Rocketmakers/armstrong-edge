@@ -4,6 +4,7 @@ import { FormValidationMode } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { Spinner } from '../spinner';
 import { ValidationErrors } from '../validationErrors';
 
 export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet> {
@@ -24,11 +25,32 @@ export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet> 
 
   /** (IIcon) the icon to use for validation errors */
   validationErrorIcon?: IIcon<IconSet>;
+
+  /** (boolean) show a spinner and disable */
+  pending?: boolean;
+
+  /** (boolean) disable use */
+  disabled?: boolean;
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
 export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IInputWrapperProps>>(
-  ({ className, children, leftIcon, rightIcon, leftOverlay, rightOverlay, validationMode, validationErrorMessages, validationErrorIcon }, ref) => {
+  (
+    {
+      className,
+      children,
+      leftIcon,
+      rightIcon,
+      leftOverlay,
+      rightOverlay,
+      validationMode,
+      validationErrorMessages,
+      validationErrorIcon,
+      disabled,
+      pending,
+    },
+    ref
+  ) => {
     const shouldShowValidationErrorsList = React.useMemo(() => validationMode === 'both' || validationMode === 'message', [validationMode]);
     const shouldShowValidationErorrsIcon = React.useMemo(() => validationMode === 'both' || validationMode === 'icon', [validationMode]);
 
@@ -38,7 +60,8 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
           ref={ref}
           className={ClassNames.concat('arm-input', className)}
           data-arm-input-pad-left={!!leftIcon || !!leftOverlay}
-          data-arm-input-pad-right={(validationErrorMessages?.length && shouldShowValidationErorrsIcon) || !!rightIcon || !!rightOverlay}
+          data-arm-input-pad-right={(validationErrorMessages?.length && shouldShowValidationErorrsIcon) || !!rightIcon || !!rightOverlay || pending}
+          data-disabled={disabled || pending}
         >
           <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
             {leftOverlay && (
@@ -53,6 +76,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
             {!!validationErrorMessages?.length && shouldShowValidationErorrsIcon && validationErrorIcon && (
               <Icon className="arm-input-validation-error-icon" iconSet={validationErrorIcon.iconSet} icon={validationErrorIcon.icon} />
             )}
+            {pending && <Spinner fillContainer={false} />}
           </IconWrapper>
         </div>
 

@@ -33,6 +33,8 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
       validationErrorMessages,
       validationMode,
       validationErrorIcon,
+      disabled,
+      pending,
       ...nativeProps
     },
     ref
@@ -55,9 +57,11 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
         rightOverlay={rightOverlay}
         validationErrorMessages={allValidationErrorMessages}
         validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
+        disabled={disabled}
+        pending={pending}
         validationMode={validationMode || bind?.formConfig?.validationMode}
       >
-        <textarea ref={ref} {...nativeProps} onChange={onChangeEvent} value={bind?.value ?? value ?? ''} />
+        <textarea ref={ref} {...nativeProps} onChange={onChangeEvent} value={bind?.value ?? value} disabled={disabled} />
       </InputWrapper>
     );
   }

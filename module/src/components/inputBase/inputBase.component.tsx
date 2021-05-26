@@ -35,6 +35,8 @@ export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>
       validationErrorMessages,
       validationMode,
       validationErrorIcon,
+      pending,
+      disabled,
       ...nativeProps
     },
     ref
@@ -58,8 +60,17 @@ export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>
         validationErrorMessages={allValidationErrorMessages}
         validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
         validationMode={validationMode || bind?.formConfig?.validationMode}
+        pending={pending}
+        disabled={disabled}
       >
-        <input ref={ref} className={'arm-input-base-input'} {...nativeProps} onChange={onChangeEvent} value={bind?.value ?? value ?? ''} />
+        <input
+          ref={ref}
+          className={'arm-input-base-input'}
+          {...nativeProps}
+          onChange={onChangeEvent}
+          value={bind?.value ?? value}
+          disabled={disabled}
+        />
       </InputWrapper>
     );
   }

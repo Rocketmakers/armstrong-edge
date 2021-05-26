@@ -43,3 +43,10 @@ export const WithOverlayText = StoryUtils.cloneTemplate(Template, {
     { id: 'b', name: '200' },
   ],
 });
+export const WithValidationError = StoryUtils.cloneTemplate(Template, {
+  options: [
+    { id: 'a', name: 'red' },
+    { id: 'b', name: 'blue' },
+  ],
+  validationErrorMessages: ['This colour is actually a bad one sorry'],
+});

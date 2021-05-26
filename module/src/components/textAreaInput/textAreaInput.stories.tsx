@@ -1,4 +1,5 @@
 import { StoryUtils } from '../../stories/storyUtils';
+import { IconUtils } from '../icon';
 import { TextAreaInput } from './textAreaInput.component';
 
 /** metadata */
@@ -24,3 +25,8 @@ const Template = StoryUtils.createTemplate(TextAreaInput);
 
 export const Default = StoryUtils.cloneTemplate(Template, {});
 export const WithIcons = StoryUtils.cloneTemplate(Template, { leftIcon: { iconSet: 'Icomoon', icon: 'certificate' } });
+export const WithValidationErrors = StoryUtils.cloneTemplate(Template, {
+  validationErrorMessages: ['Uh oh your punctuation is bad'],
+  validationErrorIcon: IconUtils.getIconDefinition('LinearIcons', 'warning'),
+  validationMode: 'message',
+});

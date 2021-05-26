@@ -21,7 +21,7 @@ export function bindInputChangeEvent<TValue>(
 ) {
   const targetValue = event.currentTarget.value;
   const newValue = formatter?.(targetValue) ?? targetValue;
-  if (binding) {
+  if (binding?.setValue) {
     binding.setValue(newValue as TValue);
   }
   if (onChangeProp) {

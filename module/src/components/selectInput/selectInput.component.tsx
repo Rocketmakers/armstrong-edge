@@ -31,7 +31,7 @@ export interface ISelectInputProps<TSelectId extends string, TSelectData = any>
   validationMode?: FormValidationMode;
 
   /** (icon) the icon overlaying the select element to the right, usually a down arrow */
-  selectOverlayIcon?: IIcon<IconSet>;
+  selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 }
 
 /** A select input which takes an array of options */
@@ -52,6 +52,8 @@ export const SelectInput = React.forwardRef(
       validationErrorMessages,
       validationMode,
       selectOverlayIcon,
+      pending,
+      disabled,
       ...nativeProps
     }: ISelectInputProps<TSelectId, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
@@ -89,16 +91,23 @@ export const SelectInput = React.forwardRef(
         validationErrorMessages={allValidationErrorMessages}
         validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
         validationMode={validationMode || bind?.formConfig?.validationMode}
+        pending={pending}
+        disabled={disabled}
       >
         <div className="arm-select-input-inner">
-          <select {...nativeProps} ref={ref} onChange={onChangeEvent} value={bind?.value ?? value ?? ''}>
+          <select {...nativeProps} ref={ref} onChange={onChangeEvent} value={bind?.value ?? value} disabled={disabled}>
             {options.map((option) => (
               <option key={option.id} value={option.id}>
                 {option.name}
               </option>
             ))}
           </select>
-          {selectOverlayIcon && <Icon className="arm-select-input-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />}
+          {selectOverlayIcon &&
+            (IconUtils.isIconDefinition(selectOverlayIcon) ? (
+              <Icon className="arm-select-input-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />
+            ) : (
+              selectOverlayIcon
+            ))}
         </div>
       </InputWrapper>
     );

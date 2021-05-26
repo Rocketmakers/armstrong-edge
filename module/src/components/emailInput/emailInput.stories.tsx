@@ -24,3 +24,8 @@ const Template = StoryUtils.createTemplate(EmailInput);
 
 export const Default = StoryUtils.cloneTemplate(Template, {});
 export const WithIcons = StoryUtils.cloneTemplate(Template, { leftIcon: { icon: 'envelope', iconSet: 'LinearIcons' } });
+export const WithValidationErrors = StoryUtils.cloneTemplate(Template, {
+  leftIcon: { icon: 'envelope', iconSet: 'LinearIcons' },
+  validationErrorMessages: ["This doesn't look like an email"],
+});
+export const Pending = StoryUtils.cloneTemplate(Template, { leftIcon: { icon: 'envelope', iconSet: 'LinearIcons' }, pending: true });

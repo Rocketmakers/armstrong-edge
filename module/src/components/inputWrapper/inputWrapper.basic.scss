@@ -22,4 +22,15 @@
   + .arm-validation-errors {
     margin-top: $spacing-xsmall;
   }
+
+  &[data-disabled='true'] {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .arm-spinner {
+    .arm-icon {
+      font-size: 0.75rem;
+    }
+  }
 }

@@ -1,6 +1,7 @@
 .arm-input {
   box-shadow: $shadow-small;
   border-radius: $spacing-xxsmall;
+  transition: opacity $transition-quick;
 
   .arm-icon-wrapper {
     min-height: 1.5rem;
@@ -22,5 +23,9 @@
     color: $color-negative;
     animation: slide-in-left-small $transition-quick;
     font-size: 0.75rem;
+  }
+
+  &[data-disabled='true'] {
+    opacity: 0.5;
   }
 }
