@@ -15,7 +15,6 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
           path: module/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('module/package-lock.json') }}
           restore-keys: |
@@ -38,8 +37,8 @@ jobs:
       - name: build
         run: (cd module && npm run build)
 
-      - name: artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: dist
-          path: module/dist
+      # - name: artifact
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: dist
+      #     path: module/dist
