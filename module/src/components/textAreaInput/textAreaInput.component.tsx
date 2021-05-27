@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { FormValidationMode, IBindingProps } from '../../hooks/form/form.types';
+import { IBindingProps } from '../../hooks/form/form.types';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 import { useMyValidationErrorMessages } from '../validationErrors';
@@ -10,12 +10,6 @@ export interface ITextAreaInputProps
     IInputWrapperProps {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string>;
-
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
 }
 
 export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInputProps>(

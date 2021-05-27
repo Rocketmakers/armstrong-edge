@@ -4,8 +4,7 @@
   color: white;
   border-radius: $border-radius-small;
   padding: $spacing-xsmall;
-
-  transition: opacity $transition-quick, background-color $transition-quick;
+  transition: opacity $transition-quick, background-color $transition-quick, transform $transition-quick;
 
   &[data-disabled='true'] {
     opacity: 0.5;
@@ -25,5 +24,9 @@
         font-size: 0.75rem;
       }
     }
+  }
+
+  &:active {
+    transform: translateY(2px);
   }
 }

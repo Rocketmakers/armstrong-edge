@@ -12,6 +12,13 @@
   width: 100%;
 }
 
+@mixin absolute-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  @include fill;
+}
+
 @mixin flex-centre {
   display: flex;
   align-items: center;

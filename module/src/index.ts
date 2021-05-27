@@ -6,9 +6,11 @@ import * as Form from './hooks/form/index';
 
 export { Form };
 export { Button, IButtonProps } from './components/button';
+export { CheckboxInput, ICheckboxInputProps } from './components/checkboxInput';
 export { EmailInput } from './components/emailInput';
 export { ErrorMessage, IErrorMessageProps } from './components/errorMessage';
 export { IcomoonIcon, Icon, IconName, Icons, IconSet, IIcon, IIconProps, LinearIcon } from './components/icon';
+export { IconButton, IIconButtonProps } from './components/iconButton';
 export { IInputBaseProps, InputBase } from './components/inputBase';
 export { IInputWrapperProps, InputWrapper } from './components/inputWrapper';
 export { NumberInput } from './components/numberInput';

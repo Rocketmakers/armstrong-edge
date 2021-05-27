@@ -22,6 +22,7 @@ export namespace MemoryServer {
     points: number
     roles: IUserRole[]
     bio?: string
+    isACoolGuy?: boolean;
   }
 
   let users: IUser[] = [

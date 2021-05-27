@@ -73,7 +73,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       <>
         <div
           ref={ref}
-          className={ClassNames.concat('arm-input', className)}
+          className={ClassNames.concat('arm-input', 'input-wrapper', className)}
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
         >

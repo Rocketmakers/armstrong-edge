@@ -49,13 +49,25 @@ $shadow-large: $shadow-offset-large $shadow-size-large $shadow-color !default;
 
 // transitions
 
-$transition-quick: 0.25s;
-$transition-medium: 0.5s;
-$transition-slow: 1s;
+$transition-quick: 0.25s !default;
+$transition-medium: 0.5s !default;
+$transition-slow: 1s !default;
 
 // sizing
 
-$input-width: 240px;
-$input-width-large: 320px;
-$input-height: 32px;
-$input-height-large: 70px;
+$input-width: 240px !default;
+$input-width-large: 320px !default;
+$input-height: 32px !default;
+$input-height-large: 70px !default;
+
+// lines
+
+$line: 1px solid !default;
+
+$line-very-light: $line $gray-very-light !default;
+$line-light: $line $gray-light !default;
+$line-medium: $line $gray-medium !default;
+$line-dark: $line $gray-dark !default;
+$line-very-dark: $line $gray-very-dark !default;
+
+$line-white: $line $white !default;
