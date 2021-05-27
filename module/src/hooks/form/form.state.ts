@@ -1,6 +1,16 @@
+/** ******************************************************
+ * FORM - State file.
+ * Contains everything related to form state such as the reducer and action factories.
+ ******************************************************* */
 import { Objects } from '../../utils/objects';
 import { FormAction } from './form.types';
 
+/**
+ * The reducer for the form state object
+ * @param state The current form state.
+ * @param action The action to respond to.
+ * @returns The updated state.
+ */
 export function reducer<TData extends object>(state: TData, action: FormAction<TData, any>): TData {
   switch (action.type) {
     case 'set-one':

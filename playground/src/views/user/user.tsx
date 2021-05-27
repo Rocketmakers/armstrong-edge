@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button } from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, useDebounce, useThrottle } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"
@@ -16,15 +16,9 @@ export const UserEdit: React.FC = () => {
   const [addUser, { processed: addUserProcessed }] = apiHooks.user.addUser.useMutation()
   const [updateUser, { processed: updateUserProcessed }] = apiHooks.user.updateUser.useMutation()
 
-  const validationErrors: IValidationError[] = Arrays.flatten(
-    addUserProcessed?.validationErrors,
-    updateUserProcessed?.validationErrors,
-    [{key: 'firstName', message: 'uh oh'}]
-  )
+  const validationErrors: IValidationError[] = Arrays.flatten(addUserProcessed?.validationErrors, updateUserProcessed?.validationErrors, [{ key: "firstName", message: "uh oh" }])
 
-  console.log(validationErrors)
-
-  const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(
+  const { formState, formProp, getFormData } = Form.use<MemoryServer.IUser>(
     {
       firstName: "",
       lastName: "",
@@ -38,13 +32,17 @@ export const UserEdit: React.FC = () => {
       roles: [],
       ...(data ?? {}),
     },
-    
-    { validationErrors, validationErrorIcon: IconUtils.getIconDefinition('LinearIcons', 'alarm') }
+
+    { validationErrors, validationErrorIcon: IconUtils.getIconDefinition("LinearIcons", "alarm") }
   )
 
   React.useEffect(() => {
     console.log("NEW STATE", formState)
   }, [formState])
+
+  React.useEffect(() => {
+    console.log("NEW ADDRESS STATE", formState)
+  }, [formState.address])
 
   const submitData = React.useCallback(async () => {
     const user = getFormData()
@@ -62,24 +60,28 @@ export const UserEdit: React.FC = () => {
     [formProp]
   )
 
-  console.log(formProp('firstName').bind())
-
   return (
     <form>
       <fieldset>
         <h2>Basic Info</h2>
-        <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} validationErrorMessages={['no you']} />
-        <TextInput bind={formProp("lastName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} />
+        <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition("Icomoon", "user")} validationErrorMessages={["no you"]} />
+        <TextInput bind={formProp("lastName").bind()} delay={{ mode: "debounce", milliseconds: 500 }} leftIcon={IconUtils.getIconDefinition("Icomoon", "user")} />
         <TextAreaInput bind={formProp("bio").bind()} />
-        <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition('LinearIcons', 'envelope')} />
+        <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
-        <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]}  />
+        <SelectInput
+          leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
+          bind={formProp("favouriteColour").bind()}
+          options={[
+            { id: "blue", name: "Blue" },
+            { id: "red", name: "red" },
+            { id: "something else", name: "Something else" },
+          ]}
+        />
 
-      <div className='loader-test' style={{height: '300px'}}>
-        <Spinner fillContainer={false} />
-      </div>
-
-
+        <div className="loader-test" style={{ height: "300px" }}>
+          <Spinner fillContainer={false} />
+        </div>
       </fieldset>
 
       <AddressForm bind={formProp("address").bind()} />
@@ -88,7 +90,7 @@ export const UserEdit: React.FC = () => {
         <h2>Roles</h2>
         {formState.roles.map((role, index) => (
           <div key={index}>
-            <TextInput bind={formProp("roles", index, "name").bind()} />
+            <TextInput bind={formProp("address", "line2").bind()} />
             <Button onClick={() => formProp("roles").remove(index)}>Remove</Button>
           </div>
         ))}
@@ -114,7 +116,8 @@ const AddressForm: React.FC<IAddressFormProps> = ({ bind }) => {
   return (
     <fieldset>
       <h2>Address</h2>
-      <TextInput bind={formProp("line1").bind()} />
+      <TextInput bind={formProp("line2").bind()} />
+      <TextInput bind={formProp("line2").bind()} />
       <TextInput bind={formProp("city").bind()} />
       <TextInput bind={formProp("postcode").bind()} />
     </fieldset>

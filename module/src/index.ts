@@ -18,5 +18,7 @@ export { TelInput } from './components/telInput';
 export { ITextAreaInputProps, TextAreaInput } from './components/textAreaInput';
 export { TextInput } from './components/textInput';
 export { IValidationErrorsProps, ValidationErrors } from './components/validationErrors';
+export { useDebounce } from './hooks/useDebounce';
+export { useThrottle } from './hooks/useThrottle';
 export { Arrays } from './utils/arrays';
 export { ClassNames } from './utils/classNames';
