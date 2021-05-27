@@ -51,8 +51,8 @@ export const UserEdit: React.FC = () => {
       roles: [],
       ...(data ?? {}),
     },
-    
-    { validationErrors, validationErrorIcon: IconUtils.getIconDefinition('LinearIcons', 'alarm') }
+
+    { validationErrors, validationErrorIcon: IconUtils.getIconDefinition("LinearIcons", "alarm") }
   )
 
   const selectRef = React.useRef<HTMLSelectElement>()
@@ -60,6 +60,10 @@ export const UserEdit: React.FC = () => {
   React.useEffect(() => {
     console.log("NEW STATE", formState)
   }, [formState])
+
+  React.useEffect(() => {
+    console.log("NEW ADDRESS STATE", formState)
+  }, [formState.address])
 
   const submitData = React.useCallback(async () => {
     const user = getFormData()
@@ -82,10 +86,10 @@ export const UserEdit: React.FC = () => {
       <fieldset>
         <h2>Basic Info</h2>
         <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} validationErrorMessages={['no you']} />
-        
+
         <TextInput bind={formProp("lastName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} />
         <TextAreaInput bind={formProp("bio").bind()} />
-        <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition('LinearIcons', 'envelope')} />
+        <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} ref={selectRef} />
         <NativeSelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} ref={selectRef} />
@@ -94,11 +98,11 @@ export const UserEdit: React.FC = () => {
 
         <NativeDateInput />
 
-        <AutoCompleteInput 
+        <AutoCompleteInput
           onTextInputChange={setAutocompleteValue}
-          bind={formProp("favouriteCuisine").bind({ format:{ fromData: value => sauces?.find(sauce => sauce.id === value)?.name }})} 
-          leftIcon={IconUtils.getIconDefinition('Icomoon', 'pizza')} 
-          options={sauces?.map(sauce => sauce.id)} 
+          bind={formProp("favouriteCuisine").bind({ format:{ fromData: value => sauces?.find(sauce => sauce.id === value)?.name }})}
+          leftIcon={IconUtils.getIconDefinition('Icomoon', 'pizza')}
+          options={sauces?.map(sauce => sauce.id)}
           filterOptions={false}
           pending={isFetchingSauces}
         />
@@ -117,7 +121,7 @@ export const UserEdit: React.FC = () => {
 
         {formState.roles.map((role, index) => (
           <div key={index}>
-            <TextInput bind={formProp("roles", index, "name").bind()} />
+            <TextInput bind={formProp("address", "line2").bind()} />
             <Button onClick={() => formProp("roles").remove(index)}>Remove</Button>
           </div>
         ))}
@@ -144,7 +148,8 @@ const AddressForm: React.FC<IAddressFormProps> = ({ bind }) => {
   return (
     <fieldset>
       <h2>Address</h2>
-      <TextInput bind={formProp("line1").bind()} />
+      <TextInput bind={formProp("line2").bind()} />
+      <TextInput bind={formProp("line2").bind()} />
       <TextInput bind={formProp("city").bind()} />
       <TextInput bind={formProp("postcode").bind()} />
     </fieldset>
