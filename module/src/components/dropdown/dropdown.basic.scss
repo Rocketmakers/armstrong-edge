@@ -1,17 +1,13 @@
 $arm-dropdown-top: var(--arm-dropdown-top);
 $arm-dropdown-left: var(--arm-dropdown-left);
-
-.arm-dropdown {
-  top: $arm-dropdown-top;
-  left: $arm-dropdown-left;
-}
+$arm-dropdown-width: var(--arm-dropdown-width);
 
 .arm-dropdown-content {
   position: fixed;
   top: $arm-dropdown-top;
   left: $arm-dropdown-left;
   background-color: $white;
-  width: $input-width;
+  width: $arm-dropdown-width;
   opacity: 0;
   pointer-events: none;
   transition: opacity $transition-quick;

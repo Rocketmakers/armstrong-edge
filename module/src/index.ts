@@ -9,12 +9,13 @@ export { AutoCompleteInput, IAutoCompleteInputProps } from './components/autoCom
 export { Button, IButtonProps } from './components/button';
 export { CheckboxInput, ICheckboxInputProps } from './components/checkboxInput';
 export { Dropdown, IDropdownProps } from './components/dropdown';
+export { DropdownButton, IDropdownButtonProps } from './components/dropdownButton';
 export { DropdownItem, DropdownItems, IDropdownItem, IDropdownItemProps, IDropdownItemsProps } from './components/dropdownItems';
 export { EmailInput } from './components/emailInput';
 export { ErrorMessage, IErrorMessageProps } from './components/errorMessage';
 export { IcomoonIcon, Icon, IconName, Icons, IconSet, IIcon, IIconProps, LinearIcon } from './components/icon';
 export { IconButton, IIconButtonProps } from './components/iconButton';
-export { IInputBaseProps, InputBase } from './components/inputBase';
+export { IInputProps, Input } from './components/input';
 export { IInputWrapperProps, InputWrapper } from './components/inputWrapper';
 export { NumberInput } from './components/numberInput';
 export { ISelectInputOption, ISelectInputProps, SelectInput } from './components/selectInput';

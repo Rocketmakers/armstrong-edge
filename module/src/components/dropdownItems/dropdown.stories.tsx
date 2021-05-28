@@ -5,7 +5,7 @@ import { DropdownItems } from './dropdownItems.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(DropdownItems as any, 'Form', 'Dropdown Items', {});
+export default StoryUtils.createMeta(DropdownItems as any, 'Layout', 'Dropdown Items', {});
 
 /** component template */
 

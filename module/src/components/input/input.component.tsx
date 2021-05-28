@@ -5,7 +5,7 @@ import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 import { useMyValidationErrorMessages } from '../validationErrors';
 
-export interface IInputBaseProps<TValue>
+export interface IInputProps<TValue>
   extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
     IInputWrapperProps {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
@@ -19,7 +19,7 @@ export interface IInputBaseProps<TValue>
 }
 
 /** A component which wraps up a native input element with some binding logic and some repeated elements (icons and stuff) for components which only contain a single input element. */
-export const InputBase = React.forwardRef<HTMLInputElement, IInputBaseProps<any>>(
+export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
   (
     {
       bind,

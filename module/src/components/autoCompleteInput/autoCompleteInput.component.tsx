@@ -2,15 +2,15 @@ import React from 'react';
 
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
-import { IInputBaseProps } from '../inputBase';
+import { IInputProps } from '../input';
 import { TextInput } from '../textInput';
 import { useMyValidationErrorMessages, ValidationErrors } from '../validationErrors';
 
 // internally, the autocompleteinput binds two values - the actual content of the text input, and the selected value
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
-// will use bindConfig.fromData to bind up the parsed data
+// will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
-export interface IAutoCompleteInputProps extends Omit<IInputBaseProps<string>, 'type' | 'onChange' | 'value'> {
+export interface IAutoCompleteInputProps extends Omit<IInputProps<string>, 'type' | 'onChange' | 'value'> {
   /** (string[]) The options to render when the input is focused - use bindConfig.fromData to parse theseß */
   options?: string[];
 
@@ -34,9 +34,12 @@ export interface IAutoCompleteInputProps extends Omit<IInputBaseProps<string>, '
 
   /** (boolean | (option: string, textInputValue: string) => boolean) whether to filter the available options based on the string in the text input, optionally takes the callback used to do the filtering */
   filterOptions?: boolean | ((option: string, textInputValue: string) => boolean);
+
+  /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
+  allowKeyboardSelection?: boolean;
 }
 
-/** An input which displays some given options below the  */
+/** An input which displays some given options below the and allows the user to select from those options */
 export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoCompleteInputProps>(
   (
     {
@@ -55,18 +58,19 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
       onChange,
       value,
       allowFreeText,
+      allowKeyboardSelection,
       ...textInputProps
     },
     ref
   ) => {
     const currentValue = bind?.value || value;
+
+    // parse the given value if there is a parsing function given to the bind
     const valueFromData = React.useCallback((val?: string) => bind?.bindConfig?.format?.fromData?.(val) || val || '', [bind]);
 
     const [textInputCurrentValue, setTextInputCurrentValue] = React.useState((bind && valueFromData(bind.value)) || textInputValue || value || '');
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
-
-    console.log(textInputCurrentValue);
 
     React.useLayoutEffect(() => {
       onTextInputChange?.(textInputCurrentValue);
@@ -132,9 +136,9 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
         if (allowFreeText) {
           setBoundValue(bind?.bindConfig?.format?.toData?.(newValue) || newValue);
         } else {
-          const selectedOption = options?.find((option) => valueFromData(option) === newValue);
-          if (selectedOption) {
-            setBoundValue(selectedOption);
+          const inputtedOption = options?.find((option) => valueFromData(option) === newValue);
+          if (inputtedOption) {
+            setBoundValue(inputtedOption);
           }
         }
       },
@@ -145,7 +149,7 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
       if (!allowFreeText) {
         setTextInputCurrentValue(valueFromData(bind?.value) || value || '');
       }
-    }, [allowFreeText, bind]);
+    }, [allowFreeText, valueFromData, bind?.value]);
 
     return (
       <>
@@ -162,9 +166,11 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
             onOpenChange={setOptionsOpen}
             rootElementSelector={optionsRootElementSelector}
             onItemSelected={onSelectOption}
+            allowKeyboard={allowKeyboardSelection}
           >
             <TextInput
               {...textInputProps}
+              pending={pending}
               ref={ref}
               error={shouldShowErrorIcon}
               validationMode={validationMode}
@@ -187,4 +193,6 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
 
 AutoCompleteInput.defaultProps = {
   validationMode: 'both',
+  allowKeyboardSelection: true,
+  filterOptions: true,
 };

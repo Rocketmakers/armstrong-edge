@@ -27,3 +27,30 @@ export const Default = StoryUtils.cloneTemplate(Template, {
   leftIcon: IconUtils.getIconDefinition('Icomoon', 'syringe'),
   options: ['one', 'two'],
 });
+export const Disabled = StoryUtils.cloneTemplate(Template, {
+  leftIcon: IconUtils.getIconDefinition('Icomoon', 'syringe'),
+  options: ['very', 'slightly', 'somewhat'],
+  disabled: true,
+});
+export const Pending = StoryUtils.cloneTemplate(Template, {
+  leftIcon: IconUtils.getIconDefinition('Icomoon', 'syringe'),
+  options: ['very', 'slightly', 'somewhat'],
+  pending: true,
+});
+export const WithOverlayText = StoryUtils.cloneTemplate(Template, {
+  leftIcon: IconUtils.getIconDefinition('Icomoon', 'fork-knife'),
+  options: ['tomato', 'brown', 'HP'],
+  rightOverlay: 'sauce',
+});
+export const AllowFreeText = StoryUtils.cloneTemplate(Template, {
+  leftIcon: IconUtils.getIconDefinition('Icomoon', 'fork-knife'),
+  options: ['tomato', 'brown', 'HP'],
+  rightOverlay: 'sauce',
+  allowFreeText: true,
+});
+export const DontFilter = StoryUtils.cloneTemplate(Template, {
+  leftIcon: IconUtils.getIconDefinition('Icomoon', 'fork-knife'),
+  options: ['tomato', 'brown', 'HP'],
+  rightOverlay: 'sauce',
+  filterOptions: false,
+});

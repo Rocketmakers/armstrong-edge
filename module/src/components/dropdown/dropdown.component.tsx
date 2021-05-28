@@ -51,6 +51,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
 
     const [top, setTop] = React.useState<number>();
     const [left, setLeft] = React.useState<number>();
+    const [width, setWidth] = React.useState<number>();
 
     React.useEffect(() => {
       if (isOpen && rootRef.current && contentRef.current) {
@@ -59,6 +60,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         // set top and left from position, but ensure it doesn't fall off the edge of the screen
         setTop(Math.min(rect.top + rect.height, (Globals.Window?.innerHeight || 0) - contentRect.height));
         setLeft(Math.min(rect.left, (Globals.Window?.innerWidth || 0) - contentRect.width));
+        setWidth(rect.width);
       }
     }, [isOpen]);
 
@@ -97,7 +99,13 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         <Portal rootElementSelector={rootElementSelector}>
           <div
             className={ClassNames.concat('arm-dropdown-content', contentClassName)}
-            style={{ '--arm-dropdown-top': `${top}px`, '--arm-dropdown-left': `${left}px` } as React.CSSProperties}
+            style={
+              {
+                '--arm-dropdown-top': `${top}px`,
+                '--arm-dropdown-left': `${left}px`,
+                '--arm-dropdown-width': `${width}px`,
+              } as React.CSSProperties
+            }
             onClick={(event) => event.stopPropagation()}
             ref={contentRef}
             data-is-open={isOpen}

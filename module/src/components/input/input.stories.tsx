@@ -1,13 +1,13 @@
 import { StoryUtils } from '../../stories/storyUtils';
-import { InputBase } from './inputBase.component';
+import { Input } from './input.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(InputBase, 'FormUtils', 'Input Base', {});
+export default StoryUtils.createMeta(Input, 'FormUtils', 'Input', {});
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(InputBase);
+const Template = StoryUtils.createTemplate(Input);
 
 /** stories */
 

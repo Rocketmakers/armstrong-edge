@@ -1,11 +1,11 @@
 import * as React from 'react';
 
 import { ClassNames } from '../../utils/classNames';
-import { IInputBaseProps } from '../inputBase/inputBase.component';
+import { IInputProps } from '../input/input.component';
 import { InputWrapper } from '../inputWrapper';
 import { useMyValidationErrorMessages } from '../validationErrors';
 
-export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputBaseProps<number>, 'type'>>(
+export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputProps<number>, 'type'>>(
   (
     {
       bind,

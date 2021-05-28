@@ -129,7 +129,10 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
             <DropdownItem
               {...item}
               key={item.content + index}
-              onClick={() => onItemSelected(item.id)}
+              onClick={() => {
+                console.log(item);
+                onItemSelected(item.id);
+              }}
               isKeyboardSelected={!!allowKeyboard && keyboardSelectedItemIndex === index}
               isSelected={!!currentValue?.includes(item.content)}
               ref={(optionItemRef) => {
