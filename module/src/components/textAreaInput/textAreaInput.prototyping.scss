@@ -1,7 +1,7 @@
 .arm-input.arm-text-area-input {
   textarea {
     border: none;
-    padding: $spacing-xsmall;
+    padding: $spacing-xsmall 0;
 
     &:focus {
       border: none;

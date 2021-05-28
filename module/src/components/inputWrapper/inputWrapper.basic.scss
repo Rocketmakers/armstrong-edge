@@ -1,22 +1,26 @@
 .arm-input.input-wrapper {
   width: $input-width;
-  padding: 0 $spacing-xsmall;
-  display: flex;
-  align-items: center;
-  gap: $spacing-xsmall;
 
-  + .arm-validation-errors {
-    margin-top: $spacing-xsmall;
-  }
+  .arm-input-inner {
+    width: 100%;
+    padding: 0 $spacing-xsmall;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xsmall;
 
-  &[data-disabled='true'] {
-    pointer-events: none;
-    user-select: none;
-  }
+    + .arm-validation-errors {
+      margin-top: $spacing-xsmall;
+    }
 
-  .arm-spinner {
-    .arm-icon {
-      font-size: 0.75rem;
+    &[data-disabled='true'] {
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .arm-spinner {
+      .arm-icon {
+        font-size: 0.75rem;
+      }
     }
   }
 }

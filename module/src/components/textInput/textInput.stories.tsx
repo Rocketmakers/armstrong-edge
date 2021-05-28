@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import { StoryUtils } from '../../stories/storyUtils';
 import { TextInput } from './textInput.component';
 
@@ -26,4 +28,14 @@ export const Default = StoryUtils.cloneTemplate(Template, {});
 export const WithIcons = StoryUtils.cloneTemplate(Template, {
   leftIcon: { icon: 'user', iconSet: 'Icomoon' },
   rightIcon: { icon: 'user-check', iconSet: 'Icomoon' },
+});
+export const Pending = StoryUtils.cloneTemplate(Template, {
+  leftIcon: { icon: 'user', iconSet: 'Icomoon' },
+  rightIcon: { icon: 'user-check', iconSet: 'Icomoon' },
+  pending: true,
+});
+export const ElementsBelow = StoryUtils.cloneTemplate(Template, {
+  leftIcon: { icon: 'user', iconSet: 'Icomoon' },
+  rightIcon: { icon: 'user-check', iconSet: 'Icomoon' },
+  below: <p>Hello there</p>,
 });

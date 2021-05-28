@@ -23,4 +23,12 @@
   &[data-error='true'] {
     border: 1px solid $color-negative;
   }
+
+  .arm-input-wrapper-above {
+    border-bottom: $line-very-light;
+  }
+
+  .arm-input-wrapper-below {
+    border-top: $line-very-light;
+  }
 }

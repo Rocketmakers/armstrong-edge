@@ -3,7 +3,7 @@ import { Input } from './input.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(Input, 'FormUtils', 'Input', {});
+export default StoryUtils.createMeta(Input, 'Form', 'Input', {});
 
 /** component template */
 

@@ -23,6 +23,7 @@ export namespace MemoryServer {
     points: number
     roles: IUserRole[]
     bio?: string
+    toppings?: string[];
     isACoolGuy?: boolean;
   }
 

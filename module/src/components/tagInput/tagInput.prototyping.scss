@@ -1,0 +1,32 @@
+@keyframes arm-animate-in-tag-input-tag {
+  from {
+    max-width: 0;
+  }
+  to {
+    max-width: 200px;
+  }
+}
+
+.arm-tag-input {
+  .arm-tag {
+    animation: arm-animate-in-tag-input-tag $transition-quick linear;
+
+    > * {
+      animation: fade-in $transition-quick;
+    }
+  }
+
+  .arm-input-wrapper-above,
+  .arm-input-wrapper-below {
+    transition: max-height $transition-quick, padding $transition-quick;
+    max-height: 0;
+  }
+
+  &[data-has-tags='true'] {
+    .arm-input-wrapper-above,
+    .arm-input-wrapper-below {
+      padding: $spacing-xsmall;
+      max-height: 90px;
+    }
+  }
+}

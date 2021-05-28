@@ -18,14 +18,31 @@ export interface IIcon<TIconSet extends IconSet> {
   icon: IconName<TIconSet>;
 }
 
-export interface IIconProps<TIconSet extends IconSet> extends IIcon<TIconSet> {
+export interface IIconProps<TIconSet extends IconSet>
+  extends IIcon<TIconSet>,
+    React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /** (string) CSS className property */
   className?: string;
 }
 
 /** Render an icon using one of the supported icon sets */
-export const Icon = <TIconSet extends IconSet>({ className, iconSet, icon }: React.PropsWithChildren<IIconProps<TIconSet>>) => {
-  return <div data-icon-set={iconSet} data-i={icon} className={ClassNames.concat('arm-icon', className)} />;
+export const Icon = <TIconSet extends IconSet>({
+  className,
+  iconSet,
+  icon,
+  onClick,
+  ...nativeProps
+}: React.PropsWithChildren<IIconProps<TIconSet>>) => {
+  return (
+    <div
+      {...nativeProps}
+      data-icon-set={iconSet}
+      data-i={icon}
+      className={ClassNames.concat('arm-icon', className)}
+      data-clickable={!!onClick}
+      onClick={onClick}
+    />
+  );
 };
 
 type IIconsetIconProps<TIconSet extends IconSet> = Omit<IIconProps<TIconSet>, 'iconSet'>;

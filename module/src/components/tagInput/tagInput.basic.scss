@@ -1,0 +1,23 @@
+.arm-tag-input {
+  overflow-x: auto;
+
+  input {
+    flex-grow: 1;
+    -webkit-appearance: none;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: $spacing-xsmall 0;
+    height: $input-height;
+  }
+
+  .arm-input-wrapper-above,
+  .arm-input-wrapper-below {
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xsmall;
+    flex-wrap: wrap;
+    min-height: 0;
+  }
+}

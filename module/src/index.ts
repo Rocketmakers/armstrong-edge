@@ -13,7 +13,7 @@ export { DropdownButton, IDropdownButtonProps } from './components/dropdownButto
 export { DropdownItem, DropdownItems, IDropdownItem, IDropdownItemProps, IDropdownItemsProps } from './components/dropdownItems';
 export { EmailInput } from './components/emailInput';
 export { ErrorMessage, IErrorMessageProps } from './components/errorMessage';
-export { IcomoonIcon, Icon, IconName, Icons, IconSet, IIcon, IIconProps, LinearIcon } from './components/icon';
+export { IcomoonIcon, Icon, IconName, Icons, IconSet, IconUtils, IIcon, IIconProps, LinearIcon } from './components/icon';
 export { IconButton, IIconButtonProps } from './components/iconButton';
 export { IInputProps, Input } from './components/input';
 export { IInputWrapperProps, InputWrapper } from './components/inputWrapper';
@@ -21,6 +21,8 @@ export { NumberInput } from './components/numberInput';
 export { ISelectInputOption, ISelectInputProps, SelectInput } from './components/selectInput';
 export { ISpinnerProps, Spinner } from './components/spinner';
 export { Status } from './components/status';
+export { ITagProps, Tag } from './components/tag';
+export { ITagInputProps, TagInput } from './components/tagInput';
 export { TelInput } from './components/telInput';
 export { ITextAreaInputProps, TextAreaInput } from './components/textAreaInput';
 export { TextInput } from './components/textInput';

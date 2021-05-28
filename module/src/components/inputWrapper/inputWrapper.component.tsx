@@ -40,6 +40,12 @@ export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet> 
 
   /** (boolean) hide the icon on the given side if there is an active status - defaults to true */
   hideIconOnStatus?: boolean;
+
+  /** (JSX) content to render above the actual input */
+  above?: JSX.Element;
+
+  /** (JSX) content to render below the actual input */
+  below?: JSX.Element;
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
@@ -60,6 +66,9 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       error,
       statusPosition,
       hideIconOnStatus,
+      above,
+      below,
+      ...nativeProps
     },
     ref
   ) => {
@@ -76,20 +85,27 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
           className={ClassNames.concat('arm-input', 'input-wrapper', className)}
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
+          {...nativeProps}
         >
-          <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
-            {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />}
-            {leftOverlay && (
-              <div className="arm-input-overlay arm-input-overlay-left">{typeof leftOverlay === 'string' ? <p>{leftOverlay}</p> : leftOverlay}</div>
-            )}
-            {children}
-            {rightOverlay && (
-              <div className="arm-input-overlay arm-input-overlay-right">
-                {typeof rightOverlay === 'string' ? <p>{rightOverlay}</p> : rightOverlay}
-              </div>
-            )}
-            {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />}
-          </IconWrapper>
+          {above && <div className="arm-input-wrapper-above">{above}</div>}
+
+          <div className="arm-input-inner">
+            <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
+              {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />}
+              {leftOverlay && (
+                <div className="arm-input-overlay arm-input-overlay-left">{typeof leftOverlay === 'string' ? <p>{leftOverlay}</p> : leftOverlay}</div>
+              )}
+              {children}
+              {rightOverlay && (
+                <div className="arm-input-overlay arm-input-overlay-right">
+                  {typeof rightOverlay === 'string' ? <p>{rightOverlay}</p> : rightOverlay}
+                </div>
+              )}
+              {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />}
+            </IconWrapper>
+          </div>
+
+          {below && <div className="arm-input-wrapper-below">{below}</div>}
         </div>
 
         {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (

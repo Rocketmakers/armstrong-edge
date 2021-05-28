@@ -1,6 +1,7 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, CheckboxInput, AutoCompleteInput } from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, CheckboxInput, AutoCompleteInput , TagInput} from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
+
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"
 import { IconUtils } from "@rocketmakers/armstrong-edge/dist/components/icon"
@@ -74,6 +75,7 @@ export const UserEdit: React.FC = () => {
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} />
         <CheckboxInput label="pissy wickles" validationErrorMessages={['uh oh']} />
+        <TagInput bind={formProp('toppings').bind()} spaceCreatesTags />
 
         <AutoCompleteInput 
           bind={formProp("favouriteCuisine").bind({ format:{ fromData: value => autocompleteOptions.find(option => option.id === value)?.name }})} 

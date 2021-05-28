@@ -167,6 +167,7 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
             rootElementSelector={optionsRootElementSelector}
             onItemSelected={onSelectOption}
             allowKeyboard={allowKeyboardSelection}
+            currentValue={[valueFromData(currentValue)]}
           >
             <TextInput
               {...textInputProps}

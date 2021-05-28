@@ -34,6 +34,8 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       validationMode,
       validationErrorIcon,
       pending,
+      above,
+      below,
       disabled,
       ...nativeProps
     },
@@ -67,6 +69,8 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         validationMode={validationMode || bind?.formConfig?.validationMode}
         pending={pending}
         disabled={disabled}
+        above={above}
+        below={below}
       >
         <input
           {...nativeProps}
