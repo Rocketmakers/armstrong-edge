@@ -1,0 +1,21 @@
+.arm-dropdown-option {
+  padding: $spacing-xxsmall $spacing-xsmall;
+  transition: background-color $transition-quick, color $transition-quick;
+
+  + .arm-auto-complete-input-option {
+    border-top: $line-very-light;
+  }
+
+  &:hover {
+    background-color: $gray-very-light;
+  }
+
+  &[data-keyboard-selected='true'] {
+    background-color: $gray-very-light;
+  }
+
+  &[data-selected='true'] {
+    background-color: $brand-primary;
+    color: white;
+  }
+}

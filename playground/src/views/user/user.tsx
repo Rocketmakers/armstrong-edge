@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, CheckboxInput } from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, CheckboxInput, AutoCompleteInput } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 import { MemoryServer } from "../../servers/memory"
@@ -7,6 +7,8 @@ import { IconUtils } from "@rocketmakers/armstrong-edge/dist/components/icon"
 import { IValidationError } from "@rocketmakers/armstrong-edge/dist/hooks/form"
 
 type Role = MemoryServer.IUserRole
+
+const autocompleteOptions = [{ id: 'a', name: 'pizza' }, { id: 'b', name: 'chips' }, { id: 'c', name: 'pints' }]
 
 export const UserEdit: React.FC = () => {
   const { userId } = useParams<{ userId?: string }>()
@@ -21,8 +23,6 @@ export const UserEdit: React.FC = () => {
     updateUserProcessed?.validationErrors,
     [{key: 'firstName', message: 'uh oh'}]
   )
-
-  console.log(validationErrors)
 
   const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(
     {
@@ -62,31 +62,45 @@ export const UserEdit: React.FC = () => {
     [formProp]
   )
 
-  console.log(formProp('firstName').bind())
-
   return (
     <form>
       <fieldset>
         <h2>Basic Info</h2>
         <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} validationErrorMessages={['no you']} />
+        
         <TextInput bind={formProp("lastName").bind()} leftIcon={IconUtils.getIconDefinition('Icomoon', 'user')} />
         <TextAreaInput bind={formProp("bio").bind()} />
         <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition('LinearIcons', 'envelope')} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} />
-        <CheckboxInput />
+        <CheckboxInput label="pissy wickles" validationErrorMessages={['uh oh']} />
+
+        <AutoCompleteInput 
+          bind={formProp("favouriteCuisine").bind({ format:{ fromData: value => autocompleteOptions.find(option => option.id === value)?.name }})} 
+          leftIcon={IconUtils.getIconDefinition('Icomoon', 'pizza')} 
+          options={autocompleteOptions.map(option => option.id)} 
+          filterOptions
+        />
+
+        <p>you've chosen: {formProp('favouriteCuisine').get()}</p>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
       </fieldset>
 
       <AddressForm bind={formProp("address").bind()} />
 
       <fieldset>
         <h2>Roles</h2>
+
         {formState.roles.map((role, index) => (
           <div key={index}>
             <TextInput bind={formProp("roles", index, "name").bind()} />
             <Button onClick={() => formProp("roles").remove(index)}>Remove</Button>
           </div>
         ))}
+
         <Button onClick={() => swapRoleAtIndex(0, { name: "horse" })}>Add role</Button>
       </fieldset>
 

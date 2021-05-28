@@ -61,8 +61,10 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
     }: ICheckboxInputProps,
     ref
   ) => {
-    const shouldShowValidationErrorsList = validationMode === 'both' || validationMode === 'message';
-    const shouldShowErrorIcon = (!!validationErrorMessages?.length && (validationMode === 'both' || validationMode === 'icon')) || error;
+    const computedValidationMode = validationMode || bind?.formConfig?.validationMode;
+    const shouldShowValidationErrorsList = computedValidationMode === 'both' || computedValidationMode === 'message';
+    const shouldShowErrorIcon =
+      (!!validationErrorMessages?.length && (computedValidationMode === 'both' || computedValidationMode === 'icon')) || error;
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,7 +105,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
           <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />
         </div>
 
-        {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (
+        {!!allValidationErrorMessages?.length && shouldShowValidationErrorsList && (
           <ValidationErrors validationErrors={allValidationErrorMessages} icon={validationErrorIcon} />
         )}
       </>
@@ -113,4 +115,5 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
 
 CheckboxInput.defaultProps = {
   checkedIcon: IconUtils.getIconDefinition('Icomoon', 'checkmark3'),
+  validationMode: 'both',
 };

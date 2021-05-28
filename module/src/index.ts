@@ -5,8 +5,11 @@
 import * as Form from './hooks/form/index';
 
 export { Form };
+export { AutoCompleteInput, IAutoCompleteInputProps } from './components/autoCompleteInput';
 export { Button, IButtonProps } from './components/button';
 export { CheckboxInput, ICheckboxInputProps } from './components/checkboxInput';
+export { Dropdown, IDropdownProps } from './components/dropdown';
+export { DropdownItem, DropdownItems, IDropdownItem, IDropdownItemProps, IDropdownItemsProps } from './components/dropdownItems';
 export { EmailInput } from './components/emailInput';
 export { ErrorMessage, IErrorMessageProps } from './components/errorMessage';
 export { IcomoonIcon, Icon, IconName, Icons, IconSet, IIcon, IIconProps, LinearIcon } from './components/icon';
