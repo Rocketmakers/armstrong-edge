@@ -1,3 +1,13 @@
+@keyframes arm-animate-in-arm-dropdown-content {
+  from {
+    max-height: 0;
+  }
+  to {
+    max-height: 150px;
+  }
+}
+
 .arm-dropdown-content {
   box-shadow: $shadow-medium;
+  animation: arm-animate-in-arm-dropdown-content $transition-quick;
 }

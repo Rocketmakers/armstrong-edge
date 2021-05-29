@@ -78,7 +78,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
           className={'arm-input-base-input'}
           onChange={onChangeEvent}
           value={bind?.value ?? value}
-          disabled={disabled}
+          disabled={disabled || pending}
         />
       </InputWrapper>
     );
