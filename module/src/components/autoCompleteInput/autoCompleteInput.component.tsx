@@ -4,13 +4,12 @@ import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
 import { IInputProps } from '../input';
 import { TextInput } from '../textInput';
-import { useMyValidationErrorMessages, ValidationErrors } from '../validationErrors';
 
 // internally, the autocompleteinput binds two values - the actual content of the text input, and the selected value
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
 // will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
-export interface IAutoCompleteInputProps extends Omit<IInputProps<string>, 'type' | 'onChange' | 'value'> {
+export interface IAutoCompleteInputProps extends Omit<IInputProps<string>, 'type' | 'onChange' | 'value' | 'disableOnPending'> {
   /** (string[]) The options to render when the input is focused - use bindConfig.fromData to parse theseß */
   options?: string[];
 
@@ -36,7 +35,7 @@ export interface IAutoCompleteInputProps extends Omit<IInputProps<string>, 'type
   filterOptions?: boolean | ((option: string, textInputValue: string) => boolean);
 
   /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
-  allowKeyboardSelection?: boolean;
+  allowKeyboardNavigationSelection?: boolean;
 }
 
 /** An input which displays some given options below the and allows the user to select from those options */
@@ -58,7 +57,7 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
       onChange,
       value,
       allowFreeText,
-      allowKeyboardSelection,
+      allowKeyboardNavigationSelection,
       ...textInputProps
     },
     ref
@@ -85,15 +84,6 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
       }
       return options || [];
     }, [filterOptions, JSON.stringify(options), textInputCurrentValue]);
-
-    const computedValidationMode = validationMode || bind?.formConfig?.validationMode;
-    const shouldShowValidationErrorsList = computedValidationMode === 'both' || computedValidationMode === 'message';
-    const shouldShowErrorIcon =
-      (!!validationErrorMessages?.length && (computedValidationMode === 'both' || computedValidationMode === 'icon')) || error;
-
-    const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
-
-    const onTextinputFocus = React.useCallback(() => setOptionsOpen(true), []);
 
     /** set the value that is bound and trigger onChange */
     const setBoundValue = React.useCallback(
@@ -127,7 +117,9 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
 
     const onTextInputChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = event.currentTarget.value;
+        const newValue = event.currentTarget.value || '';
+
+        console.log({ newValue });
 
         setInputValue(newValue);
 
@@ -166,27 +158,28 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
             onOpenChange={setOptionsOpen}
             rootElementSelector={optionsRootElementSelector}
             onItemSelected={onSelectOption}
-            allowKeyboard={allowKeyboardSelection}
-            currentValue={[valueFromData(currentValue)]}
+            allowKeyboardNavigation={allowKeyboardNavigationSelection}
+            currentValue={currentValue ? [currentValue] : []}
+            openWhenClickInside
+            openWhenFocusInside
           >
             <TextInput
               {...textInputProps}
               pending={pending}
               ref={ref}
-              error={shouldShowErrorIcon}
-              validationMode={validationMode}
-              onFocus={onTextinputFocus}
+              error={error}
               value={textInputCurrentValue}
               onChange={onTextInputChangeEvent}
               onBlur={onTextInputBlur}
               onKeyDown={() => setOptionsOpen(true)}
+              validationMode={validationMode}
+              onFocus={() => setOptionsOpen(true)}
+              validationErrorMessages={validationErrorMessages}
+              validationErrorIcon={validationErrorIcon}
+              disableOnPending={false}
             />
           </DropdownItems>
         </div>
-
-        {!!allValidationErrorMessages?.length && shouldShowValidationErrorsList && (
-          <ValidationErrors validationErrors={allValidationErrorMessages} icon={validationErrorIcon} />
-        )}
       </>
     );
   }
@@ -194,6 +187,6 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
 
 AutoCompleteInput.defaultProps = {
   validationMode: 'both',
-  allowKeyboardSelection: true,
+  allowKeyboardNavigationSelection: true,
   filterOptions: true,
 };

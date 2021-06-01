@@ -40,3 +40,9 @@ html {
     }
   }
 }
+
+.arm-dropdown-items {
+  &:focus {
+    // border: 1px solid blue;
+  }
+}

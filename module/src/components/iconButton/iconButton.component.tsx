@@ -8,11 +8,14 @@ import { Status } from '../status';
 export interface IIconButtonProps extends Omit<IButtonProps, 'leftIcon' | 'rightIcon' | 'hideIconOnStatus' | 'statusPosition'> {
   /** (IIcon) the icon to render on the button */
   icon: IIcon<IconSet>;
+
+  /** (boolean) should not render as a button */
+  iconOnly?: boolean;
 }
 
-export const IconButton: React.FunctionComponent<IIconButtonProps> = ({ icon, pending, error, errorIcon, className, ...buttonProps }) => {
+export const IconButton: React.FunctionComponent<IIconButtonProps> = ({ icon, pending, error, errorIcon, className, iconOnly, ...buttonProps }) => {
   return (
-    <Button {...buttonProps} className={ClassNames.concat('arm-icon-button', className)} statusPosition={undefined}>
+    <Button {...buttonProps} className={ClassNames.concat('arm-icon-button', className)} statusPosition={undefined} data-icon-only={iconOnly}>
       {!pending && !error && <Icon iconSet={icon.iconSet} icon={icon.icon} />}
       <Status errorIcon={errorIcon} pending={pending} error={error} />
     </Button>

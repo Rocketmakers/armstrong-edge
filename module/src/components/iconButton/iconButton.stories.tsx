@@ -37,9 +37,10 @@ export const PendingAnimation = () => {
   };
 
   return (
-    <IconButton error={error} icon={IconUtils.getIconDefinition('Icomoon', 'rotate-ccw')} pending={pending} onClick={onClick}>
-      Click me to pend...
-    </IconButton>
+    <>
+      <IconButton error={error} icon={IconUtils.getIconDefinition('Icomoon', 'chess-king')} pending={pending} onClick={onClick} />
+      <p>CLICK IT</p>
+    </>
   );
 };
 export const Error = StoryUtils.cloneTemplate(Template, {

@@ -1,6 +1,10 @@
-.arm-dropdown-option {
+.arm-dropdown-item {
   padding: $spacing-xxsmall $spacing-xsmall;
   transition: background-color $transition-quick, color $transition-quick;
+
+  p {
+    flex-grow: 1;
+  }
 
   + .arm-auto-complete-input-option {
     border-top: $line-very-light;
@@ -17,5 +21,9 @@
   &[data-selected='true'] {
     background-color: $brand-primary;
     color: white;
+  }
+
+  .arm-dropdown-item-checkmark {
+    font-size: 0.75rem;
   }
 }

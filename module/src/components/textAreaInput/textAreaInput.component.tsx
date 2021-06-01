@@ -7,7 +7,7 @@ import { useMyValidationErrorMessages } from '../validationErrors';
 
 export interface ITextAreaInputProps
   extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
-    IInputWrapperProps {
+    Omit<IInputWrapperProps, 'onClick'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string>;
 }
@@ -30,10 +30,15 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
       pending,
       above,
       below,
+      statusPosition,
+      disableOnPending,
       ...nativeProps
     },
     ref
   ) => {
+    const internalRef = React.useRef<HTMLTextAreaElement>(null);
+    React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(event);
@@ -63,9 +68,12 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
         pending={pending}
         validationMode={validationMode || bind?.formConfig?.validationMode}
         above={above}
+        disableOnPending={disableOnPending}
+        statusPosition={statusPosition}
         below={below}
+        onClick={() => internalRef.current?.focus()}
       >
-        <textarea ref={ref} {...nativeProps} onChange={onChangeEvent} value={bind?.value ?? value} disabled={disabled} />
+        <textarea ref={internalRef} {...nativeProps} onChange={onChangeEvent} value={bind?.value ?? value} disabled={disabled} />
       </InputWrapper>
     );
   }

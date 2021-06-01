@@ -1,7 +1,7 @@
 .arm-input.input-wrapper {
   box-shadow: $shadow-small;
   border-radius: $spacing-xxsmall;
-  transition: opacity $transition-quick, border-color $transition-quick;
+  transition: opacity $transition-quick, border-color $transition-quick, box-shadow $transition-quick;
   border: 1px solid transparent;
 
   + .arm-input {
@@ -30,5 +30,9 @@
 
   .arm-input-wrapper-below {
     border-top: $line-very-light;
+  }
+
+  &:focus-within {
+    box-shadow: $shadow-medium;
   }
 }

@@ -16,35 +16,48 @@ const Template = StoryUtils.createTemplate(TagInput);
 export const Default = () => {
   const [tags, setTags] = React.useState([]);
 
-  return <TagInput value={tags} onChange={setTags} />;
+  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." />;
 };
 export const NoDeletingWithButton = () => {
   const [tags, setTags] = React.useState([]);
 
-  return <TagInput value={tags} onChange={setTags} deleteButton={false} />;
+  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." deleteButton={false} />;
 };
 export const SpaceAddsTags = () => {
   const [tags, setTags] = React.useState([]);
 
-  return <TagInput value={tags} onChange={setTags} spaceCreatesTags />;
+  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." spaceCreatesTags />;
 };
 export const DuplicatesAllowed = () => {
   const [tags, setTags] = React.useState([]);
 
-  return <TagInput value={tags} onChange={setTags} allowDuplicates />;
+  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." allowDuplicates />;
 };
 export const WithValidationErrors = () => {
   const [tags, setTags] = React.useState([]);
 
-  return <TagInput value={tags} onChange={setTags} validationErrorMessages={tags?.length < 3 && ['Must have at least 3 tags']} spaceCreatesTags />;
+  return (
+    <TagInput
+      value={tags}
+      onChange={setTags}
+      placeholder="Please add some tags..."
+      validationErrorMessages={tags?.length < 3 && ['Must have at least 3 tags']}
+      spaceCreatesTags
+    />
+  );
 };
 export const Above = () => {
   const [tags, setTags] = React.useState([]);
 
-  return <TagInput value={tags} onChange={setTags} tagPosition="above" />;
+  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." tagPosition="above" />;
 };
 export const Below = () => {
   const [tags, setTags] = React.useState([]);
 
-  return <TagInput value={tags} onChange={setTags} tagPosition="below" />;
+  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." tagPosition="below" />;
+};
+export const Pending = () => {
+  const [tags, setTags] = React.useState(['thing', 'other thing', 'tag time']);
+
+  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." tagPosition="below" pending />;
 };

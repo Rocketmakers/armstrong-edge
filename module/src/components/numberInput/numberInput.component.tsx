@@ -20,7 +20,9 @@ export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputProps<n
       validationMode,
       validationErrorIcon,
       pending,
+      disableOnPending,
       disabled,
+      statusPosition,
       ...nativeProps
     },
     ref
@@ -53,6 +55,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputProps<n
         validationMode={validationMode || bind?.formConfig?.validationMode}
         pending={pending}
         disabled={disabled}
+        disableOnPending={disableOnPending}
+        statusPosition={statusPosition}
       >
         <input
           {...nativeProps}

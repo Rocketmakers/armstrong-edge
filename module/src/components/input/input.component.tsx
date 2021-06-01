@@ -1,13 +1,13 @@
 import * as React from 'react';
 
+import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form/form.types';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
-import { useMyValidationErrorMessages } from '../validationErrors';
 
 export interface IInputProps<TValue>
   extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
-    IInputWrapperProps {
+    Omit<IInputWrapperProps, 'onClick'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TValue>;
 
@@ -37,25 +37,27 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       above,
       below,
       disabled,
+      disableOnPending,
+      statusPosition,
       ...nativeProps
     },
     ref
   ) => {
+    const internalRef = React.useRef<HTMLInputElement>(null);
+    React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+
+    const [boundValue, boundOnChange, { myValidationErrorMessages }] = Form.useBindingTools<any>(bind, {
+      value: value?.toString(),
+      onChange,
+      validationErrorMessages,
+    });
+
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        onChange?.(event);
-
-        const currentValue = event.currentTarget.value;
-
-        if (bind) {
-          const formattedValue = bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
-          bind.setValue(formattedValue);
-        }
+        boundOnChange(event.currentTarget.value);
       },
-      [bind, onChange]
+      [boundOnChange]
     );
-
-    const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
 
     return (
       <InputWrapper
@@ -64,21 +66,24 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
-        validationErrorMessages={allValidationErrorMessages}
+        validationErrorMessages={myValidationErrorMessages}
         validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
         validationMode={validationMode || bind?.formConfig?.validationMode}
         pending={pending}
         disabled={disabled}
         above={above}
+        statusPosition={statusPosition}
         below={below}
+        disableOnPending={disableOnPending}
+        onClick={() => internalRef.current?.focus()}
       >
         <input
           {...nativeProps}
-          ref={ref}
+          ref={internalRef}
           className={'arm-input-base-input'}
           onChange={onChangeEvent}
-          value={bind?.value ?? value}
-          disabled={disabled || pending}
+          value={boundValue}
+          disabled={disabled || (pending && disableOnPending)}
         />
       </InputWrapper>
     );

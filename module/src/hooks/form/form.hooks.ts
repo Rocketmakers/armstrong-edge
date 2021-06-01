@@ -1,6 +1,7 @@
 /* eslint-disable no-redeclare */
 import * as React from 'react';
 
+import { useMyValidationErrorMessages } from '../../components/validationErrors';
 import { Objects } from '../../utils/objects';
 import { Typescript } from '../../utils/typescript';
 import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
@@ -207,4 +208,65 @@ export function use<TData extends object>(dataOrBinder: TData | IBindingProps<TD
     return useChild(dataOrBinder, formConfig);
   }
   return useForm(dataOrBinder, formConfig);
+}
+
+/** The values and callbacks returned from the useBindingTools hook */
+
+interface IUseBindingToolsReturnUtils<TData> {
+  /** Take any value and use the fromData formatter on it */
+  getFormattedValueFromData: (val: TData) => void;
+
+  /** Take any value and use the toData formatter on it */
+  getFormattedValueToData: (val: TData) => void;
+
+  /** Validation errors from the binder concatenated with manually passed in errors */
+  myValidationErrorMessages?: string[];
+}
+
+type UseBindingToolsReturn<TData> = [TData | undefined, (newValue: TData) => void, IUseBindingToolsReturnUtils<TData>];
+
+/** Used as overrides for the bind functionality, for use with component props */
+interface IUseBindingToolsOverrides<TData> {
+  /** The current value, will override the value from bind if both are provided */
+  value?: TData;
+
+  /** Called when the value is updated, is called alongside the binder's onChange */
+  onChange?: (newValue: TData) => void;
+
+  /** Component level validation errors, will be concatenated with the validation errors from the binder */
+  validationErrorMessages?: string[];
+}
+
+/**
+ * An optional hook for internal form component use. Takes a bind and some optional overrides and ensures that onChange and value
+ * use the bind's formatters
+ */
+
+export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingToolsOverrides<TData>): UseBindingToolsReturn<TData> {
+  const value = React.useMemo(
+    () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind?.value) ?? bind?.value,
+    [overrides?.value, bind?.bindConfig?.format?.fromData, bind?.value]
+  );
+
+  const onChange = React.useCallback(
+    (newValue: TData) => {
+      overrides?.onChange?.(newValue);
+      bind?.setValue?.(bind?.bindConfig?.format?.toData?.(newValue) ?? newValue);
+    },
+    [overrides?.onChange, bind?.setValue, bind?.bindConfig?.format?.toData]
+  );
+
+  const getFormattedValueFromData = React.useCallback(
+    (val?: TData) => bind?.bindConfig?.format?.fromData?.(val) ?? val,
+    [bind?.bindConfig?.format?.fromData]
+  );
+
+  const getFormattedValueToData = React.useCallback(
+    (val?: TData) => bind?.bindConfig?.format?.toData?.(val) ?? val,
+    [bind?.bindConfig?.format?.toData]
+  );
+
+  const myValidationErrorMessages = useMyValidationErrorMessages(bind, overrides?.validationErrorMessages);
+
+  return [value, onChange, { getFormattedValueFromData, getFormattedValueToData, myValidationErrorMessages }];
 }

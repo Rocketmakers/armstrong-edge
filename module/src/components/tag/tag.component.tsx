@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import { ClassNames } from '../../utils/classNames';
-import { Icon, IconSet } from '../icon';
+import { IconSet, IconUtils } from '../icon';
+import { IconButton } from '../iconButton';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 
 export interface ITagProps
@@ -18,7 +19,9 @@ export const Tag: React.FC<ITagProps> = ({ content, className, leftIcon, rightIc
   <div className={ClassNames.concat('arm-tag', className)} {...nativeProps}>
     <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
       {typeof children === 'string' || !children ? <p>{content}</p> : children}
-      {onRemove && <Icon className="arm-tag-close" onClick={onRemove} iconSet="Icomoon" icon="cross2" />}
+      {onRemove && (
+        <IconButton iconOnly className="arm-tag-close" onClick={() => onRemove()} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} />
+      )}
     </IconWrapper>
   </div>
 );

@@ -18,7 +18,7 @@ export const Default = () => {
 
   return (
     <Dropdown isOpen={isOpen} onOpenChange={setIsOpen} dropdownContent={<p>I'm in a dropdown</p>}>
-      <p onClick={() => setIsOpen(true)}>Click on me for dropdown</p>
+      <p>Click on me for dropdown</p>
     </Dropdown>
   );
 };

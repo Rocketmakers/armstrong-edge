@@ -2,6 +2,11 @@ $arm-dropdown-top: var(--arm-dropdown-top);
 $arm-dropdown-left: var(--arm-dropdown-left);
 $arm-dropdown-width: var(--arm-dropdown-width);
 
+.arm-dropdown {
+  width: max-content;
+  user-select: none;
+}
+
 .arm-dropdown-content {
   position: fixed;
   top: $arm-dropdown-top;
@@ -12,13 +17,12 @@ $arm-dropdown-width: var(--arm-dropdown-width);
   transition: max-height $transition-medium linear, opacity $transition-quick;
   overflow: auto;
   opacity: 0;
-  overscroll-behavior: none;
   border-radius: $border-radius-small;
-  max-height: 0;
+  // max-height: 0;
 
   &[data-is-open='true'] {
     pointer-events: all;
-    max-height: 120px;
+    // max-height: 180px;
     opacity: 1;
     transition: max-height $transition-quick linear;
   }

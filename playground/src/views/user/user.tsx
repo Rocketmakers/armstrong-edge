@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, CheckboxInput, AutoCompleteInput , TagInput} from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, CheckboxInput, AutoCompleteInput, NativeDateInput , TagInput, NativeSelectInput} from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 
 import { apiHooks } from "../../state/apiHooks"
@@ -18,6 +18,18 @@ export const UserEdit: React.FC = () => {
 
   const [addUser, { processed: addUserProcessed }] = apiHooks.user.addUser.useMutation()
   const [updateUser, { processed: updateUserProcessed }] = apiHooks.user.updateUser.useMutation()
+
+  const [autcompleteValue, setAutocompleteValue] = React.useState('')
+
+  const [{ data: sauces, isFetching: isFetchingSauces }] = apiHooks.sauces.getSauces.useQuery({
+    parameters: { q: autcompleteValue },
+    cacheKey: a => a.q,
+    autoInvoke: true,
+  })
+
+  console.log({sauces})
+
+  console.log({autcompleteValue})
 
   const validationErrors: IValidationError[] = Arrays.flatten(
     addUserProcessed?.validationErrors,
@@ -42,6 +54,8 @@ export const UserEdit: React.FC = () => {
     
     { validationErrors, validationErrorIcon: IconUtils.getIconDefinition('LinearIcons', 'alarm') }
   )
+
+  const selectRef = React.useRef<HTMLSelectElement>()
 
   React.useEffect(() => {
     console.log("NEW STATE", formState)
@@ -73,15 +87,20 @@ export const UserEdit: React.FC = () => {
         <TextAreaInput bind={formProp("bio").bind()} />
         <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition('LinearIcons', 'envelope')} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
-        <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} />
+        <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} ref={selectRef} />
+        <NativeSelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} ref={selectRef} />
         <CheckboxInput label="pissy wickles" validationErrorMessages={['uh oh']} />
-        <TagInput bind={formProp('toppings').bind()} spaceCreatesTags />
+        <TagInput bind={formProp('sauces').bind()} spaceCreatesTags tagPosition="above" />
+
+        <NativeDateInput />
 
         <AutoCompleteInput 
-          bind={formProp("favouriteCuisine").bind({ format:{ fromData: value => autocompleteOptions.find(option => option.id === value)?.name }})} 
+          onTextInputChange={setAutocompleteValue}
+          bind={formProp("favouriteCuisine").bind({ format:{ fromData: value => sauces?.find(sauce => sauce.id === value)?.name }})} 
           leftIcon={IconUtils.getIconDefinition('Icomoon', 'pizza')} 
-          options={autocompleteOptions.map(option => option.id)} 
-          filterOptions
+          options={sauces?.map(sauce => sauce.id)} 
+          filterOptions={false}
+          pending={isFetchingSauces}
         />
 
         <p>you've chosen: {formProp('favouriteCuisine').get()}</p>

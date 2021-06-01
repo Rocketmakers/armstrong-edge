@@ -1,7 +1,24 @@
 .arm-input.arm-select-input {
+  cursor: pointer;
+
   .arm-select-input-inner {
     flex-grow: 1;
     position: relative;
+
+    .arm-select-input-content {
+      height: $input-height;
+      display: flex;
+      align-items: center;
+
+      p.placeholder {
+        color: $gray-light;
+      }
+
+      p {
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+    }
 
     .arm-icon.arm-select-input-overlay-icon {
       position: absolute;
@@ -9,25 +26,6 @@
       top: 50%;
       transform: translateY(-50%);
       font-size: 0.6rem;
-    }
-
-    select {
-      @include fill;
-      height: $input-height;
-      cursor: pointer;
-      padding: $spacing-xsmall;
-
-      -webkit-appearance: none;
-      background-color: transparent;
-      resize: none;
-      font-family: inherit;
-      outline: none;
-      border: none;
-
-      &:focus {
-        outline: none;
-        border: none;
-      }
     }
   }
 }
