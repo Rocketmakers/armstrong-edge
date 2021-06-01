@@ -6,22 +6,39 @@
 import { IBindingProps, IValidationError, KeyChain } from './form.types';
 
 /**
+ * Converts a keyChain into a validation error key string
+ * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
+ * @param mode (dots|brackets) Whether to use dot syntax for array indexes, or square brackets.
+ * @returns The key string
+ */
+export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots' | 'brackets'): string {
+  switch (mode) {
+    case 'dots':
+      return keyChain.filter((key) => !!key).join('.');
+    case 'brackets':
+      return keyChain.reduce<string>((attrString, key) => {
+        if (typeof key === 'string') {
+          return `${attrString}${attrString ? `.` : ''}${key}`;
+        }
+        if (typeof key === 'number') {
+          return `${attrString}[${key}]`;
+        }
+        return attrString;
+      }, '');
+    default:
+      throw new Error(`Unsupported mode: ${mode} sent to validation key factory`);
+  }
+}
+
+/**
  * Filters a set of validation errors based on the `keyChain` of the property.
  * @param rootErrors The root set of validation errors for the entire form.
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
  * @returns {Array} A filtered set of validation errors that apply to the property in question.
  */
 export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], keyChain: KeyChain = []): IValidationError[] {
-  const keyChainAttrStringDots = keyChain.filter((key) => !!key).join('.');
-  const keyChainAttrStringSquareArray = keyChain.reduce<string>((attrString, key) => {
-    if (typeof key === 'string') {
-      return `${attrString}${attrString ? `.` : ''}${key}`;
-    }
-    if (typeof key === 'number') {
-      return `${attrString}[${key}]`;
-    }
-    return attrString;
-  }, '');
+  const keyChainAttrStringDots = validationKeyStringFromKeyChain(keyChain, 'dots');
+  const keyChainAttrStringSquareArray = validationKeyStringFromKeyChain(keyChain, 'brackets');
   return rootErrors.filter((error) => error.key === keyChainAttrStringDots || error.key === keyChainAttrStringSquareArray);
 }
 

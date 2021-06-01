@@ -9,7 +9,7 @@ import { useMyValidationErrorMessages } from '../../components/validationErrors'
 import { Objects } from '../../utils/objects';
 import { Typescript } from '../../utils/typescript';
 import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
-import { reducer } from './form.state';
+import { dataReducer, validationReducer } from './form.state';
 import {
   BindingTools,
   BindingToolsArray,
@@ -19,9 +19,10 @@ import {
   IBindConfig,
   IBindingProps,
   IFormConfig,
+  IValidationError,
   KeyChain,
 } from './form.types';
-import { isBindingProps, validationErrorsByKeyChain, valueByKeyChain } from './form.utils';
+import { isBindingProps, validationErrorsByKeyChain, validationKeyStringFromKeyChain, valueByKeyChain } from './form.utils';
 
 /**
  * The base hook used by both of the `useForm` hooks.
@@ -39,6 +40,14 @@ function useFormBase<TData extends object>(
   initialData?: Partial<TData>,
   formConfig?: IFormConfig
 ): HookReturn<TData> {
+  const [validationErrors, validationDispatch] = React.useReducer(validationReducer, []);
+
+  React.useLayoutEffect(() => {
+    if (formConfig?.validationErrors) {
+      validationDispatch({ type: 'add-validation', errors: formConfig.validationErrors });
+    }
+  }, [Objects.contentDependency(formConfig?.validationErrors)]);
+
   /**
    * For setting a new value for a target property
    */
@@ -51,6 +60,45 @@ function useFormBase<TData extends object>(
       }
     },
     [dispatch]
+  );
+
+  /**
+   * For adding validation errors with a string key
+   */
+  const addValidationError = React.useCallback(
+    (...errors: IValidationError[]) => {
+      validationDispatch({ type: 'add-validation', errors });
+    },
+    [validationDispatch]
+  );
+
+  /**
+   * For adding a validation error against a specific property from a keyChain.
+   */
+  const addValidationErrorFromKeyChain = React.useCallback(
+    (keyChain: KeyChain, messages: string | string[]) => {
+      const messageArray = Array.isArray(messages) ? messages : [messages];
+      const key = validationKeyStringFromKeyChain(keyChain, 'dots');
+      addValidationError(...messageArray.map((message) => ({ key, message })));
+    },
+    [validationDispatch]
+  );
+
+  const clearAllValidationErrors = React.useCallback(() => {
+    validationDispatch({ type: 'clear-validation' });
+  }, [validationDispatch]);
+
+  /**
+   * For clearing all validation errors associated with a specific keyChain property
+   */
+  const clearValidationErrorsByKeyChain = React.useCallback(
+    (keyChain: KeyChain) => {
+      const dotKey = validationKeyStringFromKeyChain(keyChain, 'dots');
+      const bracketKey = validationKeyStringFromKeyChain(keyChain, 'brackets');
+      validationDispatch({ type: 'clear-validation', key: dotKey });
+      validationDispatch({ type: 'clear-validation', key: bracketKey });
+    },
+    [validationDispatch]
   );
 
   /**
@@ -111,13 +159,24 @@ function useFormBase<TData extends object>(
         setValue: (newValue: any) => set(keyChain, newValue),
         bindConfig,
         formConfig,
-        myValidationErrors: validationErrorsByKeyChain(formConfig?.validationErrors, keyChain),
+        myValidationErrors: validationErrorsByKeyChain(validationErrors, keyChain),
         dispatch,
         keyChain,
         initialValue: valueByKeyChain(initialData, keyChain),
+        addValidationError: (...messages: string[]) => addValidationErrorFromKeyChain(keyChain, messages),
+        clearValidationErrors: () => clearValidationErrorsByKeyChain(keyChain),
       };
     },
-    [set, Objects.contentDependency(formConfig), dispatch, formStateLive, initialData]
+    [
+      set,
+      Objects.contentDependency(formConfig),
+      dispatch,
+      formStateLive,
+      initialData,
+      validationErrors,
+      addValidationErrorFromKeyChain,
+      clearValidationErrorsByKeyChain,
+    ]
   );
 
   /**
@@ -153,10 +212,16 @@ function useFormBase<TData extends object>(
           remove(keyChain, value as any[], index);
           return formProp(...keyChain) as BindingToolsArray<any>;
         },
+        addValidationError: (...messages: string[]) => {
+          addValidationErrorFromKeyChain(keyChain, messages);
+        },
+        clearValidationErrors: () => {
+          clearValidationErrorsByKeyChain(keyChain);
+        },
       };
       return arrayMethods as BindingTools<TData>;
     },
-    [bind, set, add, pop, remove, insert, formStateLive]
+    [bind, set, add, pop, remove, insert, formStateLive, addValidationErrorFromKeyChain, clearValidationErrorsByKeyChain]
   );
 
   /**
@@ -183,7 +248,15 @@ function useFormBase<TData extends object>(
     [dispatch]
   );
 
-  return { formState: formStateLive, formProp: formProp as FormPropFactory<TData>['formProp'], resetFormData, getFormData, setFormData };
+  return {
+    formState: formStateLive,
+    formProp: formProp as FormPropFactory<TData>['formProp'],
+    resetFormData,
+    getFormData,
+    setFormData,
+    clearAllValidationErrors,
+    addValidationError,
+  };
 }
 
 /**
@@ -199,7 +272,7 @@ function useForm<TData extends object>(initialData: TData, formConfig?: IFormCon
 
   const dispatch = React.useCallback(
     (action) => {
-      formStateRef.current = reducer(formStateRef.current, action);
+      formStateRef.current = dataReducer(formStateRef.current, action);
       setFormState(formStateRef.current);
       return formStateRef.current;
     },

@@ -39,6 +39,15 @@ export interface BindingToolsStandard<TValue> {
    * @returns the value if set, or undefined.
    */
   get: () => TValue | undefined;
+  /**
+   * Adds a validation error for a field within the form state.
+   * @param messages The validation error message(s) to add.
+   */
+  addValidationError: (...messages: string[]) => void;
+  /**
+   * Clears all validation messages associated with a key.
+   */
+  clearValidationErrors: () => void;
 }
 
 /**
@@ -212,6 +221,15 @@ export interface IBindingProps<TValue> {
    * The initial value attributed to the targeted property before any user input.
    */
   initialValue: TValue | undefined;
+  /**
+   * Adds a validation error for a field within the form state.
+   * @param messages (string|string[]) The validation error message(s) to add.
+   */
+  addValidationError: (...messages: string[]) => void;
+  /**
+   * Clears all validation messages associated with a key.
+   */
+  clearValidationErrors: () => void;
 }
 
 /**
@@ -373,6 +391,16 @@ export interface HookReturn<TData extends object> {
    * @param newData The data to set as the active form data.
    */
   setFormData: (newData: TData) => void;
+  /**
+   * Clears all validation errors for the current form state.
+   */
+  clearAllValidationErrors: () => void;
+  /**
+   * Adds one or more validation errors to the current form state.
+   * - Validation errors consist of a key to target the property, and a message to display.
+   * @param validationErrors The errors to add to the current state.
+   */
+  addValidationError: (...validationErrors: IValidationError[]) => void;
 }
 
 /**
@@ -389,3 +417,14 @@ export interface IDelayInputConfig {
    */
   milliseconds: number;
 }
+
+export interface IAddValidationAction {
+  type: 'add-validation';
+  errors: IValidationError[];
+}
+export interface IClearValidationAction {
+  type: 'clear-validation';
+  key?: string;
+}
+
+export type ValidationAction = IAddValidationAction | IClearValidationAction;

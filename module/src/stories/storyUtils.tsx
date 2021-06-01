@@ -49,7 +49,7 @@ export namespace StoryUtils {
 
   /** SCAFFOLD */
 
-  export function createMeta<TComponent extends React.FC>(
+  export function createMeta<TComponent extends React.FC<any>>(
     component: TComponent,
     folder: keyof typeof Folder,
     title: string,
