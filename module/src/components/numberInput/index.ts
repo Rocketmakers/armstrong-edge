@@ -1,1 +1,1 @@
-export { NumberInput } from './numberInput.component';
+export * from './numberInput.component';

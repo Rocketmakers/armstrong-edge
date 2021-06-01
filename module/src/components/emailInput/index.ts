@@ -1,1 +1,1 @@
-export { EmailInput } from './emailInput.component';
+export * from './emailInput.component';

@@ -1,3 +1,3 @@
-export { IcomoonIcon, Icon, IconName, IconSet, IIcon, IIconProps, LinearIcon } from './icon.component';
-export { Icons } from './icon.icons';
-export { IconUtils } from './icons.utils';
+export * from './icon.component';
+export * from './icon.icons';
+export * from './icons.utils';

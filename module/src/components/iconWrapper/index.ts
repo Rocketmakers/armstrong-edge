@@ -1,1 +1,1 @@
-export { IconWrapper, IIconWrapperProps } from './iconWrapper.component';
+export * from './iconWrapper.component';

@@ -1,1 +1,1 @@
-export { INativeSelectInputOption, INativeSelectInputProps, NativeSelectInput } from './nativeSelectInput.component';
+export * from './nativeSelectInput.component';

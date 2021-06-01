@@ -1,1 +1,1 @@
-export { ITextAreaInputProps, TextAreaInput } from './textAreaInput.component';
+export * from './textAreaInput.component';

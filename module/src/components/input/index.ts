@@ -1,1 +1,1 @@
-export { IInputProps, Input } from './input.component';
+export * from './input.component';

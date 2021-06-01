@@ -1,1 +1,1 @@
-export { ErrorMessage, IErrorMessageProps } from './errorMessage.component';
+export * from './errorMessage.component';

@@ -1,1 +1,1 @@
-export { AutoCompleteInput, IAutoCompleteInputProps } from './autoCompleteInput.component';
+export * from './autoCompleteInput.component';

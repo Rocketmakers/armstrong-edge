@@ -1,1 +1,1 @@
-export { NativeDateInput } from './nativeDateInput';
+export * from './nativeDateInput';

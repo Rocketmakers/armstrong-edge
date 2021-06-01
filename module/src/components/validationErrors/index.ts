@@ -1,2 +1,2 @@
-export { IValidationErrorsProps, ValidationErrors } from './validationErrors.component';
-export { useMyValidationErrorMessages } from './validationErrors.hooks';
+export * from './validationErrors.component';
+export * from './validationErrors.hooks';
