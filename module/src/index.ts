@@ -29,3 +29,6 @@ export { TextInput } from './components/textInput';
 export { IValidationErrorsProps, ValidationErrors } from './components/validationErrors';
 export { Arrays } from './utils/arrays';
 export { ClassNames } from './utils/classNames';
+export { InputValidator, ValidatorAndMessage, ValidatorFunction } from './hooks/clientside-validation/ValidationTypes';
+export { Validator } from './hooks/clientside-validation/Validators';
+export { useValidatedForm } from './hooks/clientside-validation/formValidationHook';
