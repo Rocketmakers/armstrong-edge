@@ -145,7 +145,7 @@ export const UserEdit: React.FC = () => {
           pending={isFetchingSauces}
         />
 
-        <p>you've chosen: {formProp("favouriteCuisine").get()}</p>
+        <p>you've chosen: {formState.favouriteCuisine}</p>
         <br />
         <br />
         <br />
