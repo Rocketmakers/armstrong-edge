@@ -1,0 +1,88 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration Guides/Form Hook" />
+
+# Migrating from the old form binder
+
+The new version of the Armstrong Form toolkit is fundementally different to the previous version, the main differences are:
+
+### Live state instead of object mutation
+
+The live state object is dependency smart and always up to date, no need to stringify or notify change.
+
+### No form context by default
+
+The new form tools can be passed between components like any other React friendly variable; props, context, redux, however you normally manage state. The use of context is no longer enforced by Armstrong.
+
+### Custom components instead of custom binders
+
+The vision of the original Armstrong form library was that supplied/custom "binders" could be spread onto native JSX DOM elements. But this approach ended up being inconsistently implemented, offered poor TypeScript support, and was difficult to extend. The new Armstrong form library hands control of binding behaviour to the component, so doing something bespoke is as simple as creating a React component that recieves a `bind` prop.
+
+This process is covered in the "Custom inputs" section of the main "Form" documentation.
+
+## A quick example
+
+Here's a very simple login form implemented using both library versions, these implementations are functionally the same:
+
+### The old way
+
+```tsx
+
+const initialData = React.useMemo(() => {
+  return {
+    email: '',
+    password: ''
+  }
+}, []);
+
+const { DataForm, dataBinder, bind, notifyChange } = useForm(initialData);
+
+const formIsReady = React.useMemo(() => {
+  return !!dataBinder.getKeyValue('email') && !!dataBinder.getKeyValue('password');
+}, [JSON.stringify(dataBinder.toJson())]);
+
+const loginClick = React.useCallback(async () => {
+  const { email, password } = dataBinder.toJson();
+  await login(email, password);
+}, [dataBinder]);
+
+const resetClick = React.useCallback(() => {
+  dataBinder.setKeyValue('email', '');
+  dataBinder.setKeyValue('password', '');
+  notifyChange();
+}, [dataBinder, notifyChange]);
+
+return (
+  <DataForm validationMode="both">
+    <TextInput {...bind.textEmail('email')} />
+    <TextInput {...bind.password('password')} />
+    <Button disabled={!formIsReady} onClick={loginClick}>Login</Button>
+    <Button onClick={resetClick}>Reset Form</Button>
+  </DataForm>
+)
+```
+
+### The new way
+
+```tsx
+const { formProp, formState, resetFormData } = Form.use({
+  email: '',
+  password: ''
+}, { validationMode: 'both' });
+
+const formIsReady = !!formState.email && !!formState.password;
+
+const loginClick = React.useCallback(async () => {
+  const { email, password } = formState;
+  await login(email, password);
+}, [formState]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <Button disabled={!formIsReady} onClick={loginClick}>Login</Button>
+    <Button onClick={resetFormData}>Reset Form</Button>
+  </form>
+)
+```
