@@ -139,3 +139,25 @@ export const Scrolling = () => {
     </DropdownItems>
   );
 };
+export const GroupedItems = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <DropdownItems
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+      items={[
+        { content: "I'm a thing", id: 'a', group: 'Good things' },
+        { content: "I'm another thing", id: 'b', group: 'Good things' },
+        { content: "I'm a third thing", id: 'c', group: 'Bad things' },
+      ]}
+      onItemSelected={(item) => {
+        setIsOpen(false);
+        // eslint-disable-next-line no-alert
+        alert(item);
+      }}
+    >
+      <p onClick={() => setIsOpen(true)}>Click on me for dropdown items</p>
+    </DropdownItems>
+  );
+};

@@ -62,11 +62,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
     }: ICheckboxInputProps,
     ref
   ) => {
-    const [
-      boundValue,
-      setBoundValue,
-      { myValidationErrorMessages, validationErrorIcon: boundValidationErrorIcon, shouldShowValidationErrorIcon, shouldShowValidationErrorMessage },
-    ] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
       value: checked,
       validationErrorMessages,
       validationErrorIcon,
@@ -99,11 +95,11 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
             {label}
           </label>
 
-          <Status error={shouldShowValidationErrorIcon} pending={pending} errorIcon={boundValidationErrorIcon} />
+          <Status error={bindConfig.shouldShowValidationErrorIcon} pending={pending} errorIcon={bindConfig.validationErrorIcon} />
         </div>
 
-        {!!myValidationErrorMessages?.length && shouldShowValidationErrorMessage && (
-          <ValidationErrors validationErrors={myValidationErrorMessages} icon={boundValidationErrorIcon} />
+        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={bindConfig.validationErrorIcon} />
         )}
       </>
     );

@@ -94,11 +94,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [
-      boundValue,
-      setBoundValue,
-      { myValidationErrorMessages, validationErrorIcon: boundValidationErrorIcon, validationMode: boundValidationMode },
-    ] = Form.useBindingTools<any>(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
       value: value?.toString(),
       validationErrorMessages,
       validationMode,
@@ -117,9 +113,9 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange?.(event);
         const currentValue = event.currentTarget.value;
         setBoundValue(currentValue);
-        onBindValueChange(currentValue);
       },
       [setBoundValue, onBindValueChange]
     );
@@ -145,9 +141,9 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
-        validationErrorMessages={myValidationErrorMessages}
-        validationErrorIcon={boundValidationErrorIcon}
-        validationMode={boundValidationMode}
+        validationErrorMessages={bindConfig.validationErrorMessages}
+        validationErrorIcon={bindConfig.validationErrorIcon}
+        validationMode={bindConfig.validationMode}
         pending={pending}
         disabled={disabled}
         above={above}

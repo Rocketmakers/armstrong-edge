@@ -4,14 +4,15 @@ import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
-import { Icon, IconSet, IconUtils, IIcon, IIconProps } from '../icon';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
+import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
-export interface ISelectInputOption<TSelectId extends string, TSelectData = any> {
+export interface ISelectInputOption<TSelectId extends string, TSelectData = any> extends IIconWrapperProps<IconSet, IconSet> {
   id: TSelectId;
   name: string;
-  icon?: IIconProps<IconSet>;
+  group?: string;
   data?: TSelectData;
 }
 
@@ -72,11 +73,7 @@ export const SelectInput = React.forwardRef(
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [
-      boundValue,
-      setBoundValue,
-      { myValidationErrorMessages, validationMode: boundValidationMode, validationErrorIcon: boundValidationErrorIcon },
-    ] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
       value,
       validationErrorMessages,
       validationErrorIcon,
@@ -88,18 +85,24 @@ export const SelectInput = React.forwardRef(
     const onChangeEvent = React.useCallback(
       (option: ISelectInputOption<TSelectId> | undefined) => {
         onSelectOption?.(option);
-        if (option) {
-          setBoundValue(option.id);
-        }
+        setBoundValue(option?.id ?? undefined!);
       },
       [onSelectOption, options, bind]
     );
+
+    const currentOptionText = React.useMemo(() => options.find((option) => option.id === boundValue)?.name ?? boundValue, [boundValue, options]);
 
     return (
       <DropdownItems
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
-        items={options.map((option) => ({ content: option.id, id: option.id, icon: option.icon }))}
+        items={options.map((option) => ({
+          content: option.name,
+          id: option.id,
+          leftIcon: option.leftIcon,
+          rightIcon: option.rightIcon,
+          group: option.group,
+        }))}
         onItemSelected={(item) => onChangeEvent(options.find((option) => option.id === item)!)}
         allowKeyboardNavigation
         focusableWrapper
@@ -112,16 +115,16 @@ export const SelectInput = React.forwardRef(
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}
           rightOverlay={rightOverlay}
-          validationErrorMessages={myValidationErrorMessages}
-          validationErrorIcon={boundValidationErrorIcon}
-          validationMode={boundValidationMode}
+          validationErrorMessages={bindConfig.validationErrorMessages}
+          validationErrorIcon={bindConfig.validationErrorIcon}
+          validationMode={bindConfig.validationMode}
           pending={pending}
           disabled={disabled}
           disableOnPending={disableOnPending}
         >
           <div className="arm-select-input-inner">
             <div className="arm-select-input-content">
-              {boundValue ? <p>{boundValue}</p> : placeholder && <p className="placeholder">{placeholder}</p>}
+              {currentOptionText ? <p>{currentOptionText}</p> : placeholder && <p className="placeholder">{placeholder}</p>}
             </div>
             {selectOverlayIcon &&
               (IconUtils.isIconDefinition(selectOverlayIcon) ? (
@@ -133,14 +136,14 @@ export const SelectInput = React.forwardRef(
 
           {deleteButton && boundValue && (
             <IconButton
-              onMouseDown={(event) => event.stopPropagation()}
-              onMouseUp={(event) => event.stopPropagation()}
               className="arm-select-input-delete"
               onClick={(event) => {
                 onChangeEvent(undefined);
                 setDropdownOpen(false);
                 event.stopPropagation();
               }}
+              onMouseDown={(event) => event.stopPropagation()}
+              onMouseUp={(event) => event.stopPropagation()}
               icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
               iconOnly
             />

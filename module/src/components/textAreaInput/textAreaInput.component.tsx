@@ -1,11 +1,11 @@
 import * as React from 'react';
 
+import { Form } from '../..';
 import { FormValidationMode, IBindingProps, IDelayInputConfig } from '../../hooks/form/form.types';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useThrottle } from '../../hooks/useThrottle';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
-import { useMyValidationErrorMessages } from '../validationErrors';
 
 type NativeTextAreaProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>;
 
@@ -93,37 +93,33 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
     const internalRef = React.useRef<HTMLTextAreaElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const onBindValueChange = React.useCallback(
-      (currentValue: string) => {
-        if (bind) {
-          const formattedValue = bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
-          bind.setValue(formattedValue);
-        }
-      },
-      [bind]
-    );
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+      value: value?.toString(),
+      validationErrorMessages,
+      validationMode,
+      validationErrorIcon,
+    });
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(event);
         const currentValue = event.currentTarget.value;
         onValueChange?.(currentValue);
-        onBindValueChange(currentValue);
+        setBoundValue(currentValue);
       },
-      [bind, onChange, onValueChange, onBindValueChange]
+      [bind, onChange, onValueChange, setBoundValue]
     );
 
     const onValueChangeEvent = React.useCallback(
       (currentValue: string | undefined) => {
         onValueChange?.(currentValue ?? '');
-        onBindValueChange(currentValue ?? '');
+        setBoundValue(currentValue ?? '');
       },
-      [onValueChange, onBindValueChange]
+      [onValueChange, setBoundValue]
     );
-    const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
 
     const inputProps: NativeTextAreaProps = {
-      value: bind?.value ?? value,
+      value: boundValue,
       disabled,
       ref: internalRef,
     };
@@ -135,11 +131,11 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
-        validationErrorMessages={allValidationErrorMessages}
-        validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
+        validationErrorMessages={bindConfig.validationErrorMessages}
+        validationErrorIcon={bindConfig.validationErrorIcon}
+        validationMode={bindConfig.validationMode}
         disabled={disabled}
         pending={pending}
-        validationMode={validationMode || bind?.formConfig?.validationMode}
         above={above}
         disableOnPending={disableOnPending}
         statusPosition={statusPosition}

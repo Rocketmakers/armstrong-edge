@@ -34,3 +34,41 @@
   @include square($size);
   border-radius: 50%;
 }
+
+//responsiveness
+
+@mixin media-query($screen-width: $screen-size-phone) {
+  @media screen and (max-width: $screen-width) {
+    @content;
+  }
+}
+
+@mixin media-query-min($screen-width: $screen-size-phone) {
+  @media screen and (min-width: $screen-width) {
+    @content;
+  }
+}
+
+@mixin screen-tablet() {
+  @include media-query($screen-size-tablet) {
+    @content;
+  }
+}
+
+@mixin screen-phone() {
+  @include media-query($screen-size-phone) {
+    @content;
+  }
+}
+
+@mixin screen-not-phone() {
+  @include media-query-min($screen-size-phone) {
+    @content;
+  }
+}
+
+@mixin screen-phone-tiny() {
+  @include media-query($screen-size-phone * 0.4) {
+    @content;
+  }
+}

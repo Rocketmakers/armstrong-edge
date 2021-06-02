@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { Form } from '../..';
+import { Form, IconSet } from '../..';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
+import { IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
 import { TextInput } from '../textInput';
 
@@ -10,14 +12,20 @@ import { TextInput } from '../textInput';
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
 // will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
-export interface IAutoCompleteInputProps extends Omit<IInputProps<string>, 'type' | 'onChange' | 'value' | 'disableOnPending'> {
-  /** (string[]) The options to render when the input is focused - use bindConfig.fromData to parse theseß */
-  options?: string[];
+export interface IAutoCompleteInputOption extends IIconWrapperProps<IconSet, IconSet> {
+  id: string;
+  name?: string;
+  group?: string;
+}
 
-  /** ((string) => void) called when the user inputs into the  */
+export interface IAutoCompleteInputProps extends Omit<IInputProps<string>, 'type' | 'onChange' | 'value' | 'disableOnPending'> {
+  /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
+  options?: IAutoCompleteInputOption[];
+
+  /** ((string) => void) called when the user inputs into the text input - if provided, the hook will not bind internally and therefore this must be used in conjunction with textInputValue  */
   onTextInputChange?: (value: string) => void;
 
-  /** (string) the value to use for the text input */
+  /** (string) the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
   textInputValue?: string;
 
   /** ((string) => void) called when an option is selected  */
@@ -32,8 +40,8 @@ export interface IAutoCompleteInputProps extends Omit<IInputProps<string>, 'type
   /** (boolean) bind the value of the input, rather than just when an item is selected */
   allowFreeText?: boolean;
 
-  /** (boolean | (option: string, textInputValue: string) => boolean) whether to filter the available options based on the string in the text input, optionally takes the callback used to do the filtering */
-  filterOptions?: boolean | ((option: string, textInputValue: string) => boolean);
+  /** (boolean | (option: string, textInputValue: string) => boolean) whether to filter the available options based on the string in the text input, optionally takes the callback used to do the filtering and by default will just do a option.name.startsWith() */
+  filterOptions?: boolean | ((option: IAutoCompleteInputOption, textInputValue: string) => boolean);
 
   /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
   allowKeyboardNavigationSelection?: boolean;
@@ -63,81 +71,92 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
     },
     ref
   ) => {
-    const [boundValue, setBoundValue, { getFormattedValueFromData, myValidationErrorMessages }] = Form.useBindingTools(bind, {
-      value,
-      onChange,
-      validationErrorMessages,
-    });
-
-    // the value before any formatting
-    const currentValue = bind?.value || value;
-
-    const [textInputCurrentValue, setTextInputCurrentValue] = React.useState(boundValue || '');
+    const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingTools(
+      bind,
+      {
+        value,
+        onChange,
+        validationErrorMessages,
+      }
+    );
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
-    React.useLayoutEffect(() => {
-      onTextInputChange?.(textInputCurrentValue);
-    }, [textInputCurrentValue]);
+    // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided
+    const getOptionName = React.useCallback(
+      (option: IAutoCompleteInputOption) => option.name ?? getFormattedValueFromData(option.id)!,
+      [getFormattedValueFromData]
+    );
 
+    // internal state for the text input
+    const [textInputInternalValue, setTextInputInternalValue] = React.useState(options?.find((option) => option.id === boundValue)?.name || '');
+
+    // wrap up the internal text input state to ensure it's overriden if an external bind is being used with onTextInputChange and textInputValue props
+    const textInputCurrentValue = (onTextInputChange ? textInputValue : textInputInternalValue) || '';
+    const setTextInputCurrentValue = onTextInputChange ?? setTextInputInternalValue;
+
+    // The provided options, optionally filtered by the text input value
     const filteredOptions = React.useMemo(() => {
       if (filterOptions && options) {
         if (filterOptions === true) {
-          return options.filter((option) => getFormattedValueFromData(option)!.indexOf(textInputCurrentValue) > -1);
+          return options.filter((option) => getOptionName(option).startsWith(textInputCurrentValue));
         }
         return options.filter((option) => filterOptions(option, textInputCurrentValue));
       }
       return options || [];
     }, [filterOptions, JSON.stringify(options), textInputCurrentValue]);
 
-    const setInputValue = React.useCallback(
-      (newValue: string) => {
-        setTextInputCurrentValue?.(newValue);
-        onTextInputChange?.(newValue);
-      },
-      [setTextInputCurrentValue, onTextInputChange]
-    );
-
     /** when the user clicks on an option, change the value in the textInput */
     const onSelectOption = React.useCallback(
-      (option: string) => {
-        setInputValue(getFormattedValueFromData(option)!);
+      (id: string) => {
+        const selectedOption = options?.find((option) => option.id === id);
+        setTextInputCurrentValue(selectedOption?.name || '');
         setOptionsOpen(false);
 
         // if free text is allowed, the onChange triggered by the textinput's change event
         // otherwise, it is triggered it here
         if (!allowFreeText) {
-          setBoundValue(option);
+          setBoundValue(selectedOption?.id || '');
         }
       },
-      [bind, getFormattedValueFromData, allowFreeText]
+      [bind, allowFreeText]
     );
 
+    /** Fired when the user changes the value in the text input */
     const onTextInputChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = event.currentTarget.value || '';
-        setInputValue(newValue);
+        const newTextInputValue = event.currentTarget.value || '';
+        setTextInputCurrentValue(newTextInputValue);
 
         // if allow free text, bind exact value on every change
         // if inputted text is an option, bind that
         if (allowFreeText) {
-          setBoundValue(newValue);
+          setBoundValue(newTextInputValue);
         } else {
-          const inputtedOption = options?.find((option) => getFormattedValueFromData(option) === newValue);
+          const inputtedOption = options?.find((option) => getOptionName(option) === newTextInputValue);
 
           if (inputtedOption) {
-            setBoundValue(inputtedOption);
+            setBoundValue(inputtedOption.id);
           }
         }
       },
-      [setTextInputCurrentValue, getFormattedValueFromData]
+      [setTextInputCurrentValue, getOptionName]
     );
 
-    const onTextInputBlur = React.useCallback(() => {
+    const resetInputValue = React.useCallback(() => {
       if (!allowFreeText) {
-        setTextInputCurrentValue(getFormattedValueFromData(bind?.value) || value || '');
+        const currentOption = options?.find((option) => option.id === boundValue);
+        if (currentOption) {
+          setTextInputCurrentValue(getOptionName(currentOption));
+        }
       }
-    }, [allowFreeText, getFormattedValueFromData, bind?.value]);
+    }, [allowFreeText, options, boundValue, getOptionName]);
+
+    useDidUpdateEffect(() => {
+      if (!optionsOpen) {
+        resetInputValue();
+      }
+    }, [optionsOpen]);
 
     return (
       <>
@@ -145,17 +164,23 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
           className={ClassNames.concat('arm-input', 'arm-autocomplete-input', className)}
           data-error={error}
           data-pending={pending}
-          data-is-option={allowFreeText || getFormattedValueFromData(textInputValue) === currentValue}
+          data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
             contentClassName="arm-auto-complete-options"
-            items={filteredOptions.map((option) => ({ content: getFormattedValueFromData(option)!, id: option }))}
+            items={filteredOptions.map((option) => ({
+              content: getOptionName(option),
+              id: option.id,
+              leftIcon: option.leftIcon,
+              rightIcon: option.rightIcon,
+              group: option.group,
+            }))}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
             rootElementSelector={optionsRootElementSelector}
-            onItemSelected={onSelectOption}
+            onItemSelected={(id) => onSelectOption(id)}
             allowKeyboardNavigation={allowKeyboardNavigationSelection}
-            currentValue={currentValue ? [currentValue] : []}
+            currentValue={boundValue ? [boundValue] : []}
             openWhenClickInside
             openWhenFocusInside
           >
@@ -166,7 +191,6 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
               error={error}
               value={textInputCurrentValue}
               onChange={onTextInputChangeEvent}
-              onBlur={onTextInputBlur}
               onKeyDown={() => setOptionsOpen(true)}
               validationMode={validationMode}
               onFocus={() => setOptionsOpen(true)}

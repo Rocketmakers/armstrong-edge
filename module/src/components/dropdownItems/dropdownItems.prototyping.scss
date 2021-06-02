@@ -6,24 +6,31 @@
     flex-grow: 1;
   }
 
-  + .arm-auto-complete-input-option {
-    border-top: $line-very-light;
-  }
-
   &:hover {
-    background-color: $gray-very-light;
+    background-color: $gray-light;
   }
 
   &[data-keyboard-selected='true'] {
-    background-color: $gray-very-light;
+    background-color: $gray-light;
   }
 
   &[data-selected='true'] {
     background-color: $brand-primary;
     color: white;
-  }
 
-  .arm-dropdown-item-checkmark {
-    font-size: 0.75rem;
+    &[data-keyboard-selected='true'] {
+      opacity: 0.7;
+    }
   }
+}
+
+.arm-dropdown-item-checkmark {
+  font-size: 0.75rem;
+}
+
+.arm-dropdown-items-group-title {
+  padding: $spacing-xsmall $spacing-xsmall $spacing-xxsmall $spacing-xsmall;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: $gray-medium;
 }

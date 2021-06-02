@@ -1,26 +1,31 @@
 import * as React from 'react';
 
+import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { Dropdown, IDropdownProps } from '../dropdown';
-import { Icon, IconSet, IIcon } from '../icon';
+import { Icon, IconSet } from '../icon';
+import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 
-export interface IDropdownItem {
+export interface IDropdownItem extends IIconWrapperProps<IconSet, IconSet> {
   /** (string) The text content of the dropdown item */
   content: string;
 
   /** (string) The string to be passed into onItemSelected */
   id: string;
 
-  /** (IIcon) the icon to render */
-  icon?: IIcon<IconSet>;
-
   /** (HTMLDivElement) props to spread onto the div element for the dropdown item */
   htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onMouseUp' | 'ref'>;
+
+  /** (string) a group to show this item under */
+  group?: string;
 }
 
 export interface IDropdownItemProps extends IDropdownItem {
   /** ((event) => void) fired when clicking on the dropdown item */
-  onMouseUp: (event: React.MouseEvent) => void;
+  onMouseUp?: (event: React.MouseEvent) => void;
+
+  /** ((event) => void) fired when clicking on the dropdown item */
+  onClick: (event: React.MouseEvent) => void;
 
   /** ((event) => void) fired when the cursor enters the dropdown item */
   onMouseEnter: (event: React.MouseEvent) => void;
@@ -33,20 +38,28 @@ export interface IDropdownItemProps extends IDropdownItem {
 }
 
 export const DropdownItem = React.forwardRef<HTMLDivElement, IDropdownItemProps>(
-  ({ content, htmlProps, onMouseUp, isKeyboardSelected, isSelected, onMouseEnter }, ref) => {
+  ({ content, htmlProps, onMouseUp, isKeyboardSelected, isSelected, onMouseEnter, leftIcon, rightIcon, onClick }, ref) => {
     return (
       <div
         {...htmlProps}
         ref={ref}
         className={ClassNames.concat('arm-dropdown-item', htmlProps?.className)}
-        onMouseUp={onMouseUp}
+        onMouseUp={(event) => {
+          if (onMouseUp) {
+            onMouseUp(event);
+            event.preventDefault();
+          }
+        }}
+        onMouseDown={(event) => event.stopPropagation()}
+        onClick={onClick}
         data-keyboard-selected={isKeyboardSelected}
         data-selected={isSelected}
         onMouseEnter={onMouseEnter}
-        onTouchEnd={(event) => event.preventDefault()}
       >
-        <p>{content}</p>
-        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
+        <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+          <p>{content}</p>
+          {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
+        </IconWrapper>
       </div>
     );
   }
@@ -89,6 +102,11 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   const itemRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
   const [keyboardSelectedItemIndex, setKeyboardSelectedItemIndex] = React.useState(0);
 
+  const groupedItems = React.useMemo(() => Arrays.arrayToArraysByKey(items, (item) => item.group || ''), [items]);
+
+  /** Will be true when the user clicks until they move the mouse */
+  const [hasBegunClick, setHasBegunClick] = React.useState(false);
+
   const resetKeyboardSelectedItemIndex = React.useCallback(() => {
     const selectedItemIndex = items.findIndex((item) => currentValue?.includes(item.id));
     setKeyboardSelectedItemIndex(selectedItemIndex > -1 ? selectedItemIndex : 0);
@@ -127,10 +145,14 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
             break;
           }
           case 'Enter': {
-            const selectedItem = items[keyboardSelectedItemIndex];
-            onItemSelected(selectedItem.id);
-            if (closeOnSelection) {
-              onOpenChange(false);
+            const selectedItem = Arrays.ArrayArrays.getAtIndex(keyboardSelectedItemIndex, groupedItems);
+
+            if (selectedItem) {
+              onItemSelected(selectedItem.id);
+
+              if (closeOnSelection) {
+                onOpenChange(false);
+              }
             }
             event.preventDefault();
             break;
@@ -143,16 +165,9 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
             break;
           }
         }
-
-        if (event.key.match(/\w/)) {
-          const itemIndex = items.findIndex((item) => item.content[0] === event.key);
-          if (itemIndex > -1) {
-            setKeyboardSelectedItemIndex(itemIndex);
-          }
-        }
       }
     },
-    [keyboardSelectedItemIndex, onItemSelected, items, isOpen, allowKeyboardNavigation, onOpenChange, itemRefs]
+    [keyboardSelectedItemIndex, onItemSelected, items, isOpen, allowKeyboardNavigation, onOpenChange, itemRefs, groupedItems]
   );
 
   const onMouseUpDropdownItem = React.useCallback(
@@ -173,21 +188,49 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       onKeyDown={onKeyDownEvent}
+      onMouseDown={() => setHasBegunClick(true)}
+      onMouseMove={() => setHasBegunClick(false)}
       tabIndex={focusableWrapper ? 0 : undefined}
       dropdownContent={
         <>
-          {items.map((item, index) => (
-            <DropdownItem
-              {...item}
-              key={item.id}
-              onMouseUp={() => onMouseUpDropdownItem(item.id)}
-              onMouseEnter={() => setKeyboardSelectedItemIndex(index)}
-              isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === index}
-              isSelected={!!currentValue?.includes(item.id)}
-              ref={(optionItemRef) => {
-                itemRefs.current[item.id] = optionItemRef;
-              }}
-            />
+          {groupedItems.map((group, groupIndex) => (
+            <React.Fragment key={group.key}>
+              {group.key && (
+                <div className="arm-dropdown-items-group-title">
+                  <p>{group.key}</p>
+                </div>
+              )}
+
+              {group.items.map((item, index) => {
+                // get overall index in array
+                const arrayIndex = Arrays.ArrayArrays.getArrayIndex(index, groupIndex, groupedItems);
+
+                return (
+                  <DropdownItem
+                    {...item}
+                    key={item.id}
+                    onMouseUp={
+                      !hasBegunClick
+                        ? () => {
+                            console.log('MOUSE UP', item.id);
+                            onMouseUpDropdownItem(item.id);
+                          }
+                        : undefined
+                    }
+                    onClick={() => {
+                      console.log('CLICK', item.id);
+                      onMouseUpDropdownItem(item.id);
+                    }}
+                    onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
+                    isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
+                    isSelected={!!currentValue?.includes(item.id)}
+                    ref={(optionItemRef) => {
+                      itemRefs.current[item.id] = optionItemRef;
+                    }}
+                  />
+                );
+              })}
+            </React.Fragment>
           ))}
         </>
       }

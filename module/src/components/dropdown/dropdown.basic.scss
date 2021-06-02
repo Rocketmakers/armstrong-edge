@@ -1,6 +1,9 @@
-$arm-dropdown-top: var(--arm-dropdown-top);
-$arm-dropdown-left: var(--arm-dropdown-left);
-$arm-dropdown-width: var(--arm-dropdown-width);
+$arm-dropdown-top: var(--arm-dropdown-top) !default;
+$arm-dropdown-left: var(--arm-dropdown-left) !default;
+$arm-dropdown-width: var(--arm-dropdown-width) !default;
+$arm-dropdown-min-width: 50px !default;
+
+$arm-dropdown-height: 180px;
 
 .arm-dropdown {
   width: max-content;
@@ -13,17 +16,27 @@ $arm-dropdown-width: var(--arm-dropdown-width);
   left: $arm-dropdown-left;
   background-color: $white;
   width: $arm-dropdown-width;
+  min-width: $arm-dropdown-min-width;
   pointer-events: none;
   transition: max-height $transition-medium linear, opacity $transition-quick;
   overflow: auto;
   opacity: 0;
   border-radius: $border-radius-small;
   // max-height: 0;
+  max-height: $arm-dropdown-height;
+  user-select: none;
 
   &[data-is-open='true'] {
+    // max-height: $arm-dropdown-height;
     pointer-events: all;
-    // max-height: 180px;
     opacity: 1;
     transition: max-height $transition-quick linear;
+  }
+}
+
+@include screen-phone {
+  .arm-dropdown-content {
+    left: $spacing-xsmall;
+    width: calc(100vw - #{$spacing-xsmall * 2});
   }
 }

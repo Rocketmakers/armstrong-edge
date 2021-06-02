@@ -6,7 +6,10 @@
     padding: 0 $spacing-xsmall;
     display: flex;
     align-items: center;
-    gap: $spacing-xsmall;
+
+    > *:not(:last-child) {
+      margin-right: $spacing-xxsmall;
+    }
 
     .arm-spinner {
       .arm-icon {

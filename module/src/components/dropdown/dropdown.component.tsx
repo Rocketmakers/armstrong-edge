@@ -68,8 +68,12 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         onOpenChange(false);
       }
     }, [isOpen]);
+    const onResize = React.useCallback(() => {
+      onOpenChange(false);
+    }, [onOpenChange]);
 
-    useEventListener('click', onBodyClick);
+    useEventListener('click', onBodyClick, Globals.Document?.body);
+    useEventListener('resize', onResize, window);
 
     const [top, setTop] = React.useState<number>();
     const [left, setLeft] = React.useState<number>();
@@ -79,10 +83,13 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       if (isOpen && rootRef.current && contentRef.current) {
         const rect = rootRef.current.getBoundingClientRect();
         const contentRect = contentRef.current.getBoundingClientRect();
+
         // set top and left from position, but ensure it doesn't fall off the edge of the screen
-        console.log(Globals.Window?.innerHeight);
-        setTop(Math.max(Math.min(rect.top + rect.height, (Globals.Window?.innerHeight || 0) - contentRect.height - rect.height)));
-        setLeft(Math.max(0, Math.min(rect.left, (Globals.Window?.innerWidth || 0) - contentRect.width)));
+        const newTop = Math.max(Math.min(rect.top + rect.height, (Globals.Window?.innerHeight || 0) - contentRect.height - rect.height));
+        const newLeft = Math.max(0, Math.min(rect.left, (Globals.Window?.innerWidth || 0) - contentRect.width));
+
+        setTop(newTop);
+        setLeft(newLeft);
         setWidth(rect.width);
       }
     }, [isOpen]);
@@ -107,15 +114,16 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           Globals.Document?.removeEventListener('scroll', onScrollContent, { capture: true });
         };
       }
-    }, [isOpen, onScrollContent]);
+    }, [isOpen, onScrollContent, onResize]);
 
     const onMouseDownEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         if (openWhenClickInside) {
-          onOpenChange(true);
+          onOpenChange(!isOpen);
         }
         onMouseDown?.(event);
-        event?.stopPropagation();
+        // event?.stopPropagation();
+        // event?.preventDefault();
       },
       [openWhenClickInside, onOpenChange, onMouseDown, isOpen]
     );
@@ -151,7 +159,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
                 '--arm-dropdown-width': `${width}px`,
               } as React.CSSProperties
             }
-            onMouseDown={(event) => event.stopPropagation()}
             ref={contentRef}
             data-is-open={isOpen}
             onScroll={(event) => {
@@ -160,6 +167,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
               return false;
             }}
             tabIndex={!isOpen ? -1 : undefined}
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+            onMouseDown={(event) => event.stopPropagation()}
           >
             {dropdownContent}
           </div>

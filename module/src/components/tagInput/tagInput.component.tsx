@@ -82,11 +82,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [
-      boundValue,
-      setBoundValue,
-      { myValidationErrorMessages, validationMode: boundValidationMode, validationErrorIcon: boundValidationErrorIcon },
-    ] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
       value,
       onChange,
       validationErrorMessages,
@@ -150,9 +146,9 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
     return (
       <InputWrapper
         className={ClassNames.concat('arm-tag-input', className)}
-        validationErrorMessages={myValidationErrorMessages}
-        validationErrorIcon={boundValidationErrorIcon}
-        validationMode={boundValidationMode}
+        validationErrorMessages={bindConfig.validationErrorMessages}
+        validationErrorIcon={bindConfig.validationErrorIcon}
+        validationMode={bindConfig.validationMode}
         data-tag-position={tagPosition}
         data-has-tags={!!boundValue?.length}
         pending={pending}

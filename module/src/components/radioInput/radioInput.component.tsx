@@ -39,11 +39,7 @@ export const RadioInput = React.forwardRef(
     { bind, options, className, value, validationErrorIcon, validationMode, validationErrorMessages }: IRadioInputProps<TSelectId>,
     ref
   ) => {
-    const [
-      boundValue,
-      setBoundValue,
-      { myValidationErrorMessages, validationErrorIcon: boundValidationErrorIcon, shouldShowValidationErrorMessage },
-    ] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
       value,
       validationErrorMessages,
       validationErrorIcon,
@@ -63,8 +59,8 @@ export const RadioInput = React.forwardRef(
             </div>
           ))}
 
-          {shouldShowValidationErrorMessage && myValidationErrorMessages && (
-            <ValidationErrors validationErrors={myValidationErrorMessages} icon={boundValidationErrorIcon} />
+          {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
+            <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={bindConfig.validationErrorIcon} />
           )}
         </div>
       </>

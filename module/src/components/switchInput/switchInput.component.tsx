@@ -68,11 +68,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
     },
     ref
   ) => {
-    const [
-      boundValue,
-      setBoundValue,
-      { myValidationErrorMessages, validationErrorIcon: boundValidationErrorIcon, shouldShowValidationErrorIcon, shouldShowValidationErrorMessage },
-    ] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
       value: checked,
       validationErrorMessages,
       onChange,
@@ -103,14 +99,14 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
           </div>
 
           <Status
-            error={shouldShowValidationErrorIcon && (error || !!myValidationErrorMessages?.length)}
+            error={bindConfig.shouldShowValidationErrorIcon && (error || !!bindConfig.validationErrorMessages?.length)}
             pending={pending}
             errorIcon={validationErrorIcon}
           />
         </div>
 
-        {myValidationErrorMessages && shouldShowValidationErrorMessage && (
-          <ValidationErrors validationErrors={myValidationErrorMessages} icon={boundValidationErrorIcon} />
+        {bindConfig.validationErrorMessages && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={bindConfig.validationErrorIcon} />
         )}
       </>
     );

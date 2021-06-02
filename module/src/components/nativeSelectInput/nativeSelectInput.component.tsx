@@ -69,7 +69,7 @@ export const NativeSelectInput = React.forwardRef(
     const internalRef = React.useRef<HTMLSelectElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [boundValue, setBoundValue, { myValidationErrorMessages }] = Form.useBindingTools(bind, { value, validationErrorMessages });
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, { value, validationErrorMessages });
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -94,7 +94,7 @@ export const NativeSelectInput = React.forwardRef(
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
-        validationErrorMessages={myValidationErrorMessages}
+        validationErrorMessages={bindConfig.validationErrorMessages}
         validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
         validationMode={validationMode || bind?.formConfig?.validationMode}
         pending={pending}

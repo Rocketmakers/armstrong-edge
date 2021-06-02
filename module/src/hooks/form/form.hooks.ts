@@ -366,7 +366,7 @@ interface IUseBindingToolsReturnUtils<TData> {
   getFormattedValueToData: (val?: TData) => TData | undefined;
 
   /** Validation errors from the binder concatenated with manually passed in errors */
-  myValidationErrorMessages: string[];
+  validationErrorMessages: string[];
 
   /** The current validation mode for the form */
   validationMode?: FormValidationMode;
@@ -430,7 +430,7 @@ export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: 
     [bind?.bindConfig?.format?.toData]
   );
 
-  const myValidationErrorMessages = useMyValidationErrorMessages(bind, overrides?.validationErrorMessages);
+  const validationErrorMessages = useMyValidationErrorMessages(bind, overrides?.validationErrorMessages);
 
   const validationMode = overrides?.validationMode ?? bind?.formConfig?.validationMode;
   const validationErrorIcon = overrides?.validationErrorIcon ?? bind?.formConfig?.validationErrorIcon;
@@ -441,7 +441,7 @@ export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: 
     {
       getFormattedValueFromData,
       getFormattedValueToData,
-      myValidationErrorMessages,
+      validationErrorMessages,
       validationMode,
       validationErrorIcon,
       shouldShowValidationErrorIcon: validationMode === 'icon' || validationMode === 'both',
