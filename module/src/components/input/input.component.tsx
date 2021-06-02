@@ -1,21 +1,67 @@
 import * as React from 'react';
 
 import { Form } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form/form.types';
+import { FormValidationMode, IBindingProps, IDelayInputConfig } from '../../hooks/form/form.types';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useThrottle } from '../../hooks/useThrottle';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
-export interface IInputProps<TValue>
-  extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
-    Omit<IInputWrapperProps, 'onClick'> {
+type NativeInputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+
+interface IDelayedInputBaseProps<TValue> extends NativeInputProps {
+  milliseconds: number;
+  /** Called when the value changes, takes into account any delay values and other effects. */
+  onValueChange: (value: TValue) => any;
+}
+
+const DebounceInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseProps<any>>(
+  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
+    const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
+
+    const onChangeEvent = React.useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setActualValue(e.currentTarget.value);
+        onChange?.(e);
+      },
+      [setActualValue, onChange]
+    );
+
+    return <input ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+  }
+);
+
+const ThrottledInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseProps<any>>(
+  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
+    const [actualValue, setActualValue] = useThrottle(milliseconds, value, onValueChange);
+
+    const onChangeEvent = React.useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setActualValue(e.currentTarget.value);
+        onChange?.(e);
+      },
+      [setActualValue, onChange]
+    );
+
+    return <input ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+  }
+);
+
+export interface IInputProps<TValue> extends NativeInputProps, Omit<IInputWrapperProps, 'onClick'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TValue>;
+
+  /** Called when the value changes, takes into account any delay values and other effects. */
+  onValueChange?: (value: TValue) => any;
 
   /** (string[]) array of validation errors to render */
   validationErrorMessages?: string[];
 
   /** (icon|message|both) how to render the validation errors */
   validationMode?: FormValidationMode;
+
+  /** The delay config, used to set throttle and debounce values. */
+  delay?: IDelayInputConfig;
 }
 
 /** A component which wraps up a native input element with some binding logic and some repeated elements (icons and stuff) for components which only contain a single input element. */
@@ -39,6 +85,8 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       disabled,
       disableOnPending,
       statusPosition,
+      onValueChange,
+      delay,
       ...nativeProps
     },
     ref
@@ -48,16 +96,41 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
 
     const [boundValue, setBoundValue, { myValidationErrorMessages }] = Form.useBindingTools<any>(bind, {
       value: value?.toString(),
-      onChange,
       validationErrorMessages,
     });
 
+    const onBindValueChange = React.useCallback(
+      (currentValue: string) => {
+        if (bind) {
+          const formattedValue = bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
+          bind.setValue(formattedValue);
+        }
+      },
+      [bind]
+    );
+
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        setBoundValue(event.currentTarget.value);
+        const currentValue = event.currentTarget.value;
+        setBoundValue(currentValue);
+        onBindValueChange(currentValue);
       },
-      [setBoundValue]
+      [setBoundValue, onBindValueChange]
     );
+
+    const onValueChangeEvent = React.useCallback(
+      (currentValue: string) => {
+        setBoundValue(currentValue);
+        onValueChange?.(currentValue);
+      },
+      [onValueChange, onBindValueChange, setBoundValue]
+    );
+
+    const inputProps: NativeInputProps = {
+      className: 'arm-input-base-input',
+      value: boundValue,
+      disabled,
+    };
 
     return (
       <InputWrapper
@@ -77,14 +150,27 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         disableOnPending={disableOnPending}
         onClick={() => internalRef.current?.focus()}
       >
-        <input
-          {...nativeProps}
-          ref={internalRef}
-          className={'arm-input-base-input'}
-          onChange={onChangeEvent}
-          value={boundValue}
-          disabled={disabled || (pending && disableOnPending)}
-        />
+        {delay?.mode === 'debounce' && delay.milliseconds && (
+          <DebounceInputBase
+            {...nativeProps}
+            milliseconds={delay.milliseconds}
+            {...inputProps}
+            onChange={onChange}
+            onValueChange={onValueChangeEvent}
+            ref={ref}
+          />
+        )}
+        {delay?.mode === 'throttle' && delay.milliseconds && (
+          <ThrottledInputBase
+            {...nativeProps}
+            milliseconds={delay.milliseconds}
+            {...inputProps}
+            onChange={onChange}
+            onValueChange={onValueChangeEvent}
+            ref={ref}
+          />
+        )}
+        {!delay?.milliseconds && <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={ref} />}
       </InputWrapper>
     );
   }

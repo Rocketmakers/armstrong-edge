@@ -1,0 +1,168 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { use } from './form.hooks';
+import { ConfigExample, HookReturnExample, FormPropExample, FormPropArrayExample } from './form.examples';
+
+<Meta title="Form/Form Hook" />
+
+# Form.use()
+
+The Armstrong `Form.use()` hook takes either an object, an array, or a parent bind, and returns a simple set of tools which allows data to be edited by the user in a way that's designed to plug directly into your existing React hook dependency and React component structure.
+
+## A simple form
+
+Below is an example of a really simple login form:
+
+```tsx
+const { formProp, formState } = Form.use({
+  email: '',
+  password: '',
+});
+
+const submitData = React.useCallback(async () => {
+  const { email, password } = formState;
+  await login(email, password);
+}, [formState]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Login
+    </Button>
+  </form>
+);
+```
+
+## Tools returned from the hook
+
+<ArgsTable of={HookReturnExample} />
+
+## fromProp
+
+The `formProp` function returned from the `Form.use` hook can be used to perform a set of tasks relating to a single form prop.
+
+### Field targeting
+
+Targeting fields within a nested structure is acheived via passing an argument for each level of nesting. For example, take the following object shape:
+
+```typescript
+{
+  firstName: 'Joe',
+  lastName: 'Bloggs',
+  address: {
+    line1: '45 Road Street',
+    line2: '',
+    city: 'Bath',
+    postcode: 'BA7 4FG',
+    location: {
+      lat: 51.378582,
+      long: -2.3568462
+    }
+  },
+  roles: [
+    { id: 1, name: 'admin' },
+    { id: 2, name: 'tester' }
+  ]
+}
+```
+
+This is how some of these properties are targeted using the `formProp` method:
+
+```typescript
+formProp('firstName');
+formProp('address', 'city');
+formProp('address', 'location', 'lat');
+formProp('roles', 0, 'name'); // binding to properties within an array is done via the index
+```
+
+### Standard property tools
+
+If the property being targeted by `formProp` is *not* an array, the below set of tools is returned:
+<ArgsTable of={FormPropExample} />
+
+### Array property tools
+
+If the property being targeted by `formProp` *is* an array, the follwing additional tools are returned:
+<ArgsTable of={FormPropArrayExample} />
+
+## Validation
+
+Validation can be handled in two different ways. These two methods can also be used in tandum, allowing support for server and client side validation together.
+
+- **Hook config validation errors** refers to passing errors into the form via the hook config, this is ideal for errors that are returned from an existing piece of state or API library.
+- **Dispatched validation errors** refers to dispatching errors via the functions provided by the form hook, this is ideal for handling client side validation
+
+Regardless of which of these methods you use, validation errors will automatically display underneath the relevant components by matching the `key` attribute of the error to the bound property.
+Here's a simple example of a validation error:
+```javascript
+{
+  key: 'email',
+  message: 'Please enter a valid email address'
+}
+```
+
+### Hook config validation errors.
+
+The below example shows the same login form, but with validation errors being returned from an APIHooks processing hook, and passed into the form config. A standard pattern for handling server side validation.
+
+```tsx
+const [login, { processed: { validationErrors } }] = apiHooks.auth.login.useMutation();
+
+const { formProp, formState } = Form.use({
+  email: '',
+  password: '',
+}, {
+  validationErrors,
+  validationMode: 'both'
+});
+
+const submitData = React.useCallback(async () => {
+  const { email, password } = formState;
+  await login(email, password);
+}, [formState]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Login
+    </Button>
+  </form>
+);
+```
+
+<ArgsTable of={ConfigExample} />
+
+### Dispatched validation errors
+
+The below example shows our login form again, but with a password confirmation input and some client side validation:
+
+```tsx
+const { formProp, formState } = Form.use({
+  email: '',
+  password: '',
+  passwordConfirmation: '',
+});
+
+const submitData = React.useCallback(async () => {
+  const { email, password, passwordConfirmation } = formState;
+  if(password !== passwordConfirmation) {
+    formProp('passwordConfirmation').addValidationError("Passwords don't match");
+    return;
+  }
+  await login(email, password);
+}, [formState, formProp]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <PasswordInput bind={formProp('passwordConfirmation').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Login
+    </Button>
+  </form>
+);
+```

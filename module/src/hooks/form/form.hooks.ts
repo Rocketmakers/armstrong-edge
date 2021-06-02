@@ -1,4 +1,8 @@
 /* eslint-disable no-redeclare */
+/** ******************************************************
+ * FORM - Hooks file.
+ * Contains the `useForm` hooks
+ ******************************************************* */
 import * as React from 'react';
 
 import { IconSet, IIcon } from '../../components/icon';
@@ -6,7 +10,7 @@ import { useMyValidationErrorMessages } from '../../components/validationErrors'
 import { Objects } from '../../utils/objects';
 import { Typescript } from '../../utils/typescript';
 import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
-import { reducer } from './form.state';
+import { dataReducer, validationReducer } from './form.state';
 import {
   BindingTools,
   BindingToolsArray,
@@ -17,17 +21,38 @@ import {
   IBindConfig,
   IBindingProps,
   IFormConfig,
+  IValidationError,
   KeyChain,
 } from './form.types';
-import { isBindingProps, validationErrorsByKeyChain, valueByKeyChain } from './form.utils';
+import { isBindingProps, validationErrorsByKeyChain, validationKeyStringFromKeyChain, valueByKeyChain } from './form.utils';
 
-function useBase<TData extends object>(
+/**
+ * The base hook used by both of the `useForm` hooks.
+ * @param formStateLive The live form state object from the reducer.
+ * @param formStateRef The form state object ref (this allows "instant access" to latest form data for method chaining.)
+ * @param dispatch The dispatcher for sending form state modification actions.
+ * @param initialData The initial data as passed to the `useForm` hook.
+ * @param formConfig The configuration as passed to the `useForm` hook.
+ * @returns The form state, property accessor, and associated helper methods.
+ */
+function useFormBase<TData extends object>(
   formStateLive: TData | undefined,
   formStateRef: React.MutableRefObject<TData | undefined>,
   dispatch: FormDispatcher<TData | undefined>,
   initialData?: Partial<TData>,
   formConfig?: IFormConfig
 ): HookReturn<TData> {
+  const [validationErrors, validationDispatch] = React.useReducer(validationReducer, []);
+
+  React.useLayoutEffect(() => {
+    if (formConfig?.validationErrors) {
+      validationDispatch({ type: 'add-validation', errors: formConfig.validationErrors });
+    }
+  }, [Objects.contentDependency(formConfig?.validationErrors)]);
+
+  /**
+   * For setting a new value for a target property
+   */
   const set = React.useCallback(
     (keyChain: KeyChain, newValue: any) => {
       if (keyChain.length === 1) {
@@ -39,6 +64,48 @@ function useBase<TData extends object>(
     [dispatch]
   );
 
+  /**
+   * For adding validation errors with a string key
+   */
+  const addValidationError = React.useCallback(
+    (...errors: IValidationError[]) => {
+      validationDispatch({ type: 'add-validation', errors });
+    },
+    [validationDispatch]
+  );
+
+  /**
+   * For adding a validation error against a specific property from a keyChain.
+   */
+  const addValidationErrorFromKeyChain = React.useCallback(
+    (keyChain: KeyChain, messages: string | string[]) => {
+      const messageArray = Array.isArray(messages) ? messages : [messages];
+      const key = validationKeyStringFromKeyChain(keyChain, 'dots');
+      addValidationError(...messageArray.map((message) => ({ key, message })));
+    },
+    [validationDispatch]
+  );
+
+  const clearAllValidationErrors = React.useCallback(() => {
+    validationDispatch({ type: 'clear-validation' });
+  }, [validationDispatch]);
+
+  /**
+   * For clearing all validation errors associated with a specific keyChain property
+   */
+  const clearValidationErrorsByKeyChain = React.useCallback(
+    (keyChain: KeyChain) => {
+      const dotKey = validationKeyStringFromKeyChain(keyChain, 'dots');
+      const bracketKey = validationKeyStringFromKeyChain(keyChain, 'brackets');
+      validationDispatch({ type: 'clear-validation', key: dotKey });
+      validationDispatch({ type: 'clear-validation', key: bracketKey });
+    },
+    [validationDispatch]
+  );
+
+  /**
+   * For adding an item to a target array property (will be available to array properties only.)
+   */
   const add = React.useCallback(
     (keyChain: KeyChain, currentValue: any[], newItem: any) => {
       const newValue = [...(currentValue ?? [])];
@@ -48,6 +115,9 @@ function useBase<TData extends object>(
     [dispatch]
   );
 
+  /**
+   * For removing an item from a target array property at a specific index (will be available to array properties only.)
+   */
   const remove = React.useCallback(
     (keyChain: KeyChain, currentValue: any[], index: number) => {
       const newValue = [...(currentValue ?? [])];
@@ -57,6 +127,9 @@ function useBase<TData extends object>(
     [dispatch]
   );
 
+  /**
+   * For inserting an item into a target array property at a specific index (will be available to array properties only.)
+   */
   const insert = React.useCallback(
     (keyChain: KeyChain, currentValue: any[], index: number, newItem: any) => {
       const newValue = [...(currentValue ?? [])];
@@ -66,6 +139,9 @@ function useBase<TData extends object>(
     [dispatch]
   );
 
+  /**
+   * For removing an item from the end of a target array property (will be available to array properties only.)
+   */
   const pop = React.useCallback(
     (keyChain: KeyChain, currentValue: any[]) => {
       const newValue = [...(currentValue ?? [])];
@@ -75,6 +151,9 @@ function useBase<TData extends object>(
     [dispatch]
   );
 
+  /**
+   * For binding a target array property to a component (often an input)
+   */
   const bind = React.useCallback(
     (keyChain: KeyChain, bindConfig?: IBindConfig<any>) => {
       return {
@@ -82,15 +161,33 @@ function useBase<TData extends object>(
         setValue: (newValue: any) => set(keyChain, newValue),
         bindConfig,
         formConfig,
-        myValidationErrors: validationErrorsByKeyChain(formConfig?.validationErrors, keyChain),
+        myValidationErrors: validationErrorsByKeyChain(validationErrors, keyChain),
         dispatch,
         keyChain,
         initialValue: valueByKeyChain(initialData, keyChain),
+        addValidationError: (...messages: string[]) => addValidationErrorFromKeyChain(keyChain, messages),
+        clearValidationErrors: () => clearValidationErrorsByKeyChain(keyChain),
       };
     },
-    [set, Objects.contentDependency(formConfig), dispatch, formStateLive, initialData]
+    [
+      set,
+      Objects.contentDependency(formConfig),
+      dispatch,
+      formStateLive,
+      initialData,
+      validationErrors,
+      addValidationErrorFromKeyChain,
+      clearValidationErrorsByKeyChain,
+    ]
   );
 
+  /**
+   * The root method used to access a property within the form data object.
+   * - Receives a strictly typed set of args for targeting nested properties within a complex data object.
+   * - Can also allow targeting objects within an array by requesting an index number rather than a key.
+   * - The args passed to `formProp` form a "key chain" which is then used to access properties within the data object.
+   * @returns a set of tools for the property in question, notably `bind` and `set`.
+   */
   const formProp = React.useCallback(
     (...keyChain: KeyChain): BindingTools<TData> => {
       const value = valueByKeyChain(formStateRef.current, keyChain);
@@ -117,20 +214,35 @@ function useBase<TData extends object>(
           remove(keyChain, value as any[], index);
           return formProp(...keyChain) as BindingToolsArray<any>;
         },
+        addValidationError: (...messages: string[]) => {
+          addValidationErrorFromKeyChain(keyChain, messages);
+        },
+        clearValidationErrors: () => {
+          clearValidationErrorsByKeyChain(keyChain);
+        },
       };
       return arrayMethods as BindingTools<TData>;
     },
-    [bind, set, add, pop, remove, insert, formStateLive]
+    [bind, set, add, pop, remove, insert, formStateLive, addValidationErrorFromKeyChain, clearValidationErrorsByKeyChain]
   );
 
+  /**
+   * A simple getter to return the latest form data.
+   */
   const getFormData = React.useCallback(() => {
     return formStateRef.current;
   }, []);
 
+  /**
+   * Resets form data to it's latest "initial" state.
+   */
   const resetFormData = React.useCallback(() => {
     dispatch({ type: 'set-all', data: initialData });
   }, [Objects.contentDependency(initialData), dispatch]);
 
+  /**
+   * Sets all form data to a new object value.
+   */
   const setFormData = React.useCallback(
     (newFormData: TData) => {
       return dispatch({ type: 'set-all', data: newFormData });
@@ -138,9 +250,23 @@ function useBase<TData extends object>(
     [dispatch]
   );
 
-  return { formState: formStateLive, formProp: formProp as FormPropFactory<TData>['formProp'], resetFormData, getFormData, setFormData };
+  return {
+    formState: formStateLive,
+    formProp: formProp as FormPropFactory<TData>['formProp'],
+    resetFormData,
+    getFormData,
+    setFormData,
+    clearAllValidationErrors,
+    addValidationError,
+  };
 }
 
+/**
+ * Turns a potentially complex nested object or array into a piece of live state and a set of helper tools designed to be used in a form.
+ * @param initialData (optional) The initial value of the form data object.
+ * @param formConfig (optional) The settings to use with the form.
+ * @returns The form state, property accessor, and associated helper methods.
+ */
 function useForm<TData extends object>(initialData: TData, formConfig?: IFormConfig): HookReturn<TData> {
   const [formState, setFormState] = React.useState<TData>(initialData);
 
@@ -148,7 +274,7 @@ function useForm<TData extends object>(initialData: TData, formConfig?: IFormCon
 
   const dispatch = React.useCallback(
     (action) => {
-      formStateRef.current = reducer(formStateRef.current, action);
+      formStateRef.current = dataReducer(formStateRef.current, action);
       setFormState(formStateRef.current);
       return formStateRef.current;
     },
@@ -159,9 +285,15 @@ function useForm<TData extends object>(initialData: TData, formConfig?: IFormCon
     dispatch({ type: 'set-all', data: initialData });
   }, [Objects.contentDependency(initialData)]);
 
-  return useBase<TData>(formState, formStateRef, dispatch, initialData, formConfig);
+  return useFormBase<TData>(formState, formStateRef, dispatch, initialData, formConfig);
 }
 
+/**
+ * Turns an existing set of binding props into a piece of live state and a set of helper tools designed to be used in a form.
+ * @param parentBinder A set of binding props associated with a property and returned from another `useForm` hook.
+ * @param formConfig (optional) The settings to use with the form.
+ * @returns The form state, property accessor, and associated helper methods.
+ */
 function useChild<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig): HookReturn<TData> {
   const formStateRef = React.useRef<TData | undefined>(parentBinder.value);
 
@@ -200,10 +332,22 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
     [parentBinder.keyChain, parentBinder.dispatch]
   );
 
-  return useBase<TData>(parentBinder.value, formStateRef, dispatch, parentBinder.initialValue, combinedConfig);
+  return useFormBase<TData>(parentBinder.value, formStateRef, dispatch, parentBinder.initialValue, combinedConfig);
 }
 
+/**
+ * Turns an existing set of binding props into a piece of live state and a set of helper tools designed to be used in a form.
+ * @param parentBinder A set of binding props associated with a property and returned from another `useForm` hook.
+ * @param formConfig (optional) The settings to use with the form.
+ * @returns The form state, property accessor, and associated helper methods.
+ */
 export function use<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig): HookReturn<TData>;
+/**
+ * Turns a potentially complex nested object or array into a piece of live state and a set of helper tools designed to be used in a form.
+ * @param initialData (optional) The initial value of the form data object.
+ * @param formConfig (optional) The settings to use with the form.
+ * @returns The form state, property accessor, and associated helper methods.
+ */
 export function use<TData extends object>(initialData?: TData, formConfig?: IFormConfig): HookReturn<TData>;
 export function use<TData extends object>(dataOrBinder: TData | IBindingProps<TData>, formConfig?: IFormConfig): HookReturn<TData> {
   if (isBindingProps<TData>(dataOrBinder)) {
