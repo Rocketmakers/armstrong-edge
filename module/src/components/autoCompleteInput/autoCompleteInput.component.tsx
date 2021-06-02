@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Form } from '../..';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
 import { IInputProps } from '../input';
@@ -62,12 +63,16 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
     },
     ref
   ) => {
+    const [boundValue, setBoundValue, { getFormattedValueFromData, myValidationErrorMessages }] = Form.useBindingTools(bind, {
+      value,
+      onChange,
+      validationErrorMessages,
+    });
+
+    // the value before any formatting
     const currentValue = bind?.value || value;
 
-    // parse the given value if there is a parsing function given to the bind
-    const valueFromData = React.useCallback((val?: string) => bind?.bindConfig?.format?.fromData?.(val) || val || '', [bind]);
-
-    const [textInputCurrentValue, setTextInputCurrentValue] = React.useState((bind && valueFromData(bind.value)) || textInputValue || value || '');
+    const [textInputCurrentValue, setTextInputCurrentValue] = React.useState(boundValue || '');
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
@@ -78,32 +83,25 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
     const filteredOptions = React.useMemo(() => {
       if (filterOptions && options) {
         if (filterOptions === true) {
-          return options.filter((option) => valueFromData(option).indexOf(textInputCurrentValue) > -1);
+          return options.filter((option) => getFormattedValueFromData(option)!.indexOf(textInputCurrentValue) > -1);
         }
         return options.filter((option) => filterOptions(option, textInputCurrentValue));
       }
       return options || [];
     }, [filterOptions, JSON.stringify(options), textInputCurrentValue]);
 
-    /** set the value that is bound and trigger onChange */
-    const setBoundValue = React.useCallback(
+    const setInputValue = React.useCallback(
       (newValue: string) => {
-        onChange?.(newValue);
-        bind?.setValue(newValue);
+        setTextInputCurrentValue?.(newValue);
+        onTextInputChange?.(newValue);
       },
-      [onChange, bind]
+      [setTextInputCurrentValue, onTextInputChange]
     );
-
-    const setInputValue = React.useCallback((newValue: string) => {
-      setTextInputCurrentValue?.(newValue);
-      onTextInputChange?.(newValue);
-    }, []);
 
     /** when the user clicks on an option, change the value in the textInput */
     const onSelectOption = React.useCallback(
       (option: string) => {
-        setInputValue(valueFromData(option));
-
+        setInputValue(getFormattedValueFromData(option)!);
         setOptionsOpen(false);
 
         // if free text is allowed, the onChange triggered by the textinput's change event
@@ -112,36 +110,34 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
           setBoundValue(option);
         }
       },
-      [bind, valueFromData, allowFreeText]
+      [bind, getFormattedValueFromData, allowFreeText]
     );
 
     const onTextInputChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = event.currentTarget.value || '';
-
-        console.log({ newValue });
-
         setInputValue(newValue);
 
         // if allow free text, bind exact value on every change
         // if inputted text is an option, bind that
         if (allowFreeText) {
-          setBoundValue(bind?.bindConfig?.format?.toData?.(newValue) || newValue);
+          setBoundValue(newValue);
         } else {
-          const inputtedOption = options?.find((option) => valueFromData(option) === newValue);
+          const inputtedOption = options?.find((option) => getFormattedValueFromData(option) === newValue);
+
           if (inputtedOption) {
             setBoundValue(inputtedOption);
           }
         }
       },
-      [setTextInputCurrentValue, valueFromData]
+      [setTextInputCurrentValue, getFormattedValueFromData]
     );
 
     const onTextInputBlur = React.useCallback(() => {
       if (!allowFreeText) {
-        setTextInputCurrentValue(valueFromData(bind?.value) || value || '');
+        setTextInputCurrentValue(getFormattedValueFromData(bind?.value) || value || '');
       }
-    }, [allowFreeText, valueFromData, bind?.value]);
+    }, [allowFreeText, getFormattedValueFromData, bind?.value]);
 
     return (
       <>
@@ -149,11 +145,11 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
           className={ClassNames.concat('arm-input', 'arm-autocomplete-input', className)}
           data-error={error}
           data-pending={pending}
-          data-is-option={allowFreeText || valueFromData(textInputValue) === currentValue}
+          data-is-option={allowFreeText || getFormattedValueFromData(textInputValue) === currentValue}
         >
           <DropdownItems
             contentClassName="arm-auto-complete-options"
-            items={filteredOptions.map((option) => ({ content: valueFromData(option), id: option }))}
+            items={filteredOptions.map((option) => ({ content: getFormattedValueFromData(option)!, id: option }))}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
             rootElementSelector={optionsRootElementSelector}
@@ -174,7 +170,7 @@ export const AutoCompleteInput = React.forwardRef<HTMLInputElement, IAutoComplet
               onKeyDown={() => setOptionsOpen(true)}
               validationMode={validationMode}
               onFocus={() => setOptionsOpen(true)}
-              validationErrorMessages={validationErrorMessages}
+              validationErrorMessages={myValidationErrorMessages}
               validationErrorIcon={validationErrorIcon}
               disableOnPending={false}
             />

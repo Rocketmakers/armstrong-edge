@@ -1,10 +1,11 @@
 import * as React from 'react';
 
+import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { Status } from '../status';
-import { useMyValidationErrorMessages, ValidationErrors } from '../validationErrors';
+import { ValidationErrors } from '../validationErrors';
 
 export interface ICheckboxInputProps extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'type'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
@@ -61,28 +62,24 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
     }: ICheckboxInputProps,
     ref
   ) => {
-    const computedValidationMode = validationMode || bind?.formConfig?.validationMode;
-    const shouldShowValidationErrorsList = computedValidationMode === 'both' || computedValidationMode === 'message';
-    const shouldShowErrorIcon =
-      (!!validationErrorMessages?.length && (computedValidationMode === 'both' || computedValidationMode === 'icon')) || error;
+    const [
+      boundValue,
+      setBoundValue,
+      { myValidationErrorMessages, validationErrorIcon: boundValidationErrorIcon, shouldShowValidationErrorIcon, shouldShowValidationErrorMessage },
+    ] = Form.useBindingTools(bind, {
+      value: checked,
+      validationErrorMessages,
+      validationErrorIcon,
+      validationMode,
+    });
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBoundValue(event.currentTarget.checked);
         onChange?.(event);
-
-        const currentValue = event.currentTarget.checked;
-
-        if (bind) {
-          const formattedValue = bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
-          bind.setValue(formattedValue);
-        }
       },
       [bind, onChange]
     );
-
-    const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
-
-    const isChecked = bind?.bindConfig?.format?.fromData?.(bind?.value) ?? bind?.value ?? checked;
 
     return (
       <>
@@ -90,11 +87,11 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
           className={ClassNames.concat('arm-input', 'arm-checkbox-input', className)}
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
-          data-checked={isChecked}
+          data-checked={boundValue}
         >
           <label>
             <div className="arm-checkbox-input-checkbox">
-              <input onChange={onChangeEvent} {...nativeProps} type="checkbox" ref={ref} checked={isChecked} />
+              <input onChange={onChangeEvent} {...nativeProps} type="checkbox" ref={ref} checked={boundValue} />
 
               {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
               {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
@@ -102,11 +99,11 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
             {label}
           </label>
 
-          <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />
+          <Status error={shouldShowValidationErrorIcon} pending={pending} errorIcon={boundValidationErrorIcon} />
         </div>
 
-        {!!allValidationErrorMessages?.length && shouldShowValidationErrorsList && (
-          <ValidationErrors validationErrors={allValidationErrorMessages} icon={validationErrorIcon} />
+        {!!myValidationErrorMessages?.length && shouldShowValidationErrorMessage && (
+          <ValidationErrors validationErrors={myValidationErrorMessages} icon={boundValidationErrorIcon} />
         )}
       </>
     );

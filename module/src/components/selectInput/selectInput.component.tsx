@@ -1,12 +1,12 @@
 import * as React from 'react';
 
+import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon, IIconProps } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
-import { useMyValidationErrorMessages } from '../validationErrors';
 
 export interface ISelectInputOption<TSelectId extends string, TSelectData = any> {
   id: TSelectId;
@@ -35,7 +35,7 @@ export interface ISelectInputProps<TSelectId extends string, TSelectData = any> 
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
   /** (string) the current value */
-  value?: string;
+  value?: TSelectId;
 
   /** (string) the string to show when there is no value */
   placeholder?: string;
@@ -72,22 +72,28 @@ export const SelectInput = React.forwardRef(
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
+    const [
+      boundValue,
+      setBoundValue,
+      { myValidationErrorMessages, validationMode: boundValidationMode, validationErrorIcon: boundValidationErrorIcon },
+    ] = Form.useBindingTools(bind, {
+      value,
+      validationErrorMessages,
+      validationErrorIcon,
+      validationMode,
+    });
+
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
     const onChangeEvent = React.useCallback(
       (option: ISelectInputOption<TSelectId> | undefined) => {
         onSelectOption?.(option);
-        if (bind) {
-          const selectedOptionId = bind.bindConfig?.format?.toData?.(option?.id) || option?.id;
-          bind.setValue(selectedOptionId!);
+        if (option) {
+          setBoundValue(option.id);
         }
       },
       [onSelectOption, options, bind]
     );
-
-    const currentValue = value ?? bind?.bindConfig?.format?.fromData?.(bind?.value) ?? bind?.value ?? '';
-
-    const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
 
     return (
       <DropdownItems
@@ -97,7 +103,7 @@ export const SelectInput = React.forwardRef(
         onItemSelected={(item) => onChangeEvent(options.find((option) => option.id === item)!)}
         allowKeyboardNavigation
         focusableWrapper
-        currentValue={[currentValue]}
+        currentValue={[boundValue!]}
       >
         <InputWrapper
           ref={internalRef}
@@ -106,16 +112,16 @@ export const SelectInput = React.forwardRef(
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}
           rightOverlay={rightOverlay}
-          validationErrorMessages={allValidationErrorMessages}
-          validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
-          validationMode={validationMode || bind?.formConfig?.validationMode}
+          validationErrorMessages={myValidationErrorMessages}
+          validationErrorIcon={boundValidationErrorIcon}
+          validationMode={boundValidationMode}
           pending={pending}
           disabled={disabled}
           disableOnPending={disableOnPending}
         >
           <div className="arm-select-input-inner">
             <div className="arm-select-input-content">
-              {currentValue ? <p>{currentValue}</p> : placeholder && <p className="placeholder">{placeholder}</p>}
+              {boundValue ? <p>{boundValue}</p> : placeholder && <p className="placeholder">{placeholder}</p>}
             </div>
             {selectOverlayIcon &&
               (IconUtils.isIconDefinition(selectOverlayIcon) ? (
@@ -125,7 +131,7 @@ export const SelectInput = React.forwardRef(
               ))}
           </div>
 
-          {deleteButton && currentValue && (
+          {deleteButton && boundValue && (
             <IconButton
               onMouseDown={(event) => event.stopPropagation()}
               onMouseUp={(event) => event.stopPropagation()}

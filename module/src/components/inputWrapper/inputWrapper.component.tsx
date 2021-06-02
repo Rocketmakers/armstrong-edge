@@ -86,8 +86,6 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
     const showLeftIcon = statusPosition !== 'left' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
     const showRightIcon = statusPosition !== 'right' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
 
-    console.log(pending && disableOnPending, disabled);
-
     return (
       <>
         <div

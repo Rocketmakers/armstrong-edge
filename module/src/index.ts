@@ -23,6 +23,7 @@ export * from './components/numberInput';
 export * from './components/selectInput';
 export * from './components/spinner';
 export * from './components/status';
+export * from './components/switchInput';
 export * from './components/tag';
 export * from './components/tagInput';
 export * from './components/telInput';

@@ -46,7 +46,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [boundValue, boundOnChange, { myValidationErrorMessages }] = Form.useBindingTools<any>(bind, {
+    const [boundValue, setBoundValue, { myValidationErrorMessages }] = Form.useBindingTools<any>(bind, {
       value: value?.toString(),
       onChange,
       validationErrorMessages,
@@ -54,9 +54,9 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        boundOnChange(event.currentTarget.value);
+        setBoundValue(event.currentTarget.value);
       },
-      [boundOnChange]
+      [setBoundValue]
     );
 
     return (

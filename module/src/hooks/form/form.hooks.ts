@@ -1,6 +1,7 @@
 /* eslint-disable no-redeclare */
 import * as React from 'react';
 
+import { IconSet, IIcon } from '../../components/icon';
 import { useMyValidationErrorMessages } from '../../components/validationErrors';
 import { Objects } from '../../utils/objects';
 import { Typescript } from '../../utils/typescript';
@@ -11,6 +12,7 @@ import {
   BindingToolsArray,
   FormDispatcher,
   FormPropFactory,
+  FormValidationMode,
   HookReturn,
   IBindConfig,
   IBindingProps,
@@ -214,13 +216,25 @@ export function use<TData extends object>(dataOrBinder: TData | IBindingProps<TD
 
 interface IUseBindingToolsReturnUtils<TData> {
   /** Take any value and use the fromData formatter on it */
-  getFormattedValueFromData: (val: TData) => void;
+  getFormattedValueFromData: (val?: TData) => TData | undefined;
 
   /** Take any value and use the toData formatter on it */
-  getFormattedValueToData: (val: TData) => void;
+  getFormattedValueToData: (val?: TData) => TData | undefined;
 
   /** Validation errors from the binder concatenated with manually passed in errors */
-  myValidationErrorMessages?: string[];
+  myValidationErrorMessages: string[];
+
+  /** The current validation mode for the form */
+  validationMode?: FormValidationMode;
+
+  /** The current validation mode for the form */
+  validationErrorIcon?: IIcon<IconSet>;
+
+  /** Derived from the validation mode */
+  shouldShowValidationErrorIcon?: boolean;
+
+  /** Derived from the validation mode */
+  shouldShowValidationErrorMessage?: boolean;
 }
 
 type UseBindingToolsReturn<TData> = [TData | undefined, (newValue: TData) => void, IUseBindingToolsReturnUtils<TData>];
@@ -235,6 +249,12 @@ interface IUseBindingToolsOverrides<TData> {
 
   /** Component level validation errors, will be concatenated with the validation errors from the binder */
   validationErrorMessages?: string[];
+
+  /** The current validation mode for the form */
+  validationMode?: FormValidationMode;
+
+  /** The current validation mode for the form */
+  validationErrorIcon?: IIcon<IconSet>;
 }
 
 /**
@@ -268,5 +288,20 @@ export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: 
 
   const myValidationErrorMessages = useMyValidationErrorMessages(bind, overrides?.validationErrorMessages);
 
-  return [value, onChange, { getFormattedValueFromData, getFormattedValueToData, myValidationErrorMessages }];
+  const validationMode = overrides?.validationMode ?? bind?.formConfig?.validationMode;
+  const validationErrorIcon = overrides?.validationErrorIcon ?? bind?.formConfig?.validationErrorIcon;
+
+  return [
+    value,
+    onChange,
+    {
+      getFormattedValueFromData,
+      getFormattedValueToData,
+      myValidationErrorMessages,
+      validationMode,
+      validationErrorIcon,
+      shouldShowValidationErrorIcon: validationMode === 'icon' || validationMode === 'both',
+      shouldShowValidationErrorMessage: validationMode === 'message' || validationMode === 'both',
+    },
+  ];
 }

@@ -9,16 +9,8 @@ export interface IDropdownButtonProps extends IButtonProps {
   dropdownContent: JSX.Element;
 }
 
-export const DropdownButton: React.FC<IDropdownButtonProps> = ({ dropdownContent, onClick, className, children, ...buttonProps }) => {
+export const DropdownButton: React.FC<IDropdownButtonProps> = ({ dropdownContent, className, children, ...buttonProps }) => {
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
-
-  const onClickEvent = React.useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(event);
-      setDropdownOpen(!dropdownOpen);
-    },
-    [onClick, dropdownOpen]
-  );
 
   return (
     <Dropdown
@@ -27,9 +19,7 @@ export const DropdownButton: React.FC<IDropdownButtonProps> = ({ dropdownContent
       className={ClassNames.concat('arm-dropdown-button', className)}
       dropdownContent={dropdownContent}
     >
-      <Button {...buttonProps} onClick={onClickEvent}>
-        {children}
-      </Button>
+      <Button {...buttonProps}>{children}</Button>
     </Dropdown>
   );
 };

@@ -1,11 +1,11 @@
 import * as React from 'react';
 
+import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
-import { useMyValidationErrorMessages } from '../validationErrors';
 
 export interface INativeSelectInputOption<TSelectId extends string, TSelectData = any> {
   id: TSelectId;
@@ -36,6 +36,8 @@ export interface INativeSelectInputProps<TSelectId extends string, TSelectData =
 
   /** (boolean) should allow deletion of value with a cross */
   deleteButton?: boolean;
+
+  value?: TSelectId;
 }
 
 /** A select input which takes an array of options */
@@ -67,6 +69,8 @@ export const NativeSelectInput = React.forwardRef(
     const internalRef = React.useRef<HTMLSelectElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
+    const [boundValue, setBoundValue, { myValidationErrorMessages }] = Form.useBindingTools(bind, { value, validationErrorMessages });
+
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (onChange) {
@@ -76,21 +80,12 @@ export const NativeSelectInput = React.forwardRef(
         const selectedOption = options.find((option) => option.id === event.currentTarget.value);
 
         if (selectedOption) {
-          if (onSelectOption) {
-            onSelectOption(selectedOption);
-          }
-          if (bind) {
-            const selectedOptionId = bind.bindConfig?.format?.toData?.(selectedOption.id) || selectedOption.id;
-            bind.setValue(selectedOptionId);
-          }
+          setBoundValue(selectedOption.id);
+          onSelectOption?.(selectedOption);
         }
       },
       [onSelectOption, options, onChange, bind]
     );
-
-    const currentValue = bind?.bindConfig?.format?.fromData?.(bind?.value) ?? bind?.value ?? value;
-
-    const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
 
     return (
       <InputWrapper
@@ -99,7 +94,7 @@ export const NativeSelectInput = React.forwardRef(
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
-        validationErrorMessages={allValidationErrorMessages}
+        validationErrorMessages={myValidationErrorMessages}
         validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
         validationMode={validationMode || bind?.formConfig?.validationMode}
         pending={pending}
@@ -107,7 +102,7 @@ export const NativeSelectInput = React.forwardRef(
         disableOnPending={disableOnPending}
       >
         <div className="arm-native-select-input-inner">
-          <select {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={bind?.value ?? value} disabled={disabled}>
+          <select {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
             {options.map((option) => (
               <option key={option.id} value={option.id}>
                 {option.name}
@@ -121,7 +116,7 @@ export const NativeSelectInput = React.forwardRef(
               selectOverlayIcon
             ))}
         </div>
-        {deleteButton && currentValue && (
+        {deleteButton && boundValue && (
           <IconButton
             className="arm-select-input-delete"
             onClick={(event) => {
