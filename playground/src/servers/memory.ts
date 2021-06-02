@@ -17,6 +17,7 @@ export namespace MemoryServer {
     firstName: string
     lastName: string
     favouriteCuisine?: string
+    isCool?: boolean
     email: string
     address: IUserAddress
     favouriteColour?: 'blue' | 'red' | 'something else'

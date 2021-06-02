@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, CheckboxInput, AutoCompleteInput, NativeDateInput , TagInput, NativeSelectInput} from "@rocketmakers/armstrong-edge"
+import { Form, TextInput, NumberInput, EmailInput, TextAreaInput, Arrays, SelectInput, Spinner, Button, SwitchInput, AutoCompleteInput, NativeDateInput , TagInput, NativeSelectInput} from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 
 import { apiHooks } from "../../state/apiHooks"
@@ -89,8 +89,8 @@ export const UserEdit: React.FC = () => {
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} ref={selectRef} />
         <NativeSelectInput leftIcon={IconUtils.getIconDefinition('Icomoon', 'paint-format')} bind={formProp("favouriteColour").bind()} options={[{id: "blue", name: 'Blue'}, {id: 'red', name:"red"}, {id:'something else', name: 'Something else'}]} ref={selectRef} />
-        <CheckboxInput label="pissy wickles" validationErrorMessages={['uh oh']} />
-        <TagInput bind={formProp('sauces').bind()} spaceCreatesTags tagPosition="above" />
+        <SwitchInput bind={formProp('isCool').bind()} validationErrorMessages={['uh oh']} />
+        <TagInput bind={formProp('sauces').bind()} spaceCreatesTags tagPosition="below" />
 
         <NativeDateInput />
 
