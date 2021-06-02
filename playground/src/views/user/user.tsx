@@ -108,7 +108,7 @@ export const UserEdit: React.FC = () => {
         <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SwitchInput bind={formProp('isCool').bind()} validationErrorMessages={['uh oh']} />
-        <TagInput bind={formProp('sauces').bind()} spaceCreatesTags tagPosition="below" />
+        <TagInput bind={formProp('sauces').bind()} spaceCreatesTags tagPosition="inside" />
         <SelectInput
           leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
           bind={formProp("favouriteColour").bind()}
@@ -134,10 +134,13 @@ export const UserEdit: React.FC = () => {
         <NativeDateInput />
 
         <AutoCompleteInput
-          onTextInputChange={setAutocompleteValue}
           bind={formProp("favouriteCuisine").bind({ format: { fromData: (value) => sauces?.find((sauce) => sauce.id === value)?.name } })}
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "pizza")}
           options={sauces?.map((sauce) => sauce.id)}
+
+          onTextInputChange={setAutocompleteValue}
+          textInputValue
+
+          leftIcon={IconUtils.getIconDefinition("Icomoon", "pizza")}
           filterOptions={false}
           pending={isFetchingSauces}
         />
