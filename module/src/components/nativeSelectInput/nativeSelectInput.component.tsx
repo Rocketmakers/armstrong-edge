@@ -2,28 +2,29 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
-export interface INativeSelectInputOption<TSelectId extends string, TSelectData = any> {
-  id: TSelectId;
+export interface INativeSelectInputOption<Id extends ArmstrongId, TSelectData = any> {
+  id: Id;
   name: string;
   data?: TSelectData;
 }
 
-export interface INativeSelectInputProps<TSelectId extends string, TSelectData = any>
+export interface INativeSelectInputProps<Id extends ArmstrongId, TSelectData = any>
   extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>,
     Omit<IInputWrapperProps, 'onClick'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<TSelectId>;
+  bind?: IBindingProps<Id>;
 
   /** (INativeSelectInputOption[]) The options to be shown in the input */
-  options: INativeSelectInputOption<TSelectId, TSelectData>[];
+  options: INativeSelectInputOption<Id, TSelectData>[];
 
   /** ((option: INativeSelectInputOption) => void) Called on change to get the  */
-  onSelectOption?: (option?: INativeSelectInputOption<TSelectId>) => void;
+  onSelectOption?: (option?: INativeSelectInputOption<Id>) => void;
 
   /** (string[]) array of validation errors to render */
   validationErrorMessages?: string[];
@@ -37,12 +38,12 @@ export interface INativeSelectInputProps<TSelectId extends string, TSelectData =
   /** (boolean) should allow deletion of value with a cross */
   deleteButton?: boolean;
 
-  value?: TSelectId;
+  value?: Id;
 }
 
 /** A select input which takes an array of options */
 export const NativeSelectInput = React.forwardRef(
-  <TSelectId extends string, TSelectData = any>(
+  <Id extends ArmstrongId, TSelectData = any>(
     {
       bind,
       options,
@@ -63,7 +64,7 @@ export const NativeSelectInput = React.forwardRef(
       deleteButton,
       disableOnPending,
       ...nativeProps
-    }: INativeSelectInputProps<TSelectId, TSelectData>,
+    }: INativeSelectInputProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
   ) => {
     const internalRef = React.useRef<HTMLSelectElement>(null);
@@ -133,8 +134,8 @@ export const NativeSelectInput = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TSelectId extends string, TSelectData = any>(
-  props: React.PropsWithRef<INativeSelectInputProps<TSelectId, TSelectData>> & React.RefAttributes<HTMLSelectElement>
+) as (<Id extends ArmstrongId, TSelectData = any>(
+  props: React.PropsWithRef<INativeSelectInputProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<INativeSelectInputProps<any, any>> };
 
 NativeSelectInput.defaultProps = {
