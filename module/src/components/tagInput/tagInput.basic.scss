@@ -1,9 +1,19 @@
 .arm-tag-input {
-  overflow-x: auto;
+  .arm-input-inner {
+    cursor: text;
+  }
+
+  .arm-tag-input-inner {
+    overflow-x: auto;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xsmall;
+  }
 
   input {
     flex-grow: 1;
-    -webkit-appearance: none;
+    appearance: none;
     border: none;
     outline: none;
     background-color: transparent;

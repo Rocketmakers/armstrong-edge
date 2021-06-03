@@ -1,3 +1,15 @@
-.arm-dropdown-option {
-  cursor: pointer;
+.arm-dropdown-items {
+  &:focus {
+    border: none;
+    outline: none;
+  }
+}
+
+.arm-dropdown-items-content {
+  .arm-dropdown-item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xsmall;
+  }
 }

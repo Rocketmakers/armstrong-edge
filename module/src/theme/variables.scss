@@ -36,16 +36,29 @@ $border-radius-large: $spacing-medium !default;
 $shadow-opacity: 0.25 !default;
 $shadow-color: rgba($gray-very-dark, $shadow-opacity) !default;
 
+$shadow-size-xsmall: 0.2rem !default;
 $shadow-size-small: 0.5rem !default;
 $shadow-size-medium: 1rem !default;
 $shadow-size-large: 2rem !default;
-$shadow-offset-small: 0.1rem 0.1rem !default;
-$shadow-offset-medium: 0.5rem 0.5rem !default;
-$shadow-offset-large: 1rem 1rem !default;
+$shadow-size-xlarge: 3rem !default;
 
+$shadow-offset-xsmall: 0.05rem 0.05rem !default;
+$shadow-offset-small: 0.1rem 0.1rem !default;
+$shadow-offset-medium: 0.2rem 0.2rem !default;
+$shadow-offset-large: 0.4rem 0.4rem !default;
+$shadow-offset-xlarge: 1.5rem 1.5rem !default;
+
+$shadow-xsmall: $shadow-offset-xsmall $shadow-size-xsmall $shadow-color !default;
 $shadow-small: $shadow-offset-small $shadow-size-small $shadow-color !default;
 $shadow-medium: $shadow-offset-medium $shadow-size-medium $shadow-color !default;
 $shadow-large: $shadow-offset-large $shadow-size-large $shadow-color !default;
+$shadow-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color !default;
+
+$shadow-inner-xsmall: $shadow-offset-xsmall $shadow-size-xsmall $shadow-color inset !default;
+$shadow-inner-small: $shadow-offset-small $shadow-size-small $shadow-color inset !default;
+$shadow-inner-medium: $shadow-offset-medium $shadow-size-medium $shadow-color inset !default;
+$shadow-inner-large: $shadow-offset-large $shadow-size-large $shadow-color inset !default;
+$shadow-inner-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color inset !default;
 
 // transitions
 
@@ -55,9 +68,9 @@ $transition-slow: 1s !default;
 
 // sizing
 
-$input-width: 240px !default;
-$input-width-large: 320px !default;
-$input-height: 32px !default;
+$input-width: 320px !default;
+$input-width-large: 420px !default;
+$input-height: 34px !default;
 $input-height-large: 70px !default;
 
 // lines
@@ -71,3 +84,8 @@ $line-dark: $line $gray-dark !default;
 $line-very-dark: $line $gray-very-dark !default;
 
 $line-white: $line $white !default;
+
+// responsiveness
+
+$screen-size-phone: 780px;
+$screen-size-tablet: 1024px;

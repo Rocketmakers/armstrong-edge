@@ -1,1 +1,1 @@
-export { PasswordInput } from './passwordInput.component';
+export * from './passwordInput.component';

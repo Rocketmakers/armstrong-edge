@@ -1,1 +1,1 @@
-export { ISpinnerProps, Spinner } from './spinner.component';
+export * from './spinner.component';

@@ -1,1 +1,1 @@
-export { ITagInputProps, TagInput } from './tagInput.component';
+export * from './tagInput.component';

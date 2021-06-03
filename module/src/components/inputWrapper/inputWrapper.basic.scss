@@ -6,15 +6,9 @@
     padding: 0 $spacing-xsmall;
     display: flex;
     align-items: center;
-    gap: $spacing-xsmall;
 
-    + .arm-validation-errors {
-      margin-top: $spacing-xsmall;
-    }
-
-    &[data-disabled='true'] {
-      pointer-events: none;
-      user-select: none;
+    > *:not(:last-child) {
+      margin-right: $spacing-xxsmall;
     }
 
     .arm-spinner {
@@ -22,5 +16,10 @@
         font-size: 0.75rem;
       }
     }
+  }
+
+  &[data-disabled='true'] {
+    pointer-events: none;
+    user-select: none;
   }
 }

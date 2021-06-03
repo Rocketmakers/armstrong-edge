@@ -32,3 +32,14 @@ body,
 .shell {
   padding: 10px;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-medium;
+}
+fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-small;
+}

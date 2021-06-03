@@ -1,1 +1,1 @@
-export { IInputWrapperProps, InputWrapper } from './inputWrapper.component';
+export * from './inputWrapper.component';

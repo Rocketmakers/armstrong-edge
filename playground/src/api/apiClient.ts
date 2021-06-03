@@ -50,10 +50,18 @@ class Users {
   }
 }
 
+class Sauces {
+  getSauces = async (args: AddTestArgs<{q: string}>) => {
+    await processTestArgs(args);
+    return MemoryServer.getSauces(args.q)
+  }
+}
+
 
 
 class ApiClient {
   user = new Users()
+  sauces = new Sauces()
 }
 
 export const apiClient = new ApiClient()

@@ -1,1 +1,1 @@
-export { DropdownButton, IDropdownButtonProps } from './dropdownButton.component';
+export * from './dropdownButton.component';

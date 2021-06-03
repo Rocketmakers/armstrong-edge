@@ -22,7 +22,7 @@
 
       input {
         @include fill;
-        -webkit-appearance: none;
+        appearance: none;
         border: none;
         outline: none;
         background-color: transparent;
@@ -40,8 +40,9 @@
 
       .arm-icon {
         @include absolute-fill;
-        @include flex-centre;
+        @include flex-centre-content;
         transition: opacity $transition-quick;
+        pointer-events: none;
       }
     }
   }

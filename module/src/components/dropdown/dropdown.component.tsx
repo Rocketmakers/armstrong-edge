@@ -15,14 +15,23 @@ export interface IDropdownProps extends Omit<React.DetailedHTMLProps<React.BaseH
   /** (JSX) rendered inside the dropdown */
   dropdownContent: JSX.Element;
 
-  /** (string) selector for the element to portal the options into */
-  rootElementSelector?: string;
+  /** (string) selector for the element to portal the content into */
+  contentRootElementSelector?: string;
 
   /** (string) CSS className property */
   className?: string;
 
   /** (string) CSS className for content wrapper */
   contentClassName?: string;
+
+  /** (boolean) should open when the user clicks on children */
+  openWhenClickInside?: boolean;
+
+  /** (boolean) should open when the user focuses inside vhildren */
+  openWhenFocusInside?: boolean;
+
+  /** (string) selector for the element to visually render the content below - by default will render below the wrapper element */
+  childRootElementSelector?: string;
 }
 
 export interface IDropdownRef {
@@ -34,7 +43,24 @@ export interface IDropdownRef {
 }
 
 export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<IDropdownProps>>(
-  ({ isOpen, onOpenChange, children, rootElementSelector, dropdownContent, className, contentClassName, ...htmlProps }, ref) => {
+  (
+    {
+      isOpen,
+      onOpenChange,
+      children,
+      contentRootElementSelector,
+      dropdownContent,
+      className,
+      contentClassName,
+      openWhenClickInside,
+      openWhenFocusInside,
+      onMouseDown,
+      childRootElementSelector,
+      onFocus,
+      ...htmlProps
+    },
+    ref
+  ) => {
     const rootRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
 
@@ -47,19 +73,33 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       }
     }, [isOpen]);
 
-    useEventListener('click', onBodyClick);
+    const close = React.useCallback(() => {
+      onOpenChange(false);
+    }, [onOpenChange]);
+
+    useEventListener('click', onBodyClick, Globals.Document?.body);
+    useEventListener('resize', close, window);
+    useEventListener('blur', close, window);
 
     const [top, setTop] = React.useState<number>();
     const [left, setLeft] = React.useState<number>();
     const [width, setWidth] = React.useState<number>();
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
       if (isOpen && rootRef.current && contentRef.current) {
-        const rect = rootRef.current.getBoundingClientRect();
+        const elementToRenderBelow = childRootElementSelector
+          ? rootRef.current.querySelector(childRootElementSelector) ?? rootRef.current
+          : rootRef.current;
+
+        const rect = elementToRenderBelow!.getBoundingClientRect();
         const contentRect = contentRef.current.getBoundingClientRect();
+
         // set top and left from position, but ensure it doesn't fall off the edge of the screen
-        setTop(Math.min(rect.top + rect.height, (Globals.Window?.innerHeight || 0) - contentRect.height));
-        setLeft(Math.min(rect.left, (Globals.Window?.innerWidth || 0) - contentRect.width));
+        const newTop = Math.max(Math.min(rect.top + rect.height, (Globals.Window?.innerHeight || 0) - contentRect.height - rect.height));
+        const newLeft = Math.max(0, Math.min(rect.left, (Globals.Window?.innerWidth || 0) - contentRect.width));
+
+        setTop(newTop);
+        setLeft(newLeft);
         setWidth(rect.width);
       }
     }, [isOpen]);
@@ -86,17 +126,40 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       }
     }, [isOpen, onScrollContent]);
 
+    const onMouseDownEvent = React.useCallback(
+      (event: React.MouseEvent<HTMLDivElement>) => {
+        if (openWhenClickInside) {
+          onOpenChange(!isOpen);
+        }
+        onMouseDown?.(event);
+        // event?.stopPropagation();
+        // event?.preventDefault();
+      },
+      [openWhenClickInside, onOpenChange, onMouseDown, isOpen]
+    );
+    const onFocusEvent = React.useCallback(
+      (event: React.FocusEvent<HTMLDivElement>) => {
+        if (openWhenFocusInside) {
+          onOpenChange(true);
+        }
+        onFocus?.(event);
+      },
+      [openWhenFocusInside, onOpenChange, onFocus]
+    );
+
     return (
       <div
         {...htmlProps}
         className={ClassNames.concat('arm-dropdown', className)}
-        onClick={(event) => event.stopPropagation()}
+        onMouseDown={onMouseDownEvent}
         ref={rootRef}
         data-is-open={isOpen}
+        onFocus={onFocusEvent}
+        onClick={(event) => event.stopPropagation()}
       >
         {children}
 
-        <Portal rootElementSelector={rootElementSelector}>
+        <Portal rootElementSelector={contentRootElementSelector}>
           <div
             className={ClassNames.concat('arm-dropdown-content', contentClassName)}
             style={
@@ -106,7 +169,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
                 '--arm-dropdown-width': `${width}px`,
               } as React.CSSProperties
             }
-            onClick={(event) => event.stopPropagation()}
             ref={contentRef}
             data-is-open={isOpen}
             onScroll={(event) => {
@@ -115,6 +177,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
               return false;
             }}
             tabIndex={!isOpen ? -1 : undefined}
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+            onMouseDown={(event) => event.stopPropagation()}
           >
             {dropdownContent}
           </div>
@@ -123,3 +189,8 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     );
   }
 );
+
+Dropdown.defaultProps = {
+  openWhenFocusInside: true,
+  openWhenClickInside: true,
+};

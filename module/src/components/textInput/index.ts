@@ -1,1 +1,1 @@
-export { TextInput } from './textInput.component';
+export * from './textInput.component';

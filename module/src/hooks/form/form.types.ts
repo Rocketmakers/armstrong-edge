@@ -39,6 +39,15 @@ export interface BindingToolsStandard<TValue> {
    * @returns the value if set, or undefined.
    */
   get: () => TValue | undefined;
+  /**
+   * Adds a validation error for a field within the form state.
+   * @param messages The validation error message(s) to add.
+   */
+  addValidationError: (...messages: string[]) => void;
+  /**
+   * Clears all validation messages associated with a key.
+   */
+  clearValidationErrors: () => void;
 }
 
 /**
@@ -212,6 +221,15 @@ export interface IBindingProps<TValue> {
    * The initial value attributed to the targeted property before any user input.
    */
   initialValue: TValue | undefined;
+  /**
+   * Adds a validation error for a field within the form state.
+   * @param messages (string|string[]) The validation error message(s) to add.
+   */
+  addValidationError: (...messages: string[]) => void;
+  /**
+   * Clears all validation messages associated with a key.
+   */
+  clearValidationErrors: () => void;
 }
 
 /**
@@ -345,9 +363,68 @@ export type FormAction<TData, TValue> = IFormSetOneAction<TValue> | IFormSetPath
  * The items returned from the `useForm` hooks.
  */
 export interface HookReturn<TData extends object> {
+  /**
+   * The live form state object.
+   * - The root reference is redefined on any change so this can be used as a hook dependency.
+   * - References below the root are smart and only redefined when data beneath them has changed, so use the most granular possible dependencies in your hooks!
+   */
   formState: TData | undefined;
+  /**
+   * The root method used to access a property within the form data object.
+   * - Receives a strictly typed set of args for targeting nested properties within a complex data object.
+   * - Can also allow targeting objects within an array by requesting an index number rather than a key.
+   * - The args passed to `formProp` form a "key chain" which is then used to access properties within the data object.
+   * @returns a set of tools for the property in question, notably `bind` and `set`.
+   */
   formProp: FormPropFactory<TData>['formProp'];
+  /**
+   * Resets user inputted form data back to the most recent "initial" value passed into the hook.
+   */
   resetFormData: () => void;
+  /**
+   * Returns all current form data as an object
+   * - Will match the value of `formState` but useful as a light dependency for hooks that need to access the data functionally.
+   */
   getFormData: () => TData | undefined;
+  /**
+   * Sets the entire form data object to a new value
+   * @param newData The data to set as the active form data.
+   */
   setFormData: (newData: TData) => void;
+  /**
+   * Clears all validation errors for the current form state.
+   */
+  clearAllValidationErrors: () => void;
+  /**
+   * Adds one or more validation errors to the current form state.
+   * - Validation errors consist of a key to target the property, and a message to display.
+   * @param validationErrors The errors to add to the current state.
+   */
+  addValidationError: (...validationErrors: IValidationError[]) => void;
 }
+
+/**
+ * The delay config, used to set throttle and debounce values.
+ */
+export interface IDelayInputConfig {
+  /**
+   * (debounce|throttle) Whether to use a debounce or a throttle delay.
+   */
+  mode: 'debounce' | 'throttle';
+
+  /**
+   * (debounce|throttle) The number of milliseconds to delay for.
+   */
+  milliseconds: number;
+}
+
+export interface IAddValidationAction {
+  type: 'add-validation';
+  errors: IValidationError[];
+}
+export interface IClearValidationAction {
+  type: 'clear-validation';
+  key?: string;
+}
+
+export type ValidationAction = IAddValidationAction | IClearValidationAction;

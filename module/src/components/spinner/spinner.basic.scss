@@ -1,5 +1,5 @@
 .arm-spinner {
-  @include flex-centre;
+  @include flex-centre-content;
 
   &[data-fill-container='true'] {
     @include fill;

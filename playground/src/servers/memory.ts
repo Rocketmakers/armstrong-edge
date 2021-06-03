@@ -17,13 +17,15 @@ export namespace MemoryServer {
     firstName: string
     lastName: string
     favouriteCuisine?: string
+    isCool?: boolean
     email: string
     address: IUserAddress
     favouriteColour?: 'blue' | 'red' | 'something else'
     points: number
     roles: IUserRole[]
     bio?: string
-    toppings?: string[];
+    sauces?: string[];
+    favouriteSauce?: string;
     isACoolGuy?: boolean;
   }
 
@@ -112,5 +114,23 @@ export namespace MemoryServer {
     const newUser = { id: UUIDService.create(), ...data }
     users.push(newUser)
     return newUser
+  }
+
+  interface ISauce {
+    id: string;
+    name: string;
+  }
+  const sauces: ISauce[] = [
+    {id: 'a', name:'ketchup'},
+    {id: 'b', name:'brown sauce'},
+    {id: 'c', name:'sriracha'},
+    {id: 'd', name:'mayonnaise'},
+    {id: 'e', name:'blue cheese'},
+    {id: 'f', name:'mustard'},
+  ]
+
+  export function getSauces(q: string ) {
+    console.log({q})
+    return q?.length ? sauces.filter(sauce => sauce.name.includes(q)) : sauces
   }
 }

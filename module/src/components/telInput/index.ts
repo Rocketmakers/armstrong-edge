@@ -1,1 +1,1 @@
-export { TelInput } from './telInput.component';
+export * from './telInput.component';

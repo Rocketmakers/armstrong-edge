@@ -1,1 +1,1 @@
-export { CheckboxInput, ICheckboxInputProps } from './checkboxInput.component';
+export * from './checkboxInput.component';

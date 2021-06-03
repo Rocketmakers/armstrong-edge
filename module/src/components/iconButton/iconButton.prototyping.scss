@@ -8,4 +8,13 @@
   .arm-status .arm-status-error {
     font-size: 1rem;
   }
+
+  &[data-icon-only='true'] {
+    background-color: transparent;
+    color: inherit;
+    box-shadow: none;
+    width: initial;
+    height: initial;
+    padding: initial;
+  }
 }

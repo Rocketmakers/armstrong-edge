@@ -19,7 +19,21 @@
   @include fill;
 }
 
-@mixin flex-centre {
+@mixin absolute-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  @include fill;
+}
+
+@mixin absolute-centre-self {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin flex-centre-content {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,4 +47,42 @@
 @mixin circle($size) {
   @include square($size);
   border-radius: 50%;
+}
+
+// responsiveness
+
+@mixin media-query($screen-width: $screen-size-phone) {
+  @media screen and (max-width: $screen-width) {
+    @content;
+  }
+}
+
+@mixin media-query-min($screen-width: $screen-size-phone) {
+  @media screen and (min-width: $screen-width) {
+    @content;
+  }
+}
+
+@mixin screen-tablet() {
+  @include media-query($screen-size-tablet) {
+    @content;
+  }
+}
+
+@mixin screen-phone() {
+  @include media-query($screen-size-phone) {
+    @content;
+  }
+}
+
+@mixin screen-not-phone() {
+  @include media-query-min($screen-size-phone) {
+    @content;
+  }
+}
+
+@mixin screen-phone-tiny() {
+  @include media-query($screen-size-phone * 0.4) {
+    @content;
+  }
 }

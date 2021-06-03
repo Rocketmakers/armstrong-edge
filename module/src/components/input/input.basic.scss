@@ -1,7 +1,11 @@
 .arm-input.arm-input-base {
+  .arm-input-inner {
+    cursor: text;
+  }
+
   input.arm-input-base-input {
     flex-grow: 1;
-    -webkit-appearance: none;
+    appearance: none;
     border: none;
     outline: none;
     background-color: transparent;

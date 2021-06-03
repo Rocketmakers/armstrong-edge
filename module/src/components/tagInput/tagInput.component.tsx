@@ -1,12 +1,15 @@
 import * as React from 'react';
 
-import { ClassNames } from '../..';
+import { ClassNames, Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { IconUtils } from '../icon';
+import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag/tag.component';
-import { useMyValidationErrorMessages, ValidationErrors } from '../validationErrors';
 
-export interface ITagInputProps extends Omit<IInputWrapperProps, 'above' | 'below'> {
+export interface ITagInputProps
+  extends Omit<IInputWrapperProps, 'above' | 'below' | 'onClick'>,
+    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'value'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string[]>;
 
@@ -23,7 +26,7 @@ export interface ITagInputProps extends Omit<IInputWrapperProps, 'above' | 'belo
   onChange?: (newValue: string[]) => void;
 
   /** (event => void) fired when the internal text input changes */
-  onTextInputChange?: (event: React.ChangeEvent) => void;
+  onTextInputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
   /** (boolean) don't add duplicates to the list of tags */
   allowDuplicates?: boolean;
@@ -39,9 +42,12 @@ export interface ITagInputProps extends Omit<IInputWrapperProps, 'above' | 'belo
 
   /** (boolean) should allow deletion of tags with a cross */
   deleteButton?: boolean;
+
+  /** (boolean) should show button to clear all tags */
+  deleteAllButton?: boolean;
 }
 
-export const TagInput: React.FC<ITagInputProps> = React.forwardRef<HTMLInputElement, ITagInputProps>(
+export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
   (
     {
       className,
@@ -56,50 +62,64 @@ export const TagInput: React.FC<ITagInputProps> = React.forwardRef<HTMLInputElem
       getCanAddTag,
       tagPosition,
       deleteButton,
-      ...inputWrapperProps
+      deleteAllButton,
+      pending,
+      disabled,
+      leftIcon,
+      rightOverlay,
+      error,
+      hideIconOnStatus,
+      leftOverlay,
+      onTextInputChange,
+      rightIcon,
+      statusPosition,
+      placeholder,
+      disableOnPending,
+      ...nativeProps
     },
     ref
   ) => {
+    const internalRef = React.useRef<HTMLInputElement>(null);
+    React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+      value,
+      onChange,
+      validationErrorMessages,
+      validationErrorIcon,
+      validationMode,
+    });
+
     const [inputValue, setInputValue] = React.useState('');
-
-    const allValidationErrorMessages = useMyValidationErrorMessages(bind, validationErrorMessages);
-
-    const computedValidationMode = validationMode || bind?.formConfig?.validationMode;
-    const shouldShowValidationErrorsList = computedValidationMode === 'both' || computedValidationMode === 'message';
-
-    const setValue = (newValue: string[]) => {
-      onChange?.(newValue);
-      bind?.setValue?.(bind?.bindConfig?.format?.toData?.(newValue) || newValue);
-    };
-
-    const parsedTags = React.useMemo(
-      () => value ?? bind?.bindConfig?.format?.fromData?.(bind?.value) ?? bind?.value ?? [],
-      [value, bind?.value, bind?.bindConfig?.format?.fromData]
-    );
 
     const addTag = React.useCallback(
       (newTag: string) => {
-        if (newTag && (allowDuplicates || (!parsedTags.includes(newTag) && (!getCanAddTag || getCanAddTag(newTag))))) {
-          setValue([...parsedTags, newTag.trim()]);
+        if (newTag && (allowDuplicates || (!boundValue?.includes(newTag) && (!getCanAddTag || getCanAddTag(newTag))))) {
+          setBoundValue([...(boundValue || []), newTag.trim()]);
         }
         setInputValue('');
       },
-      [parsedTags, allowDuplicates]
+      [boundValue, allowDuplicates, setBoundValue]
     );
 
     const removeTag = React.useCallback(
       (newTag: string) => {
-        setValue((parsedTags || []).filter((tag) => tag !== newTag));
+        setBoundValue((boundValue || []).filter((tag) => tag !== newTag));
         setInputValue('');
       },
-      [parsedTags]
+      [boundValue, setBoundValue]
     );
+
+    const clearTags = React.useCallback(() => {
+      setBoundValue([]);
+    }, [setBoundValue]);
 
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>) => {
         switch (event.key) {
           case 'Enter': {
             addTag(inputValue);
+            event.preventDefault();
             break;
           }
           case ' ': {
@@ -110,8 +130,8 @@ export const TagInput: React.FC<ITagInputProps> = React.forwardRef<HTMLInputElem
             break;
           }
           case 'Backspace': {
-            if (inputValue === '' && parsedTags && tagPosition === 'inside') {
-              removeTag(parsedTags[parsedTags.length - 1]);
+            if (inputValue === '' && boundValue && tagPosition === 'inside') {
+              removeTag(boundValue[boundValue.length - 1]);
             }
             break;
           }
@@ -120,49 +140,69 @@ export const TagInput: React.FC<ITagInputProps> = React.forwardRef<HTMLInputElem
           }
         }
       },
-      [inputValue, addTag, spaceCreatesTags, tagPosition, parsedTags]
+      [inputValue, addTag, spaceCreatesTags, tagPosition, boundValue]
     );
 
     return (
-      <>
-        <InputWrapper
-          {...inputWrapperProps}
-          className={ClassNames.concat('arm-tag-input', className)}
-          validationErrorMessages={allValidationErrorMessages}
-          validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
-          validationMode={validationMode || bind?.formConfig?.validationMode}
-          data-tag-position={tagPosition}
-          data-has-tags={!!parsedTags.length}
-          above={
-            tagPosition === 'above' ? (
-              <>
-                {parsedTags?.map((tag, index) => (
-                  <Tag content={tag} key={allowDuplicates ? tag + index : tag} onRemove={deleteButton ? () => removeTag(tag) : undefined} />
-                ))}
-              </>
-            ) : undefined
-          }
-          below={
-            tagPosition === 'below' ? (
-              <>
-                {parsedTags?.map((tag, index) => (
-                  <Tag content={tag} key={allowDuplicates ? tag + index : tag} onRemove={deleteButton ? () => removeTag(tag) : undefined} />
-                ))}
-              </>
-            ) : undefined
-          }
-        >
+      <InputWrapper
+        className={ClassNames.concat('arm-tag-input', className)}
+        validationErrorMessages={bindConfig.validationErrorMessages}
+        validationErrorIcon={bindConfig.validationErrorIcon}
+        validationMode={bindConfig.validationMode}
+        data-tag-position={tagPosition}
+        data-has-tags={!!boundValue?.length}
+        pending={pending}
+        disabled={disabled}
+        leftIcon={leftIcon}
+        rightOverlay={rightOverlay}
+        error={error}
+        hideIconOnStatus={hideIconOnStatus}
+        leftOverlay={leftOverlay}
+        rightIcon={rightIcon}
+        disableOnPending={disableOnPending}
+        statusPosition={statusPosition}
+        onClick={() => internalRef.current?.focus()}
+        above={
+          tagPosition === 'above' ? (
+            <>
+              {boundValue?.map((tag, index) => (
+                <Tag content={tag} key={allowDuplicates ? tag + index : tag} onRemove={deleteButton ? () => removeTag(tag) : undefined} />
+              ))}
+            </>
+          ) : undefined
+        }
+        below={
+          tagPosition === 'below' ? (
+            <>
+              {boundValue?.map((tag, index) => (
+                <Tag content={tag} key={allowDuplicates ? tag + index : tag} onRemove={deleteButton ? () => removeTag(tag) : undefined} />
+              ))}
+            </>
+          ) : undefined
+        }
+      >
+        <div className="arm-tag-input-inner">
           {tagPosition === 'inside' &&
-            parsedTags?.map((tag, index) => (
+            boundValue?.map((tag, index) => (
               <Tag content={tag} key={allowDuplicates ? tag + index : tag} onRemove={deleteButton ? () => removeTag(tag) : undefined} />
             ))}
-          <input ref={ref} value={inputValue} onChange={(event) => setInputValue(event.currentTarget.value)} onKeyDown={onKeyDown} />
-        </InputWrapper>
+          <input
+            {...nativeProps}
+            ref={internalRef}
+            value={inputValue}
+            placeholder={!boundValue?.length || tagPosition !== 'inside' ? placeholder : undefined}
+            onChange={(event) => {
+              setInputValue(event.currentTarget.value);
+              onTextInputChange?.(event);
+            }}
+            onKeyDown={onKeyDown}
+          />
+        </div>
 
-        {!!allValidationErrorMessages?.length && shouldShowValidationErrorsList && (
-          <ValidationErrors validationErrors={allValidationErrorMessages} icon={validationErrorIcon} />
+        {deleteAllButton && !!boundValue?.length && (
+          <IconButton iconOnly onClick={clearTags} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} />
         )}
-      </>
+      </InputWrapper>
     );
   }
 );
@@ -170,4 +210,5 @@ export const TagInput: React.FC<ITagInputProps> = React.forwardRef<HTMLInputElem
 TagInput.defaultProps = {
   tagPosition: 'inside',
   deleteButton: true,
+  deleteAllButton: true,
 };

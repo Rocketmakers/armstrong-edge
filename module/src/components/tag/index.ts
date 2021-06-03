@@ -1,1 +1,1 @@
-export { ITagProps, Tag } from './tag.component';
+export * from './tag.component';
