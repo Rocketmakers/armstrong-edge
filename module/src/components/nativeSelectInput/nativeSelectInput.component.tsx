@@ -78,7 +78,7 @@ export const NativeSelectInput = React.forwardRef(
           onChange(event);
         }
 
-        const selectedOption = options.find((option) => option.id === event.currentTarget.value);
+        const selectedOption = options.find((option) => option.id.toString() === event.currentTarget.value);
 
         if (selectedOption) {
           setBoundValue(selectedOption.id);
