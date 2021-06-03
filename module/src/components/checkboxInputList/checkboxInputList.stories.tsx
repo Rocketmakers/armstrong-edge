@@ -2,24 +2,24 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
-import { RadioInputList } from './radioInputList.component';
+import { CheckboxInputList } from './checkboxInputList.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(RadioInputList as any, 'Form', 'Radio Input List', {});
+export default StoryUtils.createMeta(CheckboxInputList as any, 'Form', 'Checkbox Input List', {});
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(RadioInputList);
+const Template = StoryUtils.createTemplate(CheckboxInputList);
 
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <RadioInputList
+      <CheckboxInputList
         value={value}
         onChange={setValue}
         options={[
@@ -32,16 +32,16 @@ export const Default = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p>bound value: {value?.join(', ')}</p>
     </>
   );
 };
 export const Grouped = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <RadioInputList
+      <CheckboxInputList
         value={value}
         onChange={setValue}
         options={[
@@ -54,16 +54,16 @@ export const Grouped = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p>bound value: {value?.join(', ')}</p>
     </>
   );
 };
 export const CheckedIcon = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <RadioInputList
+      <CheckboxInputList
         value={value}
         onChange={setValue}
         checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
@@ -77,16 +77,16 @@ export const CheckedIcon = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p>bound value: {value?.join(', ')}</p>
     </>
   );
 };
 export const UncheckedIcon = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <RadioInputList
+      <CheckboxInputList
         value={value}
         onChange={setValue}
         checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
@@ -101,16 +101,16 @@ export const UncheckedIcon = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p>bound value: {value?.join(', ')}</p>
     </>
   );
 };
 export const NumericIds = () => {
-  const [value, setValue] = React.useState<number>();
+  const [value, setValue] = React.useState<number[]>([]);
 
   return (
     <>
-      <RadioInputList
+      <CheckboxInputList
         value={value}
         onChange={setValue}
         checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
@@ -125,7 +125,7 @@ export const NumericIds = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p>bound value: {value?.join(', ')}</p>
     </>
   );
 };

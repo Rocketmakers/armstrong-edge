@@ -1,0 +1,12 @@
+.arm-checkbox-input-list-group-title {
+  padding: $spacing-small 0 $spacing-xsmall 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: $gray-medium;
+}
+
+.arm-checkbox-input-list {
+  .arm-checkbox-input + .arm-checkbox-input {
+    margin-top: $spacing-xxsmall;
+  }
+}

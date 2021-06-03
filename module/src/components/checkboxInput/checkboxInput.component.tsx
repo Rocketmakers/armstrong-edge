@@ -4,10 +4,13 @@ import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
-export interface ICheckboxInputProps extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'type'> {
+export interface ICheckboxInputProps
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'type'>,
+    IIconWrapperProps<IconSet, IconSet> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
 
@@ -58,6 +61,8 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       checkedIcon,
       label,
       uncheckedIcon,
+      leftIcon,
+      rightIcon,
       ...nativeProps
     }: ICheckboxInputProps,
     ref
@@ -92,10 +97,16 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
               {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
               {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
             </div>
-            {label}
+            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+              {label}
+            </IconWrapper>
           </label>
 
-          <Status error={bindConfig.shouldShowValidationErrorIcon} pending={pending} errorIcon={bindConfig.validationErrorIcon} />
+          <Status
+            error={bindConfig.shouldShowValidationErrorIcon && (!!bindConfig?.validationErrorMessages?.length || error)}
+            pending={pending}
+            errorIcon={bindConfig.validationErrorIcon}
+          />
         </div>
 
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (

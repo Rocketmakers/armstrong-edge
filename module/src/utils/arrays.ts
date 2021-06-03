@@ -38,8 +38,6 @@ export namespace Arrays {
       for (const array of arrays) {
         const newIndex = totalIndex + array.items.length;
 
-        console.log(newIndex, index, array, index - totalIndex);
-
         if (index < newIndex) {
           return array.items[index - totalIndex];
         }
