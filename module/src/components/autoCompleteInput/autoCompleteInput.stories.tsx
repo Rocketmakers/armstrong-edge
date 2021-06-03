@@ -72,3 +72,20 @@ export const WithGroups = () => {
     />
   );
 };
+export const WithValidationErrors = () => {
+  const [value, setValue] = React.useState('b');
+
+  return (
+    <AutoCompleteInput
+      value={value}
+      onChange={setValue}
+      leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
+      options={[
+        { id: 'a', name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
+        { id: 'b', name: 'blue', leftIcon: IconUtils.getIconDefinition('Icomoon', 'cherry'), group: 'primary' },
+        { id: 'c', name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
+      ]}
+      validationErrorMessages={['your taste in colours is terrible']}
+    />
+  );
+};

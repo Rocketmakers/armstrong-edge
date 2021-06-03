@@ -12,7 +12,7 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall 
 
     input {
       @include fill;
-      -webkit-appearance: none;
+      appearance: none;
       border: none;
       outline: none;
       background-color: transparent;
@@ -33,7 +33,7 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall 
     .arm-switch-input-unchecked-icon,
     .arm-switch-input-checked-icon {
       @include square($arm-switch-input-handle);
-      @include flex-centre;
+      @include flex-centre-content;
       position: absolute;
       top: $spacing-xxsmall;
       z-index: 2;

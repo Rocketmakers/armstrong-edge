@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { ArmstrongId } from '../../types';
 import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { Dropdown, IDropdownProps } from '../dropdown';
@@ -11,7 +12,7 @@ export interface IDropdownItem extends IIconWrapperProps<IconSet, IconSet> {
   content: string;
 
   /** (string) The string to be passed into onItemSelected */
-  id: string;
+  id: ArmstrongId;
 
   /** (HTMLDivElement) props to spread onto the div element for the dropdown item */
   htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onMouseUp' | 'ref'>;
@@ -70,13 +71,13 @@ export interface IDropdownItemsProps extends Omit<IDropdownProps, 'dropdownConte
   items: IDropdownItem[];
 
   /** (content => void) Fired when the user selects and item in the dropdown */
-  onItemSelected: (content: string) => void;
+  onItemSelected: (content: ArmstrongId) => void;
 
   /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
   allowKeyboardNavigation?: boolean;
 
   /** (string) Currently selected items */
-  currentValue?: string[];
+  currentValue?: ArmstrongId[];
 
   /** (boolean) adds tabIndex={0} to the wrapper element making it keyboard focusable without needing another focusable element inside it - needed to make keyboard interaction work without a focusable element inside it */
   focusableWrapper?: boolean;
@@ -171,7 +172,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   );
 
   const onMouseUpDropdownItem = React.useCallback(
-    (id: string) => {
+    (id: ArmstrongId) => {
       if (closeOnSelection) {
         onOpenChange(false);
       }
@@ -212,15 +213,11 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                     onMouseUp={
                       !hasBegunClick
                         ? () => {
-                            console.log('MOUSE UP', item.id);
                             onMouseUpDropdownItem(item.id);
                           }
                         : undefined
                     }
-                    onClick={() => {
-                      console.log('CLICK', item.id);
-                      onMouseUpDropdownItem(item.id);
-                    }}
+                    onClick={() => onMouseUpDropdownItem(item.id)}
                     onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
                     isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
                     isSelected={!!currentValue?.includes(item.id)}

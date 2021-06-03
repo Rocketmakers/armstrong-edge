@@ -34,3 +34,9 @@
   text-transform: uppercase;
   color: $gray-medium;
 }
+
+@include screen-phone {
+  .arm-dropdown-item {
+    padding: $spacing-small $spacing-small;
+  }
+}

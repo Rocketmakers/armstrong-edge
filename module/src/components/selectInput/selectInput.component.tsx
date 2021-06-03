@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
@@ -9,22 +10,22 @@ import { IconButton } from '../iconButton';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
-export interface ISelectInputOption<TSelectId extends string, TSelectData = any> extends IIconWrapperProps<IconSet, IconSet> {
-  id: TSelectId;
+export interface ISelectInputOption<Id extends ArmstrongId, TSelectData = any> extends IIconWrapperProps<IconSet, IconSet> {
+  id: Id;
   name: string;
   group?: string;
   data?: TSelectData;
 }
 
-export interface ISelectInputProps<TSelectId extends string, TSelectData = any> extends IInputWrapperProps {
+export interface ISelectInputProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<TSelectId>;
+  bind?: IBindingProps<Id>;
 
   /** (ISelectInputOption[]) The options to be shown in the input */
-  options: ISelectInputOption<TSelectId, TSelectData>[];
+  options: ISelectInputOption<Id, TSelectData>[];
 
   /** ((option: ISelectInputOption) => void) Called on change to get the  */
-  onSelectOption?: (option?: ISelectInputOption<TSelectId>) => void;
+  onSelectOption?: (option?: ISelectInputOption<Id>) => void;
 
   /** (string[]) array of validation errors to render */
   validationErrorMessages?: string[];
@@ -36,7 +37,7 @@ export interface ISelectInputProps<TSelectId extends string, TSelectData = any> 
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
   /** (string) the current value */
-  value?: TSelectId;
+  value?: Id;
 
   /** (string) the string to show when there is no value */
   placeholder?: string;
@@ -47,7 +48,7 @@ export interface ISelectInputProps<TSelectId extends string, TSelectData = any> 
 
 /** A select input which takes an array of options */
 export const SelectInput = React.forwardRef(
-  <TSelectId extends string, TSelectData = any>(
+  <Id extends ArmstrongId, TSelectData = any>(
     {
       bind,
       options,
@@ -67,7 +68,7 @@ export const SelectInput = React.forwardRef(
       placeholder,
       deleteButton,
       disableOnPending,
-    }: ISelectInputProps<TSelectId, TSelectData>,
+    }: ISelectInputProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const internalRef = React.useRef<HTMLInputElement>(null);
@@ -83,7 +84,7 @@ export const SelectInput = React.forwardRef(
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
     const onChangeEvent = React.useCallback(
-      (option: ISelectInputOption<TSelectId> | undefined) => {
+      (option: ISelectInputOption<Id> | undefined) => {
         onSelectOption?.(option);
         setBoundValue(option?.id ?? undefined!);
       },
@@ -97,7 +98,7 @@ export const SelectInput = React.forwardRef(
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
         items={options.map((option) => ({
-          content: option.name,
+          content: option.name ?? bindConfig.getFormattedValueFromData(option.id),
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
@@ -107,6 +108,7 @@ export const SelectInput = React.forwardRef(
         allowKeyboardNavigation
         focusableWrapper
         currentValue={[boundValue!]}
+        childRootElementSelector=".arm-input-inner"
       >
         <InputWrapper
           ref={internalRef}
@@ -154,8 +156,8 @@ export const SelectInput = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TSelectId extends string, TSelectData = any>(
-  props: React.PropsWithRef<ISelectInputProps<TSelectId, TSelectData>> & React.RefAttributes<HTMLSelectElement>
+) as (<Id extends ArmstrongId, TSelectData = any>(
+  props: React.PropsWithChildren<ISelectInputProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<ISelectInputProps<any, any>> };
 
 SelectInput.defaultProps = {

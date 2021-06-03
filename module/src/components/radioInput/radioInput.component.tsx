@@ -1,69 +1,42 @@
 import * as React from 'react';
 
-import { Form } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
-import { Icon, IconSet, IIcon, IIconProps } from '../icon';
-import { ValidationErrors } from '../validationErrors';
+import { Icon, IconSet, IIcon } from '../icon';
+import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 
-export interface IRadioInputOption<TRadioId extends string> {
-  id: TRadioId;
+export interface IRadioInputProps
+  extends IIconWrapperProps<IconSet, IconSet>,
+    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'> {
+  /** ((newValue: string) => void) fired when the user changes the current value */
+  onChange?: (newValue: boolean) => void;
+
+  /** (string) the name to render in a label, fallsd back to ID */
   name: string;
-  icon?: IIconProps<IconSet>;
+
+  /** (IIcon) icon to render on the input when checked */
+  checkedIcon?: IIcon<IconSet>;
+
+  /** (IIcon) icon to render on the input when not checked */
+  uncheckedIcon?: IIcon<IconSet>;
 }
 
-export interface IRadioInputProps<TRadioId extends string> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<TRadioId>;
-
-  /** (IRadioInputOption[]) The options to be shown in the input */
-  options: IRadioInputOption<TRadioId>[];
-
-  /** (string) CSS className property */
-  className?: string;
-
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
-
-  /** (IIcon) the icon to use for validation errors */
-  validationErrorIcon?: IIcon<IconSet>;
-
-  value?: TRadioId;
-}
-
-export const RadioInput = React.forwardRef(
-  <TSelectId extends string>(
-    { bind, options, className, value, validationErrorIcon, validationMode, validationErrorMessages }: IRadioInputProps<TSelectId>,
-    ref
-  ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
-      value,
-      validationErrorMessages,
-      validationErrorIcon,
-      validationMode,
-    });
-
+export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
+  ({ onChange, name, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, ...nativeProps }, ref) => {
     return (
-      <>
-        <div className={ClassNames.concat('arm-radio-input', className)} ref={ref}>
-          {options.map((option) => (
-            <div className="arm-radio-input-option" key={option.id}>
-              <label>
-                <input type="radio" checked={option.id === boundValue} onClick={() => setBoundValue(option.id)} />
-                {option.icon && <Icon {...option.icon} />}
-                <p>{option.name}</p>
-              </label>
-            </div>
-          ))}
+      <div className={ClassNames.concat('arm-radio-input', className)} data-checked={checked} data-has-checked-icon={!!checkedIcon}>
+        <label>
+          <div className="arm-radio-input-radio">
+            <input ref={ref} type="radio" checked={checked} onChange={() => onChange?.(!checked)} {...nativeProps} />
 
-          {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
-            <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={bindConfig.validationErrorIcon} />
-          )}
-        </div>
-      </>
+            {checkedIcon && <Icon className="arm-radio-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
+            {uncheckedIcon && <Icon className="arm-radio-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
+          </div>
+
+          <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+            <p>{name}</p>
+          </IconWrapper>
+        </label>
+      </div>
     );
   }
 );

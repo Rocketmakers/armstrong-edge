@@ -1,0 +1,71 @@
+.arm-radio-input {
+  label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    > *:not(:last-child) {
+      margin-right: $spacing-xsmall;
+    }
+
+    .arm-radio-input-radio {
+      @include square(1.4rem);
+      @include flex-centre-content;
+      position: relative;
+
+      input {
+        appearance: none;
+        @include absolute-fill;
+        margin: 0;
+
+        &:checked ~ .arm-icon.arm-radio-input-checked-icon {
+          opacity: 1;
+        }
+
+        &:checked ~ .arm-icon.arm-radio-input-unchecked-icon {
+          opacity: 0;
+        }
+      }
+
+      &::after {
+        @include init-pseudo;
+        @include square(0.9rem);
+        pointer-events: none;
+        background-color: $brand-primary;
+        opacity: 0;
+      }
+
+      .arm-icon {
+        @include absolute-fill;
+        @include flex-centre-content;
+        transition: opacity $transition-quick;
+        pointer-events: none;
+        opacity: 0;
+
+        &.arm-icon.arm-radio-input-unchecked-icon {
+          opacity: 1;
+        }
+
+        &.arm-icon.arm-radio-input-checked-icon {
+          color: $brand-primary;
+        }
+      }
+    }
+  }
+
+  &[data-has-checked-icon='true'] {
+    .arm-radio-input-radio {
+      &::after {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &[data-checked='true'] {
+    .arm-radio-input-radio {
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+}

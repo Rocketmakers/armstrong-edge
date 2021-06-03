@@ -1,0 +1,12 @@
+.arm-radio-input-list-group-title {
+  padding: $spacing-small 0 $spacing-xsmall 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: $gray-medium;
+}
+
+.arm-radio-input-list {
+  .arm-radio-input + .arm-radio-input {
+    margin-top: $spacing-xxsmall;
+  }
+}

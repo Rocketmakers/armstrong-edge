@@ -19,7 +19,21 @@
   @include fill;
 }
 
-@mixin flex-centre {
+@mixin absolute-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  @include fill;
+}
+
+@mixin absolute-centre-self {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin flex-centre-content {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +49,7 @@
   border-radius: 50%;
 }
 
-//responsiveness
+// responsiveness
 
 @mixin media-query($screen-width: $screen-size-phone) {
   @media screen and (max-width: $screen-width) {
