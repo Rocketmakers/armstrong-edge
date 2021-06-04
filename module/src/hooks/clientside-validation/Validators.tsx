@@ -1,4 +1,5 @@
 
+import { KeyChain, valueByKeyChain } from '../form';
 import { ValidatorFunction } from './ValidationTypes';
 
 export namespace Validator {
@@ -12,6 +13,15 @@ export namespace Validator {
 
   export function required(): ValidatorFunction {
     return (value: any) => validateRequired(value);
+  }
+
+  export function pattern(regex: RegExp): ValidatorFunction {
+    return (value: string) => validatePattern(value, regex);
+  }
+
+  export function requiredWhenOtherFieldHasValues<T>(key: KeyChain, values: any[]): ValidatorFunction {
+    return (value: any, state: T) =>
+      validateRequiredWhenOtherFieldHasValues<T>(value, key, values, state);
   }
 }
 
@@ -27,4 +37,13 @@ const validateMax = (value: number, maxValue: number, allowEqual?: boolean): boo
     return allowEqual ? value <= maxValue : value < maxValue;
   }
   return true;
+};
+const validatePattern = (value: string, regex: RegExp): boolean => (value ? regex.test(value) : true);
+const validateRequiredWhenOtherFieldHasValues = <T,>(
+  value: any,
+  keyOfOtherField: KeyChain,
+  valuesOfOtherField: any[],
+  state: T
+): boolean => {
+  return valuesOfOtherField.includes(valueByKeyChain(state, keyOfOtherField)) ? validateRequired(value) : true;
 };

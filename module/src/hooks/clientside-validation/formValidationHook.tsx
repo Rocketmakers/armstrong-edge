@@ -1,7 +1,6 @@
 
 import * as React from 'react';
-import { Form } from '../..';
-import { KeyChain, valueByKeyChain } from '../form';
+import { BindingTools, KeyChain, valueByKeyChain } from '../form';
 import { InputState, InputValidator } from './ValidationTypes';
 
 /**
@@ -31,29 +30,23 @@ function convertKeyChainToDotNotation(keyChain: KeyChain): string {
 }
 
 /**
- * Create an immutable validation errors store. This holds all possible validation errors on the form.
- * If an error is being added to the errors list, the error object must come from this store. That way
- * object references can be checked against, the errors list is guaranteed to never hold duplicate
- * errors, and existing errors can be removed easily.
- * 
- * @param inputValidators form validators.
+ * Runs validation on the given input. This sets the error message to the first piece of validation that fails.
+ * Otherwise this removes all errors if the input is valid
+ * @param input input to test validity against
+ * @param state the state of the form
+ * @param formProp formProp
  */
-function createValidationErrorsStore<T>(inputValidators: InputValidator[]): Form.IValidationError[] {
-  const allResults: Form.IValidationError[] = [];
-  for (const inputValidator of inputValidators) {
-    for (const validator of inputValidator.validators) {
-      const result: Form.IValidationError = {
-        key: convertKeyChainToDotNotation(inputValidator.key),
-        message: validator.message,
-      };
-      Object.freeze(result);
-      allResults.push(result);
+function runValidationOnInput<TData>(input: InputValidator, state: TData, formProp: (...keyChain: KeyChain) => BindingTools<TData>) {
+  const value = valueByKeyChain(state, input.key);
+
+  formProp(...input.key).clearValidationErrors();
+  for (const validator of input.validators) {
+    if (!validator.validate(value, state)) {
+      formProp(...input.key).addValidationError(validator.message);
+      break;
     }
   }
-
-  Object.freeze(allResults);
-  return allResults;
-}
+};
 
 /**
  * Hook to enable real time validation of an armstrong form. The form validation is defined in `inputValidators`, and
@@ -76,51 +69,7 @@ function createValidationErrorsStore<T>(inputValidators: InputValidator[]): Form
  * @param inputValidators form validation
  * @param dataBinder form state
  */
-export function useValidatedForm<TData>(inputValidators: InputValidator[], state: TData) {
-  const [validationErrors, setValidationErrors] = React.useState<Set<Form.IValidationError>>(new Set());
-  const [inputStates, setInputStates] = React.useState<InputState[]>(
-    inputValidators.map(input => ({
-      key: input.key,
-      touched: false,
-    }))
-  );
-  const [validationErrorsStore] = React.useState<Form.IValidationError[]>(createValidationErrorsStore(inputValidators));
-
-  const setTouched = (inputElement: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const inputStatesCopy = [...inputStates];
-
-    const touchedInput = inputStatesCopy.find(
-      input => convertKeyChainToDotNotation(input.key) === inputElement.target.name
-    );
-
-    if (touchedInput) {
-      touchedInput.touched = true;
-      setInputStates(inputStatesCopy);
-    }
-  };
-
-  const formIsValid = calculateFormValidity(state, inputValidators);
-
-  const runValidationOnInput = (input: InputValidator) => {
-    const value = valueByKeyChain(state, input.key);
-    const validationErrorsCopy = new Set<Form.IValidationError>(validationErrors);
-
-    for (const validator of input.validators) {
-      // Should probably be improved.
-      const immutableValidationResult = validationErrorsStore.find(
-        result =>
-          result.key === convertKeyChainToDotNotation(input.key) && result.message === validator.message
-      )!;
-      if (validator.validate(value, state)) {
-        validationErrorsCopy.delete(immutableValidationResult);
-      } else {
-        validationErrorsCopy.add(immutableValidationResult);
-      }
-    }
-
-    setValidationErrors(validationErrorsCopy);
-  };
-
+export function useValidatedForm<TData>(inputValidators: InputValidator[], state: TData, formProp: (...keyChain: KeyChain) => BindingTools<TData>) {
   // Use this to calculate if this is the first render. If it is, then don't run the validation useEffect as it'll show all of the validation errors prematurely.
   const firstRenderCheck = React.useRef(0);
 
@@ -131,16 +80,45 @@ export function useValidatedForm<TData>(inputValidators: InputValidator[], state
         firstRenderCheck.current++;
         return;
       }
-      runValidationOnInput(inputValidator);
+      runValidationOnInput(inputValidator, state, formProp);
     }, [valueByKeyChain(state, inputValidator.key)]);
   }
+
+  // Display all validation error messages on the form
+  function showAllValidation() {
+    for (const inputValidator of inputValidators) {
+      runValidationOnInput(inputValidator, state, formProp);
+    }
+  }
+
+  const formIsValid = calculateFormValidity(state, inputValidators);
+
+  // Everything to do with input state being touched below:
+  const [inputStates, setInputStates] = React.useState<InputState[]>(
+    inputValidators.map(input => ({
+      key: input.key,
+      touched: false,
+    }))
+  );
+
+  const setTouched = (inputElement: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const inputStatesCopy = [...inputStates];
+    const touchedInput = inputStatesCopy.find(
+      input => convertKeyChainToDotNotation(input.key) === inputElement.target.name
+    );
+    if (touchedInput) {
+      touchedInput.touched = true;
+      setInputStates(inputStatesCopy);
+    }
+  };
+
 
   // Run validation on individual inputs whenever their state changes to 'touched'.
   // This covers the scenario where a user clicks on an input, doesn't change anything, and clicks off.
   for (const inputState of inputStates) {
     React.useEffect(() => {
       if (inputState.touched) {
-        runValidationOnInput(inputValidators.find(validator => validator.key === inputState.key)!);
+        runValidationOnInput(inputValidators.find(validator => validator.key === inputState.key)!, state, formProp);
       }
     }, [inputState.touched]);
   }
@@ -148,6 +126,6 @@ export function useValidatedForm<TData>(inputValidators: InputValidator[], state
   return {
     setTouched,
     formIsValid,
-    validationErrors: Array.from(validationErrors),
+    showAllValidation,
   };
 }
