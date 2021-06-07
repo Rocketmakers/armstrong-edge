@@ -2,26 +2,26 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
-import { ListBox } from './listBox.component';
+import { ListBoxMulti } from './listBoxMulti.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(ListBox, 'Form', 'Listbox', {});
+export default StoryUtils.createMeta(ListBoxMulti, 'Form', 'Listbox Multi', {});
 
 /** component template */
 
-// const Template = StoryUtils.createTemplate(ListBox as React.FC<IListBoxProps<any, any>>);
+// const Template = StoryUtils.createTemplate(ListBoxMulti as React.FC<IListBoxMultiProps<any, any>>);
 
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
-    <ListBox
+    <ListBoxMulti
       value={value}
       placeholder="Please pick something...."
-      onSelectOption={(option) => setValue(option?.id)}
+      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },
@@ -32,13 +32,13 @@ export const Default = () => {
   );
 };
 export const WithCustomDropDownIcon = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
-    <ListBox
+    <ListBoxMulti
       value={value}
       placeholder="Please pick something...."
-      onSelectOption={(option) => setValue(option?.id)}
+      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },
@@ -50,14 +50,14 @@ export const WithCustomDropDownIcon = () => {
   );
 };
 export const WithIcons = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
-    <ListBox
+    <ListBoxMulti
       value={value}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onSelectOption={(option) => setValue(option?.id)}
+      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },
@@ -68,14 +68,14 @@ export const WithIcons = () => {
   );
 };
 export const WithValidationError = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
-    <ListBox
+    <ListBoxMulti
       value={value}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onSelectOption={(option) => setValue(option?.id)}
+      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },
@@ -87,14 +87,14 @@ export const WithValidationError = () => {
   );
 };
 export const WithGroupsAndIcons = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
-    <ListBox
+    <ListBoxMulti
       value={value}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onSelectOption={(option) => setValue(option?.id)}
+      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
         { id: 'b', name: 'blue', group: 'primary' },

@@ -1,0 +1,27 @@
+.arm-input.arm-listbox-multi {
+  cursor: pointer;
+
+  .arm-listbox-multi-inner {
+    flex-grow: 1;
+    position: relative;
+    overflow-x: auto;
+
+    .arm-listbox-multi-content {
+      height: $input-height;
+      display: flex;
+      align-items: center;
+      margin-right: $spacing-large;
+
+      .arm-tag {
+        margin-right: $spacing-xsmall;
+      }
+
+      p.placeholder {
+        color: $gray-light;
+      }
+    }
+  }
+  .arm-icon.arm-listbox-multi-overlay-icon {
+    font-size: 0.6rem;
+  }
+}

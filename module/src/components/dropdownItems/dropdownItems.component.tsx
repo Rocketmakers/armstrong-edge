@@ -64,8 +64,8 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
       >
         <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
           <p>{content}</p>
-          {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
         </IconWrapper>
+        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
       </li>
     );
   }
@@ -183,6 +183,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
         onOpenChange(false);
       }
       onItemSelected?.(id);
+      console.log('aa');
     },
     [closeOnSelection, onOpenChange, onItemSelected]
   );
@@ -204,7 +205,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
       aria-labelledby={`${id}_item`}
       id={id}
       dropdownContent={
-        <ul aria-labelledby={`${id}`} id={`${id}_list`} aria-activedescendent={`${id}_item_${currentValue?.[0]}`} role="listbox">
+        <ul aria-labelledby={`${id}`} id={`${id}_list`} aria-activedescendant={`${id}_item_${currentValue?.[0]}`} role="listbox">
           {groupedItems.map((group, groupIndex) => (
             <React.Fragment key={group.key}>
               {group.key && (
@@ -229,7 +230,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                         : undefined
                     }
                     idPrefix={`${id}_item`}
-                    onClick={() => onMouseUpDropdownItem(item.id)}
+                    onClick={() => hasBegunClick && onMouseUpDropdownItem(item.id)}
                     onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
                     isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
                     isSelected={!!currentValue?.includes(item.id)}

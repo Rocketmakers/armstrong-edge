@@ -1,27 +1,18 @@
 import * as React from 'react';
 
-import { Form } from '../..';
+import { Form, IListBoxOption } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
-import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { Tag } from '../tag';
 
-export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any> extends IIconWrapperProps<IconSet, IconSet> {
-  id: Id;
-  name: string;
-  group?: string;
-  data?: TSelectData;
-}
-
-/** A DOM recreation of a select element */
-
-export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
+export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<Id>;
+  bind?: IBindingProps<Id[]>;
 
   /** (IListBoxOption[]) The options to be shown in the input */
   options: IListBoxOption<Id, TSelectData>[];
@@ -39,7 +30,10 @@ export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extend
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
   /** (ArmstrongId) the current value */
-  value?: Id;
+  value?: Id[];
+
+  /** ((newValue: ArmstrongId[]) => void) fired when the value changes */
+  onValueChange?: (neWValue: Id[]) => void;
 
   /** (string) the string to show when there is no value */
   placeholder?: string;
@@ -49,7 +43,7 @@ export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extend
 }
 
 /** A select input which takes an array of options */
-export const ListBox = React.forwardRef(
+export const ListBoxMulti = React.forwardRef(
   <Id extends ArmstrongId, TSelectData = any>(
     {
       bind,
@@ -67,11 +61,12 @@ export const ListBox = React.forwardRef(
       selectOverlayIcon,
       pending,
       disabled,
-      statusPosition,
       placeholder,
       deleteButton,
+      statusPosition,
+      onValueChange,
       disableOnPending,
-    }: IListBoxProps<Id, TSelectData>,
+    }: IListBoxMultiProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const internalRef = React.useRef<HTMLInputElement>(null);
@@ -82,40 +77,64 @@ export const ListBox = React.forwardRef(
       validationErrorMessages,
       validationErrorIcon,
       validationMode,
+      onChange: onValueChange,
     });
 
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
-    const onChangeEvent = React.useCallback(
-      (option: IListBoxOption<Id> | undefined) => {
-        onSelectOption?.(option);
-        setBoundValue(option?.id ?? undefined!);
+    const removeItem = React.useCallback(
+      (id: ArmstrongId) => {
+        setBoundValue(boundValue?.filter((item) => item !== id) || []);
       },
-      [onSelectOption, options, bind]
+      [boundValue]
     );
 
-    const currentOptionText = React.useMemo(() => options.find((option) => option.id === boundValue)?.name ?? boundValue, [boundValue, options]);
+    const onItemSelected = React.useCallback(
+      (option: IListBoxOption<Id> | undefined) => {
+        onSelectOption?.(option);
+
+        if (option) {
+          if (boundValue?.find((item) => item === option.id)) {
+            removeItem(option.id);
+          } else {
+            setBoundValue([...(boundValue || []), option.id]);
+          }
+        } else {
+          setBoundValue([]);
+        }
+      },
+      [onSelectOption, options, bind, boundValue, setBoundValue]
+    );
+
+    const currentOptions = React.useMemo(
+      () =>
+        boundValue?.map<IListBoxOption<Id, TSelectData>>(
+          (item) => options.find((option) => option.id === item) || { id: item, name: item.toString() }
+        ),
+      [boundValue, options]
+    );
 
     return (
       <DropdownItems
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
         items={options.map((option) => ({
-          content: option.name ?? bindConfig.getFormattedValueFromData(option.id),
+          content: option.name ?? option.id,
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
           group: option.group,
         }))}
-        onItemSelected={(item) => onChangeEvent(options.find((option) => option.id === item)!)}
+        onItemSelected={(item) => onItemSelected(options.find((option) => option.id === item)!)}
         allowKeyboardNavigation
         focusableWrapper
-        currentValue={[boundValue!]}
+        currentValue={boundValue}
         childRootElementSelector=".arm-input-inner"
+        closeOnSelection={false}
       >
         <InputWrapper
           ref={internalRef}
-          className={ClassNames.concat('arm-listbox', className)}
+          className={ClassNames.concat('arm-listbox-multi', className)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}
@@ -123,28 +142,43 @@ export const ListBox = React.forwardRef(
           validationErrorMessages={bindConfig.validationErrorMessages}
           errorIcon={bindConfig.validationErrorIcon}
           validationMode={bindConfig.validationMode}
+          statusPosition={statusPosition}
           pending={pending}
           disabled={disabled}
           disableOnPending={disableOnPending}
-          statusPosition={statusPosition}
         >
-          <div className="arm-listbox-inner">
-            <div className="arm-listbox-content">
-              {currentOptionText ? <p>{currentOptionText}</p> : placeholder && <p className="placeholder">{placeholder}</p>}
-            </div>
-            {selectOverlayIcon &&
-              (IconUtils.isIconDefinition(selectOverlayIcon) ? (
-                <Icon className="arm-listbox-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />
+          <div className="arm-listbox-multi-inner">
+            <div className="arm-listbox-multi-content">
+              {currentOptions?.length ? (
+                <>
+                  {currentOptions.map((tag) => (
+                    <Tag
+                      content={tag.name ?? tag.id.toString()}
+                      leftIcon={tag.leftIcon}
+                      rightIcon={tag.rightIcon}
+                      key={tag.id}
+                      onRemove={() => removeItem(tag.id)}
+                    />
+                  ))}
+                </>
               ) : (
-                selectOverlayIcon
-              ))}
+                placeholder && <p className="placeholder">{placeholder}</p>
+              )}
+            </div>
           </div>
 
-          {deleteButton && boundValue && (
+          {selectOverlayIcon &&
+            (IconUtils.isIconDefinition(selectOverlayIcon) ? (
+              <Icon className="arm-listbox-multi-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />
+            ) : (
+              selectOverlayIcon
+            ))}
+
+          {deleteButton && !!boundValue?.length && (
             <IconButton
-              className="arm-listbox-delete"
+              className="arm-listbox-multi-delete"
               onClick={(event) => {
-                onChangeEvent(undefined);
+                onItemSelected(undefined);
                 setDropdownOpen(false);
                 event.stopPropagation();
               }}
@@ -161,10 +195,10 @@ export const ListBox = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: React.PropsWithChildren<IListBoxProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IListBoxProps<any, any>> };
+  props: React.PropsWithChildren<IListBoxMultiProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
+) => ReturnType<React.FC>) & { defaultProps?: Partial<IListBoxMultiProps<any, any>> };
 
-ListBox.defaultProps = {
+ListBoxMulti.defaultProps = {
   selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
   deleteButton: true,
 };
