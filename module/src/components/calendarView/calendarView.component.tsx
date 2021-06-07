@@ -7,7 +7,8 @@ import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
 import { Button } from '../button';
 import { NativeSelectInput } from '../nativeSelectInput';
-import { getDayOfWeekHeadings, getDays, getMonths, getYears, ICalendarHighlight, ICalendarHighlightParsed, IDay } from './calendarView.utils';
+import { ICalendarHighlight, ICalendarHighlightParsed, IDay } from './calendarView.types';
+import { getDayOfWeekHeadings, getDays, getMonths, getYears } from './calendarView.utils';
 
 interface ICalendarViewProps {
   /** (Date|string) The currently selected date as a string or a `Date` object. Will default to today. */
