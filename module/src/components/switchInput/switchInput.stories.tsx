@@ -10,7 +10,7 @@ export default StoryUtils.createMeta(SwitchInput as any, 'Form', 'Switch Input',
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(SwitchInput);
+// const Template = StoryUtils.createTemplate(SwitchInput);
 
 /** stories */
 

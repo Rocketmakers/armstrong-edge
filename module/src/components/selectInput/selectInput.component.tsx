@@ -59,7 +59,7 @@ export const SelectInput = React.forwardRef(
       className,
       onSelectOption,
       value,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       validationErrorMessages,
       validationMode,
       selectOverlayIcon,
@@ -118,7 +118,7 @@ export const SelectInput = React.forwardRef(
           leftOverlay={leftOverlay}
           rightOverlay={rightOverlay}
           validationErrorMessages={bindConfig.validationErrorMessages}
-          validationErrorIcon={bindConfig.validationErrorIcon}
+          errorIcon={bindConfig.validationErrorIcon}
           validationMode={bindConfig.validationMode}
           pending={pending}
           disabled={disabled}

@@ -77,7 +77,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
       rightOverlay,
       validationErrorMessages,
       validationMode,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       disabled,
       pending,
       above,
@@ -132,7 +132,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
         validationErrorMessages={bindConfig.validationErrorMessages}
-        validationErrorIcon={bindConfig.validationErrorIcon}
+        errorIcon={bindConfig.validationErrorIcon}
         validationMode={bindConfig.validationMode}
         disabled={disabled}
         pending={pending}

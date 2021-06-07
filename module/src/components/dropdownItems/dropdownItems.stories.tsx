@@ -9,7 +9,7 @@ export default StoryUtils.createMeta(DropdownItems as any, 'Layout', 'Dropdown I
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(DropdownItems);
+// const Template = StoryUtils.createTemplate(DropdownItems);
 
 /** stories */
 
@@ -50,7 +50,7 @@ export const WithKeyboardNavigation = () => {
         { content: "I'm a third thing", id: "I'm a third thing" },
       ]}
       onItemSelected={(item) => {
-        setVal(item);
+        setVal(item as any as string);
       }}
       allowKeyboardNavigation
       focusableWrapper
@@ -83,10 +83,10 @@ export const MultipleSelected = () => {
         { content: "I'm a third thing", id: "I'm a third thing" },
       ]}
       onItemSelected={(item) => {
-        if (val.includes(item)) {
+        if (val.includes(item as string)) {
           setVal(val.filter((a) => a !== item));
         } else {
-          setVal([...val, item]);
+          setVal([...val, item as string]);
         }
       }}
       closeOnSelection={false}

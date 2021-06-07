@@ -1,0 +1,15 @@
+$range-input-track-height: 6px;
+
+.arm-range-input {
+  .arm-range-input-track {
+    .arm-range-input-track-inner {
+      border-radius: $range-input-track-height / 2;
+    }
+
+    .arm-range-input-handle {
+      background-color: $white;
+      box-shadow: $shadow-small;
+      box-shadow: $shadow-small;
+    }
+  }
+}

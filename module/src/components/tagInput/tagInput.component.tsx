@@ -53,7 +53,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       className,
       bind,
       validationMode,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       validationErrorMessages,
       value,
       onChange,
@@ -147,7 +147,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       <InputWrapper
         className={ClassNames.concat('arm-tag-input', className)}
         validationErrorMessages={bindConfig.validationErrorMessages}
-        validationErrorIcon={bindConfig.validationErrorIcon}
+        errorIcon={bindConfig.validationErrorIcon}
         validationMode={bindConfig.validationMode}
         data-tag-position={tagPosition}
         data-has-tags={!!boundValue?.length}

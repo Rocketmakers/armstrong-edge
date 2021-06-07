@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
-import { Icon, IconUtils } from '../icon';
+import { IconUtils } from '../icon';
 import { AutoCompleteInput } from './autoCompleteInput.component';
 
 /** metadata */
@@ -21,7 +21,7 @@ export default StoryUtils.createMeta(AutoCompleteInput, 'Form', 'Auto Complete I
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(AutoCompleteInput);
+// const Template = StoryUtils.createTemplate(AutoCompleteInput);
 
 /** stories */
 

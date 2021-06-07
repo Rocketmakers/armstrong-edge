@@ -1,0 +1,7 @@
+.arm-character-limit {
+  margin: $spacing-xsmall 0;
+
+  &[data-exceeded='true'] {
+    color: $color-negative;
+  }
+}

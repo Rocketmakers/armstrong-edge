@@ -78,7 +78,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       rightOverlay,
       validationErrorMessages,
       validationMode,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       pending,
       above,
       below,
@@ -117,7 +117,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         const currentValue = event.currentTarget.value;
         setBoundValue(currentValue);
       },
-      [setBoundValue, onBindValueChange]
+      [setBoundValue, onBindValueChange, onChange]
     );
 
     const onValueChangeEvent = React.useCallback(
@@ -142,7 +142,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
         validationErrorMessages={bindConfig.validationErrorMessages}
-        validationErrorIcon={bindConfig.validationErrorIcon}
+        errorIcon={bindConfig.validationErrorIcon}
         validationMode={bindConfig.validationMode}
         pending={pending}
         disabled={disabled}
@@ -159,7 +159,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
             {...inputProps}
             onChange={onChange}
             onValueChange={onValueChangeEvent}
-            ref={ref}
+            ref={internalRef}
           />
         )}
         {delay?.mode === 'throttle' && delay.milliseconds && (
@@ -169,10 +169,10 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
             {...inputProps}
             onChange={onChange}
             onValueChange={onValueChangeEvent}
-            ref={ref}
+            ref={internalRef}
           />
         )}
-        {!delay?.milliseconds && <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={ref} />}
+        {!delay?.milliseconds && <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={internalRef} />}
       </InputWrapper>
     );
   }

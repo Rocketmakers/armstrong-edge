@@ -10,12 +10,6 @@
     > *:not(:last-child) {
       margin-right: $spacing-xxsmall;
     }
-
-    .arm-spinner {
-      .arm-icon {
-        font-size: 0.75rem;
-      }
-    }
   }
 
   &[data-disabled='true'] {

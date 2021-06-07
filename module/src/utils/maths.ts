@@ -6,4 +6,11 @@ export namespace Maths {
   export function positiveModulo(numerator: number, denominator: number) {
     return ((numerator % denominator) + denominator) % denominator;
   }
+
+  /**
+   * Get a value as a percent of another value
+   */
+  export function getPercent(value: number, total: number) {
+    return (value / total) * 100;
+  }
 }

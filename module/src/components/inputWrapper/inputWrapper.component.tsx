@@ -4,10 +4,10 @@ import { FormValidationMode } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
-import { Status } from '../status';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
 
-export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet> {
+export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet>, IStatusWrapperProps {
   /** (string) CSS className property */
   className?: string;
 
@@ -24,19 +24,10 @@ export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet> 
   validationMode?: FormValidationMode;
 
   /** (IIcon) the icon to use for validation errors */
-  validationErrorIcon?: IIcon<IconSet>;
-
-  /** (boolean) show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
-  error?: boolean;
-
-  /** (boolean) show a spinner and disable */
-  pending?: boolean;
+  errorIcon?: IIcon<IconSet>;
 
   /** (boolean) disable use */
   disabled?: boolean;
-
-  /** (left|right) which side of the button to show the spinner on - defaults to 'right' */
-  statusPosition?: 'left' | 'right';
 
   /** (boolean) hide the icon on the given side if there is an active status - defaults to true */
   hideIconOnStatus?: boolean;
@@ -66,7 +57,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       rightOverlay,
       validationMode,
       validationErrorMessages,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       disabled,
       pending,
       error,
@@ -99,19 +90,28 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
           {above && <div className="arm-input-wrapper-above">{above}</div>}
 
           <div className="arm-input-inner">
-            {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />}
-            <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
-              {leftOverlay && (
-                <div className="arm-input-overlay arm-input-overlay-left">{typeof leftOverlay === 'string' ? <p>{leftOverlay}</p> : leftOverlay}</div>
-              )}
-              {children}
-              {rightOverlay && (
-                <div className="arm-input-overlay arm-input-overlay-right">
-                  {typeof rightOverlay === 'string' ? <p>{rightOverlay}</p> : rightOverlay}
-                </div>
-              )}
-            </IconWrapper>
-            {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={validationErrorIcon} />}
+            <StatusWrapper
+              error={error}
+              pending={pending}
+              statusPosition={statusPosition}
+              errorIcon={validationErrorIcon}
+              validationErrorMessages={validationErrorMessages}
+              validationMode={validationMode}
+            >
+              <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
+                {leftOverlay && (
+                  <div className="arm-input-overlay arm-input-overlay-left">
+                    {typeof leftOverlay === 'string' ? <p>{leftOverlay}</p> : leftOverlay}
+                  </div>
+                )}
+                {children}
+                {rightOverlay && (
+                  <div className="arm-input-overlay arm-input-overlay-right">
+                    {typeof rightOverlay === 'string' ? <p>{rightOverlay}</p> : rightOverlay}
+                  </div>
+                )}
+              </IconWrapper>
+            </StatusWrapper>
           </div>
 
           {below && <div className="arm-input-wrapper-below">{below}</div>}
@@ -127,7 +127,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
 
 InputWrapper.defaultProps = {
   validationMode: 'both',
-  validationErrorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
+  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
   statusPosition: 'right',
   hideIconOnStatus: true,
   disableOnPending: true,

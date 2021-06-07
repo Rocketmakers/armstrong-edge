@@ -54,7 +54,7 @@ export const AutoCompleteInput = React.forwardRef(
   <Id extends ArmstrongId>(
     {
       options,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       validationMode,
       validationErrorMessages,
       bind,
@@ -199,7 +199,7 @@ export const AutoCompleteInput = React.forwardRef(
               validationMode={validationMode}
               onFocus={() => setOptionsOpen(true)}
               validationErrorMessages={myValidationErrorMessages}
-              validationErrorIcon={validationErrorIcon}
+              errorIcon={validationErrorIcon}
               disableOnPending={false}
             />
           </DropdownItems>

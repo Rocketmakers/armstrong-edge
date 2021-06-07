@@ -3,12 +3,13 @@ import * as React from 'react';
 import { ClassNames } from '../../utils/classNames';
 import { IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
-import { Status } from '../status';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
 
 export interface IButtonProps
   extends IIconWrapperProps<IconSet, IconSet>,
-    React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
+    React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
+    IStatusWrapperProps {
   /** (string) CSS className property */
   className?: string;
 
@@ -21,17 +22,11 @@ export interface IButtonProps
   /** (boolean) show a spinner and disable */
   pending?: boolean;
 
-  /** (left|right) which side of the button to show the spinner on */
-  statusPosition?: 'left' | 'right';
-
   /** (boolean) hide the icon on the same side as the status if there is an active status - defaults to true */
   hideIconOnStatus?: boolean;
 
   /** (boolean) disable use */
   disabled?: boolean;
-
-  /** (boolean) show an error icon on the button and add a data-attribute */
-  error?: boolean;
 }
 
 export const Button: React.FC<IButtonProps> = ({
@@ -64,9 +59,9 @@ export const Button: React.FC<IButtonProps> = ({
         disabled={disabled || pending}
       >
         <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
-          {statusPosition === 'left' && <Status pending={pending} error={shouldShowErrorIcon} errorIcon={errorIcon} />}
-          {children}
-          {statusPosition === 'right' && <Status pending={pending} error={shouldShowErrorIcon} errorIcon={errorIcon} />}
+          <StatusWrapper errorIcon={errorIcon} statusPosition={statusPosition} error={error} validationErrorMessages={validationErrorMessages}>
+            {children}
+          </StatusWrapper>
         </IconWrapper>
       </button>
 
