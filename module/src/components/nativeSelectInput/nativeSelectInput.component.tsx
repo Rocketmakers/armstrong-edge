@@ -12,6 +12,7 @@ export interface INativeSelectInputOption<Id extends ArmstrongId, TSelectData = 
   id: Id;
   name: string;
   data?: TSelectData;
+  disabled?: boolean;
 }
 
 export interface INativeSelectInputProps<Id extends ArmstrongId, TSelectData = any>
@@ -72,7 +73,7 @@ export const NativeSelectInput = React.forwardRef(
           onChange(event);
         }
 
-        const selectedOption = options.find((option) => option.id === event.currentTarget.value);
+        const selectedOption = options.find((option) => option.id.toString() === event.currentTarget.value);
 
         if (selectedOption) {
           setBoundValue(selectedOption.id);
@@ -99,7 +100,7 @@ export const NativeSelectInput = React.forwardRef(
         <div className="arm-native-select-input-inner">
           <select {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
             {options.map((option) => (
-              <option key={option.id} value={option.id}>
+              <option key={option.id} value={option.id} disabled={option.disabled}>
                 {option.name}
               </option>
             ))}

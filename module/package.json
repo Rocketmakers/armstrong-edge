@@ -79,5 +79,8 @@
     "glob": "^7.1.7",
     "sass": "^1.32.13",
     "style-loader": "^2.0.0"
+  },
+  "dependencies": {
+    "date-fns": "^2.22.1"
   }
 }
