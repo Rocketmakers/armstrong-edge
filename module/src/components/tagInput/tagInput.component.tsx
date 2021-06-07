@@ -70,6 +70,9 @@ export interface ITagInputProps
 
   /** ((removedTagId: armstrongId) => void) */
   onRemoveTag?: (id: ArmstrongId) => void;
+
+  /** (() => void) fired when all tags are removed */
+  onRemoveAllTags?: () => void;
 }
 
 export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
@@ -91,6 +94,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       pending,
       disabled,
       leftIcon,
+      onRemoveAllTags,
       rightOverlay,
       error,
       hideIconOnStatus,
@@ -145,7 +149,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
     );
 
     const removeTag = React.useCallback(
-      (tagToRemove: string) => {
+      (tagToRemove: ArmstrongId) => {
         setBoundValue((boundValue || []).filter((tag) => tag !== tagToRemove));
         setTextInputInternalValue('');
         onRemoveTag?.(tagToRemove);
@@ -155,7 +159,9 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
 
     const clearTags = React.useCallback(() => {
       setBoundValue([]);
-    }, [setBoundValue]);
+      setTextInputInternalValue('');
+      onRemoveAllTags?.();
+    }, [setBoundValue, onRemoveAllTags]);
 
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -173,8 +179,8 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
             break;
           }
           case 'Backspace': {
-            if (textInputInternalValue === '' && boundValue && tagPosition === 'inside') {
-              removeTag(boundValue[boundValue.length - 1]);
+            if (textInputInternalValue === '' && currentTags?.length >= 1 && tagPosition === 'inside') {
+              removeTag(currentTags[currentTags.length - 1].id);
             }
             break;
           }
@@ -183,7 +189,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
           }
         }
       },
-      [textInputInternalValue, addTag, spaceCreatesTags, tagPosition, boundValue]
+      [textInputInternalValue, addTag, spaceCreatesTags, tagPosition, boundValue, removeTag]
     );
 
     const tagsJsx = (
@@ -194,7 +200,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
             leftIcon={tag.leftIcon}
             rightIcon={tag.rightIcon}
             key={allowDuplicates ? `${tag.id}${index}` : tag.id}
-            onRemove={deleteButton ? () => removeTag(tag.id?.toString()) : undefined}
+            onRemove={deleteButton ? () => removeTag(tag.id) : undefined}
           />
         ))}
       </>

@@ -29,79 +29,94 @@ export const Default = () => {
   const [value, setValue] = React.useState([]);
 
   return (
-    <AutoCompleteInputMulti
-      value={value}
-      onChange={setValue}
-      options={[
-        { id: 'a', name: 'red' },
-        { id: 'b', name: 'blue' },
-        { id: 'c', name: 'purple' },
-      ]}
-    />
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        options={[
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'purple' },
+        ]}
+      />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
   );
 };
 export const AllowFreeText = () => {
   const [value, setValue] = React.useState([]);
 
   return (
-    <AutoCompleteInputMulti
-      value={value}
-      onChange={setValue}
-      allowFreeText
-      options={[
-        { id: 'a', name: 'red' },
-        { id: 'b', name: 'blue' },
-        { id: 'c', name: 'purple' },
-      ]}
-    />
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        allowFreeText
+        options={[
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'purple' },
+        ]}
+      />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
   );
 };
 export const WithIcons = () => {
   const [value, setValue] = React.useState([]);
 
   return (
-    <AutoCompleteInputMulti
-      value={value}
-      onChange={setValue}
-      leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
-      options={[
-        { id: 'a', name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2') },
-        { id: 'b', name: 'blue', leftIcon: IconUtils.getIconDefinition('Icomoon', 'cherry') },
-        { id: 'c', name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css') },
-      ]}
-    />
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
+        options={[
+          { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2') },
+          { id: 2, name: 'blue', leftIcon: IconUtils.getIconDefinition('Icomoon', 'cherry') },
+          { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css') },
+        ]}
+      />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
   );
 };
 export const WithGroups = () => {
   const [value, setValue] = React.useState([]);
 
   return (
-    <AutoCompleteInputMulti
-      value={value}
-      onChange={setValue}
-      leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
-      options={[
-        { id: 'a', name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
-        { id: 'b', name: 'blue', leftIcon: IconUtils.getIconDefinition('Icomoon', 'cherry'), group: 'primary' },
-        { id: 'c', name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
-      ]}
-    />
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
+        options={[
+          { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
+          { id: 2, name: 'blue', leftIcon: IconUtils.getIconDefinition('Icomoon', 'cherry'), group: 'primary' },
+          { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
+        ]}
+      />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
   );
 };
 export const WithValidationErrors = () => {
   const [value, setValue] = React.useState([]);
 
   return (
-    <AutoCompleteInputMulti
-      value={value}
-      onChange={setValue}
-      leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
-      options={[
-        { id: 'a', name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
-        { id: 'b', name: 'blue', leftIcon: IconUtils.getIconDefinition('Icomoon', 'cherry'), group: 'primary' },
-        { id: 'c', name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
-      ]}
-      validationErrorMessages={['your taste in colours is terrible']}
-    />
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
+        options={[
+          { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
+          { id: 2, name: 'blue', leftIcon: IconUtils.getIconDefinition('Icomoon', 'cherry'), group: 'primary' },
+          { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
+        ]}
+        validationErrorMessages={['your taste in colours is terrible']}
+      />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
   );
 };

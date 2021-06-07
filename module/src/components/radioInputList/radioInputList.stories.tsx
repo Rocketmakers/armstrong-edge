@@ -32,7 +32,7 @@ export const Default = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p className="bound-value">bound value: {value}</p>
     </>
   );
 };
@@ -54,7 +54,7 @@ export const Grouped = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p className="bound-value">bound value: {value}</p>
     </>
   );
 };
@@ -77,7 +77,7 @@ export const CheckedIcon = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p className="bound-value">bound value: {value}</p>
     </>
   );
 };
@@ -101,7 +101,7 @@ export const UncheckedIcon = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p className="bound-value">bound value: {value}</p>
     </>
   );
 };
@@ -125,7 +125,7 @@ export const NumericIds = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value}</p>
+      <p className="bound-value">bound value: {value}</p>
     </>
   );
 };

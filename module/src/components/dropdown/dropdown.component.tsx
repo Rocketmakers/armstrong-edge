@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { useEventListener } from '../../hooks/useEventListener';
+import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
 import { Portal } from '../portal/portal';
@@ -32,6 +33,9 @@ export interface IDropdownProps extends Omit<React.DetailedHTMLProps<React.BaseH
 
   /** (string) selector for the element to visually render the content below - by default will render below the wrapper element */
   childRootElementSelector?: string;
+
+  /** (boolean) should close if the user scrolls - replicates some browser experiences */
+  closeOnScroll?: boolean;
 }
 
 export interface IDropdownRef {
@@ -56,12 +60,14 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       openWhenFocusInside,
       onMouseDown,
       childRootElementSelector,
+      closeOnScroll,
       onFocus,
       ...htmlProps
     },
     ref
   ) => {
     const rootRef = React.useRef<HTMLDivElement>(null);
+    const elementToRenderBelowRef = React.useRef<Element>();
     const contentRef = React.useRef<HTMLDivElement>(null);
 
     React.useImperativeHandle(ref, () => ({ rootRef, contentRef }), [rootRef, contentRef]);
@@ -85,11 +91,18 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const [left, setLeft] = React.useState<number>();
     const [width, setWidth] = React.useState<number>();
 
-    const setPosition = React.useCallback(() => {
-      if (isOpen && rootRef.current && contentRef.current) {
-        const elementToRenderBelow = childRootElementSelector
+    // assign the element given to render the dropdown items below to a ref so we don't have to reselect it every time
+    React.useLayoutEffect(() => {
+      if (rootRef.current) {
+        elementToRenderBelowRef.current = childRootElementSelector
           ? rootRef.current.querySelector(childRootElementSelector) ?? rootRef.current
           : rootRef.current;
+      }
+    }, [childRootElementSelector, rootRef.current]);
+
+    const setPosition = React.useCallback(() => {
+      if (isOpen && rootRef.current && contentRef.current) {
+        const elementToRenderBelow = elementToRenderBelowRef.current;
 
         const rect = elementToRenderBelow!.getBoundingClientRect();
         const contentRect = contentRef.current.getBoundingClientRect();
@@ -111,13 +124,16 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onScrollContent = React.useCallback(
       (event: Event) => {
         if (
-          (event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
-          !(event.target instanceof HTMLDivElement)
+          closeOnScroll &&
+          ((event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
+            !(event.target instanceof HTMLDivElement))
         ) {
           onOpenChange(false);
+        } else {
+          setPosition();
         }
       },
-      [onOpenChange]
+      [onOpenChange, closeOnScroll, setPosition]
     );
 
     React.useEffect(() => {
@@ -141,6 +157,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       },
       [openWhenClickInside, onOpenChange, onMouseDown, isOpen]
     );
+
     const onFocusEvent = React.useCallback(
       (event: React.FocusEvent<HTMLDivElement>) => {
         if (openWhenFocusInside) {
@@ -150,6 +167,8 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       },
       [openWhenFocusInside, onOpenChange, onFocus]
     );
+
+    useResizeObserver(rootRef as any, setPosition);
 
     return (
       <div
