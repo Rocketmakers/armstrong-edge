@@ -4,7 +4,7 @@ import { Form, IconSet } from '../..';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
-import { DropdownItems } from '../dropdownItems';
+import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
 import { TextInput } from '../textInput';
@@ -13,10 +13,12 @@ import { TextInput } from '../textInput';
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
 // will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
-export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet> {
+export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet>, Pick<IDropdownItem, 'group'> {
+  /** (ArmstrongId) the value to be bound */
   id: Id;
+
+  /** (string) the name to be rendered for the option */
   name?: string;
-  group?: string;
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>

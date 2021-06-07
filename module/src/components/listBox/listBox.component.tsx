@@ -4,18 +4,17 @@ import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
-import { DropdownItems } from '../dropdownItems';
+import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { ISelectOption } from '../select';
 
-export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any> extends IIconWrapperProps<IconSet, IconSet> {
-  id: Id;
-  name: string;
-  group?: string;
-  data?: TSelectData;
-}
+export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
+  extends IIconWrapperProps<IconSet, IconSet>,
+    ISelectOption<Id, TSelectData>,
+    Pick<IDropdownItem, 'group'> {}
 
 /** A DOM recreation of a select element */
 
@@ -101,7 +100,7 @@ export const ListBox = React.forwardRef(
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
         items={options.map((option) => ({
-          content: option.name ?? bindConfig.getFormattedValueFromData(option.id),
+          content: option.name ?? bindConfig.getFormattedValueFromData(option.id)?.toString() ?? option.id.toString(),
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
