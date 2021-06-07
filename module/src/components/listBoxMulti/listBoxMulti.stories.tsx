@@ -31,6 +31,24 @@ export const Default = () => {
     />
   );
 };
+export const CustomPreview = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <ListBoxMulti
+      value={value}
+      placeholder="Please pick something...."
+      onValueChange={setValue}
+      renderPreview={(items) => <p>{items.length} colours selected</p>}
+      options={[
+        { id: 'a', name: 'red' },
+        { id: 'b', name: 'blue' },
+        { id: 'c', name: 'pink' },
+        { id: 'd', name: 'brown' },
+      ]}
+    />
+  );
+};
 export const WithCustomDropDownIcon = () => {
   const [value, setValue] = React.useState([]);
 

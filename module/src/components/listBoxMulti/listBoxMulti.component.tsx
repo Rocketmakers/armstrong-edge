@@ -40,6 +40,9 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any> e
 
   /** (boolean) should allow deletion of value with a cross */
   deleteButton?: boolean;
+
+  /** (boolean) if set, will render a string like "X selected" instead of the selected values as tags */
+  renderPreview?: (selectedOptions: IListBoxOption<Id, TSelectData>[]) => React.ReactChild;
 }
 
 /** A select input which takes an array of options */
@@ -64,6 +67,7 @@ export const ListBoxMulti = React.forwardRef(
       placeholder,
       deleteButton,
       statusPosition,
+      renderPreview,
       onValueChange,
       disableOnPending,
     }: IListBoxMultiProps<Id, TSelectData>,
@@ -151,15 +155,17 @@ export const ListBoxMulti = React.forwardRef(
             <div className="arm-listbox-multi-content">
               {currentOptions?.length ? (
                 <>
-                  {currentOptions.map((tag) => (
-                    <Tag
-                      content={tag.name ?? tag.id.toString()}
-                      leftIcon={tag.leftIcon}
-                      rightIcon={tag.rightIcon}
-                      key={tag.id}
-                      onRemove={() => removeItem(tag.id)}
-                    />
-                  ))}
+                  {renderPreview
+                    ? renderPreview(currentOptions)
+                    : currentOptions.map((tag) => (
+                        <Tag
+                          content={tag.name ?? tag.id.toString()}
+                          leftIcon={tag.leftIcon}
+                          rightIcon={tag.rightIcon}
+                          key={tag.id}
+                          onRemove={() => removeItem(tag.id)}
+                        />
+                      ))}
                 </>
               ) : (
                 placeholder && <p className="placeholder">{placeholder}</p>
