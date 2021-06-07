@@ -9,8 +9,13 @@ import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any> {
+  /** (ArmstrongId) the value to be bound */
   id: Id;
-  name: string;
+
+  /** (string) the name to be rendered for the option */
+  name?: string;
+
+  /** (string) data which will be passed into the onSelectOption callback */
   data?: TSelectData;
 }
 

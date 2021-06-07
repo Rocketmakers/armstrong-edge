@@ -123,7 +123,7 @@ export const ListBoxMulti = React.forwardRef(
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
         items={options.map((option) => ({
-          content: option.name ?? option.id,
+          content: option.name ?? option.id.toString(),
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
