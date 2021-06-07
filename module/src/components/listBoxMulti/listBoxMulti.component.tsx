@@ -90,7 +90,7 @@ export const ListBoxMulti = React.forwardRef(
       (id: ArmstrongId) => {
         setBoundValue(boundValue?.filter((item) => item !== id) || []);
       },
-      [boundValue]
+      [boundValue, setBoundValue]
     );
 
     const onItemSelected = React.useCallback(

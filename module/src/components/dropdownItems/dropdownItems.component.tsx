@@ -220,7 +220,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                 return (
                   <DropdownItem
                     {...item}
-                    key={item.id}
+                    key={item.id + index.toString()}
                     onMouseUp={
                       !hasBegunClick
                         ? () => {

@@ -40,6 +40,22 @@ export const Default = () => {
     />
   );
 };
+export const AllowFreeText = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <AutoCompleteInputMulti
+      value={value}
+      onChange={setValue}
+      allowFreeText
+      options={[
+        { id: 'a', name: 'red' },
+        { id: 'b', name: 'blue' },
+        { id: 'c', name: 'purple' },
+      ]}
+    />
+  );
+};
 export const WithIcons = () => {
   const [value, setValue] = React.useState([]);
 

@@ -2,14 +2,16 @@ import React from 'react';
 
 import { Form, IAutoCompleteInputOption } from '../..';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
+import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
 import { IInputProps } from '../input';
-import { TextInput } from '../textInput';
+import { ITag, ITagInputProps, TagInput } from '../tagInput';
 
 export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
-  extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'> {
+  extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
+    Pick<ITagInputProps, 'tagPosition'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -36,6 +38,9 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
 
   /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
   allowKeyboardNavigationSelection?: boolean;
+
+  /** ((option: IAutoCompleteOption) => ITag)  */
+  getSelectedOptionTags?: (option: Id) => ITag;
 }
 
 /** An input which displays some given options below the and allows the user to select from those options */
@@ -55,9 +60,11 @@ export const AutoCompleteInputMulti = React.forwardRef(
       textInputValue,
       filterOptions,
       onChange,
+      tagPosition,
       value,
       allowFreeText,
       allowKeyboardNavigationSelection,
+      getSelectedOptionTags,
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
@@ -79,52 +86,45 @@ export const AutoCompleteInputMulti = React.forwardRef(
       [getFormattedValueFromData]
     );
 
-    // internal state for the text input
-    const [textInputInternalValue, setTextInputInternalValue] = React.useState('');
-
-    // wrap up the internal text input state to ensure it's overriden if an external bind is being used with onTextInputChange and textInputValue props
-    const textInputCurrentValue = (onTextInputChange ? textInputValue : textInputInternalValue) || '';
-    const setTextInputCurrentValue = onTextInputChange ?? setTextInputInternalValue;
+    // internal state for the text input, overriden by props
+    const [textInputInternalValue, setTextInputInternalValue] = useOverridableState('', textInputValue, onTextInputChange);
 
     // The provided options, optionally filtered by the text input value
     const filteredOptions = React.useMemo(() => {
       if (filterOptions && options) {
         if (filterOptions === true) {
-          return options.filter((option) => getOptionName(option).startsWith(textInputCurrentValue));
+          return options.filter((option) => getOptionName(option).startsWith(textInputInternalValue));
         }
-        return options.filter((option) => filterOptions(option, textInputCurrentValue));
+        return options.filter((option) => filterOptions(option, textInputInternalValue));
       }
       return options || [];
-    }, [filterOptions, JSON.stringify(options), textInputCurrentValue]);
+    }, [filterOptions, JSON.stringify(options), textInputInternalValue]);
+
+    const removeItem = React.useCallback(
+      (id: ArmstrongId) => {
+        setBoundValue(boundValue?.filter((item) => item !== id) || []);
+      },
+      [boundValue, setBoundValue]
+    );
 
     /** when the user clicks on an option, change the value in the textInput */
     const onSelectOption = React.useCallback(
       (id: Id) => {
         const selectedOption = options?.find((option) => option.id === id);
-        setTextInputCurrentValue(selectedOption?.name || '');
-        setOptionsOpen(false);
 
-        // if free text is allowed, the onChange triggered by the textinput's change event
-        // otherwise, it is triggered it here
-        if (!allowFreeText) {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-          setBoundValue([...(boundValue || []), selectedOption?.id!]);
+        if (selectedOption) {
+          if (boundValue?.find((item) => item === selectedOption.id)) {
+            removeItem(selectedOption.id);
+          } else {
+            setBoundValue([...(boundValue || []), selectedOption.id!]);
+          }
         }
       },
-      [bind, allowFreeText, boundValue, options]
-    );
-
-    /** Fired when the user changes the value in the text input */
-    const onTextInputChangeEvent = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newTextInputValue = event.currentTarget.value || '';
-        setTextInputCurrentValue(newTextInputValue);
-      },
-      [setTextInputCurrentValue, getOptionName]
+      [bind, boundValue, options, removeItem]
     );
 
     const resetInputValue = React.useCallback(() => {
-      setTextInputCurrentValue('');
+      setTextInputInternalValue('');
     }, [allowFreeText, options, boundValue, getOptionName]);
 
     useDidUpdateEffect(() => {
@@ -132,6 +132,43 @@ export const AutoCompleteInputMulti = React.forwardRef(
         resetInputValue();
       }
     }, [optionsOpen]);
+
+    const selectedOptionTags = React.useMemo(
+      () =>
+        (boundValue || []).map<ITag>((item) => {
+          if (getSelectedOptionTags) {
+            return getSelectedOptionTags(item);
+          }
+          const selectedOption = options?.find((option) => item === option.id);
+          if (selectedOption) {
+            return {
+              name: selectedOption.name || selectedOption.id.toString(),
+              id: selectedOption.id,
+              leftIcon: selectedOption.leftIcon,
+              rightIcon: selectedOption.rightIcon,
+            };
+          }
+          return {
+            name: item.toString(),
+            id: item,
+          };
+        }),
+      [getSelectedOptionTags, options, boundValue]
+    );
+
+    const onAddTag = React.useCallback(
+      (addedValue: string) => {
+        if (allowFreeText) {
+          setBoundValue([...(boundValue || []), addedValue as Id]);
+        }
+      },
+      [allowFreeText, boundValue, setBoundValue]
+    );
+
+    const shouldShowFreeTextItemInDropdown = React.useMemo(
+      () => allowFreeText && textInputInternalValue && !options?.find((option) => (option.name ?? option.id) === textInputInternalValue),
+      [allowFreeText, textInputInternalValue, options]
+    );
 
     return (
       <>
@@ -143,13 +180,16 @@ export const AutoCompleteInputMulti = React.forwardRef(
         >
           <DropdownItems
             contentClassName="arm-auto-complete-options"
-            items={filteredOptions.map((option) => ({
-              content: getOptionName(option),
-              id: option.id,
-              leftIcon: option.leftIcon,
-              rightIcon: option.rightIcon,
-              group: option.group,
-            }))}
+            items={[
+              ...(shouldShowFreeTextItemInDropdown ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
+              ...filteredOptions.map((option) => ({
+                content: getOptionName(option),
+                id: option.id,
+                leftIcon: option.leftIcon,
+                rightIcon: option.rightIcon,
+                group: option.group,
+              })),
+            ]}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
             contentRootElementSelector={optionsRootElementSelector}
@@ -161,19 +201,23 @@ export const AutoCompleteInputMulti = React.forwardRef(
             closeOnSelection={false}
             childRootElementSelector=".arm-input-inner"
           >
-            <TextInput
+            <TagInput
               {...textInputProps}
               pending={pending}
               ref={ref}
               error={error}
-              value={textInputCurrentValue}
-              onChange={onTextInputChangeEvent}
+              tags={selectedOptionTags}
+              tagPosition={tagPosition}
               onKeyDown={() => setOptionsOpen(true)}
               validationMode={validationMode}
               onFocus={() => setOptionsOpen(true)}
+              textInputValue={textInputInternalValue}
+              onTextInputValueChange={setTextInputInternalValue}
               validationErrorMessages={myValidationErrorMessages}
               errorIcon={validationErrorIcon}
               disableOnPending={false}
+              onAddTag={onAddTag}
+              onRemoveTag={(id) => removeItem(id as Id)}
             />
           </DropdownItems>
         </div>
@@ -190,4 +234,5 @@ AutoCompleteInputMulti.defaultProps = {
   validationMode: 'both',
   allowKeyboardNavigationSelection: true,
   filterOptions: true,
+  tagPosition: 'above',
 };

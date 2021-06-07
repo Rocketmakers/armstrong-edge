@@ -85,7 +85,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const [left, setLeft] = React.useState<number>();
     const [width, setWidth] = React.useState<number>();
 
-    React.useLayoutEffect(() => {
+    const setPosition = React.useCallback(() => {
       if (isOpen && rootRef.current && contentRef.current) {
         const elementToRenderBelow = childRootElementSelector
           ? rootRef.current.querySelector(childRootElementSelector) ?? rootRef.current
@@ -102,6 +102,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         setLeft(newLeft);
         setWidth(rect.width);
       }
+    }, [isOpen, rootRef.current, contentRef.current]);
+
+    React.useLayoutEffect(() => {
+      setPosition();
     }, [isOpen]);
 
     const onScrollContent = React.useCallback(
