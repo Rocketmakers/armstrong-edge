@@ -1,11 +1,11 @@
-.arm-input.arm-select-input {
+.arm-input.arm-listbox {
   cursor: pointer;
 
-  .arm-select-input-inner {
+  .arm-listbox-inner {
     flex-grow: 1;
     position: relative;
 
-    .arm-select-input-content {
+    .arm-listbox-content {
       height: $input-height;
       display: flex;
       align-items: center;
@@ -20,7 +20,7 @@
       }
     }
 
-    .arm-icon.arm-select-input-overlay-icon {
+    .arm-icon.arm-listbox-overlay-icon {
       position: absolute;
       right: $spacing-xsmall;
       top: 50%;

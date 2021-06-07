@@ -10,22 +10,22 @@ import { IconButton } from '../iconButton';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
-export interface ISelectInputOption<Id extends ArmstrongId, TSelectData = any> extends IIconWrapperProps<IconSet, IconSet> {
+export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any> extends IIconWrapperProps<IconSet, IconSet> {
   id: Id;
   name: string;
   group?: string;
   data?: TSelectData;
 }
 
-export interface ISelectInputProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
+export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
-  /** (ISelectInputOption[]) The options to be shown in the input */
-  options: ISelectInputOption<Id, TSelectData>[];
+  /** (IListBoxOption[]) The options to be shown in the input */
+  options: IListBoxOption<Id, TSelectData>[];
 
-  /** ((option: ISelectInputOption) => void) Called on change to get the  */
-  onSelectOption?: (option?: ISelectInputOption<Id>) => void;
+  /** ((option: IListBoxOption) => void) Called on change to get the  */
+  onSelectOption?: (option?: IListBoxOption<Id>) => void;
 
   /** (string[]) array of validation errors to render */
   validationErrorMessages?: string[];
@@ -47,7 +47,7 @@ export interface ISelectInputProps<Id extends ArmstrongId, TSelectData = any> ex
 }
 
 /** A select input which takes an array of options */
-export const SelectInput = React.forwardRef(
+export const ListBox = React.forwardRef(
   <Id extends ArmstrongId, TSelectData = any>(
     {
       bind,
@@ -68,7 +68,7 @@ export const SelectInput = React.forwardRef(
       placeholder,
       deleteButton,
       disableOnPending,
-    }: ISelectInputProps<Id, TSelectData>,
+    }: IListBoxProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const internalRef = React.useRef<HTMLInputElement>(null);
@@ -84,7 +84,7 @@ export const SelectInput = React.forwardRef(
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
     const onChangeEvent = React.useCallback(
-      (option: ISelectInputOption<Id> | undefined) => {
+      (option: IListBoxOption<Id> | undefined) => {
         onSelectOption?.(option);
         setBoundValue(option?.id ?? undefined!);
       },
@@ -112,7 +112,7 @@ export const SelectInput = React.forwardRef(
       >
         <InputWrapper
           ref={internalRef}
-          className={ClassNames.concat('arm-select-input', className)}
+          className={ClassNames.concat('arm-listbox', className)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}
@@ -124,13 +124,13 @@ export const SelectInput = React.forwardRef(
           disabled={disabled}
           disableOnPending={disableOnPending}
         >
-          <div className="arm-select-input-inner">
-            <div className="arm-select-input-content">
+          <div className="arm-listbox-inner">
+            <div className="arm-listbox-content">
               {currentOptionText ? <p>{currentOptionText}</p> : placeholder && <p className="placeholder">{placeholder}</p>}
             </div>
             {selectOverlayIcon &&
               (IconUtils.isIconDefinition(selectOverlayIcon) ? (
-                <Icon className="arm-select-input-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />
+                <Icon className="arm-listbox-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />
               ) : (
                 selectOverlayIcon
               ))}
@@ -138,7 +138,7 @@ export const SelectInput = React.forwardRef(
 
           {deleteButton && boundValue && (
             <IconButton
-              className="arm-select-input-delete"
+              className="arm-listbox-delete"
               onClick={(event) => {
                 onChangeEvent(undefined);
                 setDropdownOpen(false);
@@ -157,10 +157,10 @@ export const SelectInput = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: React.PropsWithChildren<ISelectInputProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<ISelectInputProps<any, any>> };
+  props: React.PropsWithChildren<IListBoxProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
+) => ReturnType<React.FC>) & { defaultProps?: Partial<IListBoxProps<any, any>> };
 
-SelectInput.defaultProps = {
+ListBox.defaultProps = {
   selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
   deleteButton: true,
 };
