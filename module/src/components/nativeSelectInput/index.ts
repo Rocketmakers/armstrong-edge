@@ -1,1 +1,1 @@
-export * from './nativeSelectInput.component';
+export * from './select.component';
