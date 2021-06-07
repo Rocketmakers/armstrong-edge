@@ -90,7 +90,6 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
       return getDays(formState!.viewingMonth, formState!.viewingYear, selectedDateParsed, minParsed, maxParsed, rangeToParsed, highlightsParsed);
     }, [formState, minParsed, maxParsed, selectedDateParsed, rangeToParsed, highlightsParsed]);
 
-
     // Calculate the number of "empty" days to display at the beginning of the month based on the day of the week displayed first, and the first day of the month selected.
     const blankDaysAtStartCount = React.useMemo(() => {
       const monthStartsOnWeekday = selectableDays[0].indexInWeek;
