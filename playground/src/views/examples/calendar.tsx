@@ -1,6 +1,5 @@
 import * as React from "react"
-import { CalendarView } from "@rocketmakers/armstrong-edge/dist/components/calendarView/calendarView.component"
-import { ICalendarHighlight } from "@rocketmakers/armstrong-edge/dist/components/calendarView/calendarView.utils"
+import { CalendarView, ICalendarHighlight } from "@rocketmakers/armstrong-edge"
 
 export const CalendarExample: React.FC = () => {
   const dateFormat = "dd/MM/yyyy"
@@ -20,13 +19,6 @@ export const CalendarExample: React.FC = () => {
   }, [])
 
   return (
-    <CalendarView
-      min={minDate}
-      max={maxDate}
-      formatString={dateFormat}
-      selectedDate={currentDate}
-      rangeTo={rangeToDate}
-      onDateClicked={(__, date) => setCurrentDate(date)}
-      highlights={highlights} />
+    <CalendarView min={minDate} max={maxDate} formatString={dateFormat} selectedDate={currentDate} rangeTo={rangeToDate} onDateClicked={(__, date) => setCurrentDate(date)} highlights={highlights} />
   )
 }
