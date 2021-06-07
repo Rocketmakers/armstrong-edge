@@ -27,6 +27,9 @@ export namespace Arrays {
     return Object.keys(dictionary).map<IArrayWithKey<T, Keys>>((key) => ({ key: key as Keys, items: dictionary[key] }));
   };
 
+  export const findLastIndex = <T>(array: T[], callback: (item: T) => boolean) =>
+    array.reduce((output, item, index) => (callback(item) ? index : output), -1);
+
   export namespace ArrayArrays {
     export const getArrayIndex = <T>(innerIndex: number, outerIndex: number, arrays: { items: T[] }[]) => {
       return arrays.slice(0, outerIndex).reduce((output, array) => array.items.length + output, 0) + innerIndex;

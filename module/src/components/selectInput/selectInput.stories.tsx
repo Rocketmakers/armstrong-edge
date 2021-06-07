@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
-import { ISelectInputProps, SelectInput } from './selectInput.component';
+import { SelectInput } from './selectInput.component';
 
 /** metadata */
 
@@ -10,7 +10,7 @@ export default StoryUtils.createMeta(SelectInput, 'Form', 'Select Input', {});
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(SelectInput as React.FC<ISelectInputProps<any, any>>);
+// const Template = StoryUtils.createTemplate(SelectInput as React.FC<ISelectInputProps<any, any>>);
 
 /** stories */
 

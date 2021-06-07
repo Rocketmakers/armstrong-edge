@@ -9,7 +9,7 @@ export default StoryUtils.createMeta(Dropdown as any, 'Layout', 'Dropdown', {});
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(Dropdown);
+// const Template = StoryUtils.createTemplate(Dropdown);
 
 /** stories */
 

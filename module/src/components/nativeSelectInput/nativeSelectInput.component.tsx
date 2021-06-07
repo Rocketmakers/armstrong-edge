@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Form } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
@@ -26,12 +26,6 @@ export interface INativeSelectInputProps<Id extends ArmstrongId, TSelectData = a
   /** ((option: INativeSelectInputOption) => void) Called on change to get the  */
   onSelectOption?: (option?: INativeSelectInputOption<Id>) => void;
 
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
-
   /** (icon) the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
@@ -55,7 +49,7 @@ export const NativeSelectInput = React.forwardRef(
       onSelectOption,
       onChange,
       value,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       validationErrorMessages,
       validationMode,
       selectOverlayIcon,
@@ -96,7 +90,7 @@ export const NativeSelectInput = React.forwardRef(
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
         validationErrorMessages={bindConfig.validationErrorMessages}
-        validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
+        errorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
         validationMode={validationMode || bind?.formConfig?.validationMode}
         pending={pending}
         disabled={disabled}

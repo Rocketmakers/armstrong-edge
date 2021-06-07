@@ -12,6 +12,12 @@
     color: $color-negative;
   }
 
+  .arm-spinner {
+    .arm-icon {
+      font-size: 0.75rem;
+    }
+  }
+
   .arm-status-spinner,
   .arm-status-error {
     display: none;

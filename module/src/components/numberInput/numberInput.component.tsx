@@ -18,7 +18,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputProps<n
       rightOverlay,
       validationErrorMessages,
       validationMode,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       pending,
       disableOnPending,
       disabled,
@@ -51,7 +51,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputProps<n
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
         validationErrorMessages={allValidationErrorMessages}
-        validationErrorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
+        errorIcon={validationErrorIcon || bind?.formConfig?.validationErrorIcon}
         validationMode={validationMode || bind?.formConfig?.validationMode}
         pending={pending}
         disabled={disabled}

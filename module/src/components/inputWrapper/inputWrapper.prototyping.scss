@@ -4,10 +4,6 @@
   transition: opacity $transition-quick, border-color $transition-quick, box-shadow $transition-quick;
   border: 1px solid transparent;
 
-  + .arm-input {
-    margin-top: $spacing-small;
-  }
-
   .arm-input-overlay {
     p {
       color: $gray-light;

@@ -10,7 +10,7 @@ export default StoryUtils.createMeta(CheckboxInputList as any, 'Form', 'Checkbox
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(CheckboxInputList);
+// const Template = StoryUtils.createTemplate(CheckboxInputList);
 
 /** stories */
 

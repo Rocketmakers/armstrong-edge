@@ -432,7 +432,7 @@ export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: 
 
   const validationErrorMessages = useMyValidationErrorMessages(bind, overrides?.validationErrorMessages);
 
-  const validationMode = overrides?.validationMode ?? bind?.formConfig?.validationMode;
+  const validationMode: FormValidationMode = overrides?.validationMode ?? bind?.formConfig?.validationMode ?? 'both';
   const validationErrorIcon = overrides?.validationErrorIcon ?? bind?.formConfig?.validationErrorIcon;
 
   return [

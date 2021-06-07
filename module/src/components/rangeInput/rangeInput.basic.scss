@@ -1,0 +1,82 @@
+$range-input-track-height: 6px;
+
+.arm-range-input {
+  width: $input-width;
+  display: flex;
+  align-items: center;
+
+  .arm-range-input-track {
+    position: relative;
+    flex-grow: 1;
+    height: $input-height;
+
+    input {
+      opacity: 0;
+      @include absolute-fill;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      @include range-input-thumb {
+        opacity: 0;
+        background-color: transparent;
+        appearance: none;
+      }
+
+      @include range-input-track {
+        opacity: 0;
+        background-color: transparent;
+        appearance: none;
+      }
+
+      &:active {
+        ~ .arm-range-input-handle {
+          transform: translate(-50%, -50%) scale(1.1);
+        }
+      }
+    }
+
+    .arm-range-input-track-inner {
+      height: $range-input-track-height;
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      background-color: $gray-light;
+      overflow: hidden;
+
+      &::after {
+        @include init-pseudo;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: var(--arm-range-input-percent);
+        height: 100%;
+        background-color: $brand-primary;
+      }
+    }
+
+    .arm-range-input-handle {
+      position: absolute;
+      left: var(--arm-range-input-percent);
+      transform: translate(-50%, -50%);
+      transition: transform $transition-quick;
+      @include circle(0.7rem);
+      top: 50%;
+      pointer-events: none;
+
+      .arm-icon {
+        @include absolute-centre-self;
+      }
+    }
+  }
+
+  > *:not(:last-child) {
+    margin-right: $spacing-xsmall;
+  }
+
+  &[data-disabled='true'] {
+    opacity: 0.5;
+  }
+}
