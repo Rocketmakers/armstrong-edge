@@ -183,7 +183,6 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
         onOpenChange(false);
       }
       onItemSelected?.(id);
-      console.log('aa');
     },
     [closeOnSelection, onOpenChange, onItemSelected]
   );
