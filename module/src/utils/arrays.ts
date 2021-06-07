@@ -37,9 +37,9 @@ export namespace Arrays {
    */
   export function reIndex<T>(array: T[], startFrom: number): T[] {
     if (startFrom === 0) {
-      return array;
+      return [...array];
     }
-    return [...[...array].splice(startFrom, array.length - startFrom), ...[...array].splice(0, startFrom)];
+    return [...array.slice(startFrom), ...array.slice(0, startFrom)];
   }
 
   /**
