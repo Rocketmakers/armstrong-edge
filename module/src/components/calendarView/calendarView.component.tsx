@@ -11,14 +11,14 @@ import { ICalendarHighlight, ICalendarHighlightParsed, IDay } from './calendarVi
 import { getDayOfWeekHeadings, getDays, getMonths, getYears } from './calendarView.utils';
 
 interface ICalendarViewProps {
-  /** (Date|string) The currently selected date as a string or a `Date` object. Will default to today. */
+  /** (Date|string|number) The currently selected date as a string or a `Date` object. Will default to today. */
   selectedDate?: Dates.DateLike;
-  /** (Date|string) An optional minimum selectable date. If passed, all dates before this date will not be selectable. */
+  /** (Date|string|number) An optional minimum selectable date. If passed, all dates before this date will not be selectable. */
   min?: Dates.DateLike;
-  /** (Date|string) An optional maximum selectable date. If passed, all dates after this date will not be selectable. */
+  /** (Date|string|number) An optional maximum selectable date. If passed, all dates after this date will not be selectable. */
   max?: Dates.DateLike;
   /**
-   * (Date|string) An optional date to display a range to.
+   * (Date|string|number) An optional date to display a range to.
    * - Will use the `selectedDate` as the other end of the range.
    * - This date will show as the beginning of the range if `selectedDate` is later, or the end of the range if `selectedDate` is sooner.
    * - Useful if using two calendar inputs to create a "from - to" date range selector, simply pass the selected date from one as the `rangeTo` date on the other and vice versa.
@@ -90,6 +90,7 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
       return getDays(formState!.viewingMonth, formState!.viewingYear, selectedDateParsed, minParsed, maxParsed, rangeToParsed, highlightsParsed);
     }, [formState, minParsed, maxParsed, selectedDateParsed, rangeToParsed, highlightsParsed]);
 
+
     // Calculate the number of "empty" days to display at the beginning of the month based on the day of the week displayed first, and the first day of the month selected.
     const blankDaysAtStartCount = React.useMemo(() => {
       const monthStartsOnWeekday = selectableDays[0].indexInWeek;
@@ -153,7 +154,7 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
             ))}
           </div>
           <div className="arm-calendar-date-grid-days">
-            {Arrays.range(blankDaysAtStartCount).map((index) => (
+            {Arrays.repeat(blankDaysAtStartCount, (index) => (
               <div key={index} className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty" />
             ))}
             {selectableDays.map((day) => (

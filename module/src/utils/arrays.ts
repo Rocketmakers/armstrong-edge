@@ -43,18 +43,18 @@ export namespace Arrays {
   }
 
   /**
-   * Creates a new array containing an item count that matches the passed `count`.
-   * - The items in the array are simply the index numbers.
+   * A version of `map` which loops a specified number of times and returns the index as the map arg.
    * - Useful when you want to run a `map` x number of times but you don't have a specific array to loop.
-   * @param count The number of items that the new array should contain.
-   * @returns A new array of index numbers matching the length of `count`.
+   * @param count The number of times to run the mapper.
+   * @param mapper A function to call x number of times (x = `count`).
+   * @returns The array of newly mapped items.
    */
-  export function range(count: number): number[] {
+  export function repeat<TMapped>(count: number, mapper: (index: number) => TMapped): TMapped[] {
     const array: number[] = [];
     for (let i = 0; i < count; i += 1) {
       array.push(i);
     }
-    return array;
+    return array.map(mapper);
   }
 
   export const findLastIndex = <T>(array: T[], callback: (item: T) => boolean) =>
