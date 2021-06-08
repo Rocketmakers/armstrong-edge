@@ -1,10 +1,19 @@
 .arm-status {
+  animation: expand-in-width-small $transition-quick;
+
   .arm-status-error {
     color: $color-negative;
     font-size: 0.75rem;
   }
 
-  .arm-status-spinner {
-    font-size: 0.75rem;
+  .arm-spinner {
+    .arm-icon {
+      font-size: 0.75rem;
+    }
+  }
+
+  .arm-status-spinner,
+  .arm-status-error {
+    animation: fade-in $transition-quick;
   }
 }

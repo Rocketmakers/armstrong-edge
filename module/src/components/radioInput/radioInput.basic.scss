@@ -17,6 +17,7 @@
         appearance: none;
         @include absolute-fill;
         margin: 0;
+        cursor: pointer;
 
         &:checked ~ .arm-icon.arm-radio-input-checked-icon {
           opacity: 1;

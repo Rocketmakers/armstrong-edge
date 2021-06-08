@@ -43,6 +43,25 @@ export const Default = () => {
     </>
   );
 };
+export const tagsAbove = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        tagPosition="above"
+        options={[
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'purple' },
+        ]}
+      />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
+  );
+};
 export const AllowFreeText = () => {
   const [value, setValue] = React.useState([]);
 

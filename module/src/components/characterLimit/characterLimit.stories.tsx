@@ -27,13 +27,23 @@ export const Default = () => {
   );
 };
 
-export const Impose = () => {
+export const Enforce = () => {
   const { formProp } = Form.use({ thing: '' });
 
   return (
     <>
       <TextInput bind={formProp('thing').bind()} />
-      <CharacterLimit bind={formProp('thing').bind()} limit={10} shouldImpose />
+      <CharacterLimit bind={formProp('thing').bind()} limit={10} shouldEnforce />
+    </>
+  );
+};
+
+export const InsideInput = () => {
+  const { formProp } = Form.use({ thing: '' });
+
+  return (
+    <>
+      <TextInput bind={formProp('thing').bind()} rightOverlay={<CharacterLimit bind={formProp('thing').bind()} limit={10} />} />
     </>
   );
 };

@@ -62,6 +62,25 @@ export const AllowFreeText = () => {
     </>
   );
 };
+export const DontFilter = () => {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <>
+      <AutoCompleteInput
+        value={value}
+        onChange={setValue}
+        options={[
+          { id: '1', name: 'red' },
+          { id: '2', name: 'blue' },
+          { id: '3', name: 'purple' },
+        ]}
+        filterOptions={false}
+      />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
 export const WithIcons = () => {
   const [value, setValue] = React.useState(2);
 

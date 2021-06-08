@@ -117,12 +117,8 @@ export const AutoCompleteInput = React.forwardRef(
         const selectedOption = options?.find((option) => option.id === id);
         setTextInputInternalValue(selectedOption?.name || '');
 
-        // if free text is allowed, the onChange triggered by the textinput's change event
-        // otherwise, it is triggered it here
-        if (!allowFreeText) {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-          setBoundValue(selectedOption?.id!);
-        }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+        setBoundValue(selectedOption?.id!);
       },
       [bind, allowFreeText]
     );
@@ -135,10 +131,11 @@ export const AutoCompleteInput = React.forwardRef(
 
         // if allow free text, bind exact value on every change
         // if inputted text is an option, bind that
-        const inputtedOption = options?.find((option) => getOptionName(option) === newTextInputValue);
+        const inputtedOptionIndex = options?.findIndex((option) => getOptionName(option) === newTextInputValue);
+        if (inputtedOptionIndex && inputtedOptionIndex > -1) {
+          const inputtedOption = options![inputtedOptionIndex];
 
-        if (inputtedOption) {
-          setBoundValue(inputtedOption.id);
+          setBoundValue(inputtedOption!.id);
         } else if (allowFreeText) {
           setBoundValue(newTextInputValue as Id);
         }
@@ -146,6 +143,7 @@ export const AutoCompleteInput = React.forwardRef(
       [setTextInputInternalValue, getOptionName]
     );
 
+    // reset the input's value to reflect the bound value
     const resetInputValue = React.useCallback(() => {
       if (!allowFreeText) {
         const currentOption = options?.find((option) => option.id === boundValue);
@@ -155,12 +153,14 @@ export const AutoCompleteInput = React.forwardRef(
       }
     }, [allowFreeText, options, boundValue, getOptionName]);
 
+    // when the user closes the dropdown, reset the input value
     useDidUpdateEffect(() => {
       if (!optionsOpen) {
         resetInputValue();
       }
     }, [optionsOpen]);
 
+    // if allow free text is true, show the currently typed value at the top of the list of options
     const shouldShowFreeTextItemInDropdown = React.useMemo(
       () => allowFreeText && textInputInternalValue && !options?.find((option) => (option.name ?? option.id) === textInputInternalValue),
       [allowFreeText, textInputInternalValue, options]

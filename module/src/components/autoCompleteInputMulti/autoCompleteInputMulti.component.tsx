@@ -160,7 +160,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
     // in the options array
     const dropdownItems = React.useMemo<IDropdownItem[]>(() => {
       const showCurrentlyTypingOption =
-        allowFreeText && textInputInternalValue && !options?.find((option) => (option.name ?? option.id) === textInputInternalValue);
+        allowFreeText && textInputInternalValue && !options?.find((option) => getOptionName(option) === textInputInternalValue);
 
       return [
         ...(showCurrentlyTypingOption ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
