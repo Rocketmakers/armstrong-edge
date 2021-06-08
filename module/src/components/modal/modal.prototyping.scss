@@ -1,0 +1,14 @@
+.arm-modal-wrapper {
+  @include flex-centre-content;
+}
+
+.arm-modal {
+  background-color: $white;
+  box-shadow: $shadow-xsmall;
+  animation: fade-in $transition-quick;
+
+  &[data-closing='true'] {
+    animation: none;
+    transition: opacity $transition-quick;
+  }
+}

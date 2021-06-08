@@ -6,11 +6,13 @@ import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { IInputProps } from '../input';
+import { IPortalProps } from '../portal';
 import { ITag, ITagInputProps, TagInput } from '../tagInput';
 
 export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
-    Pick<ITagInputProps, 'tagPosition'> {
+    Pick<ITagInputProps, 'tagPosition'>,
+    Pick<IPortalProps, 'rootElementSelector' | 'rootElement'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -54,7 +56,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
       className,
       error,
       pending,
-      optionsRootElementSelector,
+      rootElement,
+      rootElementSelector,
       onTextInputChange,
       textInputValue,
       filterOptions,
@@ -180,7 +183,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
           group: option.group,
         })),
       ];
-    }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, options, parseOptionTag]);
+    }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, options, parseOptionTag, getOptionName]);
 
     return (
       <>
@@ -195,7 +198,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
             items={dropdownItems}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
-            contentRootElementSelector={optionsRootElementSelector}
+            rootElementSelector={rootElementSelector}
+            rootElement={rootElement}
             onItemSelected={(id) => onSelectOption(id as Id)}
             allowKeyboardNavigation={allowKeyboardNavigationSelection}
             currentValue={boundValue || []}

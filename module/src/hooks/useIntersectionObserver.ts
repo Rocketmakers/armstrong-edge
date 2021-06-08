@@ -9,11 +9,11 @@ import { Globals } from '../utils/globals';
  * @param options an intersection observer options object
  */
 
-export const useIntersectionObserver = (
+export function useIntersectionObserver(
   ref: React.MutableRefObject<HTMLElement>,
   callback: (isIntersecting: boolean, entries: IntersectionObserverEntry[], io: IntersectionObserver) => any,
   options?: IntersectionObserverInit
-) => {
+) {
   const observer = React.useRef<IntersectionObserver>();
 
   React.useLayoutEffect(() => {
@@ -27,4 +27,4 @@ export const useIntersectionObserver = (
       return () => observer.current?.unobserve(ref.current);
     }
   }, [ref, observer, callback]);
-};
+}

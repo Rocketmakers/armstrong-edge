@@ -8,6 +8,7 @@ import { ClassNames } from '../../utils/classNames';
 import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
+import { IPortalProps } from '../portal';
 import { TextInput } from '../textInput';
 
 // internally, the autocompleteinput binds two values - the actual content of the text input, and the selected value
@@ -23,7 +24,8 @@ export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconW
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
-  extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'> {
+  extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
+    Pick<IPortalProps, 'rootElementSelector' | 'rootElement'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -64,7 +66,8 @@ export const AutoCompleteInput = React.forwardRef(
       className,
       error,
       pending,
-      optionsRootElementSelector,
+      rootElementSelector,
+      rootElement,
       onTextInputChange,
       textInputValue,
       filterOptions,
@@ -188,7 +191,8 @@ export const AutoCompleteInput = React.forwardRef(
             ]}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
-            contentRootElementSelector={optionsRootElementSelector}
+            rootElementSelector={rootElementSelector}
+            rootElement={rootElement}
             onItemSelected={(id) => onSelectOption(id as Id)}
             allowKeyboardNavigation={allowKeyboardNavigationSelection}
             currentValue={boundValue ? [boundValue] : []}

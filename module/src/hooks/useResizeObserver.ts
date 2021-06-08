@@ -9,18 +9,15 @@ import { Globals } from '../utils/globals';
  * @param options an Resize observer options object
  */
 
-export const useResizeObserver = (
-  ref: React.MutableRefObject<HTMLElement>,
-  callback: (entries: ResizeObserverEntry[], io: ResizeObserver) => any
-) => {
+export function useResizeObserver(ref: React.MutableRefObject<HTMLElement>, callback: (entries: ResizeObserverEntry[], io: ResizeObserver) => any) {
   const observer = React.useRef<ResizeObserver>();
 
   React.useLayoutEffect(() => {
-    if (!!ref && !!ref.current && Globals.isBrowser && !!Globals.supportsResizeObserver) {
+    if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsResizeObserver) {
       observer.current = new ResizeObserver((entries, createdObserver) => callback && callback(entries, createdObserver));
       observer.current.observe(ref.current);
 
       return () => observer.current?.unobserve(ref.current);
     }
   }, [ref, observer, callback]);
-};
+}

@@ -3,41 +3,41 @@ import * as ReactDOM from 'react-dom';
 
 import { Globals } from '../../utils/globals';
 
-interface IPortalProps {
-  /** (string) classname of the element to be created to portal the children into */
-  wrapperClassName?: string;
-
-  /** (string) tagname of the element to be created to portal the children into, div by default */
-  wrapperTagName?: string;
-
+export interface IPortalProps {
   /** (string) selector for the element to append the root to as a queryselector, body by default */
   rootElementSelector?: string;
+
+  /** (HTMLElement) a ref for an element to portal into - will override  rootElementSelector */
+  rootElement?: HTMLElement;
 }
 
-export const Portal: React.FunctionComponent<IPortalProps> = ({ wrapperClassName, wrapperTagName, rootElementSelector, children }) => {
-  const [rootElement, setRootElement] = React.useState<HTMLElement>();
+export const Portal: React.FunctionComponent<IPortalProps> = ({ rootElementSelector, children, rootElement }) => {
+  const [selectedRootElement, setSelectedRootElement] = React.useState<Element>();
 
+  // the root element is not always available as a result of that query selection on the initial render, so must be assigned to a piece of state
   React.useEffect(() => {
-    const element = document.createElement(wrapperTagName!);
+    if (rootElement) {
+      setSelectedRootElement(rootElement);
+    } else if (rootElementSelector) {
+      const element = Globals.Document?.querySelector(rootElementSelector);
 
-    if (wrapperClassName) {
-      element.classList.add(wrapperClassName);
+      if (element) {
+        setSelectedRootElement(element);
+      } else {
+        setSelectedRootElement(undefined);
+      }
+    } else {
+      setSelectedRootElement(undefined);
     }
+  }, [rootElement, rootElementSelector]);
 
-    setRootElement(element);
-    Globals.Document?.querySelector(rootElementSelector!)?.appendChild(element);
+  if (!selectedRootElement) {
+    return null;
+  }
 
-    return () => {
-      element.remove();
-    };
-  }, []);
-
-  if (!rootElement) return null;
-
-  return ReactDOM.createPortal(children, rootElement);
+  return ReactDOM.createPortal(children, selectedRootElement);
 };
 
 Portal.defaultProps = {
   rootElementSelector: '#host',
-  wrapperTagName: 'div',
 };
