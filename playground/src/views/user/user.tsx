@@ -107,8 +107,8 @@ export const UserEdit: React.FC = () => {
         <TextAreaInput bind={formProp("bio").bind()} />
         <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
-        <SwitchInput bind={formProp('isCool').bind()} validationErrorMessages={['uh oh']} />
-        <TagInput bind={formProp('sauces').bind()} spaceCreatesTags tagPosition="inside" />
+        <SwitchInput bind={formProp("isCool").bind()} validationErrorMessages={["uh oh"]} />
+        <TagInput bind={formProp("sauces").bind()} spaceCreatesTags tagPosition="inside" />
         <SelectInput
           leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
           bind={formProp("favouriteColour").bind()}

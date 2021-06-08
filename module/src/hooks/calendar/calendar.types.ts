@@ -1,9 +1,3 @@
-/** ******************************************************
- * Calendar View - Types file.
- * All of the types specifically associated with the form.
- * No real code in here (TypeScript's not real.)
- ******************************************************* */
-
 import { Dates } from '../../utils/dates';
 
 /** Defines the data required by the calendar view and associated with a single day */
@@ -36,6 +30,8 @@ export interface IDay {
 export interface IMonth {
   /** (string) The name of the month. e.g. March, April etc.  */
   name: string;
+  /** (string) The shot name of the month. e.g. Mar, Apr etc.  */
+  shortName: string;
   /** (number) The 0-11 index of the months position within the year. January = 0, December = 11. */
   indexInYear: number;
   /** (boolean) Is this month currently disabled within the calendar view? */
@@ -54,4 +50,35 @@ export interface ICalendarHighlight {
 export interface ICalendarHighlightParsed extends ICalendarHighlight {
   /** The `Date` object parsed from `DateLike` type */
   date: Date;
+}
+
+export interface IConfig {
+  /** (Date|string|number) The currently selected date as a string or a `Date` object. Will default to today. */
+  selectedDate?: Dates.DateLike;
+  /** (Date|string|number) An optional minimum selectable date. If passed, all dates before this date will not be selectable. */
+  min?: Dates.DateLike;
+  /** (Date|string|number) An optional maximum selectable date. If passed, all dates after this date will not be selectable. */
+  max?: Dates.DateLike;
+  /**
+   * (Date|string|number) An optional date to display a range to.
+   * - Will use the `selectedDate` as the other end of the range.
+   * - This date will show as the beginning of the range if `selectedDate` is later, or the end of the range if `selectedDate` is sooner.
+   * - Useful if using two calendar inputs to create a "from - to" date range selector, simply pass the selected date from one as the `rangeTo` date on the other and vice versa.
+   */
+  rangeTo?: Dates.DateLike;
+  /** An optional array of dates to highlight with optional class names to apply to each highlighted date. */
+  highlights?: ICalendarHighlight[];
+  /**
+   * (string) A formatter to apply to all passed in date strings.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - If date strings are used without this prop, strict ISO format will be assumed.
+   * - This format will not be used if dates are passed as `Date` objects rather than strings.
+   */
+  formatString?: string;
+  /**
+   * An optional locale to apply to all date formatting.
+   * - Must be a date-fns compliant `Locale` object (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/Locale))
+   * - If no locale is passed, `en-GB` will be used as the system default for all date formatting.
+   */
+  locale?: Dates.DateLocale;
 }
