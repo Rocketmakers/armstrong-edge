@@ -17,7 +17,7 @@ export const useIntersectionObserver = (
   const observer = React.useRef<IntersectionObserver>();
 
   React.useLayoutEffect(() => {
-    if (!!ref && !!ref.current && Globals.isBrowser) {
+    if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsIntersectionObserver) {
       observer.current = new IntersectionObserver(
         (entries, createdObserver) => callback && callback(entries[0].isIntersecting, entries, createdObserver),
         options

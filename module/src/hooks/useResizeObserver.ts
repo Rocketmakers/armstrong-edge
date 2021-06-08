@@ -16,7 +16,7 @@ export const useResizeObserver = (
   const observer = React.useRef<ResizeObserver>();
 
   React.useLayoutEffect(() => {
-    if (!!ref && !!ref.current && Globals.isBrowser) {
+    if (!!ref && !!ref.current && Globals.isBrowser && !!Globals.supportsResizeObserver) {
       observer.current = new ResizeObserver((entries, createdObserver) => callback && callback(entries, createdObserver));
       observer.current.observe(ref.current);
 
