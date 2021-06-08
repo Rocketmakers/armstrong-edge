@@ -133,7 +133,7 @@ export const UserEdit: React.FC = () => {
 
         <NativeDateInput />
 
-        <AutoCompleteInput
+        {/* <AutoCompleteInput
           bind={formProp("favouriteCuisine").bind({ format: { fromData: (value) => sauces?.find((sauce) => sauce.id === value)?.name } })}
           options={sauces?.map((sauce) => sauce.id)}
 
@@ -143,7 +143,7 @@ export const UserEdit: React.FC = () => {
           leftIcon={IconUtils.getIconDefinition("Icomoon", "pizza")}
           filterOptions={false}
           pending={isFetchingSauces}
-        />
+        /> */}
 
         <p>you've chosen: {formState.favouriteCuisine}</p>
         <br />
