@@ -17,6 +17,7 @@ export interface ISelectOption<Id extends ArmstrongId, TSelectData = any> {
 
   /** (string) data which will be passed into the onSelectOption callback */
   data?: TSelectData;
+  disabled?: boolean;
 }
 
 export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
@@ -77,7 +78,7 @@ export const Select = React.forwardRef(
           onChange(event);
         }
 
-        const selectedOption = options.find((option) => option.id === event.currentTarget.value);
+        const selectedOption = options.find((option) => option.id.toString() === event.currentTarget.value);
 
         if (selectedOption) {
           setBoundValue(selectedOption.id);
@@ -104,7 +105,7 @@ export const Select = React.forwardRef(
         <div className="arm-select-inner">
           <select {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
             {options.map((option) => (
-              <option key={option.id} value={option.id}>
+              <option key={option.id} value={option.id} disabled={option.disabled}>
                 {option.name}
               </option>
             ))}
