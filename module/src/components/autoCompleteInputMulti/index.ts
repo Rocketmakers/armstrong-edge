@@ -1,1 +1,1 @@
-export * from './autoCompleteInput.component';
+export * from './autoCompleteInputMulti.component';
