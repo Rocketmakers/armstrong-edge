@@ -17,6 +17,11 @@
     "preserveConstEnums": false,
     "noImplicitAny": false,
     "outDir": "../generated",
-    "lib": ["es2015", "es5", "dom"]
+    "lib": [
+      "es2020.string",
+      "es2015",
+      "es5",
+      "dom"
+    ]
   }
 }
