@@ -104,6 +104,7 @@ export function useValidatedForm<TData>(inputValidators: InputValidator[], state
   const setTouched = (inputElement: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const inputStatesCopy = [...inputStates];
     const touchedInput = inputStatesCopy.find(
+      // TODO doesn't work as the name property isn't specified on inputs anymore.
       input => convertKeyChainToDotNotation(input.key) === inputElement.target.name
     );
     if (touchedInput) {

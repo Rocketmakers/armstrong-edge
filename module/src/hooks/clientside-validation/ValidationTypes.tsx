@@ -10,7 +10,7 @@ export interface ValidatorAndMessage {
 }
 
 export interface InputValidator {
-  key: KeyChain;
+  key: KeyChain; //may need to change this to account for the typings used in formProp
   validators: ValidatorAndMessage[];
 }
 

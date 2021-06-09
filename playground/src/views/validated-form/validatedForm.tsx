@@ -66,7 +66,7 @@ export const ValidatedForm: React.FC = () => {
     },
     {}
   );
-  const { formIsValid, showAllValidation } = useValidatedForm(validation, formState, formProp);
+  const { formIsValid, showAllValidation, setTouched } = useValidatedForm(validation, formState, formProp);
 
   return (
     <>
@@ -74,7 +74,7 @@ export const ValidatedForm: React.FC = () => {
         <fieldset>
           <h2>Address</h2>
           <label htmlFor="line1">line 1</label>
-          <TextInput bind={formProp("line1").bind()} />
+          <TextInput bind={formProp("line1").bind()} onBlur={setTouched} />
           <label htmlFor="line2">line 2</label>
           <TextInput bind={formProp("line2").bind()} />
           <label htmlFor="city">city</label>
