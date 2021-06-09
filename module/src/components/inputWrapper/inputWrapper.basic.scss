@@ -7,9 +7,7 @@
     display: flex;
     align-items: center;
 
-    > *:not(:last-child) {
-      margin-right: $spacing-xsmall;
-    }
+    @include space-between-children-horizontal($spacing-xsmall);
   }
 
   &[data-disabled='true'] {

@@ -39,5 +39,5 @@ export const Portal: React.FunctionComponent<IPortalProps> = ({ rootElementSelec
 };
 
 Portal.defaultProps = {
-  rootElementSelector: '#host',
+  rootElementSelector: 'body',
 };

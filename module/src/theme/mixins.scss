@@ -49,6 +49,18 @@
   border-radius: 50%;
 }
 
+@mixin space-between-children-horizontal($spacing) {
+  > *:not(:last-child) {
+    margin-right: $spacing;
+  }
+}
+
+@mixin space-between-children-vertical($spacing) {
+  > *:not(:last-child) {
+    margin-bottom: $spacing;
+  }
+}
+
 // responsiveness
 
 @mixin media-query($screen-width: $screen-size-phone) {
