@@ -42,7 +42,7 @@ export const use = ({ formatString, locale, highlights, max, min, rangeTo, selec
   }, [minParsed, maxParsed]);
 
   const selectableMonths = React.useMemo(() => {
-    return getMonths(formState!.viewingYear, minParsed, maxParsed, locale);
+    return getMonths(formState!.viewingYear, minParsed, maxParsed);
   }, [minParsed, maxParsed, formState!.viewingYear, locale]);
 
   const selectableDays = React.useMemo(() => {

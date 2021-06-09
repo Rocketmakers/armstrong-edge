@@ -5,6 +5,7 @@ import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
+import { Objects } from '../../utils/objects';
 import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
@@ -85,8 +86,6 @@ export const AutoCompleteInput = React.forwardRef(
       }
     );
 
-    console.log("AUTOCOMP VAL", boundValue, bind);
-
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
     // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided
@@ -111,7 +110,7 @@ export const AutoCompleteInput = React.forwardRef(
         return options.filter((option) => filterOptions(option, textInputInternalValue));
       }
       return options || [];
-    }, [filterOptions, JSON.stringify(options), textInputInternalValue]);
+    }, [filterOptions, Objects.contentDependency(options), textInputInternalValue]);
 
     /** when the user clicks on an option, change the value in the textInput */
     const onSelectOption = React.useCallback(
@@ -133,8 +132,8 @@ export const AutoCompleteInput = React.forwardRef(
 
         // if allow free text, bind exact value on every change
         // if inputted text is an option, bind that
-        const inputtedOptionIndex = options?.findIndex((option) => getOptionName(option) === newTextInputValue);
-        if (inputtedOptionIndex && inputtedOptionIndex > -1) {
+        const inputtedOptionIndex = options?.findIndex((option) => getOptionName(option) === newTextInputValue) ?? -1;
+        if (inputtedOptionIndex > -1) {
           const inputtedOption = options![inputtedOptionIndex];
 
           setBoundValue(inputtedOption!.id);
@@ -154,6 +153,10 @@ export const AutoCompleteInput = React.forwardRef(
         }
       }
     }, [allowFreeText, options, boundValue, getOptionName]);
+
+    useDidUpdateEffect(() => {
+      resetInputValue();
+    }, [boundValue, options]);
 
     // when the user closes the dropdown, reset the input value
     useDidUpdateEffect(() => {

@@ -28,14 +28,20 @@ export interface IDay {
 
 /** Defines the data required by the calendar view and associated with a single month  */
 export interface IMonth {
-  /** (string) The name of the month. e.g. March, April etc.  */
-  name: string;
-  /** (string) The shot name of the month. e.g. Mar, Apr etc.  */
-  shortName: string;
+  /** (Date) The date object representing the month in question */
+  date: Date;
   /** (number) The 0-11 index of the months position within the year. January = 0, December = 11. */
   indexInYear: number;
   /** (boolean) Is this month currently disabled within the calendar view? */
   isDisabled: boolean;
+}
+
+/** Defines the data required by the calendar view and associated with a single month  */
+export interface IYear {
+  /** (Date) The date object representing the year in question */
+  date: Date;
+  /** (number) The year as a 4 digit number number (e.g 2021) */
+  number: number;
 }
 
 /** Defines the data associated with a day that has been highlighted with a dot.  */
@@ -81,4 +87,25 @@ export interface IConfig {
    * - If no locale is passed, `en-GB` will be used as the system default for all date formatting.
    */
   locale?: Dates.DateLocale;
+  /**
+   * (string) A formatter to apply when displaying the day selector.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Padded number by default `dd` = (01 - 31).
+   * - Other options include: `d` = (1 - 31), `Do` = (1st - 31st)
+   */
+  dayDisplayFormat?: string;
+  /**
+   * (string) A formatter to apply when displaying the day selector.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Padded number by default: `MM` = (01 - 12)
+   * - Other options include: `MMM` = (Jan - Dec), `MMMM` = (January - December)
+   */
+  monthDisplayFormat?: string;
+  /**
+   * (string) A formatter to apply when displaying the day selector.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Number by default: `YYYY` = (2021).
+   * - Other options include: `YY` = (21).
+   */
+  yearDisplayFormat?: string;
 }

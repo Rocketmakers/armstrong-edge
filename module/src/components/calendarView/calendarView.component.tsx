@@ -7,7 +7,7 @@ import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
 import { Button } from '../button';
-import { getDayOfWeekHeadings } from '../calendarVIew/calendarView.utils';
+import { getDayOfWeekHeadings, getDaysWithDisplayFormat, getMonthOptions, getYearOptions } from './calendarView.utils';
 
 export interface ICalendarViewProps {
   /**
@@ -28,7 +28,7 @@ export interface ICalendarViewProps {
    */
   days: Calendar.IDay[];
   months: Calendar.IMonth[];
-  years: number[];
+  years: Calendar.IYear[];
   currentMonthBinding: IBindingProps<number>;
   currentYearBinding: IBindingProps<number>;
   onDayClicked?: (day: Calendar.IDay) => void;
@@ -45,6 +45,18 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
       return Arrays.reIndex(getDayOfWeekHeadings(locale), weekdayStartIndex!);
     }, [weekdayStartIndex, locale]);
 
+    const monthOptions = React.useMemo(() => {
+      return getMonthOptions(months, locale);
+    }, [months, locale]);
+
+    const yearOptions = React.useMemo(() => {
+      return getYearOptions(years, locale);
+    }, [years, locale]);
+
+    const displayDays = React.useMemo(() => {
+      return getDaysWithDisplayFormat(days, locale);
+    }, [days, locale]);
+
     // Calculate the number of "empty" days to display at the beginning of the month based on the day of the week displayed first, and the first day of the month selected.
     const blankDaysAtStartCount = React.useMemo(() => {
       const monthStartsOnWeekday = days[0]?.indexInWeek ?? 0;
@@ -57,16 +69,8 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
           <Button className="arm-calendar-view-button arm-calendar-view-button-prev" onClick={onBackClicked}>
             &lt;
           </Button>
-          <Select
-            className="arm-calendar-view-select arm-calendar-view-select-month"
-            bind={currentMonthBinding}
-            options={months.map((month, index) => ({ id: index, name: month.name, data: month, disabled: month.isDisabled }))}
-          />
-          <Select
-            className="arm-calendar-view-select arm-calendar-view-select-year"
-            bind={currentYearBinding}
-            options={years.map((year) => ({ id: year, name: year.toString() }))}
-          />
+          <Select className="arm-calendar-view-select arm-calendar-view-select-month" bind={currentMonthBinding} options={monthOptions} />
+          <Select className="arm-calendar-view-select arm-calendar-view-select-year" bind={currentYearBinding} options={yearOptions} />
           <Button className="arm-calendar-view-button arm-calendar-view-button-next" onClick={onForwardClicked}>
             &gt;
           </Button>
@@ -83,21 +87,21 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
             {Arrays.repeat(blankDaysAtStartCount, (index) => (
               <div key={index} className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty" />
             ))}
-            {days.map((day) => (
+            {displayDays.map((displayDay) => (
               <Button
-                className={ClassNames.concat('arm-calendar-date-grid-day', day.highlightedClassName)}
-                onClick={() => onDayClicked?.(day)}
-                key={day.numberInMonth}
-                data-selected={day.isSelected}
-                disabled={day.isDisabled}
-                data-today={day.isToday}
-                data-range-start={day.isRangeStart}
-                data-range-middle={day.isRangeMiddle}
-                data-range-end={day.isRangeEnd}
-                data-highlight={day.isHighlighted}
+                className={ClassNames.concat('arm-calendar-date-grid-day', displayDay.day.highlightedClassName)}
+                onClick={() => onDayClicked?.(displayDay.day)}
+                key={displayDay.day.numberInMonth}
+                data-selected={displayDay.day.isSelected}
+                disabled={displayDay.day.isDisabled}
+                data-today={displayDay.day.isToday}
+                data-range-start={displayDay.day.isRangeStart}
+                data-range-middle={displayDay.day.isRangeMiddle}
+                data-range-end={displayDay.day.isRangeEnd}
+                data-highlight={displayDay.day.isHighlighted}
               >
-                {day.numberInMonth.toString()}
-                {day.isHighlighted && <div className="arm-calendar-date-grid-day-highlight" />}
+                {displayDay.displayFormat}
+                {displayDay.day.isHighlighted && <div className="arm-calendar-date-grid-day-highlight" />}
               </Button>
             ))}
           </div>

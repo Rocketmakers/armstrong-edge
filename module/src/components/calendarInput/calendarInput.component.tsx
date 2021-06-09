@@ -6,9 +6,9 @@ import { IBindingProps } from '../../hooks/form';
 import { Dates } from '../../utils/dates';
 import { AutoCompleteInput } from '../autoCompleteInput';
 import { Button } from '../button';
-import { CalendarView } from '../calendarVIew/calendarView.component';
+import { CalendarView } from '../calendarView/calendarView.component';
 import { IconUtils } from '../icon';
-import { calendarDayToDateLike, dateObjectToDateLike } from './calendarInput.utils';
+import { calendarDayToDateLike, dateObjectToDateLike, getDayInputOptions, getMonthInputOptions, getYearInputOptions } from './calendarInput.utils';
 
 interface ICalendarInputProps extends Omit<Calendar.IConfig, 'selectedDate'> {
   /**
@@ -17,11 +17,32 @@ interface ICalendarInputProps extends Omit<Calendar.IConfig, 'selectedDate'> {
    * - Indexes range from Sunday = 0 to Saturday = 6
    */
   weekdayStartIndex?: number;
+  /**
+   * (boolean) Should the calendar close when a date is selected from inside?
+   * - Defaults to `true`
+   */
+  closeCalendarOnDayClick?: boolean;
   bind: IBindingProps<Dates.DateLike>;
 }
 
 export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProps>(
-  ({ bind, formatString, highlights, locale, max, min, rangeTo, weekdayStartIndex }, ref) => {
+  (
+    {
+      bind,
+      formatString,
+      highlights,
+      locale,
+      max,
+      min,
+      rangeTo,
+      weekdayStartIndex,
+      dayDisplayFormat,
+      yearDisplayFormat,
+      monthDisplayFormat,
+      closeCalendarOnDayClick,
+    },
+    ref
+  ) => {
     const [selectedDate, setSelectedDate] = Form.useBindingTools(bind);
 
     const { monthYearFormProp, stepMonth, days, months, years, selectedDateParsed } = Calendar.use({
@@ -35,21 +56,20 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
     });
     const [calendarOpen, setCalendarOpen] = React.useState(false);
 
-    console.log("NEW DATE!", selectedDateParsed);
-
     const { formProp, formState } = Form.use({
       day: selectedDateParsed.getDate(),
       year: selectedDateParsed.getFullYear(),
       month: selectedDateParsed.getMonth(),
     });
 
-    console.log("NEW STATE!", formState);
-
     const onDayClicked = React.useCallback(
       (day: Calendar.IDay) => {
         setSelectedDate(calendarDayToDateLike(day, selectedDate ? typeof selectedDate : 'string', formatString, locale));
+        if (closeCalendarOnDayClick) {
+          setCalendarOpen(false);
+        }
       },
-      [selectedDate, setSelectedDate, formatString, locale]
+      [selectedDate, setSelectedDate, formatString, locale, closeCalendarOnDayClick, setCalendarOpen]
     );
 
     React.useEffect(() => {
@@ -64,19 +84,25 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       }
     }, [formState]);
 
+    const dayOptions = React.useMemo(() => {
+      return getDayInputOptions(days, dayDisplayFormat!, locale);
+    }, [days, locale, dayDisplayFormat]);
+
+    const monthOptions = React.useMemo(() => {
+      return getMonthInputOptions(months, monthDisplayFormat!, locale);
+    }, [months, locale, monthDisplayFormat]);
+
+    const yearOptions = React.useMemo(() => {
+      return getYearInputOptions(years, yearDisplayFormat!, locale);
+    }, [years, locale, yearDisplayFormat]);
+
     return (
       <div ref={ref} className="arm-calendar-input-wrapper">
         <div className="arm-calendar-selects-wrapper">
           <Button leftIcon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={() => setCalendarOpen(!calendarOpen)} />
-          <AutoCompleteInput
-            bind={formProp('day').bind()}
-            options={days.map((day) => ({ id: day.numberInMonth, name: day.numberInMonth.toString() }))}
-          />
-          <AutoCompleteInput
-            bind={formProp('month').bind()}
-            options={months.map((month) => ({ id: month.indexInYear, name: (month.indexInYear + 1).toString() }))}
-          />
-          <AutoCompleteInput bind={formProp('year').bind()} options={years.map((year) => ({ id: year, name: year.toString() }))} />
+          <AutoCompleteInput bind={formProp('day').bind()} options={dayOptions} />
+          <AutoCompleteInput bind={formProp('month').bind()} options={monthOptions} />
+          <AutoCompleteInput bind={formProp('year').bind()} options={yearOptions} />
         </div>
         {calendarOpen && (
           <CalendarView
@@ -98,4 +124,8 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
 
 CalendarInput.defaultProps = {
   weekdayStartIndex: 0,
+  dayDisplayFormat: 'dd',
+  monthDisplayFormat: 'MM',
+  yearDisplayFormat: 'yyyy',
+  closeCalendarOnDayClick: true,
 };

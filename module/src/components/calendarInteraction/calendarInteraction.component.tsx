@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Calendar } from '../..';
 import { Dates } from '../../utils/dates';
-import { CalendarView } from '../calendarVIew/calendarView.component';
+import { CalendarView } from '../calendarView/calendarView.component';
 
 export interface ICalendarInteractionProps extends Calendar.IConfig {
   /**

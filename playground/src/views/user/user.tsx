@@ -6,7 +6,7 @@ import {
   EmailInput,
   TextAreaInput,
   Arrays,
-  SelectInput,
+  Select,
   SwitchInput,
   Spinner,
   Button,
@@ -14,7 +14,6 @@ import {
   AutoCompleteInput,
   NativeDateInput,
   TagInput,
-  NativeSelectInput,
 } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 
@@ -46,10 +45,6 @@ export const UserEdit: React.FC = () => {
     cacheKey: (a) => a.q,
     autoInvoke: true,
   })
-
-  console.log({ sauces })
-
-  console.log({ autcompleteValue })
 
   const validationErrors: IValidationError[] = Arrays.flatten(addUserProcessed?.validationErrors, updateUserProcessed?.validationErrors, [{ key: "firstName", message: "uh oh" }])
 
@@ -109,7 +104,7 @@ export const UserEdit: React.FC = () => {
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SwitchInput bind={formProp("isCool").bind()} validationErrorMessages={["uh oh"]} />
         <TagInput bind={formProp("sauces").bind()} spaceCreatesTags tagPosition="inside" />
-        <SelectInput
+        <Select
           leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
           bind={formProp("favouriteColour").bind()}
           options={[
@@ -119,7 +114,7 @@ export const UserEdit: React.FC = () => {
           ]}
           ref={selectRef}
         />
-        <NativeSelectInput
+        <Select
           leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
           bind={formProp("favouriteColour").bind()}
           options={[
