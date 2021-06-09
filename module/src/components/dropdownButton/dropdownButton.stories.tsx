@@ -9,7 +9,7 @@ export default StoryUtils.createMeta(DropdownButton as any, 'Button', 'Dropdown 
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(DropdownButton);
+// const Template = StoryUtils.createTemplate(DropdownButton);
 
 /** stories */
 

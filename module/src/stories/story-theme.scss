@@ -33,8 +33,19 @@ html {
         align-items: center;
         justify-content: center;
 
+        // uncomment for anything that needs scrolling to test
+        height: 200vh;
+
         .story-wrapper {
+          position: relative;
           width: max-content;
+
+          p.bound-value {
+            position: absolute;
+            left: 0;
+            bottom: -$spacing-xlarge * 2;
+            white-space: nowrap;
+          }
         }
       }
     }

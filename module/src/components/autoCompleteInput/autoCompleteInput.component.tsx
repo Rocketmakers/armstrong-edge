@@ -2,9 +2,10 @@ import React from 'react';
 
 import { Form, IconSet } from '../..';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
+import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
-import { DropdownItems } from '../dropdownItems';
+import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
 import { TextInput } from '../textInput';
@@ -13,10 +14,12 @@ import { TextInput } from '../textInput';
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
 // will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
-export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet> {
+export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet>, Pick<IDropdownItem, 'group'> {
+  /** (ArmstrongId) the value to be bound */
   id: Id;
+
+  /** (string) the name to be rendered for the option */
   name?: string;
-  group?: string;
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
@@ -54,7 +57,7 @@ export const AutoCompleteInput = React.forwardRef(
   <Id extends ArmstrongId>(
     {
       options,
-      validationErrorIcon,
+      errorIcon: validationErrorIcon,
       validationMode,
       validationErrorMessages,
       bind,
@@ -90,37 +93,32 @@ export const AutoCompleteInput = React.forwardRef(
       [getFormattedValueFromData]
     );
 
-    // internal state for the text input
-    const [textInputInternalValue, setTextInputInternalValue] = React.useState(options?.find((option) => option.id === boundValue)?.name || '');
-
-    // wrap up the internal text input state to ensure it's overriden if an external bind is being used with onTextInputChange and textInputValue props
-    const textInputCurrentValue = (onTextInputChange ? textInputValue : textInputInternalValue) || '';
-    const setTextInputCurrentValue = onTextInputChange ?? setTextInputInternalValue;
+    // internal state for the text input, overriden by props
+    const [textInputInternalValue, setTextInputInternalValue] = useOverridableState(
+      options?.find((option) => option.id === boundValue)?.name || '',
+      textInputValue,
+      onTextInputChange
+    );
 
     // The provided options, optionally filtered by the text input value
     const filteredOptions = React.useMemo(() => {
       if (filterOptions && options) {
         if (filterOptions === true) {
-          return options.filter((option) => getOptionName(option).startsWith(textInputCurrentValue));
+          return options.filter((option) => getOptionName(option).startsWith(textInputInternalValue));
         }
-        return options.filter((option) => filterOptions(option, textInputCurrentValue));
+        return options.filter((option) => filterOptions(option, textInputInternalValue));
       }
       return options || [];
-    }, [filterOptions, JSON.stringify(options), textInputCurrentValue]);
+    }, [filterOptions, JSON.stringify(options), textInputInternalValue]);
 
     /** when the user clicks on an option, change the value in the textInput */
     const onSelectOption = React.useCallback(
       (id: Id) => {
         const selectedOption = options?.find((option) => option.id === id);
-        setTextInputCurrentValue(selectedOption?.name || '');
-        setOptionsOpen(false);
+        setTextInputInternalValue(selectedOption?.name || '');
 
-        // if free text is allowed, the onChange triggered by the textinput's change event
-        // otherwise, it is triggered it here
-        if (!allowFreeText) {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-          setBoundValue(selectedOption?.id!);
-        }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+        setBoundValue(selectedOption?.id!);
       },
       [bind, allowFreeText]
     );
@@ -129,37 +127,44 @@ export const AutoCompleteInput = React.forwardRef(
     const onTextInputChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         const newTextInputValue = event.currentTarget.value || '';
-        setTextInputCurrentValue(newTextInputValue);
+        setTextInputInternalValue(newTextInputValue);
 
         // if allow free text, bind exact value on every change
         // if inputted text is an option, bind that
-        if (allowFreeText) {
-          setBoundValue(newTextInputValue as Id);
-        } else {
-          const inputtedOption = options?.find((option) => getOptionName(option) === newTextInputValue);
+        const inputtedOptionIndex = options?.findIndex((option) => getOptionName(option) === newTextInputValue);
+        if (inputtedOptionIndex && inputtedOptionIndex > -1) {
+          const inputtedOption = options![inputtedOptionIndex];
 
-          if (inputtedOption) {
-            setBoundValue(inputtedOption.id);
-          }
+          setBoundValue(inputtedOption!.id);
+        } else if (allowFreeText) {
+          setBoundValue(newTextInputValue as Id);
         }
       },
-      [setTextInputCurrentValue, getOptionName]
+      [setTextInputInternalValue, getOptionName]
     );
 
+    // reset the input's value to reflect the bound value
     const resetInputValue = React.useCallback(() => {
       if (!allowFreeText) {
         const currentOption = options?.find((option) => option.id === boundValue);
         if (currentOption) {
-          setTextInputCurrentValue(getOptionName(currentOption));
+          setTextInputInternalValue(getOptionName(currentOption));
         }
       }
     }, [allowFreeText, options, boundValue, getOptionName]);
 
+    // when the user closes the dropdown, reset the input value
     useDidUpdateEffect(() => {
       if (!optionsOpen) {
         resetInputValue();
       }
     }, [optionsOpen]);
+
+    // if allow free text is true, show the currently typed value at the top of the list of options
+    const shouldShowFreeTextItemInDropdown = React.useMemo(
+      () => allowFreeText && textInputInternalValue && !options?.find((option) => (option.name ?? option.id) === textInputInternalValue),
+      [allowFreeText, textInputInternalValue, options]
+    );
 
     return (
       <>
@@ -171,13 +176,16 @@ export const AutoCompleteInput = React.forwardRef(
         >
           <DropdownItems
             contentClassName="arm-auto-complete-options"
-            items={filteredOptions.map((option) => ({
-              content: getOptionName(option),
-              id: option.id,
-              leftIcon: option.leftIcon,
-              rightIcon: option.rightIcon,
-              group: option.group,
-            }))}
+            items={[
+              ...(shouldShowFreeTextItemInDropdown ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
+              ...filteredOptions.map((option) => ({
+                content: getOptionName(option),
+                id: option.id,
+                leftIcon: option.leftIcon,
+                rightIcon: option.rightIcon,
+                group: option.group,
+              })),
+            ]}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
             contentRootElementSelector={optionsRootElementSelector}
@@ -193,13 +201,13 @@ export const AutoCompleteInput = React.forwardRef(
               pending={pending}
               ref={ref}
               error={error}
-              value={textInputCurrentValue}
+              value={textInputInternalValue}
               onChange={onTextInputChangeEvent}
               onKeyDown={() => setOptionsOpen(true)}
               validationMode={validationMode}
               onFocus={() => setOptionsOpen(true)}
               validationErrorMessages={myValidationErrorMessages}
-              validationErrorIcon={validationErrorIcon}
+              errorIcon={validationErrorIcon}
               disableOnPending={false}
             />
           </DropdownItems>

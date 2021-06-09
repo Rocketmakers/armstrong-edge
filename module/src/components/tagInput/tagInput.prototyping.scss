@@ -1,15 +1,6 @@
-@keyframes arm-animate-in-tag-input-tag {
-  from {
-    max-width: 0;
-  }
-  to {
-    max-width: 200px;
-  }
-}
-
 .arm-tag-input {
   .arm-tag {
-    animation: arm-animate-in-tag-input-tag $transition-quick linear;
+    animation: expand-in-width-medium $transition-quick linear;
 
     > * {
       animation: fade-in $transition-quick;

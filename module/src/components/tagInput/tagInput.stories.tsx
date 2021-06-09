@@ -9,7 +9,7 @@ export default StoryUtils.createMeta(TagInput, 'Form', 'TagInput', {});
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(TagInput);
+// const Template = StoryUtils.createTemplate(TagInput);
 
 /** stories */
 

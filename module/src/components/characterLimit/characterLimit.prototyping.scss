@@ -1,0 +1,18 @@
+.arm-character-limit {
+  margin: $spacing-xsmall 0;
+
+  &[data-exceeded='true'] {
+    > p,
+    > .arm-icon {
+      color: $color-negative;
+    }
+  }
+
+  .arm-icon {
+    animation: expand-in-width-small $transition-quick;
+
+    &::before {
+      animation: fade-in $transition-quick;
+    }
+  }
+}

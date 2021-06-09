@@ -19,9 +19,19 @@ export const Tag: React.FC<ITagProps> = ({ content, className, leftIcon, rightIc
   <div className={ClassNames.concat('arm-tag', className)} {...nativeProps}>
     <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
       {typeof children === 'string' || !children ? <p>{content}</p> : children}
-      {onRemove && (
-        <IconButton iconOnly className="arm-tag-close" onClick={() => onRemove()} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} />
-      )}
     </IconWrapper>
+
+    {onRemove && (
+      <IconButton
+        iconOnly
+        className="arm-tag-close"
+        onMouseDown={(event) => event.stopPropagation()}
+        onClick={(event) => {
+          onRemove();
+          event.stopPropagation();
+        }}
+        icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+      />
+    )}
   </div>
 );

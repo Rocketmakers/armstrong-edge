@@ -10,7 +10,7 @@ export default StoryUtils.createMeta(RadioInput as any, 'Form', 'Radio Input', {
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(RadioInput);
+// const Template = StoryUtils.createTemplate(RadioInput);
 
 /** stories */
 

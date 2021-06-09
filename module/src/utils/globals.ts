@@ -2,4 +2,5 @@
 export namespace Globals {
   export const Window = typeof window === 'undefined' ? undefined : window;
   export const Document = typeof document === 'undefined' ? undefined : document;
+  export const isBrowser = !!Window;
 }

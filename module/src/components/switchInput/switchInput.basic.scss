@@ -28,6 +28,7 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall 
       left: $spacing-xxsmall;
       position: absolute;
       pointer-events: none;
+      box-shadow: $shadow-small;
     }
 
     .arm-switch-input-unchecked-icon,
