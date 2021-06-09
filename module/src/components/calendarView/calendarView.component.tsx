@@ -6,7 +6,7 @@ import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
 import { Button } from '../button';
-import { NativeSelectInput } from '../nativeSelectInput';
+import { Select } from '../select';
 import { ICalendarHighlight, ICalendarHighlightParsed, IDay } from './calendarView.types';
 import { getDayOfWeekHeadings, getDays, getMonths, getYears } from './calendarView.utils';
 
@@ -130,12 +130,12 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
           <Button className="arm-calendar-view-button arm-calendar-view-button-prev" onClick={onBackClicked}>
             &lt;
           </Button>
-          <NativeSelectInput
+          <Select
             className="arm-calendar-view-select arm-calendar-view-select-month"
             bind={formProp('viewingMonth').bind()}
             options={selectableMonths.map((month, index) => ({ id: index, name: month.name, data: month, disabled: month.isDisabled }))}
           />
-          <NativeSelectInput
+          <Select
             className="arm-calendar-view-select arm-calendar-view-select-year"
             bind={formProp('viewingYear').bind()}
             options={selectableYears.map((year) => ({ id: year, name: year.toString() }))}

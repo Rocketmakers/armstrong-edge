@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { useGeneratedId } from '../../hooks/useGeneratedId';
 import { ArmstrongId } from '../../types';
 import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
@@ -14,8 +15,8 @@ export interface IDropdownItem extends IIconWrapperProps<IconSet, IconSet> {
   /** (string) The string to be passed into onItemSelected */
   id: ArmstrongId;
 
-  /** (HTMLDivElement) props to spread onto the div element for the dropdown item */
-  htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onMouseUp' | 'ref'>;
+  /** (HTMLLIElement) props to spread onto the div element for the dropdown item */
+  htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
 
   /** (string) a group to show this item under */
   group?: string;
@@ -36,12 +37,15 @@ export interface IDropdownItemProps extends IDropdownItem {
 
   /** (boolean) the item is selected - adds a data-selected attribute */
   isSelected: boolean;
+
+  /** (string) the prefix for the html ID - used for aria stufff */
+  idPrefix?: string;
 }
 
-export const DropdownItem = React.forwardRef<HTMLDivElement, IDropdownItemProps>(
-  ({ content, htmlProps, onMouseUp, isKeyboardSelected, isSelected, onMouseEnter, leftIcon, rightIcon, onClick }, ref) => {
+export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
+  ({ content, htmlProps, onMouseUp, isKeyboardSelected, isSelected, onMouseEnter, leftIcon, rightIcon, onClick, id, idPrefix }, ref) => {
     return (
-      <div
+      <li
         {...htmlProps}
         ref={ref}
         className={ClassNames.concat('arm-dropdown-item', htmlProps?.className)}
@@ -56,12 +60,13 @@ export const DropdownItem = React.forwardRef<HTMLDivElement, IDropdownItemProps>
         data-keyboard-selected={isKeyboardSelected}
         data-selected={isSelected}
         onMouseEnter={onMouseEnter}
+        id={`${idPrefix}_${id}`}
       >
         <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
           <p>{content}</p>
-          {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
         </IconWrapper>
-      </div>
+        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
+      </li>
     );
   }
 );
@@ -98,9 +103,10 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   className,
   focusableWrapper,
   onOpenChange,
+  id: htmlId,
   ...dropdownProps
 }) => {
-  const itemRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
+  const itemRefs = React.useRef<Record<string, HTMLLIElement | null>>({});
   const [keyboardSelectedItemIndex, setKeyboardSelectedItemIndex] = React.useState(0);
 
   const groupedItems = React.useMemo(() => Arrays.arrayToArraysByKey(items, (item) => item.group || ''), [items]);
@@ -181,6 +187,8 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     [closeOnSelection, onOpenChange, onItemSelected]
   );
 
+  const id = useGeneratedId('arm_dd', htmlId);
+
   return (
     <Dropdown
       {...dropdownProps}
@@ -192,14 +200,17 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
       onMouseDown={() => setHasBegunClick(true)}
       onMouseMove={() => setHasBegunClick(false)}
       tabIndex={focusableWrapper ? 0 : undefined}
+      aria-haspopup="listbox"
+      aria-labelledby={`${id}_item`}
+      id={id}
       dropdownContent={
-        <>
+        <ul aria-labelledby={`${id}`} id={`${id}_list`} aria-activedescendant={`${id}_item_${currentValue?.[0]}`} role="listbox">
           {groupedItems.map((group, groupIndex) => (
             <React.Fragment key={group.key}>
               {group.key && (
-                <div className="arm-dropdown-items-group-title">
+                <li className="arm-dropdown-items-group-title">
                   <p>{group.key}</p>
-                </div>
+                </li>
               )}
 
               {group.items.map((item, index) => {
@@ -217,7 +228,8 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                           }
                         : undefined
                     }
-                    onClick={() => onMouseUpDropdownItem(item.id)}
+                    idPrefix={`${id}_item`}
+                    onClick={() => hasBegunClick && onMouseUpDropdownItem(item.id)}
                     onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
                     isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
                     isSelected={!!currentValue?.includes(item.id)}
@@ -229,7 +241,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
               })}
             </React.Fragment>
           ))}
-        </>
+        </ul>
       }
     >
       {children}

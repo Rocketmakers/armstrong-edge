@@ -2,15 +2,15 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
-import { SelectInput } from './selectInput.component';
+import { ListBox } from './listBox.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(SelectInput, 'Form', 'Select Input', {});
+export default StoryUtils.createMeta(ListBox, 'Form', 'Listbox', {});
 
 /** component template */
 
-// const Template = StoryUtils.createTemplate(SelectInput as React.FC<ISelectInputProps<any, any>>);
+// const Template = StoryUtils.createTemplate(ListBox as React.FC<IListBoxProps<any, any>>);
 
 /** stories */
 
@@ -18,7 +18,7 @@ export const Default = () => {
   const [value, setValue] = React.useState('');
 
   return (
-    <SelectInput
+    <ListBox
       value={value}
       placeholder="Please pick something...."
       onSelectOption={(option) => setValue(option?.id)}
@@ -35,7 +35,7 @@ export const WithCustomDropDownIcon = () => {
   const [value, setValue] = React.useState('');
 
   return (
-    <SelectInput
+    <ListBox
       value={value}
       placeholder="Please pick something...."
       onSelectOption={(option) => setValue(option?.id)}
@@ -53,7 +53,7 @@ export const WithIcons = () => {
   const [value, setValue] = React.useState('');
 
   return (
-    <SelectInput
+    <ListBox
       value={value}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
@@ -71,7 +71,7 @@ export const WithValidationError = () => {
   const [value, setValue] = React.useState('');
 
   return (
-    <SelectInput
+    <ListBox
       value={value}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
@@ -90,7 +90,7 @@ export const WithGroupsAndIcons = () => {
   const [value, setValue] = React.useState('');
 
   return (
-    <SelectInput
+    <ListBox
       value={value}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}

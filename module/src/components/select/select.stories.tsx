@@ -2,15 +2,15 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
-import { INativeSelectInputProps, NativeSelectInput } from './nativeSelectInput.component';
+import { ISelectProps, Select } from './select.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(NativeSelectInput, 'Form', 'Native Select Input', {});
+export default StoryUtils.createMeta(Select, 'Form', 'Select', {});
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(NativeSelectInput as React.FC<INativeSelectInputProps<any, any>>);
+const Template = StoryUtils.createTemplate(Select as React.FC<ISelectProps<any, any>>);
 
 /** stories */
 
