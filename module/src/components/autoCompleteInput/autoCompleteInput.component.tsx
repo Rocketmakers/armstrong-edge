@@ -82,6 +82,8 @@ export const AutoCompleteInput = React.forwardRef(
       }
     );
 
+    console.log("AUTOCOMP VAL", boundValue, bind);
+
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
     // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided

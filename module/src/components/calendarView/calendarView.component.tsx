@@ -1,66 +1,56 @@
 import * as React from 'react';
 
-import { IConfig as ICalendarConfig, IDay, use as useCalendar } from '../../hooks/calendar';
+import { Calendar } from '../..';
+import { IBindingProps } from '../../hooks/form';
 import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
 import { Button } from '../button';
+import { getDayOfWeekHeadings } from '../calendarVIew/calendarView.utils';
 import { NativeSelectInput } from '../nativeSelectInput';
-import { getDayOfWeekHeadings } from './calendarView.utils';
 
-export interface ICalendarProps extends ICalendarConfig {
+export interface ICalendarViewProps {
   /**
    * (number) An optional "day of the week" index to be the first day of the week.
    * - By default, weeks will start on Sunday (index 0)
    * - Indexes range from Sunday = 0 to Saturday = 6
    */
-  weekdayStartIndex?: number;
+  weekdayStartIndex: number;
   /**
-   * ((date: Date, dateString: string) => void) An optional function to call when a date is clicked.
-   * @param date The date object of the date that has been clicked.
-   * @param dateString A formatted string representation of the date that has been clicked (will use the `formatString` prop if passed, or fall back to strict ISO.)
+   * An optional locale to apply to all date formatting.
+   * - Must be a date-fns compliant `Locale` object (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/Locale))
+   * - If no locale is passed, `en-GB` will be used as the system default for all date formatting.
    */
-  onDateClicked?: (date: Date, dateString: string) => void;
+  locale?: Dates.DateLocale;
+  /**
+   * ((day: Calendar.IDay) => void) An optional function to call when a day is clicked.
+   * @param day The day that has been clicked.
+   */
+  days: Calendar.IDay[];
+  months: Calendar.IMonth[];
+  years: number[];
+  currentMonthBinding: IBindingProps<number>;
+  currentYearBinding: IBindingProps<number>;
+  onDayClicked?: (day: Calendar.IDay) => void;
+  onBackClicked?: () => void;
+  onForwardClicked?: () => void;
 }
 
-export const Calendar = React.forwardRef<HTMLDivElement, ICalendarProps>(
-  ({ selectedDate, min, max, weekdayStartIndex, formatString, onDateClicked, locale, rangeTo, highlights }, ref) => {
-    const { days, months, years, monthYearFormProp, stepMonth } = useCalendar({
-      formatString,
-      min,
-      highlights,
-      locale,
-      max,
-      rangeTo,
-      selectedDate,
-    });
-
+export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>(
+  (
+    { onForwardClicked, weekdayStartIndex, onBackClicked, onDayClicked, locale, days, months, years, currentMonthBinding, currentYearBinding },
+    ref
+  ) => {
     const dayOfWeekHeadings = React.useMemo(() => {
       return Arrays.reIndex(getDayOfWeekHeadings(locale), weekdayStartIndex!);
     }, [weekdayStartIndex, locale]);
 
     // Calculate the number of "empty" days to display at the beginning of the month based on the day of the week displayed first, and the first day of the month selected.
     const blankDaysAtStartCount = React.useMemo(() => {
-      const monthStartsOnWeekday = days[0].indexInWeek;
-      return Maths.positiveModulo(monthStartsOnWeekday - weekdayStartIndex!, 7);
+      const monthStartsOnWeekday = days[0]?.indexInWeek ?? 0;
+      return Maths.positiveModulo(monthStartsOnWeekday - weekdayStartIndex, 7);
     }, [days, weekdayStartIndex]);
-
-    // Click event listeners
-    const onBackClicked = React.useCallback(() => {
-      stepMonth('back');
-    }, [stepMonth]);
-
-    const onForwardClicked = React.useCallback(() => {
-      stepMonth('forward');
-    }, [stepMonth]);
-
-    const onDayClicked = React.useCallback(
-      (day: IDay) => {
-        onDateClicked?.(day.date, Dates.dateToString(day.date, formatString, locale));
-      },
-      [onDateClicked, formatString, locale]
-    );
 
     return (
       <div ref={ref} className="arm-calendar-view">
@@ -70,12 +60,12 @@ export const Calendar = React.forwardRef<HTMLDivElement, ICalendarProps>(
           </Button>
           <NativeSelectInput
             className="arm-calendar-view-select arm-calendar-view-select-month"
-            bind={monthYearFormProp('viewingMonth').bind()}
+            bind={currentMonthBinding}
             options={months.map((month, index) => ({ id: index, name: month.name, data: month, disabled: month.isDisabled }))}
           />
           <NativeSelectInput
             className="arm-calendar-view-select arm-calendar-view-select-year"
-            bind={monthYearFormProp('viewingYear').bind()}
+            bind={currentYearBinding}
             options={years.map((year) => ({ id: year, name: year.toString() }))}
           />
           <Button className="arm-calendar-view-button arm-calendar-view-button-next" onClick={onForwardClicked}>
@@ -97,7 +87,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, ICalendarProps>(
             {days.map((day) => (
               <Button
                 className={ClassNames.concat('arm-calendar-date-grid-day', day.highlightedClassName)}
-                onClick={() => onDayClicked(day)}
+                onClick={() => onDayClicked?.(day)}
                 key={day.numberInMonth}
                 data-selected={day.isSelected}
                 disabled={day.isDisabled}
@@ -117,8 +107,3 @@ export const Calendar = React.forwardRef<HTMLDivElement, ICalendarProps>(
     );
   }
 );
-
-CalendarView.defaultProps = {
-  selectedDate: new Date(),
-  weekdayStartIndex: 0,
-};

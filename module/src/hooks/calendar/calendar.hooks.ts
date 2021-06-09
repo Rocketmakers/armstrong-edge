@@ -65,6 +65,7 @@ export const use = ({ formatString, locale, highlights, max, min, rangeTo, selec
     days: selectableDays,
     months: selectableMonths,
     years: selectableYears,
+    selectedDateParsed,
     monthYearFormState: formState,
     monthYearFormProp: formProp,
     stepMonth,
