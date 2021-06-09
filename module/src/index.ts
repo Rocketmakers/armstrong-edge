@@ -6,6 +6,7 @@ import * as Form from './hooks/form/index';
 
 export { Form };
 export * from './components/autoCompleteInput';
+export * from './components/autoCompleteInputMulti';
 export * from './components/button';
 export * from './components/calendarView';
 export * from './components/characterLimit';

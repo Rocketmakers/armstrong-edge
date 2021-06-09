@@ -23,16 +23,16 @@ export const Default = () => {
         value={value}
         onChange={setValue}
         options={[
-          { id: 'a', name: 'red' },
-          { id: 'b', name: 'blue' },
-          { id: 'c', name: 'pink' },
-          { id: 'd', name: 'brown' },
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'pink' },
+          { id: 4, name: 'brown' },
         ]}
       />
       <br />
       <br />
       <br />
-      <p>bound value: {value?.join(', ')}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
@@ -45,16 +45,16 @@ export const Grouped = () => {
         value={value}
         onChange={setValue}
         options={[
-          { id: 'a', name: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
-          { id: 'b', name: 'blue', group: 'primary' },
-          { id: 'c', name: 'pink', group: 'secondary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
-          { id: 'd', name: 'brown', group: 'secondary' },
+          { id: 1, name: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
+          { id: 2, name: 'blue', group: 'primary' },
+          { id: 3, name: 'pink', group: 'secondary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
+          { id: 4, name: 'brown', group: 'secondary' },
         ]}
       />
       <br />
       <br />
       <br />
-      <p>bound value: {value?.join(', ')}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
@@ -68,16 +68,16 @@ export const CheckedIcon = () => {
         onChange={setValue}
         checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
         options={[
-          { id: 'a', name: 'red', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
-          { id: 'b', name: 'blue' },
-          { id: 'c', name: 'pink', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
-          { id: 'd', name: 'brown' },
+          { id: 1, name: 'red', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'pink', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
+          { id: 4, name: 'brown' },
         ]}
       />
       <br />
       <br />
       <br />
-      <p>bound value: {value?.join(', ')}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
@@ -92,16 +92,16 @@ export const UncheckedIcon = () => {
         checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
         uncheckedIcon={IconUtils.getIconDefinition('Icomoon', 'cross3')}
         options={[
-          { id: 'a', name: 'red', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
-          { id: 'b', name: 'blue' },
-          { id: 'c', name: 'pink', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
-          { id: 'd', name: 'brown' },
+          { id: 1, name: 'red', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'pink', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
+          { id: 4, name: 'brown' },
         ]}
       />
       <br />
       <br />
       <br />
-      <p>bound value: {value?.join(', ')}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
@@ -125,7 +125,7 @@ export const NumericIds = () => {
       <br />
       <br />
       <br />
-      <p>bound value: {value?.join(', ')}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };

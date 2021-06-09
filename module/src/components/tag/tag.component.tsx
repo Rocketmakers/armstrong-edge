@@ -20,6 +20,7 @@ export const Tag: React.FC<ITagProps> = ({ content, className, leftIcon, rightIc
     <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
       {typeof children === 'string' || !children ? <p>{content}</p> : children}
     </IconWrapper>
+
     {onRemove && (
       <IconButton
         iconOnly

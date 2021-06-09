@@ -133,13 +133,28 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       onKeyDown?.(event);
 
+      if (!isOpen && allowKeyboardNavigation) {
+        switch (event.key) {
+          case 'ArrowDown': {
+            onOpenChange(true);
+            break;
+          }
+          case 'ArrowUp': {
+            onOpenChange(true);
+            break;
+          }
+          default:
+            break;
+        }
+        onOpenChange(true);
+      }
+
       if (isOpen && allowKeyboardNavigation) {
         switch (event.key) {
           case 'ArrowDown': {
             const newItemIndex = Math.min((items.length || 0) - 1, keyboardSelectedItemIndex + 1);
             setKeyboardSelectedItemIndex(newItemIndex);
             itemRefs.current?.[items[newItemIndex].id]?.scrollIntoView(false);
-            onOpenChange(true);
             event.preventDefault();
             break;
           }
@@ -147,7 +162,6 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
             const newItemIndex = Math.max(0, keyboardSelectedItemIndex - 1);
             setKeyboardSelectedItemIndex(newItemIndex);
             itemRefs.current?.[items[newItemIndex].id]?.scrollIntoView();
-            onOpenChange(true);
             event.preventDefault();
             break;
           }
@@ -164,13 +178,13 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
             event.preventDefault();
             break;
           }
-          case 'Tab': {
+          case 'Tab':
+          case 'Escape': {
             onOpenChange(false);
             break;
           }
-          default: {
+          default:
             break;
-          }
         }
       }
     },
@@ -220,7 +234,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                 return (
                   <DropdownItem
                     {...item}
-                    key={item.id}
+                    key={item.id + index.toString()}
                     onMouseUp={
                       !hasBegunClick
                         ? () => {

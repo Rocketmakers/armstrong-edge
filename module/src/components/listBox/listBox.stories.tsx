@@ -15,7 +15,7 @@ export default StoryUtils.createMeta(ListBox, 'Form', 'Listbox', {});
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState<number>();
 
   return (
     <ListBox
@@ -23,16 +23,16 @@ export const Default = () => {
       placeholder="Please pick something...."
       onSelectOption={(option) => setValue(option?.id)}
       options={[
-        { id: 'a', name: 'red' },
-        { id: 'b', name: 'blue' },
-        { id: 'c', name: 'pink' },
-        { id: 'd', name: 'brown' },
+        { id: 1, name: 'red' },
+        { id: 2, name: 'blue' },
+        { id: 3, name: 'pink' },
+        { id: 4, name: 'brown' },
       ]}
     />
   );
 };
 export const WithCustomDropDownIcon = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState<number>();
 
   return (
     <ListBox
@@ -40,17 +40,17 @@ export const WithCustomDropDownIcon = () => {
       placeholder="Please pick something...."
       onSelectOption={(option) => setValue(option?.id)}
       options={[
-        { id: 'a', name: 'red' },
-        { id: 'b', name: 'blue' },
-        { id: 'c', name: 'pink' },
-        { id: 'd', name: 'brown' },
+        { id: 1, name: 'red' },
+        { id: 2, name: 'blue' },
+        { id: 3, name: 'pink' },
+        { id: 4, name: 'brown' },
       ]}
       selectOverlayIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down13')}
     />
   );
 };
 export const WithIcons = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState<number>();
 
   return (
     <ListBox
@@ -59,16 +59,16 @@ export const WithIcons = () => {
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
       onSelectOption={(option) => setValue(option?.id)}
       options={[
-        { id: 'a', name: 'red' },
-        { id: 'b', name: 'blue' },
-        { id: 'c', name: 'pink' },
-        { id: 'd', name: 'brown' },
+        { id: 1, name: 'red' },
+        { id: 2, name: 'blue' },
+        { id: 3, name: 'pink' },
+        { id: 4, name: 'brown' },
       ]}
     />
   );
 };
 export const WithValidationError = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState<number>();
 
   return (
     <ListBox
@@ -77,17 +77,17 @@ export const WithValidationError = () => {
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
       onSelectOption={(option) => setValue(option?.id)}
       options={[
-        { id: 'a', name: 'red' },
-        { id: 'b', name: 'blue' },
-        { id: 'c', name: 'pink' },
-        { id: 'd', name: 'brown' },
+        { id: 1, name: 'red' },
+        { id: 2, name: 'blue' },
+        { id: 3, name: 'pink' },
+        { id: 4, name: 'brown' },
       ]}
       validationErrorMessages={['This colour is actually a bad one sorry']}
     />
   );
 };
 export const WithGroupsAndIcons = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState<number>();
 
   return (
     <ListBox
@@ -96,10 +96,10 @@ export const WithGroupsAndIcons = () => {
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
       onSelectOption={(option) => setValue(option?.id)}
       options={[
-        { id: 'a', name: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
-        { id: 'b', name: 'blue', group: 'primary' },
-        { id: 'c', name: 'pink', group: 'secondary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
-        { id: 'd', name: 'brown', group: 'secondary' },
+        { id: 1, name: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
+        { id: 2, name: 'blue', group: 'primary' },
+        { id: 3, name: 'pink', group: 'secondary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
+        { id: 4, name: 'brown', group: 'secondary' },
       ]}
     />
   );

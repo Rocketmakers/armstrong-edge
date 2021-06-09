@@ -14,6 +14,7 @@
     .arm-checkbox-input-checkbox {
       @include square(1.7rem);
       flex-shrink: 0;
+      cursor: pointer;
       position: relative;
 
       .arm-icon.arm-checkbox-input-checked-icon {
@@ -22,6 +23,7 @@
 
       input {
         @include fill;
+        cursor: pointer;
         appearance: none;
         border: none;
         outline: none;

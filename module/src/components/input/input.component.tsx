@@ -85,6 +85,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       disabled,
       disableOnPending,
       statusPosition,
+      hideIconOnStatus,
       onValueChange,
       delay,
       ...nativeProps
@@ -150,6 +151,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         statusPosition={statusPosition}
         below={below}
         disableOnPending={disableOnPending}
+        hideIconOnStatus={hideIconOnStatus}
         onClick={() => internalRef.current?.focus()}
       >
         {delay?.mode === 'debounce' && delay.milliseconds && (
