@@ -7,7 +7,7 @@ export interface IPortalProps {
   /** (string) selector for the element to append the root to as a queryselector, body by default */
   rootElementSelector?: string;
 
-  /** (HTMLElement) a ref for an element to portal into - will override  rootElementSelector */
+  /** (HTMLElement) a ref for an element to portal into */
   rootElement?: HTMLElement;
 }
 
@@ -16,9 +16,7 @@ export const Portal: React.FunctionComponent<IPortalProps> = ({ rootElementSelec
 
   // the root element is not always available as a result of that query selection on the initial render, so must be assigned to a piece of state
   React.useEffect(() => {
-    if (rootElement) {
-      setSelectedRootElement(rootElement);
-    } else if (rootElementSelector) {
+    if (rootElementSelector) {
       const element = Globals.Document?.querySelector(rootElementSelector);
 
       if (element) {
@@ -26,6 +24,8 @@ export const Portal: React.FunctionComponent<IPortalProps> = ({ rootElementSelec
       } else {
         setSelectedRootElement(undefined);
       }
+    } else if (rootElement) {
+      setSelectedRootElement(rootElement);
     } else {
       setSelectedRootElement(undefined);
     }

@@ -1,3 +1,4 @@
+export * from './useArrayState';
 export * from './useDebounce';
 export * from './useDidUpdateEffect';
 export * from './useEventListener';

@@ -45,6 +45,8 @@ export interface IDropdownRef {
   modalRef: React.RefObject<HTMLDivElement | undefined>;
 }
 
+/** Extends the modal (see component modal docs) but positions the modal below the children of the component */
+
 export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<IDropdownProps>>(
   (
     {
@@ -116,6 +118,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       (event: Event) => {
         if (
           closeOnScroll &&
+          // check if scrolling element is inside the dropdown content
           ((event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
             !(event.target instanceof HTMLDivElement))
         ) {
@@ -194,7 +197,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
             // eslint-disable-next-line no-param-reassign
             return false;
           }}
-          tabIndex={!isOpen ? -1 : undefined}
           onClick={(event) => {
             event.stopPropagation();
             event.nativeEvent.stopImmediatePropagation();

@@ -1,0 +1,138 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+
+<Meta title="Layout/useModal and useDialog" />
+
+### useModal
+
+`useModal` is a hook that returns a callback which will add a modal to a modal stack and return a promise which is resolved when a function is called on that Modal.
+
+Here's an example:
+
+```tsx
+const MyComponent = () => {
+  const getConfirmation = useModal<boolean>(
+    // the contents of the modal
+    ({ resolve }) => (
+      <div>
+        <p>Are you sure?</p>
+        <Button onClick={() => resolve(true)}>Yes</Button>
+        <Button onClick={() => resolve(false)}>No</Button>
+      </div>
+    )
+  );
+
+  const submit = React.useCallback(async () => {
+    // when this line is hit, a modal is added to the modal layer and rendered on top of everything, this promise will only resolve when a user
+    // clicks one of the buttons in there
+    const confirmation = await getConfirmation();
+
+    if (confirmation) {
+      // do some stuff
+    }
+  }, [getConfirmation]);
+
+  return (
+    <>
+      <p>Click here to submit</p>
+      <Button onClick={submit}>Submit</Button>
+    </>
+  );
+};
+```
+
+The useModal hook takes a generic and that promise can resolve to basically anything you want. Here's a different example where the promise resolves to a string.
+
+```tsx
+const MyComponent = () => {
+  const getFavouriteColour = useModal<string>(({ resolve }) => (
+    <div>
+      <p>What's your favourite colour?</p>
+      <Button onClick={() => resolve('red')}>red</Button>
+      <Button onClick={() => resolve('white')}>white</Button>
+      <Button onClick={() => resolve('blue')}>blue</Button>
+    </div>
+  ));
+
+  const submit = React.useCallback(async () => {
+    const favouriteColour = await getFavouriteColour();
+
+    // this check is still needed, as if the user closes without selecting something, the promise will resolve with undefined
+    if (favouriteColour) {
+      // do some stuff
+    }
+  }, [getFavouriteColour]);
+
+  return (
+    <>
+      <p>Click here to submit</p>
+      <Button onClick={submit}>Submit</Button>
+    </>
+  );
+};
+```
+
+The second argument to useModal allows props to be passed directly to the modal component.
+
+### useDialog
+
+There is also a useDialog hook which behaves in the same way, but wraps the given component in a Dialog instead of a modal
+
+```tsx
+const MyComponent = () => {
+  const getConfirmation = useDialog<boolean>(
+    // the contents of the modal
+    ({ resolve }) => (
+      <div>
+        <p>Are you sure?</p>
+        <Button onClick={() => resolve(true)}>Yes</Button>
+        <Button onClick={() => resolve(false)}>No</Button>
+      </div>
+    )
+  );
+
+  const submit = React.useCallback(async () => {
+    // when this line is hit, a modal is added to the modal layer and rendered on top of everything, this promise will only resolve when a user
+    // clicks one of the buttons in there
+    const confirmation = await getConfirmation();
+
+    if (confirmation) {
+      // do some stuff
+    }
+  }, [getConfirmation]);
+
+  return (
+    <>
+      <p>Click here to submit</p>
+      <Button onClick={submit}>Submit</Button>
+    </>
+  );
+};
+```
+
+### useConfirmationDialog
+
+There is also a useConfirmationDialog hook which wraps up that first example:
+
+```tsx
+const MyComponent = () => {
+  const getConfirmation = useConfirmationDialog({
+    content: 'are you sure you want to do that thing?',
+    buttons: { yes: 'absolutely', no: 'heck no' },
+  });
+
+  const submit = React.useCallback(async () => {
+    const confirmation = await getConfirmation();
+
+    if (confirmation) {
+      // do some stuff
+    }
+  }, [getConfirmation]);
+
+  return (
+    <>
+      <p>Click here to submit</p>
+      <Button onClick={submit}>Submit</Button>
+    </>
+  );
+};
+```

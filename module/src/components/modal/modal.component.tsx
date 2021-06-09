@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useEventListener } from '../..';
+import { useEventListener, useModalLayerElement } from '../..';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
 import { IPortalProps, Portal } from '../portal';
@@ -11,7 +11,7 @@ export interface IModalProps
   /** (boolean) should the dropdown be rendered */
   isOpen: boolean;
 
-  /** (boolean) fired when the user attempts to close the dropdown */
+  /** (boolean) fired when the user attempts to close the modal by cicking outside of it (or other behaviours depending on the vaues of other props) */
   onOpenChange: (open: boolean) => void;
 
   /** (boolean) the modal will close if the user blurs the window */
@@ -31,7 +31,15 @@ export interface IModalProps
 
   /** (string) the className of the wrapper */
   wrapperClassName?: string;
+
+  /** (boolean) if true, will stop the modal from being closable */
+  disableClose?: boolean;
 }
+
+/**
+ * A component which will portal its children into a div on top of all existing DOM, with handlers to close it if the user clicks outside of that area.
+ * By defaut, if inside a ModalProvider, it will portal into an element rendered by that, but that can be overidden by providing rootElement or rootElementSelector
+ */
 
 export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
   (
@@ -48,13 +56,16 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       children,
       closeOnBackgroundClick,
       wrapperClassName,
+      disableClose,
       ...nativeProps
     },
     ref
   ) => {
     const close = React.useCallback(() => {
-      onOpenChange(false);
-    }, [onOpenChange]);
+      if (!disableClose) {
+        onOpenChange(false);
+      }
+    }, [onOpenChange, disableClose]);
 
     /** Close when the user clicks outside of the dropdown */
     const onWindowClick = React.useCallback(() => {
@@ -84,23 +95,26 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       [onClick]
     );
 
+    /** When the user clicks on the wrapper element, close if closeOnBackgroundClick is true */
     const onClickWrapperEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         onClickWrapper?.(event);
 
         if (closeOnBackgroundClick) {
-          onOpenChange(false);
+          close();
         }
       },
-      [onClick]
+      [onClick, close, closeOnBackgroundClick]
     );
+
+    const wrapperRef = useModalLayerElement();
 
     if (!isOpen) {
       return null;
     }
 
     return (
-      <Portal rootElement={rootElement} rootElementSelector={rootElementSelector}>
+      <Portal rootElement={(!rootElementSelector && wrapperRef?.current) || rootElement} rootElementSelector={rootElementSelector}>
         <div
           className={ClassNames.concat('arm-modal-wrapper', wrapperClassName)}
           onClick={onClickWrapperEvent}
