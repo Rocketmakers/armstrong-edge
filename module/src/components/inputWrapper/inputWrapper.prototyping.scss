@@ -1,11 +1,11 @@
-.arm-input.input-wrapper {
+.input-wrapper {
   box-shadow: $shadow-small;
   border-radius: $spacing-xxsmall;
   transition: opacity $transition-quick, border-color $transition-quick, box-shadow $transition-quick;
   border: 1px solid transparent;
 
   .arm-input-overlay {
-    p {
+    p.arm-input-overlay-text {
       color: $gray-light;
       font-size: 0.75rem;
       white-space: nowrap;

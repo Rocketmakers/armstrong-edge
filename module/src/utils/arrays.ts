@@ -27,6 +27,10 @@ export namespace Arrays {
     return Object.keys(dictionary).map<IArrayWithKey<T, Keys>>((key) => ({ key: key as Keys, items: dictionary[key] }));
   };
 
+  /** A variant of findIndex that returns the index of the last item in the array where the callback returns true */
+  export function findLastIndex<T>(array: T[], callback: (item: T) => boolean) {
+    return array.reduce((output, item, index) => (callback(item) ? index : output), -1);
+  }
   /**
    * Re-indexes an array from a specific index point.
    * - Does not mutate the passed array, returns a new one.
@@ -56,9 +60,6 @@ export namespace Arrays {
     }
     return array.map(mapper);
   }
-
-  export const findLastIndex = <T>(array: T[], callback: (item: T) => boolean) =>
-    array.reduce((output, item, index) => (callback(item) ? index : output), -1);
 
   export namespace ArrayArrays {
     export const getArrayIndex = <T>(innerIndex: number, outerIndex: number, arrays: { items: T[] }[]) => {

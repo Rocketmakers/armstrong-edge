@@ -1,11 +1,21 @@
 import * as React from 'react';
 
-import { ClassNames, Form } from '../..';
+import { ClassNames, Form, IIconWrapperProps } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
-import { IconUtils } from '../icon';
+import { useOverridableState } from '../../hooks/useOverridableState';
+import { ArmstrongId } from '../../types';
+import { IconSet, IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag/tag.component';
+
+export interface ITag extends IIconWrapperProps<IconSet, IconSet> {
+  /** (ArmstrongId) id used to keep track of the tag when used in tag lists */
+  id: ArmstrongId;
+
+  /** (string) the text to render inside the tag */
+  name?: string;
+}
 
 export interface ITagInputProps
   extends Omit<IInputWrapperProps, 'above' | 'below' | 'onClick'>,
@@ -22,11 +32,20 @@ export interface ITagInputProps
   /** (string[]) array of tags */
   value?: string[];
 
+  /** (ITag[]) overrides value to render a custom array of tags - should still be used in conjunction with a bound value */
+  tags?: ITag[];
+
   /** ((newValue: string[]) => void) event fired when the array of tags changes */
   onChange?: (newValue: string[]) => void;
 
   /** (event => void) fired when the internal text input changes */
   onTextInputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+
+  /** (event => string) fired when the internal text input changes */
+  onTextInputValueChange?: (event: string) => void;
+
+  /** (string) the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
+  textInputValue?: string;
 
   /** (boolean) don't add duplicates to the list of tags */
   allowDuplicates?: boolean;
@@ -45,6 +64,15 @@ export interface ITagInputProps
 
   /** (boolean) should show button to clear all tags */
   deleteAllButton?: boolean;
+
+  /** ((addedTagName: string) => void) */
+  onAddTag?: (value: string) => void;
+
+  /** ((removedTagId: armstrongId) => void) */
+  onRemoveTag?: (id: ArmstrongId) => void;
+
+  /** (() => void) fired when all tags are removed */
+  onRemoveAllTags?: () => void;
 }
 
 export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
@@ -66,13 +94,19 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       pending,
       disabled,
       leftIcon,
+      onRemoveAllTags,
       rightOverlay,
       error,
       hideIconOnStatus,
       leftOverlay,
       onTextInputChange,
+      onTextInputValueChange,
+      textInputValue,
+      tags,
       rightIcon,
       statusPosition,
+      onAddTag,
+      onRemoveTag,
       placeholder,
       disableOnPending,
       ...nativeProps
@@ -90,48 +124,63 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       validationMode,
     });
 
-    const [inputValue, setInputValue] = React.useState('');
+    // internal state for the text input, overriden by props
+    const [textInputInternalValue, setTextInputInternalValue] = useOverridableState('', textInputValue, onTextInputValueChange);
+
+    const currentTags = React.useMemo(() => {
+      if (tags) {
+        return tags;
+      }
+      if (boundValue) {
+        return boundValue.map<ITag>((val) => ({ name: val, id: val }));
+      }
+      return [];
+    }, [tags, boundValue]);
 
     const addTag = React.useCallback(
       (newTag: string) => {
         if (newTag && (allowDuplicates || (!boundValue?.includes(newTag) && (!getCanAddTag || getCanAddTag(newTag))))) {
           setBoundValue([...(boundValue || []), newTag.trim()]);
         }
-        setInputValue('');
+        setTextInputInternalValue('');
+        onAddTag?.(newTag);
       },
-      [boundValue, allowDuplicates, setBoundValue]
+      [boundValue, allowDuplicates, setBoundValue, onAddTag]
     );
 
     const removeTag = React.useCallback(
-      (newTag: string) => {
-        setBoundValue((boundValue || []).filter((tag) => tag !== newTag));
-        setInputValue('');
+      (tagToRemove: ArmstrongId) => {
+        setBoundValue((boundValue || []).filter((tag) => tag !== tagToRemove));
+        setTextInputInternalValue('');
+        onRemoveTag?.(tagToRemove);
       },
-      [boundValue, setBoundValue]
+      [boundValue, setBoundValue, onRemoveTag]
     );
 
     const clearTags = React.useCallback(() => {
       setBoundValue([]);
-    }, [setBoundValue]);
+      setTextInputInternalValue('');
+      onRemoveAllTags?.();
+    }, [setBoundValue, onRemoveAllTags]);
 
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>) => {
         switch (event.key) {
           case 'Enter': {
-            addTag(inputValue);
+            addTag(textInputInternalValue);
             event.preventDefault();
             break;
           }
           case ' ': {
             if (spaceCreatesTags) {
-              addTag(inputValue);
+              addTag(textInputInternalValue);
               event.preventDefault();
             }
             break;
           }
           case 'Backspace': {
-            if (inputValue === '' && boundValue && tagPosition === 'inside') {
-              removeTag(boundValue[boundValue.length - 1]);
+            if (textInputInternalValue === '' && currentTags?.length >= 1 && tagPosition === 'inside') {
+              removeTag(currentTags[currentTags.length - 1].id);
             }
             break;
           }
@@ -140,7 +189,21 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
           }
         }
       },
-      [inputValue, addTag, spaceCreatesTags, tagPosition, boundValue]
+      [textInputInternalValue, addTag, spaceCreatesTags, tagPosition, boundValue, removeTag]
+    );
+
+    const tagsJsx = (
+      <>
+        {currentTags?.map((tag, index) => (
+          <Tag
+            content={tag.name}
+            leftIcon={tag.leftIcon}
+            rightIcon={tag.rightIcon}
+            key={allowDuplicates ? `${tag.id}${index}` : tag.id}
+            onRemove={deleteButton ? () => removeTag(tag.id) : undefined}
+          />
+        ))}
+      </>
     );
 
     return (
@@ -150,7 +213,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
         errorIcon={bindConfig.validationErrorIcon}
         validationMode={bindConfig.validationMode}
         data-tag-position={tagPosition}
-        data-has-tags={!!boundValue?.length}
+        data-has-tags={!!currentTags?.length}
         pending={pending}
         disabled={disabled}
         leftIcon={leftIcon}
@@ -162,37 +225,18 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
         disableOnPending={disableOnPending}
         statusPosition={statusPosition}
         onClick={() => internalRef.current?.focus()}
-        above={
-          tagPosition === 'above' ? (
-            <>
-              {boundValue?.map((tag, index) => (
-                <Tag content={tag} key={allowDuplicates ? tag + index : tag} onRemove={deleteButton ? () => removeTag(tag) : undefined} />
-              ))}
-            </>
-          ) : undefined
-        }
-        below={
-          tagPosition === 'below' ? (
-            <>
-              {boundValue?.map((tag, index) => (
-                <Tag content={tag} key={allowDuplicates ? tag + index : tag} onRemove={deleteButton ? () => removeTag(tag) : undefined} />
-              ))}
-            </>
-          ) : undefined
-        }
+        above={tagPosition === 'above' ? tagsJsx : undefined}
+        below={tagPosition === 'below' ? tagsJsx : undefined}
       >
         <div className="arm-tag-input-inner">
-          {tagPosition === 'inside' &&
-            boundValue?.map((tag, index) => (
-              <Tag content={tag} key={allowDuplicates ? tag + index : tag} onRemove={deleteButton ? () => removeTag(tag) : undefined} />
-            ))}
+          {tagPosition === 'inside' && tagsJsx}
           <input
             {...nativeProps}
             ref={internalRef}
-            value={inputValue}
+            value={textInputInternalValue}
             placeholder={!boundValue?.length || tagPosition !== 'inside' ? placeholder : undefined}
             onChange={(event) => {
-              setInputValue(event.currentTarget.value);
+              setTextInputInternalValue(event.currentTarget.value);
               onTextInputChange?.(event);
             }}
             onKeyDown={onKeyDown}

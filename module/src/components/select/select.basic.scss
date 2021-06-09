@@ -1,9 +1,9 @@
-.arm-input.arm-native-select-input {
-  .arm-native-select-input-inner {
+.arm-input.arm-select {
+  .arm-select-inner {
     flex-grow: 1;
     position: relative;
 
-    .arm-icon.arm-native-select-input-overlay-icon {
+    .arm-icon.arm-select-overlay-icon {
       position: absolute;
       right: $spacing-xsmall;
       top: 50%;

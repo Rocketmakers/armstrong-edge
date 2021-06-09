@@ -1,29 +1,16 @@
 import React from 'react';
 
-import { Form, IconSet } from '../..';
-import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
+import { Form, IAutoCompleteInputOption } from '../..';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems, IDropdownItem } from '../dropdownItems';
-import { IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
-import { TextInput } from '../textInput';
+import { ITag, ITagInputProps, TagInput } from '../tagInput';
 
-// internally, the autocompleteinput binds two values - the actual content of the text input, and the selected value
-// if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
-// will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
-
-export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet>, Pick<IDropdownItem, 'group'> {
-  /** (ArmstrongId) the value to be bound */
-  id: Id;
-
-  /** (string) the name to be rendered for the option */
-  name?: string;
-}
-
-export interface IAutoCompleteInputProps<Id extends ArmstrongId>
-  extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'> {
+export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
+  extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
+    Pick<ITagInputProps, 'tagPosition'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -34,10 +21,10 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
   textInputValue?: string;
 
   /** ((string) => void) called when an option is selected  */
-  onChange?: (value: Id) => void;
+  onChange?: (value: Id[]) => void;
 
   /** (string) the currently selected option */
-  value?: Id;
+  value?: Id[];
 
   /** (string) selector for the element to portal the options into */
   optionsRootElementSelector?: string;
@@ -50,10 +37,13 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
 
   /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
   allowKeyboardNavigationSelection?: boolean;
+
+  /** ((option: IAutoCompleteOption) => ITag)  */
+  getSelectedOptionTag?: (option: Id) => ITag;
 }
 
 /** An input which displays some given options below the and allows the user to select from those options */
-export const AutoCompleteInput = React.forwardRef(
+export const AutoCompleteInputMulti = React.forwardRef(
   <Id extends ArmstrongId>(
     {
       options,
@@ -69,11 +59,13 @@ export const AutoCompleteInput = React.forwardRef(
       textInputValue,
       filterOptions,
       onChange,
+      tagPosition,
       value,
       allowFreeText,
       allowKeyboardNavigationSelection,
+      getSelectedOptionTag,
       ...textInputProps
-    }: IAutoCompleteInputProps<Id>,
+    }: IAutoCompleteInputMultiProps<Id>,
     ref
   ) => {
     const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingTools(
@@ -85,22 +77,16 @@ export const AutoCompleteInput = React.forwardRef(
       }
     );
 
-    console.log("AUTOCOMP VAL", boundValue, bind);
-
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
     // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided
     const getOptionName = React.useCallback(
-      (option: IAutoCompleteInputOption<Id>) => option.name ?? getFormattedValueFromData(option.id)!.toString(),
+      (option: IAutoCompleteInputOption<Id>) => option.name ?? option.id.toString(),
       [getFormattedValueFromData]
     );
 
     // internal state for the text input, overriden by props
-    const [textInputInternalValue, setTextInputInternalValue] = useOverridableState(
-      options?.find((option) => option.id === boundValue)?.name || '',
-      textInputValue,
-      onTextInputChange
-    );
+    const [textInputInternalValue, setTextInputInternalValue] = useOverridableState('', textInputValue, onTextInputChange);
 
     // The provided options, optionally filtered by the text input value
     const filteredOptions = React.useMemo(() => {
@@ -113,104 +99,128 @@ export const AutoCompleteInput = React.forwardRef(
       return options || [];
     }, [filterOptions, JSON.stringify(options), textInputInternalValue]);
 
+    // remove a given tag value from the array using its ID (the value which is bound)
+    const onRemoveTag = React.useCallback(
+      (id: ArmstrongId) => {
+        setBoundValue(boundValue?.filter((item) => item !== id) || []);
+      },
+      [boundValue, setBoundValue]
+    );
+
     /** when the user clicks on an option, change the value in the textInput */
     const onSelectOption = React.useCallback(
       (id: Id) => {
-        const selectedOption = options?.find((option) => option.id === id);
-        setTextInputInternalValue(selectedOption?.name || '');
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-        setBoundValue(selectedOption?.id!);
-      },
-      [bind, allowFreeText]
-    );
-
-    /** Fired when the user changes the value in the text input */
-    const onTextInputChangeEvent = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newTextInputValue = event.currentTarget.value || '';
-        setTextInputInternalValue(newTextInputValue);
-
-        // if allow free text, bind exact value on every change
-        // if inputted text is an option, bind that
-        const inputtedOptionIndex = options?.findIndex((option) => getOptionName(option) === newTextInputValue);
-        if (inputtedOptionIndex && inputtedOptionIndex > -1) {
-          const inputtedOption = options![inputtedOptionIndex];
-
-          setBoundValue(inputtedOption!.id);
-        } else if (allowFreeText) {
-          setBoundValue(newTextInputValue as Id);
+        if (boundValue?.find((item) => item === id)) {
+          onRemoveTag(id);
+        } else {
+          setBoundValue([...(boundValue || []), id!]);
         }
       },
-      [setTextInputInternalValue, getOptionName]
+      [bind, boundValue, options, onRemoveTag]
     );
 
-    // reset the input's value to reflect the bound value
-    const resetInputValue = React.useCallback(() => {
-      if (!allowFreeText) {
-        const currentOption = options?.find((option) => option.id === boundValue);
-        if (currentOption) {
-          setTextInputInternalValue(getOptionName(currentOption));
+    // get a value or option into a form that can be used to render a tag
+    // use the given getSelectedOptionTag prop, or construct a tag from the array of options, or just make one using the ID if one cannot be found
+    const parseOptionTag = React.useCallback(
+      (item: Id) => {
+        if (getSelectedOptionTag) {
+          return getSelectedOptionTag(item);
         }
-      }
-    }, [allowFreeText, options, boundValue, getOptionName]);
-
-    // when the user closes the dropdown, reset the input value
-    useDidUpdateEffect(() => {
-      if (!optionsOpen) {
-        resetInputValue();
-      }
-    }, [optionsOpen]);
-
-    // if allow free text is true, show the currently typed value at the top of the list of options
-    const shouldShowFreeTextItemInDropdown = React.useMemo(
-      () => allowFreeText && textInputInternalValue && !options?.find((option) => (option.name ?? option.id) === textInputInternalValue),
-      [allowFreeText, textInputInternalValue, options]
+        const selectedOption = options?.find((option) => item === option.id);
+        if (selectedOption) {
+          return {
+            name: selectedOption.name || selectedOption.id.toString(),
+            id: selectedOption.id,
+            leftIcon: selectedOption.leftIcon,
+            rightIcon: selectedOption.rightIcon,
+          };
+        }
+        return {
+          name: item.toString(),
+          id: item,
+        };
+      },
+      [getSelectedOptionTag, options]
     );
+
+    // the currently bound value of the input parsed as an array of tags
+    const selectedOptionTags = React.useMemo(() => (boundValue || []).map<ITag>((item) => parseOptionTag(item)), [parseOptionTag, boundValue]);
+
+    const onAddTag = React.useCallback(
+      (addedValue: string) => {
+        if (allowFreeText && !boundValue?.find((item) => item === addedValue)) {
+          setBoundValue([...(boundValue || []), addedValue as Id]);
+        }
+      },
+      [allowFreeText, boundValue, setBoundValue]
+    );
+
+    // options to render in the dropdown if the prop allowFreeText is true
+    // first shows what the user is currently typing as the first value, then shows all the free text values that have been bound up which aren't
+    // in the options array
+    const dropdownItems = React.useMemo<IDropdownItem[]>(() => {
+      const showCurrentlyTypingOption =
+        allowFreeText && textInputInternalValue && !options?.find((option) => getOptionName(option) === textInputInternalValue);
+
+      return [
+        ...(showCurrentlyTypingOption ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
+        ...(boundValue || [])
+          .map((item) => parseOptionTag(item))
+          .filter((item) => {
+            const isntAnOption = !options?.find((option) => option.id === item.id);
+            const filterByTextInputValue = !textInputInternalValue || (item.name || item.id).toString().startsWith(textInputInternalValue);
+            return isntAnOption && filterByTextInputValue;
+          })
+          .map<IDropdownItem>((item) => ({ content: item.name || item.id.toString(), id: item.id })),
+        ...filteredOptions.map((option) => ({
+          content: getOptionName(option),
+          id: option.id,
+          leftIcon: option.leftIcon,
+          rightIcon: option.rightIcon,
+          group: option.group,
+        })),
+      ];
+    }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, options, parseOptionTag]);
 
     return (
       <>
         <div
-          className={ClassNames.concat('arm-input', 'arm-autocomplete-input', className)}
+          className={ClassNames.concat('arm-input', 'arm-autocomplete-input-multi', className)}
           data-error={error}
           data-pending={pending}
           data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
             contentClassName="arm-auto-complete-options"
-            items={[
-              ...(shouldShowFreeTextItemInDropdown ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
-              ...filteredOptions.map((option) => ({
-                content: getOptionName(option),
-                id: option.id,
-                leftIcon: option.leftIcon,
-                rightIcon: option.rightIcon,
-                group: option.group,
-              })),
-            ]}
+            items={dropdownItems}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
             contentRootElementSelector={optionsRootElementSelector}
             onItemSelected={(id) => onSelectOption(id as Id)}
             allowKeyboardNavigation={allowKeyboardNavigationSelection}
-            currentValue={boundValue ? [boundValue] : []}
+            currentValue={boundValue || []}
             openWhenClickInside
             openWhenFocusInside
+            closeOnSelection={false}
             childRootElementSelector=".arm-input-inner"
           >
-            <TextInput
+            <TagInput
               {...textInputProps}
               pending={pending}
               ref={ref}
               error={error}
-              value={textInputInternalValue}
-              onChange={onTextInputChangeEvent}
+              tags={selectedOptionTags}
+              tagPosition={tagPosition}
               onKeyDown={() => setOptionsOpen(true)}
               validationMode={validationMode}
               onFocus={() => setOptionsOpen(true)}
+              textInputValue={textInputInternalValue}
+              onTextInputValueChange={setTextInputInternalValue}
               validationErrorMessages={myValidationErrorMessages}
               errorIcon={validationErrorIcon}
               disableOnPending={false}
+              onAddTag={onAddTag}
+              onRemoveTag={(id) => onRemoveTag(id as Id)}
             />
           </DropdownItems>
         </div>
@@ -220,10 +230,10 @@ export const AutoCompleteInput = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId>(
-  props: React.PropsWithChildren<IAutoCompleteInputProps<Id>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IAutoCompleteInputProps<any>> };
+  props: React.PropsWithChildren<IAutoCompleteInputMultiProps<Id>> & React.RefAttributes<HTMLSelectElement>
+) => ReturnType<React.FC>) & { defaultProps?: Partial<IAutoCompleteInputMultiProps<any>> };
 
-AutoCompleteInput.defaultProps = {
+AutoCompleteInputMulti.defaultProps = {
   validationMode: 'both',
   allowKeyboardNavigationSelection: true,
   filterOptions: true,

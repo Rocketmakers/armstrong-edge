@@ -101,13 +101,13 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
               <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
                 {leftOverlay && (
                   <div className="arm-input-overlay arm-input-overlay-left">
-                    {typeof leftOverlay === 'string' ? <p>{leftOverlay}</p> : leftOverlay}
+                    {typeof leftOverlay === 'string' ? <p className="arm-input-overlay-text">{leftOverlay}</p> : leftOverlay}
                   </div>
                 )}
                 {children}
                 {rightOverlay && (
                   <div className="arm-input-overlay arm-input-overlay-right">
-                    {typeof rightOverlay === 'string' ? <p>{rightOverlay}</p> : rightOverlay}
+                    {typeof rightOverlay === 'string' ? <p className="arm-input-overlay-text">{rightOverlay}</p> : rightOverlay}
                   </div>
                 )}
               </IconWrapper>

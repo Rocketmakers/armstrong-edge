@@ -8,24 +8,29 @@ import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
-export interface INativeSelectInputOption<Id extends ArmstrongId, TSelectData = any> {
+export interface ISelectOption<Id extends ArmstrongId, TSelectData = any> {
+  /** (ArmstrongId) the value to be bound */
   id: Id;
-  name: string;
+
+  /** (string) the name to be rendered for the option */
+  name?: string;
+
+  /** (string) data which will be passed into the onSelectOption callback */
   data?: TSelectData;
   disabled?: boolean;
 }
 
-export interface INativeSelectInputProps<Id extends ArmstrongId, TSelectData = any>
+export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>,
     Omit<IInputWrapperProps, 'onClick'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
-  /** (INativeSelectInputOption[]) The options to be shown in the input */
-  options: INativeSelectInputOption<Id, TSelectData>[];
+  /** (ISelectOption[]) The options to be shown in the input */
+  options: ISelectOption<Id, TSelectData>[];
 
-  /** ((option: INativeSelectInputOption) => void) Called on change to get the  */
-  onSelectOption?: (option?: INativeSelectInputOption<Id>) => void;
+  /** ((option: ISelectOption) => void) Called on change to get the  */
+  onSelectOption?: (option?: ISelectOption<Id>) => void;
 
   /** (icon) the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
@@ -37,7 +42,7 @@ export interface INativeSelectInputProps<Id extends ArmstrongId, TSelectData = a
 }
 
 /** A select input which takes an array of options */
-export const NativeSelectInput = React.forwardRef(
+export const Select = React.forwardRef(
   <Id extends ArmstrongId, TSelectData = any>(
     {
       bind,
@@ -59,7 +64,7 @@ export const NativeSelectInput = React.forwardRef(
       deleteButton,
       disableOnPending,
       ...nativeProps
-    }: INativeSelectInputProps<Id, TSelectData>,
+    }: ISelectProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
   ) => {
     const internalRef = React.useRef<HTMLSelectElement>(null);
@@ -85,7 +90,7 @@ export const NativeSelectInput = React.forwardRef(
 
     return (
       <InputWrapper
-        className={ClassNames.concat('arm-native-select-input', className)}
+        className={ClassNames.concat('arm-select', className)}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
@@ -97,7 +102,7 @@ export const NativeSelectInput = React.forwardRef(
         disabled={disabled}
         disableOnPending={disableOnPending}
       >
-        <div className="arm-native-select-input-inner">
+        <div className="arm-select-inner">
           <select {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
             {options.map((option) => (
               <option key={option.id} value={option.id} disabled={option.disabled}>
@@ -107,14 +112,14 @@ export const NativeSelectInput = React.forwardRef(
           </select>
           {selectOverlayIcon &&
             (IconUtils.isIconDefinition(selectOverlayIcon) ? (
-              <Icon className="arm-native-select-input-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />
+              <Icon className="arm-select-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />
             ) : (
               selectOverlayIcon
             ))}
         </div>
         {deleteButton && boundValue && (
           <IconButton
-            className="arm-select-input-delete"
+            className="arm-select-delete"
             onClick={(event) => {
               onSelectOption?.(undefined);
               bind?.setValue?.(undefined!);
@@ -130,9 +135,9 @@ export const NativeSelectInput = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: React.PropsWithRef<INativeSelectInputProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<INativeSelectInputProps<any, any>> };
+  props: React.PropsWithRef<ISelectProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
+) => ReturnType<React.FC>) & { defaultProps?: Partial<ISelectProps<any, any>> };
 
-NativeSelectInput.defaultProps = {
+Select.defaultProps = {
   selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
 };

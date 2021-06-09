@@ -12,10 +12,13 @@ export interface IStatusProps {
 }
 
 export const Status: React.FunctionComponent<IStatusProps> = ({ pending, error, errorIcon, spinnerIcon }) => {
+  if (!error && !pending) {
+    return null;
+  }
   return (
     <div className="arm-status" data-active={!!pending || !!error} data-error={!!error && !pending} data-pending={pending}>
-      <Icon className="arm-status-error" iconSet={errorIcon!.iconSet} icon={errorIcon!.icon} />
-      <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />
+      {error && !pending && <Icon className="arm-status-error" iconSet={errorIcon!.iconSet} icon={errorIcon!.icon} />}
+      {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />}
     </div>
   );
 };

@@ -14,8 +14,8 @@ export interface ICharacterLimitProps {
   /** (input) the character limit for the bound input */
   limit: number;
 
-  /** (boolean) the limit should be imposed by the bind in this component - by default you will have to handle this yourself */
-  shouldImpose?: boolean;
+  /** (boolean) the limit should be enforced by the bind in this component - by default you will have to handle this yourself */
+  shouldEnforce?: boolean;
 
   /** (string) CSS className property */
   className?: string;
@@ -24,13 +24,13 @@ export interface ICharacterLimitProps {
   exceedsIcon?: IIcon<IconSet>;
 }
 
-export const CharacterLimit: React.FC<ICharacterLimitProps> = ({ bind, limit, shouldImpose, value, className, exceedsIcon }) => {
+export const CharacterLimit: React.FC<ICharacterLimitProps> = ({ bind, limit, shouldEnforce, value, className, exceedsIcon }) => {
   const [boundValue, setBoundValue] = useBindingTools(bind, { value });
 
   const exceeded = boundValue && boundValue.length > limit;
 
   React.useLayoutEffect(() => {
-    if (shouldImpose && exceeded) {
+    if (shouldEnforce && exceeded) {
       setBoundValue(boundValue!.slice(0, limit));
     }
   }, [boundValue]);

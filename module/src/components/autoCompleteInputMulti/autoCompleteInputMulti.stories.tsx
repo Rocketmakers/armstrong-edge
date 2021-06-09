@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
-import { AutoCompleteInput } from './autoCompleteInput.component';
+import { AutoCompleteInputMulti } from './autoCompleteInputMulti.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(AutoCompleteInput, 'Form', 'Auto Complete Input', {
+export default StoryUtils.createMeta(AutoCompleteInputMulti, 'Form', 'Auto Complete Input Multi', {
   placeholder: {
     control: { type: 'text' },
     description: 'Adds placeholder text to the input',
@@ -21,16 +21,16 @@ export default StoryUtils.createMeta(AutoCompleteInput, 'Form', 'Auto Complete I
 
 /** component template */
 
-// const Template = StoryUtils.createTemplate(AutoCompleteInput);
+// const Template = StoryUtils.createTemplate(AutoCompleteInputMulti);
 
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState<number>();
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <AutoCompleteInput
+      <AutoCompleteInputMulti
         value={value}
         onChange={setValue}
         options={[
@@ -39,54 +39,54 @@ export const Default = () => {
           { id: 3, name: 'purple' },
         ]}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
+  );
+};
+export const tagsAbove = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        tagPosition="above"
+        options={[
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'purple' },
+        ]}
+      />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
 export const AllowFreeText = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <AutoCompleteInput
+      <AutoCompleteInputMulti
         value={value}
         onChange={setValue}
         allowFreeText
         options={[
-          { id: '1', name: 'red' },
-          { id: '2', name: 'blue' },
-          { id: '3', name: 'purple' },
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'purple' },
         ]}
       />
-      <p className="bound-value">bound value: {value}</p>
-    </>
-  );
-};
-export const DontFilter = () => {
-  const [value, setValue] = React.useState('');
-
-  return (
-    <>
-      <AutoCompleteInput
-        value={value}
-        onChange={setValue}
-        options={[
-          { id: '1', name: 'red' },
-          { id: '2', name: 'blue' },
-          { id: '3', name: 'purple' },
-        ]}
-        filterOptions={false}
-      />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
 export const WithIcons = () => {
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <AutoCompleteInput
+      <AutoCompleteInputMulti
         value={value}
         onChange={setValue}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
@@ -96,16 +96,16 @@ export const WithIcons = () => {
           { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css') },
         ]}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
 export const WithGroups = () => {
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <AutoCompleteInput
+      <AutoCompleteInputMulti
         value={value}
         onChange={setValue}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
@@ -115,16 +115,16 @@ export const WithGroups = () => {
           { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
         ]}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
 export const WithValidationErrors = () => {
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = React.useState([]);
 
   return (
     <>
-      <AutoCompleteInput
+      <AutoCompleteInputMulti
         value={value}
         onChange={setValue}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
@@ -135,7 +135,7 @@ export const WithValidationErrors = () => {
         ]}
         validationErrorMessages={['your taste in colours is terrible']}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {value.join(', ')}</p>
     </>
   );
 };
