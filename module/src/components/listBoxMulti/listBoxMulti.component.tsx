@@ -45,7 +45,7 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any> e
   renderPreview?: (selectedOptions: IListBoxOption<Id, TSelectData>[]) => React.ReactChild;
 }
 
-/** A select input which takes an array of options */
+/** A DOM recreation of a select element, which binds to an array of Id values */
 export const ListBoxMulti = React.forwardRef(
   <Id extends ArmstrongId, TSelectData = any>(
     {

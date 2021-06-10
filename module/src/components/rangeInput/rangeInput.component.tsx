@@ -40,6 +40,7 @@ export interface IRangeInputProps
   handleIcon?: IIcon<IconSet>;
 }
 
+/** Render a range input where the visuals are recerated using DOM */
 export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
   (
     {

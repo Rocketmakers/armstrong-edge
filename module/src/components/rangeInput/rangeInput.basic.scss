@@ -72,9 +72,7 @@ $range-input-track-height: 6px;
     }
   }
 
-  > *:not(:last-child) {
-    margin-right: $spacing-xsmall;
-  }
+  @include space-between-children-horizontal($spacing-xsmall);
 
   &[data-disabled='true'] {
     opacity: 0.5;

@@ -4,9 +4,7 @@
     align-items: center;
     cursor: pointer;
 
-    > *:not(:last-child) {
-      margin-right: $spacing-xsmall;
-    }
+    @include space-between-children-horizontal($spacing-xsmall);
 
     .arm-radio-input-radio {
       @include square(1.4rem);

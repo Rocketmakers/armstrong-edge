@@ -43,6 +43,7 @@ export interface ICheckboxInputListProps<Id extends ArmstrongId> extends Pick<IC
   error?: boolean;
 }
 
+/** A list of checkboxes which binds to an array of IDs */
 export const CheckboxInputList = React.forwardRef(
   <Id extends ArmstrongId>(
     {

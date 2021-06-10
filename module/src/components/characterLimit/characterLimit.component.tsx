@@ -24,6 +24,7 @@ export interface ICharacterLimitProps {
   exceedsIcon?: IIcon<IconSet>;
 }
 
+/** Render a character limit from a bound value, showing as an error if the user  */
 export const CharacterLimit: React.FC<ICharacterLimitProps> = ({ bind, limit, shouldEnforce, value, className, exceedsIcon }) => {
   const [boundValue, setBoundValue] = useBindingTools(bind, { value });
 

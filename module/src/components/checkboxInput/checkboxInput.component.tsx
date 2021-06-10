@@ -45,6 +45,7 @@ export interface ICheckboxInputProps
   label?: string | JSX.Element;
 }
 
+/** Render a checkbox that uses DOM elements allow for easier styling */
 export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputProps>(
   (
     {

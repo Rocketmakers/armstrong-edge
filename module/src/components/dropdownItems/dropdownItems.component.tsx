@@ -91,6 +91,7 @@ export interface IDropdownItemsProps extends Omit<IDropdownProps, 'dropdownConte
   closeOnSelection?: boolean;
 }
 
+/** A dropdown which renders a list of selectable options and allows keyboard navigation when its children are focused */
 export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   items,
   allowKeyboardNavigation,

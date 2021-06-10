@@ -6,11 +6,13 @@ import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { IInputProps } from '../input';
+import { IPortalProps } from '../portal';
 import { ITag, ITagInputProps, TagInput } from '../tagInput';
 
 export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
-    Pick<ITagInputProps, 'tagPosition'> {
+    Pick<ITagInputProps, 'tagPosition'>,
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -42,7 +44,7 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   getSelectedOptionTag?: (option: Id) => ITag;
 }
 
-/** An input which displays some given options below the and allows the user to select from those options */
+/** A text input which displays some options in a dropdown and allows the user to select multiple */
 export const AutoCompleteInputMulti = React.forwardRef(
   <Id extends ArmstrongId>(
     {
@@ -54,7 +56,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
       className,
       error,
       pending,
-      optionsRootElementSelector,
+      portalTo,
+      portalToSelector,
       onTextInputChange,
       textInputValue,
       filterOptions,
@@ -85,7 +88,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
       [getFormattedValueFromData]
     );
 
-    // internal state for the text input, overriden by props
+    // internal state for the text input, overridden by props
     const [textInputInternalValue, setTextInputInternalValue] = useOverridableState('', textInputValue, onTextInputChange);
 
     // The provided options, optionally filtered by the text input value
@@ -167,9 +170,9 @@ export const AutoCompleteInputMulti = React.forwardRef(
         ...(boundValue || [])
           .map((item) => parseOptionTag(item))
           .filter((item) => {
-            const isntAnOption = !options?.find((option) => option.id === item.id);
+            const notAnOption = !options?.find((option) => option.id === item.id);
             const filterByTextInputValue = !textInputInternalValue || (item.name || item.id).toString().startsWith(textInputInternalValue);
-            return isntAnOption && filterByTextInputValue;
+            return notAnOption && filterByTextInputValue;
           })
           .map<IDropdownItem>((item) => ({ content: item.name || item.id.toString(), id: item.id })),
         ...filteredOptions.map((option) => ({
@@ -180,7 +183,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
           group: option.group,
         })),
       ];
-    }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, options, parseOptionTag]);
+    }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, parseOptionTag, getOptionName]);
 
     return (
       <>
@@ -195,7 +198,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
             items={dropdownItems}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
-            contentRootElementSelector={optionsRootElementSelector}
+            portalToSelector={portalToSelector}
+            portalTo={portalTo}
             onItemSelected={(id) => onSelectOption(id as Id)}
             allowKeyboardNavigation={allowKeyboardNavigationSelection}
             currentValue={boundValue || []}

@@ -20,6 +20,7 @@ export interface IRadioInputProps
   uncheckedIcon?: IIcon<IconSet>;
 }
 
+/** Render a single radio input */
 export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
   ({ onChange, name, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, ...nativeProps }, ref) => {
     return (

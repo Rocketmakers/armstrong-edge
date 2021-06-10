@@ -5,6 +5,7 @@ import { IInputProps } from '../input/input.component';
 import { InputWrapper } from '../inputWrapper';
 import { useMyValidationErrorMessages } from '../validationErrors';
 
+/** Wrap up a text input with type=num which binds to a number */
 export const NumberInput = React.forwardRef<HTMLInputElement, Omit<IInputProps<number>, 'type'>>(
   (
     {
