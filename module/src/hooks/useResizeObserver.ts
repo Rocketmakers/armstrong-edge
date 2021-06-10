@@ -9,15 +9,52 @@ import { Globals } from '../utils/globals';
  * @param options an Resize observer options object
  */
 
-export function useResizeObserver(ref: React.MutableRefObject<HTMLElement>, callback: (entries: ResizeObserverEntry[], io: ResizeObserver) => any) {
+export function useResizeObserver(
+  callback: (entries: ResizeObserverEntry[], io: ResizeObserver) => any,
+  ref?: React.MutableRefObject<Element | undefined | null>
+) {
   const observer = React.useRef<ResizeObserver>();
+
+  const observe = React.useCallback(
+    (element: Element) => {
+      observer.current = new ResizeObserver((entries, createdObserver) => callback && callback(entries, createdObserver));
+      observer.current.observe(element);
+    },
+    [callback]
+  );
+
+  const unobserve = React.useCallback((element: Element) => {
+    if (observer.current) {
+      observer.current.unobserve(element);
+    }
+  }, []);
+
+  const disconnect = React.useCallback(() => {
+    observer.current?.disconnect();
+  }, []);
 
   React.useLayoutEffect(() => {
     if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsResizeObserver) {
-      observer.current = new ResizeObserver((entries, createdObserver) => callback && callback(entries, createdObserver));
-      observer.current.observe(ref.current);
+      observe(ref.current);
 
-      return () => observer.current?.unobserve(ref.current);
+      return () => {
+        if (ref.current) {
+          unobserve(ref.current!);
+        }
+      };
     }
-  }, [ref, observer, callback]);
+  }, [ref?.current, observer, callback]);
+
+  React.useEffect(
+    () => () => {
+      disconnect();
+    },
+    []
+  );
+
+  return {
+    observer,
+    unobserve,
+    disconnect,
+  };
 }
