@@ -8,6 +8,9 @@ To use SCSS from Armstrong, it must be imported into your app's SCSS:
 // variables and mixins - required for the reset of armstrong to work
 @import "~@rocketmakers/armstrong-edge/dist/imports.scss";
 
+// includes a tonne of useful animations (required for use in the animated.scss theme)
+@import "~@rocketmakers/armstrong-edge/dist/animations.scss";
+
 // basic theme - includes only functional and layout styling
 @import "~@rocketmakers/armstrong-edge/dist/basic.scss";
 
@@ -19,7 +22,8 @@ To use SCSS from Armstrong, it must be imported into your app's SCSS:
 ## Existing themes
 
 - **basic.scss** — the bare minimum functional SCSS to override some default browser styling and to lay out components - should be imported before other themes
-- **prototyping.scss** — a more advanced stylesheet with decent looking styling, allowing a project to get off the ground a lot more quickly, used in Storybook
+- **prototyping.scss** — a more advanced stylesheet with decent looking styling, allowing a project to get off the ground a lot more quickly, used in Storybook. This theme is designed to be used on top of `basic.scss`
+- **animated.scss** — adds animations across many components, must be used alongside an import of `animations.scss`. This theme is designed to be used on top of any other theme.
 
 # For Armstrong developers
 
