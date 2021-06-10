@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { Globals } from '../utils/globals';
-
 export interface IUseTimeoutReturn {
   /** Set the timeout, optionally give a callback which will override the one set at hook level */
   set: (callback?: () => void) => void;
@@ -16,19 +14,19 @@ export interface IUseTimeoutReturn {
  * @param callback the callback to run after the given time
  */
 export function useTimeout(time?: number, callback?: () => void): IUseTimeoutReturn {
-  const timeout = React.useRef<number>();
+  const timeout = React.useRef<any>();
 
   const set = React.useCallback(
     (overrideCallback?: () => void) => {
       if (overrideCallback || callback) {
-        timeout.current = Globals.Window?.setTimeout(overrideCallback ?? callback!, time);
+        timeout.current = setTimeout(overrideCallback ?? callback!, time);
       }
     },
     [time, callback]
   );
 
   const clear = React.useCallback(() => {
-    Globals?.Window?.clearTimeout(timeout.current);
+    clearTimeout(timeout.current);
   }, []);
 
   React.useEffect(() => {

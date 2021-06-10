@@ -88,7 +88,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
       [getFormattedValueFromData]
     );
 
-    // internal state for the text input, overriden by props
+    // internal state for the text input, overridden by props
     const [textInputInternalValue, setTextInputInternalValue] = useOverridableState('', textInputValue, onTextInputChange);
 
     // The provided options, optionally filtered by the text input value
@@ -170,9 +170,9 @@ export const AutoCompleteInputMulti = React.forwardRef(
         ...(boundValue || [])
           .map((item) => parseOptionTag(item))
           .filter((item) => {
-            const isntAnOption = !options?.find((option) => option.id === item.id);
+            const notAnOption = !options?.find((option) => option.id === item.id);
             const filterByTextInputValue = !textInputInternalValue || (item.name || item.id).toString().startsWith(textInputInternalValue);
-            return isntAnOption && filterByTextInputValue;
+            return notAnOption && filterByTextInputValue;
           })
           .map<IDropdownItem>((item) => ({ content: item.name || item.id.toString(), id: item.id })),
         ...filteredOptions.map((option) => ({
@@ -183,7 +183,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
           group: option.group,
         })),
       ];
-    }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, options, parseOptionTag, getOptionName]);
+    }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, parseOptionTag, getOptionName]);
 
     return (
       <>

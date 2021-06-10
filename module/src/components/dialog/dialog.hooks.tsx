@@ -13,8 +13,10 @@ export const useDialog = <T, TArg = unknown>(
 ) => useModalLayerPromise(Children, (internalProps) => <Dialog {...internalProps} {...props} />);
 
 export interface IUseConfirmationDialogConfig {
-  /** The content of the  */
+  /** The content of the confirmation dialog, usually a message like "are you sure?" */
   content?: React.ReactNode;
+
+  /** The text content of the buttons */
   buttons?: {
     yes?: string;
     no?: string;
@@ -26,7 +28,7 @@ export const useConfirmationDialog = (config: IUseConfirmationDialogConfig, prop
   return useDialog<boolean>(
     ({ resolve }) => (
       <>
-        {!config.content || typeof config.content === 'string' ? <p>{'Are you sure?'}</p> : config.content}
+        {!config.content || typeof config.content === 'string' ? <p>{config.content || 'Are you sure?'}</p> : config.content}
         <div className="arm-confirmation-dialog-buttons">
           <Button onClick={() => resolve(true)}>{config.buttons?.yes || 'Yes'}</Button>
           <Button>{config.buttons?.no || 'No'}</Button>
