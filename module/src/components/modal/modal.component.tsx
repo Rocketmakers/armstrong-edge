@@ -6,7 +6,7 @@ import { Globals } from '../../utils/globals';
 import { IPortalProps, Portal } from '../portal';
 
 export interface IModalProps
-  extends Pick<IPortalProps, 'rootElementSelector' | 'rootElement'>,
+  extends Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
     Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'> {
   /** (boolean) should the dropdown be rendered */
   isOpen: boolean;
@@ -38,14 +38,14 @@ export interface IModalProps
 
 /**
  * A component which will portal its children into a div on top of all existing DOM, with handlers to close it if the user clicks outside of that area.
- * By defaut, if inside a ModalProvider, it will portal into an element rendered by that, but that can be overidden by providing rootElement or rootElementSelector
+ * By defaut, if inside a ModalProvider, it will portal into an element rendered by that, but that can be overidden by providing portalTo or portalToSelector
  */
 
 export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
   (
     {
-      rootElementSelector,
-      rootElement,
+      portalToSelector,
+      portalTo,
       isOpen,
       onOpenChange,
       closeOnWindowBlur,
@@ -114,7 +114,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     }
 
     return (
-      <Portal rootElement={(!rootElementSelector && wrapperRef?.current) || rootElement} rootElementSelector={rootElementSelector}>
+      <Portal portalTo={(!portalToSelector && wrapperRef?.current) || portalTo} portalToSelector={portalToSelector}>
         <div
           className={ClassNames.concat('arm-modal-wrapper', wrapperClassName)}
           onClick={onClickWrapperEvent}

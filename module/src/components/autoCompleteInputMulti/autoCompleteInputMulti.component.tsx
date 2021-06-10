@@ -12,7 +12,7 @@ import { ITag, ITagInputProps, TagInput } from '../tagInput';
 export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
     Pick<ITagInputProps, 'tagPosition'>,
-    Pick<IPortalProps, 'rootElementSelector' | 'rootElement'> {
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -44,7 +44,7 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   getSelectedOptionTag?: (option: Id) => ITag;
 }
 
-/** An input which displays some given options below the and allows the user to select from those options */
+/** A text input which displays some options in a dropdown and allows the user to select multiple */
 export const AutoCompleteInputMulti = React.forwardRef(
   <Id extends ArmstrongId>(
     {
@@ -56,8 +56,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
       className,
       error,
       pending,
-      rootElement,
-      rootElementSelector,
+      portalTo,
+      portalToSelector,
       onTextInputChange,
       textInputValue,
       filterOptions,
@@ -198,8 +198,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
             items={dropdownItems}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
-            rootElementSelector={rootElementSelector}
-            rootElement={rootElement}
+            portalToSelector={portalToSelector}
+            portalTo={portalTo}
             onItemSelected={(id) => onSelectOption(id as Id)}
             allowKeyboardNavigation={allowKeyboardNavigationSelection}
             currentValue={boundValue || []}

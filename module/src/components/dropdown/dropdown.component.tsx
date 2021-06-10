@@ -8,7 +8,7 @@ import { IPortalProps } from '../portal';
 
 export interface IDropdownProps
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>,
-    Pick<IPortalProps, 'rootElementSelector' | 'rootElement'> {
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
   /** (boolean) should the dropdown be rendered */
   isOpen: boolean;
 
@@ -46,15 +46,14 @@ export interface IDropdownRef {
 }
 
 /** Extends the modal (see component modal docs) but positions the modal below the children of the component */
-
 export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<IDropdownProps>>(
   (
     {
       isOpen,
       onOpenChange,
       children,
-      rootElement,
-      rootElementSelector,
+      portalTo,
+      portalToSelector,
       dropdownContent,
       className,
       contentClassName,
@@ -179,8 +178,8 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         {children}
 
         <Modal
-          rootElement={rootElement}
-          rootElementSelector={rootElementSelector}
+          portalTo={portalTo}
+          portalToSelector={portalToSelector}
           className={ClassNames.concat('arm-dropdown-content', contentClassName)}
           style={
             {

@@ -11,6 +11,7 @@ export interface IStatusProps {
   spinnerIcon?: IIcon<IconSet>;
 }
 
+/** Render a status icon which can either be pending or errored */
 export const Status: React.FunctionComponent<IStatusProps> = ({ pending, error, errorIcon, spinnerIcon }) => {
   if (!error && !pending) {
     return null;

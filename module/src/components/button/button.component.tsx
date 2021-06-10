@@ -29,6 +29,7 @@ export interface IButtonProps
   disabled?: boolean;
 }
 
+/** Renders an HTML button element with some useful additions */
 export const Button: React.FC<IButtonProps> = ({
   className,
   validationErrorMessages,

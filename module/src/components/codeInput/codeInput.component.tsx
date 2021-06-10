@@ -37,6 +37,8 @@ export interface ICodeInputPartProps {
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
+/** an individual input from the CodeInput */
+
 export const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps>(({ part, onChange, onKeyDown, value }, ref) => {
   const length = React.useMemo(() => CodeInputUtils.getLengthFromPart(part), [part]);
 
@@ -75,6 +77,7 @@ export const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartPr
   );
 });
 
+/** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
 export interface ICodeInputProps extends IIconWrapperProps<IconSet, IconSet> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string>;

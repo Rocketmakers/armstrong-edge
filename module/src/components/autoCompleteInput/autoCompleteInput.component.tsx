@@ -25,7 +25,7 @@ export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconW
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
-    Pick<IPortalProps, 'rootElementSelector' | 'rootElement'> {
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -54,7 +54,7 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
   allowKeyboardNavigationSelection?: boolean;
 }
 
-/** An input which displays some given options below the and allows the user to select from those options */
+/** A text input which displays some options in a dropdown */
 export const AutoCompleteInput = React.forwardRef(
   <Id extends ArmstrongId>(
     {
@@ -66,8 +66,8 @@ export const AutoCompleteInput = React.forwardRef(
       className,
       error,
       pending,
-      rootElementSelector,
-      rootElement,
+      portalToSelector,
+      portalTo,
       onTextInputChange,
       textInputValue,
       filterOptions,
@@ -191,8 +191,8 @@ export const AutoCompleteInput = React.forwardRef(
             ]}
             isOpen={optionsOpen && !!options?.length}
             onOpenChange={setOptionsOpen}
-            rootElementSelector={rootElementSelector}
-            rootElement={rootElement}
+            portalToSelector={portalToSelector}
+            portalTo={portalTo}
             onItemSelected={(id) => onSelectOption(id as Id)}
             allowKeyboardNavigation={allowKeyboardNavigationSelection}
             currentValue={boundValue ? [boundValue] : []}
