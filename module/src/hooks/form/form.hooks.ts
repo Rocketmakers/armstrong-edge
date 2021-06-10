@@ -251,7 +251,7 @@ function useFormBase<TData extends object>(
   );
 
   return {
-    formState: formStateRef.current,
+    formState: formStateLive,
     formProp: formProp as FormPropFactory<TData>['formProp'],
     resetFormData,
     getFormData,
@@ -271,9 +271,6 @@ function useForm<TData extends object>(initialData: TData, formConfig?: IFormCon
   const [formState, setFormState] = React.useState<TData>(initialData);
 
   const formStateRef = React.useRef<TData>(initialData);
-  React.useMemo(() => {
-    formStateRef.current = initialData;
-  }, [Objects.contentDependency(initialData)]);
 
   const dispatch = React.useCallback(
     (action) => {
