@@ -88,24 +88,24 @@ export interface IConfig {
    */
   locale?: Dates.DateLocale;
   /**
-   * (string) A formatter to apply when displaying the day selector.
+   * (string) A formatter to apply when displaying the day selector on the input.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - Padded number by default `dd` = (01 - 31).
    * - Other options include: `d` = (1 - 31), `Do` = (1st - 31st)
    */
-  dayDisplayFormat?: string;
+  dayInputDisplayFormat?: string;
   /**
-   * (string) A formatter to apply when displaying the day selector.
+   * (string) A formatter to apply when displaying the month selector on the input.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - Padded number by default: `MM` = (01 - 12)
    * - Other options include: `MMM` = (Jan - Dec), `MMMM` = (January - December)
    */
-  monthDisplayFormat?: string;
+  monthInputDisplayFormat?: string;
   /**
-   * (string) A formatter to apply when displaying the day selector.
+   * (string) A formatter to apply when displaying the year selector on the input.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - Number by default: `YYYY` = (2021).
    * - Other options include: `YY` = (21).
    */
-  yearDisplayFormat?: string;
+  yearInputDisplayFormat?: string;
 }

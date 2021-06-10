@@ -31,31 +31,10 @@ export function calendarDayToDateLike(
   return dateObjectToDateLike(day.date, type, formatString, locale);
 }
 
-export function getDayInputOptions(
+export function getDaySelectOptions(
   days: Calendar.IDay[],
   formatString: string,
   locale: Locale = Dates.defaultLocale
 ): ISelectOption<number, Calendar.IMonth>[] {
   return days.map((day) => ({ id: day.numberInMonth, name: format(day.date, formatString, { locale }) }));
-}
-
-export function getMonthInputOptions(
-  months: Calendar.IMonth[],
-  formatString: string,
-  locale: Locale = Dates.defaultLocale
-): ISelectOption<number, Calendar.IMonth>[] {
-  return months.map((month) => ({
-    id: month.indexInYear,
-    name: format(month.date, formatString, { locale }),
-    data: month,
-    disabled: month.isDisabled,
-  }));
-}
-
-export function getYearInputOptions(
-  years: Calendar.IYear[],
-  formatString: string,
-  locale: Locale = Dates.defaultLocale
-): ISelectOption<number, Calendar.IYear>[] {
-  return years.map((year) => ({ id: year.number, name: format(year.date, formatString, { locale }), data: year }));
 }

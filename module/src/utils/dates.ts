@@ -1,6 +1,8 @@
 import { format, formatISO, parse, parseISO } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 
+import { Calendar, ISelectOption } from '..';
+
 /** Set of utilities and types relating to the native JS date object */
 export namespace Dates {
   /** The root type for date properties.
@@ -61,5 +63,26 @@ export namespace Dates {
       return `0${stringNumber}`;
     }
     return stringNumber;
+  }
+
+  export function getMonthSelectOptions(
+    months: Calendar.IMonth[],
+    formatString: string,
+    locale: Locale = Dates.defaultLocale
+  ): ISelectOption<number, Calendar.IMonth>[] {
+    return months.map((month) => ({
+      id: month.indexInYear,
+      name: format(month.date, formatString, { locale }),
+      data: month,
+      disabled: month.isDisabled,
+    }));
+  }
+
+  export function getYearSelectOptions(
+    years: Calendar.IYear[],
+    formatString: string,
+    locale: Locale = Dates.defaultLocale
+  ): ISelectOption<number, Calendar.IYear>[] {
+    return years.map((year) => ({ id: year.number, name: format(year.date, formatString, { locale }), data: year }));
   }
 }

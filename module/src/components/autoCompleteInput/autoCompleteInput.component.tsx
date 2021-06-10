@@ -25,7 +25,7 @@ export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconW
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
-  extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
+  extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange' | 'ref'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];

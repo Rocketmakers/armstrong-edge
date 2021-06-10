@@ -7,7 +7,7 @@ import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
 import { Button } from '../button';
-import { getDayOfWeekHeadings, getDaysWithDisplayFormat, getMonthOptions, getYearOptions } from './calendarView.utils';
+import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarView.utils';
 
 export interface ICalendarViewProps {
   /**
@@ -15,7 +15,7 @@ export interface ICalendarViewProps {
    * - By default, weeks will start on Sunday (index 0)
    * - Indexes range from Sunday = 0 to Saturday = 6
    */
-  weekdayStartIndex: number;
+  weekdayStartIndex?: number;
   /**
    * An optional locale to apply to all date formatting.
    * - Must be a date-fns compliant `Locale` object (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/Locale))
@@ -34,33 +34,76 @@ export interface ICalendarViewProps {
   onDayClicked?: (day: Calendar.IDay) => void;
   onBackClicked?: () => void;
   onForwardClicked?: () => void;
+  /**
+   * (string) A formatter to apply when displaying the days inside the calendar.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Number by default `d` = (1 - 31).
+   * - Other options include: `dd` = (01 - 31), `Do` = (1st - 31st)
+   */
+  calendarDayDisplayFormat?: string;
+  /**
+   * (string) A formatter to apply when displaying the month selector inside the calendar.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Long word by default: `MMMM` = (January - December)
+   * - Other options include: `MM` = (01 - 12), `MMMM` = (January - December)
+   */
+  calendarMonthSelectDisplayFormat?: string;
+  /**
+   * (string) A formatter to apply when displaying the year selector inside the calendar.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Number by default: `YYYY` = (2021).
+   * - Other options include: `YY` = (21).
+   */
+  calendarYearSelectDisplayFormat?: string;
+  /**
+   * (string) A formatter to apply when displaying the day of the week headings inside the calendar.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Number by default: `YYYY` = (2021).
+   * - Other options include: `YY` = (21).
+   */
+  calendarDayOfTheWeekHeadingDisplayFormat?: string;
 }
 
 export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>(
   (
-    { onForwardClicked, weekdayStartIndex, onBackClicked, onDayClicked, locale, days, months, years, currentMonthBinding, currentYearBinding },
+    {
+      onForwardClicked,
+      weekdayStartIndex,
+      onBackClicked,
+      onDayClicked,
+      locale,
+      days,
+      months,
+      years,
+      currentMonthBinding,
+      currentYearBinding,
+      calendarDayDisplayFormat,
+      calendarMonthSelectDisplayFormat,
+      calendarYearSelectDisplayFormat,
+      calendarDayOfTheWeekHeadingDisplayFormat,
+    },
     ref
   ) => {
     const dayOfWeekHeadings = React.useMemo(() => {
-      return Arrays.reIndex(getDayOfWeekHeadings(locale), weekdayStartIndex!);
-    }, [weekdayStartIndex, locale]);
+      return Arrays.reIndex(getDayOfWeekHeadings(calendarDayOfTheWeekHeadingDisplayFormat!, locale), weekdayStartIndex!);
+    }, [weekdayStartIndex, locale, calendarDayOfTheWeekHeadingDisplayFormat]);
 
     const monthOptions = React.useMemo(() => {
-      return getMonthOptions(months, locale);
-    }, [months, locale]);
+      return Dates.getMonthSelectOptions(months, calendarMonthSelectDisplayFormat!, locale);
+    }, [months, locale, calendarMonthSelectDisplayFormat]);
 
     const yearOptions = React.useMemo(() => {
-      return getYearOptions(years, locale);
-    }, [years, locale]);
+      return Dates.getYearSelectOptions(years, calendarYearSelectDisplayFormat!, locale);
+    }, [years, locale, calendarYearSelectDisplayFormat]);
 
     const displayDays = React.useMemo(() => {
-      return getDaysWithDisplayFormat(days, locale);
-    }, [days, locale]);
+      return getDaysWithDisplayFormat(days, calendarDayDisplayFormat!, locale);
+    }, [days, locale, calendarDayDisplayFormat]);
 
     // Calculate the number of "empty" days to display at the beginning of the month based on the day of the week displayed first, and the first day of the month selected.
     const blankDaysAtStartCount = React.useMemo(() => {
       const monthStartsOnWeekday = days[0]?.indexInWeek ?? 0;
-      return Maths.positiveModulo(monthStartsOnWeekday - weekdayStartIndex, 7);
+      return Maths.positiveModulo(monthStartsOnWeekday - weekdayStartIndex!, 7);
     }, [days, weekdayStartIndex]);
 
     return (
@@ -110,3 +153,11 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
     );
   }
 );
+
+CalendarView.defaultProps = {
+  weekdayStartIndex: 0,
+  calendarDayOfTheWeekHeadingDisplayFormat: 'eeeee',
+  calendarMonthSelectDisplayFormat: 'MMMM',
+  calendarYearSelectDisplayFormat: 'yyyy',
+  calendarDayDisplayFormat: 'd',
+};
