@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Button } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
-import { Icon, IconUtils } from '../icon';
+import { IconUtils } from '../icon';
 import { Dialog } from './dialog.component';
 
 /** metadata */
