@@ -4,10 +4,16 @@ import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { Spinner } from '../spinner';
 
 export interface IStatusProps {
+  /** (boolean) show a spinner */
   pending?: boolean;
+
+  /** (boolean) show an error state  */
   error?: boolean;
 
+  /** (IIcon) the icon to use for the error */
   errorIcon?: IIcon<IconSet>;
+
+  /** (IIcon) the icon to use for the spinner */
   spinnerIcon?: IIcon<IconSet>;
 }
 
