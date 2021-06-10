@@ -19,13 +19,13 @@
   height: $input-height;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   p.placeholder {
     color: $gray-light;
   }
 
   p {
-    cursor: pointer;
     font-size: 0.8rem;
   }
 }

@@ -12,8 +12,12 @@ $brand-primary: green;
 
 // import base component styles
 @import '../../dist/basic.scss';
+
 // import styled component styles
 @import '../../dist/prototyping.scss';
+
+// import animated component styles
+@import '../../dist/animated.scss';
 
 @import './theme/fonts';
 
