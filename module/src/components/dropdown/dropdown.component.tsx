@@ -27,7 +27,7 @@ export interface IDropdownProps
   /** (boolean) should open when the user clicks on children */
   openWhenClickInside?: boolean;
 
-  /** (boolean) should open when the user focuses inside vhildren */
+  /** (boolean) should open when the user focuses inside children */
   openWhenFocusInside?: boolean;
 
   /** (string) selector for the element to visually render the content below - by default will render below the wrapper element */
@@ -113,7 +113,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       [setPosition]
     );
 
-    const onScrollContent = React.useCallback(
+    const onScrollDocument = React.useCallback(
       (event: Event) => {
         if (
           closeOnScroll &&
@@ -131,15 +131,15 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
 
     React.useEffect(() => {
       if (isOpen) {
-        Globals.Document?.addEventListener('scroll', onScrollContent, { capture: true, passive: true });
-        Globals.Document?.body.addEventListener('resize', onScrollContent, { capture: true, passive: true });
+        Globals.Document?.addEventListener('scroll', onScrollDocument, { capture: true, passive: true });
+        Globals.Document?.body.addEventListener('resize', onScrollDocument, { capture: true, passive: true });
 
         return () => {
-          Globals.Document?.removeEventListener('scroll', onScrollContent, { capture: true });
-          Globals.Document?.body.removeEventListener('resize', onScrollContent, { capture: true });
+          Globals.Document?.removeEventListener('scroll', onScrollDocument, { capture: true });
+          Globals.Document?.body.removeEventListener('resize', onScrollDocument, { capture: true });
         };
       }
-    }, [isOpen, onScrollContent]);
+    }, [isOpen, onScrollDocument]);
 
     const onMouseDownEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
@@ -165,6 +165,19 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
 
     useResizeObserver(rootRef as any, setPosition);
 
+    const onScrollContent = React.useCallback((event: React.UIEvent) => event.stopPropagation(), []);
+    const onMouseDownContent = React.useCallback((event: React.UIEvent) => event.stopPropagation(), []);
+
+    const modalStyle = React.useMemo(
+      () =>
+        ({
+          '--arm-dropdown-top': `${top}px`,
+          '--arm-dropdown-left': `${left}px`,
+          '--arm-dropdown-width': `${width}px`,
+        } as React.CSSProperties),
+      [top, left, width]
+    );
+
     return (
       <div
         {...htmlProps}
@@ -181,26 +194,12 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           portalTo={portalTo}
           portalToSelector={portalToSelector}
           className={ClassNames.concat('arm-dropdown-content', contentClassName)}
-          style={
-            {
-              '--arm-dropdown-top': `${top}px`,
-              '--arm-dropdown-left': `${left}px`,
-              '--arm-dropdown-width': `${width}px`,
-            } as React.CSSProperties
-          }
+          style={modalStyle}
           ref={setModalRef}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
-          onScroll={(event) => {
-            event.stopPropagation();
-            // eslint-disable-next-line no-param-reassign
-            return false;
-          }}
-          onClick={(event) => {
-            event.stopPropagation();
-            event.nativeEvent.stopImmediatePropagation();
-          }}
-          onMouseDown={(event) => event.stopPropagation()}
+          onScroll={onScrollContent}
+          onMouseDown={onMouseDownContent}
           closeOnWindowBlur
           closeOnWindowClick
           closeOnBackgroundClick={false}

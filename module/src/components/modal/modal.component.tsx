@@ -11,7 +11,7 @@ export interface IModalProps
   /** (boolean) should the dropdown be rendered */
   isOpen: boolean;
 
-  /** (boolean) fired when the user attempts to close the modal by cicking outside of it (or other behaviours depending on the vaues of other props) */
+  /** (boolean) fired when the user attempts to close the modal by clicking outside of it (or other behaviors depending on the values of other props) */
   onOpenChange: (open: boolean) => void;
 
   /** (boolean) the modal will close if the user blurs the window */
@@ -19,7 +19,7 @@ export interface IModalProps
 
   /** (boolean) the modal will close if the user clicks outside of the arm-modal element
    * uses a window click with a stop prop on the modal element, will close all modals with this, not just the last one
-   * use closeOnBackgroundClick to esure that this will only happen when clicking on the
+   * use closeOnBackgroundClick to ensure that this will only happen when clicking on the
    */
   closeOnWindowClick?: boolean;
 
@@ -38,7 +38,7 @@ export interface IModalProps
 
 /**
  * A component which will portal its children into a div on top of all existing DOM, with handlers to close it if the user clicks outside of that area.
- * By defaut, if inside a ModalProvider, it will portal into an element rendered by that, but that can be overidden by providing portalTo or portalToSelector
+ * By default, if inside a ModalProvider, it will portal into an element rendered by that, but that can be overridden by providing portalTo or portalToSelector
  */
 
 export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
@@ -84,7 +84,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     useEventListener('click', onWindowClick, Globals.Document?.body);
     useEventListener('blur', onWindowBlur, Globals.Window);
 
-    /** Stop propogation when clicking on the modal, to stop modal clicks from also closing the window */
+    /** Stop propagation when clicking on the modal, to stop modal clicks from also closing the window */
     const onClickEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         onClick?.(event);
@@ -104,7 +104,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
           close();
         }
       },
-      [onClick, close, closeOnBackgroundClick]
+      [onClickWrapper, close, closeOnBackgroundClick]
     );
 
     const wrapperRef = useModalLayerElement();
