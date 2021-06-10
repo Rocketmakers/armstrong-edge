@@ -44,6 +44,7 @@ export interface IRadioInputListProps<Id extends ArmstrongId> extends Pick<IRadi
   error?: boolean;
 }
 
+/** Render a list of radio inputs which binds to a single string */
 export const RadioInputList = React.forwardRef(
   <Id extends string>(
     {

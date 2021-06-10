@@ -1,0 +1,20 @@
+.arm-modal-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+
+  &[data-close-on-background-click='false'] {
+    pointer-events: none;
+
+    .arm-modal {
+      pointer-events: visible;
+    }
+  }
+}
+
+.arm-modal {
+  background-color: $white;
+  user-select: contain;
+}

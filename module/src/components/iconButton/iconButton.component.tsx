@@ -13,6 +13,7 @@ export interface IIconButtonProps extends Omit<IButtonProps, 'leftIcon' | 'right
   iconOnly?: boolean;
 }
 
+/** A button that only renders an icon without text */
 export const IconButton: React.FunctionComponent<IIconButtonProps> = ({ icon, pending, error, errorIcon, className, iconOnly, ...buttonProps }) => {
   return (
     <Button {...buttonProps} className={ClassNames.concat('arm-icon-button', className)} statusPosition={undefined} data-icon-only={iconOnly}>

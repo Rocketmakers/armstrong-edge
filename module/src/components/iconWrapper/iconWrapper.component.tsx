@@ -12,7 +12,6 @@ export interface IIconWrapperProps<TLeftIcon extends IconSet, TRightIcon extends
 }
 
 /** Wraps its children with optional icons on either side */
-
 export const IconWrapper = <TLeftIcon extends IconSet, TRightIcon extends IconSet>({
   leftIcon,
   rightIcon,

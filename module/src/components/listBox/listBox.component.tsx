@@ -17,7 +17,6 @@ export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
     Pick<IDropdownItem, 'group'> {}
 
 /** A DOM recreation of a select element */
-
 export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;

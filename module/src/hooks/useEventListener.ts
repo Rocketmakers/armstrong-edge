@@ -10,11 +10,11 @@ import { Globals } from '../utils/globals';
  * @param element the element to add the listener to, defaults to window
  */
 
-export const useEventListener = (
+export function useEventListener(
   type: string,
   eventHandler: (e: Event) => any,
   element: Pick<HTMLElement, 'addEventListener' | 'removeEventListener'> | undefined = Globals.Window
-) => {
+) {
   React.useEffect(() => {
     if (element) {
       element.addEventListener(type, eventHandler, { passive: true });
@@ -24,4 +24,4 @@ export const useEventListener = (
       };
     }
   }, [eventHandler]);
-};
+}

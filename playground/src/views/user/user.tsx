@@ -6,7 +6,7 @@ import {
   EmailInput,
   TextAreaInput,
   Arrays,
-  SelectInput,
+  ListBox,
   SwitchInput,
   Spinner,
   Button,
@@ -14,7 +14,7 @@ import {
   AutoCompleteInput,
   NativeDateInput,
   TagInput,
-  NativeSelectInput,
+  Select,
 } from "@rocketmakers/armstrong-edge"
 import { useParams } from "react-router"
 
@@ -109,7 +109,7 @@ export const UserEdit: React.FC = () => {
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SwitchInput bind={formProp('isCool').bind()} validationErrorMessages={['uh oh']} />
         <TagInput bind={formProp('sauces').bind()} spaceCreatesTags tagPosition="inside" />
-        <SelectInput
+        <ListBox
           leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
           bind={formProp("favouriteColour").bind()}
           options={[
@@ -119,7 +119,7 @@ export const UserEdit: React.FC = () => {
           ]}
           ref={selectRef}
         />
-        <NativeSelectInput
+        <Select
           leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
           bind={formProp("favouriteColour").bind()}
           options={[

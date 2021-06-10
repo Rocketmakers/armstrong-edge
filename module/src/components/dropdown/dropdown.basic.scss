@@ -17,21 +17,12 @@ $arm-dropdown-height: 240px;
   background-color: $white;
   width: $arm-dropdown-width;
   min-width: $arm-dropdown-min-width;
-  pointer-events: none;
   transition: max-height $transition-medium linear, opacity $transition-quick;
   overflow: auto;
-  opacity: 0;
   border-radius: $border-radius-small;
-  // max-height: 0;
   max-height: $arm-dropdown-height;
   user-select: none;
-
-  &[data-is-open='true'] {
-    // max-height: $arm-dropdown-height;
-    pointer-events: all;
-    opacity: 1;
-    transition: max-height $transition-quick linear;
-  }
+  z-index: 2;
 }
 
 @include screen-phone {
