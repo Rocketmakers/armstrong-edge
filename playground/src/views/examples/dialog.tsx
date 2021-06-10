@@ -7,7 +7,7 @@ import {
 import * as React from "react";
 
 export const DialogExample: React.FC = () => {
-  const openDialog = useDialog<string, { test: string }>(
+  const [openDialog] = useDialog<string, { test: string }>(
     ({ resolve, argument }) => {
       const [val, setVal] = React.useState("");
 

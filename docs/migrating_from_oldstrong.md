@@ -67,3 +67,13 @@ The new Dialog `component` uses the `Modal` under the hood, and works the same w
 Another feature of the `ModalProvider` is that it provides the context used for `useModal` and `useDialog` which are hooks designed to work the same way as the old `useDialogProvider` hook - when the callback they return is run, it opens a Modal and returns a promise that is resolved when the user performs a defined action inside that Modal.
 
 For detailed information on using that hook, see `useModal and useDialog` in Storybook
+
+The only breaking change when switching from `useDialogProvider` to `useDialog` is that it now returns an array where the second element in that array has an object with some state on it (currently only used for isOpen)
+
+```tsx
+// old
+const open = useDialogProvider(() => <p>HIYA</p>);
+
+// new
+const [open, { isOpen }] = useDialogProvider(() => <p>HIYA</p>);
+```

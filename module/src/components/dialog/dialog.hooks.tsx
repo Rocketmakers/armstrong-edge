@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Button } from '../button';
-import { IUseModalComponentProps, useModalLayerPromise } from '../modal/modal.hooks';
+import { IUseModalLayerPromiseComponentProps, useModalLayerPromise } from '../modal/modal.hooks';
 import { Dialog, IDialogProps } from '.';
 
 /** Add a dialog to the modal layer with a promise that can be resolved from inside the dialog */
 export const useDialog = <T, TArg = unknown>(
   /** The JSX to render inside the Dialog, with the promise functions passed in as props */
-  Children: React.FC<IUseModalComponentProps<T, TArg>>,
+  Children: React.FC<IUseModalLayerPromiseComponentProps<T, TArg>>,
   /** The props to give to the actual Modal component */
   props?: Omit<IDialogProps, 'isOpen' | 'onOpenChange'>
 ) => useModalLayerPromise(Children, (internalProps) => <Dialog {...internalProps} {...props} />);
