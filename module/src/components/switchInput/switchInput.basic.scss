@@ -3,54 +3,6 @@ $arm-switch-input-height: 30px !default;
 $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall * 2});
 
 .arm-switch-input {
-  .arm-switch-input-inner {
-    position: relative;
-    cursor: pointer;
-    height: $arm-switch-input-height;
-    width: $arm-switch-input-width;
-    box-shadow: $shadow-inner-xsmall;
-
-    input {
-      @include fill;
-      appearance: none;
-      border: none;
-      outline: none;
-      background-color: transparent;
-      padding: 0;
-      margin: 0;
-      cursor: pointer;
-    }
-
-    &::after {
-      @include init-pseudo;
-      @include square($arm-switch-input-handle);
-      top: $spacing-xxsmall;
-      left: $spacing-xxsmall;
-      position: absolute;
-      pointer-events: none;
-      box-shadow: $shadow-small;
-    }
-
-    .arm-switch-input-unchecked-icon,
-    .arm-switch-input-checked-icon {
-      @include square($arm-switch-input-handle);
-      @include flex-centre-content;
-      position: absolute;
-      top: $spacing-xxsmall;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .arm-switch-input-checked-icon {
-      right: $spacing-xxsmall;
-      opacity: 0;
-    }
-
-    .arm-switch-input-unchecked-icon {
-      left: $spacing-xxsmall;
-    }
-  }
-
   &[data-icon-style='on-handle'] {
     .arm-switch-input-inner {
       .arm-switch-input-checked-icon {
@@ -74,4 +26,52 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall 
       opacity: 0;
     }
   }
+}
+
+.arm-switch-input-inner {
+  position: relative;
+  cursor: pointer;
+  height: $arm-switch-input-height;
+  width: $arm-switch-input-width;
+  box-shadow: $shadow-inner-xsmall;
+
+  &::after {
+    @include init-pseudo;
+    @include square($arm-switch-input-handle);
+    top: $spacing-xxsmall;
+    left: $spacing-xxsmall;
+    position: absolute;
+    pointer-events: none;
+    box-shadow: $shadow-small;
+  }
+}
+
+.arm-switch-input-checkbox {
+  @include fill;
+  appearance: none;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.arm-switch-input-unchecked-icon,
+.arm-switch-input-checked-icon {
+  @include square($arm-switch-input-handle);
+  @include flex-centre-content;
+  position: absolute;
+  top: $spacing-xxsmall;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.arm-switch-input-checked-icon {
+  right: $spacing-xxsmall;
+  opacity: 0;
+}
+
+.arm-switch-input-unchecked-icon {
+  left: $spacing-xxsmall;
 }

@@ -87,6 +87,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
         >
           <div className="arm-switch-input-inner">
             <input
+              className="arm-switch-input-checkbox"
               {...nativeProps}
               ref={ref}
               type="checkbox"

@@ -27,7 +27,14 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
       <div className={ClassNames.concat('arm-radio-input', className)} data-checked={checked} data-has-checked-icon={!!checkedIcon}>
         <label>
           <div className="arm-radio-input-radio">
-            <input ref={ref} type="radio" checked={checked} onChange={() => onChange?.(!checked)} {...nativeProps} />
+            <input
+              className="arm-radio-input-radio-input"
+              ref={ref}
+              type="radio"
+              checked={checked}
+              onChange={() => onChange?.(!checked)}
+              {...nativeProps}
+            />
 
             {checkedIcon && <Icon className="arm-radio-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
             {uncheckedIcon && <Icon className="arm-radio-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}

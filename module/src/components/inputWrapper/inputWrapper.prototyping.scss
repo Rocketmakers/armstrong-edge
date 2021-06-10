@@ -1,16 +1,7 @@
-.input-wrapper {
+.arm-input-wrapper {
   box-shadow: $shadow-small;
   border-radius: $spacing-xxsmall;
-  transition: opacity $transition-quick, border-color $transition-quick, box-shadow $transition-quick;
   border: 1px solid transparent;
-
-  .arm-input-overlay {
-    p.arm-input-overlay-text {
-      color: $gray-light;
-      font-size: 0.75rem;
-      white-space: nowrap;
-    }
-  }
 
   &[data-disabled='true'] {
     opacity: 0.5;
@@ -20,15 +11,21 @@
     border: 1px solid $color-negative;
   }
 
-  .arm-input-wrapper-above {
-    border-bottom: $line-very-light;
-  }
-
-  .arm-input-wrapper-below {
-    border-top: $line-very-light;
-  }
-
   &:focus-within {
     box-shadow: $shadow-medium;
   }
+}
+
+.arm-input-wrapper-above {
+  border-bottom: $line-very-light;
+}
+
+.arm-input-wrapper-below {
+  border-top: $line-very-light;
+}
+
+p.arm-input-overlay-text {
+  color: $gray-light;
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
