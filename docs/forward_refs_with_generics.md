@@ -15,10 +15,10 @@ interface IRef {
     ...bits
 }
 
-export const MyComponent = React.forwardRef(<T extends any>({ myThing }: IMyComponentProps<T>, ref) => {
+export const MyComponent = React.forwardRef(<T extends any>({ myThing }: IMyComponentProps<T>, ref: MyRefType) => {
     // component inners
 }) as (<T extends any>(
-  props: React.PropsWithChildren<IMyComponentProps<T>> & React.RefAttributes<HTMLSelectElement>
+  props: React.PropsWithChildren<IMyComponentProps<T>> & React.RefAttributes<MyRefType>
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<IMyComponentProps<any>> };
 ```
 

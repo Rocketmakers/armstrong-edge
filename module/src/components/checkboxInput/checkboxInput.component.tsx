@@ -93,7 +93,14 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
         >
           <label>
             <div className="arm-checkbox-input-checkbox">
-              <input onChange={onChangeEvent} {...nativeProps} type="checkbox" ref={ref} checked={boundValue} />
+              <input
+                className="arm-checkbox-input-checkbox-input"
+                onChange={onChangeEvent}
+                {...nativeProps}
+                type="checkbox"
+                ref={ref}
+                checked={boundValue}
+              />
 
               {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
               {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}

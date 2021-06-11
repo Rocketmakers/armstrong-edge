@@ -12,10 +12,10 @@
     width: max-content;
     height: max-content;
   }
+}
 
-  .arm-spinner-inner {
-    animation: spin-clockwise $transition-slow linear infinite;
-    width: max-content;
-    height: max-content;
-  }
+.arm-spinner-inner {
+  animation: spin-clockwise $transition-slow linear infinite;
+  width: max-content;
+  height: max-content;
 }

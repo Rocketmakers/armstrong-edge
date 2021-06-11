@@ -231,6 +231,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
         <div className="arm-tag-input-inner">
           {tagPosition === 'inside' && tagsJsx}
           <input
+            className="arm-tag-input-input"
             {...nativeProps}
             ref={internalRef}
             value={textInputInternalValue}

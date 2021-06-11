@@ -1,6 +1,8 @@
 import * as React from 'react';
 
-import { useResizeObserver } from '../../hooks/useResizeObserver';
+import { useResizeObserver } from '../../hooks';
+import { useElementContentRect } from '../../hooks/useElementContentRect';
+import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
 import { Modal } from '../modal';
@@ -71,11 +73,36 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const elementToRenderBelowRef = React.useRef<Element>();
     const modalRef = React.useRef<HTMLDivElement>();
 
+    const [rootRect, getRootRectContentRect] = useElementContentRect(elementToRenderBelowRef);
+    const [modalRect] = useElementContentRect(modalRef);
+    const windowSize = useWindowSize();
+
+    useResizeObserver(getRootRectContentRect, rootRef);
+
+    const setModalRef = React.useCallback(
+      (node: HTMLDivElement) => {
+        modalRef.current = node;
+        getRootRectContentRect();
+      },
+      [getRootRectContentRect]
+    );
+
     React.useImperativeHandle(ref, () => ({ rootRef, modalRef }), [rootRef, modalRef]);
 
-    const [top, setTop] = React.useState<number>();
-    const [left, setLeft] = React.useState<number>();
-    const [width, setWidth] = React.useState<number>();
+    const top = React.useMemo(
+      () =>
+        rootRect &&
+        modalRect &&
+        Math.max(0, Math.min(rootRect.top + rootRect.height, (windowSize.innerHeight || 0) - modalRect.height - rootRect.height)),
+      [rootRect?.top, rootRect?.height, modalRect?.height, windowSize.innerHeight]
+    );
+
+    const left = React.useMemo(
+      () => rootRect && modalRect && Math.max(0, Math.min(rootRect.left, (windowSize.innerWidth || 0) - modalRect.width)),
+      [rootRect?.left, modalRect?.width, windowSize.innerWidth]
+    );
+
+    const width = React.useMemo(() => rootRect?.width, [rootRect?.width]);
 
     // assign the element given to render the dropdown items below to a ref so we don't have to reselect it every time
     React.useLayoutEffect(() => {
@@ -86,33 +113,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       }
     }, [childRootElementSelector, rootRef.current]);
 
-    const setPosition = React.useCallback(() => {
-      if (isOpen && rootRef.current && modalRef.current) {
-        const elementToRenderBelow = elementToRenderBelowRef.current;
-
-        const rect = elementToRenderBelow!.getBoundingClientRect();
-        const contentRect = modalRef.current.getBoundingClientRect();
-
-        // set top and left from position, but ensure it doesn't fall off the edge of the screen
-        const newTop = Math.max(Math.min(rect.top + rect.height, (Globals.Window?.innerHeight || 0) - contentRect.height - rect.height));
-        const newLeft = Math.max(0, Math.min(rect.left, (Globals.Window?.innerWidth || 0) - contentRect.width));
-
-        setTop(newTop);
-        setLeft(newLeft);
-        setWidth(rect.width);
-      }
-    }, [isOpen, rootRef.current, modalRef.current]);
-
-    // set the ref for the modal content by taking over the ref callback and running setPosition based on the node passed in
-    // to ensure it is run when the ref comes into existence
-    const setModalRef = React.useCallback(
-      (node: HTMLDivElement) => {
-        modalRef.current = node;
-        setPosition();
-      },
-      [setPosition]
-    );
-
     const onScrollDocument = React.useCallback(
       (event: Event) => {
         if (
@@ -122,11 +122,9 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
             !(event.target instanceof HTMLDivElement))
         ) {
           onOpenChange(false);
-        } else {
-          setPosition();
         }
       },
-      [onOpenChange, closeOnScroll, setPosition]
+      [onOpenChange, closeOnScroll]
     );
 
     React.useEffect(() => {
@@ -162,8 +160,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       },
       [openWhenFocusInside, onOpenChange, onFocus]
     );
-
-    useResizeObserver(rootRef as any, setPosition);
 
     const onScrollContent = React.useCallback((event: React.UIEvent) => event.stopPropagation(), []);
     const onMouseDownContent = React.useCallback((event: React.UIEvent) => event.stopPropagation(), []);

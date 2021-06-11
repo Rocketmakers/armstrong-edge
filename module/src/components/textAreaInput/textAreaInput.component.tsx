@@ -27,7 +27,7 @@ const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextA
       [setActualValue, onChange]
     );
 
-    return <textarea ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+    return <textarea className="arm-text-area-input-textarea" ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
   }
 );
 
@@ -43,7 +43,7 @@ const ThrottledTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedText
       [setActualValue, onChange]
     );
 
-    return <textarea ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+    return <textarea className="arm-text-area-input-textarea" ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
   }
 );
 
@@ -162,7 +162,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
             ref={ref}
           />
         )}
-        {!delay?.milliseconds && <textarea {...nativeProps} onChange={onChangeEvent} {...inputProps} />}
+        {!delay?.milliseconds && <textarea className="arm-text-area-input-textarea" {...nativeProps} onChange={onChangeEvent} {...inputProps} />}
       </InputWrapper>
     );
   }

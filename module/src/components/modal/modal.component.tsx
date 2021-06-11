@@ -81,7 +81,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       }
     }, [isOpen, close, closeOnWindowBlur]);
 
-    useEventListener('click', onWindowClick, Globals.Document?.body);
+    useEventListener('click', onWindowClick, Globals.Document);
     useEventListener('blur', onWindowBlur, Globals.Window);
 
     /** Stop propagation when clicking on the modal, to stop modal clicks from also closing the window */

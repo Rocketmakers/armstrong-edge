@@ -1,6 +1,7 @@
 export * from './useArrayState';
 export * from './useDebounce';
 export * from './useDidUpdateEffect';
+export * from './useElementContentRect';
 export * from './useEventListener';
 export * from './useGeneratedId';
 export * from './useIntersectionObserver';

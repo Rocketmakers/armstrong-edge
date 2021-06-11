@@ -1,24 +1,24 @@
-.arm-input.arm-text-area-input {
+.arm-text-area-input {
   width: $input-width-large;
 
   .arm-input-inner {
     cursor: text;
+  }
+}
 
-    textarea {
-      min-height: $input-height-large;
-      width: 100%;
+.arm-text-area-input-textarea {
+  min-height: $input-height-large;
+  width: 100%;
 
-      appearance: none;
-      background-color: transparent;
-      resize: none;
-      font-family: inherit;
-      outline: none;
-      border: none;
+  appearance: none;
+  background-color: transparent;
+  resize: none;
+  font-family: inherit;
+  outline: none;
+  border: none;
 
-      &:focus {
-        outline: none;
-        border: none;
-      }
-    }
+  &:focus {
+    outline: none;
+    border: none;
   }
 }

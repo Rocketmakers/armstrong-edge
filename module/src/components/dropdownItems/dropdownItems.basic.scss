@@ -9,12 +9,12 @@
   ul {
     padding: 0;
     margin: 0;
-
-    .arm-dropdown-item {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: $spacing-xsmall;
-    }
   }
+}
+
+.arm-dropdown-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xsmall;
 }
