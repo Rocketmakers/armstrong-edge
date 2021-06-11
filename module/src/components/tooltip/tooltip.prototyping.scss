@@ -60,8 +60,8 @@
 
     &::after {
       border-top: $spacing-xsmall solid transparent;
-      border-right: $spacing-xsmall solid transparent;
-      border-bottom: $spacing-xsmall solid white;
+      border-bottom: $spacing-xsmall solid transparent;
+      border-left: $spacing-xsmall solid white;
     }
   }
 
@@ -70,8 +70,8 @@
 
     &::before {
       border-top: $spacing-xsmall solid transparent;
-      border-left: $spacing-xsmall solid transparent;
-      border-bottom: $spacing-xsmall solid white;
+      border-bottom: $spacing-xsmall solid transparent;
+      border-right: $spacing-xsmall solid white;
     }
   }
 

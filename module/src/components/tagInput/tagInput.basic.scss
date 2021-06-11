@@ -15,9 +15,8 @@
 .arm-tag-input-inner {
   overflow-x: auto;
   flex-grow: 1;
-  display: flex;
-  align-items: center;
-  gap: $spacing-xsmall;
+  @include flex-centre-content;
+  @include space-between-children-horizontal($spacing-xsmall);
 }
 
 .arm-input-wrapper-above,
@@ -25,7 +24,12 @@
   overflow-y: auto;
   display: flex;
   align-items: center;
-  gap: $spacing-xsmall;
+  @include space-between-children-horizontal($spacing-xsmall);
   flex-wrap: wrap;
   min-height: 0;
+
+  .arm-tag {
+    margin-top: $spacing-xxsmall * 0.5;
+    margin-bottom: $spacing-xxsmall * 0.5;
+  }
 }

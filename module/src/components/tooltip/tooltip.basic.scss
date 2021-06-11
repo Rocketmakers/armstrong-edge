@@ -1,5 +1,6 @@
 $arm-tooltip-top: var(--arm-tooltip-top) !default;
 $arm-tooltip-left: var(--arm-tooltip-left) !default;
+$arm-tooltip-max-width: 250px;
 
 .arm-tooltip-wrapper {
   cursor: default;
@@ -8,6 +9,7 @@ $arm-tooltip-left: var(--arm-tooltip-left) !default;
 .arm-tooltip {
   left: $arm-tooltip-left;
   top: $arm-tooltip-top;
+  max-width: $arm-tooltip-max-width;
   background-color: red;
   position: fixed;
 }

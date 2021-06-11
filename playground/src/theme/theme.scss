@@ -38,10 +38,10 @@ body,
 form {
   display: flex;
   flex-direction: column;
-  gap: $spacing-medium;
+  @include space-between-children-vertical($spacing-xsmall);
 }
 fieldset {
   display: flex;
   flex-direction: column;
-  gap: $spacing-small;
+  @include space-between-children-vertical($spacing-xsmall);
 }
