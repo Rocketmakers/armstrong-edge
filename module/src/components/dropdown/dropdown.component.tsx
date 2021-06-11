@@ -93,7 +93,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       () =>
         rootRect &&
         modalRect &&
-        Math.max(Math.min(rootRect.top + rootRect.height, (windowSize.innerHeight || 0) - modalRect.height - rootRect.height)),
+        Math.max(0, Math.min(rootRect.top + rootRect.height, (windowSize.innerHeight || 0) - modalRect.height - rootRect.height)),
       [rootRect?.top, rootRect?.height, modalRect?.height, windowSize.innerHeight]
     );
 
