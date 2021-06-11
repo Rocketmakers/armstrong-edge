@@ -17,7 +17,8 @@
     "check-versions": "ncu && (cd module && ncu) && (cd playground && ncu)",
     "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i",
     "storybook": "(cd module && npm run storybook)",
-    "build-storybook": "(cd module && npm run build-storybook)"
+    "build-storybook": "(cd module && npm run build-storybook)",
+    "lint": "(cd module && npm run lint)"
   },
   "repository": {
     "type": "git",
