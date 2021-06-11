@@ -116,10 +116,9 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onScrollDocument = React.useCallback(
       (event: Event) => {
         if (
-          closeOnScroll &&
           // check if scrolling element is inside the dropdown content
-          ((event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
-            !(event.target instanceof HTMLDivElement))
+          (event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
+          !(event.target instanceof HTMLDivElement)
         ) {
           onOpenChange(false);
         }
@@ -128,7 +127,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     );
 
     React.useEffect(() => {
-      if (isOpen) {
+      if (isOpen && closeOnScroll) {
         Globals.Document?.addEventListener('scroll', onScrollDocument, { capture: true, passive: true });
         Globals.Document?.body.addEventListener('resize', onScrollDocument, { capture: true, passive: true });
 

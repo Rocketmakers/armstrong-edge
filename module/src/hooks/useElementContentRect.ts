@@ -6,7 +6,9 @@ import { useResizeObserver } from './useResizeObserver';
 export type useElementContentRectReturn = [DOMRect, () => void];
 
 /**
- * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events - if you need to do anything fancier, you'll have to use the second item in the returned array to force a resize
+ * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
+ * WARNING: positions will not update automatically, other than when something resizes, if you need to do anything fancier, you'll have to
+ * use the callback which is the second item in the returned array to force a resize
  * @param ref the html element to watch
  */
 export function useElementContentRect(ref: React.MutableRefObject<Element | undefined | null>): useElementContentRectReturn {

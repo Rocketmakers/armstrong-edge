@@ -1,0 +1,13 @@
+$arm-tooltip-top: var(--arm-tooltip-top) !default;
+$arm-tooltip-left: var(--arm-tooltip-left) !default;
+
+.arm-tooltip-wrapper {
+  cursor: default;
+}
+
+.arm-tooltip {
+  left: $arm-tooltip-left;
+  top: $arm-tooltip-top;
+  background-color: red;
+  position: fixed;
+}

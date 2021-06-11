@@ -1,14 +1,34 @@
 import * as React from 'react';
 
-import { IPortalProps } from '../..';
+import { IPortalProps, useResizeObserver } from '../..';
+import { useElementContentRect } from '../../hooks/useElementContentRect';
+import { useIsHovering } from '../../hooks/useIsHovering';
+import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
 import { Modal } from '../modal';
 
+export type TooltipPosition = 'above' | 'below' | 'left' | 'right';
+
 export interface ITooltipProps
-  extends React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+  extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onMouseEnter' | 'onMouseLeave'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
   /** (ReactNode) the contents of the tooltip */
   content: React.ReactNode;
+
+  /** (['above'|'below'|'left'|'right']) an array of options for the tooltip to render, in order of preference */
+  tooltipPosition?: TooltipPosition[];
+
+  /** (string) the className for the  */
+  wrapperClassName?: string;
+
+  /** (number) the margin in px around the edge of the innerWindow used to detect whether the tooltip is intersecting the edge - defaults to 5 */
+  edgeDetectionMargin?: number;
+
+  /** (boolean) should the tooltip be open (by default, will only open if hovered) */
+  isOpen?: boolean;
+
+  /** (boolean) should open when the children are hovered - true by default */
+  openOnHover?: boolean;
 }
 
 export interface ITooltipRef {
@@ -20,22 +40,142 @@ export interface ITooltipRef {
 }
 
 export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
-  ({ content, className, children, portalTo, portalToSelector, ...nativeProps }, ref) => {
+  (
+    {
+      content,
+      className,
+      children,
+      portalTo,
+      portalToSelector,
+      tooltipPosition,
+      wrapperClassName,
+      edgeDetectionMargin,
+      isOpen,
+      openOnHover,
+      ...nativeProps
+    },
+    ref
+  ) => {
     const rootRef = React.useRef<HTMLDivElement>(null);
     const modalRef = React.useRef<HTMLDivElement>();
 
+    const [rootRect, getRootRectContentRect] = useElementContentRect(rootRef);
+    const [modalRect] = useElementContentRect(modalRef);
+    const windowSize = useWindowSize();
+
+    useResizeObserver(getRootRectContentRect, rootRef);
+
+    const setModalRef = React.useCallback(
+      (node: HTMLDivElement) => {
+        modalRef.current = node;
+        getRootRectContentRect();
+      },
+      [getRootRectContentRect]
+    );
+
     React.useImperativeHandle(ref, () => ({ rootRef, modalRef }), [rootRef, modalRef]);
 
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isHovering, hoveringProps] = useIsHovering();
+
+    /** Check if the tooltip is inside the screen for a given top and left */
+    const getIsInside = React.useCallback(
+      (top: number, left: number) =>
+        top > edgeDetectionMargin! &&
+        top + (modalRect?.height || 0!) < windowSize.innerHeight - edgeDetectionMargin! &&
+        left > edgeDetectionMargin! &&
+        left + (modalRect?.width || 0!) < windowSize.innerWidth - edgeDetectionMargin!,
+      [modalRect?.width, modalRect?.height, windowSize.innerWidth, windowSize.innerHeight, edgeDetectionMargin]
+    );
+
+    /** Get left and top values when placing the tooltip in a tooltipPosition */
+    const getPosition = React.useCallback(
+      (position: TooltipPosition) => {
+        switch (position) {
+          case 'above': {
+            const top = rootRect.top - modalRect.height;
+            const left = rootRect.left + rootRect.width / 2 - modalRect.width / 2;
+            return { top, left, outside: !getIsInside(top, left), position: 'above' };
+          }
+          case 'below': {
+            const top = rootRect.top + rootRect.height;
+            const left = rootRect.left + rootRect.width / 2 - modalRect.width / 2;
+            return { top, left, outside: !getIsInside(top, left), position: 'below' };
+          }
+          case 'left': {
+            const left = rootRect.left - modalRect.left;
+            const top = rootRect.top + rootRect.height / 2 - modalRect.height / 2;
+            return { left, top, outside: !getIsInside(top, left), position: 'left' };
+          }
+          case 'right': {
+            const left = rootRect.left + rootRect.width;
+            const top = rootRect.top + rootRect.height / 2 - modalRect.height / 2;
+            return { left, top, outside: !getIsInside(top, left), position: 'right' };
+          }
+          default: {
+            break;
+          }
+        }
+      },
+      [
+        windowSize.innerWidth,
+        windowSize.innerHeight,
+        rootRect?.left,
+        rootRect?.top,
+        rootRect?.height,
+        rootRect?.width,
+        modalRect?.height,
+        modalRect?.width,
+      ]
+    );
+
+    /** Loop through the given positions and use the first one where the tooltip is not off the edge */
+    const position = React.useMemo(() => {
+      if (isHovering && tooltipPosition?.length) {
+        for (let index = 0; index < tooltipPosition.length; index += 1) {
+          const positionOption = tooltipPosition[index];
+
+          const calculatedPosition = getPosition(positionOption);
+
+          // if position isn't outside the screen or if it's just the last option in the array of possible positions
+          if (!calculatedPosition?.outside || index === tooltipPosition.length - 1) {
+            return calculatedPosition;
+          }
+        }
+      }
+    }, [getPosition, tooltipPosition, isHovering]);
+
+    const style = React.useMemo(
+      () =>
+        ({
+          '--arm-tooltip-left': `${position?.left || 0}px`,
+          '--arm-tooltip-top': `${position?.top || 0}px`,
+        } as React.CSSProperties),
+      [position]
+    );
 
     return (
-      <div className={ClassNames.concat('arm-tooltip-wrapper', className)} ref={rootRef} {...nativeProps}>
+      <div className={ClassNames.concat('arm-tooltip-wrapper', wrapperClassName)} ref={rootRef} {...nativeProps} {...hoveringProps}>
         {children}
 
-        <Modal portalTo={portalTo} portalToSelector={portalToSelector} isOpen={isOpen} onOpenChange={setIsOpen}>
-          {content}
+        <Modal
+          className={ClassNames.concat('arm-tooltip', className)}
+          ref={setModalRef}
+          portalTo={portalTo}
+          portalToSelector={portalToSelector}
+          isOpen={isOpen || (openOnHover && isHovering) || false}
+          closeOnBackgroundClick={false}
+          style={style}
+          data-position={position?.position}
+        >
+          <div className="arm-tooltip-inner">{typeof content === 'string' ? <p>{content}</p> : content}</div>
         </Modal>
       </div>
     );
   }
 );
+
+Tooltip.defaultProps = {
+  tooltipPosition: ['below', 'right', 'above', 'left'],
+  edgeDetectionMargin: 5,
+  openOnHover: true,
+};
