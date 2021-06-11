@@ -1,15 +1,10 @@
 import * as React from 'react';
 
-import { Calendar, Select } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { Arrays } from '../../utils/arrays';
-import { ClassNames } from '../../utils/classNames';
+import { Calendar } from '../..';
 import { Dates } from '../../utils/dates';
-import { Maths } from '../../utils/maths';
-import { Button } from '../button';
-import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarView.utils';
+import { CalendarDisplay } from '../calendarDisplay/calendarDisplay.component';
 
-export interface ICalendarViewProps {
+export interface ICalendarViewProps extends Calendar.IConfig {
   /**
    * (number) An optional "day of the week" index to be the first day of the week.
    * - By default, weeks will start on Sunday (index 0)
@@ -17,147 +12,65 @@ export interface ICalendarViewProps {
    */
   weekdayStartIndex?: number;
   /**
-   * An optional locale to apply to all date formatting.
-   * - Must be a date-fns compliant `Locale` object (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/Locale))
-   * - If no locale is passed, `en-GB` will be used as the system default for all date formatting.
+   * ((date: Date, dateString: string) => void) An optional function to call when a date is clicked.
+   * @param date The date object of the date that has been clicked.
+   * @param dateString A formatted string representation of the date that has been clicked (will use the `formatString` prop if passed, or fall back to strict ISO.)
    */
-  locale?: Dates.DateLocale;
-  /**
-   * ((day: Calendar.IDay) => void) An optional function to call when a day is clicked.
-   * @param day The day that has been clicked.
-   */
-  days: Calendar.IDay[];
-  months: Calendar.IMonth[];
-  years: Calendar.IYear[];
-  currentMonthBinding: IBindingProps<number>;
-  currentYearBinding: IBindingProps<number>;
-  onDayClicked?: (day: Calendar.IDay) => void;
-  onBackClicked?: () => void;
-  onForwardClicked?: () => void;
-  /**
-   * (string) A formatter to apply when displaying the days inside the calendar.
-   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
-   * - Number by default `d` = (1 - 31).
-   * - Other options include: `dd` = (01 - 31), `Do` = (1st - 31st)
-   */
-  calendarDayDisplayFormat?: string;
-  /**
-   * (string) A formatter to apply when displaying the month selector inside the calendar.
-   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
-   * - Long word by default: `MMMM` = (January - December)
-   * - Other options include: `MM` = (01 - 12), `MMMM` = (January - December)
-   */
-  calendarMonthSelectDisplayFormat?: string;
-  /**
-   * (string) A formatter to apply when displaying the year selector inside the calendar.
-   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
-   * - Number by default: `YYYY` = (2021).
-   * - Other options include: `YY` = (21).
-   */
-  calendarYearSelectDisplayFormat?: string;
-  /**
-   * (string) A formatter to apply when displaying the day of the week headings inside the calendar.
-   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
-   * - Number by default: `YYYY` = (2021).
-   * - Other options include: `YY` = (21).
-   */
-  calendarDayOfTheWeekHeadingDisplayFormat?: string;
+  onDateClicked?: (date: Date, dateString: string) => void;
 }
 
+/**
+ * Displays an interactive calendar view.
+ * - For date selection via an inline calendar.
+ * - NOTE: Not a date input for a traditional form, please use `CalendarInput`
+ */
 export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>(
-  (
-    {
-      onForwardClicked,
-      weekdayStartIndex,
-      onBackClicked,
-      onDayClicked,
+  ({ selectedDate, min, max, weekdayStartIndex, formatString, onDateClicked, locale, rangeTo, highlights }, ref) => {
+    const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
+      formatString,
+      min,
+      highlights,
       locale,
-      days,
-      months,
-      years,
-      currentMonthBinding,
-      currentYearBinding,
-      calendarDayDisplayFormat,
-      calendarMonthSelectDisplayFormat,
-      calendarYearSelectDisplayFormat,
-      calendarDayOfTheWeekHeadingDisplayFormat,
-    },
-    ref
-  ) => {
-    const dayOfWeekHeadings = React.useMemo(() => {
-      return Arrays.reIndex(getDayOfWeekHeadings(calendarDayOfTheWeekHeadingDisplayFormat!, locale), weekdayStartIndex!);
-    }, [weekdayStartIndex, locale, calendarDayOfTheWeekHeadingDisplayFormat]);
+      max,
+      rangeTo,
+      selectedDate,
+    });
 
-    const monthOptions = React.useMemo(() => {
-      return Dates.getMonthSelectOptions(months, calendarMonthSelectDisplayFormat!, locale);
-    }, [months, locale, calendarMonthSelectDisplayFormat]);
+    // Click event listeners
+    const onBackClicked = React.useCallback(() => {
+      stepMonth('back');
+    }, [stepMonth]);
 
-    const yearOptions = React.useMemo(() => {
-      return Dates.getYearSelectOptions(years, calendarYearSelectDisplayFormat!, locale);
-    }, [years, locale, calendarYearSelectDisplayFormat]);
+    const onForwardClicked = React.useCallback(() => {
+      stepMonth('forward');
+    }, [stepMonth]);
 
-    const displayDays = React.useMemo(() => {
-      return getDaysWithDisplayFormat(days, calendarDayDisplayFormat!, locale);
-    }, [days, locale, calendarDayDisplayFormat]);
-
-    // Calculate the number of "empty" days to display at the beginning of the month based on the day of the week displayed first, and the first day of the month selected.
-    const blankDaysAtStartCount = React.useMemo(() => {
-      const monthStartsOnWeekday = days[0]?.indexInWeek ?? 0;
-      return Maths.positiveModulo(monthStartsOnWeekday - weekdayStartIndex!, 7);
-    }, [days, weekdayStartIndex]);
+    const onDayClicked = React.useCallback(
+      (day: Calendar.IDay) => {
+        onDateClicked?.(day.date, Dates.dateToString(day.date, formatString, locale));
+      },
+      [onDateClicked, formatString, locale]
+    );
 
     return (
-      <div ref={ref} className="arm-calendar-view">
-        <div className="arm-calendar-view-controls">
-          <Button className="arm-calendar-view-button arm-calendar-view-button-prev" onClick={onBackClicked}>
-            &lt;
-          </Button>
-          <Select className="arm-calendar-view-select arm-calendar-view-select-month" bind={currentMonthBinding} options={monthOptions} />
-          <Select className="arm-calendar-view-select arm-calendar-view-select-year" bind={currentYearBinding} options={yearOptions} />
-          <Button className="arm-calendar-view-button arm-calendar-view-button-next" onClick={onForwardClicked}>
-            &gt;
-          </Button>
-        </div>
-        <div className="arm-calendar-date-grid">
-          <div className="arm-calendar-date-grid-headings">
-            {dayOfWeekHeadings.map((heading, index) => (
-              <div key={index} className="arm-calendar-date-grid-heading">
-                {heading}
-              </div>
-            ))}
-          </div>
-          <div className="arm-calendar-date-grid-days">
-            {Arrays.repeat(blankDaysAtStartCount, (index) => (
-              <div key={index} className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty" />
-            ))}
-            {displayDays.map((displayDay) => (
-              <Button
-                className={ClassNames.concat('arm-calendar-date-grid-day', displayDay.day.highlightedClassName)}
-                onClick={() => onDayClicked?.(displayDay.day)}
-                key={displayDay.day.numberInMonth}
-                data-selected={displayDay.day.isSelected}
-                disabled={displayDay.day.isDisabled}
-                data-today={displayDay.day.isToday}
-                data-range-start={displayDay.day.isRangeStart}
-                data-range-middle={displayDay.day.isRangeMiddle}
-                data-range-end={displayDay.day.isRangeEnd}
-                data-highlight={displayDay.day.isHighlighted}
-              >
-                {displayDay.displayFormat}
-                {displayDay.day.isHighlighted && <div className="arm-calendar-date-grid-day-highlight" />}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </div>
+      <CalendarDisplay
+        ref={ref}
+        days={days}
+        months={months}
+        years={years}
+        currentMonthBinding={monthYearFormProp('viewingMonth').bind()}
+        currentYearBinding={monthYearFormProp('viewingYear').bind()}
+        weekdayStartIndex={weekdayStartIndex!}
+        locale={locale}
+        onBackClicked={onBackClicked}
+        onForwardClicked={onForwardClicked}
+        onDayClicked={onDayClicked}
+      />
     );
   }
 );
 
 CalendarView.defaultProps = {
+  selectedDate: new Date(),
   weekdayStartIndex: 0,
-  calendarDayOfTheWeekHeadingDisplayFormat: 'eeeee',
-  calendarMonthSelectDisplayFormat: 'MMMM',
-  calendarYearSelectDisplayFormat: 'yyyy',
-  calendarDayDisplayFormat: 'd',
 };

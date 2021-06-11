@@ -1,5 +1,5 @@
 /** ******************************************************
- * Calendar View - Utilities file.
+ * Calendar Display - Utilities file.
  * A set of helper functions to support the calendar view logic.
  ******************************************************* */
 

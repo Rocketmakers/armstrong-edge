@@ -1,21 +1,21 @@
-import { isSameDay, isValid } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import * as React from 'react';
 
 import { Calendar, Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { Dates } from '../../utils/dates';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
-import { CalendarView, ICalendarViewProps } from '../calendarView/calendarView.component';
+import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
-import { calendarDayToDateLike, dateObjectToDateLike, getDaySelectOptions } from './calendarInput.utils';
+import { calendarDayToDateLike, dateObjectToDateLike, getDaySelectOptions, validateDateSelection } from './calendarInput.utils';
 
 type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'>;
 interface ICalendarInputProps
   extends Omit<Calendar.IConfig, 'selectedDate'>,
     Pick<
-      ICalendarViewProps,
+      ICalendarDisplayProps,
       | 'weekdayStartIndex'
       | 'calendarDayDisplayFormat'
       | 'calendarMonthSelectDisplayFormat'
@@ -34,16 +34,49 @@ interface ICalendarInputProps
    * - WARNING: If no initial value is passed it will assume the type is string.
    */
   bind: IBindingProps<Dates.DateLike>;
+  /**
+   * The order of the three select inputs.
+   * - Defaults to 'day-month-year'
+   */
+  inputOrder?: 'day-month-year' | 'year-month-day';
+  /**
+   * Any additional props for the "day" autocomplete input
+   */
   additionalDayInputProps?: AdditionalInputProps;
+  /**
+   * Any additional props for the "month" autocomplete input
+   */
   additionalMonthInputProps?: AdditionalInputProps;
+  /**
+   * Any additional props for the "year" autocomplete input
+   */
   additionalYearInputProps?: AdditionalInputProps;
+  /**
+   * An optional alternative display mode for the input.
+   * - `calendar` will render the calendar button and read only inputs, this will force the user to select a date from the calendar.
+   * - `inputs` will render the inputs only, hiding the calendar button and forcing the user to select/enter a date from the inputs.
+   * - `both` will allow users to select a date from the calendar OR enter one using the inputs.
+   * @default both
+   */
+  displayMode?: 'calendar' | 'inputs' | 'both';
 }
+
+/** Type representing the internal form data within the calendar input */
 interface IDateInputFormData {
+  /** The selected day (1 - 31) */
   day: number;
+  /** The selected month index (0 - 11) */
   month: number;
+  /** The selected year */
   year: number;
 }
 
+/**
+ * An input used for selecting a date. Supports the following input methods:
+ * - Day/month/year selection via dropdowns.
+ * - Date selection via a calendar view.
+ * - Date input via the keyboard in day/month/year format.
+ */
 export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProps>(
   (
     {
@@ -72,6 +105,8 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       pending,
       statusPosition,
       validationMode,
+      inputOrder,
+      displayMode,
     },
     ref
   ) => {
@@ -90,6 +125,7 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       rangeTo,
       selectedDate,
     });
+
     const [calendarOpen, setCalendarOpen] = React.useState(false);
 
     const { formProp, formState } = Form.use<Partial<IDateInputFormData>>(
@@ -113,14 +149,15 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
 
     React.useEffect(() => {
       if (formState?.day && (formState?.month ?? -1) > -1 && formState?.year) {
-        const date = new Date(formState.year, formState.month!, formState.day);
-        if (!isValid(date)) {
+        if (!validateDateSelection(formState.day, formState.month!, formState.year)) {
           bind.addValidationError('Invalid date selection');
           return;
         }
         bind.clearValidationErrors();
+        const date = new Date(formState.year, formState.month!, formState.day);
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
-          setSelectedDate(dateObjectToDateLike(date, selectedDate ? typeof selectedDate : 'string', formatString, locale));
+          const newDate = dateObjectToDateLike(date, selectedDate ? typeof selectedDate : 'string', formatString, locale);
+          setSelectedDate(newDate);
         }
       }
     }, [formState]);
@@ -137,6 +174,16 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       return Dates.getYearSelectOptions(years, yearInputDisplayFormat!, locale);
     }, [years, locale, yearInputDisplayFormat]);
 
+    const showCalendarButton = displayMode !== 'inputs';
+    const disableInputs = displayMode === 'calendar';
+
+    const dayInputProps: IAutoCompleteInputProps<number> = { ...(additionalDayInputProps ?? {}), bind: formProp('day').bind(), options: dayOptions };
+    const yearInputProps: IAutoCompleteInputProps<number> = {
+      ...(additionalYearInputProps ?? {}),
+      bind: formProp('year').bind(),
+      options: yearOptions,
+    };
+
     return (
       <div ref={ref} className="arm-calendar-input-wrapper">
         <div className="arm-calendar-selects-wrapper">
@@ -148,14 +195,21 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
             pending={pending}
             validationMode={bindConfig.validationMode}
           >
-            <IconButton icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={() => setCalendarOpen(!calendarOpen)} />
-            <AutoCompleteInput {...(additionalDayInputProps ?? {})} bind={formProp('day').bind()} options={dayOptions} />
-            <AutoCompleteInput {...(additionalMonthInputProps ?? {})} bind={formProp('month').bind()} options={monthOptions} />
-            <AutoCompleteInput {...(additionalYearInputProps ?? {})} bind={formProp('year').bind()} options={yearOptions} />
+            {showCalendarButton && (
+              <IconButton icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={() => setCalendarOpen(!calendarOpen)} />
+            )}
+            <AutoCompleteInput {...(inputOrder === 'day-month-year' ? dayInputProps : yearInputProps)} disabled={disableInputs} />
+            <AutoCompleteInput
+              {...(additionalMonthInputProps ?? {})}
+              bind={formProp('month').bind()}
+              disabled={disableInputs}
+              options={monthOptions}
+            />
+            <AutoCompleteInput {...(inputOrder === 'day-month-year' ? yearInputProps : dayInputProps)} disabled={disableInputs} />
           </StatusWrapper>
         </div>
         {calendarOpen && (
-          <CalendarView
+          <CalendarDisplay
             weekdayStartIndex={weekdayStartIndex!}
             currentYearBinding={monthYearFormProp('viewingYear').bind()}
             currentMonthBinding={monthYearFormProp('viewingMonth').bind()}
@@ -182,4 +236,5 @@ CalendarInput.defaultProps = {
   monthInputDisplayFormat: 'MM',
   yearInputDisplayFormat: 'yyyy',
   closeCalendarOnDayClick: true,
+  inputOrder: 'day-month-year',
 };
