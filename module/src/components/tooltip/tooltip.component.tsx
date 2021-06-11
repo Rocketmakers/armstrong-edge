@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IPortalProps, useResizeObserver } from '../..';
+import { IPortalProps } from '../..';
 import { useGeneratedId } from '../../hooks';
 import { useElementBoundingClientRect } from '../../hooks/useElementBoundingClientRect';
 import { useIsFocused } from '../../hooks/useIsFocused';
@@ -70,8 +70,6 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
     const [rootRect, getRootRectContentRect] = useElementBoundingClientRect(rootRef);
     const [modalRect] = useElementBoundingClientRect(modalRef);
     const windowSize = useWindowSize();
-
-    useResizeObserver(getRootRectContentRect, rootRef);
 
     const setModalRef = React.useCallback(
       (node: HTMLDivElement) => {

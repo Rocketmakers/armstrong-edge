@@ -77,7 +77,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const [modalRect] = useElementBoundingClientRect(modalRef);
     const windowSize = useWindowSize();
 
-    useResizeObserver(getRootRectContentRect, rootRef);
+    useResizeObserver(getRootRectContentRect, {}, rootRef);
 
     const setModalRef = React.useCallback(
       (node: HTMLDivElement) => {

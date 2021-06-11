@@ -35,7 +35,7 @@ export function useElementBoundingClientRect(ref: React.MutableRefObject<Element
   }, [ref.current]);
 
   /** Run the callback to get the element's size whenever it resizes */
-  useResizeObserver(setRectSize, ref);
+  useResizeObserver(setRectSize, {}, ref);
 
   /** Run the callback to get the element's size whenever the user scrolls or the window resizes */
   React.useEffect(() => {
