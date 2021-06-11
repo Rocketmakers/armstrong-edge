@@ -45,9 +45,9 @@ export interface BindingToolsStandard<TValue> {
    */
   addValidationError: (...messages: string[]) => void;
   /**
-   * Clears all validation messages associated with a key.
+   * Clears all client created validation errors associated with a key.
    */
-  clearValidationErrors: () => void;
+  clearClientValidationErrors: () => void;
 }
 
 /**
