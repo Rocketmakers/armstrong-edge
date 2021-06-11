@@ -26,7 +26,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
     const titleId = `${id}_label`;
 
     const onClickClose = React.useCallback(() => {
-      onOpenChange(false);
+      onOpenChange?.(false);
     }, [onOpenChange]);
 
     return (
