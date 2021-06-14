@@ -1,0 +1,16 @@
+.arm-tab-control {
+  display: flex;
+  align-items: center;
+}
+
+.arm-button.arm-tab-control-tab {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  color: black;
+
+  &[data-is-current='true'] {
+    color: $brand-primary;
+  }
+}
