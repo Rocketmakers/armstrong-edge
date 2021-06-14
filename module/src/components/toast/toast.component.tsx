@@ -76,7 +76,7 @@ export interface IToastNotificationContainerProps {
 /** A container which will render toasts passed in through props or toasts available from the ToastContext dispatched from useToastDispatch */
 export const ToastNotificationContainer: React.FC<IToastNotificationContainerProps> = ({ toasts }) => {
   const contextToasts = useToasts();
-  const combinedToasts = [...(contextToasts || []), ...(toasts || [])];
+  const combinedToasts = React.useMemo(() => [...(contextToasts || []), ...(toasts || [])], [contextToasts, toasts]);
 
   const splitToasts = React.useMemo(() => Arrays.arrayToArrayDictionary(combinedToasts, (toast) => toast.position!), [combinedToasts]);
 
@@ -88,21 +88,21 @@ export const ToastNotificationContainer: React.FC<IToastNotificationContainerPro
     <div className="arm-toast-notification-container">
       <div className="arm-toast-notification-container-left">
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-top">
-          {splitToasts['top-left']?.length &&
+          {!!splitToasts['top-left']?.length &&
             splitToasts['top-left'].map((toast) => <ToastNotification {...toast} key={Objects.contentDependency(toast)} />)}
         </div>
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-bottom">
-          {splitToasts['bottom-left']?.length &&
+          {!!splitToasts['bottom-left']?.length &&
             splitToasts['bottom-left'].map((toast) => <ToastNotification {...toast} key={Objects.contentDependency(toast)} />)}
         </div>
       </div>
       <div className="arm-toast-notification-container-right">
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-top">
-          {splitToasts['top-right']?.length &&
+          {!!splitToasts['top-right']?.length &&
             splitToasts['top-right'].map((toast) => <ToastNotification {...toast} key={Objects.contentDependency(toast)} />)}
         </div>
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-bottom">
-          {splitToasts['bottom-right']?.length &&
+          {!!splitToasts['bottom-right']?.length &&
             splitToasts['bottom-right'].map((toast) => <ToastNotification {...toast} key={Objects.contentDependency(toast)} />)}
         </div>
       </div>

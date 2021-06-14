@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ToastProvider } from '../src';
 
 import { ModalProvider } from '../src/components/modal/modal.context';
 
