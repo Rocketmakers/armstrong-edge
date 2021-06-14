@@ -13,14 +13,15 @@ import { Globals } from '../utils/globals';
 export function useEventListener(
   type: string,
   eventHandler: (e: Event) => any,
-  element: Pick<HTMLElement, 'addEventListener' | 'removeEventListener'> | undefined = Globals.Window
+  element: Pick<HTMLElement, 'addEventListener' | 'removeEventListener'> | undefined = Globals.Window,
+  options: boolean | AddEventListenerOptions | undefined = { passive: true }
 ) {
   React.useEffect(() => {
     if (element) {
-      element.addEventListener(type, eventHandler, { passive: true });
+      element.addEventListener(type, eventHandler, options);
 
       return () => {
-        element.removeEventListener(type, eventHandler);
+        element.removeEventListener(type, eventHandler, options);
       };
     }
   }, [eventHandler]);
