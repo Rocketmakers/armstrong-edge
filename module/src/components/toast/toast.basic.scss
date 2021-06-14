@@ -1,0 +1,40 @@
+$toast-notification-width: 160px;
+
+.arm-toast-notification-container {
+  @include fixed-fill;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.arm-toast-notification-container-left,
+.arm-toast-notification-container-right {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+}
+
+.arm-toast-notification-toasts {
+  display: flex;
+  flex-direction: column;
+}
+
+.arm-toast-notification-toasts-top {
+  flex-direction: column-reverse;
+}
+
+.arm-toast-notification {
+  pointer-events: all;
+}
+
+.arm-toast-notification-inner {
+  width: $toast-notification-width;
+  background-color: white;
+}
+
+.arm-toast-notification-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
