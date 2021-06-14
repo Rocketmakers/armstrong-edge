@@ -18,7 +18,6 @@ export interface IDialogProps extends IModalProps {
 }
 
 /** Extends the Modal component (see docs for modal) with some extra features and styling for simple dialog popups */
-
 export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
   ({ children, className, wrapperClassName, id: htmlId, title, onOpenChange, closeButtonIcon, titleIcon, ...modalProps }, ref) => {
     const id = useGeneratedId(htmlId);

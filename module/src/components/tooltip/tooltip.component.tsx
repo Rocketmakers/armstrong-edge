@@ -17,11 +17,11 @@ export interface ITooltipProps
   /** (ReactNode) the contents of the tooltip */
   content: React.ReactNode;
 
-  /** (['above'|'below'|'left'|'right']) an array of positions options for the tooltip to try to display in, in reverse order of preference, with the tooltip falling back through the array if a position makes the tooltip fall of the edge of the screen */
-  tooltipPosition?: TooltipPosition[];
+  /** (['above'|'below'|'left'|'right']) a position or array of position options for the tooltip to try to display in, in reverse order of preference, with the tooltip falling back through the array if a position makes the tooltip fall of the edge of the screen */
+  tooltipPosition?: TooltipPosition | TooltipPosition[];
 
-  /** (string) the className for the  */
-  wrapperClassName?: string;
+  /** (HTMLAttributes) props for the wrapper element */
+  wrapperAttributes?: React.HTMLAttributes<HTMLElement>;
 
   /** (number) the margin in px around the edge of the innerWindow used to detect whether the tooltip is intersecting the edge - defaults to 5 */
   edgeDetectionMargin?: number;
@@ -54,7 +54,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
       portalTo,
       portalToSelector,
       tooltipPosition,
-      wrapperClassName,
+      wrapperAttributes,
       edgeDetectionMargin,
       isOpen: isOpenProp,
       openOnHover,
@@ -139,14 +139,16 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
 
     /** Loop through the given positions and use the first one where the tooltip is not off the edge */
     const position = React.useMemo(() => {
-      if (isOpen && tooltipPosition?.length) {
-        for (let index = 0; index < tooltipPosition.length; index += 1) {
-          const positionOption = tooltipPosition[index];
+      const positions = typeof tooltipPosition === 'string' ? [tooltipPosition] : tooltipPosition;
+
+      if (isOpen && positions?.length) {
+        for (let index = 0; index < positions.length; index += 1) {
+          const positionOption = positions[index];
 
           const calculatedPosition = getPosition(positionOption);
 
           // if position isn't outside the screen or if it's just the last option in the array of possible positions
-          if (!calculatedPosition?.outside || index === tooltipPosition.length - 1) {
+          if (!calculatedPosition?.outside || index === positions.length - 1) {
             return calculatedPosition;
           }
         }
@@ -166,7 +168,8 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
 
     return (
       <div
-        className={ClassNames.concat('arm-tooltip-wrapper', wrapperClassName)}
+        {...(wrapperAttributes || {})}
+        className={ClassNames.concat('arm-tooltip-wrapper', wrapperAttributes?.className)}
         ref={rootRef}
         {...hoveringProps}
         {...focusedProps}
