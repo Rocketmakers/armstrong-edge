@@ -252,7 +252,6 @@ export const useSidebar = <T, TArg = unknown>(
 ) => useModalLayerPromise(Children, (internalProps) => <Sidebar {...internalProps} {...props} />);
 
 // this can then be used in the same way as the useModal component, and will use the Sidebar component
-
 const MyComponent = () => {
   const [getConfirmation] = useSidebar<boolean>(
     // the contents of the modal
@@ -269,6 +268,23 @@ const MyComponent = () => {
 };
 ```
 
-### Otherwise
+### Using them as components
 
-If you don't want to (or can't) use modals or dialogs this way, replace
+If you don't want to use modals or dialogs using the hooks, you can use them as simple components, which will portal
+in front of the UI when rendered with `isOpen` set to `true`.
+
+```tsx
+const MyComponent = () => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open the thing</Button>
+
+      <Modal isOpen={open} onOpenChange={setOpen}>
+        I'm inside the modal
+      </Modal>
+    </>
+  );
+};
+```
