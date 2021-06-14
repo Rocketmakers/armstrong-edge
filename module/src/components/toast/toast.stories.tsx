@@ -20,7 +20,7 @@ export default StoryUtils.createMeta(ToastProvider, 'Layout', 'Toast Notificatio
 const ToastInner = () => {
   const dispatch = useDispatchToast();
 
-  return <Button onClick={() => dispatch({ title: "I'm some toast" })}>Click here to open the toast</Button>;
+  return <Button onClick={() => dispatch("I'm some toast")}>Click here to open the toast</Button>;
 };
 export const Default = () => {
   return (
@@ -35,10 +35,10 @@ const ToastPositionsInner = () => {
 
   return (
     <div className="buttons-wrapper">
-      <Button onClick={() => dispatch({ title: "I'm some toast", location: 'top-left' })}>Click here to open the toast to the top left</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", location: 'bottom-left' })}>Click here to open the toast to the bottom left</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", location: 'top-right' })}>Click here to open the toast to the top right</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", location: 'bottom-right' })}>
+      <Button onClick={() => dispatch({ title: "I'm some toast", position: 'top-left' })}>Click here to open the toast to the top left</Button>
+      <Button onClick={() => dispatch({ title: "I'm some toast", position: 'bottom-left' })}>Click here to open the toast to the bottom left</Button>
+      <Button onClick={() => dispatch({ title: "I'm some toast", position: 'top-right' })}>Click here to open the toast to the top right</Button>
+      <Button onClick={() => dispatch({ title: "I'm some toast", position: 'bottom-right' })}>
         Click here to open the toast to the bottom right
       </Button>
     </div>
@@ -108,7 +108,7 @@ const CustomToastsInner = () => {
 
   return (
     <>
-      <Button onClick={() => dispatch({ title: "I'm some toast" })}>Click here to open the toast</Button>
+      <Button onClick={() => dispatch("I'm some toast")}>Click here to open the toast</Button>
 
       <div
         className="custom-toasts"
@@ -134,7 +134,7 @@ export const CustomToasts = () => {
 const PortaledToastsInner = () => {
   const dispatch = useDispatchToast();
 
-  return <Button onClick={() => dispatch({ title: "I'm some toast" })}>Click here to open the toast</Button>;
+  return <Button onClick={() => dispatch("I'm some toast")}>Click here to open the toast</Button>;
 };
 export const PortaledToasts = () => {
   return (

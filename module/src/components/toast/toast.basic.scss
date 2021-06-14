@@ -1,4 +1,4 @@
-$toast-notification-width: 160px;
+$toast-notification-width: 200px;
 
 .arm-toast-notification-container {
   @include fixed-fill;
@@ -12,12 +12,15 @@ $toast-notification-width: 160px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  flex-grow: 1;
   height: 100%;
+  max-width: $toast-notification-width;
 }
 
 .arm-toast-notification-toasts {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .arm-toast-notification-toasts-top {
@@ -29,7 +32,7 @@ $toast-notification-width: 160px;
 }
 
 .arm-toast-notification-inner {
-  width: $toast-notification-width;
+  width: 100%;
   background-color: white;
 }
 

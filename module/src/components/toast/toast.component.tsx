@@ -10,11 +10,9 @@ import { IconButton } from '../iconButton';
 import { useToastConfig, useToasts } from './toast.context';
 import { IToastNotification } from './toast.types';
 
-export interface IToastNotificationProps extends IToastNotification {
-  /** (() => void) dismiss this toast notification */
-  onDismiss: () => void;
-}
+export interface IToastNotificationProps extends IToastNotification {}
 
+/** Render a single toast notification with a title and some given information */
 export const ToastNotification: React.FC<IToastNotificationProps> = ({ onDismiss, ...toast }) => {
   const { autoDismissTime, children, content, htmlProps, timestamp, title, type, allowManualDismiss } = toast;
 
@@ -70,14 +68,19 @@ ToastNotification.defaultProps = {
   allowManualDismiss: true,
 };
 
-export const ToastNotificationContainer: React.FC = () => {
-  const toasts = useToasts();
+export interface IToastNotificationContainerProps {
+  /** (IToastNotificationProps[]) the toasts to render inside this component */
+  toasts?: IToastNotificationProps[];
+}
 
-  const splitToasts = React.useMemo(() => {
-    return Arrays.arrayToArrayDictionary(toasts, (toast) => toast.location!);
-  }, [toasts]);
+/** A container which will render toasts passed in through props or toasts available from the ToastContext dispatched from useToastDispatch */
+export const ToastNotificationContainer: React.FC<IToastNotificationContainerProps> = ({ toasts }) => {
+  const contextToasts = useToasts();
+  const combinedToasts = [...(contextToasts || []), ...(toasts || [])];
 
-  if (!toasts.length) {
+  const splitToasts = React.useMemo(() => Arrays.arrayToArrayDictionary(combinedToasts, (toast) => toast.position!), [combinedToasts]);
+
+  if (!combinedToasts.length) {
     return null;
   }
 

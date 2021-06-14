@@ -51,7 +51,7 @@ export interface IToastProviderProps extends Pick<IPortalProps, 'portalTo' | 'po
   renderToastContainer?: boolean;
 }
 
-/** Provides the context for Armstrong toast notifications,  */
+/** Provides the context for Armstrong toast notifications, and by default renders a ToastContainer which will display all dispatched toasts */
 export const ToastProvider: React.FC<IToastProviderProps> = ({ children, portalTo, portalToSelector, renderToastContainer, ...config }) => {
   const [toasts, dispatchAction] = React.useReducer(toastReducer, []);
 
@@ -95,7 +95,7 @@ export const ToastProvider: React.FC<IToastProviderProps> = ({ children, portalT
 
 ToastProvider.defaultProps = {
   autoDismissTime: 5000,
-  location: 'bottom-right',
+  position: 'bottom-right',
   renderToastContainer: true,
 };
 
@@ -104,34 +104,52 @@ export function useDispatchToast() {
   const { dismiss, dispatch, config } = useToastContext();
 
   const dispatchToasts = React.useCallback(
-    (...toasts: IToastNotification[]) => {
+    (...toasts: (IToastNotification | string)[]) => {
       dispatch!(
         ...toasts.map((toast) => {
-          const newToast: IToastNotificationProps = {
-            timestamp: new Date(),
-            autoDismissTime: toast.autoDismissTime ?? config.autoDismissTime,
-            location: toast.location ?? config.location,
-            onDismiss: () => dismiss!(newToast),
-            ...toast,
-          };
+          const newToast: IToastNotificationProps =
+            typeof toast === 'string'
+              ? {
+                  title: toast,
+                  timestamp: new Date(),
+                  autoDismissTime: config.autoDismissTime,
+                  position: config.position,
+                  onDismiss: () => dismiss!(newToast),
+                }
+              : {
+                  timestamp: new Date(),
+                  autoDismissTime: toast.autoDismissTime ?? config.autoDismissTime,
+                  position: toast.position ?? config.position,
+                  ...toast,
+                  onDismiss: () => {
+                    dismiss!(newToast);
+                    toast.onDismiss?.();
+                  },
+                };
 
           return newToast;
         })
       );
     },
-    [config.location, config.autoDismissTime]
+    [config.position, config.autoDismissTime]
   );
 
   return dispatchToasts;
 }
 
 /** Dismiss all toast notifications */
-export function useToastDismiss() {
+export function useToastDismissAll() {
   const { dismissAll } = useToastContext();
   return dismissAll!;
 }
 
-/** Dismiss all toast notifications */
+/** Dismiss a toast notification by reference */
+export function useToastDismiss() {
+  const { dismiss } = useToastContext();
+  return dismiss!;
+}
+
+/** Get the config for toasts given in the ToastContext */
 export function useToastConfig() {
   const { config } = useToastContext();
   return config!;

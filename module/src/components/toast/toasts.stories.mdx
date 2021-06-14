@@ -1,0 +1,141 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { ToastProvider, ToastNotification } from '.';
+
+<Meta title="Layout/Toast Notifications" />
+
+### Toast Notifications
+
+Toast notifications are short term popups that appear for a few seconds to alert users to activity.
+
+Armstrong exports a bunch of components that can be used in conjunction to render toast notifications, and a series of hooks that can be used to dispatch and render them.
+
+The most common way you are most likely to interact with Armstrong toasts is using the `useToastDispatch` hook with the `ToastProvider` component.
+
+### The ToastProvider
+
+The `ToastProvider` provides the toast context that's used by that hook, and it also renders the toasts into a `ToastContainer` element.
+
+```tsx
+const MyApp = () => {
+  return (
+    <ToastProvider>
+      <MyView />
+    </ToastProvider>
+  );
+};
+
+const MyView = () => {
+  const dispatchToast = useToastDispatch();
+
+  return (
+    <div>
+      <Button onClick={() => dispatchToast("I'm a toast")}>Dispatch</Button>
+    </div>
+  );
+};
+```
+
+When that button is clicked, a toast notification will be dispatched over the top of the screen.
+
+There are a number of options available in the ToastProvider for customising how toasts work:
+
+These are applied as props on the provider.
+
+```tsx
+const MyApp = () => {
+  return (
+    <ToastProvider location="bottom-right" autoDismissTime={1000}>
+      <MyView />
+    </ToastProvider>
+  );
+};
+```
+
+<ArgsTable of={ToastProvider} />
+
+There are also a number of customisations that can be used when running `useToastDispatch` which are passed in as an `IToastNotification` object when running the callback it returns.
+
+```tsx
+const dispatchToast = useToastDispatch();
+
+const submit = React.useCallback(() => {
+  dispatchToast({ title: "It's toast o'clock", htmlProps: { className: 'my-cool-toast' }, location: 'top-right', type: 'error' });
+}, []);
+```
+
+<ArgsTable of={ToastNotification} />
+
+The callback returned from `useToastDispatch` can also take an args array or strings or `IToastNotification`s
+
+```tsx
+const dispatchToast = useToastDispatch();
+
+const submit = React.useCallback(() => {
+  dispatchToast({ title: "It's toast o'clock" }, { title: "I'm another toast" }, 'hey hey hey');
+}, []);
+```
+
+### Using Toasts without the Toast context
+
+If you don't want to use the toast context, but still want to use the Armstrong toast components, those components are exported as well.
+
+`ToastNotification` will render a single toast notification in place.
+
+```tsx
+<ToastNotification title="I'm a toast" onDismiss={() => { some stuff }} />
+```
+
+`ToastNotificationContainer` will render an array of toast notifications, overlaid on top of the whole UI with `position: fixed`.
+
+```tsx
+<ToastNotificationContainer toasts={[{ title: "I'm a toast" }]} />
+```
+
+### Using the Toast context without the Armstrong components
+
+The Toast context can also optionally disable rendering any toasts, if you want to handle them completely on your own.
+
+The hook `useToasts` will return an array of dispatched toast notifications. You will need to reimplement a fair few things yourself to replicate all the functionality of useToasts, like `position` and `autoDismissTime`.
+
+`useToastConfig` will allow you to access configuration set at the Provider level (or default configurations)
+
+Below is an example reimplementation of toast notifications.
+
+```tsx
+const MyApp = () => {
+  return (
+    <ToastProvider renderToastContainer={false}>
+      <MyView />
+      <MyToasts />
+    </ToastProvider>
+  );
+};
+
+const MyView = () => {
+  const dispatchToast = useToastDispatch();
+
+  return (
+    <div>
+      <Button onClick={() => dispatchToast("I'm a toast")}>Dispatch</Button>
+    </div>
+  );
+};
+
+const MyToasts = () => {
+  const toasts = useToasts();
+  const dismiss = useToastDismiss();
+  const { position } = useToastConfig();
+
+  return (
+    <div className="toasts">
+      {toasts.map((toast) => (
+        <p data-position={position} onClick={() => dismiss(toast)}>
+          {toast.title}
+        </p>
+      ))}
+    </div>
+  );
+};
+```
+
+`renderToastContainer={false}` is the key part for disabling the default Armstrong toast display

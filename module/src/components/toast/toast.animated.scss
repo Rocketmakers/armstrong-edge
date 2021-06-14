@@ -1,3 +1,4 @@
+// must be nested to ensure toasts don't animate like this when rendered on their own
 .arm-toast-notification-container {
   .arm-toast-notification {
     animation: expand-in-height-medium $transition-medium;
@@ -14,7 +15,6 @@
 
       .arm-toast-notification-inner {
         animation: none;
-        // transform: translateX($spacing-xlarge);
         transform: scale(0.7);
         opacity: 0;
       }
@@ -27,13 +27,6 @@
   }
 
   .arm-toast-notification-container-left {
-    // .arm-toast-notification {
-    //   &[data-dismissing='true'] {
-    //     .arm-toast-notification-inner {
-    //       transform: translateX(-$spacing-xlarge);
-    //     }
-    //   }
-    // }
     .arm-toast-notification-inner {
       animation: slide-in-right-large $transition-quick;
     }

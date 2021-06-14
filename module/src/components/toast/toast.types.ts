@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 /** A corner of the screen to render a toast notification */
-export type ToastLocation = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+export type ToastPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export type ToastType = 'info' | 'success' | 'warning' | 'error';
 
 export interface IToastNotification {
@@ -23,14 +23,17 @@ export interface IToastNotification {
   /** (HTMLAttributes) html attributes to spread onto the toast notification element */
   htmlProps?: React.HTMLAttributes<HTMLDivElement>;
 
-  /** ('top left' | 'top right' | 'bottom left' | 'bottom right') the location at which to render the toasts */
-  location?: ToastLocation;
+  /** ('top left' | 'top right' | 'bottom left' | 'bottom right') the position at which to render the toasts */
+  position?: ToastPosition;
 
   /** whether to allow the user to manually dismiss the toast with a close button rendered at the top right - defaults to true */
   allowManualDismiss?: boolean;
+
+  /** (() => void) dismiss this toast notification, automatically fired after the given autoDismissTime */
+  onDismiss?: () => void;
 }
 
-export interface IGlobalToastConfig extends Pick<IToastNotification, 'location' | 'autoDismissTime'> {
+export interface IGlobalToastConfig extends Pick<IToastNotification, 'position' | 'autoDismissTime'> {
   /**
    * (string) A formatter to apply to the timestamp.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
