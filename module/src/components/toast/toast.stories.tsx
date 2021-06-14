@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { useToasts } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Dates } from '../../utils/dates';
 import { Button } from '../button';
@@ -16,12 +17,20 @@ export default StoryUtils.createMeta(ToastProvider, 'Layout', 'Toast Notificatio
 
 /** stories */
 
-export const Toast = () => {
+const ToastInner = () => {
   const dispatch = useDispatchToast();
 
   return <Button onClick={() => dispatch({ title: "I'm some toast" })}>Click here to open the toast</Button>;
 };
-export const ToastPositions = () => {
+export const Default = () => {
+  return (
+    <ToastProvider>
+      <ToastInner />
+    </ToastProvider>
+  );
+};
+
+const ToastPositionsInner = () => {
   const dispatch = useDispatchToast();
 
   return (
@@ -35,7 +44,15 @@ export const ToastPositions = () => {
     </div>
   );
 };
-export const ToastTypes = () => {
+export const ToastPositions = () => {
+  return (
+    <ToastProvider>
+      <ToastPositionsInner />
+    </ToastProvider>
+  );
+};
+
+const ToastTypesInner = () => {
   const dispatch = useDispatchToast();
 
   return (
@@ -47,7 +64,15 @@ export const ToastTypes = () => {
     </div>
   );
 };
-export const CustomContent = () => {
+export const ToastTypes = () => {
+  return (
+    <ToastProvider>
+      <ToastTypesInner />
+    </ToastProvider>
+  );
+};
+
+const CustomContentInner = () => {
   const dispatch = useDispatchToast();
 
   return (
@@ -67,5 +92,54 @@ export const CustomContent = () => {
     >
       Click here to open the toast
     </Button>
+  );
+};
+export const CustomContent = () => {
+  return (
+    <ToastProvider>
+      <CustomContentInner />
+    </ToastProvider>
+  );
+};
+
+const CustomToastsInner = () => {
+  const dispatch = useDispatchToast();
+  const toasts = useToasts();
+
+  return (
+    <>
+      <Button onClick={() => dispatch({ title: "I'm some toast" })}>Click here to open the toast</Button>
+
+      <div
+        className="custom-toasts"
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', position: 'absolute', top: '50px' }}
+      >
+        {toasts.map((toast, index) => (
+          <p style={{ padding: '2px', boxShadow: '1px 1px 3px rgba(0,0,0,0.3)' }} key={index}>
+            {toast.title}
+          </p>
+        ))}
+      </div>
+    </>
+  );
+};
+export const CustomToasts = () => {
+  return (
+    <ToastProvider renderToastContainer={false}>
+      <CustomToastsInner />
+    </ToastProvider>
+  );
+};
+
+const PortaledToastsInner = () => {
+  const dispatch = useDispatchToast();
+
+  return <Button onClick={() => dispatch({ title: "I'm some toast" })}>Click here to open the toast</Button>;
+};
+export const PortaledToasts = () => {
+  return (
+    <ToastProvider portalToSelector="body">
+      <PortaledToastsInner />
+    </ToastProvider>
   );
 };
