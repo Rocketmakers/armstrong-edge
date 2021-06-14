@@ -2,7 +2,8 @@ import * as React from 'react';
 
 export type UseIsHoveringReturn = [boolean, Pick<React.HTMLAttributes<HTMLElement>, 'onMouseEnter' | 'onMouseLeave'>];
 
-export const useIsHovering = (): UseIsHoveringReturn => {
+/** Get, in React state, whether an element is being hovered, using the event listener props returned from the second element in the returned array */
+export function useIsHovering(): UseIsHoveringReturn {
   const [isHovering, setIsHovering] = React.useState(false);
 
   const onMouseEnter = React.useCallback(() => {
@@ -14,4 +15,4 @@ export const useIsHovering = (): UseIsHoveringReturn => {
   }, []);
 
   return [isHovering, { onMouseEnter, onMouseLeave }];
-};
+}
