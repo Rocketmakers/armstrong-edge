@@ -61,3 +61,13 @@ html {
     // border: 1px solid blue;
   }
 }
+
+.story-scroll-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+
+  > * {
+    margin: 0 auto;
+  }
+}
