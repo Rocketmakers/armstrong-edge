@@ -28,3 +28,9 @@
     border-bottom-right-radius: $border-radius-small;
   }
 }
+
+@include screen-phone {
+  .arm-button.arm-tab-control-tab {
+    padding: $spacing-xsmall;
+  }
+}

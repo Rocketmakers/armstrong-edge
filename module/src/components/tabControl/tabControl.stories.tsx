@@ -36,10 +36,31 @@ export const WithIcons = () => {
         currentTab={value}
         onTabChange={(id) => setValue(id as string)}
         tabs={[
+          { id: "I'm a tab", content: "I'm a tab", leftIcon: IconUtils.getIconDefinition('LinearIcons', 'sun') },
+          {
+            id: "I'm another tab",
+            content: "I'm another tab",
+            leftIcon: IconUtils.getIconDefinition('LinearIcons', 'moon'),
+            rightIcon: IconUtils.getIconDefinition('LinearIcons', 'star'),
+          },
+          { id: "I'm also a tab", content: "I'm also a tab", leftIcon: IconUtils.getIconDefinition('LinearIcons', 'cloud') },
+        ]}
+      />
+    </>
+  );
+};
+export const IconsOnly = () => {
+  const [value, setValue] = React.useState("I'm a tab");
+
+  return (
+    <>
+      <TabControl
+        currentTab={value}
+        onTabChange={(id) => setValue(id as string)}
+        tabs={[
           { id: "I'm a tab", leftIcon: IconUtils.getIconDefinition('LinearIcons', 'sun') },
           {
             id: "I'm another tab",
-            leftIcon: IconUtils.getIconDefinition('LinearIcons', 'moon'),
             rightIcon: IconUtils.getIconDefinition('LinearIcons', 'star'),
           },
           { id: "I'm also a tab", leftIcon: IconUtils.getIconDefinition('LinearIcons', 'cloud') },
