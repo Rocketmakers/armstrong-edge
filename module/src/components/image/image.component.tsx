@@ -5,7 +5,7 @@ import { useElementStatus } from '../../hooks/useElementStatus';
 import { useHasTimeElapsedSinceMount } from '../../hooks/useHasTimeElapsed';
 import { IUseInViewportOptions, useInViewport } from '../../hooks/useIsInViewport';
 import { ClassNames } from '../../utils/classNames';
-import { Status } from '../status';
+import { IStatusProps, Status } from '../status';
 
 export interface IImageSource {
   /** (string) the url source which will replace the main src if the right conditions are met */
@@ -23,7 +23,7 @@ export interface IImageSource {
 
 type ImageSource = string | IImageSource;
 
-export interface IImageProps extends Omit<IUseInViewportOptions, 'once'> {
+export interface IImageProps extends Omit<IUseInViewportOptions, 'once'>, Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
   /** (HTMLPictureElement) attributes to spread onto the picture element */
   pictureAttributes?: Omit<HTMLAttributes<HTMLPictureElement>, 'ref'>;
 
@@ -46,7 +46,8 @@ export interface IImageProps extends Omit<IUseInViewportOptions, 'once'> {
   timeToSpinner?: number;
 }
 
-const ImageInner: React.FC<IImageProps> = ({ pictureAttributes, imgAttributes, src, additionalSources, timeToSpinner }) => {
+/** This is a separate component as a lot of its internal logic depends on when it is mounted by the outer component */
+const ImageInner: React.FC<IImageProps> = ({ pictureAttributes, imgAttributes, src, additionalSources, timeToSpinner, errorIcon, spinnerIcon }) => {
   const internalImageRef = React.useRef<HTMLImageElement>(null);
   const { error, loaded, loading, props: elementStatusProps } = useElementStatus(internalImageRef);
   const showSpinner = useHasTimeElapsedSinceMount(timeToSpinner!);
@@ -66,7 +67,7 @@ const ImageInner: React.FC<IImageProps> = ({ pictureAttributes, imgAttributes, s
         </picture>
       )}
 
-      <Status pending={loading && showSpinner} error={error} />
+      <Status pending={loading && showSpinner} error={error} spinnerIcon={spinnerIcon} errorIcon={errorIcon} />
     </div>
   );
 };
