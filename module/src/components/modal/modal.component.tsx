@@ -12,7 +12,7 @@ export interface IModalProps
   isOpen: boolean;
 
   /** (boolean) fired when the user attempts to close the modal by clicking outside of it (or other behaviors depending on the values of other props) */
-  onOpenChange: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
 
   /** (boolean) the modal will close if the user blurs the window */
   closeOnWindowBlur?: boolean;
@@ -63,7 +63,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
   ) => {
     const close = React.useCallback(() => {
       if (!disableClose) {
-        onOpenChange(false);
+        onOpenChange?.(false);
       }
     }, [onOpenChange, disableClose]);
 

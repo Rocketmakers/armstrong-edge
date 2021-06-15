@@ -9,6 +9,7 @@ export interface IWindowSize {
   outerHeight: number;
 }
 
+/** Returns the size of the window as a piece of live state, ensuring that any calculations happening during the React lifecycle that need the window size will have it up to date */
 export function useWindowSize() {
   const [size, setSize] = React.useState<IWindowSize>({ innerWidth: 0, innerHeight: 0, outerWidth: 0, outerHeight: 0 });
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useResizeObserver } from '../../hooks';
-import { useElementContentRect } from '../../hooks/useElementContentRect';
+import { useElementBoundingClientRect } from '../../hooks/useElementBoundingClientRect';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
@@ -73,11 +73,11 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const elementToRenderBelowRef = React.useRef<Element>();
     const modalRef = React.useRef<HTMLDivElement>();
 
-    const [rootRect, getRootRectContentRect] = useElementContentRect(elementToRenderBelowRef);
-    const [modalRect] = useElementContentRect(modalRef);
+    const [rootRect, getRootRectContentRect] = useElementBoundingClientRect(elementToRenderBelowRef);
+    const [modalRect] = useElementBoundingClientRect(modalRef);
     const windowSize = useWindowSize();
 
-    useResizeObserver(getRootRectContentRect, rootRef);
+    useResizeObserver(getRootRectContentRect, {}, rootRef);
 
     const setModalRef = React.useCallback(
       (node: HTMLDivElement) => {
@@ -116,10 +116,9 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onScrollDocument = React.useCallback(
       (event: Event) => {
         if (
-          closeOnScroll &&
           // check if scrolling element is inside the dropdown content
-          ((event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
-            !(event.target instanceof HTMLDivElement))
+          (event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
+          !(event.target instanceof HTMLDivElement)
         ) {
           onOpenChange(false);
         }
@@ -128,7 +127,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     );
 
     React.useEffect(() => {
-      if (isOpen) {
+      if (isOpen && closeOnScroll) {
         Globals.Document?.addEventListener('scroll', onScrollDocument, { capture: true, passive: true });
         Globals.Document?.body.addEventListener('resize', onScrollDocument, { capture: true, passive: true });
 

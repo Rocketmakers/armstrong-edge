@@ -158,7 +158,7 @@ There is also a useDialog hook which behaves in the same way, but wraps the give
 
 ```tsx
 const MyComponent = () => {
-  const getConfirmation = useDialog<boolean>(
+  const [getConfirmation] = useDialog<boolean>(
     // the contents of the modal
     ({ resolve }) => (
       <div>
@@ -236,7 +236,7 @@ interface ISidebarProps extends Pick<IModalProps, 'isOpen' | 'onOpenChange'> {}
 
 export const Sidebar: React.FC<ISidebarProps> = ({ children }) => {
   // get the ref to the modal layer element out of context, this hook is exported from Armstrong
-  const wrapperRef = useModalLayerElement();
+  const [wrapperRef] = useModalLayerElement();
 
   return (
     // portal is exported from Armstrong and is used by the modal components under the hood
