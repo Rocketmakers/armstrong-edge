@@ -22,6 +22,7 @@ export * from './components/errorMessage';
 export * from './components/icon';
 export * from './components/iconButton';
 export * from './components/iconWrapper';
+export * from './components/image';
 export * from './components/input';
 export * from './components/inputWrapper';
 export * from './components/listBox';
