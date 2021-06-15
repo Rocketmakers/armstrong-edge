@@ -6,24 +6,22 @@ export interface IUseElementStatusReturn {
   loaded: boolean;
 
   /** ({onLoad, onError}) props that must be spread onto the element you want to listen to (must be the same element as the ref that's being passed in) */
-  props: Pick<React.HTMLAttributes<Element>, 'onLoad' | 'onError'> & { ref?: React.RefObject<HTMLElement> };
+  props: Pick<React.HTMLAttributes<Element>, 'onLoad' | 'onError'>;
 }
 
 /**
  * Listen to the onLoad and onError events on an element
  * can only be used on certain HTML tags
- * @param checkCached
  * @returns some booleans representing the element's state, and some props that need to be spread on
  */
 export const useElementStatus = (
-  /** attempt to check if the element has a .complete property, used to see if there's an existing cached version of the request the element is
-   * making (as in that case, the onLoad event won't fire) only relevant if listening to IMG elements, will also return a ref in the returned
-   * props if this is set to true that must be added to the element
+  /**
+   * A reference to the element you're listening to if it's an image element.
+   * Is needed to check if an image is cached if it's an image element, using the complete property on the element as if it is, onLoad won't fire
+   * Must be used in conjunction with the returned props
    */
-  checkCached = true
+  ref?: React.MutableRefObject<HTMLImageElement | undefined | null>
 ): IUseElementStatusReturn => {
-  const ref = React.useRef<HTMLElement>(null);
-
   const [loading, setLoading] = React.useState(true);
   const [loaded, setLoaded] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -39,7 +37,7 @@ export const useElementStatus = (
   }, []);
 
   React.useEffect(() => {
-    if (checkCached && typeof (ref.current as HTMLImageElement)?.complete === 'boolean' && !(ref.current as HTMLImageElement)?.complete) {
+    if (ref?.current?.complete) {
       setLoaded(true);
     } else {
       setLoading(true);
@@ -50,6 +48,6 @@ export const useElementStatus = (
     loading,
     error,
     loaded,
-    props: checkCached ? { ref, onLoad, onError } : { onLoad, onError },
+    props: { onLoad, onError },
   };
 };
