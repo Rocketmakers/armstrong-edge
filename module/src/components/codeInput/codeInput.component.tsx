@@ -249,8 +249,8 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
                   value={getValueForPart(index) || ''}
                   onChange={(event) => onPartChange(event, index)}
                   onKeyDown={(event) => onKeyDown(event, index)}
-                  ref={(a) => {
-                    inputRefs.current[index] = a;
+                  ref={(r) => {
+                    inputRefs.current[index] = r;
                   }}
                 />
               ))}

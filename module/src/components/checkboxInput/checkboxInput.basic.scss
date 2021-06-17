@@ -18,7 +18,7 @@
 }
 
 .arm-checkbox-input-checkbox {
-  @include square(1.7rem);
+  @include square(1.3rem);
   flex-shrink: 0;
   cursor: pointer;
   position: relative;
@@ -28,6 +28,13 @@
     @include flex-centre-content;
     transition: opacity $transition-quick;
     pointer-events: none;
+    font-size: 0.75rem;
+  }
+
+  &[data-checked='true'] {
+    background-color: $brand-primary;
+    border-color: $brand-primary;
+    color: white;
   }
 }
 

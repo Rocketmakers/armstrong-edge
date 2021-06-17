@@ -41,8 +41,8 @@ export interface ICheckboxInputProps
   /** (IIcon) icon to render on the input when not checked */
   uncheckedIcon?: IIcon<IconSet>;
 
-  /** (string | JSX) the text or jsx element to render inside the checkbox's label */
-  label?: string | JSX.Element;
+  /** (ReactNode) the text or jsx element to render inside the checkbox's label */
+  label?: React.ReactNode;
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -106,7 +106,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
               {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
             </div>
             <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-              {label}
+              {typeof label === 'string' || typeof label === 'number' ? <p>{label}</p> : label}
             </IconWrapper>
           </label>
 

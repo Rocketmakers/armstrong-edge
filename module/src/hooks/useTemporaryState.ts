@@ -8,10 +8,13 @@ import { useTimeout } from './useTimeout';
  * @param time the amount of time in ms to wait to return back to initialValue
  */
 
-export function useTemporaryState<T>(initialValue?: T, time = 500): [T | undefined, (newValue: T) => void] {
+export function useTemporaryState<T>(initialValue?: T, time = 500, onReset?: () => void): [T | undefined, (newValue: T) => void] {
   const [value, setValue] = React.useState(initialValue);
 
-  const onTimeout = React.useCallback(() => setValue(initialValue), []);
+  const onTimeout = React.useCallback(() => {
+    setValue(initialValue);
+    onReset?.();
+  }, [onReset, initialValue]);
 
   const { set: setTimeout } = useTimeout(time, onTimeout);
 
