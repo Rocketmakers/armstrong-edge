@@ -65,8 +65,14 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
           ref={ref}
         >
           <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
-            <StatusWrapper errorIcon={errorIcon} statusPosition={statusPosition} error={error} validationErrorMessages={validationErrorMessages}>
-              {children}
+            <StatusWrapper
+              pending={pending}
+              errorIcon={errorIcon}
+              statusPosition={statusPosition}
+              error={error}
+              validationErrorMessages={validationErrorMessages}
+            >
+              {typeof children === 'string' || typeof children === 'number' ? <p>{children}</p> : children}
             </StatusWrapper>
           </IconWrapper>
         </button>

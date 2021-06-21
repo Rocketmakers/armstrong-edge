@@ -48,7 +48,8 @@ export interface ISwitchInputProps extends Omit<React.DetailedHTMLProps<React.In
   /** (on-handle|static) where to render the icon, will either follow the handle or stay in place */
   iconStyle?: 'on-handle' | 'static';
 
-  /** (boolean) allow dragging to  */
+  /** (boolean) allow clicking and dragging horizontally to change the value of the switch - defaults to true */
+  changeOnDrag?: boolean;
 }
 
 export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>(
@@ -67,6 +68,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
       checkedIcon,
       uncheckedIcon,
       iconStyle,
+      changeOnDrag,
       ...nativeProps
     },
     ref
@@ -91,7 +93,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
     const { props: dragProps, changePosition } = useDrag(onDragEnd);
 
     React.useEffect(() => {
-      if (changePosition) {
+      if (changePosition && changeOnDrag) {
         if (changePosition.left > 0) {
           setBoundValue(true);
         } else if (changePosition.left < 0) {
@@ -138,3 +140,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
     );
   }
 );
+
+SwitchInput.defaultProps = {
+  changeOnDrag: true,
+};
