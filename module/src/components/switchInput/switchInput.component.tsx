@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { IDragReleaseCallbackArgs, useDrag } from '../../hooks/useDrag';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IIcon } from '../icon';
 import { Status } from '../status';
@@ -46,6 +47,8 @@ export interface ISwitchInputProps extends Omit<React.DetailedHTMLProps<React.In
 
   /** (on-handle|static) where to render the icon, will either follow the handle or stay in place */
   iconStyle?: 'on-handle' | 'static';
+
+  /** (boolean) allow dragging to  */
 }
 
 export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>(
@@ -76,6 +79,27 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
       validationMode,
     });
 
+    const onDragEnd = React.useCallback(
+      ({ changePosition }: IDragReleaseCallbackArgs) => {
+        if (!changePosition || changePosition?.left === 0) {
+          setBoundValue(!boundValue);
+        }
+      },
+      [setBoundValue, boundValue]
+    );
+
+    const { props: dragProps, changePosition } = useDrag(onDragEnd);
+
+    React.useEffect(() => {
+      if (changePosition) {
+        if (changePosition.left > 0) {
+          setBoundValue(true);
+        } else if (changePosition.left < 0) {
+          setBoundValue(false);
+        }
+      }
+    }, [changePosition?.left]);
+
     return (
       <>
         <div
@@ -91,9 +115,10 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
               {...nativeProps}
               ref={ref}
               type="checkbox"
-              onChange={(event) => setBoundValue(event.currentTarget.checked)}
+              onChange={() => ''}
               checked={boundValue}
               disabled={disabled}
+              {...dragProps}
             />
             {checkedIcon && <Icon className="arm-switch-input-checked-icon" {...checkedIcon} />}
             {uncheckedIcon && <Icon className="arm-switch-input-unchecked-icon" {...uncheckedIcon} />}

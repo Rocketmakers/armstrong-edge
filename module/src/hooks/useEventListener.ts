@@ -12,7 +12,7 @@ import { Globals } from '../utils/globals';
 
 export function useEventListener(
   type: string,
-  eventHandler: (e: Event) => any,
+  eventHandler: EventListenerOrEventListenerObject,
   element: Pick<HTMLElement, 'addEventListener' | 'removeEventListener'> | undefined = Globals.Window
 ) {
   React.useEffect(() => {
