@@ -4,7 +4,7 @@ import { ClassNames } from '../../utils/classNames';
 import { AutoResizer } from '../autoResizer/autoResizer.component';
 
 export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
-  /** (boolean) is the expandable region open */
+  /** (boolean) is the expandable region open, if false will take up no space */
   isOpen?: boolean;
 
   /** ('vertical' | 'horizontal') which direction should the children open */
@@ -14,7 +14,14 @@ export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProp
 /** A div which expands to fit its children when isOpen is true, otherwise it takes up no space - can work horizontally or vertically */
 export const Expandable: React.FC<IExpandableProps> = ({ isOpen, className, direction, ...nativeProps }) => {
   return (
-    <AutoResizer className={ClassNames.concat('arm-expandable', className)} data-direction={direction} data-is-open={!!isOpen} {...nativeProps} />
+    <AutoResizer
+      tabIndex={isOpen ? undefined : -1}
+      aria-hidden={!isOpen}
+      className={ClassNames.concat('arm-expandable', className)}
+      data-direction={direction}
+      data-is-open={!!isOpen}
+      {...nativeProps}
+    />
   );
 };
 
