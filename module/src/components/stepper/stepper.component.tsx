@@ -7,19 +7,39 @@ import { Icon } from '../icon';
 import { IStatusProps, Status } from '../status';
 
 export interface IStepperStep extends Pick<IStatusProps, 'pending' | 'error'> {
+  /** (IIcon) the icon for this step */
   icon?: IIcon<IconSet>;
+
+  /** (number) the index of this step from 0 */
   index?: number;
+
+  /** (string) the name of this step */
   name?: string;
+
+  /** (boolean) is this step disabled - stops the onChange from firing */
   disabled?: boolean;
+
+  /** (boolean) is this step complete */
   isComplete?: boolean;
 }
 
 export interface IStepperStepProps extends IStepperStep, Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
+  /** (boolean) is this step the current step */
   isCurrent?: boolean;
+
+  /** (boolean) is this step previous to the current step */
   isPrevious?: boolean;
+
+  /** ((event) => void) fired when the user clicks on the stepper step */
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+
+  /** (IIcon) the icon to render if isComplete is set to true - leave blank to not change */
   completeIcon?: IIcon<IconSet>;
+
+  /** (boolean) is small (no icon or index) */
   small?: boolean;
+
+  /** (boolean) is the next one small (no icon or index) used to position the line between them */
   nextIsSmall?: boolean;
 }
 
@@ -93,14 +113,23 @@ export const StepperStep = React.forwardRef<HTMLButtonElement, IStepperStepProps
 );
 
 export interface IStepperProps extends Pick<IStepperStepProps, 'completeIcon'>, Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
+  /** (IStepperStep[]) the steps to render */
   steps?: IStepperStep[];
+
+  /** (number) the index of the currently selected step */
   stepIndex: number;
-  showIndex?: boolean; // if not icon
+
+  /** (boolean) will show the index on the circle if an icon is not provided for each step */
+  showIndex?: boolean;
+
+  /** ((newStep: number) => void) fired when the user clicks on a step, leave undefined to disable user interaction */
   onStepIndexChange?: (newStep: number) => void;
-  changeOnClickStep?: boolean;
+
+  /** ('horizontal' | 'vertical') the direction that the steps should flow */
   direction?: 'horizontal' | 'vertical';
 }
 
+/** R */
 export const Stepper = React.forwardRef<HTMLDivElement, IStepperProps>(
   ({ steps, stepIndex, onStepIndexChange, children, completeIcon, showIndex, direction, spinnerIcon, errorIcon }, ref) => {
     return (

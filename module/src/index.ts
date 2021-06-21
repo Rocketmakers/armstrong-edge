@@ -37,6 +37,7 @@ export * from './components/select';
 export * from './components/spinner';
 export * from './components/status';
 export * from './components/statusWrapper';
+export * from './components/stepper';
 export * from './components/switchInput';
 export * from './components/tag';
 export * from './components/tagInput';
