@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Globals } from '../utils/globals';
 import { useResizeObserver } from './useResizeObserver';
 
-export type useElementBoundingClientRectReturn = [DOMRect, () => void];
+export type useBoundingClientRectReturn = [DOMRect, () => void];
 
 /**
  * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
@@ -11,7 +11,7 @@ export type useElementBoundingClientRectReturn = [DOMRect, () => void];
  * use the callback which is the second item in the returned array to force a resize
  * @param ref the html element to watch
  */
-export function useElementBoundingClientRect(ref: React.MutableRefObject<Element | undefined | null>): useElementBoundingClientRectReturn {
+export function useBoundingClientRect(ref: React.MutableRefObject<Element | undefined | null>): useBoundingClientRectReturn {
   const [rect, setRect] = React.useState<DOMRect>({
     bottom: 0,
     height: 0,

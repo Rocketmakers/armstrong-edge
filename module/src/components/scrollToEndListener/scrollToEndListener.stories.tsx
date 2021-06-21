@@ -22,11 +22,11 @@ export const Default = () => {
 
   return (
     <div className="story-scroll-container" style={{ padding: '5px' }}>
-      <ScrollToEndListener onScrollToEnd={() => setPending(true)} pending={pending}>
-        {things.map((thing) => (
-          <div style={{ marginBottom: '5px', border: '1px solid black', borderRadius: '5px', width: '100%', height: '300px' }} key={thing} />
-        ))}
-      </ScrollToEndListener>
+      {things.map((thing) => (
+        <div style={{ marginBottom: '5px', border: '1px solid black', borderRadius: '5px', width: '100%', height: '300px' }} key={thing} />
+      ))}
+
+      <ScrollToEndListener onScrollToEnd={() => setPending(true)} pending={pending} />
     </div>
   );
 };

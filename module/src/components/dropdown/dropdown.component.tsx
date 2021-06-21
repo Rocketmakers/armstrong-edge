@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useResizeObserver } from '../../hooks';
-import { useElementBoundingClientRect } from '../../hooks/useElementBoundingClientRect';
+import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
@@ -73,8 +73,8 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const elementToRenderBelowRef = React.useRef<Element>();
     const modalRef = React.useRef<HTMLDivElement>();
 
-    const [rootRect, getRootRectContentRect] = useElementBoundingClientRect(elementToRenderBelowRef);
-    const [modalRect] = useElementBoundingClientRect(modalRef);
+    const [rootRect, getRootRectContentRect] = useBoundingClientRect(elementToRenderBelowRef);
+    const [modalRect] = useBoundingClientRect(modalRef);
     const windowSize = useWindowSize();
 
     useResizeObserver(getRootRectContentRect, {}, rootRef);
