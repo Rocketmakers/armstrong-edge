@@ -144,7 +144,7 @@ export const AutoCompleteInput = React.forwardRef(
           }
         }
       },
-      [bind, allowFreeText, options]
+      [bind, allowFreeText, Objects.contentDependency(options)]
     );
 
     /** Fired when the user changes the value in the text input */

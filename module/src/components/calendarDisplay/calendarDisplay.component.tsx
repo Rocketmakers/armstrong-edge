@@ -79,8 +79,8 @@ export interface ICalendarDisplayProps {
   /**
    * (string) A formatter to apply when displaying the day of the week headings inside the calendar.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
-   * - Number by default: `YYYY` = (2021).
-   * - Other options include: `YY` = (21).
+   * - Single letter by default: `eeeee` = (S - S).
+   * - Other options include: `eee` = (Sun - Sat). `eeee` = (Sunday - Saturday).
    */
   calendarDayOfTheWeekHeadingDisplayFormat?: string;
 }
