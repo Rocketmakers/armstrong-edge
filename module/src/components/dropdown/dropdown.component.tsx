@@ -5,6 +5,7 @@ import { useElementBoundingClientRect } from '../../hooks/useElementBoundingClie
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
+import { Maths } from '../../utils/maths';
 import { Modal } from '../modal';
 import { IPortalProps } from '../portal';
 
@@ -91,14 +92,12 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
 
     const top = React.useMemo(
       () =>
-        rootRect &&
-        modalRect &&
-        Math.max(0, Math.min(rootRect.top + rootRect.height, (windowSize.innerHeight || 0) - modalRect.height - rootRect.height)),
+        rootRect && modalRect && Maths.clamp(rootRect.top + rootRect.height, 0, (windowSize.innerHeight || 0) - modalRect.height - rootRect.height),
       [rootRect?.top, rootRect?.height, modalRect?.height, windowSize.innerHeight]
     );
 
     const left = React.useMemo(
-      () => rootRect && modalRect && Math.max(0, Math.min(rootRect.left, (windowSize.innerWidth || 0) - modalRect.width)),
+      () => rootRect && modalRect && Maths.clamp(rootRect.left, 0, (windowSize.innerWidth || 0) - modalRect.width),
       [rootRect?.left, modalRect?.width, windowSize.innerWidth]
     );
 
