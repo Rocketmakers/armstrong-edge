@@ -40,6 +40,7 @@ export namespace StoryUtils {
   /** ORGANISATION */
 
   const Folder = {
+    Setup: 'Setup',
     Form: 'Form',
     FormUtils: 'Form Utils',
     Button: 'Buttons',

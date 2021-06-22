@@ -61,3 +61,13 @@ html {
     // border: 1px solid blue;
   }
 }
+
+.buttons-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  > .arm-button {
+    margin-bottom: $spacing-small;
+  }
+}
