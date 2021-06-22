@@ -2,7 +2,9 @@
   position: fixed;
   border-radius: 0;
 
-  .arm-progress-bar-progress {
+  .arm-progress-bar-progress,
+  &[data-has-label='true'],
+  &[data-has-label='true'] .arm-progress-bar-progress {
     border-radius: 0;
   }
 
@@ -10,23 +12,39 @@
     top: 0;
     left: 0;
     width: 100vw;
+
+    &[data-hidden='true'] {
+      transform: translateY(-100%);
+    }
   }
 
   &[data-position='bottom'] {
     bottom: 0;
     left: 0;
     width: 100vw;
+
+    &[data-hidden='true'] {
+      transform: translateY(100%);
+    }
   }
 
   &[data-position='left'] {
     bottom: 0;
     left: 0;
     height: 100vw;
+
+    &[data-hidden='true'] {
+      transform: translateX(-100%);
+    }
   }
 
   &[data-position='right'] {
     bottom: 0;
     right: 0;
     height: 100vw;
+
+    &[data-hidden='true'] {
+      transform: translateX(100%);
+    }
   }
 }

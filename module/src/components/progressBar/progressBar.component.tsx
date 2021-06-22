@@ -46,6 +46,7 @@ export const ProgressBar: React.FC<IProgressBarProps> = ({
     <div
       className={ClassNames.concat('arm-progress-bar', className)}
       data-direction={direction}
+      data-has-label={!!labelText}
       style={{ '--arm-progress-bar-color': color, '--arm-progress-bar-progress': `${progress}%` } as React.CSSProperties}
       {...nativeProps}
     >

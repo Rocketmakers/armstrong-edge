@@ -9,13 +9,17 @@ export type GlobalProgressBarPosition = 'top' | 'bottom' | 'left' | 'right';
 export interface IGlobalProgressBarProps extends IProgressBarProps, IPortalProps {
   /** ('top' | 'bottom' | 'left' | 'right') which side of the screen should the progress bar be rendered on */
   position?: GlobalProgressBarPosition;
+
+  /** (boolean) should hide off edge of screen */
+  hidden?: boolean;
 }
 
 /** A ProgressBar which is portaled into a fixed position on the edge of the screen */
-export const GlobalProgressBar: React.FC<IGlobalProgressBarProps> = ({
+export const FixedProgressBar: React.FC<IGlobalProgressBarProps> = ({
   className,
   portalToSelector,
   portalTo,
+  hidden,
   position,
   direction,
   ...progressBarProps
@@ -34,6 +38,7 @@ export const GlobalProgressBar: React.FC<IGlobalProgressBarProps> = ({
   return (
     <Portal portalToSelector={portalToSelector} portalTo={portalTo}>
       <ProgressBar
+        data-hidden={hidden}
         direction={fixedDirection}
         data-position={position}
         className={ClassNames.concat('arm-global-progress-bar', className)}
@@ -43,6 +48,6 @@ export const GlobalProgressBar: React.FC<IGlobalProgressBarProps> = ({
   );
 };
 
-GlobalProgressBar.defaultProps = {
+FixedProgressBar.defaultProps = {
   position: 'top',
 };

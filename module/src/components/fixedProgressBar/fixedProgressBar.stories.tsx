@@ -1,18 +1,17 @@
 import * as React from 'react';
 
-import { useInterval } from '../..';
+import { Button, useInterval } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
-import { Button } from '../button';
-import { ProgressBar } from './progressBar.component';
-import { useProgress } from './progressBar.hooks';
+import { useProgress } from '../progressBar/progressBar.hooks';
+import { FixedProgressBar } from './fixedProgressBar.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(ProgressBar, 'Display', 'Progress Bar', {});
+export default StoryUtils.createMeta(FixedProgressBar, 'Display', 'Fixed Progress Bar', {});
 
 /** component template */
 
-// const Template = StoryUtils.createTemplate(ProgressBar as React.FC<IProgressBarProps<any, any>>);
+// const Template = StoryUtils.createTemplate(GlobalProgressBar as React.FC<IGlobalProgressBarProps<any, any>>);
 
 /** stories */
 
@@ -37,48 +36,48 @@ const useFakeProgress = () => {
 export const Default = () => {
   const progress = useFakeProgress();
 
-  return <ProgressBar progress={progress} />;
+  return <FixedProgressBar progress={progress} />;
 };
 
 export const ColourFading = () => {
   const progress = useFakeProgress();
 
-  return <ProgressBar progress={progress} colorBreakpoints={['#ff1100', '#c800ff', '#00ff11']} />;
+  return <FixedProgressBar progress={progress} colorBreakpoints={['#ff1100', '#c800ff', '#00ff11']} />;
 };
 
 export const WithLabel = () => {
   const progress = useFakeProgress();
 
-  return <ProgressBar progress={progress} labelText={`${progress}%`} />;
+  return <FixedProgressBar progress={progress} labelText={`${progress}%`} />;
 };
 export const LabelCentresProgress = () => {
   const progress = useFakeProgress();
 
-  return <ProgressBar progress={progress} labelText={`${progress}%`} labelVariant="centre-progress" />;
+  return <FixedProgressBar progress={progress} labelText={`${progress}%`} labelVariant="centre-progress" />;
 };
 
-export const Up = () => {
-  const progress = useFakeProgress();
-
-  return <ProgressBar progress={progress} direction="up" />;
-};
 export const Left = () => {
   const progress = useFakeProgress();
 
-  return <ProgressBar progress={progress} direction="left" />;
+  return <FixedProgressBar progress={progress} position="left" direction="up" />;
 };
-export const Down = () => {
+export const Bottom = () => {
   const progress = useFakeProgress();
 
-  return <ProgressBar progress={progress} direction="down" />;
+  return <FixedProgressBar progress={progress} position="bottom" />;
+};
+export const Right = () => {
+  const progress = useFakeProgress();
+
+  return <FixedProgressBar progress={progress} position="right" />;
 };
 
 export const UseProgressHook = () => {
-  const { progress, start, increment, complete, reset } = useProgress({ trickle: true });
+  const { progress, start, increment, complete, reset, started } = useProgress({ trickle: true });
 
   return (
     <>
-      <ProgressBar progress={progress} />
+      <FixedProgressBar progress={progress} hidden={!started} />
 
       <div className="buttons-wrapper">
         <Button onClick={start}>Start</Button>

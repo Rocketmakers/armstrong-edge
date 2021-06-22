@@ -1,4 +1,5 @@
-$arm-progress-bar-thickness: 1rem;
+$arm-progress-bar-thickness: 0.5rem;
+$arm-progress-bar-with-label-thickness: 1rem;
 
 .arm-progress-bar {
   background-color: $gray-light;
@@ -35,6 +36,18 @@ $arm-progress-bar-thickness: 1rem;
       transform: translateX(calc(100% - var(--arm-progress-bar-progress)));
     }
   }
+
+  &[data-has-label='true'] {
+    &[data-direction='up'],
+    &[data-direction='down'] {
+      width: $arm-progress-bar-with-label-thickness;
+    }
+
+    &[data-direction='left'],
+    &[data-direction='right'] {
+      height: $arm-progress-bar-with-label-thickness;
+    }
+  }
 }
 
 .arm-progress-bar-progress {
@@ -55,7 +68,7 @@ $arm-progress-bar-thickness: 1rem;
     text-align: center;
     @include absolute-fill;
     @include flex-centre-content;
-    font-size: min(#{$arm-progress-bar-thickness * 0.7}, 1rem);
+    font-size: min(#{$arm-progress-bar-with-label-thickness * 0.7}, 1rem);
   }
 
   &[data-variant='centre-progress'] {
@@ -67,6 +80,6 @@ $arm-progress-bar-thickness: 1rem;
     width: var(--arm-progress-bar-progress);
     overflow: hidden;
     @include flex-centre-content;
-    font-size: min(#{$arm-progress-bar-thickness * 0.7}, 1rem);
+    font-size: min(#{$arm-progress-bar-with-label-thickness * 0.7}, 1rem);
   }
 }
