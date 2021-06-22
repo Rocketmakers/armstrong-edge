@@ -1,3 +1,7 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+
+<Meta title="Display/Icons" />
+
 ## Setup
 
 There is some setup involved in making icons work in an app using Armstrong.
@@ -16,8 +20,8 @@ This font file must be set up as a font face in your SCSS using one of the follo
 ```scss
 // Icomoon
 @font-face {
-  font-family: "IcoMoon-Ultimate";
-  src: url("../assets/fonts/IcoMoon-Ultimate.ttf") format("truetype");
+  font-family: 'IcoMoon-Ultimate';
+  src: url('../assets/fonts/IcoMoon-Ultimate.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -25,8 +29,8 @@ This font file must be set up as a font face in your SCSS using one of the follo
 // LinearIcons
 @font-face {
   font-display: swap;
-  font-family: "Linearicons";
-  src: url("../assets/fonts/Linearicons.ttf") format("truetype");
+  font-family: 'Linearicons';
+  src: url('../assets/fonts/Linearicons.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -35,18 +39,18 @@ This font file must be set up as a font face in your SCSS using one of the follo
 Finally, you must import the SCSS file for the font you're using into your own SCSS
 
 ```scss
-@import "~@rocketmakers/armstrong-edge/dist/icomoon.scss";
-@import "~@rocketmakers/armstrong-edge/dist/linearicons.scss";
+@import '~@rocketmakers/armstrong-edge/dist/icomoon.scss';
+@import '~@rocketmakers/armstrong-edge/dist/linearicons.scss';
 ```
 
 This includes all the definitions which are used to tell the icon component what to render. Alternatively, you can copy the file you're using, remove all unused icons manually, and import that instead as these files are pretty big. We are considering ways of automating this in future.
 
-From here, icons can be used as follows:
+From here, icons can be used in Icon components
 
 ```tsx
 <Icon iconSet="IcoMoon" iconName="heart2" />
+// or
+<IcomoonIcon iconName="heart2" />
+// or
+<LinearIcon iconName="tap" />
 ```
-
-**see storybook page for icons for more instructions on use**
-
-TODO add storybook link here when deployed

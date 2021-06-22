@@ -3,24 +3,26 @@ import * as React from 'react';
 import { Globals } from '../utils/globals';
 
 /**
- * Use an resize observer to fire the passed callback upon Resize - also cleans up on unmount
+ * Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
  * @param ref the html element to watch
  * @param callback the callback to be fired
- * @param options an Resize observer options object
+ * @param options options for the mutation observer
+ *
  */
 
 export function useResizeObserver(
-  callback: (entries: ResizeObserverEntry[], io: ResizeObserver) => any,
+  callback: ResizeObserverCallback,
+  options?: ResizeObserverOptions,
   ref?: React.MutableRefObject<Element | undefined | null>
 ) {
   const observer = React.useRef<ResizeObserver>();
 
   const observe = React.useCallback(
     (element: Element) => {
-      observer.current = new ResizeObserver((entries, createdObserver) => callback && callback(entries, createdObserver));
-      observer.current.observe(element);
+      observer.current = new ResizeObserver(callback);
+      observer.current.observe(element, options);
     },
-    [callback]
+    [callback, options]
   );
 
   const unobserve = React.useCallback((element: Element) => {
@@ -43,7 +45,7 @@ export function useResizeObserver(
         }
       };
     }
-  }, [ref?.current, observer, callback]);
+  }, [ref?.current, observe, unobserve]);
 
   React.useEffect(
     () => () => {

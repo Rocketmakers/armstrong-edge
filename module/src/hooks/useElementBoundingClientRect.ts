@@ -3,13 +3,15 @@ import * as React from 'react';
 import { Globals } from '../utils/globals';
 import { useResizeObserver } from './useResizeObserver';
 
-export type useElementContentRectReturn = [DOMRect, () => void];
+export type useElementBoundingClientRectReturn = [DOMRect, () => void];
 
 /**
- * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events - if you need to do anything fancier, you'll have to use the second item in the returned array to force a resize
+ * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
+ * WARNING: positions will not update automatically unless happening at the same time as a resize, if you need to do anything fancier, you'll have to
+ * use the callback which is the second item in the returned array to force a resize
  * @param ref the html element to watch
  */
-export function useElementContentRect(ref: React.MutableRefObject<Element | undefined | null>): useElementContentRectReturn {
+export function useElementBoundingClientRect(ref: React.MutableRefObject<Element | undefined | null>): useElementBoundingClientRectReturn {
   const [rect, setRect] = React.useState<DOMRect>({
     bottom: 0,
     height: 0,
@@ -27,13 +29,15 @@ export function useElementContentRect(ref: React.MutableRefObject<Element | unde
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
 
-      // todo - optimise so this is only run when one of its values changes
+      // todo - optimise so this is only run when one of its values changes - currently unnecessary re-renders will be called
       setRect(boundingClientRect);
     }
   }, [ref.current]);
 
-  useResizeObserver(setRectSize, ref);
+  /** Run the callback to get the element's size whenever it resizes */
+  useResizeObserver(setRectSize, {}, ref);
 
+  /** Run the callback to get the element's size whenever the user scrolls or the window resizes */
   React.useEffect(() => {
     Globals.Document?.addEventListener('resize', setRectSize, { capture: true, passive: true });
     Globals.Document?.addEventListener('scroll', setRectSize, { capture: true, passive: true });
