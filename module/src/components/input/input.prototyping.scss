@@ -1,9 +1,9 @@
 .arm-input.arm-input-base {
-  input.arm-input-base-input {
-    width: 100%;
-  }
-
   &[disabled] {
     opacity: 0.5;
   }
+}
+
+input.arm-input-base-input {
+  width: 100%;
 }

@@ -3,21 +3,60 @@ import * as React from 'react';
 import { Globals } from '../utils/globals';
 
 /**
- * Use an resize observer to fire the passed callback upon Resize - also cleans up on unmount
+ * Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
  * @param ref the html element to watch
  * @param callback the callback to be fired
- * @param options an Resize observer options object
+ * @param options options for the mutation observer
+ *
  */
 
-export function useResizeObserver(ref: React.MutableRefObject<HTMLElement>, callback: (entries: ResizeObserverEntry[], io: ResizeObserver) => any) {
+export function useResizeObserver(
+  callback: ResizeObserverCallback,
+  options?: ResizeObserverOptions,
+  ref?: React.MutableRefObject<Element | undefined | null>
+) {
   const observer = React.useRef<ResizeObserver>();
+
+  const observe = React.useCallback(
+    (element: Element) => {
+      observer.current = new ResizeObserver(callback);
+      observer.current.observe(element, options);
+    },
+    [callback, options]
+  );
+
+  const unobserve = React.useCallback((element: Element) => {
+    if (observer.current) {
+      observer.current.unobserve(element);
+    }
+  }, []);
+
+  const disconnect = React.useCallback(() => {
+    observer.current?.disconnect();
+  }, []);
 
   React.useLayoutEffect(() => {
     if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsResizeObserver) {
-      observer.current = new ResizeObserver((entries, createdObserver) => callback && callback(entries, createdObserver));
-      observer.current.observe(ref.current);
+      observe(ref.current);
 
-      return () => observer.current?.unobserve(ref.current);
+      return () => {
+        if (ref.current) {
+          unobserve(ref.current!);
+        }
+      };
     }
-  }, [ref, observer, callback]);
+  }, [ref?.current, observe, unobserve]);
+
+  React.useEffect(
+    () => () => {
+      disconnect();
+    },
+    []
+  );
+
+  return {
+    observer,
+    unobserve,
+    disconnect,
+  };
 }

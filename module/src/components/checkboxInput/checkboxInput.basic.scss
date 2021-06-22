@@ -1,56 +1,55 @@
 .arm-input.arm-checkbox-input {
   display: flex;
-  gap: $spacing-xsmall;
+  @include space-between-children-horizontal($spacing-xsmall);
   align-items: center;
-  transition: opacity $transition-quick;
 
   label {
     display: flex;
-    gap: $spacing-xsmall;
+    @include space-between-children-horizontal($spacing-xsmall);
     align-items: center;
     cursor: pointer;
     user-select: none;
-
-    .arm-checkbox-input-checkbox {
-      @include square(1.7rem);
-      flex-shrink: 0;
-      cursor: pointer;
-      position: relative;
-
-      .arm-icon.arm-checkbox-input-checked-icon {
-        opacity: 0;
-      }
-
-      input {
-        @include fill;
-        cursor: pointer;
-        appearance: none;
-        border: none;
-        outline: none;
-        background-color: transparent;
-        padding: $spacing-xsmall;
-        height: $input-height;
-
-        &:checked ~ .arm-icon.arm-checkbox-input-checked-icon {
-          opacity: 1;
-        }
-
-        &:checked ~ .arm-icon.arm-checkbox-input-unchecked-icon {
-          opacity: 0;
-        }
-      }
-
-      .arm-icon {
-        @include absolute-fill;
-        @include flex-centre-content;
-        transition: opacity $transition-quick;
-        pointer-events: none;
-      }
-    }
   }
 
   &[data-disabled='true'] {
     opacity: 0.5;
     pointer-events: none;
+  }
+}
+
+.arm-checkbox-input-checkbox {
+  @include square(1.7rem);
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+
+  .arm-icon {
+    @include absolute-fill;
+    @include flex-centre-content;
+    transition: opacity $transition-quick;
+    pointer-events: none;
+  }
+}
+
+.arm-icon.arm-checkbox-input-checked-icon {
+  opacity: 0;
+}
+
+.arm-checkbox-input-checkbox-input {
+  @include fill;
+  cursor: pointer;
+  appearance: none;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: $spacing-xsmall;
+  height: $input-height;
+
+  &:checked ~ .arm-icon.arm-checkbox-input-checked-icon {
+    opacity: 1;
+  }
+
+  &:checked ~ .arm-icon.arm-checkbox-input-unchecked-icon {
+    opacity: 0;
   }
 }

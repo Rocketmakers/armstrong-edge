@@ -105,14 +105,16 @@ export declare abstract class FormPropFactory<TData extends object> {
    * Used to access a property within the form data.
    * @param args The key of the property to access.
    */
-  public formProp<TDataKey extends keyof TData>(...args: [key1: KeyOrIndex<TData, TDataKey>]): BindingTools<TData[TDataKey]>;
+  public formProp<TDataKey extends keyof Required<TData>>(
+    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>]
+  ): BindingTools<Required<TData>[TDataKey]>;
 
   /**
    * Used to access a property within the form data.
    * @param args The keys or indexes used to access a nested property to a depth of 2.
    */
-  public formProp<TDataKey extends keyof TData, TData2 extends TData[TDataKey], TDataKey2 extends keyof TData2>(
-    ...args: [key1: KeyOrIndex<TData, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>]
+  public formProp<TDataKey extends keyof Required<TData>, TData2 extends Required<TData>[TDataKey], TDataKey2 extends keyof TData2>(
+    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>]
   ): BindingTools<TData2[TDataKey2]>;
 
   /**
@@ -120,13 +122,13 @@ export declare abstract class FormPropFactory<TData extends object> {
    * @param args The keys or indexes used to access a nested property to a depth of 3.
    */
   public formProp<
-    TDataKey extends keyof TData,
-    TData2 extends TData[TDataKey],
+    TDataKey extends keyof Required<TData>,
+    TData2 extends Required<TData>[TDataKey],
     TDataKey2 extends keyof TData2,
     TData3 extends TData2[TDataKey2],
     TDataKey3 extends keyof TData3
   >(
-    ...args: [key1: KeyOrIndex<TData, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>, key3: KeyOrIndex<TData3, TDataKey3>]
+    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>, key3: KeyOrIndex<TData3, TDataKey3>]
   ): BindingTools<TData3[TDataKey3]>;
 
   /**
@@ -134,8 +136,8 @@ export declare abstract class FormPropFactory<TData extends object> {
    * @param args The keys or indexes used to access a nested property to a depth of 4.
    */
   public formProp<
-    TDataKey extends keyof TData,
-    TData2 extends TData[TDataKey],
+    TDataKey extends keyof Required<TData>,
+    TData2 extends Required<TData>[TDataKey],
     TDataKey2 extends keyof TData2,
     TData3 extends TData2[TDataKey2],
     TDataKey3 extends keyof TData3,
@@ -143,7 +145,7 @@ export declare abstract class FormPropFactory<TData extends object> {
     TDataKey4 extends keyof TData4
   >(
     ...args: [
-      key1: KeyOrIndex<TData, TDataKey>,
+      key1: KeyOrIndex<Required<TData>, TDataKey>,
       key2: KeyOrIndex<TData2, TDataKey2>,
       key3: KeyOrIndex<TData3, TDataKey3>,
       key4: KeyOrIndex<TData4, TDataKey4>
@@ -155,8 +157,8 @@ export declare abstract class FormPropFactory<TData extends object> {
    * @param args The keys or indexes used to access a nested property to a depth of 5.
    */
   public formProp<
-    TDataKey extends keyof TData,
-    TData2 extends TData[TDataKey],
+    TDataKey extends keyof Required<TData>,
+    TData2 extends Required<TData>[TDataKey],
     TDataKey2 extends keyof TData2,
     TData3 extends TData2[TDataKey2],
     TDataKey3 extends keyof TData3,
@@ -166,7 +168,7 @@ export declare abstract class FormPropFactory<TData extends object> {
     TDataKey5 extends keyof TData5
   >(
     ...args: [
-      key1: KeyOrIndex<TData, TDataKey>,
+      key1: KeyOrIndex<Required<TData>, TDataKey>,
       key2: KeyOrIndex<TData2, TDataKey2>,
       key3: KeyOrIndex<TData3, TDataKey3>,
       key4: KeyOrIndex<TData4, TDataKey4>,

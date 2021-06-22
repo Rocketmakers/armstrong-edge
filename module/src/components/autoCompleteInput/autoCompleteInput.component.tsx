@@ -5,6 +5,7 @@ import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
+import { Objects } from '../../utils/objects';
 import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
@@ -24,7 +25,7 @@ export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconW
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
-  extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
+  extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange' | 'ref'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
   /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
@@ -52,6 +53,9 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
 
   /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
   allowKeyboardNavigationSelection?: boolean;
+
+  /** (boolean) Whether to show all the options on focus, even when a value is set. The default is `true` as this means the user will always see all the options before they start typing. */
+  showAllOptionsOnFocus?: boolean;
 }
 
 /** A text input which displays some options in a dropdown */
@@ -75,6 +79,7 @@ export const AutoCompleteInput = React.forwardRef(
       value,
       allowFreeText,
       allowKeyboardNavigationSelection,
+      showAllOptionsOnFocus,
       ...textInputProps
     }: IAutoCompleteInputProps<Id>,
     ref
@@ -90,6 +95,14 @@ export const AutoCompleteInput = React.forwardRef(
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
+    // log a piece of state to manage whether the options dropdown has just been opened, and no filtering has occurred
+    const [justOpened, setJustOpened] = React.useState(optionsOpen);
+    React.useEffect(() => {
+      if (optionsOpen) {
+        setJustOpened(true);
+      }
+    }, [optionsOpen]);
+
     // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided
     const getOptionName = React.useCallback(
       (option: IAutoCompleteInputOption<Id>) => option.name ?? getFormattedValueFromData(option.id)!.toString(),
@@ -103,27 +116,35 @@ export const AutoCompleteInput = React.forwardRef(
       onTextInputChange
     );
 
+    // Once filtering has occurred, set the just opened state to false
+    React.useEffect(() => {
+      setJustOpened(false);
+    }, [textInputInternalValue]);
+
     // The provided options, optionally filtered by the text input value
     const filteredOptions = React.useMemo(() => {
-      if (filterOptions && options) {
+      const showAllOptions = showAllOptionsOnFocus && justOpened;
+      if (filterOptions && !showAllOptions && options) {
         if (filterOptions === true) {
           return options.filter((option) => getOptionName(option).startsWith(textInputInternalValue));
         }
         return options.filter((option) => filterOptions(option, textInputInternalValue));
       }
       return options || [];
-    }, [filterOptions, JSON.stringify(options), textInputInternalValue]);
+    }, [filterOptions, Objects.contentDependency(options), textInputInternalValue, justOpened, showAllOptionsOnFocus]);
 
     /** when the user clicks on an option, change the value in the textInput */
     const onSelectOption = React.useCallback(
       (id: Id) => {
-        const selectedOption = options?.find((option) => option.id === id);
-        setTextInputInternalValue(selectedOption?.name || '');
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-        setBoundValue(selectedOption?.id!);
+        if (options) {
+          const selectedOption = options.find((option) => option.id === id);
+          if (selectedOption) {
+            setTextInputInternalValue(selectedOption.name ?? '');
+            setBoundValue(selectedOption.id);
+          }
+        }
       },
-      [bind, allowFreeText]
+      [bind, allowFreeText, Objects.contentDependency(options)]
     );
 
     /** Fired when the user changes the value in the text input */
@@ -134,8 +155,8 @@ export const AutoCompleteInput = React.forwardRef(
 
         // if allow free text, bind exact value on every change
         // if inputted text is an option, bind that
-        const inputtedOptionIndex = options?.findIndex((option) => getOptionName(option) === newTextInputValue);
-        if (inputtedOptionIndex && inputtedOptionIndex > -1) {
+        const inputtedOptionIndex = options?.findIndex((option) => getOptionName(option) === newTextInputValue) ?? -1;
+        if (inputtedOptionIndex > -1) {
           const inputtedOption = options![inputtedOptionIndex];
 
           setBoundValue(inputtedOption!.id);
@@ -143,7 +164,7 @@ export const AutoCompleteInput = React.forwardRef(
           setBoundValue(newTextInputValue as Id);
         }
       },
-      [setTextInputInternalValue, getOptionName]
+      [setTextInputInternalValue, getOptionName, options]
     );
 
     // reset the input's value to reflect the bound value
@@ -155,6 +176,10 @@ export const AutoCompleteInput = React.forwardRef(
         }
       }
     }, [allowFreeText, options, boundValue, getOptionName]);
+
+    useDidUpdateEffect(() => {
+      resetInputValue();
+    }, [boundValue, options]);
 
     // when the user closes the dropdown, reset the input value
     useDidUpdateEffect(() => {
@@ -229,4 +254,5 @@ AutoCompleteInput.defaultProps = {
   validationMode: 'both',
   allowKeyboardNavigationSelection: true,
   filterOptions: true,
+  showAllOptionsOnFocus: true,
 };

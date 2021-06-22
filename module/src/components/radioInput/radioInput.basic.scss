@@ -5,51 +5,6 @@
     cursor: pointer;
 
     @include space-between-children-horizontal($spacing-xsmall);
-
-    .arm-radio-input-radio {
-      @include square(1.4rem);
-      @include flex-centre-content;
-      position: relative;
-
-      input {
-        appearance: none;
-        @include absolute-fill;
-        margin: 0;
-        cursor: pointer;
-
-        &:checked ~ .arm-icon.arm-radio-input-checked-icon {
-          opacity: 1;
-        }
-
-        &:checked ~ .arm-icon.arm-radio-input-unchecked-icon {
-          opacity: 0;
-        }
-      }
-
-      &::after {
-        @include init-pseudo;
-        @include square(0.9rem);
-        pointer-events: none;
-        background-color: $brand-primary;
-        opacity: 0;
-      }
-
-      .arm-icon {
-        @include absolute-fill;
-        @include flex-centre-content;
-        transition: opacity $transition-quick;
-        pointer-events: none;
-        opacity: 0;
-
-        &.arm-icon.arm-radio-input-unchecked-icon {
-          opacity: 1;
-        }
-
-        &.arm-icon.arm-radio-input-checked-icon {
-          color: $brand-primary;
-        }
-      }
-    }
   }
 
   &[data-has-checked-icon='true'] {
@@ -66,5 +21,49 @@
         opacity: 1;
       }
     }
+  }
+}
+
+.arm-radio-input-radio {
+  @include square(1.4rem);
+  @include flex-centre-content;
+  position: relative;
+
+  &::after {
+    @include init-pseudo;
+    @include square(0.9rem);
+    pointer-events: none;
+    background-color: $brand-primary;
+    opacity: 0;
+  }
+
+  .arm-icon {
+    @include absolute-fill;
+    @include flex-centre-content;
+    pointer-events: none;
+    opacity: 0;
+
+    &.arm-icon.arm-radio-input-unchecked-icon {
+      opacity: 1;
+    }
+
+    &.arm-icon.arm-radio-input-checked-icon {
+      color: $brand-primary;
+    }
+  }
+}
+
+.arm-radio-input-radio-input {
+  appearance: none;
+  @include absolute-fill;
+  margin: 0;
+  cursor: pointer;
+
+  &:checked ~ .arm-icon.arm-radio-input-checked-icon {
+    opacity: 1;
+  }
+
+  &:checked ~ .arm-icon.arm-radio-input-unchecked-icon {
+    opacity: 0;
   }
 }

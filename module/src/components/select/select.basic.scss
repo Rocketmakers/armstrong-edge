@@ -2,32 +2,32 @@
   .arm-select-inner {
     flex-grow: 1;
     position: relative;
-
-    .arm-icon.arm-select-overlay-icon {
-      position: absolute;
-      right: $spacing-xsmall;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.6rem;
-    }
-
-    select {
-      @include fill;
-      height: $input-height;
-      cursor: pointer;
-      padding: $spacing-xsmall 0;
-
-      appearance: none;
-      background-color: transparent;
-      resize: none;
-      font-family: inherit;
-      outline: none;
-      border: none;
-
-      &:focus {
-        outline: none;
-        border: none;
-      }
-    }
   }
+}
+
+.arm-select-select {
+  @include fill;
+  height: $input-height;
+  cursor: pointer;
+  padding: $spacing-xsmall 0;
+
+  appearance: none;
+  background-color: transparent;
+  resize: none;
+  font-family: inherit;
+  outline: none;
+  border: none;
+
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}
+
+.arm-icon.arm-select-overlay-icon {
+  position: absolute;
+  right: $spacing-xsmall;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
 }

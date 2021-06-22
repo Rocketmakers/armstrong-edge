@@ -17,7 +17,6 @@ $arm-dropdown-height: 240px;
   background-color: $white;
   width: $arm-dropdown-width;
   min-width: $arm-dropdown-min-width;
-  transition: max-height $transition-medium linear, opacity $transition-quick;
   overflow: auto;
   border-radius: $border-radius-small;
   max-height: $arm-dropdown-height;

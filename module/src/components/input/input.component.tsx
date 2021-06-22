@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Form } from '../..';
-import { FormValidationMode, IBindingProps, IDelayInputConfig } from '../../hooks/form/form.types';
+import { IBindingProps, IDelayInputConfig } from '../../hooks/form/form.types';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useThrottle } from '../../hooks/useThrottle';
 import { ClassNames } from '../../utils/classNames';
@@ -53,12 +53,6 @@ export interface IInputProps<TValue> extends NativeInputProps, Omit<IInputWrappe
 
   /** Called when the value changes, takes into account any delay values and other effects. */
   onValueChange?: (value: TValue) => any;
-
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
 
   /** The delay config, used to set throttle and debounce values. */
   delay?: IDelayInputConfig;

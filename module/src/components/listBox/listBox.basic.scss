@@ -1,31 +1,31 @@
 .arm-input.arm-listbox {
   cursor: pointer;
+}
 
-  .arm-listbox-inner {
-    flex-grow: 1;
-    position: relative;
+.arm-listbox-inner {
+  flex-grow: 1;
+  position: relative;
+}
 
-    .arm-listbox-content {
-      height: $input-height;
-      display: flex;
-      align-items: center;
+.arm-icon.arm-listbox-overlay-icon {
+  position: absolute;
+  right: $spacing-xsmall;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+}
 
-      p.placeholder {
-        color: $gray-light;
-      }
+.arm-listbox-content {
+  height: $input-height;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 
-      p {
-        cursor: pointer;
-        font-size: 0.8rem;
-      }
-    }
+  p.placeholder {
+    color: $gray-light;
+  }
 
-    .arm-icon.arm-listbox-overlay-icon {
-      position: absolute;
-      right: $spacing-xsmall;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.6rem;
-    }
+  p {
+    font-size: 0.8rem;
   }
 }

@@ -1,20 +1,18 @@
-.arm-input.arm-input-base {
-  .arm-input-inner {
-    cursor: text;
-  }
+.arm-input-inner {
+  cursor: text;
+}
 
-  input.arm-input-base-input {
-    flex-grow: 1;
-    appearance: none;
+.arm-input-base-input {
+  flex-grow: 1;
+  appearance: none;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: $spacing-xsmall 0;
+  height: $input-height;
+
+  &:focus {
     border: none;
     outline: none;
-    background-color: transparent;
-    padding: $spacing-xsmall 0;
-    height: $input-height;
-
-    &:focus {
-      border: none;
-      outline: none;
-    }
   }
 }

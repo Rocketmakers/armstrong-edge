@@ -2,7 +2,9 @@
 export namespace Globals {
   export const Window = typeof window === 'undefined' ? undefined : window;
   export const Document = typeof document === 'undefined' ? undefined : document;
-  export const supportsResizeObserver = typeof ResizeObserver !== 'undefined';
-  export const supportsIntersectionObserver = typeof ResizeObserver !== 'undefined';
+  export const supportsResizeObserver = !!Globals.Window?.ResizeObserver;
+  export const supportsIntersectionObserver = !!Globals.Window?.IntersectionObserver;
+  export const supportsMutationObserver = !!Globals.Window?.MutationObserver;
+  export const supportsPerformanceObserver = !!Globals.Window?.PerformanceObserver;
   export const isBrowser = !!Window;
 }

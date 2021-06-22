@@ -1,17 +1,17 @@
-.input-wrapper {
+.arm-input-wrapper {
   width: $input-width;
-
-  .arm-input-inner {
-    width: 100%;
-    padding: 0 $spacing-xsmall;
-    display: flex;
-    align-items: center;
-
-    @include space-between-children-horizontal($spacing-xsmall);
-  }
 
   &[data-disabled='true'] {
     pointer-events: none;
     user-select: none;
   }
+}
+
+.arm-input-inner {
+  width: 100%;
+  padding: 0 $spacing-xsmall;
+  display: flex;
+  align-items: center;
+
+  @include space-between-children-horizontal($spacing-xsmall);
 }

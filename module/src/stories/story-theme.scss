@@ -12,8 +12,12 @@ $brand-primary: green;
 
 // import base component styles
 @import '../../dist/basic.scss';
+
 // import styled component styles
 @import '../../dist/prototyping.scss';
+
+// import animated component styles
+@import '../../dist/animated.scss';
 
 @import './theme/fonts';
 
@@ -32,9 +36,6 @@ html {
         display: flex;
         align-items: center;
         justify-content: center;
-
-        // uncomment for anything that needs scrolling to test
-        // height: 200vh;
 
         .story-wrapper {
           position: relative;
@@ -55,5 +56,32 @@ html {
 .arm-dropdown-items {
   &:focus {
     // border: 1px solid blue;
+  }
+}
+
+.story-wrapper {
+  .arm-image {
+    img {
+      height: 200px;
+      width: 200px;
+    }
+  }
+}
+.story-scroll-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+
+  > * {
+    margin: 0 auto;
+  }
+}
+.buttons-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  > .arm-button {
+    margin-bottom: $spacing-small;
   }
 }

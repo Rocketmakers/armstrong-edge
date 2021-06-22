@@ -111,6 +111,7 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
             <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
               <div className="arm-range-input-track">
                 <input
+                  className="arm-range-input-input"
                   {...nativeProps}
                   ref={ref}
                   type="range"

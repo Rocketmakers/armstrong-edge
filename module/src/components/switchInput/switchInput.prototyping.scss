@@ -1,19 +1,12 @@
 .arm-switch-input {
   .arm-switch-input-inner {
-    border-radius: $arm-switch-input-height / 2;
+    border-radius: $arm-switch-input-height * 0.5;
     background-color: $gray-light;
-    transition: background-color $transition-quick;
 
     &::after {
       background-color: $white;
       box-shadow: $shadow-small;
       border-radius: 50%;
-      transition: transform $transition-quick;
-    }
-
-    .arm-switch-input-checked-icon,
-    .arm-switch-input-unchecked-icon {
-      transition: opacity $transition-quick, transform $transition-quick;
     }
   }
 
