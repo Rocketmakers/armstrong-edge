@@ -7,10 +7,10 @@ import { Dates } from '../../utils/dates';
 import { Objects } from '../../utils/objects';
 import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
-import { useToastConfig, useToasts } from './toast.context';
+import { useToasts } from './toast.context';
 import { IToastNotification } from './toast.types';
 
-export interface IToastNotificationProps extends IToastNotification {}
+export interface IToastNotificationProps extends Omit<IToastNotification, 'timestamp'>, Required<Pick<IToastNotification, 'timestamp'>> {}
 
 /** Render a single toast notification with a title and some given information */
 export const ToastNotification: React.FC<IToastNotificationProps> = ({ onDismiss, ...toast }) => {
@@ -32,7 +32,9 @@ export const ToastNotification: React.FC<IToastNotificationProps> = ({ onDismiss
     [content, beginDismiss, toast]
   );
 
-  const { timestampFormatString } = useToastConfig();
+  const {
+    config: { timestampFormatString },
+  } = useToasts();
 
   const timestampString = React.useMemo(() => timestampFormatString && Dates.dateToString(timestamp!, timestampFormatString), [timestamp]);
 
@@ -75,7 +77,7 @@ export interface IToastNotificationContainerProps {
 
 /** A container which will render toasts passed in through props or toasts available from the ToastContext dispatched from useToastDispatch */
 export const ToastNotificationContainer: React.FC<IToastNotificationContainerProps> = ({ toasts }) => {
-  const contextToasts = useToasts();
+  const { toasts: contextToasts } = useToasts();
   const combinedToasts = React.useMemo(() => [...(contextToasts || []), ...(toasts || [])], [contextToasts, toasts]);
 
   const splitToasts = React.useMemo(() => Arrays.arrayToArrayDictionary(combinedToasts, (toast) => toast.position!), [combinedToasts]);

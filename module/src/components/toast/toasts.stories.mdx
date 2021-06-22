@@ -95,9 +95,7 @@ If you don't want to use the toast context, but still want to use the Armstrong 
 
 The Toast context can also optionally disable rendering any toasts, if you want to handle them completely on your own.
 
-The hook `useToasts` will return an array of dispatched toast notifications. You will need to reimplement a fair few things yourself to replicate all the functionality of useToasts, like `position` and `autoDismissTime`.
-
-`useToastConfig` will allow you to access configuration set at the Provider level (or default configurations)
+The hook `useToasts` will return an array of dispatched toast notifications. You will need to reimplement a fair few things yourself to replicate all the functionality of useToasts, like `position` and `autoDismissTime`. It also returns callbacks to dismiss the toasts, and the toast config given to the provider
 
 Below is an example reimplementation of toast notifications.
 
@@ -122,9 +120,11 @@ const MyView = () => {
 };
 
 const MyToasts = () => {
-  const toasts = useToasts();
-  const dismiss = useToastDismiss();
-  const { position } = useToastConfig();
+  const {
+    toasts,
+    dismiss,
+    config: { position },
+  } = useToasts();
 
   return (
     <div className="toasts">

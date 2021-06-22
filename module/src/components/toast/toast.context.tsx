@@ -137,26 +137,8 @@ export function useDispatchToast() {
   return dispatchToasts;
 }
 
-/** Dismiss all toast notifications */
-export function useToastDismissAll() {
-  const { dismissAll } = useToastContext();
-  return dismissAll!;
-}
-
-/** Dismiss a toast notification by reference */
-export function useToastDismiss() {
-  const { dismiss } = useToastContext();
-  return dismiss!;
-}
-
-/** Get the config for toasts given in the ToastContext */
-export function useToastConfig() {
-  const { config } = useToastContext();
-  return config!;
-}
-
 /** Get the array of currently active toast notifications */
 export function useToasts() {
-  const { toasts } = useToastContext();
-  return toasts;
+  const { toasts, config, dismiss, dismissAll } = useToastContext();
+  return { toasts, config, dismiss: dismiss!, dismissAll: dismissAll! };
 }
