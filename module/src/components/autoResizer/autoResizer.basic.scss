@@ -1,0 +1,11 @@
+.arm-auto-resizer {
+  width: var(--arm-auto-resizer-width);
+  height: var(--arm-auto-resizer-height);
+  overflow: hidden;
+  transition: width $transition-quick, height $transition-quick;
+}
+
+.arm-auto-resizer-content {
+  width: max-content;
+  height: max-content;
+}

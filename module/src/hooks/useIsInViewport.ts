@@ -33,7 +33,7 @@ export function useInViewport(ref: React.MutableRefObject<HTMLElement | undefine
         if (options.once) {
           observer.disconnect();
         }
-      } else if (isIntersecting && !isInViewport) {
+      } else if (!isIntersecting && isInViewport) {
         options.onExit?.(entries);
         setIsInViewport(false);
       }

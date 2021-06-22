@@ -35,6 +35,7 @@ export const Icon = <TIconSet extends IconSet>({
 }: React.PropsWithChildren<IIconProps<TIconSet>>) => {
   return (
     <div
+      aria-hidden
       {...nativeProps}
       data-icon-set={iconSet}
       data-i={icon}

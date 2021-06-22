@@ -53,9 +53,13 @@ html {
   }
 }
 
-.arm-dropdown-items {
-  &:focus {
-    // border: 1px solid blue;
+.story-scroll-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+
+  > * {
+    margin: 0 auto;
   }
 }
 
@@ -67,15 +71,7 @@ html {
     }
   }
 }
-.story-scroll-container {
-  width: 100vw;
-  height: 100vh;
-  overflow: auto;
 
-  > * {
-    margin: 0 auto;
-  }
-}
 .buttons-wrapper {
   display: flex;
   align-items: center;

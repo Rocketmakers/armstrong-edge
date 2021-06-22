@@ -1,7 +1,7 @@
 export * from './useArrayState';
+export * from './useBoundingClientRect';
 export * from './useDebounce';
 export * from './useDidUpdateEffect';
-export * from './useElementBoundingClientRect';
 export * from './useElementStatus';
 export * from './useEventListener';
 export * from './useGeneratedId';
@@ -11,7 +11,7 @@ export * from './useIsFocused';
 export * from './useIsHovering';
 export * from './useIsInViewport';
 export * from './useMutationObserver';
-export * from './useOnScrollToThreshold';
+export * from './useOnScrollToEnd';
 export * from './useOverridableState';
 export * from './usePerformanceObserver';
 export * from './useResizeObserver';
