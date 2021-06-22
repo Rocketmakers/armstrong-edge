@@ -403,14 +403,14 @@ interface IUseBindingToolsOverrides<TData> {
 
 export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingToolsOverrides<TData>): UseBindingToolsReturn<TData> {
   const value = React.useMemo(
-    () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind?.value) ?? bind?.value,
+    () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind.value) ?? bind?.value,
     [overrides?.value, bind?.bindConfig?.format?.fromData, bind?.value]
   );
 
   const onChange = React.useCallback(
     (newValue: TData) => {
       overrides?.onChange?.(newValue);
-      bind?.setValue?.(bind?.bindConfig?.format?.toData?.(newValue) ?? newValue);
+      bind?.setValue?.(bind.bindConfig?.format?.toData?.(newValue) ?? newValue);
     },
     [overrides?.onChange, bind?.setValue, bind?.bindConfig?.format?.toData]
   );
