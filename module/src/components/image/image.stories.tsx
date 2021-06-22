@@ -13,28 +13,6 @@ export default StoryUtils.createMeta(Image, 'Display', 'Image', {});
 
 /** stories */
 
-// export const Default = () => {
-//   return (
-//     <div style={{ height: '100vh', width: '100vw', overflow: 'auto', paddingTop: '100px', paddingLeft: '50px' }}>
-//       <Image wrapperAttributes={{ style: { marginBottom: '600px' } }} imgAttributes={{ style: { width: '100px' } }} src=";sdlfgnspdkfjgnl;ksjdng" />
-//       <Image
-//         wrapperAttributes={{ style: { marginBottom: '600px' } }}
-//         imgAttributes={{ style: { width: '100px' } }}
-//         src="https://wallpapercave.com/wp/wp2550666.jpg"
-//       />
-//       <Image
-//         wrapperAttributes={{ style: { marginBottom: '600px' } }}
-//         imgAttributes={{ style: { width: '100px' } }}
-//         src="https://wallpapercave.com/wp/wp2550666.jpg"
-//       />
-//       <Image
-//         wrapperAttributes={{ style: { marginBottom: '600px' } }}
-//         imgAttributes={{ style: { width: '100px' } }}
-//         src="https://wallpapercave.com/wp/wp2550666.jpg"
-//       />
-//     </div>
-//   );
-// };
 export const Default = () => {
   return <Image alt="I'm an image" src="https://wallpapercave.com/wp/wp2550666.jpg" />;
 };
