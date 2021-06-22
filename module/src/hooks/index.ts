@@ -5,6 +5,7 @@ export * from './useElementBoundingClientRect';
 export * from './useEventListener';
 export * from './useGeneratedId';
 export * from './useIntersectionObserver';
+export * from './useInterval';
 export * from './useOnScrollToThreshold';
 export * from './useOverridableState';
 export * from './useResizeObserver';

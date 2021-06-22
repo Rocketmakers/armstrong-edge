@@ -1,6 +1,6 @@
 export * from './arrays';
 export * from './classNames';
-export * from './colour';
+export * from './color';
 export * from './dates';
 export * from './globals';
 export * from './maths';

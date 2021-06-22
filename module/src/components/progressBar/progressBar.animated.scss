@@ -1,0 +1,10 @@
+.arm-progress-bar-progress::after {
+  transition-duration: $transition-quick;
+  transition-property: background-color, transform;
+}
+
+.arm-progress-bar-label {
+  &[data-variant='centre-progress'] {
+    transition: width $transition-quick;
+  }
+}

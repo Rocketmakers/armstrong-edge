@@ -1,0 +1,32 @@
+.arm-progress-bar.arm-global-progress-bar {
+  position: fixed;
+  border-radius: 0;
+
+  .arm-progress-bar-progress {
+    border-radius: 0;
+  }
+
+  &[data-position='top'] {
+    top: 0;
+    left: 0;
+    width: 100vw;
+  }
+
+  &[data-position='bottom'] {
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+  }
+
+  &[data-position='left'] {
+    bottom: 0;
+    left: 0;
+    height: 100vw;
+  }
+
+  &[data-position='right'] {
+    bottom: 0;
+    right: 0;
+    height: 100vw;
+  }
+}

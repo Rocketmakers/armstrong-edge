@@ -17,3 +17,4 @@ const Template = StoryUtils.createTemplate(Spinner);
 export const Default = StoryUtils.cloneTemplate(Template, {});
 export const CustomIcon = StoryUtils.cloneTemplate(Template, { icon: IconUtils.getIconDefinition('Icomoon', 'spinner9') });
 export const CustomJSX = StoryUtils.cloneTemplate(Template, { children: <p>I'm a loader</p> });
+export const Label = StoryUtils.cloneTemplate(Template, { label: 'Loading the goods...' });
