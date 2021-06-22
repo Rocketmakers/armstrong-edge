@@ -1,0 +1,84 @@
+import * as React from 'react';
+
+import { IBindingProps, useBindingTools } from '../../hooks/form';
+import { ArmstrongId } from '../../types';
+import { ClassNames } from '../../utils/classNames';
+import { IInputWrapperProps } from '../inputWrapper';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
+import { ITabControlProps, TabControl } from '../tabControl';
+import { ValidationErrors } from '../validationErrors';
+
+export interface ITabSelectProps<Id extends ArmstrongId>
+  extends Omit<ITabControlProps<Id>, 'currentTab' | 'onTabChange'>,
+    IStatusWrapperProps,
+    Pick<IInputWrapperProps, 'validationErrorMessages' | 'validationMode'> {
+  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  bind?: IBindingProps<Id>;
+
+  /** (Id) the current value of the input */
+  value?: Id;
+
+  /** (Id => void) the current value of the input */
+  onValueChange?: (newValue: Id) => void;
+
+  /** (boolean) disable the input */
+  disabled?: boolean;
+}
+
+/** A TabControl that can have its value bound to an Armstrong form */
+export const TabSelect = React.forwardRef(
+  <Id extends ArmstrongId>(
+    {
+      bind,
+      value,
+      onValueChange,
+      className,
+      pending,
+      error,
+      errorIcon,
+      statusPosition,
+      validationErrorMessages,
+      validationMode,
+      disabled,
+      ...tabControlProps
+    }: ITabSelectProps<Id>,
+    ref: React.ForwardedRef<HTMLDivElement>
+  ) => {
+    const [boundValue, setBoundValue, bindConfig] = useBindingTools(bind, {
+      onChange: onValueChange,
+      value,
+      validationErrorMessages,
+      validationMode,
+      validationErrorIcon: errorIcon,
+    });
+
+    return (
+      <>
+        <div
+          className={ClassNames.concat('arm-tab-select', className)}
+          data-pending={pending}
+          data-error={error || (bindConfig.shouldShowValidationErrorIcon && !!bindConfig.validationErrorMessages.length)}
+          data-disabled={disabled || pending}
+        >
+          <StatusWrapper
+            pending={pending}
+            error={error || (bindConfig.shouldShowValidationErrorIcon && !!bindConfig.validationErrorMessages.length)}
+            errorIcon={bindConfig.validationErrorIcon}
+            statusPosition={statusPosition}
+          >
+            <TabControl currentTab={boundValue!} onTabChange={disabled ? setBoundValue : undefined} {...tabControlProps} ref={ref} />
+          </StatusWrapper>
+        </div>
+
+        {bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={bindConfig.validationErrorIcon} />
+        )}
+      </>
+    );
+  }
+
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<Id extends ArmstrongId>(props: React.PropsWithRef<ITabSelectProps<Id>> & React.RefAttributes<HTMLDivElement>) => ReturnType<React.FC>) & {
+  defaultProps?: Partial<ITabSelectProps<any>>;
+};
