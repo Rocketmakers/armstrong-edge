@@ -1,6 +1,8 @@
 export namespace Maths {
   /** Get a number, clamped to a maximum and minimum */
-  export const clamp = (input: number, minimum: number, maximum: number) => Math.min(Math.max(input, minimum), maximum);
+  export function clamp(input: number, minimum: number, maximum: number) {
+    return Math.min(Math.max(input, minimum), maximum);
+  }
 
   /**
    * Perform a modulo operation that ensures that the output is always positive - javascript modulos behave unusually with negative numbers
@@ -25,7 +27,7 @@ export namespace Maths {
   };
 
   /** lerp between multiple numbers, with equally spaced breakpoints */
-  export const multiLerp = (breakpoints: number[], progress: number) => {
+  export function multiLerp(breakpoints: number[], progress: number) {
     const clampedProgress = clamp(progress, 0, 100);
     const breakpointSpacing = 100 / (breakpoints.length - 1);
 
@@ -43,5 +45,5 @@ export namespace Maths {
     const pointProgress = (clampedProgress - previousBreakpointPercent) * (100 / breakpointSpacing);
 
     return lerp(previousBreakpoint, nextBreakpoint, pointProgress);
-  };
+  }
 }

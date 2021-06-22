@@ -1,6 +1,7 @@
 import { Maths } from './maths';
 
 export namespace Colours {
+  /** A 3 channel interface of numbers describing an RGB colour, with an optional alpha channel */
   export interface IRGBColour {
     red: number;
     green: number;
@@ -8,8 +9,10 @@ export namespace Colours {
     alpha?: number;
   }
 
+  /** Either a hex string or a IRGBColour interface */
   export type Colour = string | IRGBColour;
 
+  /** Convert a hex string to an RGB object */
   export function hexToRGB(hex: string): IRGBColour {
     // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
     const parts = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?$/i.exec(hex);

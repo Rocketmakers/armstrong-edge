@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Colours } from '../..';
+import { ClassNames } from '../../utils';
 
 export type ProgressBarLabelVariant = 'centre' | 'following';
 
@@ -19,7 +20,7 @@ export interface IProgressBarProps extends React.DetailedHTMLProps<React.HTMLPro
   /** ('centre' | 'following') the position to show the label - defaults to centre */
   labelVariant?: ProgressBarLabelVariant;
 
-  /** (Colour[]) breakpoints for the colour to make the progress bar based on the progress  */
+  /** (Colour[]) breakpoints for the colour to make the progress bar based on the progress in an array, given either as hex strings */
   colorBreakpoints?: Colours.Colour[];
 
   /** (string) colour when the progress has hit 100 */
@@ -40,5 +41,5 @@ export const ProgressBar: React.FC<IProgressBarProps> = ({
     [colorBreakpoints, progress]
   );
 
-  return <div className="arm-progress-bar" {...nativeProps}></div>;
+  return <div className={ClassNames.concat('arm-progress-bar', className)} {...nativeProps}></div>;
 };
