@@ -191,12 +191,12 @@ $large-expand-max: 700px;
 }
 
 @mixin expand-in-height($name, $max) {
-  @keyframes expand-in-width-#{$name} {
+  @keyframes expand-in-height-#{$name} {
     from {
-      max-width: 0;
+      max-height: 0;
     }
     to {
-      max-width: $max;
+      max-height: $max;
     }
   }
 }

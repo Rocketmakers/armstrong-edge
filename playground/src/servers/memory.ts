@@ -130,7 +130,6 @@ export namespace MemoryServer {
   ]
 
   export function getSauces(q: string ) {
-    console.log({q})
     return q?.length ? sauces.filter(sauce => sauce.name.includes(q)) : sauces
   }
 }
