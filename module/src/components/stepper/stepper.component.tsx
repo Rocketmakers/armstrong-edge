@@ -98,7 +98,7 @@ export const StepperStep = React.forwardRef<HTMLButtonElement, IStepperStepProps
           ) : icon ? (
             <Icon iconSet={icon.iconSet} icon={icon.icon} />
           ) : (
-            typeof index !== 'undefined' && <p className="arm-stepper-step-icon-index">{index! + 1}</p>
+            Number.isInteger(index) && <p className="arm-stepper-step-icon-index">{index! + 1}</p>
           )}
         </div>
         {name && (

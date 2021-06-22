@@ -117,7 +117,8 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
               {...nativeProps}
               ref={ref}
               type="checkbox"
-              onChange={() => ''}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              onChange={() => {}}
               checked={boundValue}
               disabled={disabled}
               {...dragProps}

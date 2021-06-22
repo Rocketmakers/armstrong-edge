@@ -60,7 +60,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
           className={ClassNames.concat('arm-button', className)}
           data-pending={pending}
           data-disabled={disabled || pending}
-          data-error={error || validationErrorMessages?.length}
+          data-error={shouldShowErrorIcon}
           disabled={disabled || pending}
           ref={ref}
         >
