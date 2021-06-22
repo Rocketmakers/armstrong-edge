@@ -5,7 +5,7 @@ export interface IUseTimeoutReturn {
   set: (callback?: () => void) => void;
 
   /** Clear the timeout before its time has finished */
-  clear: (callback?: () => void) => void;
+  clear: () => void;
 }
 
 /**

@@ -15,7 +15,7 @@ export function usePerformanceObserver(callback: PerformanceObserverCallback, op
   const observe = React.useCallback(() => {
     observer.current = new PerformanceObserver(callback);
     observer.current.observe(options);
-  }, [callback]);
+  }, [callback, options]);
 
   const disconnect = React.useCallback(() => {
     observer.current?.disconnect();

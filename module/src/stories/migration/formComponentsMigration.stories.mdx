@@ -1,0 +1,23 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration Guides/Form Components" />
+
+### TextInput and TextAreaInput
+
+The TextInput's `multiLine` prop previously made the TextInput render a textarea instead of an input. This prop has been removed in favour of a new TextAreaInput component.
+
+```tsx
+// old
+<TextInput multiLine />
+
+// new
+<TextAreaInput />
+```
+
+Additionally, TextInput has been split into a number of different components most of which just add `type=X` but NumberInput uses a numeric bind prop.
+
+### SelectInput
+
+There is now a DOM based select alternative called ListBox (it's a silly name but w3c recommend it in their aria docs so...) which can be optionally used in substitute.
+
+The native SelectInput has been renamed Select.

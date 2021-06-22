@@ -8,9 +8,13 @@ By default, Armstrong doesn't compile its SCSS, allowing consuming projects to m
 
 ## Using Armstrong
 
+Armstrong is installed using `npm`.
+
 ```bash
 # This repo is currently @rocketmakers/armstrong-edge, writing docs as if deployed as main armstrong package
 npm install @rocketmakers/armstrong
+# or
+yarn add @rocketmakers/armstrong
 ```
 
 Then to use a component in your project
@@ -29,11 +33,9 @@ const MyComponent: React.FC = () => {
 
 See [Storybook](todo.com) for a list of all available components
 
-For details on how to import Armstrong's styling, see [scss.md](./docs/scss.md)
+For details on how to import Armstrong's styling, see [SCSS](STORYBOOK LINK TODO)
 
-For details on how to make Armstrong icons work, see [using_icons.md](./docs/using_icons.md)
-
-For details on using Armstrong forms, see [forms.md](./docs/forms.md)
+For details on using Armstrong forms, see [Forms](STORYBOOK LINK TODO)
 
 ### Issues / bug reports
 
@@ -80,7 +82,7 @@ then go to `localhost:6006`
 
 `npm run start-sass` will spin up a watcher which will watch all SASS files and rebuild them
 
-For more information on using SASS, see SASS Concatenation in [scss.md](./docs/scss.md)
+For more information on using SASS, see SASS Concatenation in [SCSS](STORYBOOK LINK TODO)
 
 ### Process
 

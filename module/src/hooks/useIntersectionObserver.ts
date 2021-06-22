@@ -25,9 +25,7 @@ export function useIntersectionObserver(
   );
 
   const unobserve = React.useCallback((element: Element) => {
-    if (observer.current) {
-      observer.current.unobserve(element);
-    }
+    observer.current?.unobserve(element);
   }, []);
 
   const disconnect = React.useCallback(() => {
@@ -40,7 +38,7 @@ export function useIntersectionObserver(
 
       return () => {
         if (ref.current) {
-          unobserve(ref.current!);
+          unobserve(ref.current);
         }
       };
     }
