@@ -2,12 +2,15 @@
  * Root library exports
  *  - Everything that needs to be made available externally.
  */
+import * as Calendar from './hooks/calendar';
 import * as Form from './hooks/form/index';
 
-export { Form };
+export { Calendar, Form };
 export * from './components/autoCompleteInput';
 export * from './components/autoCompleteInputMulti';
 export * from './components/button';
+export * from './components/calendarDisplay';
+export * from './components/calendarInput';
 export * from './components/calendarView';
 export * from './components/characterLimit';
 export * from './components/checkboxInput';
