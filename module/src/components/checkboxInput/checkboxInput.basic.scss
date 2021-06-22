@@ -1,11 +1,11 @@
 .arm-input.arm-checkbox-input {
   display: flex;
-  gap: $spacing-xsmall;
+  @include space-between-children-horizontal($spacing-xsmall);
   align-items: center;
 
   label {
     display: flex;
-    gap: $spacing-xsmall;
+    @include space-between-children-horizontal($spacing-xsmall);
     align-items: center;
     cursor: pointer;
     user-select: none;

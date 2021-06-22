@@ -46,6 +46,7 @@ export * from './components/tagInput';
 export * from './components/telInput';
 export * from './components/textAreaInput';
 export * from './components/textInput';
+export * from './components/tooltip';
 export * from './components/validationErrors';
 export * from './hooks';
 export * from './utils/arrays';

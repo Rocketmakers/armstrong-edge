@@ -1,6 +1,6 @@
 .arm-tag {
   display: flex;
   align-items: center;
-  gap: $spacing-xsmall;
+  @include space-between-children-horizontal($spacing-xsmall);
   white-space: nowrap;
 }

@@ -16,5 +16,5 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: $spacing-xsmall;
+  @include space-between-children-horizontal($spacing-xsmall);
 }

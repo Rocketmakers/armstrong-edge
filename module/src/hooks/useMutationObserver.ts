@@ -3,49 +3,42 @@ import * as React from 'react';
 import { Globals } from '../utils/globals';
 
 /**
- * Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
+ * Use an mutation observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
  * @param ref the html element to watch
  * @param callback the callback to be fired
  * @param options options for the mutation observer
- *
  */
 
-export function useResizeObserver(
-  callback: ResizeObserverCallback,
-  options?: ResizeObserverOptions,
+export function useMutationObserver(
+  callback: MutationCallback,
+  options?: MutationObserverInit,
   ref?: React.MutableRefObject<Element | undefined | null>
 ) {
-  const observer = React.useRef<ResizeObserver>();
+  const observer = React.useRef<MutationObserver>();
 
   const observe = React.useCallback(
     (element: Element) => {
-      observer.current = new ResizeObserver(callback);
+      observer.current = new MutationObserver(callback);
       observer.current.observe(element, options);
     },
     [callback, options]
   );
-
-  const unobserve = React.useCallback((element: Element) => {
-    if (observer.current) {
-      observer.current.unobserve(element);
-    }
-  }, []);
 
   const disconnect = React.useCallback(() => {
     observer.current?.disconnect();
   }, []);
 
   React.useLayoutEffect(() => {
-    if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsResizeObserver) {
+    if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsMutationObserver) {
       observe(ref.current);
 
       return () => {
         if (ref.current) {
-          unobserve(ref.current!);
+          disconnect();
         }
       };
     }
-  }, [ref?.current, observe, unobserve]);
+  }, [ref?.current, observer, callback, options]);
 
   React.useEffect(
     () => () => {
@@ -56,7 +49,6 @@ export function useResizeObserver(
 
   return {
     observer,
-    unobserve,
     disconnect,
   };
 }
