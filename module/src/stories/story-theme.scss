@@ -71,3 +71,12 @@ html {
     margin: 0 auto;
   }
 }
+.buttons-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  > .arm-button {
+    margin-bottom: $spacing-small;
+  }
+}
