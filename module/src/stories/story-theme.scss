@@ -67,3 +67,21 @@ html {
     }
   }
 }
+.story-scroll-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+
+  > * {
+    margin: 0 auto;
+  }
+}
+.buttons-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  > .arm-button {
+    margin-bottom: $spacing-small;
+  }
+}

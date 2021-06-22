@@ -11,6 +11,7 @@ export * from './useIsFocused';
 export * from './useIsHovering';
 export * from './useIsInViewport';
 export * from './useMutationObserver';
+export * from './useOnScrollToThreshold';
 export * from './useOverridableState';
 export * from './usePerformanceObserver';
 export * from './useResizeObserver';
