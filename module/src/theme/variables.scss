@@ -76,12 +76,19 @@ $input-height-large: 70px !default;
 // lines
 
 $line: 1px solid !default;
+$line-thick: 2px solid !default;
 
 $line-very-light: $line $gray-very-light !default;
 $line-light: $line $gray-light !default;
 $line-medium: $line $gray-medium !default;
 $line-dark: $line $gray-dark !default;
 $line-very-dark: $line $gray-very-dark !default;
+
+$line-thick-very-light: $line-thick $gray-very-light !default;
+$line-thick-light: $line-thick $gray-light !default;
+$line-thick-medium: $line-thick $gray-medium !default;
+$line-thick-dark: $line-thick $gray-dark !default;
+$line-thick-very-dark: $line-thick $gray-very-dark !default;
 
 $line-white: $line $white !default;
 

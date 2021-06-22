@@ -37,9 +37,6 @@ html {
         align-items: center;
         justify-content: center;
 
-        // uncomment for anything that needs scrolling to test
-        // height: 200vh;
-
         .story-wrapper {
           position: relative;
           width: max-content;
@@ -56,12 +53,6 @@ html {
   }
 }
 
-.arm-dropdown-items {
-  &:focus {
-    // border: 1px solid blue;
-  }
-}
-
 .story-scroll-container {
   width: 100vw;
   height: 100vh;
@@ -71,6 +62,16 @@ html {
     margin: 0 auto;
   }
 }
+
+.story-wrapper {
+  .arm-image {
+    img {
+      height: 200px;
+      width: 200px;
+    }
+  }
+}
+
 .buttons-wrapper {
   display: flex;
   align-items: center;

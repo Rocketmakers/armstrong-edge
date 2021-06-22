@@ -14,7 +14,7 @@ export function useTemporaryState<T>(initialValue?: T, time = 500, onReset?: () 
   const onTimeout = React.useCallback(() => {
     setValue(initialValue);
     onReset?.();
-  }, [onReset]);
+  }, [onReset, initialValue]);
 
   const { set: setTimeout } = useTimeout(time, onTimeout);
 

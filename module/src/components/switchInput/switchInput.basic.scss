@@ -1,6 +1,8 @@
 $arm-switch-input-width: 50px !default;
 $arm-switch-input-height: 30px !default;
-$arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall * 2});
+$arm-switch-input-handle-padding: $spacing-xxsmall / 2 !default;
+
+$arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input-handle-padding * 2});
 
 .arm-switch-input {
   &[data-icon-style='on-handle'] {
@@ -15,7 +17,7 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall 
     .arm-switch-input-inner::after,
     &[data-icon-style='on-handle'] .arm-switch-input-checked-icon,
     &[data-icon-style='on-handle'] .arm-switch-input-unchecked-icon {
-      transform: translateX(calc(#{$arm-switch-input-width} - #{$arm-switch-input-handle} - #{$spacing-xxsmall * 2}));
+      transform: translateX(calc(#{$arm-switch-input-width} - #{$arm-switch-input-handle} - #{$arm-switch-input-handle-padding * 2}));
     }
 
     .arm-switch-input-checked-icon {
@@ -38,8 +40,8 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall 
   &::after {
     @include init-pseudo;
     @include square($arm-switch-input-handle);
-    top: $spacing-xxsmall;
-    left: $spacing-xxsmall;
+    top: $arm-switch-input-handle-padding;
+    left: $arm-switch-input-handle-padding;
     position: absolute;
     pointer-events: none;
     box-shadow: $shadow-small;
@@ -62,16 +64,16 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$spacing-xxsmall 
   @include square($arm-switch-input-handle);
   @include flex-centre-content;
   position: absolute;
-  top: $spacing-xxsmall;
+  top: $arm-switch-input-handle-padding;
   z-index: 2;
   pointer-events: none;
 }
 
 .arm-switch-input-checked-icon {
-  right: $spacing-xxsmall;
+  right: $arm-switch-input-handle-padding;
   opacity: 0;
 }
 
 .arm-switch-input-unchecked-icon {
-  left: $spacing-xxsmall;
+  left: $arm-switch-input-handle-padding;
 }

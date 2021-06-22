@@ -75,6 +75,16 @@
   }
 }
 
+@mixin object-contain {
+  object-fit: contain;
+  object-position: center;
+}
+
+@mixin object-cover {
+  object-fit: cover;
+  object-position: center;
+}
+
 // responsiveness
 
 @mixin media-query($screen-width: $screen-size-phone) {

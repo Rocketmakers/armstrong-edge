@@ -42,13 +42,7 @@ function useFormBase<TData extends object>(
   initialData?: Partial<TData>,
   formConfig?: IFormConfig
 ): HookReturn<TData> {
-  const [validationErrors, validationDispatch] = React.useReducer(validationReducer, []);
-
-  React.useLayoutEffect(() => {
-    if (formConfig?.validationErrors) {
-      validationDispatch({ type: 'add-validation', errors: formConfig.validationErrors });
-    }
-  }, [Objects.contentDependency(formConfig?.validationErrors)]);
+  const [clientValidationErrors, clientValidationDispatch] = React.useReducer(validationReducer, []);
 
   /**
    * For setting a new value for a target property
@@ -69,9 +63,9 @@ function useFormBase<TData extends object>(
    */
   const addValidationError = React.useCallback(
     (...errors: IValidationError[]) => {
-      validationDispatch({ type: 'add-validation', errors });
+      clientValidationDispatch({ type: 'add-validation', errors });
     },
-    [validationDispatch]
+    [clientValidationDispatch]
   );
 
   /**
@@ -83,12 +77,12 @@ function useFormBase<TData extends object>(
       const key = validationKeyStringFromKeyChain(keyChain, 'dots');
       addValidationError(...messageArray.map((message) => ({ key, message })));
     },
-    [validationDispatch]
+    [clientValidationDispatch]
   );
 
   const clearAllValidationErrors = React.useCallback(() => {
-    validationDispatch({ type: 'clear-validation' });
-  }, [validationDispatch]);
+    clientValidationDispatch({ type: 'clear-validation' });
+  }, [clientValidationDispatch]);
 
   /**
    * For clearing all validation errors associated with a specific keyChain property
@@ -97,10 +91,10 @@ function useFormBase<TData extends object>(
     (keyChain: KeyChain) => {
       const dotKey = validationKeyStringFromKeyChain(keyChain, 'dots');
       const bracketKey = validationKeyStringFromKeyChain(keyChain, 'brackets');
-      validationDispatch({ type: 'clear-validation', key: dotKey });
-      validationDispatch({ type: 'clear-validation', key: bracketKey });
+      clientValidationDispatch({ type: 'clear-validation', key: dotKey });
+      clientValidationDispatch({ type: 'clear-validation', key: bracketKey });
     },
-    [validationDispatch]
+    [clientValidationDispatch]
   );
 
   /**
@@ -156,12 +150,13 @@ function useFormBase<TData extends object>(
    */
   const bind = React.useCallback(
     (keyChain: KeyChain, bindConfig?: IBindConfig<any>) => {
+      const combinedValidationErrors = [...clientValidationErrors, ...(formConfig?.validationErrors ?? [])];
       return {
         value: valueByKeyChain(formStateLive, keyChain),
         setValue: (newValue: any) => set(keyChain, newValue),
         bindConfig,
         formConfig,
-        myValidationErrors: validationErrorsByKeyChain(validationErrors, keyChain),
+        myValidationErrors: validationErrorsByKeyChain(combinedValidationErrors, keyChain),
         dispatch,
         keyChain,
         initialValue: valueByKeyChain(initialData, keyChain),
@@ -175,7 +170,7 @@ function useFormBase<TData extends object>(
       dispatch,
       formStateLive,
       initialData,
-      validationErrors,
+      clientValidationErrors,
       addValidationErrorFromKeyChain,
       clearValidationErrorsByKeyChain,
     ]
@@ -217,7 +212,7 @@ function useFormBase<TData extends object>(
         addValidationError: (...messages: string[]) => {
           addValidationErrorFromKeyChain(keyChain, messages);
         },
-        clearValidationErrors: () => {
+        clearClientValidationErrors: () => {
           clearValidationErrorsByKeyChain(keyChain);
         },
       };
@@ -408,14 +403,14 @@ interface IUseBindingToolsOverrides<TData> {
 
 export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingToolsOverrides<TData>): UseBindingToolsReturn<TData> {
   const value = React.useMemo(
-    () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind?.value) ?? bind?.value,
+    () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind.value) ?? bind?.value,
     [overrides?.value, bind?.bindConfig?.format?.fromData, bind?.value]
   );
 
   const onChange = React.useCallback(
     (newValue: TData) => {
       overrides?.onChange?.(newValue);
-      bind?.setValue?.(bind?.bindConfig?.format?.toData?.(newValue) ?? newValue);
+      bind?.setValue?.(bind.bindConfig?.format?.toData?.(newValue) ?? newValue);
     },
     [overrides?.onChange, bind?.setValue, bind?.bindConfig?.format?.toData]
   );
