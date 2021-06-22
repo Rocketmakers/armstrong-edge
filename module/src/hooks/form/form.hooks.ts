@@ -9,7 +9,7 @@ import { IconSet, IIcon } from '../../components/icon';
 import { useMyValidationErrorMessages } from '../../components/validationErrors';
 import { Objects } from '../../utils/objects';
 import { Typescript } from '../../utils/typescript';
-import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
+import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
 import { dataReducer, validationReducer } from './form.state';
 import {
   BindingTools,
@@ -281,7 +281,7 @@ function useForm<TData extends object>(initialData: TData, formConfig?: IFormCon
     [setFormState]
   );
 
-  useDidUpdateEffect(() => {
+  useDidUpdateLayoutEffect(() => {
     dispatch({ type: 'set-all', data: initialData });
   }, [Objects.contentDependency(initialData)]);
 

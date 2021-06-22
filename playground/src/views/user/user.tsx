@@ -39,18 +39,6 @@ export const UserEdit: React.FC = () => {
   const [addUser, { processed: addUserProcessed }] = apiHooks.user.addUser.useMutation()
   const [updateUser, { processed: updateUserProcessed }] = apiHooks.user.updateUser.useMutation()
 
-  const [autcompleteValue, setAutocompleteValue] = React.useState("")
-
-  const [{ data: sauces, isFetching: isFetchingSauces }] = apiHooks.sauces.getSauces.useQuery({
-    parameters: { q: autcompleteValue },
-    cacheKey: (a) => a.q,
-    autoInvoke: true,
-  })
-
-  console.log({ sauces })
-
-  console.log({ autcompleteValue })
-
   const validationErrors: IValidationError[] = Arrays.flatten(addUserProcessed?.validationErrors, updateUserProcessed?.validationErrors, [{ key: "firstName", message: "uh oh" }])
 
   const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(
