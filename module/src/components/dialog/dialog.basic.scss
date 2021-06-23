@@ -29,6 +29,17 @@ $dialog-height: calc(100vh - #{$spacing-medium * 2});
   flex-grow: 1;
 }
 
+.arm-confirmation-dialog-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: $spacing-xsmall;
+
+  .arm-button {
+    margin-left: $spacing-xsmall;
+  }
+}
+
 .arm-dialog-close-button {
   position: absolute;
   top: $spacing-small;
