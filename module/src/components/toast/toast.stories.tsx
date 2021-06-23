@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { useToasts } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Dates } from '../../utils/dates';
 import { Button } from '../button';
 import { useDispatchToast } from '.';
-import { ToastProvider } from './toast.context';
+import { ToastNotification } from './toast.component';
+import { ToastProvider, useToasts } from './toast.context';
 
 /** metadata */
 
@@ -104,7 +104,7 @@ export const CustomContent = () => {
 
 const CustomToastsInner = () => {
   const dispatch = useDispatchToast();
-  const toasts = useToasts();
+  const { toasts } = useToasts();
 
   return (
     <>
@@ -114,7 +114,7 @@ const CustomToastsInner = () => {
         className="custom-toasts"
         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', position: 'absolute', top: '50px' }}
       >
-        {toasts.map((toast, index) => (
+        {(toasts || []).map((toast, index) => (
           <p style={{ padding: '2px', boxShadow: '1px 1px 3px rgba(0,0,0,0.3)' }} key={index}>
             {toast.title}
           </p>
@@ -129,6 +129,9 @@ export const CustomToasts = () => {
       <CustomToastsInner />
     </ToastProvider>
   );
+};
+export const LooseToast = () => {
+  return <ToastNotification timestamp={new Date()} title="I'm a toast" />;
 };
 
 const PortaledToastsInner = () => {

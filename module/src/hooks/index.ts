@@ -7,6 +7,7 @@ export * from './useEventListener';
 export * from './useGeneratedId';
 export * from './useHasTimeElapsed';
 export * from './useIntersectionObserver';
+export * from './useInterval';
 export * from './useIsFocused';
 export * from './useIsHovering';
 export * from './useIsInViewport';

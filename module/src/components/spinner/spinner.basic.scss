@@ -1,5 +1,6 @@
 .arm-spinner {
   @include flex-centre-content;
+  flex-direction: column;
 
   &[data-fill-container='true'] {
     @include fill;
@@ -18,4 +19,9 @@
   animation: spin-clockwise $transition-slow linear infinite;
   width: max-content;
   height: max-content;
+}
+
+.arm-spinner-label {
+  margin-top: $spacing-small;
+  font-size: 0.7rem;
 }
