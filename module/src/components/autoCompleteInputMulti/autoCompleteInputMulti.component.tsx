@@ -65,6 +65,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
       tagPosition,
       value,
       allowFreeText,
+      disabled,
       allowKeyboardNavigationSelection,
       getSelectedOptionTag,
       ...textInputProps
@@ -191,12 +192,13 @@ export const AutoCompleteInputMulti = React.forwardRef(
           className={ClassNames.concat('arm-input', 'arm-autocomplete-input-multi', className)}
           data-error={error}
           data-pending={pending}
+          data-disabled={disabled}
           data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
             contentClassName="arm-auto-complete-options"
             items={dropdownItems}
-            isOpen={optionsOpen && !!options?.length}
+            isOpen={optionsOpen && !disabled && !!options?.length}
             onOpenChange={setOptionsOpen}
             portalToSelector={portalToSelector}
             portalTo={portalTo}
@@ -222,6 +224,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
               onTextInputValueChange={setTextInputInternalValue}
               validationErrorMessages={myValidationErrorMessages}
               errorIcon={validationErrorIcon}
+              disabled={disabled}
               disableOnPending={false}
               onAddTag={onAddTag}
               onRemoveTag={(id) => onRemoveTag(id as Id)}

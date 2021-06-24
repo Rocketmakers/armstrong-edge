@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { useDidUpdateEffect } from '../../hooks';
 import { useGeneratedId } from '../../hooks/useGeneratedId';
 import { ArmstrongId } from '../../types';
 import { Arrays } from '../../utils/arrays';
@@ -49,12 +50,7 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
         {...htmlProps}
         ref={ref}
         className={ClassNames.concat('arm-dropdown-item', htmlProps?.className)}
-        onMouseUp={(event) => {
-          if (onMouseUp) {
-            onMouseUp(event);
-            event.preventDefault();
-          }
-        }}
+        onMouseUp={onMouseUp}
         onMouseDown={(event) => event.stopPropagation()}
         onClick={onClick}
         data-keyboard-selected={isKeyboardSelected}
@@ -134,19 +130,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       onKeyDown?.(event);
 
-      if (!isOpen && allowKeyboardNavigation) {
-        switch (event.key) {
-          case 'ArrowDown': {
-            onOpenChange(true);
-            break;
-          }
-          case 'ArrowUp': {
-            onOpenChange(true);
-            break;
-          }
-          default:
-            break;
-        }
+      if (!isOpen && allowKeyboardNavigation && event.key !== 'Tab' && event.key !== 'Escape') {
         onOpenChange(true);
       }
 
@@ -201,6 +185,14 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     },
     [closeOnSelection, onOpenChange, onItemSelected]
   );
+
+  useDidUpdateEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        itemRefs.current?.[items[keyboardSelectedItemIndex].id]?.scrollIntoView({ block: 'center' });
+      });
+    }
+  }, [isOpen]);
 
   const id = useGeneratedId('arm_dd', htmlId);
 

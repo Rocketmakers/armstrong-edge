@@ -4,12 +4,22 @@
   top: 0;
   width: 100vw;
   height: 100vh;
+  z-index: 4;
 
   &[data-close-on-background-click='false'] {
     pointer-events: none;
 
     .arm-modal {
       pointer-events: visible;
+    }
+  }
+
+  &[data-darken-background='true'] {
+    background-color: rgba(black, 0.2);
+    cursor: pointer;
+
+    .arm-modal {
+      cursor: default;
     }
   }
 }

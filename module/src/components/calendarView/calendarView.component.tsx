@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Calendar } from '../..';
+import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { CalendarDisplay } from '../calendarDisplay/calendarDisplay.component';
 
@@ -17,6 +18,9 @@ export interface ICalendarViewProps extends Calendar.IConfig {
    * @param dateString A formatted string representation of the date that has been clicked (will use the `formatString` prop if passed, or fall back to strict ISO.)
    */
   onDateClicked?: (date: Date, dateString: string) => void;
+
+  /** (string) CSS className property */
+  className?: string;
 }
 
 /**
@@ -25,7 +29,7 @@ export interface ICalendarViewProps extends Calendar.IConfig {
  * - NOTE: Not a date input for a traditional form, please use `CalendarInput`
  */
 export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>(
-  ({ selectedDate, min, max, weekdayStartIndex, formatString, onDateClicked, locale, rangeTo, highlights }, ref) => {
+  ({ selectedDate, min, max, weekdayStartIndex, formatString, onDateClicked, locale, rangeTo, highlights, className }, ref) => {
     const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
       formatString,
       min,
@@ -54,6 +58,7 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
 
     return (
       <CalendarDisplay
+        className={ClassNames.concat('arm-calendar-view', className)}
         ref={ref}
         days={days}
         months={months}

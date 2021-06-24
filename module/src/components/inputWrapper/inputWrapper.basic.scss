@@ -15,3 +15,12 @@
 
   @include space-between-children-horizontal($spacing-xsmall);
 }
+
+.arm-input-wrapper-below,
+.arm-input-wrapper-above {
+  width: 100%;
+
+  .arm-auto-resizer-content {
+    width: 100%;
+  }
+}

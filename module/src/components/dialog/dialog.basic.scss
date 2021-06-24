@@ -1,10 +1,6 @@
 $dialog-width: 500px;
 $dialog-height: calc(100vh - #{$spacing-medium * 2});
 
-.arm-dialog-wrapper {
-  background-color: rgba(black, 0.3);
-}
-
 .arm-dialog {
   width: 100%;
   max-width: $dialog-width;
@@ -27,6 +23,17 @@ $dialog-height: calc(100vh - #{$spacing-medium * 2});
 
 .arm-dialog-title {
   flex-grow: 1;
+}
+
+.arm-confirmation-dialog-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: $spacing-xsmall;
+
+  .arm-button {
+    margin-left: $spacing-xsmall;
+  }
 }
 
 .arm-dialog-close-button {

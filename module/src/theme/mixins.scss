@@ -126,7 +126,7 @@
 // selectors
 
 @mixin range-input-thumb {
-  // an unusual limitation with browser specific selectors means that these al need to be
+  // an unusual limitation with browser specific selectors means that these all need to be
   // separate selectors and cannot be combined with commas (like a, b, c {} )
   &::-webkit-slider-thumb {
     @content;
@@ -138,8 +138,9 @@
     @content;
   }
 }
+
 @mixin range-input-track {
-  // an unusual limitation with browser specific selectors means that these al need to be
+  // an unusual limitation with browser specific selectors means that these all need to be
   // separate selectors and cannot be combined with commas (like a, b, c {} )
   &::-webkit-slider-runnable-track {
     @content;

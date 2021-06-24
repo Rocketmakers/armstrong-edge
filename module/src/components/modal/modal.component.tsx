@@ -34,6 +34,9 @@ export interface IModalProps
 
   /** (boolean) if true, will stop the modal from being closable */
   disableClose?: boolean;
+
+  /** (boolean) should darken the background */
+  darkenBackground?: boolean;
 }
 
 /**
@@ -52,6 +55,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       className,
       onClickWrapper,
       closeOnWindowClick,
+      darkenBackground,
       onClick,
       children,
       closeOnBackgroundClick,
@@ -119,6 +123,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
           className={ClassNames.concat('arm-modal-wrapper', wrapperClassName)}
           onClick={onClickWrapperEvent}
           data-close-on-background-click={!!closeOnBackgroundClick}
+          data-darken-background={darkenBackground}
         >
           <div
             role="dialog"
