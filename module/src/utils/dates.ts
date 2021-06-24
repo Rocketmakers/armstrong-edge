@@ -49,22 +49,6 @@ export namespace Dates {
     return formatString ? format(date, formatString, { locale }) : formatISO(date);
   }
 
-  /**
-   * Adds a 0 to the front of numeric days/months if they are below 10.
-   * @param number The number to check and pad;
-   * @returns A string representation of the number with padding.
-   */
-  export function padSingleNumber(number?: number): string {
-    const stringNumber = number?.toString();
-    if (!stringNumber) {
-      return '';
-    }
-    if (stringNumber.length === 1) {
-      return `0${stringNumber}`;
-    }
-    return stringNumber;
-  }
-
   export function getMonthSelectOptions(
     months: Calendar.IMonth[],
     formatString: string,

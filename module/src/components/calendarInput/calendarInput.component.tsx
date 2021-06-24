@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import { Calendar, Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
@@ -28,6 +29,8 @@ export interface ICalendarInputProps
       | 'calendarDayOfTheWeekHeadingDisplayFormat'
     >,
     IStatusWrapperProps {
+  /** (string) CSS className property */
+  className?: string;
   /**
    * (boolean) Should the calendar close when a date is selected from inside?
    * - Defaults to `true`
@@ -137,6 +140,7 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       placeholder,
       calendarPosition,
       keepCalendarOpen,
+      className,
     },
     ref
   ) => {
@@ -246,7 +250,7 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       <>
         <div
           ref={ref}
-          className="arm-calendar-input"
+          className={ClassNames.concat('arm-calendar-input', className)}
           data-calendar-open={keepCalendarOpen || calendarOpen}
           onClick={onClickWrapperEvent}
           data-display-mode={displayMode}

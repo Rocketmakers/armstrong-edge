@@ -57,6 +57,7 @@ export * from './components/tagInput';
 export * from './components/telInput';
 export * from './components/textAreaInput';
 export * from './components/textInput';
+export * from './components/timeInput';
 export * from './components/toast';
 export * from './components/tooltip';
 export * from './components/validationErrors';
