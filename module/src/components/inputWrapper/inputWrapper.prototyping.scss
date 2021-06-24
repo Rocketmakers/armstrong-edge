@@ -1,5 +1,5 @@
 .arm-input-wrapper {
-  box-shadow: $shadow-small;
+  box-shadow: $shadow-xsmall;
   border-radius: $spacing-xxsmall;
   border: 1px solid transparent;
 
@@ -12,7 +12,7 @@
   }
 
   &:focus-within {
-    box-shadow: $shadow-medium;
+    box-shadow: $shadow-small;
   }
 }
 

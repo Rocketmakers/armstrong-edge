@@ -1,3 +1,62 @@
-.arm-calendar-selects-wrapper {
+.arm-calendar-input-inner {
+  .arm-input-inner > .arm-calendar-select {
+    margin-right: 0;
+    flex: 1;
+
+    &:not(:first-child) {
+      border-left: $line-very-light;
+    }
+
+    .arm-dropdown {
+      width: 100%;
+    }
+
+    .arm-input-wrapper {
+      width: auto;
+      flex: 1;
+      border-radius: 0;
+      margin-right: 0;
+
+      .arm-input-inner {
+        margin-right: 0;
+        width: 100%;
+
+        input {
+          width: 100%;
+          width: 50px;
+        }
+      }
+    }
+  }
+}
+
+.arm-dropdown-content.arm-calendar-input-dropdown-content {
+  max-height: none;
+
+  .arm-calendar-display {
+    max-width: none;
+  }
+}
+
+.arm-calendar-input {
+  .arm-input-wrapper-above,
+  .arm-input-wrapper-below {
+    .arm-calendar-display {
+      max-width: none;
+    }
+  }
+
+  &[data-display-mode='calendar'] {
+    cursor: pointer;
+
+    .arm-input-inner {
+      cursor: pointer;
+    }
+  }
+}
+
+.arm-calendar-input-preview {
+  height: $input-height;
   display: flex;
+  align-items: center;
 }

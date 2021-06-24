@@ -7,6 +7,8 @@ import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
 import { Button } from '../button';
+import { IconUtils } from '../icon';
+import { IconButton } from '../iconButton';
 import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarDisplay.utils';
 
 export interface ICalendarDisplayProps {
@@ -83,6 +85,9 @@ export interface ICalendarDisplayProps {
    * - Other options include: `eee` = (Sun - Sat). `eeee` = (Sunday - Saturday).
    */
   calendarDayOfTheWeekHeadingDisplayFormat?: string;
+
+  /** (string) CSS className property */
+  className?: string;
 }
 
 /**
@@ -108,6 +113,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
       calendarMonthSelectDisplayFormat,
       calendarYearSelectDisplayFormat,
       calendarDayOfTheWeekHeadingDisplayFormat,
+      className,
     },
     ref
   ) => {
@@ -134,17 +140,26 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
     }, [days, weekdayStartIndex]);
 
     return (
-      <div ref={ref} className="arm-calendar-view">
-        <div className="arm-calendar-view-controls">
-          <Button className="arm-calendar-view-button arm-calendar-view-button-prev" onClick={onBackClicked}>
-            &lt;
-          </Button>
-          <Select className="arm-calendar-view-select arm-calendar-view-select-month" bind={currentMonthBinding} options={monthOptions} />
-          <Select className="arm-calendar-view-select arm-calendar-view-select-year" bind={currentYearBinding} options={yearOptions} />
-          <Button className="arm-calendar-view-button arm-calendar-view-button-next" onClick={onForwardClicked}>
-            &gt;
-          </Button>
+      <div ref={ref} className={ClassNames.concat('arm-calendar-display', className)}>
+        <div className="arm-calendar-display-controls">
+          <IconButton
+            icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
+            iconOnly
+            className="arm-calendar-display-button arm-calendar-display-button-prev"
+            onClick={onBackClicked}
+          />
+
+          <Select className="arm-calendar-display-select arm-calendar-display-select-month" bind={currentMonthBinding} options={monthOptions} />
+          <Select className="arm-calendar-display-select arm-calendar-display-select-year" bind={currentYearBinding} options={yearOptions} />
+
+          <IconButton
+            icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
+            iconOnly
+            className="arm-calendar-display-button arm-calendar-display-button-next"
+            onClick={onForwardClicked}
+          />
         </div>
+
         <div className="arm-calendar-date-grid">
           <div className="arm-calendar-date-grid-headings">
             {dayOfWeekHeadings.map((heading, index) => (
@@ -153,10 +168,12 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
               </div>
             ))}
           </div>
+
           <div className="arm-calendar-date-grid-days">
             {Arrays.repeat(blankDaysAtStartCount, (index) => (
               <div key={index} className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty" />
             ))}
+
             {displayDays.map((displayDay) => (
               <Button
                 className={ClassNames.concat('arm-calendar-date-grid-day', displayDay.day.highlightedClassName)}
@@ -165,12 +182,13 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
                 data-selected={displayDay.day.isSelected}
                 disabled={displayDay.day.isDisabled}
                 data-today={displayDay.day.isToday}
+                aria-current={displayDay.day.isToday && 'date'}
                 data-range-start={displayDay.day.isRangeStart}
                 data-range-middle={displayDay.day.isRangeMiddle}
                 data-range-end={displayDay.day.isRangeEnd}
                 data-highlight={displayDay.day.isHighlighted}
               >
-                {displayDay.displayFormat}
+                <p>{displayDay.displayFormat}</p>
                 {displayDay.day.isHighlighted && <div className="arm-calendar-date-grid-day-highlight" />}
               </Button>
             ))}
