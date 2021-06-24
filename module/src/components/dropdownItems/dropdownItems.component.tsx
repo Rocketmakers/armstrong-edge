@@ -187,9 +187,11 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   );
 
   useDidUpdateEffect(() => {
-    setTimeout(() => {
-      itemRefs.current?.[items[keyboardSelectedItemIndex].id]?.scrollIntoView({ block: 'center' });
-    });
+    if (isOpen) {
+      setTimeout(() => {
+        itemRefs.current?.[items[keyboardSelectedItemIndex].id]?.scrollIntoView({ block: 'center' });
+      });
+    }
   }, [isOpen]);
 
   const id = useGeneratedId('arm_dd', htmlId);

@@ -234,7 +234,7 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       if (displayMode === 'calendar') {
         setCalendarOpen(!calendarOpen);
       }
-    }, [calendarOpen]);
+    }, [calendarOpen, displayMode]);
 
     const formattedSelectedDate = React.useMemo(() => {
       if (displayMode === 'calendar' && selectedDate) {
