@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { useResizeObserver } from '../../hooks';
 import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
-import { useDebug } from '../../hooks/useDebug';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
