@@ -1,4 +1,4 @@
-import { addDays, addMonths, addYears, format, getDaysInMonth, isAfter, isBefore, isSameDay, startOfYear } from 'date-fns';
+import { addDays, addMonths, addYears, endOfMonth, format, getDaysInMonth, isAfter, isBefore, isSameDay, startOfMonth, startOfYear } from 'date-fns';
 
 import { ICalendarHighlightParsed, IDay, IMonth, IYear } from './calendar.types';
 
@@ -28,7 +28,7 @@ export function minMaxCheckThrow(min?: Date, max?: Date) {
 export function getDays(
   forMonth: number,
   forYear: number,
-  selectedDate: Date,
+  selectedDate?: Date,
   min?: Date,
   max?: Date,
   rangeTo?: Date,
@@ -42,7 +42,7 @@ export function getDays(
   // Define range dates from optional args.
   let rangeStart: Date | undefined;
   let rangeEnd: Date | undefined;
-  if (rangeTo) {
+  if (rangeTo && selectedDate) {
     if (isBefore(selectedDate, rangeTo)) {
       rangeStart = selectedDate;
       rangeEnd = rangeTo;
@@ -63,7 +63,7 @@ export function getDays(
       date: currentDay,
       numberInMonth: i + 1,
       indexInWeek: Number(format(currentDay, 'e')) - 1,
-      isSelected: isSameDay(currentDay, selectedDate),
+      isSelected: !!selectedDate && isSameDay(currentDay, selectedDate),
       isDisabled: (!!min && isBefore(currentDay, min)) || (!!max && isAfter(currentDay, max)),
       isToday: isSameDay(currentDay, new Date()),
       isRangeStart: !!rangeStart && isSameDay(currentDay, rangeStart),
@@ -95,7 +95,7 @@ export function getMonths(forYear: number, min?: Date, max?: Date): IMonth[] {
     months.push({
       date: currentDate,
       indexInYear: i,
-      isDisabled: (!!min && isBefore(currentDate, min)) || (!!max && isAfter(currentDate, max)),
+      isDisabled: (!!min && isBefore(currentDate, startOfMonth(min))) || (!!max && isAfter(currentDate, endOfMonth(max))),
     });
   }
   return months;
