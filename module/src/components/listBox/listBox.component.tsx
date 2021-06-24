@@ -69,6 +69,7 @@ export const ListBox = React.forwardRef(
       placeholder,
       deleteButton,
       disableOnPending,
+      scrollValidationErrorsIntoView,
     }: IListBoxProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -125,6 +126,7 @@ export const ListBox = React.forwardRef(
           disabled={disabled}
           disableOnPending={disableOnPending}
           statusPosition={statusPosition}
+          scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
         >
           <div className="arm-listbox-inner">
             <div className="arm-listbox-content">

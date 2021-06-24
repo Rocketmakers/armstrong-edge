@@ -81,6 +81,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
       disabled,
       pending,
       above,
+      scrollValidationErrorsIntoView,
       below,
       statusPosition,
       disableOnPending,
@@ -141,6 +142,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
         statusPosition={statusPosition}
         below={below}
         onClick={() => internalRef.current?.focus()}
+        scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
         {delay?.mode === 'debounce' && delay.milliseconds && (
           <DebounceTextAreaBase

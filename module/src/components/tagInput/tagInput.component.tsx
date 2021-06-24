@@ -107,6 +107,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       statusPosition,
       onAddTag,
       onRemoveTag,
+      scrollValidationErrorsIntoView,
       placeholder,
       disableOnPending,
       ...nativeProps
@@ -227,6 +228,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
         onClick={() => internalRef.current?.focus()}
         above={tagPosition === 'above' ? tagsJsx : undefined}
         below={tagPosition === 'below' ? tagsJsx : undefined}
+        scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
         <div className="arm-tag-input-inner">
           {tagPosition === 'inside' && tagsJsx}

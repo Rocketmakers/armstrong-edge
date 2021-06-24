@@ -11,7 +11,7 @@ import { ValidationErrors } from '../validationErrors';
 export interface ITabSelectProps<Id extends ArmstrongId>
   extends Omit<ITabControlProps<Id>, 'currentTab' | 'onTabChange'>,
     IStatusWrapperProps,
-    Pick<IInputWrapperProps, 'validationErrorMessages' | 'validationMode'> {
+    Pick<IInputWrapperProps, 'validationErrorMessages' | 'validationMode' | 'scrollValidationErrorsIntoView'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
@@ -40,6 +40,7 @@ export const TabSelect = React.forwardRef(
       validationErrorMessages,
       validationMode,
       disabled,
+      scrollValidationErrorsIntoView,
       ...tabControlProps
     }: ITabSelectProps<Id>,
     ref: React.ForwardedRef<HTMLDivElement>
@@ -71,7 +72,11 @@ export const TabSelect = React.forwardRef(
         </div>
 
         {bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={bindConfig.validationErrorIcon} />
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
         )}
       </>
     );

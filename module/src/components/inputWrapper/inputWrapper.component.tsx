@@ -43,6 +43,9 @@ export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet>,
 
   /** (boolean) when pending is true should also disable the input */
   disableOnPending?: boolean;
+
+  /** (boolean) will scroll the validation errors into view when the length of validationErrors changes */
+  scrollValidationErrorsIntoView?: boolean;
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
@@ -57,7 +60,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       rightOverlay,
       validationMode,
       validationErrorMessages,
-      errorIcon: validationErrorIcon,
+      errorIcon,
       disabled,
       pending,
       error,
@@ -67,6 +70,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       below,
       onClick,
       disableOnPending,
+      scrollValidationErrorsIntoView,
       ...nativeProps
     },
     ref
@@ -94,7 +98,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
               error={error}
               pending={pending}
               statusPosition={statusPosition}
-              errorIcon={validationErrorIcon}
+              errorIcon={errorIcon}
               validationErrorMessages={validationErrorMessages}
               validationMode={validationMode}
             >
@@ -118,7 +122,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
         </div>
 
         {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (
-          <ValidationErrors validationErrors={validationErrorMessages} icon={validationErrorIcon} />
+          <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} scrollIntoView={scrollValidationErrorsIntoView} />
         )}
       </>
     );

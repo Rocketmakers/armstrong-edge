@@ -1,39 +1,26 @@
 import * as React from 'react';
 
 import { Form } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { IInputWrapperProps } from '../inputWrapper';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
 export interface ICheckboxInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'type'>,
-    IIconWrapperProps<IconSet, IconSet> {
+    IIconWrapperProps<IconSet, IconSet>,
+    Pick<
+      IInputWrapperProps,
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'disabled' | 'pending' | 'error' | 'validationErrorMessages'
+    > {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
 
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
   /** (string) CSS className property */
   className?: string;
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
-
-  /** (IIcon) the icon to use for validation errors */
-  validationErrorIcon?: IIcon<IconSet>;
-
-  /** (boolean) show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
-  error?: boolean;
-
-  /** (boolean) show a spinner and disable */
-  pending?: boolean;
-
-  /** (boolean) disable use */
-  disabled?: boolean;
 
   /** (IIcon) icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
@@ -53,7 +40,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       validationErrorMessages,
       validationMode,
       className,
-      validationErrorIcon,
+      errorIcon,
       error,
       pending,
       disabled,
@@ -64,6 +51,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       uncheckedIcon,
       leftIcon,
       rightIcon,
+      scrollValidationErrorsIntoView,
       ...nativeProps
     }: ICheckboxInputProps,
     ref
@@ -71,7 +59,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
       value: checked,
       validationErrorMessages,
-      validationErrorIcon,
+      validationErrorIcon: errorIcon,
       validationMode,
     });
 
@@ -118,7 +106,11 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
         </div>
 
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={bindConfig.validationErrorIcon} />
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
         )}
       </>
     );
