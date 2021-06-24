@@ -101,10 +101,12 @@ export const useModalLayerPromise = <T, TArg = unknown>(
   return [createModal, { isOpen }];
 };
 
+export type UseModalModalProps = Omit<IModalProps, 'isOpen' | 'onOpenChange'>;
+
 /** Add a modal to the modal layer with a promise that can be resolved from inside the modal */
 export const useModal = <T, TArg = unknown>(
   /** The JSX to render inside the Modal, with the promise functions passed in as props */
   Children: React.FC<IUseModalLayerPromiseComponentProps<T, TArg>>,
   /** The props to give to the actual Modal component */
-  props?: Omit<IModalProps, 'isOpen' | 'onOpenChange'>
+  props?: UseModalModalProps
 ) => useModalLayerPromise(Children, (internalProps) => <Modal {...internalProps} {...props} />);
