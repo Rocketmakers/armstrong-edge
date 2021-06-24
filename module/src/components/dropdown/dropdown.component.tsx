@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { useResizeObserver } from '../../hooks';
 import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
+import { useDebug } from '../../hooks/useDebug';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
@@ -79,6 +80,8 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
 
     useResizeObserver(getRootRectContentRect, {}, rootRef);
 
+    const [clicking, setClicking] = React.useState(false);
+
     const setModalRef = React.useCallback(
       (node: HTMLDivElement) => {
         modalRef.current = node;
@@ -86,6 +89,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       },
       [getRootRectContentRect]
     );
+
+    React.useEffect(() => {
+      getRootRectContentRect();
+    }, [isOpen]);
 
     React.useImperativeHandle(ref, () => ({ rootRef, modalRef }), [rootRef, modalRef]);
 
@@ -111,13 +118,15 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           ? rootRef.current.querySelector(childRootElementSelector) ?? rootRef.current
           : rootRef.current;
       }
-    }, [childRootElementSelector, rootRef.current]);
+    }, [childRootElementSelector]);
 
     const onScrollDocument = React.useCallback(
       (event: Event) => {
         if (
-          // check if scrolling element is inside the dropdown content
-          (event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
+          (closeOnScroll &&
+            // check if scrolling element is inside the dropdown content
+            event.target instanceof HTMLDivElement &&
+            !event.target.classList.contains('arm-dropdown-content')) ||
           !(event.target instanceof HTMLDivElement)
         ) {
           onOpenChange(false);
@@ -136,16 +145,15 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           Globals.Document?.body.removeEventListener('resize', onScrollDocument, { capture: true });
         };
       }
-    }, [isOpen, onScrollDocument]);
+    }, [isOpen, closeOnScroll]);
 
     const onMouseDownEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         if (openWhenClickInside) {
-          onOpenChange(!isOpen);
+          onOpenChange(true);
+          setClicking(true);
         }
         onMouseDown?.(event);
-        event.nativeEvent.stopImmediatePropagation();
-        event.nativeEvent.preventDefault();
       },
       [openWhenClickInside, onOpenChange, onMouseDown, isOpen]
     );
@@ -173,6 +181,19 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       [top, left, width]
     );
 
+    // useDebug(`ISOPEN_${isOpen}`);
+
+    const modalOnOpenChange = React.useCallback(
+      (newIsOpen: boolean) => {
+        if (clicking && !newIsOpen) {
+          setClicking(false);
+        } else {
+          onOpenChange(newIsOpen);
+        }
+      },
+      [onOpenChange, clicking]
+    );
+
     return (
       <div
         {...htmlProps}
@@ -181,7 +202,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         ref={rootRef}
         data-is-open={isOpen}
         onFocus={onFocusEvent}
-        onClick={(event) => event.stopPropagation()}
       >
         {children}
 
@@ -192,7 +212,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           style={modalStyle}
           ref={setModalRef}
           isOpen={isOpen}
-          onOpenChange={onOpenChange}
+          onOpenChange={modalOnOpenChange}
           onScroll={onScrollContent}
           onMouseDown={onMouseDownContent}
           closeOnWindowBlur

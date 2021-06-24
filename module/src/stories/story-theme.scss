@@ -81,3 +81,10 @@ html {
     margin-bottom: $spacing-small;
   }
 }
+
+.story-cols {
+  display: flex;
+  align-items: center;
+
+  @include space-between-children-horizontal($spacing-xsmall);
+}

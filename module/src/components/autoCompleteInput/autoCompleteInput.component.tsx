@@ -80,6 +80,7 @@ export const AutoCompleteInput = React.forwardRef(
       allowFreeText,
       allowKeyboardNavigationSelection,
       showAllOptionsOnFocus,
+      disabled,
       ...textInputProps
     }: IAutoCompleteInputProps<Id>,
     ref
@@ -173,6 +174,8 @@ export const AutoCompleteInput = React.forwardRef(
         const currentOption = options?.find((option) => option.id === boundValue);
         if (currentOption) {
           setTextInputInternalValue(getOptionName(currentOption));
+        } else {
+          setTextInputInternalValue('');
         }
       }
     }, [allowFreeText, options, boundValue, getOptionName]);
@@ -200,6 +203,7 @@ export const AutoCompleteInput = React.forwardRef(
           className={ClassNames.concat('arm-input', 'arm-autocomplete-input', className)}
           data-error={error}
           data-pending={pending}
+          data-disabled={disabled}
           data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
@@ -214,7 +218,7 @@ export const AutoCompleteInput = React.forwardRef(
                 group: option.group,
               })),
             ]}
-            isOpen={optionsOpen && !!options?.length}
+            isOpen={optionsOpen && !disabled && !!options?.length}
             onOpenChange={setOptionsOpen}
             portalToSelector={portalToSelector}
             portalTo={portalTo}
@@ -232,11 +236,10 @@ export const AutoCompleteInput = React.forwardRef(
               error={error}
               value={textInputInternalValue}
               onChange={onTextInputChangeEvent}
-              onKeyDown={() => setOptionsOpen(true)}
               validationMode={validationMode}
-              onFocus={() => setOptionsOpen(true)}
               validationErrorMessages={myValidationErrorMessages}
               errorIcon={validationErrorIcon}
+              disabled={disabled}
               disableOnPending={false}
             />
           </DropdownItems>

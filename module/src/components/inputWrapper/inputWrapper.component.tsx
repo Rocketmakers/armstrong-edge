@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { FormValidationMode } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
+import { AutoResizer } from '../autoResizer';
 import { IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
@@ -87,7 +88,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
           onClick={onClick}
           {...nativeProps}
         >
-          {above && <div className="arm-input-wrapper-above">{above}</div>}
+          {above && <AutoResizer className="arm-input-wrapper-above">{above}</AutoResizer>}
 
           <div className="arm-input-inner">
             <StatusWrapper
@@ -114,7 +115,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
             </StatusWrapper>
           </div>
 
-          {below && <div className="arm-input-wrapper-below">{below}</div>}
+          {below && <AutoResizer className="arm-input-wrapper-below">{below}</AutoResizer>}
         </div>
 
         {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (

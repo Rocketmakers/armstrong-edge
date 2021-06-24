@@ -1,0 +1,5 @@
+.arm-autocomplete-input {
+  &[data-disabled='true'] {
+    pointer-events: none;
+  }
+}

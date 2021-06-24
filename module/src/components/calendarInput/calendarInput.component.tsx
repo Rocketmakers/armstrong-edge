@@ -6,13 +6,18 @@ import { IBindingProps } from '../../hooks/form';
 import { Dates } from '../../utils/dates';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
+import { Dropdown } from '../dropdown';
 import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
-import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
+import { InputWrapper } from '../inputWrapper';
+import { Modal } from '../modal';
+import { IStatusWrapperProps } from '../statusWrapper';
 import { calendarDayToDateLike, dateObjectToDateLike, getDaySelectOptions, validateDateSelection } from './calendarInput.utils';
 
 type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'>;
-interface ICalendarInputProps
+
+export type CalendarInputCalendarPosition = 'dropdown' | 'modal' | 'above' | 'below';
+export interface ICalendarInputProps
   extends Omit<Calendar.IConfig, 'selectedDate'>,
     Pick<
       ICalendarDisplayProps,
@@ -59,6 +64,27 @@ interface ICalendarInputProps
    * @default both
    */
   displayMode?: 'calendar' | 'inputs' | 'both';
+
+  /**
+   * The position to show the calendar - can show below the input in a dropdown, in a modal, or above or below the input
+   */
+  calendarPosition?: CalendarInputCalendarPosition;
+
+  /**
+   * Should the calendar stay open? - useful in conjunction with calendarPosition, not compatible with calendarPosition="modal"
+   */
+  keepCalendarOpen?: boolean;
+
+  /**
+   * (string) A formatter to apply to the current date when displayMode is set to calendar.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - If date strings are used without this prop, strict ISO format will be assumed.
+   * - This format will not be used if dates are passed as `Date` objects rather than strings.
+   */
+  displayFormatString?: string;
+
+  /** (string) a string used for a placeholder if a date isn't given and the displayMode is set to "calendar" */
+  placeholder?: string;
 }
 
 /** Type representing the internal form data within the calendar input */
@@ -107,6 +133,10 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       validationMode,
       inputOrder,
       displayMode,
+      displayFormatString,
+      placeholder,
+      calendarPosition,
+      keepCalendarOpen,
     },
     ref
   ) => {
@@ -184,48 +214,102 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       options: yearOptions,
     };
 
+    const calendarDisplayProps = {
+      weekdayStartIndex: weekdayStartIndex!,
+      currentYearBinding: monthYearFormProp('viewingYear').bind(),
+      currentMonthBinding: monthYearFormProp('viewingMonth').bind(),
+      onDayClicked,
+      onBackClicked: () => stepMonth('back'),
+      onForwardClicked: () => stepMonth('forward'),
+      days,
+      months,
+      years,
+      calendarDayDisplayFormat,
+      calendarDayOfTheWeekHeadingDisplayFormat,
+      calendarMonthSelectDisplayFormat,
+      calendarYearSelectDisplayFormat,
+    };
+
+    const onClickWrapperEvent = React.useCallback(() => {
+      if (displayMode === 'calendar') {
+        setCalendarOpen(!calendarOpen);
+      }
+    }, [calendarOpen]);
+
+    const formattedSelectedDate = React.useMemo(() => {
+      if (displayMode === 'calendar' && selectedDate) {
+        return Dates.dateToString(Dates.dateLikeToDate(selectedDate)!, displayFormatString);
+      }
+    }, [displayMode, selectedDate, displayFormatString]);
+
     return (
-      <div ref={ref} className="arm-calendar-input-wrapper">
-        <div className="arm-calendar-selects-wrapper">
-          <StatusWrapper
-            error={error}
-            validationErrorMessages={bindConfig.validationErrorMessages}
-            errorIcon={bindConfig.validationErrorIcon}
-            statusPosition={statusPosition}
-            pending={pending}
-            validationMode={bindConfig.validationMode}
+      <>
+        <div
+          ref={ref}
+          className="arm-calendar-input"
+          data-calendar-open={keepCalendarOpen || calendarOpen}
+          onClick={onClickWrapperEvent}
+          data-display-mode={displayMode}
+        >
+          <Dropdown
+            isOpen={calendarPosition === 'dropdown' && (calendarOpen || !!keepCalendarOpen)}
+            onOpenChange={setCalendarOpen}
+            dropdownContent={<CalendarDisplay {...calendarDisplayProps} />}
+            contentClassName="arm-calendar-input-dropdown-content"
+            openWhenClickInside={false}
+            openWhenFocusInside={false}
           >
-            {showCalendarButton && (
-              <IconButton icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={() => setCalendarOpen(!calendarOpen)} />
-            )}
-            <AutoCompleteInput {...(inputOrder === 'day-month-year' ? dayInputProps : yearInputProps)} disabled={disableInputs} />
-            <AutoCompleteInput
-              {...(additionalMonthInputProps ?? {})}
-              bind={formProp('month').bind()}
-              disabled={disableInputs}
-              options={monthOptions}
-            />
-            <AutoCompleteInput {...(inputOrder === 'day-month-year' ? yearInputProps : dayInputProps)} disabled={disableInputs} />
-          </StatusWrapper>
+            <InputWrapper
+              error={error}
+              validationErrorMessages={bindConfig.validationErrorMessages}
+              errorIcon={bindConfig.validationErrorIcon}
+              statusPosition={statusPosition}
+              pending={pending}
+              validationMode={bindConfig.validationMode}
+              className="arm-calendar-input-inner"
+              above={calendarPosition === 'above' && (calendarOpen || keepCalendarOpen) ? <CalendarDisplay {...calendarDisplayProps} /> : undefined}
+              below={calendarPosition === 'below' && (calendarOpen || keepCalendarOpen) ? <CalendarDisplay {...calendarDisplayProps} /> : undefined}
+            >
+              {showCalendarButton && !keepCalendarOpen && (
+                <IconButton iconOnly icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={() => setCalendarOpen(!calendarOpen)} />
+              )}
+
+              {disableInputs ? (
+                <div className="arm-calendar-input-preview">
+                  {selectedDate ? <p>{formattedSelectedDate}</p> : <p className="arm-calendar-input-placeholder">{placeholder}</p>}
+                </div>
+              ) : (
+                <>
+                  <AutoCompleteInput
+                    className="arm-calendar-select"
+                    {...(inputOrder === 'day-month-year' ? dayInputProps : yearInputProps)}
+                    placeholder={inputOrder === 'day-month-year' ? dayInputProps.placeholder || 'day' : yearInputProps.placeholder || 'year'}
+                    disabled={disableInputs}
+                  />
+                  <AutoCompleteInput
+                    className="arm-calendar-select"
+                    {...(additionalMonthInputProps ?? {})}
+                    bind={formProp('month').bind()}
+                    disabled={disableInputs}
+                    options={monthOptions}
+                    placeholder={additionalMonthInputProps?.placeholder || 'month'}
+                  />
+                  <AutoCompleteInput
+                    className="arm-calendar-select"
+                    {...(inputOrder === 'day-month-year' ? yearInputProps : dayInputProps)}
+                    placeholder={inputOrder === 'day-month-year' ? yearInputProps.placeholder || 'year' : dayInputProps.placeholder || 'day'}
+                    disabled={disableInputs}
+                  />
+                </>
+              )}
+            </InputWrapper>
+          </Dropdown>
         </div>
-        {calendarOpen && (
-          <CalendarDisplay
-            weekdayStartIndex={weekdayStartIndex!}
-            currentYearBinding={monthYearFormProp('viewingYear').bind()}
-            currentMonthBinding={monthYearFormProp('viewingMonth').bind()}
-            onDayClicked={onDayClicked}
-            onBackClicked={() => stepMonth('back')}
-            onForwardClicked={() => stepMonth('forward')}
-            days={days}
-            months={months}
-            years={years}
-            calendarDayDisplayFormat={calendarDayDisplayFormat}
-            calendarDayOfTheWeekHeadingDisplayFormat={calendarDayOfTheWeekHeadingDisplayFormat}
-            calendarMonthSelectDisplayFormat={calendarMonthSelectDisplayFormat}
-            calendarYearSelectDisplayFormat={calendarYearSelectDisplayFormat}
-          />
-        )}
-      </div>
+
+        <Modal isOpen={calendarPosition === 'modal' && calendarOpen} onOpenChange={setCalendarOpen} darkenBackground>
+          <CalendarDisplay {...calendarDisplayProps} />
+        </Modal>
+      </>
     );
   }
 );
@@ -237,4 +321,6 @@ CalendarInput.defaultProps = {
   yearInputDisplayFormat: 'yyyy',
   closeCalendarOnDayClick: true,
   inputOrder: 'day-month-year',
+  calendarPosition: 'dropdown',
+  displayFormatString: 'dd/MM/yyyy',
 };

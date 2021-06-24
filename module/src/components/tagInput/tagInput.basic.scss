@@ -19,14 +19,13 @@
   @include space-between-children-horizontal($spacing-xsmall);
 }
 
-.arm-input-wrapper-above,
-.arm-input-wrapper-below {
+.arm-input-wrapper-above .arm-auto-resizer-content,
+.arm-input-wrapper-below .arm-auto-resizer-content {
   overflow-y: auto;
   display: flex;
   align-items: center;
   @include space-between-children-horizontal($spacing-xsmall);
   flex-wrap: wrap;
-  min-height: 0;
 
   .arm-tag {
     margin-top: $spacing-xxsmall * 0.5;
