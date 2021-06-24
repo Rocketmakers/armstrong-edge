@@ -67,7 +67,7 @@ interface IRemoveAction {
 
 type InfinitePagingAction<T> = IFetchAction<T> | IErrorAction | IResetAction<T> | IInsertAction<T> | IRemoveAction;
 
-export function useInfinitePagingReducer<T>(state: IUseInfinitePagingState<T>, action: InfinitePagingAction<T>): IUseInfinitePagingState<T> {
+function useInfinitePagingReducer<T>(state: IUseInfinitePagingState<T>, action: InfinitePagingAction<T>): IUseInfinitePagingState<T> {
   switch (action.type) {
     case 'fetch': {
       const items = {
@@ -144,7 +144,7 @@ export function useInfinitePaging<T>(
         dispatch({
           type: 'fetch',
           getKey,
-          hasFinished: noReturnedItems || responseSmallerThanPageSize || !response.nextPageToken,
+          hasFinished: noReturnedItems || responseSmallerThanPageSize || !response?.nextPageToken,
           newItems: response.data,
           nextPageToken: response.nextPageToken,
         });
