@@ -13,8 +13,7 @@ export type InfinitePagingKey<T> = keyof T | ((item: T) => string);
 
 export interface IUseInfinitePagingSettings<T> {
   firstPageToken?: PageToken;
-  onFetched?: (item: T[]) => void | Promise<void>;
-  key: InfinitePagingKey<T>;
+  onFetched?: (response: IInfinitePagingResult<T>) => void | Promise<void>;
   initialItems?: T[];
   pageSize?: number;
 }
@@ -27,7 +26,6 @@ interface IUseInfinitePagingState<T> {
   items: IItems<T>;
   nextPageToken?: PageToken;
   hasFinished: boolean;
-  hasData: boolean;
   error: any;
 }
 
@@ -35,27 +33,107 @@ const initialState = <T>(initialItems: IItems<T>): IUseInfinitePagingState<T> =>
   items: initialItems,
   nextPageToken: undefined,
   hasFinished: false,
-  hasData: false,
   error: undefined,
 });
 
-export function useInfinitePaging<T>(fetch: (pageToken?: PageToken) => Promise<IInfinitePagingResult<T>>, settings: IUseInfinitePagingSettings<T>) {
-  const [state, setState] = React.useState<IUseInfinitePagingState<T>>(
-    initialState(Arrays.arrayToDictionary(settings.initialItems || [], settings.key))
+interface IFetchAction<T> {
+  type: 'fetch';
+  newItems: T[];
+  hasFinished: boolean;
+  nextPageToken?: PageToken;
+  getKey: InfinitePagingKey<T>;
+}
+interface IErrorAction {
+  type: 'error';
+  error: any;
+}
+
+interface IResetAction<T> {
+  type: 'reset';
+  initialItems: T[];
+  getKey: InfinitePagingKey<T>;
+}
+
+interface IInsertAction<T> {
+  type: 'insert';
+  newItems: T[];
+  getKey: InfinitePagingKey<T>;
+}
+
+interface IRemoveAction {
+  type: 'remove';
+  key: string | number;
+}
+
+type InfinitePagingAction<T> = IFetchAction<T> | IErrorAction | IResetAction<T> | IInsertAction<T> | IRemoveAction;
+
+export function useInfinitePagingReducer<T>(state: IUseInfinitePagingState<T>, action: InfinitePagingAction<T>): IUseInfinitePagingState<T> {
+  switch (action.type) {
+    case 'fetch': {
+      const items = {
+        ...state.items,
+        ...Arrays.arrayToDictionary(action.newItems, action.getKey),
+      };
+
+      return {
+        items,
+        nextPageToken: action.nextPageToken,
+        error: undefined,
+        hasFinished: action.hasFinished,
+      };
+    }
+    case 'reset': {
+      return initialState(Arrays.arrayToDictionary(action.initialItems, action.getKey));
+    }
+    case 'error': {
+      return {
+        ...state,
+        error: action.error,
+      };
+    }
+    case 'insert': {
+      const items = {
+        ...state.items,
+        ...Arrays.arrayToDictionary(action.newItems, action.getKey),
+      };
+      return {
+        ...state,
+        items,
+      };
+    }
+    case 'remove': {
+      const items = {
+        ...state.items,
+      };
+
+      delete items[action.key];
+
+      return {
+        ...state,
+        items,
+      };
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+/** A hook used to create an infinite paging state - it takes a fetch callback that returns some data that is added to a piece of state that's returned as on big array */
+export function useInfinitePaging<T>(
+  fetch: (pageToken?: PageToken) => Promise<IInfinitePagingResult<T>>,
+  getKey: InfinitePagingKey<T>,
+  settings: IUseInfinitePagingSettings<T> = {}
+) {
+  const [state, dispatch] = React.useReducer<React.Reducer<IUseInfinitePagingState<T>, InfinitePagingAction<T>>>(
+    useInfinitePagingReducer,
+    initialState(Arrays.arrayToDictionary<T>(settings.initialItems || [], getKey))
   );
+
   const [isFetching, setIsFetching] = React.useState(false);
 
-  const addItems = React.useCallback(
-    (currentItems: IItems<T>, newItems: T[]): IItems<T> => ({
-      ...currentItems,
-      ...Arrays.arrayToDictionary(newItems, settings.key),
-    }),
-    [settings.key]
-  );
-
   const fetcher = React.useCallback(
-    async (currentItems: IItems<T>, fetchPageToken?: PageToken, isReloading?: boolean) => {
-      const isInitial = fetchPageToken === settings.firstPageToken;
+    async (fetchPageToken?: PageToken) => {
       setIsFetching(true);
 
       try {
@@ -63,84 +141,57 @@ export function useInfinitePaging<T>(fetch: (pageToken?: PageToken) => Promise<I
         const noReturnedItems = !response || !response.data || response.data.length === 0;
         const responseSmallerThanPageSize = settings.pageSize && response.data.length < settings.pageSize;
 
-        const items: IItems<T> = noReturnedItems
-          ? currentItems
-          : addItems(
-              // eslint-disable-next-line no-nested-ternary
-              isInitial ? (isReloading ? {} : Arrays.arrayToDictionary(settings.initialItems || [], settings.key)) : currentItems,
-              response.data
-            );
-
-        setState({
-          items,
-          nextPageToken: response.nextPageToken,
+        dispatch({
+          type: 'fetch',
+          getKey,
           hasFinished: noReturnedItems || responseSmallerThanPageSize || !response.nextPageToken,
-          hasData: true,
-          error: undefined,
+          newItems: response.data,
+          nextPageToken: response.nextPageToken,
         });
 
-        setIsFetching(false);
-
-        if (settings.onFetched && response) {
-          await settings.onFetched(response.data);
-        }
+        settings.onFetched?.(response);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
-        setState({ ...state, error });
-        setIsFetching(false);
+        dispatch({ type: 'error', error });
       }
+
+      setIsFetching(false);
     },
-    [state, settings.firstPageToken, addItems]
+    [settings.firstPageToken, fetch, settings.pageSize, settings.onFetched, dispatch, getKey]
   );
 
   const loadMore = React.useCallback(async () => {
-    if (isFetching || state.hasFinished) {
-      return;
+    if (!isFetching && !state.hasFinished) {
+      await fetcher(state.nextPageToken!);
     }
-    await fetcher(state.items, state.nextPageToken!);
-  }, [fetcher, isFetching]);
+  }, [fetcher, isFetching, state.hasFinished, state.nextPageToken]);
 
   /** reload the state  */
-
   const reload = React.useCallback(async () => {
-    setState({ ...initialState(Arrays.arrayToDictionary(settings.initialItems || [], settings.key)), items: state.items });
+    dispatch({ type: 'reset', getKey, initialItems: settings.initialItems || [] });
+    await fetcher(settings.firstPageToken);
+  }, [fetcher, dispatch, getKey, settings.initialItems]);
 
-    await fetcher({}, settings.firstPageToken!, true);
-  }, [fetcher]);
+  /** adds the given new items to the array state, or replaces them if items with that key are already in */
 
-  /**
-   * adds or replaces an array of new items, matched by a specified key
-   *
-   * @param key the key to check if the item is already in state
-   * @param replacements the new items to insert into the array
-   */
-
-  const insert: (replacements: T[]) => void = React.useCallback(
-    (replacements) => {
-      const newState = { ...state };
-
-      newState.items = addItems(newState.items, replacements);
-
-      setState(newState);
+  const insert = React.useCallback(
+    (...newItems: T[]) => {
+      dispatch({ type: 'insert', getKey, newItems });
     },
-    [state]
+    [dispatch, getKey]
   );
 
-  const remove: <K extends keyof T>(value: T[K]) => void = React.useCallback(
-    (value) => {
-      const newState = { ...state };
-
-      delete newState.items[value as any as string];
-
-      setState(newState);
+  const remove = React.useCallback(
+    (key: string | number) => {
+      dispatch({ type: 'remove', key });
     },
-    [state]
+    [dispatch]
   );
 
   React.useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    fetcher({}, settings.firstPageToken);
+    fetcher(settings.firstPageToken);
   }, []);
 
   const returnItems = React.useMemo(() => Object.keys(state.items).map((key) => state.items[key]), [state]);
@@ -148,8 +199,7 @@ export function useInfinitePaging<T>(fetch: (pageToken?: PageToken) => Promise<I
   return {
     items: returnItems,
     isFetching,
-    fetchError: state.error,
-    hasData: state.hasData,
+    error: state.error,
     hasFinished: state.hasFinished,
     loadMore,
     reload,

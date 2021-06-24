@@ -1,19 +1,18 @@
+import { Objects } from '.';
+
 export namespace Arrays {
   /** Convert an array of arrays into a single array */
   export function flatten<T>(...arrays: (T[] | undefined)[]) {
     return arrays.reduce<T[]>((output, current) => (current ? [...output, ...current] : output), []);
   }
 
-  /** A dictionary of T */
-  type Dictionary<T, Keys extends string> = Record<Keys, T>;
-
   /** Turn an array into a dictionary of items in that array by a given key */
   export function arrayToDictionary<T, Keys extends string = string>(array: T[], getKey: keyof T | ((item: T) => Keys)) {
-    return array.reduce<Dictionary<T, Keys>>((dictionary, currentValue) => {
+    return array.reduce<Objects.Dictionary<T, Keys>>((dictionary, currentValue) => {
       const key = typeof getKey === 'function' ? getKey(currentValue) : (currentValue[getKey] as any as Keys);
 
       return { ...dictionary, [key]: currentValue };
-    }, {} as Dictionary<T, Keys>);
+    }, {} as Objects.Dictionary<T, Keys>);
   }
 
   /** A dictionary of arrays */

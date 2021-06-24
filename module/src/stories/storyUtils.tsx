@@ -46,6 +46,7 @@ export namespace StoryUtils {
     Button: 'Buttons',
     Display: 'Display',
     Layout: 'Layout',
+    Hooks: 'Hooks',
   };
 
   /** SCAFFOLD */
