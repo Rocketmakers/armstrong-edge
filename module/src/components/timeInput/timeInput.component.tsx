@@ -12,7 +12,7 @@ type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'opti
 
 export interface ITimeInputProps extends IStatusWrapperProps {
   /** The binding for the input. */
-  bind: IBindingProps<string>;
+  bind?: IBindingProps<string>;
   /** (string) CSS className property */
   className?: string;
   /** (boolean) Should the picker disallow user interaction */
@@ -24,6 +24,11 @@ export interface ITimeInputProps extends IStatusWrapperProps {
   /** (Func) Filter the available hours - receives each hour in the array and expects a show/hide bool */
   hourFilter?: (hours: ISelectOption<number>) => boolean;
   /** (boolean) If true, when you select any hour, the minutes will be automatically set to 0 */
+  /** The value of the input */
+  value?: string;
+  /** Called when the value changes */
+  onValueChange?: (value: string) => any;
+  /** Set the minutes back to zero when the hour changes */
   zeroMinutesOnHourSelected?: boolean;
   /**
    * (string) A formatter to apply to all passed in time strings.
@@ -79,6 +84,8 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
       formatString,
       hourInputDisplayFormat,
       minuteInputDisplayFormat,
+      onValueChange,
+      value,
     },
     ref
   ) => {
@@ -86,6 +93,8 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
       validationErrorMessages,
       validationMode,
       validationErrorIcon: errorIcon,
+      onChange: onValueChange,
+      value,
     });
 
     const selectedTimeParsed = React.useMemo(() => {
@@ -117,7 +126,7 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
         }
         return additionalHourInputProps?.onChange?.(newHour);
       },
-      [formState?.minute, formProp, zeroMinutesOnHourSelected]
+      [formState?.minute, formProp, zeroMinutesOnHourSelected, additionalHourInputProps?.onChange]
     );
 
     React.useEffect(() => {
@@ -128,7 +137,7 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
             setSelectedTime(newTime!);
           }
         } catch (e) {
-          bind.addValidationError(e.message);
+          bind?.addValidationError(e.message);
         }
       }
     }, [formState]);

@@ -13,12 +13,12 @@ import { IconButton } from '../iconButton';
 import { InputWrapper } from '../inputWrapper';
 import { Modal } from '../modal';
 import { IStatusWrapperProps } from '../statusWrapper';
-import { calendarDayToDateLike, dateObjectToDateLike, getDaySelectOptions, validateDateSelection } from './calendarInput.utils';
+import { calendarDayToDateLike, getDaySelectOptions, validateDateSelection } from './calendarInput.utils';
 
 type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'>;
 
 export type CalendarInputCalendarPosition = 'dropdown' | 'modal' | 'above' | 'below';
-export interface ICalendarInputProps
+export interface ICalendarInputProps<TValue extends Dates.DateLike>
   extends Omit<Calendar.IConfig, 'selectedDate'>,
     Pick<
       ICalendarDisplayProps,
@@ -31,6 +31,10 @@ export interface ICalendarInputProps
     IStatusWrapperProps {
   /** (string) CSS className property */
   className?: string;
+  /** The value of the input */
+  value?: TValue;
+  /** Called when the value changes */
+  onValueChange?: (value: TValue) => any;
   /**
    * (boolean) Should the calendar close when a date is selected from inside?
    * - Defaults to `true`
@@ -41,7 +45,7 @@ export interface ICalendarInputProps
    * - Can be bound to a string, number or Date object.
    * - WARNING: If no initial value is passed it will assume the type is string.
    */
-  bind: IBindingProps<Dates.DateLike>;
+  bind?: IBindingProps<TValue>;
   /**
    * The order of the three select inputs.
    * - Defaults to 'day-month-year'
@@ -106,8 +110,8 @@ interface IDateInputFormData {
  * - Date selection via a calendar view.
  * - Date input via the keyboard in day/month/year format.
  */
-export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProps>(
-  (
+export const CalendarInput = React.forwardRef(
+  <TValue extends Dates.DateLike>(
     {
       bind,
       formatString,
@@ -141,13 +145,17 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       calendarPosition,
       keepCalendarOpen,
       className,
-    },
-    ref
+      onValueChange,
+      value,
+    }: ICalendarInputProps<TValue>,
+    ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [selectedDate, setSelectedDate, bindConfig] = Form.useBindingTools(bind, {
       validationErrorMessages,
       validationMode,
       validationErrorIcon: errorIcon,
+      onChange: onValueChange,
+      value,
     });
 
     const { monthYearFormProp, stepMonth, days, months, years, selectedDateParsed } = Calendar.use({
@@ -173,7 +181,7 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
 
     const onDayClicked = React.useCallback(
       (day: Calendar.IDay) => {
-        setSelectedDate(calendarDayToDateLike(day, selectedDate ? typeof selectedDate : 'string', formatString, locale));
+        setSelectedDate(calendarDayToDateLike(day, selectedDate ? typeof selectedDate : 'string', formatString, locale) as TValue);
         if (closeCalendarOnDayClick) {
           setCalendarOpen(false);
         }
@@ -184,14 +192,14 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
     React.useEffect(() => {
       if (formState?.day && (formState?.month ?? -1) > -1 && formState?.year) {
         if (!validateDateSelection(formState.day, formState.month!, formState.year)) {
-          bind.addValidationError('Invalid date selection');
+          bind?.addValidationError('Invalid date selection');
           return;
         }
-        bind.clearValidationErrors();
+        bind?.clearValidationErrors();
         const date = new Date(formState.year, formState.month!, formState.day);
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
-          const newDate = dateObjectToDateLike(date, selectedDate ? typeof selectedDate : 'string', formatString, locale);
-          setSelectedDate(newDate);
+          const newDate = Dates.dateObjectToDateLike(date, selectedDate ? typeof selectedDate : 'string', formatString, locale);
+          setSelectedDate(newDate as TValue);
         }
       }
     }, [formState]);
@@ -316,7 +324,9 @@ export const CalendarInput = React.forwardRef<HTMLDivElement, ICalendarInputProp
       </>
     );
   }
-);
+) as (<TValue extends Dates.DateLike>(
+  props: React.PropsWithChildren<ICalendarInputProps<TValue>> & React.RefAttributes<HTMLInputElement>
+) => ReturnType<React.FC>) & { defaultProps?: Partial<ICalendarInputProps<any>> };
 
 CalendarInput.defaultProps = {
   weekdayStartIndex: 0,

@@ -19,6 +19,7 @@ export * from './components/checkboxInput';
 export * from './components/checkboxInputList';
 export * from './components/codeInput';
 export * from './components/confirmButton';
+export * from './components/dateTimeInput';
 export * from './components/dialog';
 export * from './components/dropdown';
 export * from './components/dropdownButton';

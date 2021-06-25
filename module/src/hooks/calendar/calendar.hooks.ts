@@ -8,7 +8,7 @@ import { getDays, getMonths, getYears } from './calendar.utils';
 export const use = ({ formatString, locale, highlights, max, min, rangeTo, selectedDate }: IConfig = {}) => {
   // Parse all `Dates.DateLike` types into strict date objects
   const selectedDateParsed = React.useMemo(() => {
-    return Dates.dateLikeToDate(selectedDate ?? new Date(), formatString, locale)!;
+    return Dates.dateLikeToDate(selectedDate || new Date(), formatString, locale)!;
   }, [selectedDate, formatString, locale]);
 
   const minParsed = React.useMemo(() => {
