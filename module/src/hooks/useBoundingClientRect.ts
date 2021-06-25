@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Globals } from '../utils/globals';
+import { useEventListener } from './useEventListener';
 import { useResizeObserver } from './useResizeObserver';
 
 export type useBoundingClientRectReturn = [DOMRect, () => void];
@@ -37,16 +38,8 @@ export function useBoundingClientRect(ref: React.MutableRefObject<Element | unde
   /** Run the callback to get the element's size whenever it resizes */
   useResizeObserver(setRectSize, {}, ref);
 
-  /** Run the callback to get the element's size whenever the user scrolls or the window resizes */
-  React.useEffect(() => {
-    Globals.Document?.addEventListener('resize', setRectSize, { capture: true, passive: true });
-    Globals.Document?.addEventListener('scroll', setRectSize, { capture: true, passive: true });
-
-    return () => {
-      Globals.Document?.removeEventListener('resize', setRectSize, { capture: true });
-      Globals.Document?.removeEventListener('scroll', setRectSize, { capture: true });
-    };
-  }, [setRectSize]);
+  useEventListener('resize', setRectSize);
+  useEventListener('scroll', setRectSize, Globals.Window, { capture: true });
 
   return [rect, setRectSize];
 }

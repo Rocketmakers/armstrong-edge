@@ -209,6 +209,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
             openWhenFocusInside
             closeOnSelection={false}
             childRootElementSelector=".arm-input-inner"
+            searchTerm={textInputInternalValue}
           >
             <TagInput
               {...textInputProps}

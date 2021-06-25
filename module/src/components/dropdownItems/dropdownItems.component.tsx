@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useDidUpdateEffect } from '../../hooks';
+import { useDidUpdateEffect, useHasTimeElapsed } from '../../hooks';
 import { useGeneratedId } from '../../hooks/useGeneratedId';
 import { ArmstrongId } from '../../types';
 import { Arrays } from '../../utils/arrays';
@@ -39,7 +39,7 @@ export interface IDropdownItemProps extends IDropdownItem {
   /** (boolean) the item is selected - adds a data-selected attribute */
   isSelected: boolean;
 
-  /** (string) the prefix for the html ID - used for aria stufff */
+  /** (string) the prefix for the html ID - used for aria stuff */
   idPrefix?: string;
 }
 
@@ -85,6 +85,9 @@ export interface IDropdownItemsProps extends Omit<IDropdownProps, 'dropdownConte
 
   /** (boolean) should close when an item is selected */
   closeOnSelection?: boolean;
+
+  /** (string) used to move the keyboard selection to an item that starts with the given term */
+  searchTerm?: string;
 }
 
 /** A dropdown which renders a list of selectable options and allows keyboard navigation when its children are focused */
@@ -97,8 +100,10 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   currentValue,
   onKeyDown,
   closeOnSelection,
+  searchTerm,
   className,
   focusableWrapper,
+  onMouseDown,
   onOpenChange,
   id: htmlId,
   ...dropdownProps
@@ -107,9 +112,6 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   const [keyboardSelectedItemIndex, setKeyboardSelectedItemIndex] = React.useState(0);
 
   const groupedItems = React.useMemo(() => Arrays.arrayToArraysByKey(items, (item) => item.group || ''), [items]);
-
-  /** Will be true when the user clicks until they move the mouse */
-  const [hasBegunClick, setHasBegunClick] = React.useState(false);
 
   const resetKeyboardSelectedItemIndex = React.useCallback(() => {
     const selectedItemIndex = items.findIndex((item) => currentValue?.includes(item.id));
@@ -125,6 +127,16 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   React.useLayoutEffect(() => {
     resetKeyboardSelectedItemIndex();
   }, [items?.length]);
+
+  useDidUpdateEffect(() => {
+    if (isOpen && searchTerm?.length) {
+      const newIndex = items.findIndex((item) => item.content.startsWith(searchTerm));
+
+      if (newIndex > -1) {
+        setKeyboardSelectedItemIndex(newIndex);
+      }
+    }
+  }, [searchTerm]);
 
   const onKeyDownEvent = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -176,16 +188,6 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     [keyboardSelectedItemIndex, onItemSelected, items, isOpen, allowKeyboardNavigation, onOpenChange, itemRefs, groupedItems]
   );
 
-  const onMouseUpDropdownItem = React.useCallback(
-    (id: ArmstrongId) => {
-      if (closeOnSelection) {
-        onOpenChange(false);
-      }
-      onItemSelected?.(id);
-    },
-    [closeOnSelection, onOpenChange, onItemSelected]
-  );
-
   useDidUpdateEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -193,6 +195,30 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
       });
     }
   }, [isOpen]);
+
+  // used to ensure that clicks on the dropdown are not misread as a mouseUp on a dropdown item if the dropdown content is overlaying the click listener
+  const [hasTimePassedSinceMouseDown, beginHasTimeElapsed, resetHasTimeElapsed] = useHasTimeElapsed(500);
+
+  const onMouseDownEvent = React.useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      beginHasTimeElapsed();
+      onMouseDown?.(event);
+    },
+    [onMouseDown, beginHasTimeElapsed]
+  );
+
+  const onSelectItem = React.useCallback(
+    (id: ArmstrongId, ignoreHasTimePassed?: boolean) => {
+      if (ignoreHasTimePassed || hasTimePassedSinceMouseDown) {
+        if (closeOnSelection) {
+          onOpenChange(false);
+        }
+        onItemSelected?.(id);
+        resetHasTimeElapsed();
+      }
+    },
+    [closeOnSelection, onOpenChange, onItemSelected, hasTimePassedSinceMouseDown]
+  );
 
   const id = useGeneratedId('arm_dd', htmlId);
 
@@ -204,11 +230,10 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       onKeyDown={onKeyDownEvent}
-      onMouseDown={() => setHasBegunClick(true)}
-      onMouseMove={() => setHasBegunClick(false)}
       tabIndex={focusableWrapper ? 0 : undefined}
       aria-haspopup="listbox"
       aria-labelledby={`${id}_item`}
+      onMouseDown={onMouseDownEvent}
       id={id}
       dropdownContent={
         <ul aria-labelledby={`${id}`} id={`${id}_list`} aria-activedescendant={`${id}_item_${currentValue?.[0]}`} role="listbox">
@@ -228,15 +253,9 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                   <DropdownItem
                     {...item}
                     key={item.id + index.toString()}
-                    onMouseUp={
-                      !hasBegunClick
-                        ? () => {
-                            onMouseUpDropdownItem(item.id);
-                          }
-                        : undefined
-                    }
+                    onMouseUp={() => onSelectItem(item.id)}
                     idPrefix={`${id}_item`}
-                    onClick={() => hasBegunClick && onMouseUpDropdownItem(item.id)}
+                    onClick={() => onSelectItem(item.id, true)}
                     onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
                     isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
                     isSelected={!!currentValue?.includes(item.id)}

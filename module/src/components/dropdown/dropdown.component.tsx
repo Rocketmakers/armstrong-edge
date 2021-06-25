@@ -75,7 +75,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const modalRef = React.useRef<HTMLDivElement>();
 
     const [rootRect, getRootRectContentRect] = useBoundingClientRect(elementToRenderBelowRef);
-    const [modalRect] = useBoundingClientRect(modalRef);
+    const [modalRect, getModalRectContentRect] = useBoundingClientRect(modalRef);
     const windowSize = useWindowSize();
 
     useResizeObserver(getRootRectContentRect, {}, rootRef);
@@ -86,12 +86,14 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       (node: HTMLDivElement) => {
         modalRef.current = node;
         getRootRectContentRect();
+        getModalRectContentRect();
       },
-      [getRootRectContentRect]
+      [getRootRectContentRect, getModalRectContentRect]
     );
 
     React.useEffect(() => {
       getRootRectContentRect();
+      getModalRectContentRect();
     }, [isOpen]);
 
     React.useImperativeHandle(ref, () => ({ rootRef, modalRef }), [rootRef, modalRef]);
@@ -179,8 +181,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       [top, left, width]
     );
 
-    // useDebug(`ISOPEN_${isOpen}`);
-
     const modalOnOpenChange = React.useCallback(
       (newIsOpen: boolean) => {
         if (clicking && !newIsOpen) {
@@ -213,7 +213,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           onOpenChange={modalOnOpenChange}
           onScroll={onScrollContent}
           onMouseDown={onMouseDownContent}
-          closeOnWindowBlur
+          // closeOnWindowBlur
           closeOnWindowClick
           closeOnBackgroundClick={false}
         >

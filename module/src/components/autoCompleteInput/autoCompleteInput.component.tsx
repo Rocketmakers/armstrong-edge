@@ -110,7 +110,7 @@ export const AutoCompleteInput = React.forwardRef(
       [getFormattedValueFromData]
     );
 
-    // internal state for the text input, overriden by props
+    // internal state for the text input, overridden by props
     const [textInputInternalValue, setTextInputInternalValue] = useOverridableState(
       options?.find((option) => option.id === boundValue)?.name || '',
       textInputValue,
@@ -228,6 +228,7 @@ export const AutoCompleteInput = React.forwardRef(
             openWhenClickInside
             openWhenFocusInside
             childRootElementSelector=".arm-input-inner"
+            searchTerm={textInputInternalValue}
           >
             <TextInput
               {...textInputProps}

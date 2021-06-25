@@ -1,6 +1,8 @@
 import * as React from 'react';
 
+import { Objects } from '../utils';
 import { Globals } from '../utils/globals';
+import { useWillUnMountEffect } from './useWillUnmountEffect';
 
 /**
  * Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
@@ -22,7 +24,7 @@ export function useResizeObserver(
       observer.current = new ResizeObserver(callback);
       observer.current.observe(element, options);
     },
-    [callback, options]
+    [callback, Objects.contentDependency(options)]
   );
 
   const unobserve = React.useCallback((element: Element) => {
@@ -36,7 +38,7 @@ export function useResizeObserver(
   }, []);
 
   React.useLayoutEffect(() => {
-    if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsResizeObserver) {
+    if (!!ref?.current && Globals.isBrowser && Globals.supportsResizeObserver) {
       observe(ref.current);
 
       return () => {
@@ -45,14 +47,9 @@ export function useResizeObserver(
         }
       };
     }
-  }, [ref?.current, observe, unobserve]);
+  }, [observe, unobserve]);
 
-  React.useEffect(
-    () => () => {
-      disconnect();
-    },
-    []
-  );
+  useWillUnMountEffect(disconnect);
 
   return {
     observer,
