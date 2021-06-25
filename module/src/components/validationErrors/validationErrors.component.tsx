@@ -26,7 +26,7 @@ export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWith
 
     React.useEffect(() => {
       if (validationErrors.length > 0 && scrollIntoView) {
-        internalRef.current?.scrollIntoView({ block: 'center' });
+        internalRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       }
     }, [validationErrors.length]);
 

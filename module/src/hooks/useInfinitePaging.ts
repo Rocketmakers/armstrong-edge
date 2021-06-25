@@ -138,13 +138,18 @@ export function useInfinitePaging<T>(
 
       try {
         const response = await fetch(fetchPageToken);
-        const noReturnedItems = !response || !response.data || response.data.length === 0;
+
+        if (!response) {
+          throw new Error('No response returned from fetch in useInfinitePaging');
+        }
+
+        const noReturnedItems = !response.data || response.data.length === 0;
         const responseSmallerThanPageSize = settings.pageSize && response.data.length < settings.pageSize;
 
         dispatch({
           type: 'fetch',
           getKey,
-          hasFinished: noReturnedItems || responseSmallerThanPageSize || !response?.nextPageToken,
+          hasFinished: noReturnedItems || responseSmallerThanPageSize || !response.nextPageToken,
           newItems: response.data,
           nextPageToken: response.nextPageToken,
         });

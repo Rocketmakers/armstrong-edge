@@ -88,3 +88,12 @@ html {
 
   @include space-between-children-horizontal($spacing-xsmall);
 }
+
+.form {
+  padding: $spacing-large;
+  > * {
+    margin: 0 auto;
+    margin-bottom: $spacing-large;
+    display: block;
+  }
+}
