@@ -1,5 +1,5 @@
 .arm-progress-bar {
-  border-radius: $arm-progress-bar-thickness / 2;
+  border-radius: math.div($arm-progress-bar-thickness, 2);
 
   &[data-direction='up'],
   &[data-direction='down'] {
@@ -12,14 +12,14 @@
   }
 
   &[data-has-label='true'] {
-    border-radius: $arm-progress-bar-with-label-thickness / 2;
+    border-radius: math.div($arm-progress-bar-with-label-thickness, 2);
 
     .arm-progress-bar-progress {
-      border-radius: $arm-progress-bar-with-label-thickness / 2;
+      border-radius: math.div($arm-progress-bar-with-label-thickness, 2);
     }
   }
 }
 
 .arm-progress-bar-progress {
-  border-radius: $arm-progress-bar-thickness / 2;
+  border-radius: math.div($arm-progress-bar-thickness, 2);
 }

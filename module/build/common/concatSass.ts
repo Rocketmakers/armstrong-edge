@@ -56,7 +56,7 @@ export const concatSass = async () => {
 
   // write to files
   for (const fileName of Object.keys(filesDictionary)) {
-    const fileContents = filesDictionary[fileName];
+    const fileContents = `@use "sass:math";\n\n${filesDictionary[fileName]}`;
 
     await FileSystem.writeFileAsync(path.resolve(Paths.distDirectory, `${fileName}.scss`), fileContents);
   }
@@ -66,6 +66,8 @@ export const concatSass = async () => {
 
 export const sassConcatWatch = async () => {
   const watcher = chokidar.watch(Paths.sassGlob, { persistent: true });
+
+  await concatSass();
 
   // eslint-disable-next-line no-console
   watcher.on('ready', () => console.log('Listening for SASS changes'));

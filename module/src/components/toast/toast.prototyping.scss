@@ -2,7 +2,7 @@
   padding: $spacing-small;
 
   > .arm-toast-notification {
-    padding: $spacing-xsmall / 2 0;
+    padding: math.div($spacing-xsmall, 2) 0;
   }
 }
 
