@@ -9,43 +9,43 @@ import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapp
 import { ValidationErrors } from '../validationErrors';
 
 export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet>, IStatusWrapperProps {
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (JSX | string) text to overlay to the left of the input */
+  /** text to overlay to the left of the input */
   leftOverlay?: React.ReactNode;
 
-  /** (JSX | string) text to overlay to the right of the input */
+  /** text to overlay to the right of the input */
   rightOverlay?: React.ReactNode;
 
-  /** (string[]) array of validation errors to render */
+  /** array of validation errors to render */
   validationErrorMessages?: string[];
 
-  /** (icon|message|both) how to render the validation errors */
+  /** how to render the validation errors */
   validationMode?: FormValidationMode;
 
-  /** (IIcon) the icon to use for validation errors */
+  /** the icon to use for validation errors */
   errorIcon?: IIcon<IconSet>;
 
-  /** (boolean) disable use */
+  /** disable use */
   disabled?: boolean;
 
-  /** (boolean) hide the icon on the given side if there is an active status - defaults to true */
+  /** hide the icon on the given side if there is an active status - defaults to true */
   hideIconOnStatus?: boolean;
 
-  /** (JSX) content to render above the actual input */
+  /** content to render above the actual input */
   above?: JSX.Element;
 
-  /** (JSX) content to render below the actual input */
+  /** content to render below the actual input */
   below?: JSX.Element;
 
-  /** ((event) => void) fired when the user clicks on the div */
+  /** fired when the user clicks on the div */
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 
-  /** (boolean) when pending is true should also disable the input */
+  /** when pending is true should also disable the input */
   disableOnPending?: boolean;
 
-  /** (boolean) will scroll the validation errors into view when the length of validationErrors changes */
+  /** will scroll the validation errors into view when the length of validationErrors changes */
   scrollValidationErrorsIntoView?: boolean;
 }
 

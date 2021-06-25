@@ -5,7 +5,7 @@ export interface IUseElementStatusReturn {
   error: boolean;
   loaded: boolean;
 
-  /** ({onLoad, onError}) props that must be spread onto the element you want to listen to (must be the same element as the ref that's being passed in) */
+  /** props that must be spread onto the element you want to listen to (must be the same element as the ref that's being passed in) */
   props: Pick<React.HTMLAttributes<Element>, 'onLoad' | 'onError'>;
 }
 

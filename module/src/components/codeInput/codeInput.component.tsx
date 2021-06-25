@@ -27,13 +27,13 @@ export type CodeInputPartDefinition = ICodeInputInput | string | number;
 export interface ICodeInputPartProps {
   part: CodeInputPartDefinition;
 
-  /** (string) the current value of this part */
+  /** the current value of this part */
   value: string;
 
-  /** ((event) => void) called when the text input changes */
+  /** called when the text input changes */
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
-  /** ((event) => void) called when the user presses a key inside the input */
+  /** called when the user presses a key inside the input */
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
@@ -91,17 +91,17 @@ export interface ICodeInputProps
       | 'statusPosition'
       | 'validationErrorMessages'
     > {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string>;
 
-  /** (string) the current value of the CheckboxInput */
+  /** the current value */
   value?: string;
 
-  /** ((newValue: string) => void) */
+  /** Fired when the code input changes */
   onChange?: (newValue: string) => void;
 
   /**
-   * (CodeInputPart[]) the parts of the code input
+   * the parts of the code input
    * Can be a number representing the length of an input, I.E [1,1,1]
    * Can be a string representing a piece of text inbetween inputs I.E. [1,1,'-',1,1]
    * Can be an object representing an input with some properties

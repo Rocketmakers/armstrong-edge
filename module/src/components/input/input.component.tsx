@@ -48,7 +48,7 @@ const ThrottledInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseP
 );
 
 export interface IInputProps<TValue> extends NativeInputProps, Omit<IInputWrapperProps, 'onClick'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TValue>;
 
   /** Called when the value changes, takes into account any delay values and other effects. */

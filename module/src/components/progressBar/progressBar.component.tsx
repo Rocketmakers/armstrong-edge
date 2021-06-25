@@ -8,22 +8,22 @@ export type ProgressBarLabelVariant = 'centre' | 'centre-progress';
 export type ProgressBarDirection = 'left' | 'right' | 'down' | 'up';
 
 export interface IProgressBarProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
-  /** (number) the progress of the bar from 0 to 100 */
+  /** the progress of the bar from 0 to 100 */
   progress: number;
 
-  /** ('left' | 'right' | 'down' | 'up') the direction for the loading to increase */
+  /** the direction for the loading to increase */
   direction?: ProgressBarDirection;
 
-  /** (string) the text to optionally display as a label */
+  /** the text to optionally display as a label */
   labelText?: string;
 
-  /** ('centre' | 'centre-progress') the position to show the label - defaults to centre, must be used with labelText */
+  /** the position to show the label - defaults to centre, must be used with labelText */
   labelVariant?: ProgressBarLabelVariant;
 
-  /** (Color[]) breakpoints for the color to make the progress bar based on the progress in an array, given either as hex strings */
+  /** breakpoints for the color to make the progress bar based on the progress in an array, given either as hex strings */
   colorBreakpoints?: Colors.Color[];
 
-  /** (string) color when the progress has hit 100 */
+  /** color when the progress has hit 100 */
   completeColor?: string;
 }
 

@@ -71,7 +71,7 @@ ToastNotification.defaultProps = {
 };
 
 export interface IToastNotificationContainerProps {
-  /** (IToastNotificationProps[]) the toasts to render inside this component */
+  /** the toasts to render inside this component */
   toasts?: IToastNotificationProps[];
 }
 

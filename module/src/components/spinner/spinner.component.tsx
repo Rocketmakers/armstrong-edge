@@ -4,13 +4,13 @@ import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 
 export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
-  /** (IIcon) icon definition for icon to spin in middle of div, can be overriden using children */
+  /** icon definition for icon to spin in middle of div, can be overriden using children */
   icon?: IIcon<IconSet>;
 
-  /** (boolean) should the spinner wrapper fill the container, meaning the icon is centred */
+  /** should the spinner wrapper fill the container, meaning the icon is centred */
   fillContainer?: boolean;
 
-  /** (string) text to render below the spinner */
+  /** text to render below the spinner */
   label?: string;
 }
 

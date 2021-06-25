@@ -29,7 +29,7 @@ export interface ICalendarInputProps
     >,
     IStatusWrapperProps {
   /**
-   * (boolean) Should the calendar close when a date is selected from inside?
+   * Should the calendar close when a date is selected from inside?
    * - Defaults to `true`
    */
   closeCalendarOnDayClick?: boolean;
@@ -76,14 +76,14 @@ export interface ICalendarInputProps
   keepCalendarOpen?: boolean;
 
   /**
-   * (string) A formatter to apply to the current date when displayMode is set to calendar.
+   * A formatter to apply to the current date when displayMode is set to calendar.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - If date strings are used without this prop, strict ISO format will be assumed.
    * - This format will not be used if dates are passed as `Date` objects rather than strings.
    */
   displayFormatString?: string;
 
-  /** (string) a string used for a placeholder if a date isn't given and the displayMode is set to "calendar" */
+  /** a string used for a placeholder if a date isn't given and the displayMode is set to "calendar" */
   placeholder?: string;
 }
 

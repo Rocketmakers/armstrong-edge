@@ -7,13 +7,13 @@ import { IconButton } from '../iconButton';
 import { IModalProps, Modal } from '../modal';
 
 export interface IDialogProps extends IModalProps {
-  /** (string) the value to render as the title, will have necessary aria tag added */
+  /** the value to render as the title, will have necessary aria tag added */
   title?: string;
 
-  /** (IIcon) the icon to render by the title */
+  /** the icon to render by the title */
   titleIcon?: IIcon<IconSet>;
 
-  /** (IIcon) the icon to render as the close button */
+  /** the icon to render as the close button */
   closeButtonIcon?: IIcon<IconSet>;
 }
 

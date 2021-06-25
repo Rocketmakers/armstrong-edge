@@ -16,19 +16,19 @@ export interface ICheckboxInputProps
       IInputWrapperProps,
       'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'disabled' | 'pending' | 'error' | 'validationErrorMessages'
     > {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (IIcon) icon to render on the input when checked */
+  /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
 
-  /** (IIcon) icon to render on the input when not checked */
+  /** icon to render on the input when not checked */
   uncheckedIcon?: IIcon<IconSet>;
 
-  /** (ReactNode) the text or jsx element to render inside the checkbox's label */
+  /** the text or jsx element to render inside the checkbox's label */
   label?: React.ReactNode;
 }
 

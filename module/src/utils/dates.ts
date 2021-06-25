@@ -41,7 +41,7 @@ export namespace Dates {
    * Takes a native `Date` object and returns a formatted string.
    * - Uses the supplied format string and locale to format the string.
    * @param date (Date) The `Date` object to format.
-   * @param formatString (string) The optional format to use if `date` is a string, if not passed, will assume `date` strings are ISO.
+   * @param formatString The optional format to use if `date` is a string, if not passed, will assume `date` strings are ISO.
    * @param locale The locale to use if `date` is a string, if not passed, will use the system default locale of `en-GB`.
    * @returns A formatted string representation of the supplied `date`.
    */

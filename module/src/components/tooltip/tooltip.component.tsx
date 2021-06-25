@@ -14,33 +14,33 @@ export type TooltipPosition = 'above' | 'below' | 'left' | 'right';
 export interface ITooltipProps
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onMouseEnter' | 'onMouseLeave' | 'ref'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
-  /** (ReactNode) the contents of the tooltip */
+  /** the contents of the tooltip */
   content: React.ReactNode;
 
-  /** (['above'|'below'|'left'|'right']) a position or array of position options for the tooltip to try to display in, in reverse order of preference, with the tooltip falling back through the array if a position makes the tooltip fall of the edge of the screen */
+  /** a position or array of position options for the tooltip to try to display in, in reverse order of preference, with the tooltip falling back through the array if a position makes the tooltip fall of the edge of the screen */
   tooltipPosition?: TooltipPosition | TooltipPosition[];
 
-  /** (HTMLAttributes) props for the wrapper element */
+  /** props for the wrapper element */
   wrapperAttributes?: React.HTMLAttributes<HTMLElement>;
 
-  /** (number) the margin in px around the edge of the innerWindow used to detect whether the tooltip is intersecting the edge - defaults to 5 */
+  /** the margin in px around the edge of the innerWindow used to detect whether the tooltip is intersecting the edge - defaults to 5 */
   edgeDetectionMargin?: number;
 
-  /** (boolean) should the tooltip be open (by default, will only open if hovered) */
+  /** should the tooltip be open (by default, will only open if hovered) */
   isOpen?: boolean;
 
-  /** (boolean) should open when the children are hovered - true by default */
+  /** should open when the children are hovered - true by default */
   openOnHover?: boolean;
 
-  /** (boolean) should open when anything within the children is focused - true by default */
+  /** should open when anything within the children is focused - true by default */
   openOnFocus?: boolean;
 }
 
 export interface ITooltipRef {
-  /** (HTMLDivElement) the element wrapping the children */
+  /** the element wrapping the children */
   rootRef: React.RefObject<HTMLDivElement | undefined>;
 
-  /** (HTMLDivElement) the element wrapping the content which is filled with the dropdown children */
+  /** the element wrapping the content which is filled with the dropdown children */
   modalRef: React.RefObject<HTMLDivElement | undefined>;
 }
 

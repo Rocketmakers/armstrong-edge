@@ -18,22 +18,22 @@ export interface IRadioInputListOption<Id extends ArmstrongId> extends IIconWrap
 export interface IRadioInputListProps<Id extends ArmstrongId>
   extends Pick<IRadioInputProps, 'checkedIcon' | 'uncheckedIcon'>,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
-  /** (IRadioInputListOption[]) The options to be shown in the input */
+  /** The options to be shown in the input */
   options: IRadioInputListOption<Id>[];
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (Id) the current value of the radioInput */
+  /** the current value of the radioInput */
   value?: Id;
 
-  /** ((newValue: Id) => void) */
+  /** Fired when the value changes */
   onChange?: (newValue: Id) => void;
 
-  /** (boolean) show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
+  /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
 }
 

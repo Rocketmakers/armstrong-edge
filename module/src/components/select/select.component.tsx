@@ -9,13 +9,13 @@ import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any> {
-  /** (ArmstrongId) the value to be bound */
+  /** the value to be bound */
   id: Id;
 
-  /** (string) the name to be rendered for the option */
+  /** the name to be rendered for the option */
   name?: string;
 
-  /** (string) data which will be passed into the onSelectOption callback */
+  /** data which will be passed into the onSelectOption callback */
   data?: TSelectData;
   disabled?: boolean;
 }
@@ -23,19 +23,19 @@ export interface ISelectOption<Id extends ArmstrongId, TSelectData = any> {
 export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>,
     Omit<IInputWrapperProps, 'onClick'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
-  /** (ISelectOption[]) The options to be shown in the input */
+  /** The options to be shown in the input */
   options: ISelectOption<Id, TSelectData>[];
 
-  /** ((option: ISelectOption) => void) Called on change to get the  */
+  /** Called on change to get the  */
   onSelectOption?: (option?: ISelectOption<Id>) => void;
 
-  /** (icon) the icon overlaying the select element to the right, usually a down arrow */
+  /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
-  /** (boolean) should allow deletion of value with a cross */
+  /** should allow deletion of value with a cross */
   deleteButton?: boolean;
 
   value?: Id;

@@ -4,10 +4,10 @@ import { ClassNames } from '../../utils/classNames';
 import { AutoResizer } from '../autoResizer/autoResizer.component';
 
 export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
-  /** (boolean) is the expandable region open, if false will take up no space */
+  /** is the expandable region open, if false will take up no space */
   isOpen?: boolean;
 
-  /** ('vertical' | 'horizontal') which direction should the children open */
+  /** which direction should the children open */
   direction?: 'vertical' | 'horizontal';
 }
 

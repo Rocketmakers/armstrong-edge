@@ -5,16 +5,16 @@ import { ErrorMessage } from '../errorMessage';
 import { IconSet, IIcon } from '../icon';
 
 export interface IValidationErrorsProps {
-  /** (string[]) The errors to render */
+  /** The errors to render */
   validationErrors: string[];
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (IIcon) the icon to render beside the validation message */
+  /** the icon to render beside the validation message */
   icon?: IIcon<IconSet>;
 
-  /** (boolean) will scroll the validation errors into view when the length of validationErrors changes */
+  /** will scroll the validation errors into view when the length of validationErrors changes */
   scrollIntoView?: boolean;
 }
 

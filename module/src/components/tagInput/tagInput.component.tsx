@@ -10,68 +10,68 @@ import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag/tag.component';
 
 export interface ITag extends IIconWrapperProps<IconSet, IconSet> {
-  /** (ArmstrongId) id used to keep track of the tag when used in tag lists */
+  /** id used to keep track of the tag when used in tag lists */
   id: ArmstrongId;
 
-  /** (string) the text to render inside the tag */
+  /** the text to render inside the tag */
   name?: string;
 }
 
 export interface ITagInputProps
   extends Omit<IInputWrapperProps, 'above' | 'below' | 'onClick'>,
     Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'value'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string[]>;
 
-  /** (string[]) array of validation errors to render */
+  /** array of validation errors to render */
   validationErrorMessages?: string[];
 
-  /** (icon|message|both) how to render the validation errors */
+  /** how to render the validation errors */
   validationMode?: FormValidationMode;
 
-  /** (string[]) array of tags */
+  /** array of tags */
   value?: string[];
 
-  /** (ITag[]) overrides value to render a custom array of tags - should still be used in conjunction with a bound value */
+  /** overrides value to render a custom array of tags - should still be used in conjunction with a bound value */
   tags?: ITag[];
 
-  /** ((newValue: string[]) => void) event fired when the array of tags changes */
+  /** event fired when the array of tags changes */
   onChange?: (newValue: string[]) => void;
 
-  /** (event => void) fired when the internal text input changes */
+  /** fired when the internal text input changes */
   onTextInputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
-  /** (event => string) fired when the internal text input changes */
+  /** fired when the internal text input changes */
   onTextInputValueChange?: (event: string) => void;
 
-  /** (string) the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
+  /** the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
   textInputValue?: string;
 
-  /** (boolean) don't add duplicates to the list of tags */
+  /** don't add duplicates to the list of tags */
   allowDuplicates?: boolean;
 
-  /** ((value: string) => boolean) if false, will not add tag  */
+  /** If false, will not add tag  */
   getCanAddTag?: (newTag: string) => boolean;
 
-  /** (boolean) if true, hitting space will create a new tag rather than just adding a space */
+  /** if true, hitting space will create a new tag rather than just adding a space */
   spaceCreatesTags?: boolean;
 
-  /** (inside|above|below) where to render the tags - defaults to inside */
+  /** where to render the tags - defaults to inside */
   tagPosition?: 'inside' | 'above' | 'below';
 
-  /** (boolean) should allow deletion of tags with a cross */
+  /** should allow deletion of tags with a cross */
   deleteButton?: boolean;
 
-  /** (boolean) should show button to clear all tags */
+  /** should show button to clear all tags */
   deleteAllButton?: boolean;
 
-  /** ((addedTagName: string) => void) */
+  /** Fired when a tag is added */
   onAddTag?: (value: string) => void;
 
-  /** ((removedTagId: armstrongId) => void) */
+  /** Fired when a tag is removed */
   onRemoveTag?: (id: ArmstrongId) => void;
 
-  /** (() => void) fired when all tags are removed */
+  /** Fired when all tags are removed */
   onRemoveAllTags?: () => void;
 }
 

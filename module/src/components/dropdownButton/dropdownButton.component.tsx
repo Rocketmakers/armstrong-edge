@@ -5,7 +5,7 @@ import { Button, IButtonProps } from '../button';
 import { Dropdown } from '../dropdown/dropdown.component';
 
 export interface IDropdownButtonProps extends IButtonProps {
-  /** (JSX) the contents of the dropdown */
+  /** the contents of the dropdown */
   dropdownContent: JSX.Element;
 }
 

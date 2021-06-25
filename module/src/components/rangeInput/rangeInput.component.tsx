@@ -13,22 +13,22 @@ export interface IRangeInputProps
     IIconWrapperProps<IconSet, IconSet>,
     IStatusWrapperProps,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<number>;
 
-  /** (number => void) called when the value is updated after an on change event */
+  /** called when the value is updated after an on change event */
   onValueChange?: (newValue: number) => void;
 
-  /** (number) the current value of the range input */
+  /** the current value of the range input */
   value?: number;
 
-  /** (number) the minimum boundable value */
+  /** the minimum boundable value */
   minimum: number;
 
-  /** (number) the minimum boundable value */
+  /** the minimum boundable value */
   maximum: number;
 
-  /** (IIcon) the icon the render on the handle */
+  /** the icon the render on the handle */
   handleIcon?: IIcon<IconSet>;
 }
 

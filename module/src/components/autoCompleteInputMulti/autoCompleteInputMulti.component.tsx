@@ -13,34 +13,34 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
     Pick<ITagInputProps, 'tagPosition'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
-  /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
+  /** The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
-  /** ((string) => void) called when the user inputs into the text input - if provided, the hook will not bind internally and therefore this must be used in conjunction with textInputValue  */
+  /** called when the user inputs into the text input - if provided, the hook will not bind internally and therefore this must be used in conjunction with textInputValue  */
   onTextInputChange?: (value: string) => void;
 
-  /** (string) the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
+  /** the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
   textInputValue?: string;
 
-  /** ((string) => void) called when an option is selected  */
+  /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
 
-  /** (string) the currently selected option */
+  /** the currently selected option */
   value?: Id[];
 
-  /** (string) selector for the element to portal the options into */
+  /** selector for the element to portal the options into */
   optionsRootElementSelector?: string;
 
-  /** (boolean) bind the value of the input, rather than just when an item is selected - only supported if the bound value is a string and not a number */
+  /** bind the value of the input, rather than just when an item is selected - only supported if the bound value is a string and not a number */
   allowFreeText?: boolean;
 
-  /** (boolean | (option: string, textInputValue: string) => boolean) whether to filter the available options based on the string in the text input, optionally takes the callback used to do the filtering and by default will just do a option.name.startsWith() */
+  /** whether to filter the available options based on the string in the text input, optionally takes the callback used to do the filtering and by default will just do a option.name.startsWith() */
   filterOptions?: boolean | ((option: IAutoCompleteInputOption<Id>, textInputValue: string) => boolean);
 
-  /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
+  /** Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
   allowKeyboardNavigationSelection?: boolean;
 
-  /** ((option: IAutoCompleteOption) => ITag)  */
+  /** convert a selected option's Id into a tag, use if there's a chance a selected option won't be in the options array */
   getSelectedOptionTag?: (option: Id) => ITag;
 }
 

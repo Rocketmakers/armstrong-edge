@@ -2,15 +2,15 @@ import * as React from 'react';
 
 /** Returns whether the document matches the given media query string */
 export function useMatchMedia(
-  /** (string) the media query to match on */
+  /** the media query to match on */
   query: string,
   {
     onMatchesChange,
     eventListenerOptions,
   }: {
-    /** (event => void) fired when the matches change */
+    /** Fired when the matches change */
     onMatchesChange?: (event: MediaQueryListEvent) => void;
-    /** (boolean | AddEventListenerOptions) the config for the event listener added to the MediaQueryList */
+    /** The config for the event listener added to the MediaQueryList */
     eventListenerOptions?: boolean | AddEventListenerOptions;
   } = {}
 ): boolean {

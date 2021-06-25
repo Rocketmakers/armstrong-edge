@@ -7,39 +7,39 @@ import { Icon } from '../icon';
 import { IStatusProps, Status } from '../status';
 
 export interface IStepperStep extends Pick<IStatusProps, 'pending' | 'error'> {
-  /** (IIcon) the icon for this step */
+  /** the icon for this step */
   icon?: IIcon<IconSet>;
 
-  /** (number) the index of this step from 0 */
+  /** the index of this step from 0 */
   index?: number;
 
-  /** (string) the name of this step */
+  /** the name of this step */
   name?: string;
 
-  /** (boolean) is this step disabled - stops the onChange from firing */
+  /** is this step disabled - stops the onChange from firing */
   disabled?: boolean;
 
-  /** (boolean) is this step complete */
+  /** is this step complete */
   isComplete?: boolean;
 }
 
 export interface IStepperStepProps extends IStepperStep, Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
-  /** (boolean) is this step the current step */
+  /** is this step the current step */
   isCurrent?: boolean;
 
-  /** (boolean) is this step previous to the current step */
+  /** is this step previous to the current step */
   isPrevious?: boolean;
 
-  /** ((event) => void) fired when the user clicks on the stepper step */
+  /** fired when the user clicks on the stepper step */
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 
-  /** (IIcon) the icon to render if isComplete is set to true - leave blank to not change */
+  /** the icon to render if isComplete is set to true - leave blank to not change */
   completeIcon?: IIcon<IconSet>;
 
-  /** (boolean) is small (no icon or index) */
+  /** is small (no icon or index) */
   small?: boolean;
 
-  /** (boolean) is the next one small (no icon or index) used to position the line between them */
+  /** is the next one small (no icon or index) used to position the line between them */
   nextIsSmall?: boolean;
 }
 
@@ -113,19 +113,19 @@ export const StepperStep = React.forwardRef<HTMLButtonElement, IStepperStepProps
 );
 
 export interface IStepperProps extends Pick<IStepperStepProps, 'completeIcon'>, Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
-  /** (IStepperStep[]) the steps to render */
+  /** the steps to render */
   steps?: IStepperStep[];
 
-  /** (number) the index of the currently selected step */
+  /** the index of the currently selected step */
   stepIndex: number;
 
-  /** (boolean) will show the index on the circle if an icon is not provided for each step */
+  /** will show the index on the circle if an icon is not provided for each step */
   showIndex?: boolean;
 
-  /** ((newStep: number) => void) fired when the user clicks on a step, leave undefined to disable user interaction */
+  /** fired when the user clicks on a step, leave undefined to disable user interaction */
   onStepIndexChange?: (newStep: number) => void;
 
-  /** ('horizontal' | 'vertical') the direction that the steps should flow */
+  /** the direction that the steps should flow */
   direction?: 'horizontal' | 'vertical';
 }
 

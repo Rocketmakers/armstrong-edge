@@ -7,16 +7,16 @@ import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 export interface IRadioInputProps
   extends IIconWrapperProps<IconSet, IconSet>,
     Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'> {
-  /** ((newValue: string) => void) fired when the user changes the current value */
+  /** fired when the user changes the current value */
   onChange?: (newValue: boolean) => void;
 
-  /** (string) the name to render in a label, fallsd back to ID */
+  /** the name to render in a label, fallsd back to ID */
   name: string;
 
-  /** (IIcon) icon to render on the input when checked */
+  /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
 
-  /** (IIcon) icon to render on the input when not checked */
+  /** icon to render on the input when not checked */
   uncheckedIcon?: IIcon<IconSet>;
 }
 

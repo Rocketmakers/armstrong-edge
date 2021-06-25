@@ -10,22 +10,22 @@ export interface IButtonProps
   extends IIconWrapperProps<IconSet, IconSet>,
     Omit<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'ref'>,
     IStatusWrapperProps {
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (string[]) array of validation errors to render */
+  /** array of validation errors to render */
   validationErrorMessages?: string[];
 
-  /** (IIcon) the icon to use for validation errors */
+  /** the icon to use for validation errors */
   errorIcon?: IIcon<IconSet>;
 
-  /** (boolean) show a spinner and disable */
+  /** show a spinner and disable */
   pending?: boolean;
 
-  /** (boolean) hide the icon on the same side as the status if there is an active status - defaults to true */
+  /** hide the icon on the same side as the status if there is an active status - defaults to true */
   hideIconOnStatus?: boolean;
 
-  /** (boolean) disable use */
+  /** disable use */
   disabled?: boolean;
 }
 

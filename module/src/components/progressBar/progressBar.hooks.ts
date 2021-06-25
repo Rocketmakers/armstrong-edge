@@ -4,42 +4,42 @@ import { useTimeout } from '../../hooks';
 import { Maths } from '../../utils';
 
 export interface IUseProgressConfig {
-  /** (boolean) should the progress increase by a small amount every interval */
+  /** should the progress increase by a small amount every interval */
   trickle?: boolean;
 
-  /** (number) the amount to increase by each interval if trickle is set to true (limited to 5% of the remaining progress) */
+  /** the amount to increase by each interval if trickle is set to true (limited to 5% of the remaining progress) */
   trickleAmount?: number;
 
-  /** (number) the time in ms between each increment if trickle is set to true */
+  /** the time in ms between each increment if trickle is set to true */
   trickleInterval?: number;
 
-  /** (number) the maximum value that can be reached by a trickle or increment before start() has been called */
+  /** the maximum value that can be reached by a trickle or increment before start() has been called */
   maximum?: number;
 
-  /** (number) the minimum value to set to once start has been called */
+  /** the minimum value to set to once start has been called */
   minimum?: number;
 }
 
 export interface IUseProgressReturn {
-  /** (() => void) start trickling if trickle has been set to true in config */
+  /** start trickling if trickle has been set to true in config */
   start: () => void;
 
-  /** (() => void) set the progress to 100 percent */
+  /** set the progress to 100 percent */
   complete: () => void;
 
-  /** ((newValue: number) => void) set the progress to a specific arbitrary value in percent */
+  /** set the progress to a specific arbitrary value in percent */
   set: (newValue: number) => void;
 
-  /** (() => void) reset the value to 0 percent and stop trickling if enabled */
+  /** reset the value to 0 percent and stop trickling if enabled */
   reset: () => void;
 
-  /** ((amount: number) => void) increase the value by an amount in percent */
+  /** increase the value by an amount in percent */
   increment: (amount: number) => void;
 
-  /** (number) the current progress in percent */
+  /** the current progress in percent */
   progress: number;
 
-  /** (boolean) has start or set been called */
+  /** has start or set been called */
   started: boolean;
 }
 

@@ -13,7 +13,7 @@ import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarDispla
 
 export interface ICalendarDisplayProps {
   /**
-   * (number) An optional "day of the week" index to be the first day of the week.
+   * An optional "day of the week" index to be the first day of the week.
    * - By default, weeks will start on Sunday (index 0)
    * - Indexes range from Sunday = 0 to Saturday = 6
    */
@@ -45,7 +45,7 @@ export interface ICalendarDisplayProps {
    */
   currentYearBinding: IBindingProps<number>;
   /**
-   * ((day: Calendar.IDay) => void) An optional function to call when a day is clicked.
+   * An optional function to call when a day is clicked.
    * @param day The day that has been clicked.
    */
   onDayClicked?: (day: Calendar.IDay) => void;
@@ -58,35 +58,35 @@ export interface ICalendarDisplayProps {
    */
   onForwardClicked?: () => void;
   /**
-   * (string) A formatter to apply when displaying the days inside the calendar.
+   * A formatter to apply when displaying the days inside the calendar.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - Number by default `d` = (1 - 31).
    * - Other options include: `dd` = (01 - 31), `Do` = (1st - 31st)
    */
   calendarDayDisplayFormat?: string;
   /**
-   * (string) A formatter to apply when displaying the month selector inside the calendar.
+   * A formatter to apply when displaying the month selector inside the calendar.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - Long word by default: `MMMM` = (January - December)
    * - Other options include: `MM` = (01 - 12), `MMMM` = (January - December)
    */
   calendarMonthSelectDisplayFormat?: string;
   /**
-   * (string) A formatter to apply when displaying the year selector inside the calendar.
+   * A formatter to apply when displaying the year selector inside the calendar.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - Number by default: `YYYY` = (2021).
    * - Other options include: `YY` = (21).
    */
   calendarYearSelectDisplayFormat?: string;
   /**
-   * (string) A formatter to apply when displaying the day of the week headings inside the calendar.
+   * A formatter to apply when displaying the day of the week headings inside the calendar.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - Single letter by default: `eeeee` = (S - S).
    * - Other options include: `eee` = (Sun - Sat). `eeee` = (Sunday - Saturday).
    */
   calendarDayOfTheWeekHeadingDisplayFormat?: string;
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 }
 

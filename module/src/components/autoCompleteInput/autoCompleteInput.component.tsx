@@ -17,44 +17,44 @@ import { TextInput } from '../textInput';
 // will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
 export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet>, Pick<IDropdownItem, 'group'> {
-  /** (ArmstrongId) the value to be bound */
+  /** the value to be bound */
   id: Id;
 
-  /** (string) the name to be rendered for the option */
+  /** the name to be rendered for the option */
   name?: string;
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange' | 'ref'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
-  /** (IAutoCompleteInputOption[]) The options to render when the input is focused */
+  /** The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
-  /** ((string) => void) called when the user inputs into the text input - if provided, the hook will not bind internally and therefore this must be used in conjunction with textInputValue  */
+  /** called when the user inputs into the text input - if provided, the hook will not bind internally and therefore this must be used in conjunction with textInputValue  */
   onTextInputChange?: (value: string) => void;
 
-  /** (string) the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
+  /** the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
   textInputValue?: string;
 
-  /** ((string) => void) called when an option is selected  */
+  /** called when an option is selected  */
   onChange?: (value: Id) => void;
 
-  /** (string) the currently selected option */
+  /** the currently selected option */
   value?: Id;
 
-  /** (string) selector for the element to portal the options into */
+  /** selector for the element to portal the options into */
   optionsRootElementSelector?: string;
 
-  /** (boolean) bind the value of the input, rather than just when an item is selected - only supported if the bound value is a string and not a number */
+  /** bind the value of the input, rather than just when an item is selected - only supported if the bound value is a string and not a number */
   allowFreeText?: boolean;
 
-  /** (boolean | (option: string, textInputValue: string) => boolean) whether to filter the available options based on the string in the text input, optionally takes the callback used to do the filtering and by default will just do a option.name.startsWith() */
+  /** whether to filter the available options based on the string in the text input, optionally takes the callback used to do the filtering and by default will just do a option.name.startsWith() */
   filterOptions?: boolean | ((option: IAutoCompleteInputOption<Id>, textInputValue: string) => boolean);
 
-  /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
+  /** Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
   allowKeyboardNavigationSelection?: boolean;
 
-  /** (boolean) Whether to show all the options on focus, even when a value is set. The default is `true` as this means the user will always see all the options before they start typing. */
+  /** Whether to show all the options on focus, even when a value is set. The default is `true` as this means the user will always see all the options before they start typing. */
   showAllOptionsOnFocus?: boolean;
 }
 

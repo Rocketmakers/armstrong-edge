@@ -4,10 +4,10 @@ import { useInViewport } from '../../hooks/useIsInViewport';
 import { IStatusProps, Status } from '../status';
 
 export interface IScrollToEndListenerProps extends IStatusProps {
-  /** (() => void) the callback to fire when the element rendered by this component at the end of a scrolling list comes into the viewport */
+  /** the callback to fire when the element rendered by this component at the end of a scrolling list comes into the viewport */
   onScrollToEnd: () => void;
 
-  /** (string) the distance from the edge of the screen the listener must be to run the callback */
+  /** the distance from the edge of the screen the listener must be to run the callback */
   rootMargin?: string;
 }
 

@@ -7,10 +7,10 @@ import { IProgressBarProps, ProgressBar } from '../progressBar/progressBar.compo
 export type GlobalProgressBarPosition = 'top' | 'bottom' | 'left' | 'right';
 
 export interface IGlobalProgressBarProps extends IProgressBarProps, IPortalProps {
-  /** ('top' | 'bottom' | 'left' | 'right') which side of the screen should the progress bar be rendered on */
+  /** which side of the screen should the progress bar be rendered on */
   position?: GlobalProgressBarPosition;
 
-  /** (boolean) should hide off edge of screen */
+  /** should hide off edge of screen */
   hidden?: boolean;
 }
 

@@ -11,17 +11,17 @@ export type IconName<Set extends IconSet> = Icons[Set];
 
 /** core props for rendering and Armstrong Icon */
 export interface IIcon<TIconSet extends IconSet> {
-  /** (string) Icon set - IcoMoon | LinearIcon */
+  /** Icon set - IcoMoon | LinearIcon */
   iconSet: TIconSet;
 
-  /** (string) Icon name in the given iconSet */
+  /** Icon name in the given iconSet */
   icon: IconName<TIconSet>;
 }
 
 export interface IIconProps<TIconSet extends IconSet>
   extends IIcon<TIconSet>,
     React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 }
 

@@ -410,12 +410,12 @@ export interface HookReturn<TData extends object> {
  */
 export interface IDelayInputConfig {
   /**
-   * (debounce|throttle) Whether to use a debounce or a throttle delay.
+   * Whether to use a debounce or a throttle delay.
    */
   mode: 'debounce' | 'throttle';
 
   /**
-   * (debounce|throttle) The number of milliseconds to delay for.
+   * The number of milliseconds to delay for.
    */
   milliseconds: number;
 }

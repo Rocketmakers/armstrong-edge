@@ -12,16 +12,16 @@ export interface ITabSelectProps<Id extends ArmstrongId>
   extends Omit<ITabControlProps<Id>, 'currentTab' | 'onTabChange'>,
     IStatusWrapperProps,
     Pick<IInputWrapperProps, 'validationErrorMessages' | 'validationMode' | 'scrollValidationErrorsIntoView'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
-  /** (Id) the current value of the input */
+  /** the current value of the input */
   value?: Id;
 
-  /** (Id => void) the current value of the input */
+  /** the current value of the input */
   onValueChange?: (newValue: Id) => void;
 
-  /** (boolean) disable the input */
+  /** disable the input */
   disabled?: boolean;
 }
 

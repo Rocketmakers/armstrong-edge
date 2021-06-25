@@ -11,37 +11,37 @@ import { ValidationErrors } from '../validationErrors';
 export interface ISwitchInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'>,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (boolean) show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
+  /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
 
-  /** (boolean) show a spinner and disable */
+  /** show a spinner and disable */
   pending?: boolean;
 
-  /** (boolean) disable use */
+  /** disable use */
   disabled?: boolean;
 
-  /** (IIcon) icon to render on the input when checked */
+  /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
 
-  /** (IIcon) icon to render on the input when not checked */
+  /** icon to render on the input when not checked */
   uncheckedIcon?: IIcon<IconSet>;
 
-  /** (boolean) the current value of the switch input */
+  /** the current value of the switch input */
   checked?: boolean;
 
-  /** ((newValue: boolean) => void) called when the user updates the switch value */
+  /** called when the user updates the switch value */
   onChange?: (newValue: boolean) => void;
 
-  /** (on-handle|static) where to render the icon, will either follow the handle or stay in place */
+  /** where to render the icon, will either follow the handle or stay in place */
   iconStyle?: 'on-handle' | 'static';
 
-  /** (boolean) allow clicking and dragging horizontally to change the value of the switch - defaults to true */
+  /** allow clicking and dragging horizontally to change the value of the switch - defaults to true */
   changeOnDrag?: boolean;
 }
 

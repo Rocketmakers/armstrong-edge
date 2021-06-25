@@ -5,22 +5,22 @@ import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 
 export interface ICharacterLimitProps {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind: IBindingProps<string>;
 
-  /** (string) the current value of the string to count */
+  /** the current value of the string to count */
   value?: string;
 
-  /** (input) the character limit for the bound input */
+  /** the character limit for the bound input */
   limit: number;
 
-  /** (boolean) the limit should be enforced by the bind in this component - by default you will have to handle this yourself */
+  /** the limit should be enforced by the bind in this component - by default you will have to handle this yourself */
   shouldEnforce?: boolean;
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (IIcon) icon to render if error */
+  /** icon to render if error */
   exceedsIcon?: IIcon<IconSet>;
 }
 

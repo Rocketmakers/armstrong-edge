@@ -8,34 +8,34 @@ import { IPortalProps, Portal } from '../portal';
 export interface IModalProps
   extends Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
     Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'> {
-  /** (boolean) should the dropdown be rendered */
+  /** should the dropdown be rendered */
   isOpen: boolean;
 
-  /** (boolean) fired when the user attempts to close the modal by clicking outside of it (or other behaviors depending on the values of other props) */
+  /** fired when the user attempts to close the modal by clicking outside of it (or other behaviors depending on the values of other props) */
   onOpenChange?: (open: boolean) => void;
 
-  /** (boolean) the modal will close if the user blurs the window */
+  /** the modal will close if the user blurs the window */
   closeOnWindowBlur?: boolean;
 
-  /** (boolean) the modal will close if the user clicks outside of the arm-modal element
+  /** the modal will close if the user clicks outside of the arm-modal element
    * uses a window click with a stop prop on the modal element, will close all modals with this, not just the last one
    * use closeOnBackgroundClick to ensure that this will only happen when clicking on the
    */
   closeOnWindowClick?: boolean;
 
-  /** (boolean) the modal will close if the user clicks on the div rendered as its background */
+  /** the modal will close if the user clicks on the div rendered as its background */
   closeOnBackgroundClick?: boolean;
 
-  /** ((event: MouseEvent) => void) fired when the user clicks on the wrapper */
+  /** fired when the user clicks on the wrapper */
   onClickWrapper?: (event: React.MouseEvent<HTMLDivElement>) => void;
 
-  /** (string) the className of the wrapper */
+  /** the className of the wrapper */
   wrapperClassName?: string;
 
-  /** (boolean) if true, will stop the modal from being closable */
+  /** if true, will stop the modal from being closable */
   disableClose?: boolean;
 
-  /** (boolean) should darken the background */
+  /** should darken the background */
   darkenBackground?: boolean;
 }
 

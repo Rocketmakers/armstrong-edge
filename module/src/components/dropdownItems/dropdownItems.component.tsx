@@ -10,36 +10,36 @@ import { Icon, IconSet } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 
 export interface IDropdownItem extends IIconWrapperProps<IconSet, IconSet> {
-  /** (string) The text content of the dropdown item */
+  /** The text content of the dropdown item */
   content: string;
 
-  /** (string) The string to be passed into onItemSelected */
+  /** The string to be passed into onItemSelected */
   id: ArmstrongId;
 
-  /** (HTMLLIElement) props to spread onto the div element for the dropdown item */
+  /** props to spread onto the div element for the dropdown item */
   htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
 
-  /** (string) a group to show this item under */
+  /** a group to show this item under */
   group?: string;
 }
 
 export interface IDropdownItemProps extends IDropdownItem {
-  /** ((event) => void) fired when clicking on the dropdown item */
+  /** fired when clicking on the dropdown item */
   onMouseUp?: (event: React.MouseEvent) => void;
 
-  /** ((event) => void) fired when clicking on the dropdown item */
+  /** fired when clicking on the dropdown item */
   onClick: (event: React.MouseEvent) => void;
 
-  /** ((event) => void) fired when the cursor enters the dropdown item */
+  /** fired when the cursor enters the dropdown item */
   onMouseEnter: (event: React.MouseEvent) => void;
 
-  /** (boolean) the item is selected by keyboard - adds a data-keyboard-selected attribute */
+  /** the item is selected by keyboard - adds a data-keyboard-selected attribute */
   isKeyboardSelected: boolean;
 
-  /** (boolean) the item is selected - adds a data-selected attribute */
+  /** the item is selected - adds a data-selected attribute */
   isSelected: boolean;
 
-  /** (string) the prefix for the html ID - used for aria stuff */
+  /** the prefix for the html ID - used for aria stuff */
   idPrefix?: string;
 }
 
@@ -68,25 +68,25 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
 );
 
 export interface IDropdownItemsProps extends Omit<IDropdownProps, 'dropdownContent'> {
-  /** (IDropdownItem) The selectable items rendered inside the dropdown */
+  /** The selectable items rendered inside the dropdown */
   items: IDropdownItem[];
 
-  /** (content => void) Fired when the user selects and item in the dropdown */
+  /** Fired when the user selects and item in the dropdown */
   onItemSelected: (content: ArmstrongId) => void;
 
-  /** (boolean) Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
+  /** Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
   allowKeyboardNavigation?: boolean;
 
-  /** (string) Currently selected items */
+  /** Currently selected items */
   currentValue?: ArmstrongId[];
 
-  /** (boolean) adds tabIndex={0} to the wrapper element making it keyboard focusable without needing another focusable element inside it - needed to make keyboard interaction work without a focusable element inside it */
+  /** adds tabIndex={0} to the wrapper element making it keyboard focusable without needing another focusable element inside it - needed to make keyboard interaction work without a focusable element inside it */
   focusableWrapper?: boolean;
 
-  /** (boolean) should close when an item is selected */
+  /** should close when an item is selected */
   closeOnSelection?: boolean;
 
-  /** (string) used to move the keyboard selection to an item that starts with the given term */
+  /** used to move the keyboard selection to an item that starts with the given term */
   searchTerm?: string;
 }
 

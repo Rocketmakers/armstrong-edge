@@ -48,13 +48,13 @@ const ThrottledTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedText
 );
 
 export interface ITextAreaInputProps extends NativeTextAreaProps, Omit<IInputWrapperProps, 'onClick'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string>;
 
-  /** (string[]) array of validation errors to render */
+  /** array of validation errors to render */
   validationErrorMessages?: string[];
 
-  /** (icon|message|both) how to render the validation errors */
+  /** how to render the validation errors */
   validationMode?: FormValidationMode;
 
   /** Called when the value changes, takes into account any delay values and other effects. */

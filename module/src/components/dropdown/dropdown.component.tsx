@@ -12,39 +12,39 @@ import { IPortalProps } from '../portal';
 export interface IDropdownProps
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
-  /** (boolean) should the dropdown be rendered */
+  /** should the dropdown be rendered */
   isOpen: boolean;
 
-  /** (boolean) fired when the user attempts to close the dropdown */
+  /** fired when the user attempts to close the dropdown */
   onOpenChange: (open: boolean) => void;
 
-  /** (JSX) rendered inside the dropdown */
+  /** rendered inside the dropdown */
   dropdownContent: JSX.Element;
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (string) CSS className for content wrapper */
+  /** CSS className for content wrapper */
   contentClassName?: string;
 
-  /** (boolean) should open when the user clicks on children */
+  /** should open when the user clicks on children */
   openWhenClickInside?: boolean;
 
-  /** (boolean) should open when the user focuses inside children */
+  /** should open when the user focuses inside children */
   openWhenFocusInside?: boolean;
 
-  /** (string) selector for the element to visually render the content below - by default will render below the wrapper element */
+  /** selector for the element to visually render the content below - by default will render below the wrapper element */
   childRootElementSelector?: string;
 
-  /** (boolean) should close if the user scrolls - replicates some browser experiences */
+  /** should close if the user scrolls - replicates some browser experiences */
   closeOnScroll?: boolean;
 }
 
 export interface IDropdownRef {
-  /** (HTMLDivElement) the element wrapping the children */
+  /** the element wrapping the children */
   rootRef: React.RefObject<HTMLDivElement | undefined>;
 
-  /** (HTMLDivElement) the element wrapping the content which is filled with the dropdown children */
+  /** the element wrapping the content which is filled with the dropdown children */
   modalRef: React.RefObject<HTMLDivElement | undefined>;
 }
 
@@ -99,8 +99,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     React.useImperativeHandle(ref, () => ({ rootRef, modalRef }), [rootRef, modalRef]);
 
     const top = React.useMemo(
-      () =>
-        rootRect && modalRect && Maths.clamp(rootRect.top + rootRect.height, 0, (windowSize.innerHeight || 0) - modalRect.height - rootRect.height),
+      () => rootRect && modalRect && Maths.clamp(rootRect.top + rootRect.height, 0, (windowSize.innerHeight || 0) - modalRect.height),
       [rootRect?.top, rootRect?.height, modalRect?.height, windowSize.innerHeight]
     );
 
@@ -213,7 +212,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           onOpenChange={modalOnOpenChange}
           onScroll={onScrollContent}
           onMouseDown={onMouseDownContent}
-          // closeOnWindowBlur
+          closeOnWindowBlur
           closeOnWindowClick
           closeOnBackgroundClick={false}
         >

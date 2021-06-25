@@ -4,13 +4,13 @@ import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 
 export interface IErrorMessageProps {
-  /** (string) The error to render */
+  /** The error to render */
   message: string;
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (IIcon) the icon to render beside the validation message */
+  /** the icon to render beside the validation message */
   icon?: IIcon<IconSet>;
 }
 

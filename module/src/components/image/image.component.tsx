@@ -8,41 +8,41 @@ import { ClassNames } from '../../utils/classNames';
 import { IStatusProps, Status } from '../status';
 
 export interface IImageSource {
-  /** (string) the url source which will replace the main src if the right conditions are met */
+  /** the url source which will replace the main src if the right conditions are met */
   srcSet: string;
 
-  /** (string) A media query used to decide whether to render this source I.E. "(min-width: 500px)" (see [picture on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture)) */
+  /** A media query used to decide whether to render this source I.E. "(min-width: 500px)" (see [picture on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture)) */
   media?: string;
 
-  /** (string) The type of the linked image source, I.E. "image/jpg", used by the browser to determine which image to show based on support of file types */
+  /** The type of the linked image source, I.E. "image/jpg", used by the browser to determine which image to show based on support of file types */
   type?: string;
 
-  /** (HTMLSourceElement) Attributes to spread onto the source element */
+  /** Attributes to spread onto the source element */
   attributes?: Omit<HTMLAttributes<HTMLSourceElement>, 'srcSet' | 'media' | 'type'>;
 }
 
 type ImageSource = string | IImageSource;
 
 export interface IImageProps extends Omit<IUseInViewportOptions, 'once'>, Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
-  /** (HTMLPictureElement) attributes to spread onto the picture element */
+  /** attributes to spread onto the picture element */
   pictureAttributes?: Omit<HTMLAttributes<HTMLPictureElement>, 'ref'>;
 
-  /** (HTMLImageElement) attributes to spread onto the img element */
+  /** attributes to spread onto the img element */
   imgAttributes?: Omit<HTMLAttributes<HTMLImageElement>, 'ref' | 'src' | 'alt'>;
 
-  /** (HTMLDivElement) attributes to spread onto the wrapping div element */
+  /** attributes to spread onto the wrapping div element */
   wrapperAttributes?: Omit<HTMLAttributes<HTMLDivElement>, 'ref'>;
 
-  /** (string) the main src for the image */
+  /** the main src for the image */
   src: string;
 
-  /** (ImageSource[]) render a bunch of additional sources which will be rendered optionally by the browser, I.E for showing different formats in browsers that support them, or different images at different screen sizes (see [picture on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture)) */
+  /** render a bunch of additional sources which will be rendered optionally by the browser, I.E for showing different formats in browsers that support them, or different images at different screen sizes (see [picture on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture)) */
   additionalSources?: ImageSource[];
 
-  /** (string) the alt text used for the image - this is required as not including it hinders accessibility and you wil be penalized in SEO. If you really really think you don't need it, you can manually set it to undefined */
+  /** the alt text used for the image - this is required as not including it hinders accessibility and you wil be penalized in SEO. If you really really think you don't need it, you can manually set it to undefined */
   alt: string | undefined;
 
-  /** (number) the time in ms to wait after loading begins before showing a spinner - defaults to 1000ms */
+  /** the time in ms to wait after loading begins before showing a spinner - defaults to 1000ms */
   timeToSpinner?: number;
 }
 

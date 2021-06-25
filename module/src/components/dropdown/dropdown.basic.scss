@@ -17,7 +17,7 @@ $arm-dropdown-height: 240px;
   width: $arm-dropdown-width;
   min-width: $arm-dropdown-min-width;
   overflow: auto;
-  max-height: min(#{$arm-dropdown-height}, calc(100vh - #{$spacing-medium * 2}));
+  max-height: min(#{$arm-dropdown-height}, calc(100vh));
   user-select: none;
   z-index: 2;
 }

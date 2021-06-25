@@ -11,37 +11,37 @@ import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag';
 
 export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
 
-  /** (IListBoxOption[]) The options to be shown in the input */
+  /** The options to be shown in the input */
   options: IListBoxOption<Id, TSelectData>[];
 
-  /** ((option: IListBoxOption) => void) Called on change to get the  */
+  /** Called on change to get the  */
   onSelectOption?: (option?: IListBoxOption<Id>) => void;
 
-  /** (string[]) array of validation errors to render */
+  /** array of validation errors to render */
   validationErrorMessages?: string[];
 
-  /** (icon|message|both) how to render the validation errors */
+  /** how to render the validation errors */
   validationMode?: FormValidationMode;
 
-  /** (icon) the icon overlaying the select element to the right, usually a down arrow */
+  /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
-  /** (ArmstrongId) the current value */
+  /** the current value */
   value?: Id[];
 
-  /** ((newValue: ArmstrongId[]) => void) fired when the value changes */
+  /** fired when the value changes */
   onValueChange?: (neWValue: Id[]) => void;
 
-  /** (string) the string to show when there is no value */
+  /** the string to show when there is no value */
   placeholder?: string;
 
-  /** (boolean) should allow deletion of value with a cross */
+  /** should allow deletion of value with a cross */
   deleteButton?: boolean;
 
-  /** (boolean) if set, will render a string like "X selected" instead of the selected values as tags */
+  /** if set, will render a string like "X selected" instead of the selected values as tags */
   renderPreview?: (selectedOptions: IListBoxOption<Id, TSelectData>[]) => React.ReactChild;
 }
 

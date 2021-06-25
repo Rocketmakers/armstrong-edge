@@ -4,10 +4,10 @@ import * as ReactDOM from 'react-dom';
 import { Globals } from '../../utils/globals';
 
 export interface IPortalProps {
-  /** (string) selector for the element to append the root to as a queryselector, body by default */
+  /** selector for the element to append the root to as a queryselector, body by default */
   portalToSelector?: string;
 
-  /** (HTMLElement) a ref for an element to portal into */
+  /** a ref for an element to portal into */
   portalTo?: HTMLElement;
 }
 

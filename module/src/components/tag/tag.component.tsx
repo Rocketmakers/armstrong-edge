@@ -8,10 +8,10 @@ import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 export interface ITagProps
   extends IIconWrapperProps<IconSet, IconSet>,
     React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  /** (string) the text to render inside the tag */
+  /** the text to render inside the tag */
   content?: string;
 
-  /** (() => void) fired when the user clicks on a cross - if undefined, shows no cross */
+  /** fired when the user clicks on a cross - if undefined, shows no cross */
   onRemove?: () => void;
 }
 

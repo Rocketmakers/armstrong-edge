@@ -7,15 +7,15 @@ import { IconSet } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 
 export interface ITab<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet> {
-  /** (ArmstrongId) The ID of the tab, to be passed into onTabChange */
+  /** The ID of the tab, to be passed into onTabChange */
   id: Id;
 
-  /** (string) The text to render inside the tab, falls back to id if not given and no icon is set */
+  /** The text to render inside the tab, falls back to id if not given and no icon is set */
   content?: string;
 }
 
 export interface ITabControlTabProps<Id extends ArmstrongId> extends ITab<Id>, Omit<React.HTMLAttributes<HTMLButtonElement>, 'id' | 'ref'> {
-  /** (boolean) adds a data-is-current data attribute */
+  /** adds a data-is-current data attribute */
   isCurrent?: boolean;
 }
 
@@ -49,13 +49,13 @@ export const TabControlTab = React.forwardRef(
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<ITabControlTabProps<any>> };
 
 export interface ITabControlProps<Id extends ArmstrongId> extends Omit<React.HTMLAttributes<HTMLDivElement>, 'ref'> {
-  /** (ITab[]) The tabs to render in the TabControl */
+  /** The tabs to render in the TabControl */
   tabs: ITab<Id>[];
 
-  /** (ArmstrongId) The tab to be displayed as the current tab (adds a data-is-current data attribute to the tab with the given ID) */
+  /** The tab to be displayed as the current tab (adds a data-is-current data attribute to the tab with the given ID) */
   currentTab?: Id;
 
-  /** (ArmstrongId => void) fired when a user clicks on a tab */
+  /** fired when a user clicks on a tab */
   onTabChange?: (newTabId: Id) => void;
 }
 

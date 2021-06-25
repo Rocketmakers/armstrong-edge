@@ -47,7 +47,7 @@ const toastReducer: React.Reducer<IToastNotificationProps[], ToastAction> = (sta
 };
 
 export interface IToastProviderProps extends Pick<IPortalProps, 'portalTo' | 'portalToSelector'>, IGlobalToastConfig {
-  /** (boolean) set to false to completely customise how your application uses toast notifications, you'll need to render your own toasts using useToasts  */
+  /** set to false to completely customise how your application uses toast notifications, you'll need to render your own toasts using useToasts  */
   renderToastContainer?: boolean;
 }
 

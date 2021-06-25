@@ -17,22 +17,22 @@ export interface ICheckboxInputListOption<Id extends ArmstrongId> extends IIconW
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
   extends Pick<ICheckboxInputProps, 'checkedIcon' | 'uncheckedIcon'>,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
-  /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
 
-  /** (ICheckboxInputListOption[]) The options to be shown in the input */
+  /** The options to be shown in the input */
   options: ICheckboxInputListOption<Id>[];
 
-  /** (string) CSS className property */
+  /** CSS className property */
   className?: string;
 
-  /** (Id) the current value of the CheckboxInput */
+  /** the current value of the CheckboxInput */
   value?: Id[];
 
-  /** ((newValue: Id) => void) */
+  /** fired when the value of the checkbox input changes */
   onChange?: (newValue: Id[]) => void;
 
-  /** (boolean) show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
+  /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
 }
 
