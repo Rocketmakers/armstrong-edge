@@ -17,6 +17,7 @@ export interface IDragReleaseCallbackArgs {
   changePosition: IPosition;
 }
 
+/** Track the position of the cursor after a mouse down event, and fire a callback when the mouse is released */
 export function useDrag(onRelease?: (args: IDragReleaseCallbackArgs) => void) {
   const [startPosition, setStartPosition] = React.useState<IPosition | undefined>(undefined);
   const [currentPosition, setCurrentPosition] = React.useState<IPosition | undefined>(undefined);
