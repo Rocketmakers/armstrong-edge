@@ -143,8 +143,8 @@ export function useInfinitePaging<T>(
           throw new Error('No response returned from fetch in useInfinitePaging');
         }
 
-        const noReturnedItems = !response.data || response.data.length === 0;
-        const responseSmallerThanPageSize = settings.pageSize && response.data.length < settings.pageSize;
+        const noReturnedItems = !response.data?.length;
+        const responseSmallerThanPageSize = !noReturnedItems && settings.pageSize && response.data.length < settings.pageSize;
 
         dispatch({
           type: 'fetch',
@@ -176,10 +176,9 @@ export function useInfinitePaging<T>(
   const reload = React.useCallback(async () => {
     dispatch({ type: 'reset', getKey, initialItems: settings.initialItems || [] });
     await fetcher(settings.firstPageToken);
-  }, [fetcher, dispatch, getKey, settings.initialItems]);
+  }, [fetcher, dispatch, getKey, settings.initialItems, settings.firstPageToken]);
 
   /** adds the given new items to the array state, or replaces them if items with that key are already in */
-
   const insert = React.useCallback(
     (...newItems: T[]) => {
       dispatch({ type: 'insert', getKey, newItems });

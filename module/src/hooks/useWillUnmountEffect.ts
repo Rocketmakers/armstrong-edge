@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 
 /** A useEffect which only runs on the cleanup of the last effect */
-export function useWillUnMountEffect(callback: () => void) {
-  React.useEffect(() => callback, []);
+export function useWillUnMountEffect(callback: ReturnType<React.EffectCallback>) {
+  return React.useEffect(() => callback, []);
 }
 
 /** A useLayoutEffect which only runs on the cleanup of the last effect */
-export function useWillUnMountLayoutEffect(callback: () => void) {
-  React.useLayoutEffect(() => callback, []);
+export function useWillUnMountLayoutEffect(callback: ReturnType<React.EffectCallback>) {
+  return React.useLayoutEffect(() => callback, []);
 }

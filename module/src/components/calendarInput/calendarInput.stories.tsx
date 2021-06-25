@@ -69,7 +69,7 @@ export const Modal = () => {
 };
 
 export const RangeExample = () => {
-  const { formProp } = Form.use({ startDate: undefined as string, endDate: undefined as string });
+  const { formProp, formState } = Form.use({ startDate: undefined as string, endDate: undefined as string });
 
   return (
     <div className="story-cols">
@@ -79,7 +79,7 @@ export const RangeExample = () => {
           bind={formProp('startDate').bind() as any}
           calendarPosition="below"
           keepCalendarOpen
-          max={formProp('endDate').get()}
+          max={formState.endDate}
           placeholder="start date"
           rangeTo={formProp('endDate').get()}
         />
@@ -91,7 +91,7 @@ export const RangeExample = () => {
           bind={formProp('endDate').bind() as any}
           calendarPosition="below"
           keepCalendarOpen
-          min={formProp('startDate').get()}
+          min={formState.startDate}
           rangeTo={formProp('startDate').get()}
         />
       </label>

@@ -4,7 +4,7 @@ import * as React from 'react';
 export function useDidUpdateEffect(callback: React.EffectCallback, deps?: React.DependencyList) {
   const didMountRef = React.useRef(false);
 
-  React.useEffect(() => {
+  return React.useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
       return;
@@ -17,7 +17,7 @@ export function useDidUpdateEffect(callback: React.EffectCallback, deps?: React.
 export function useDidUpdateLayoutEffect(callback: React.EffectCallback, deps?: React.DependencyList) {
   const didMountRef = React.useRef(false);
 
-  React.useLayoutEffect(() => {
+  return React.useLayoutEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
       return;
