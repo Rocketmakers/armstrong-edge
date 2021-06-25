@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Form, IconSet, IIcon, ValidationErrors } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { Form, IconSet, IInputWrapperProps, ValidationErrors } from '../..';
+import { IBindingProps } from '../../hooks/form';
 import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
@@ -78,7 +78,19 @@ export const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartPr
 });
 
 /** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
-export interface ICodeInputProps extends IIconWrapperProps<IconSet, IconSet> {
+export interface ICodeInputProps
+  extends IIconWrapperProps<IconSet, IconSet>,
+    Pick<
+      IInputWrapperProps,
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'disabled'
+      | 'pending'
+      | 'error'
+      | 'statusPosition'
+      | 'validationErrorMessages'
+    > {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string>;
 
@@ -87,24 +99,6 @@ export interface ICodeInputProps extends IIconWrapperProps<IconSet, IconSet> {
 
   /** ((newValue: string) => void) */
   onChange?: (newValue: string) => void;
-
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
-
-  /** (IIcon) the icon to use for validation errors */
-  validationErrorIcon?: IIcon<IconSet>;
-
-  /** (boolean) show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
-  error?: boolean;
-
-  /** (boolean) show a spinner and disable */
-  pending?: boolean;
-
-  /** (left|right) which side of the button to show the spinner on - defaults to 'right' */
-  statusPosition?: 'left' | 'right';
 
   /**
    * (CodeInputPart[]) the parts of the code input
@@ -127,12 +121,13 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
       onChange,
       validationMode,
       validationErrorMessages,
-      validationErrorIcon,
+      errorIcon,
       error,
       pending,
       statusPosition,
       leftIcon,
       rightIcon,
+      scrollValidationErrorsIntoView,
     },
     ref
   ) => {
@@ -143,7 +138,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
       onChange,
       validationErrorMessages,
       validationMode,
-      validationErrorIcon,
+      validationErrorIcon: errorIcon,
     });
 
     const totalLength = React.useMemo(() => parts.reduce<number>((total, part) => total + CodeInputUtils.getLengthFromPart(part), 0), [parts]);
@@ -259,7 +254,11 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
         </div>
 
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={validationErrorIcon} />
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
         )}
       </>
     );

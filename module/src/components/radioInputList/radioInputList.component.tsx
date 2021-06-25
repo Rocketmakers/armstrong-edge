@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { Arrays, Form } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { Arrays, Form, IInputWrapperProps } from '../..';
+import { IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
-import { IconSet, IIcon } from '../icon';
+import { IconSet } from '../icon';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IRadioInputProps, RadioInput } from '../radioInput/radioInput.component';
 import { ValidationErrors } from '../validationErrors';
@@ -15,7 +15,9 @@ export interface IRadioInputListOption<Id extends ArmstrongId> extends IIconWrap
   group?: string;
 }
 
-export interface IRadioInputListProps<Id extends ArmstrongId> extends Pick<IRadioInputProps, 'checkedIcon' | 'uncheckedIcon'> {
+export interface IRadioInputListProps<Id extends ArmstrongId>
+  extends Pick<IRadioInputProps, 'checkedIcon' | 'uncheckedIcon'>,
+    Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
@@ -24,15 +26,6 @@ export interface IRadioInputListProps<Id extends ArmstrongId> extends Pick<IRadi
 
   /** (string) CSS className property */
   className?: string;
-
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
-
-  /** (IIcon) the icon to use for validation errors */
-  validationErrorIcon?: IIcon<IconSet>;
 
   /** (Id) the current value of the radioInput */
   value?: Id;
@@ -52,7 +45,7 @@ export const RadioInputList = React.forwardRef(
       options,
       className,
       value,
-      validationErrorIcon,
+      errorIcon,
       validationMode,
       validationErrorMessages,
       onChange,
@@ -65,7 +58,7 @@ export const RadioInputList = React.forwardRef(
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
       value,
       validationErrorMessages,
-      validationErrorIcon,
+      validationErrorIcon: errorIcon,
       validationMode,
       onChange,
     });

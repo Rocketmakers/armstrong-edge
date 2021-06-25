@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Form, ValidationErrors } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { Form, IInputWrapperProps, ValidationErrors } from '../..';
+import { IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Maths } from '../../utils/maths';
 import { Icon, IconSet, IIcon } from '../icon';
@@ -11,7 +11,8 @@ import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapp
 export interface IRangeInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'min' | 'max'>,
     IIconWrapperProps<IconSet, IconSet>,
-    IStatusWrapperProps {
+    IStatusWrapperProps,
+    Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<number>;
 
@@ -20,15 +21,6 @@ export interface IRangeInputProps
 
   /** (number) the current value of the range input */
   value?: number;
-
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
-
-  /** (IIcon) the icon to use for validation errors */
-  validationErrorIcon?: IIcon<IconSet>;
 
   /** (number) the minimum boundable value */
   minimum: number;
@@ -48,7 +40,8 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
       value,
       validationErrorMessages,
       validationMode,
-      validationErrorIcon,
+      errorIcon,
+      scrollValidationErrorsIntoView,
       className,
       minimum,
       onChange,
@@ -71,7 +64,7 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
       onChange: onValueChange,
       validationErrorMessages,
       validationMode,
-      validationErrorIcon,
+      validationErrorIcon: errorIcon,
     });
 
     const currentPercent = React.useMemo(() => Maths.getPercent((boundValue || 0) - minimum, maximum - minimum), [boundValue, minimum, maximum]);
@@ -131,7 +124,11 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
         </div>
 
         {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors validationErrors={validationErrorMessages} icon={validationErrorIcon} />
+          <ValidationErrors
+            validationErrors={validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
         )}
       </>
     );

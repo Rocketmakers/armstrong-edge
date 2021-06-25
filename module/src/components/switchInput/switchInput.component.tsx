@@ -1,28 +1,21 @@
 import * as React from 'react';
 
-import { Form } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { Form, IInputWrapperProps } from '../..';
+import { IBindingProps } from '../../hooks/form';
 import { IDragReleaseCallbackArgs, useDrag } from '../../hooks/useDrag';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IIcon } from '../icon';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
-export interface ISwitchInputProps extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'> {
+export interface ISwitchInputProps
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'>,
+    Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
   /** (IBindingProps) prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
 
-  /** (string[]) array of validation errors to render */
-  validationErrorMessages?: string[];
-
   /** (string) CSS className property */
   className?: string;
-
-  /** (icon|message|both) how to render the validation errors */
-  validationMode?: FormValidationMode;
-
-  /** (IIcon) the icon to use for validation errors */
-  validationErrorIcon?: IIcon<IconSet>;
 
   /** (boolean) show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
@@ -59,10 +52,11 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
       checked,
       onChange,
       validationErrorMessages,
+      scrollValidationErrorsIntoView,
       disabled,
       className,
       validationMode,
-      validationErrorIcon,
+      errorIcon,
       error,
       pending,
       checkedIcon,
@@ -77,7 +71,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
       value: checked,
       validationErrorMessages,
       onChange,
-      validationErrorIcon,
+      validationErrorIcon: errorIcon,
       validationMode,
     });
 
@@ -130,12 +124,16 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
           <Status
             error={bindConfig.shouldShowValidationErrorIcon && (error || !!bindConfig.validationErrorMessages?.length)}
             pending={pending}
-            errorIcon={validationErrorIcon}
+            errorIcon={bindConfig.validationErrorIcon}
           />
         </div>
 
         {bindConfig.validationErrorMessages && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} icon={bindConfig.validationErrorIcon} />
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
         )}
       </>
     );

@@ -63,6 +63,7 @@ export const Select = React.forwardRef(
       disabled,
       deleteButton,
       disableOnPending,
+      scrollValidationErrorsIntoView,
       ...nativeProps
     }: ISelectProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
@@ -101,6 +102,7 @@ export const Select = React.forwardRef(
         pending={pending}
         disabled={disabled}
         disableOnPending={disableOnPending}
+        scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
         <div className="arm-select-inner">
           <select className="arm-select-select" {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>

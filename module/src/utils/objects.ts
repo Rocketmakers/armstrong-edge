@@ -51,4 +51,7 @@ export namespace Objects {
     }
     return output;
   }
+
+  /** A dictionary of T */
+  export type Dictionary<T, Keys extends string> = Record<Keys, T>;
 }

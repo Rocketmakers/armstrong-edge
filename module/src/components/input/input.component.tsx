@@ -81,6 +81,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       statusPosition,
       hideIconOnStatus,
       onValueChange,
+      scrollValidationErrorsIntoView,
       delay,
       ...nativeProps
     },
@@ -143,6 +144,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         disabled={disabled}
         above={above}
         statusPosition={statusPosition}
+        scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
         below={below}
         disableOnPending={disableOnPending}
         hideIconOnStatus={hideIconOnStatus}

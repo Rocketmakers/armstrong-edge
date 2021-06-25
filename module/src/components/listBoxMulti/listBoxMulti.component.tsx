@@ -67,6 +67,7 @@ export const ListBoxMulti = React.forwardRef(
       placeholder,
       deleteButton,
       statusPosition,
+      scrollValidationErrorsIntoView,
       renderPreview,
       onValueChange,
       disableOnPending,
@@ -150,6 +151,7 @@ export const ListBoxMulti = React.forwardRef(
           pending={pending}
           disabled={disabled}
           disableOnPending={disableOnPending}
+          scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
         >
           <div className="arm-listbox-multi-inner">
             <div className="arm-listbox-multi-content">
