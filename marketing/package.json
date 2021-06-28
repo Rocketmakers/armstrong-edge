@@ -1,0 +1,47 @@
+{
+  "name": "@rocketmakers/armstrong-marketing",
+  "version": "0.0.1-alpha.20",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "rm -rf .cache public",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rocketmakers/armstrong": "0.0.1-alpha.51",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-typescript": "12.3.1",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-no-only-tests": "^2.6.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
+    "gatsby": "3.8.0",
+    "gatsby-plugin-sass": "4.8.0",
+    "gatsby-plugin-ts-loader": "0.1.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-helmet": "6.1.0",
+    "snyk": "1.649.0"
+  },
+  "devDependencies": {
+    "@types/react": "16.9.23",
+    "@types/react-dom": "16.9.5",
+    "@types/react-helmet": "5.0.15",
+    "node-sass": "4.13.1",
+    "typescript": "3.8.3"
+  },
+  "snyk": true
+}

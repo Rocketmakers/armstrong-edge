@@ -1,5 +1,5 @@
-$arm-progress-bar-thickness: 0.5rem;
-$arm-progress-bar-with-label-thickness: 1rem;
+$arm-progress-bar-thickness: 0.5rem !default;
+$arm-progress-bar-with-label-thickness: 1rem !default;
 
 .arm-progress-bar {
   background-color: $gray-light;

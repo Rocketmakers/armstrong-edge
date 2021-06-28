@@ -1,10 +1,12 @@
 import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 
-<Meta title="Utilities/Hooks/Hooks" />
+<Meta title="Hooks/Utility Hooks" />
 
-# Hooks
+# Utility Hooks
 
-Some hooks have more detailed documentation in other files.
+Armstrong exports a number of simple hooks that are used internally and available externally.
+
+Not all hooks are documented here, for others see the rest of the `Hooks` section of Storybook, or for the form hook, see `Form/Form Hook`
 
 ### useArrayState
 
@@ -20,16 +22,35 @@ const [value, { push, pull toggle, contains, clear }] = useArrayState([])
 
 Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
 
-WARNING: positions will not update automatically unless happening at the same time as a resize, if you need to do anything fancier, you'll have to
-use the callback which is the second item in the returned array to force a resize
+```tsx
+const contentRef = React.useRef<HTMLDivElement>(null);
+
+const [{ height, width, bottom, left, right, top, x, y }] = useBoundingClientRect(contentRef);
+
+return <div ref={contentRef} />;
+```
+
+The second element in the return array can be used to force `useBoundingClientRect` to recalculate the `boundingClientrect`, for example if it's an element that isn't available on first render and won't trigger a resize event when it first appears, or if you need to recalculate its position when its size hasn't changed.
 
 ```tsx
 const contentRef = React.useRef<HTMLDivElement>(null);
 
-const [{ height, width, bottom, left, right, top, x, y }, forceResize] = useBoundingClientRect(contentRef);
+const [{ height, width, bottom, left, right, top, x, y }, forceGetBoundingClientRect] = useBoundingClientRect(contentRef);
 
-return <div ref={contentRef} />;
+const [showThing] = React.useState(false);
+
+React.useEffect(() => {
+  if (showThing) {
+    forceGetBoundingClientRect();
+  }
+}, [showThing]);
+
+return showThing ? <div ref={contentRef} /> : <p>no thing</p>;
 ```
+
+An unfortunate limitation of this hook is that changes to the position don't update the position returned by the hook as there's currently no way of listening to positions in Javascript without doing a gnarly polling thing, the resize observer is only triggered on size changes.
+
+To rectify this limitation, the hook listens to resize and scroll events, and if this doesn't cover your needs you can use the `forceGetBoundingClientRect` callback if you know a position has changed... or write your own hook that uses an interval and recalculates this position every few ms.
 
 ### useDebounce
 

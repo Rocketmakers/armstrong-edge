@@ -1,9 +1,7 @@
-$range-input-track-height: 6px;
-
 .arm-range-input {
   .arm-range-input-track {
     .arm-range-input-track-inner {
-      border-radius: $range-input-track-height * 0.5;
+      border-radius: $range-input-track-thickness * 0.5;
     }
 
     .arm-range-input-handle {

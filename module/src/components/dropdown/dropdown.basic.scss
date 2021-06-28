@@ -1,9 +1,5 @@
-$arm-dropdown-top: var(--arm-dropdown-top) !default;
-$arm-dropdown-left: var(--arm-dropdown-left) !default;
-$arm-dropdown-width: var(--arm-dropdown-width) !default;
 $arm-dropdown-min-width: 50px !default;
-
-$arm-dropdown-height: 240px;
+$arm-dropdown-height: 240px !default;
 
 .arm-dropdown {
   width: max-content;
@@ -12,9 +8,9 @@ $arm-dropdown-height: 240px;
 
 .arm-dropdown-content {
   position: fixed;
-  top: $arm-dropdown-top;
-  left: $arm-dropdown-left;
-  width: $arm-dropdown-width;
+  top: var(--arm-dropdown-top);
+  left: var(--arm-dropdown-left);
+  width: var(--arm-dropdown-width);
   min-width: $arm-dropdown-min-width;
   overflow: auto;
   max-height: min(#{$arm-dropdown-height}, calc(100vh));

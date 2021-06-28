@@ -1,4 +1,4 @@
-$toast-notification-width: 200px;
+$toast-notification-width: 200px !default;
 
 .arm-toast-notification-container {
   @include fixed-fill;

@@ -19,7 +19,19 @@ export const decorators = [
 export const parameters = {
   options: {
     storySort: {
-      order: ['Setup', 'Migration Guides', 'Form', 'FormUtils', 'Button', 'Layout', 'Display', 'Utilities', 'Armstrong Development'],
+      order: [
+        'Setup',
+        'Migration Guides',
+        'Form',
+        'FormUtils',
+        'Button',
+        'Layout',
+        'Display',
+        'Hooks',
+        'SCSS Utilities',
+        'Utilities',
+        'Armstrong Development',
+      ],
     },
   },
 };

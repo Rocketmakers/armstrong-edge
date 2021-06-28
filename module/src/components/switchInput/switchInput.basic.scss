@@ -1,7 +1,6 @@
 $arm-switch-input-width: 50px !default;
 $arm-switch-input-height: 30px !default;
 $arm-switch-input-handle-padding: math.div($spacing-xxsmall, 2) !default;
-
 $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input-handle-padding * 2});
 
 .arm-switch-input {

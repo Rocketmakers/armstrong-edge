@@ -1,4 +1,4 @@
-$range-input-track-height: 6px;
+$range-input-track-thickness: 6px !default;
 
 .arm-range-input {
   width: $input-width;
@@ -45,7 +45,7 @@ $range-input-track-height: 6px;
 }
 
 .arm-range-input-track-inner {
-  height: $range-input-track-height;
+  height: $range-input-track-thickness;
   position: absolute;
   width: 100%;
   top: 50%;

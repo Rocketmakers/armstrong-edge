@@ -1,5 +1,5 @@
-$dialog-width: 500px;
-$dialog-height: calc(100vh - #{$spacing-medium * 2});
+$dialog-width: 500px !default;
+$dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
 
 .arm-dialog {
   width: 100%;
