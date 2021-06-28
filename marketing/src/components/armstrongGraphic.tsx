@@ -1,18 +1,20 @@
-import * as React from "react"
+import "./armstrongGraphic.scss";
 
-import "./armstrongGraphic.scss"
+import * as React from "react";
 
-export const Capsule = () => <img src={require("../assets/capsule.svg")} className="capsule" />
+import { Assets } from "../assets";
 
-export const Space = () => {
-    return <img src={require("../assets/space.svg")} className="space" />
-}
+export const Capsule: React.FC = () => (
+  <img src={Assets.Capsule} className="capsule" />
+);
 
-export const ArmstrongGraphic = () => {
-    return <div className="armstrong-graphic">
-        <Space />
-        <Capsule />
-    </div>
-}
+export const Space: React.FC = () => (
+  <img src={Assets.Space} className="space" />
+);
 
-
+export const ArmstrongGraphic: React.FC = () => (
+  <div className="armstrong-graphic">
+    <Space />
+    <Capsule />
+  </div>
+);

@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable import/no-extraneous-dependencies */
+
 module.exports = {
   siteMetadata: {
-    siteName: `Gatsby Boilerplate`,
+    siteName: `Rocketmakers Armstrong`,
   },
   plugins: [
-    `gatsby-plugin-ts-loader`,
-    `gatsby-plugin-sass`
-  ]
-}
+    { resolve: `gatsby-plugin-typescript`, options: { esModuleInterop: true } },
+    `gatsby-plugin-sass`,
+  ],
+};

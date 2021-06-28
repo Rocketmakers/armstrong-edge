@@ -20,7 +20,7 @@ Adds the base properties needed to initialise a pseudo-element
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   &::before {
@@ -48,7 +48,7 @@ Selects the thumb of a range input
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 @incude range-input-thumb {
   ...some stuff;
@@ -74,7 +74,7 @@ Selects the track of a range input
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 @incude range-input-track {
   ...some stuff;
@@ -95,7 +95,7 @@ Makes the element fill the container
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include fill;
@@ -116,7 +116,7 @@ Makes the element fill the nearest positioned ancestor or the body
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include absolute-fill;
@@ -137,7 +137,7 @@ Makes the element fill the next the body and add position fixed
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include fixed-fill;
@@ -158,7 +158,7 @@ Makes the element centre the nearest positioned ancestor or the body
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include absolute-centre-self;
@@ -178,7 +178,7 @@ Makes the element's children centred using flex
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include flex-centre-content;
@@ -197,7 +197,7 @@ Adds an equal width and height property
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include square(50px);
@@ -216,7 +216,7 @@ Adds an equal width and height property and a 50% border radius
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include circle(50px);
@@ -236,7 +236,7 @@ Add a horizontal margin between children, using `margin-right` on all except the
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include space-between-children-horizontal(10px);
@@ -256,7 +256,7 @@ Add a vertical margin between children, using `margin-bottom` on all except the 
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include space-between-children-vertical(10px);
@@ -278,7 +278,7 @@ For use with `flex-direction: row-reversed`
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   display: flex;
@@ -302,7 +302,7 @@ For use with `flex-direction: column-reversed`
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   display: flex;
@@ -323,7 +323,7 @@ Contains an image or video in the frame of an img or video tag, like doing `back
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include object-contain;
@@ -342,7 +342,7 @@ Covers an image or video in the frame of an img or video tag, like doing `backgr
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 .thing {
   @include object-cover;
@@ -364,7 +364,7 @@ Wraps the content in a screen width media query
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 @include screen-width-max(1200px) {
   .thing {
@@ -386,7 +386,7 @@ Wraps the content in a screen width media query, using `min-width`
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 @include screen-width-min(1200px) {
   .thing {
@@ -408,7 +408,7 @@ Wraps the content in a screen width media query, for screens with a size smaller
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 @include screen-tablet {
   .thing {
@@ -430,7 +430,7 @@ Wraps the content in a screen width media query, for screens with a size smaller
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 @include screen-phone {
   .thing {
@@ -452,7 +452,7 @@ Wraps the content in a screen width media query, for screens with a size larger 
 }
 
 /* use */
-@import '~@rocketmakers/armstrong-edge/dist/imports.scss';
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 @include screen-not-phone {
   .thing {

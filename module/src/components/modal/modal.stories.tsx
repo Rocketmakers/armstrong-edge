@@ -28,6 +28,20 @@ export const Default = () => {
   );
 };
 
+export const DarkenBackground = () => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>open modal</Button>
+
+      <Modal darkenBackground isOpen={open} onOpenChange={setOpen}>
+        I'm in a modal
+      </Modal>
+    </>
+  );
+};
+
 export const NestedModals = () => {
   const [open, setOpen] = React.useState(false);
   const [nestedOpen, setNestedOpen] = React.useState(false);

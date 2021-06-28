@@ -9,6 +9,10 @@ $dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
   position: relative;
 }
 
+.arm-modal.arm-dialog {
+  padding: 0;
+}
+
 .arm-dialog-top {
   display: flex;
   align-items: center;

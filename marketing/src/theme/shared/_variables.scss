@@ -20,17 +20,6 @@ $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-bold: 700;
 
-$font-sizes: (
-  xxsmall $font-size-xxsmall,
-  xsmall $font-size-xsmall,
-  small $font-size-small,
-  smallmedium $font-size-small-medium,
-  medium $font-size-medium,
-  large $font-size-large,
-  xlarge $font-size-xlarge,
-  xxlarge $font-size-xxlarge
-);
-
 //// SPACINGS
 // Note: If you're adding to this, make sure to update the value and the array
 $spacing-xxsmall: 2.5px;
@@ -56,8 +45,8 @@ $spacing-sizes: (
 $white: #ffffff;
 $black: #070600;
 
-$brand-primary: #FE445B;
-$brand-secondary: #2C3E50;
+$brand-primary: #fe445b;
+$brand-secondary: #2c3e50;
 
 $gray-base: #4f5c69;
 
@@ -67,7 +56,7 @@ $gray-medium: $gray-base;
 $gray-light: #bed1d6;
 $gray-very-light: #ecf0f2;
 
-$color-positive: #1EAE90;
+$color-positive: #1eae90;
 $color-warning: #f78e52;
 $color-negative: #ff2e08;
 $color-info: #3498d8;
