@@ -1,34 +1,8 @@
-import { formatISO, getDaysInMonth } from 'date-fns';
+import { getDaysInMonth } from 'date-fns';
 import format from 'date-fns/format';
 
 import { Calendar, ISelectOption } from '../..';
 import { Dates } from '../../utils/dates';
-
-/**
- * Turns a date object into a `DateLike` matching the requested type.
- * @param date The Date object to convert
- * @param type The type to convert to, should be 'string', 'number' or 'object', usually comes from a `typeof`.
- * @param formatString The format token to use if formatting to a string, will use ISO if none passed.
- * @param locale The locale to use if formatting to a string, will default to `en-GB`.
- * @returns The appropriate string, number or Date object as a `DateLike`.
- */
-export function dateObjectToDateLike(
-  date: Date,
-  type: string,
-  formatString?: string,
-  locale: Dates.DateLocale = Dates.defaultLocale
-): Dates.DateLike {
-  switch (type) {
-    case 'string':
-      return formatString ? format(date, formatString, { locale }) : formatISO(date);
-    case 'number':
-      return date.getTime();
-    case 'object':
-      return date;
-    default:
-      throw new Error(`Invalid type ${type} sent to DateLike creator`);
-  }
-}
 
 /**
  * Turns an `IDay` object from the calendar hook into a `DateLike`.
@@ -44,7 +18,7 @@ export function calendarDayToDateLike(
   formatString?: string,
   locale: Dates.DateLocale = Dates.defaultLocale
 ): Dates.DateLike {
-  return dateObjectToDateLike(day.date, type, formatString, locale);
+  return Dates.dateObjectToDateLike(day.date, type, formatString, locale);
 }
 
 /**

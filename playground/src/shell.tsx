@@ -2,7 +2,9 @@ import { ModalProvider } from "@rocketmakers/armstrong-edge"
 import * as React from "react"
 import { Route, Switch } from "react-router-dom"
 import { CalendarExample } from "./views/examples/calendar"
+import { DateTimeExample } from "./views/examples/dateTime"
 import { DialogExample } from "./views/examples/dialog"
+import { TimeExample } from "./views/examples/time"
 import { Home } from "./views/home/home"
 import { UserEdit } from "./views/user/user"
 
@@ -16,10 +18,11 @@ export const Shell: React.FC = () => {
           <Route exact path="/" component={Home} />
           <Route path="/edit/:userId?" component={UserEdit} />
           <Route path="/cal" component={CalendarExample} />
+          <Route path="/time" component={TimeExample} />
+          <Route path="/datetime" component={DateTimeExample} />
           <Route path="/dialogs" component={DialogExample} />
         </Switch>
       </div>
     </ModalProvider>
-
   )
 }
