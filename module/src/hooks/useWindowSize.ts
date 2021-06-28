@@ -15,7 +15,6 @@ export function useWindowSize() {
   const [size, setSize] = React.useState<IWindowSize>({ innerWidth: 0, innerHeight: 0, outerWidth: 0, outerHeight: 0 });
 
   const onResize = React.useCallback(() => {
-    console.log('RESIZE');
     if (Globals.Window) {
       const { innerHeight, innerWidth, outerHeight, outerWidth } = Globals.Window;
       setSize({ innerHeight, innerWidth, outerHeight, outerWidth });

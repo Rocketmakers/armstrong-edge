@@ -15,3 +15,11 @@ export const decorators = [
     );
   },
 ];
+
+export const parameters = {
+  options: {
+    storySort: {
+      order: ['Setup', 'Migration Guides', 'Form', 'FormUtils', 'Button', 'Layout', 'Display', 'Utilities', 'Armstrong Development'],
+    },
+  },
+};

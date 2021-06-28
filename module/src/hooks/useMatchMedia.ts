@@ -14,11 +14,11 @@ export function useMatchMedia(
     eventListenerOptions?: boolean | AddEventListenerOptions;
   } = {}
 ): boolean {
-  const [matches, setMatches] = React.useState(window.matchMedia(query).matches);
+  const [isMatching, setIsMatching] = React.useState(window.matchMedia(query).matches);
 
   const onMatchesChangeEvent = React.useCallback(
     (event: MediaQueryListEvent) => {
-      setMatches(event.matches);
+      setIsMatching(event.matches);
       onMatchesChange?.(event);
     },
     [onMatchesChange]
@@ -27,8 +27,8 @@ export function useMatchMedia(
   React.useEffect(() => {
     const media = window.matchMedia(query);
 
-    if (media.matches !== matches) {
-      setMatches(media.matches);
+    if (media.matches !== isMatching) {
+      setIsMatching(media.matches);
     }
 
     media.addEventListener('change', onMatchesChangeEvent, eventListenerOptions);
@@ -41,5 +41,5 @@ export function useMatchMedia(
       );
   }, [query, onMatchesChangeEvent]);
 
-  return matches;
+  return isMatching;
 }

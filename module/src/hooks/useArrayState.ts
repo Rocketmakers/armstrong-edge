@@ -39,7 +39,7 @@ type ArrayStateReturn<T> = [
   }
 ];
 
-/** Store an array value in state, and access push, pull, clear methods to interact with that state - all contained within a reducer, meaning that multiple state updates can happen in a single thread without any unusual behaviours */
+/** Store an array value in state, and access push, pull, clear methods to interact with that state - all contained within a reducer, meaning that multiple state updates can happen in a single thread without any unusual behaviors */
 
 export const useArrayState = <T>(
   /** The initial value of the state */
@@ -72,13 +72,6 @@ export const useArrayState = <T>(
   const toggle = React.useCallback((value: T) => (contains(value) ? pull(value) : push(value)), [currentValue, equalityComparer]);
 
   return [currentValue, { push, pull, toggle, contains, clear }];
-};
-
-/** Store an array value of primitives in a state */
-
-export const usePrimitiveArrayState = <T extends string | number | boolean>(initialValue: T[]) => {
-  const equalityComparer = React.useCallback((a, b) => a === b, []);
-  return useArrayState<T>(initialValue, equalityComparer);
 };
 
 /** Store an array value of objects in a state, with a key used to compare values when removing and adding */

@@ -5,6 +5,34 @@
   content: '';
 }
 
+@mixin range-input-thumb {
+  // an unusual limitation with browser specific selectors means that these all need to be
+  // separate selectors and cannot be combined with commas (like a, b, c {} )
+  &::-webkit-slider-thumb {
+    @content;
+  }
+  &::-moz-range-thumb {
+    @content;
+  }
+  &::-ms-thumb {
+    @content;
+  }
+}
+
+@mixin range-input-track {
+  // an unusual limitation with browser specific selectors means that these all need to be
+  // separate selectors and cannot be combined with commas (like a, b, c {} )
+  &::-webkit-slider-runnable-track {
+    @content;
+  }
+  &::-moz-range-track {
+    @content;
+  }
+  &::-ms-track {
+    @content;
+  }
+}
+
 // layout
 
 @mixin fill {
@@ -87,68 +115,32 @@
 
 // responsiveness
 
-@mixin media-query($screen-width: $screen-size-phone) {
+@mixin screen-width-max($screen-width: $screen-size-phone) {
   @media screen and (max-width: $screen-width) {
     @content;
   }
 }
 
-@mixin media-query-min($screen-width: $screen-size-phone) {
+@mixin screen-width-min($screen-width: $screen-size-phone) {
   @media screen and (min-width: $screen-width) {
     @content;
   }
 }
 
-@mixin screen-tablet() {
-  @include media-query($screen-size-tablet) {
+@mixin screen-tablet {
+  @include screen-width-max($screen-size-tablet) {
     @content;
   }
 }
 
-@mixin screen-phone() {
-  @include media-query($screen-size-phone) {
+@mixin screen-phone {
+  @include screen-width-max($screen-size-phone) {
     @content;
   }
 }
 
-@mixin screen-not-phone() {
-  @include media-query-min($screen-size-phone) {
-    @content;
-  }
-}
-
-@mixin screen-phone-tiny() {
-  @include media-query($screen-size-phone * 0.4) {
-    @content;
-  }
-}
-
-// selectors
-
-@mixin range-input-thumb {
-  // an unusual limitation with browser specific selectors means that these all need to be
-  // separate selectors and cannot be combined with commas (like a, b, c {} )
-  &::-webkit-slider-thumb {
-    @content;
-  }
-  &::-moz-range-thumb {
-    @content;
-  }
-  &::-ms-thumb {
-    @content;
-  }
-}
-
-@mixin range-input-track {
-  // an unusual limitation with browser specific selectors means that these all need to be
-  // separate selectors and cannot be combined with commas (like a, b, c {} )
-  &::-webkit-slider-runnable-track {
-    @content;
-  }
-  &::-moz-range-track {
-    @content;
-  }
-  &::-ms-track {
+@mixin screen-not-phone {
+  @include screen-width-min($screen-size-phone) {
     @content;
   }
 }

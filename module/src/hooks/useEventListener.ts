@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Globals } from '../utils/globals';
 
 /**
- * hook to add an event listener, and remove it when the component unmounts
+ * Hook to add an event listener, and remove it when the component unmounts
  *
  * @param eventHandler the callback to run when the event fires
  * @param type the name of the event to listen to
