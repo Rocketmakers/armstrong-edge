@@ -73,12 +73,19 @@ export namespace Arrays {
     return array.map(mapper);
   }
 
-  export namespace ArrayArrays {
-    export function getArrayIndex<T>(innerIndex: number, outerIndex: number, arrays: { items: T[] }[]) {
+  /** Utils for working with arrays of arrays - useful when an array has been split into groups but you want to interact with it as if it's still a single array, I.E using a single overall index */
+  export namespace NestedArrays {
+    /**
+     * Get the overall index of an item inside an array of arrays
+     *
+     * I.E. [[0,1,2], [3,4], [5,6,7]]
+     */
+    export function getOverallIndex<T>(innerIndex: number, outerIndex: number, arrays: { items: T[] }[]) {
       return arrays.slice(0, outerIndex).reduce((output, array) => array.items.length + output, 0) + innerIndex;
     }
 
-    export function getAtIndex<T>(index: number, arrays: { items: T[] }[]) {
+    /** Get the item inside an array of arrays at an overall index */
+    export function getAtOverallIndex<T>(index: number, arrays: { items: T[] }[]) {
       let totalIndex = 0;
 
       for (const array of arrays) {

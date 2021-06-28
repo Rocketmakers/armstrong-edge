@@ -163,7 +163,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
             break;
           }
           case 'Enter': {
-            const selectedItem = Arrays.ArrayArrays.getAtIndex(keyboardSelectedItemIndex, groupedItems);
+            const selectedItem = Arrays.NestedArrays.getAtOverallIndex(keyboardSelectedItemIndex, groupedItems);
 
             if (selectedItem) {
               onItemSelected(selectedItem.id);
@@ -247,7 +247,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
 
               {group.items.map((item, index) => {
                 // get overall index in array
-                const arrayIndex = Arrays.ArrayArrays.getArrayIndex(index, groupIndex, groupedItems);
+                const arrayIndex = Arrays.NestedArrays.getOverallIndex(index, groupIndex, groupedItems);
 
                 return (
                   <DropdownItem

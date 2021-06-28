@@ -48,6 +48,11 @@ export const ProgressBar: React.FC<IProgressBarProps> = ({
       data-direction={direction}
       data-has-label={!!labelText}
       style={{ '--arm-progress-bar-color': color, '--arm-progress-bar-progress': `${progress}%` } as React.CSSProperties}
+      role="progressbar"
+      aria-valuenow={progress}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuetext={labelText}
       {...nativeProps}
     >
       <div className="arm-progress-bar-progress" />
