@@ -1,14 +1,20 @@
 import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 
-<Meta title="SCSS Utilities/SCSS Variables" />
+<Meta title="SCSS Utilities/Variables" />
 
 # Available SCSS variables
 
 These are all the defaults for variables exported by Armstorng - you can override them yourself to update them and how they look throughough Armstrong.
 
-## Overriding
+## Contents
 
-All of Arsmtrong's SCSS variables use `!default`, meaning they can be overriden from anywhere. Here's a recommended way of overriding them.
+- [Overriding](#overriding)
+- [Global](#global)
+- [Components](#components)
+
+## <a name="overriding">Overriding</a>
+
+All of Armstrong's SCSS variables use `!default`, meaning they can be overriden from anywhere. Here's a recommended way of overriding them.
 
 ```css
 /* in your own scss variables file, i.e. src/theme/variables.scss */
@@ -24,7 +30,7 @@ $spacing-large 500px;
 .... the rest of your scss (see setup/scss)
 ```
 
-## Global
+## <a name="global">Global</a>
 
 ### Colors
 
@@ -141,7 +147,7 @@ $screen-size-phone: 780px;
 $screen-size-tablet: 1024px;
 ```
 
-## Components
+## <a name="components">Components</a>
 
 More specific variables used in components which can be overriden to make restyling them a bit easier, usually for values that are repeated throughought the component.
 
