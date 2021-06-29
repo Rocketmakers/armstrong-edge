@@ -36,6 +36,7 @@ export namespace Colors {
     throw new Error(`${hex} was passed to hexToRGB but it doesn't look like a valid hex color`);
   }
 
+  /** Ensure that a Color is an RGB, converting it if not */
   export function colorToRGB(color: Color): IRGBColor {
     switch (typeof color) {
       case 'string': {
@@ -51,6 +52,7 @@ export namespace Colors {
     return hex.length === 1 ? `0${hex}` : hex;
   };
 
+  /** Convert an RGB string to a hex colour */
   export function RGBToHex({ red, green, blue, alpha }: IRGBColor): string {
     // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
     return `#${RGBComponentToHex(red)}${RGBComponentToHex(green)}${RGBComponentToHex(blue)}${
@@ -58,6 +60,7 @@ export namespace Colors {
     }`;
   }
 
+  /** Get a colour lerped using a progress between a start and end colour */
   export function lerpRGB(startColor: IRGBColor, endColor: IRGBColor, /** out of 100 */ progress: number): IRGBColor {
     return {
       red: Math.round(Maths.lerp(startColor.red, endColor.red, progress)),
@@ -66,6 +69,7 @@ export namespace Colors {
     };
   }
 
+  /** Get a colour lerped between multiple breakpoints */
   export function multiLerpRGB(colors: IRGBColor[], /** out of 100 */ progress: number): IRGBColor {
     return {
       red: Math.round(
@@ -89,6 +93,7 @@ export namespace Colors {
     };
   }
 
+  /** Get a colour lerped between a start and end colour as a hex */
   export function lerpHex(startColor: string, endColor: string, /** out of 100 */ progress: number): string {
     const rgbStartColor = hexToRGB(startColor);
     const rgbEndColor = hexToRGB(endColor);
@@ -98,6 +103,7 @@ export namespace Colors {
     return RGBToHex(rgbLerped);
   }
 
+  /** Get a colour lerped between multiple breakpoints as a hex */
   export function multiLerpHex(colors: string[], /** out of 100 */ progress: number): string {
     const rgbLerped = multiLerpRGB(
       colors.map((color) => hexToRGB(color)),
@@ -107,8 +113,9 @@ export namespace Colors {
     return RGBToHex(rgbLerped);
   }
 
+  /** Turn an rgb object into a css string, i.e. rgb(100, 100, 90) */
   export function RGBToCSSString(color: IRGBColor) {
-    if (color.alpha || color.alpha === 0) {
+    if (typeof color.alpha === 'number') {
       return `rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha})`;
     }
     return `rgb(${color.red}, ${color.green}, ${color.blue})`;
