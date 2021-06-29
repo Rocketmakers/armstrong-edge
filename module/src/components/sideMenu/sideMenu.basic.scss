@@ -1,0 +1,17 @@
+$arm-side-menu-width: 240px !default;
+
+.arm-side-menu {
+  top: 0;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  max-width: min(#{$arm-side-menu-width}, calc(100vw - #{$spacing-large}));
+
+  &[data-side='left'] {
+    left: 0;
+  }
+
+  &[data-side='right'] {
+    right: 0;
+  }
+}

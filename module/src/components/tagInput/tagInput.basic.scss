@@ -16,7 +16,7 @@
   overflow-x: auto;
   flex-grow: 1;
   @include flex-centre-content;
-  @include space-between-children-horizontal($spacing-xsmall);
+  @include space-between-children-horizontal($spacing-xxsmall);
 }
 
 .arm-input-wrapper-above .arm-auto-resizer-content,
@@ -24,7 +24,7 @@
   overflow-y: auto;
   display: flex;
   align-items: center;
-  @include space-between-children-horizontal($spacing-xsmall);
+  @include space-between-children-horizontal($spacing-xxsmall);
   flex-wrap: wrap;
 
   .arm-tag {

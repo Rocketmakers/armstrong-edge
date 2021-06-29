@@ -1,3 +1,12 @@
-.arm-autocomplete-input-multi .arm-input-wrapper {
-  width: $input-width-large;
+.arm-autocomplete-input-multi {
+  width: 100%;
+  max-width: $input-width;
+
+  .arm-dropdown {
+    width: 100%;
+  }
+
+  .arm-input-wrapper {
+    width: $input-width-large;
+  }
 }

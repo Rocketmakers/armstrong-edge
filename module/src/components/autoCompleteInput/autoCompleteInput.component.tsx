@@ -270,4 +270,5 @@ AutoCompleteInput.defaultProps = {
   filterOptions: true,
   unsetOnClear: true,
   showAllOptionsOnFocus: true,
+  placeholder: 'Begin typing to filter options...',
 };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Form, IListBoxOption } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { Form, IListBoxOption, IListBoxProps } from '../..';
+import { IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
@@ -10,21 +10,11 @@ import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag';
 
-export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
+export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
+  extends IInputWrapperProps,
+    Pick<IListBoxProps<Id, TSelectData>, 'options' | 'onSelectOption' | 'selectOverlayIcon' | 'placeholder' | 'wrapperClassName' | 'deleteButton'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
-
-  /** The options to be shown in the input */
-  options: IListBoxOption<Id, TSelectData>[];
-
-  /** Called on change to get the  */
-  onSelectOption?: (option?: IListBoxOption<Id>) => void;
-
-  /** array of validation errors to render */
-  validationErrorMessages?: string[];
-
-  /** how to render the validation errors */
-  validationMode?: FormValidationMode;
 
   /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
@@ -34,12 +24,6 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any> e
 
   /** fired when the value changes */
   onValueChange?: (neWValue: Id[]) => void;
-
-  /** the string to show when there is no value */
-  placeholder?: string;
-
-  /** should allow deletion of value with a cross */
-  deleteButton?: boolean;
 
   /** if set, will render a string like "X selected" instead of the selected values as tags */
   renderPreview?: (selectedOptions: IListBoxOption<Id, TSelectData>[]) => React.ReactChild;
@@ -71,6 +55,7 @@ export const ListBoxMulti = React.forwardRef(
       renderPreview,
       onValueChange,
       disableOnPending,
+      wrapperClassName,
     }: IListBoxMultiProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -136,6 +121,7 @@ export const ListBoxMulti = React.forwardRef(
         currentValue={boundValue}
         childRootElementSelector=".arm-input-inner"
         closeOnSelection={false}
+        className={ClassNames.concat('arm-listbox-multi-wrapper', wrapperClassName)}
       >
         <InputWrapper
           ref={internalRef}

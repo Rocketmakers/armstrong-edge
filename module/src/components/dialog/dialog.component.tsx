@@ -6,7 +6,7 @@ import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IModalProps, Modal } from '../modal';
 
-export interface IDialogProps extends IModalProps {
+export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
   /** the value to render as the title, will have necessary aria tag added */
   title?: string;
 

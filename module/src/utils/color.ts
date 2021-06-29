@@ -36,7 +36,7 @@ export namespace Colors {
     throw new Error(`${hex} was passed to hexToRGB but it doesn't look like a valid hex color`);
   }
 
-  /** Ensure that a Color is an RGB, converting it if not */
+  /** Ensure that a Color (a hex string or an RGB object) is an RGB object, converting it if not */
   export function colorToRGB(color: Color): IRGBColor {
     switch (typeof color) {
       case 'string': {
@@ -114,10 +114,13 @@ export namespace Colors {
   }
 
   /** Turn an rgb object into a css string, i.e. rgb(100, 100, 90) */
-  export function RGBToCSSString(color: IRGBColor) {
-    if (typeof color.alpha === 'number') {
-      return `rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha})`;
+  export function colorToRGBCSString(color: Color) {
+    const rgb = colorToRGB(color);
+
+    if (typeof rgb.alpha === 'number') {
+      return `rgba(${rgb.red}, ${rgb.green}, ${rgb.blue}, ${rgb.alpha})`;
     }
-    return `rgb(${color.red}, ${color.green}, ${color.blue})`;
+
+    return `rgb(${rgb.red}, ${rgb.green}, ${rgb.blue})`;
   }
 }

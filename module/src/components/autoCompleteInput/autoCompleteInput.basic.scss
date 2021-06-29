@@ -1,4 +1,11 @@
 .arm-autocomplete-input {
+  width: 100%;
+  max-width: $input-width;
+
+  .arm-dropdown {
+    width: 100%;
+  }
+
   &[data-disabled='true'] {
     pointer-events: none;
   }

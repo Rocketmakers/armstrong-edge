@@ -58,6 +58,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
       disabled,
       allowKeyboardNavigationSelection,
       getSelectedOptionTag,
+      placeholder,
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
@@ -219,6 +220,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
               disableOnPending={false}
               onAddTag={onAddTag}
               onRemoveTag={(id) => onRemoveTag(id as Id)}
+              placeholder={!boundValue?.length ? placeholder : ''}
             />
           </DropdownItems>
         </div>
@@ -235,4 +237,5 @@ AutoCompleteInputMulti.defaultProps = {
   validationMode: 'both',
   allowKeyboardNavigationSelection: true,
   filterOptions: true,
+  placeholder: 'Begin typing to filter options...',
 };

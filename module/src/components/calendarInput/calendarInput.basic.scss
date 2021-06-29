@@ -38,10 +38,17 @@
 }
 
 .arm-calendar-input {
-  .arm-input-wrapper-above,
-  .arm-input-wrapper-below {
-    .arm-calendar-display {
-      max-width: none;
+  width: 100%;
+  max-width: $input-width;
+
+  .arm-dropdown {
+    width: 100%;
+
+    .arm-input-wrapper-above,
+    .arm-input-wrapper-below {
+      .arm-calendar-display {
+        max-width: none;
+      }
     }
   }
 

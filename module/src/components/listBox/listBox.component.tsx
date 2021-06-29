@@ -44,6 +44,9 @@ export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extend
 
   /** should allow deletion of value with a cross */
   deleteButton?: boolean;
+
+  /** ClassName for the wrapper element */
+  wrapperClassName?: string;
 }
 
 /** A select input which takes an array of options */
@@ -70,6 +73,7 @@ export const ListBox = React.forwardRef(
       deleteButton,
       disableOnPending,
       scrollValidationErrorsIntoView,
+      wrapperClassName,
     }: IListBoxProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -95,6 +99,15 @@ export const ListBox = React.forwardRef(
 
     const currentOptionText = React.useMemo(() => options.find((option) => option.id === boundValue)?.name ?? boundValue, [boundValue, options]);
 
+    const onClickDelete = React.useCallback(
+      (event: React.MouseEvent) => {
+        onChangeEvent(undefined);
+        setDropdownOpen(false);
+        event.stopPropagation();
+      },
+      [setDropdownOpen, onChangeEvent]
+    );
+
     return (
       <DropdownItems
         isOpen={dropdownOpen}
@@ -111,6 +124,7 @@ export const ListBox = React.forwardRef(
         focusableWrapper
         currentValue={[boundValue!]}
         childRootElementSelector=".arm-input-inner"
+        className={ClassNames.concat('arm-listbox-wrapper', wrapperClassName)}
       >
         <InputWrapper
           ref={internalRef}
@@ -141,18 +155,7 @@ export const ListBox = React.forwardRef(
           </div>
 
           {deleteButton && boundValue && (
-            <IconButton
-              className="arm-listbox-delete"
-              onClick={(event) => {
-                onChangeEvent(undefined);
-                setDropdownOpen(false);
-                event.stopPropagation();
-              }}
-              onMouseDown={(event) => event.stopPropagation()}
-              onMouseUp={(event) => event.stopPropagation()}
-              icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
-              iconOnly
-            />
+            <IconButton className="arm-listbox-delete" onClick={onClickDelete} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} iconOnly />
           )}
         </InputWrapper>
       </DropdownItems>
