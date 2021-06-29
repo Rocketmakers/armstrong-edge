@@ -5,7 +5,7 @@ import { TagInput } from './tagInput.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(TagInput, 'Form', 'TagInput', {});
+export default StoryUtils.createMeta(TagInput, 'Form', 'Tag Input', {});
 
 /** component template */
 

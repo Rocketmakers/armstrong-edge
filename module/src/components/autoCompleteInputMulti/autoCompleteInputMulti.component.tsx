@@ -4,6 +4,7 @@ import { Form, IAutoCompleteInputOption } from '../..';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
+import { IAutoCompleteInputProps } from '../autoCompleteInput/autoCompleteInput.component';
 import { DropdownItems, IDropdownItem } from '../dropdownItems';
 import { IInputProps } from '../input';
 import { IPortalProps } from '../portal';
@@ -12,33 +13,22 @@ import { ITag, ITagInputProps, TagInput } from '../tagInput';
 export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
     Pick<ITagInputProps, 'tagPosition'>,
-    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
-  /** The options to render when the input is focused */
-  options?: IAutoCompleteInputOption<Id>[];
-
-  /** called when the user inputs into the text input - if provided, the hook will not bind internally and therefore this must be used in conjunction with textInputValue  */
-  onTextInputChange?: (value: string) => void;
-
-  /** the value used in the text input - must be used in conjunction with onTextInputChange to allow the binding of that input to be handled externally */
-  textInputValue?: string;
-
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
+    Pick<
+      IAutoCompleteInputProps<Id>,
+      | 'options'
+      | 'onTextInputChange'
+      | 'textInputValue'
+      | 'optionsRootElementSelector'
+      | 'allowFreeText'
+      | 'filterOptions'
+      | 'allowKeyboardNavigationSelection'
+    > {
   /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
 
   /** the currently selected option */
   value?: Id[];
-
-  /** selector for the element to portal the options into */
-  optionsRootElementSelector?: string;
-
-  /** bind the value of the input, rather than just when an item is selected - only supported if the bound value is a string and not a number */
-  allowFreeText?: boolean;
-
-  /** whether to filter the available options based on the string in the text input, optionally takes the callback used to do the filtering and by default will just do a option.name.startsWith() */
-  filterOptions?: boolean | ((option: IAutoCompleteInputOption<Id>, textInputValue: string) => boolean);
-
-  /** Whether the user should be able to use their keyboard to navigate through the dropdown while focused on something within children like an input */
-  allowKeyboardNavigationSelection?: boolean;
 
   /** convert a selected option's Id into a tag, use if there's a chance a selected option won't be in the options array */
   getSelectedOptionTag?: (option: Id) => ITag;
@@ -96,7 +86,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
     const filteredOptions = React.useMemo(() => {
       if (filterOptions && options) {
         if (filterOptions === true) {
-          return options.filter((option) => getOptionName(option).startsWith(textInputInternalValue));
+          return options.filter((option) => getOptionName(option).toLowerCase().startsWith(textInputInternalValue.toLowerCase()));
         }
         return options.filter((option) => filterOptions(option, textInputInternalValue));
       }

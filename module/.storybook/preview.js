@@ -1,6 +1,9 @@
 import * as React from 'react';
 
+import './showCode';
+
 import { ModalProvider } from '../src/components/modal/modal.context';
+import { addParameters } from '@storybook/react';
 
 export const decorators = [
   (Story) => {
@@ -36,34 +39,26 @@ export const parameters = {
   },
 };
 
-// Show code in Docs view by default, from https://github.com/storybookjs/storybook/issues/10430
+// haven't been able to get this working, but should be revisited - should add a toggle between stylesheets
 
-window.addEventListener('load', () => {
-  let loc = window.location.href;
-  showCodeSamples();
-
-  window.setInterval(() => {
-    let newLoc = window.location.href;
-
-    if (newLoc !== loc) {
-      loc = newLoc;
-      showCodeSamples();
-    }
-  }, 300);
-});
-
-function showCodeSamples() {
-  try {
-    const docs = document.querySelectorAll('.sbdocs');
-
-    [].forEach.call(docs, (el) => {
-      const buttons = el.querySelectorAll('button');
-      const codeButton = [].find.call(buttons, (el) => el.textContent === 'Show code');
-      if (codeButton) {
-        codeButton.click();
-      }
-    });
-  } catch (e) {
-    console.warn(e);
-  }
-}
+// addParameters({
+//   stylesheetToggle: {
+//     stylesheets: [
+//       {
+//         id: 'test',
+//         title: 'Test',
+//         url: '../src/stories/test.css',
+//       },
+//       {
+//         id: 'basic',
+//         title: 'Basic',
+//         url: '../src/stories/basic-theme.scss',
+//       },
+//       {
+//         id: 'prototyping',
+//         title: 'Prototyping',
+//         url: '../src/stories/prototyping-theme.scss',
+//       },
+//     ],
+//   },
+// });

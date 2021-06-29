@@ -26,6 +26,12 @@ export const InputsOnly = () => {
   return <CalendarInput bind={formProp('date').bind() as any} displayMode="inputs" />;
 };
 
+export const CustomInputFormats = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return <CalendarInput dayInputDisplayFormat="EEEE d" monthInputDisplayFormat="LLLL" bind={formProp('date').bind() as any} displayMode="inputs" />;
+};
+
 export const CalendarOnly = () => {
   const { formProp } = Form.use({ date: undefined });
 

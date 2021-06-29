@@ -2,6 +2,7 @@
   box-shadow: $shadow-xsmall;
   border-radius: $spacing-xxsmall;
   border: 1px solid transparent;
+  background-color: white;
 
   &[data-disabled='true'] {
     opacity: 0.5;
@@ -13,6 +14,12 @@
 
   &:focus-within {
     box-shadow: $shadow-small;
+  }
+
+  .arm-input-wrapper {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
   }
 }
 

@@ -1,3 +1,12 @@
-.arm-time-selects-wrapper {
-  display: flex;
+.arm-time-input {
+  width: max-content;
+
+  input.arm-input-base-input {
+    width: 50px;
+  }
+
+  p.arm-time-input-between-inputs {
+    color: $gray-light;
+    margin-right: 0;
+  }
 }

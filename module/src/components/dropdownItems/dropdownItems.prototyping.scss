@@ -4,6 +4,7 @@
 
   p {
     flex-grow: 1;
+    font-size: 0.85rem;
   }
 
   &:hover {
@@ -38,5 +39,9 @@
 @include screen-phone {
   .arm-dropdown-item {
     padding: $spacing-small $spacing-small;
+
+    p {
+      font-size: 1rem;
+    }
   }
 }

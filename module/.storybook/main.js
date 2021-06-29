@@ -15,29 +15,29 @@ module.exports = {
         {
           loader: 'css-loader', // turn url() and @import calls into require
           options: {
-            sourceMap: isDevelopment
-          }
+            sourceMap: isDevelopment,
+          },
         },
         {
           loader: 'postcss-loader',
           options: {
-            sourceMap: isDevelopment
-          }
+            sourceMap: isDevelopment,
+          },
         },
         {
           loader: 'sass-loader', // compile sass
           options: {
-            sourceMap: isDevelopment
-          }
-        }
-      ]
+            sourceMap: isDevelopment,
+          },
+        },
+      ],
     });
 
     // Return the altered config
     return config;
   },
-  babel: async options => ({
+  babel: async (options) => ({
     ...options,
-    plugins: [['@babel/plugin-transform-typescript', { isTSX: true, allExtensions: true, allowNamespaces: true }]]
-  })
+    plugins: [['@babel/plugin-transform-typescript', { isTSX: true, allExtensions: true, allowNamespaces: true }]],
+  }),
 };

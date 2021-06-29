@@ -56,6 +56,9 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
 
   /** Whether to show all the options on focus, even when a value is set. The default is `true` as this means the user will always see all the options before they start typing. */
   showAllOptionsOnFocus?: boolean;
+
+  /** Should setBoundValue to undefined if the user clears the text input - true by default */
+  unsetOnClear?: boolean;
 }
 
 /** A text input which displays some options in a dropdown */
@@ -80,6 +83,7 @@ export const AutoCompleteInput = React.forwardRef(
       allowFreeText,
       allowKeyboardNavigationSelection,
       showAllOptionsOnFocus,
+      unsetOnClear,
       disabled,
       ...textInputProps
     }: IAutoCompleteInputProps<Id>,
@@ -122,12 +126,18 @@ export const AutoCompleteInput = React.forwardRef(
       setJustOpened(false);
     }, [textInputInternalValue]);
 
+    useDidUpdateEffect(() => {
+      if (unsetOnClear && textInputInternalValue.length === 0) {
+        setBoundValue(undefined!);
+      }
+    }, [textInputInternalValue]);
+
     // The provided options, optionally filtered by the text input value
     const filteredOptions = React.useMemo(() => {
       const showAllOptions = showAllOptionsOnFocus && justOpened;
       if (filterOptions && !showAllOptions && options) {
         if (filterOptions === true) {
-          return options.filter((option) => getOptionName(option).startsWith(textInputInternalValue));
+          return options.filter((option) => getOptionName(option).toLowerCase().startsWith(textInputInternalValue.toLowerCase()));
         }
         return options.filter((option) => filterOptions(option, textInputInternalValue));
       }
@@ -258,5 +268,6 @@ AutoCompleteInput.defaultProps = {
   validationMode: 'both',
   allowKeyboardNavigationSelection: true,
   filterOptions: true,
+  unsetOnClear: true,
   showAllOptionsOnFocus: true,
 };

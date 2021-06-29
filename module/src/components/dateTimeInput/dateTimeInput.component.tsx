@@ -5,6 +5,7 @@ import { Form } from '../..';
 import { IBindingProps, useBindingTools } from '../../hooks/form';
 import { ClassNames, Dates } from '../../utils';
 import { CalendarInput, ICalendarInputProps } from '../calendarInput';
+import { InputWrapper } from '../inputWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
 import { ITimeInputProps, TimeInput } from '../timeInput';
 
@@ -110,7 +111,7 @@ export const DateTimeInput = React.forwardRef(
     }, [formState, formatString, locale]);
 
     return (
-      <div ref={ref} className={ClassNames.concat('arm-date-time-input', className)}>
+      <InputWrapper ref={ref} className={ClassNames.concat('arm-date-time-input', className)}>
         <StatusWrapper
           error={error}
           validationErrorMessages={bindConfig.validationErrorMessages}
@@ -123,7 +124,7 @@ export const DateTimeInput = React.forwardRef(
           <CalendarInput bind={formProp('date').bind()} {...((additionalCalendarInputProps ?? {}) as AdditionalCalendarInputProps<any>)} />
           <TimeInput bind={formProp('time').bind()} {...(additionalTimeInputProps ?? {})} />
         </StatusWrapper>
-      </div>
+      </InputWrapper>
     );
   }
 ) as (<TValue extends Dates.DateLike>(
