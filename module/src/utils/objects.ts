@@ -18,6 +18,7 @@ export namespace Objects {
     );
   }
 
+  /** Check if an object is an object and is not an array */
   export function isObject<TItem>(item?: TItem): boolean {
     return !!item && typeof item === 'object' && !Array.isArray(item);
   }
@@ -54,4 +55,16 @@ export namespace Objects {
 
   /** A dictionary of T */
   export type Dictionary<T, Keys extends string> = Record<Keys, T>;
+
+  /** Perform an operation on the keys of an object and return an array of the results */
+  export const mapKeys = <T, TKey extends keyof T, TValue extends T[TKey], TReturn>(
+    object: T,
+    callback: (key: TKey, value: TValue, index: number) => TReturn
+  ): TReturn[] => Object.keys(object).map((key, index) => callback(key as TKey, object[key], index));
+
+  /** Perform an operation on the keys of an object */
+  export const forEachKeys = <T, TKey extends keyof T, TValue extends T[TKey]>(
+    object: T,
+    callback: (key: TKey, value: TValue, index: number) => void
+  ) => Object.keys(object).forEach((key, index) => callback(key as TKey, object[key], index));
 }
