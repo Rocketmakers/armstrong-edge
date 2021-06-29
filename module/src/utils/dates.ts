@@ -49,22 +49,6 @@ export namespace Dates {
     return formatString ? format(date, formatString, { locale }) : formatISO(date);
   }
 
-  /**
-   * Adds a 0 to the front of numeric days/months if they are below 10.
-   * @param number The number to check and pad;
-   * @returns A string representation of the number with padding.
-   */
-  export function padSingleNumber(number?: number): string {
-    const stringNumber = number?.toString();
-    if (!stringNumber) {
-      return '';
-    }
-    if (stringNumber.length === 1) {
-      return `0${stringNumber}`;
-    }
-    return stringNumber;
-  }
-
   export function getMonthSelectOptions(
     months: Calendar.IMonth[],
     formatString: string,
@@ -84,5 +68,31 @@ export namespace Dates {
     locale: Locale = Dates.defaultLocale
   ): ISelectOption<number, Calendar.IYear>[] {
     return years.map((year) => ({ id: year.number, name: format(year.date, formatString, { locale }), data: year }));
+  }
+
+  /**
+   * Turns a date object into a `DateLike` matching the requested type.
+   * @param date The Date object to convert
+   * @param type The type to convert to, should be 'string', 'number' or 'object', usually comes from a `typeof`.
+   * @param formatString The format token to use if formatting to a string, will use ISO if none passed.
+   * @param locale The locale to use if formatting to a string, will default to `en-GB`.
+   * @returns The appropriate string, number or Date object as a `DateLike`.
+   */
+  export function dateObjectToDateLike(
+    date: Date,
+    type: string,
+    formatString?: string,
+    locale: Dates.DateLocale = Dates.defaultLocale
+  ): Dates.DateLike {
+    switch (type) {
+      case 'string':
+        return formatString ? format(date, formatString, { locale }) : formatISO(date);
+      case 'number':
+        return date.getTime();
+      case 'object':
+        return date;
+      default:
+        throw new Error(`Invalid type ${type} sent to DateLike creator`);
+    }
   }
 }
