@@ -78,3 +78,9 @@ html {
     display: block;
   }
 }
+
+.arm-validation-errors {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

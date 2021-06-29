@@ -358,8 +358,8 @@ export const CalendarInput = React.forwardRef(
 
 CalendarInput.defaultProps = {
   weekdayStartIndex: 0,
-  dayInputDisplayFormat: 'dd',
-  monthInputDisplayFormat: 'MM',
+  dayInputDisplayFormat: 'd',
+  monthInputDisplayFormat: 'M',
   yearInputDisplayFormat: 'yyyy',
   closeCalendarOnDayClick: true,
   inputOrder: 'day-month-year',

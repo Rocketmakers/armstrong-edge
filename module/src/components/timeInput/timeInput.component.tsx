@@ -209,7 +209,7 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
 
 TimeInput.defaultProps = {
   formatString: 'HH:mm',
-  hourInputDisplayFormat: 'HH',
-  minuteInputDisplayFormat: 'mm',
+  hourInputDisplayFormat: 'H',
+  minuteInputDisplayFormat: 'm',
   betweenInputs: ':',
 };

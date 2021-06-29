@@ -2,15 +2,14 @@
   max-width: $input-width-large;
 
   .arm-calendar-input {
-    flex-basis: 70%;
+    flex-grow: 1;
     margin-right: 0;
 
     .arm-dropdown {
       width: auto;
     }
   }
+
   .arm-time-input {
-    width: auto;
-    flex-basis: 30%;
   }
 }
