@@ -141,7 +141,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
     const position = React.useMemo(() => {
       const positions = typeof tooltipPosition === 'string' ? [tooltipPosition] : tooltipPosition;
 
-      if (isOpen && positions?.length) {
+      if (positions?.length) {
         for (let index = 0; index < positions.length; index += 1) {
           const positionOption = positions[index];
 
@@ -153,7 +153,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
           }
         }
       }
-    }, [getPosition, tooltipPosition, isOpen]);
+    }, [getPosition, tooltipPosition]);
 
     const style = React.useMemo(
       () =>
@@ -202,5 +202,4 @@ Tooltip.defaultProps = {
   tooltipPosition: ['below', 'right', 'above', 'left'],
   edgeDetectionMargin: 5,
   openOnHover: true,
-  openOnFocus: true,
 };

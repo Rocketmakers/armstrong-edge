@@ -31,7 +31,7 @@ export const CustomisedPosition = () => {
 };
 export const OpenOnFocus = () => {
   return (
-    <Tooltip content="HIYA" tooltipPosition={['below']} openOnHover={false}>
+    <Tooltip content="HIYA" tooltipPosition={['below']} openOnHover={false} openOnFocus>
       <TextInput placeholder="focus on me to see some tooltip" />
     </Tooltip>
   );

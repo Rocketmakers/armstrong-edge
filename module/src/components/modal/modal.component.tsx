@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { useEventListener, useModalLayerElement } from '../..';
+import { useDelayedDependentSwitch } from '../../hooks/useDelayedDependentSwitch';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
 import { IPortalProps, Portal } from '../portal';
@@ -37,6 +38,9 @@ export interface IModalProps
 
   /** should darken the background */
   darkenBackground?: boolean;
+
+  /** The amount of time, in ms, to set data-closing true on the dialog before it has closed */
+  closeTime?: number;
 }
 
 /**
@@ -61,6 +65,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       closeOnBackgroundClick,
       wrapperClassName,
       disableClose,
+      closeTime,
       ...nativeProps
     },
     ref
@@ -113,7 +118,9 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
 
     const wrapperRef = useModalLayerElement();
 
-    if (!isOpen) {
+    const [delayedIsOpen, isClosing] = useDelayedDependentSwitch(isOpen, closeTime!);
+
+    if (!delayedIsOpen && !isClosing) {
       return null;
     }
 
@@ -124,6 +131,9 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
           onClick={onClickWrapperEvent}
           data-close-on-background-click={!!closeOnBackgroundClick}
           data-darken-background={darkenBackground}
+          data-is-closing={isClosing}
+          aria-hidden={isClosing}
+          tabIndex={isClosing ? -1 : undefined}
         >
           <div
             role="dialog"
@@ -143,4 +153,5 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
 
 Modal.defaultProps = {
   closeOnBackgroundClick: true,
+  closeTime: 500,
 };
