@@ -84,6 +84,14 @@ then go to `localhost:6006`
 
 For more information on using SASS, see SASS Concatenation in [SCSS](STORYBOOK LINK TODO)
 
+### Linting
+
+Armstrong uses eslint, style-lint, and prettier for linting.
+
+Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/`
+
+We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to make errors show in vscode, and to allow auto fixing functionality.
+
 ### Process
 
 Please work in feature branches named `feature/*` or if your branch is on a single ticket `feature/ARM-000/*`
