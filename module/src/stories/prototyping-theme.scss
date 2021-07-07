@@ -20,5 +20,7 @@
 // import animated component styles
 @import '../../dist/animated';
 
+// storybook specific styles
 @import './theme/fonts';
 @import './theme/layout';
+@import './theme/animation-demos';

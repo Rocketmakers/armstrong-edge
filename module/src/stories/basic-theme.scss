@@ -14,5 +14,7 @@
 // import base component styles
 @import '../../dist/basic';
 
+// storybook specific styles
 @import './theme/fonts';
 @import './theme/layout';
+@import './theme/animation-demos';
