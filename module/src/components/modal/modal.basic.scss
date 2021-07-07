@@ -1,3 +1,9 @@
+.arm-modal {
+  background-color: $white;
+  user-select: contain;
+  padding: $spacing-xsmall;
+}
+
 .arm-modal-wrapper {
   position: fixed;
   left: 0;
@@ -15,17 +21,11 @@
   }
 
   &[data-darken-background='true'] {
-    background-color: rgba(black, 0.2);
+    background-color: rgba($black, 0.2);
     cursor: pointer;
 
     .arm-modal {
       cursor: default;
     }
   }
-}
-
-.arm-modal {
-  background-color: $white;
-  user-select: contain;
-  padding: $spacing-xsmall;
 }

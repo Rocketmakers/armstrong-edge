@@ -3,10 +3,6 @@
   background-color: transparent;
   box-shadow: none;
   filter: drop-shadow($shadow-xsmall);
-  border-radius: 0;
-}
-
-.arm-tooltip {
   display: flex;
   align-items: center;
 
@@ -14,6 +10,7 @@
   &[data-position='above'] {
     &::after {
       @include init-pseudo;
+
       background-color: transparent;
       width: 0;
       height: 0;
@@ -24,6 +21,7 @@
   &[data-position='right'] {
     &::before {
       @include init-pseudo;
+
       background-color: transparent;
       width: 0;
       height: 0;
@@ -41,7 +39,7 @@
     &::after {
       border-left: $spacing-xsmall solid transparent;
       border-right: $spacing-xsmall solid transparent;
-      border-top: $spacing-xsmall solid white;
+      border-top: $spacing-xsmall solid $white;
     }
   }
 
@@ -51,7 +49,7 @@
     &::before {
       border-left: $spacing-xsmall solid transparent;
       border-right: $spacing-xsmall solid transparent;
-      border-bottom: $spacing-xsmall solid white;
+      border-bottom: $spacing-xsmall solid $white;
     }
   }
 
@@ -61,7 +59,7 @@
     &::after {
       border-top: $spacing-xsmall solid transparent;
       border-bottom: $spacing-xsmall solid transparent;
-      border-left: $spacing-xsmall solid white;
+      border-left: $spacing-xsmall solid $white;
     }
   }
 
@@ -71,13 +69,14 @@
     &::before {
       border-top: $spacing-xsmall solid transparent;
       border-bottom: $spacing-xsmall solid transparent;
-      border-right: $spacing-xsmall solid white;
+      border-right: $spacing-xsmall solid $white;
     }
   }
 
   &::before,
   &::after {
     @include init-pseudo;
+
     background-color: transparent;
     width: 0;
     height: 0;
@@ -85,7 +84,7 @@
 }
 
 .arm-tooltip-inner {
-  background-color: white;
+  background-color: $white;
   padding: $spacing-xsmall $spacing-small;
   border-radius: $border-radius-small;
 }

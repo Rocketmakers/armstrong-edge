@@ -2,7 +2,7 @@
   box-shadow: $shadow-xsmall;
   border-radius: $spacing-xxsmall;
   border: 1px solid transparent;
-  background-color: white;
+  background-color: $white;
 
   &[data-disabled='true'] {
     opacity: 0.5;
@@ -18,7 +18,7 @@
 
   .arm-input-wrapper {
     box-shadow: none;
-    border: none;
+    border: 0;
     border-radius: 0;
   }
 }
@@ -31,7 +31,7 @@
   border-top: $line-very-light;
 }
 
-p.arm-input-overlay-text {
+.arm-input-overlay-text {
   color: $gray-light;
   font-size: 0.75rem;
   white-space: nowrap;

@@ -8,6 +8,5 @@ $arm-tooltip-max-width: 250px !default;
   left: var(--arm-tooltip-left);
   top: var(--arm-tooltip-top);
   max-width: $arm-tooltip-max-width;
-  background-color: red;
   position: fixed;
 }

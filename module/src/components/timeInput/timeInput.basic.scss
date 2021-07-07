@@ -6,12 +6,12 @@ $arm-time-input-width: 47px !default;
   .arm-input {
     margin-right: 0;
 
-    input.arm-input-base-input {
+    .arm-input-base-input {
       width: $arm-time-input-width;
     }
   }
 
-  p.arm-time-input-between-inputs {
+  .arm-time-input-between-inputs {
     color: $gray-light;
     margin-right: 0;
   }

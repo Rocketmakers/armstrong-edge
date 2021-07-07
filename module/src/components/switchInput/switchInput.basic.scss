@@ -39,6 +39,7 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input
   &::after {
     @include init-pseudo;
     @include square($arm-switch-input-handle);
+
     top: $arm-switch-input-handle-padding;
     left: $arm-switch-input-handle-padding;
     position: absolute;
@@ -49,8 +50,9 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input
 
 .arm-switch-input-checkbox {
   @include fill;
+
   appearance: none;
-  border: none;
+  border: 0;
   outline: none;
   background-color: transparent;
   padding: 0;
@@ -62,6 +64,7 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input
 .arm-switch-input-checked-icon {
   @include square($arm-switch-input-handle);
   @include flex-centre-content;
+
   position: absolute;
   top: $arm-switch-input-handle-padding;
   z-index: 2;

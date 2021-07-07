@@ -9,16 +9,15 @@
 .arm-text-area-input-textarea {
   min-height: $input-height-large;
   width: 100%;
-
   appearance: none;
   background-color: transparent;
   resize: none;
   font-family: inherit;
   outline: none;
-  border: none;
+  border: 0;
 
   &:focus {
     outline: none;
-    border: none;
+    border: 0;
   }
 }

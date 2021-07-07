@@ -1,11 +1,13 @@
 .arm-input.arm-checkbox-input {
-  display: flex;
   @include space-between-children-horizontal($spacing-xsmall);
+
+  display: flex;
   align-items: center;
 
   label {
-    display: flex;
     @include space-between-children-horizontal($spacing-xsmall);
+
+    display: flex;
     align-items: center;
     cursor: pointer;
     user-select: none;
@@ -19,6 +21,7 @@
 
 .arm-checkbox-input-checkbox {
   @include square(1.3rem);
+
   flex-shrink: 0;
   cursor: pointer;
   position: relative;
@@ -26,6 +29,7 @@
   .arm-icon {
     @include absolute-fill;
     @include flex-centre-content;
+
     transition: opacity $transition-quick;
     pointer-events: none;
     font-size: 0.75rem;
@@ -34,7 +38,7 @@
   &[data-checked='true'] {
     background-color: $brand-primary;
     border-color: $brand-primary;
-    color: white;
+    color: $white;
   }
 }
 
@@ -44,9 +48,10 @@
 
 .arm-checkbox-input-checkbox-input {
   @include fill;
+
   cursor: pointer;
   appearance: none;
-  border: none;
+  border: 0;
   outline: none;
   background-color: transparent;
   padding: $spacing-xsmall;

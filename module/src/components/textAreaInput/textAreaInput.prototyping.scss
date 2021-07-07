@@ -1,10 +1,10 @@
 .arm-input.arm-text-area-input {
   textarea {
-    border: none;
+    border: 0;
     padding: $spacing-xsmall 0;
 
     &:focus {
-      border: none;
+      border: 0;
     }
   }
 }

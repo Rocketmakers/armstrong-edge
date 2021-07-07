@@ -1,7 +1,7 @@
 .arm-button {
   background-color: $brand-primary;
   box-shadow: $shadow-xsmall;
-  color: white;
+  color: $white;
   border-radius: $border-radius-small;
   padding: $spacing-xsmall;
   user-select: none;
@@ -17,7 +17,7 @@
 
   .arm-status {
     .arm-icon.arm-status-error {
-      color: white;
+      color: $white;
     }
     .arm-spinner {
       .arm-icon {

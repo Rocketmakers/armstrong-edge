@@ -1,44 +1,18 @@
 $arm-stepper-icon-height: 2.2rem !default;
 $arm-stepper-icon-height-small: 1rem !default;
 
-.arm-stepper {
-  display: flex;
+.arm-stepper-step-icon {
+  @include flex-centre-content;
+  @include circle($arm-stepper-icon-height);
 
-  .arm-stepper-step {
-    flex: 1 1 0;
-  }
-
-  &[data-direction='horizontal'] {
-    .arm-stepper-step {
-      padding: 0 $spacing-xsmall;
-    }
-  }
-
-  &[data-direction='vertical'] {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(var(--arm-stepper-length), 1fr);
-
-    .arm-stepper-step {
-      padding: $spacing-xsmall 0;
-      flex-direction: row;
-
-      .arm-stepper-step-icon {
-        margin: 0;
-        margin-right: $spacing-small;
-      }
-
-      &[data-small='true'] {
-        .arm-stepper-step-icon {
-          margin-left: math.div($arm-stepper-icon-height, 2) - math.div($arm-stepper-icon-height-small, 2);
-        }
-      }
-    }
-  }
+  margin-bottom: $spacing-small;
+  border: 2px solid $gray-light;
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 .arm-stepper-step {
-  border: none;
+  border: 0;
   appearance: none;
   text-align: center;
   cursor: pointer;
@@ -60,37 +34,7 @@ $arm-stepper-icon-height-small: 1rem !default;
     .arm-stepper-step-icon {
       border-color: $brand-primary;
       background-color: $brand-primary;
-      color: white;
-    }
-  }
-
-  &[data-small='true'] {
-    .arm-stepper-step-icon {
-      @include square($arm-stepper-icon-height-small);
-      margin-top: math.div($arm-stepper-icon-height, 2) - math.div($arm-stepper-icon-height-small, 2);
-
-      font-size: 0.7rem;
-    }
-
-    &[data-pending='true'] {
-      .arm-stepper-step-icon {
-        border: none;
-        background-color: transparent;
-        color: $brand-primary;
-      }
-    }
-
-    &[data-error='true'] {
-      .arm-stepper-step-icon {
-        border: none;
-        background-color: transparent;
-
-        .arm-status {
-          .arm-icon {
-            color: $color-negative;
-          }
-        }
-      }
+      color: $white;
     }
   }
 
@@ -98,11 +42,41 @@ $arm-stepper-icon-height-small: 1rem !default;
     .arm-stepper-step-icon {
       border-color: $color-negative;
       background-color: $color-negative;
-      color: white;
+      color: $white;
 
       .arm-status {
         .arm-icon {
-          color: white;
+          color: $white;
+        }
+      }
+    }
+  }
+
+  &[data-small='true'] {
+    .arm-stepper-step-icon {
+      @include square($arm-stepper-icon-height-small);
+
+      margin-top: math.div($arm-stepper-icon-height, 2) - math.div($arm-stepper-icon-height-small, 2);
+      font-size: 0.7rem;
+    }
+
+    &[data-pending='true'] {
+      .arm-stepper-step-icon {
+        border: 0;
+        background-color: transparent;
+        color: $brand-primary;
+      }
+    }
+
+    &[data-error='true'] {
+      .arm-stepper-step-icon {
+        border: 0;
+        background-color: transparent;
+
+        .arm-status {
+          .arm-icon {
+            color: $color-negative;
+          }
         }
       }
     }
@@ -119,13 +93,17 @@ $arm-stepper-icon-height-small: 1rem !default;
 }
 
 .arm-stepper {
+  display: flex;
+
   .arm-stepper-step {
+    flex: 1 1 0;
     position: relative;
 
     &:not(:last-child) {
       .arm-stepper-step-icon {
         &::after {
           @include init-pseudo;
+
           position: absolute;
           background-color: $gray-light;
         }
@@ -151,6 +129,8 @@ $arm-stepper-icon-height-small: 1rem !default;
 
   &[data-direction='horizontal'] {
     .arm-stepper-step {
+      padding: 0 $spacing-xsmall;
+
       .arm-stepper-step-icon {
         &::after {
           top: calc(#{math.div($arm-stepper-icon-height, 2)} - 1px);
@@ -188,8 +168,18 @@ $arm-stepper-icon-height-small: 1rem !default;
   }
 
   &[data-direction='vertical'] {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(var(--arm-stepper-length), 1fr);
+
     .arm-stepper-step {
+      padding: $spacing-xsmall 0;
+      flex-direction: row;
+
       .arm-stepper-step-icon {
+        margin: 0;
+        margin-right: $spacing-small;
+
         &::after {
           left: calc(#{math.div($arm-stepper-icon-height, 2)} - 1px);
           height: calc(100% - #{$arm-stepper-icon-height});
@@ -208,6 +198,8 @@ $arm-stepper-icon-height-small: 1rem !default;
 
       &[data-small='true'] {
         .arm-stepper-step-icon {
+          margin-left: math.div($arm-stepper-icon-height, 2) - math.div($arm-stepper-icon-height-small, 2);
+
           &::after {
             top: calc(50% + #{math.div($arm-stepper-icon-height-small, 2)});
             height: calc(100% - #{math.div($arm-stepper-icon-height-small, 2) + math.div($arm-stepper-icon-height, 2)});
@@ -224,15 +216,6 @@ $arm-stepper-icon-height-small: 1rem !default;
       }
     }
   }
-}
-
-.arm-stepper-step-icon {
-  @include flex-centre-content;
-  margin-bottom: $spacing-small;
-  @include circle($arm-stepper-icon-height);
-  border: 2px solid $gray-light;
-  font-size: 1.2rem;
-  flex-shrink: 0;
 }
 
 .arm-stepper-step-icon-index {

@@ -17,7 +17,7 @@
 
   &[data-selected='true'] {
     background-color: $brand-primary;
-    color: white;
+    color: $white;
 
     &[data-keyboard-selected='true'] {
       opacity: 0.7;

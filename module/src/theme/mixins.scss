@@ -41,17 +41,19 @@
 }
 
 @mixin absolute-fill {
+  @include fill;
+
   position: absolute;
   left: 0;
   top: 0;
-  @include fill;
 }
 
 @mixin fixed-fill {
+  @include fill;
+
   position: fixed;
   left: 0;
   top: 0;
-  @include fill;
 }
 
 @mixin absolute-centre-self {
@@ -74,6 +76,7 @@
 
 @mixin circle($size) {
   @include square($size);
+
   border-radius: 50%;
 }
 

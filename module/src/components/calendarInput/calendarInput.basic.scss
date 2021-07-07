@@ -1,31 +1,27 @@
-.arm-calendar-input-inner {
-  .arm-input-inner {
-    > .arm-calendar-select {
+.arm-calendar-select {
+  margin-right: 0;
+  flex: 1;
+
+  .arm-dropdown {
+    width: 100%;
+  }
+
+  .arm-input-wrapper {
+    margin-right: 0;
+
+    .arm-input-inner {
       margin-right: 0;
-      flex: 1;
 
-      .arm-dropdown {
-        width: 100%;
+      input {
+        width: 20px;
       }
-
-      .arm-input-wrapper {
-        margin-right: 0;
-
-        .arm-input-inner {
-          margin-right: 0;
-
-          input {
-            width: 20px;
-          }
-        }
-      }
-    }
-
-    p.arm-calendar-input-between-inputs {
-      color: $gray-light;
-      margin-right: 0;
     }
   }
+}
+
+.arm-calendar-input-between-inputs {
+  color: $gray-light;
+  margin-right: 0;
 }
 
 .arm-dropdown-content.arm-calendar-input-dropdown-content {

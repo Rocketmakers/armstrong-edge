@@ -1,10 +1,10 @@
 .arm-button {
-  border: none;
+  @include space-between-children-horizontal($spacing-xsmall);
+
+  border: 0;
   outline: none;
   background-color: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
-
-  @include space-between-children-horizontal($spacing-xsmall);
 }

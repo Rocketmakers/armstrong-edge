@@ -4,32 +4,32 @@ html {
 
   body {
     height: 100%;
+  }
+}
 
-    #root {
-      height: 100%;
+#root {
+  height: 100%;
+}
 
-      #host {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+#host {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-        .story-wrapper {
-          position: relative;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
+  .story-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 
-          p.bound-value {
-            position: absolute;
-            left: 0;
-            bottom: -$spacing-xlarge * 2;
-            white-space: nowrap;
-          }
-        }
-      }
+    .bound-value {
+      position: absolute;
+      left: 0;
+      bottom: -$spacing-xlarge * 2;
+      white-space: nowrap;
     }
   }
 }
@@ -64,10 +64,10 @@ html {
 }
 
 .story-cols {
+  @include space-between-children-horizontal($spacing-xsmall);
+
   display: flex;
   align-items: center;
-
-  @include space-between-children-horizontal($spacing-xsmall);
 }
 
 .form {

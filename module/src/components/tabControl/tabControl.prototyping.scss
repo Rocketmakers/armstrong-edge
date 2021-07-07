@@ -11,7 +11,7 @@
   &[data-is-current='true'] {
     border-color: $brand-primary;
     background-color: $brand-primary;
-    color: white;
+    color: $white;
 
     + .arm-button.arm-tab-control-tab {
       border-left: transparent;

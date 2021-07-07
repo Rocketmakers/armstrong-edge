@@ -1,6 +1,6 @@
 .arm-dropdown-items {
   &:focus {
-    border: none;
+    border: 0;
     outline: none;
   }
 }
@@ -17,8 +17,9 @@
 }
 
 .arm-dropdown-item {
+  @include space-between-children-horizontal($spacing-xsmall);
+
   cursor: pointer;
   display: flex;
   align-items: center;
-  @include space-between-children-horizontal($spacing-xsmall);
 }

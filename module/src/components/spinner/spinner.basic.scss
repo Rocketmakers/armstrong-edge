@@ -1,9 +1,11 @@
 .arm-spinner {
   @include flex-centre-content;
+
   flex-direction: column;
 
   &[data-fill-container='true'] {
     @include fill;
+
     flex-grow: 1;
     align-self: stretch;
     justify-self: stretch;
