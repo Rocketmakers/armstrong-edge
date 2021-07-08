@@ -17,7 +17,7 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
   flex-wrap: wrap;
 }
 
-.arm-button.arm-calendar-date-grid-day,
+.arm-calendar-date-grid-day,
 .arm-calendar-date-grid-heading,
 .arm-calendar-date-grid-day-empty {
   flex-basis: 14.2857%;
@@ -42,12 +42,11 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
   }
 }
 
-.arm-button.arm-calendar-date-grid-day {
+.arm-calendar-date-grid-day {
   @include flex-centre-content;
 
-  background-color: transparent;
-  color: $black;
   position: relative;
+  padding: $spacing-xsmall;
 
   p {
     position: relative;

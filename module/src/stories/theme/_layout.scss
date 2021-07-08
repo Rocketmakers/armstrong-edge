@@ -61,6 +61,12 @@ html {
   > .arm-button {
     margin-bottom: $spacing-small;
   }
+
+  &.buttons-wrapper-horizontal {
+    > .arm-button {
+      margin-right: $spacing-xsmall;
+    }
+  }
 }
 
 .story-cols {

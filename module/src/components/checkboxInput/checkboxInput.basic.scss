@@ -34,16 +34,14 @@
     pointer-events: none;
     font-size: 0.75rem;
   }
-
-  &[data-checked='true'] {
-    background-color: $brand-primary;
-    border-color: $brand-primary;
-    color: $white;
-  }
 }
 
-.arm-icon.arm-checkbox-input-checked-icon {
+.arm-checkbox-input-checked-icon {
   opacity: 0;
+}
+
+.arm-checkbox-input-unchecked-icon {
+  color: $black;
 }
 
 .arm-checkbox-input-checkbox-input {
@@ -57,11 +55,11 @@
   padding: $spacing-xsmall;
   height: $input-height;
 
-  &:checked ~ .arm-icon.arm-checkbox-input-checked-icon {
+  &:checked ~ .arm-checkbox-input-checked-icon {
     opacity: 1;
   }
 
-  &:checked ~ .arm-icon.arm-checkbox-input-unchecked-icon {
+  &:checked ~ .arm-checkbox-input-unchecked-icon {
     opacity: 0;
   }
 }

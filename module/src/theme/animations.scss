@@ -42,6 +42,8 @@
 
 // SLIDES
 
+// Slide the given div into place in a direction
+
 // options:
 // slide-in-up-large
 // slide-in-up-medium
@@ -86,6 +88,8 @@ $slide-amount-small: 10px;
 
 // SCALES
 
+// Scale the div into place by a given amount to 1
+
 // scale-up-large
 // scale-up-medium
 // scale-up-small
@@ -111,6 +115,8 @@ $scale-amount-small: 0.05;
 
 // ROTATES
 
+// Rotate the div into place by a given amount to 0
+
 // rotate-in-clockwise-large
 // rotate-in-clockwise-medium
 // rotate-in-clockwise-small
@@ -119,9 +125,6 @@ $scale-amount-small: 0.05;
 // rotate-in-anticlockwise-medium
 // rotate-in-anticlockwise-small
 // rotate-in-anticlockwise-very-small
-
-// spin-clockwise
-// spin-anticlockwise
 
 $rotate-amount-large: 360deg;
 $rotate-amount-medium: 180deg;
@@ -142,10 +145,19 @@ $rotate-amount-very-small: 45deg;
 @include rotate-in(anticlockwise-small, $rotate-amount-small);
 @include rotate-in(anticlockwise-very-small, $rotate-amount-very-small);
 
+// SPINS
+
+// Spin the div
+
+// spin-clockwise
+// spin-anticlockwise
+
 @include transform-continuous(spin-clockwise, rotate(360deg));
 @include transform-continuous(spin-anticlockwise, rotate(-360deg));
 
 // FADES
+
+// Fade the div's opacity
 
 @keyframes fade-in {
   from {
@@ -168,6 +180,10 @@ $rotate-amount-very-small: 45deg;
 }
 
 // EXPANDS
+
+// Expand the div to an explicit max-height or max-width
+
+// This can alternatively be done using a computed max-height or max-width by using the AutoResizer or Expandable components.
 
 // expand-in-width-small
 // expand-in-width-medium

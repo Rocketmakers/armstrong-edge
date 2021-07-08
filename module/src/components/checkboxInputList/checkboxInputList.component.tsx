@@ -70,9 +70,9 @@ export const CheckboxInputList = React.forwardRef(
     const onCheckboxInputChange = React.useCallback(
       (option: ICheckboxInputListOption<Id>) => {
         if (includesOption(option)) {
-          setBoundValue(boundValue?.filter((val) => val !== option.id) || []);
+          setBoundValue?.(boundValue?.filter((val) => val !== option.id) || []);
         } else {
-          setBoundValue([...(boundValue || []), option.id]);
+          setBoundValue?.([...(boundValue || []), option.id]);
         }
       },
       [boundValue, includesOption]

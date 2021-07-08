@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button, useInterval } from '../..';
+import { Button, Group, useInterval } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { useProgress } from '../progressBar/progressBar.hooks';
 import { FixedProgressBar } from './fixedProgressBar.component';
@@ -79,12 +79,12 @@ export const UseProgressHook = () => {
     <>
       <FixedProgressBar progress={progress} hidden={!started} />
 
-      <div className="buttons-wrapper">
+      <Group>
         <Button onClick={start}>Start</Button>
         <Button onClick={() => increment(10)}>Increment 10%</Button>
         <Button onClick={complete}>Complete</Button>
         <Button onClick={reset}>Reset</Button>
-      </div>
+      </Group>
     </>
   );
 };

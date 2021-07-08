@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { Button } from '../button';
+import { Group } from '../group';
 import { TextInput } from '../textInput';
 import { Tooltip } from './tooltip.component';
 
@@ -42,6 +43,25 @@ export const CustomOpeningLogic = () => {
   return (
     <Tooltip content="HIYA" tooltipPosition={['above']} isOpen={isOpen} openOnHover={false}>
       <Button onClick={() => setIsOpen(!isOpen)}>Click here to open the tooltip</Button>
+    </Tooltip>
+  );
+};
+export const CustomContent = () => {
+  return (
+    <Tooltip
+      content={
+        <div className="custom-tooltip-example">
+          <p>Hey hey hey how's it going</p>
+          <br />
+          <Group>
+            <Button>Do thing</Button>
+            <Button>Do other thing</Button>
+          </Group>
+        </div>
+      }
+      tooltipPosition={['above']}
+    >
+      <p>Oh hey hey look at this here</p>
     </Tooltip>
   );
 };

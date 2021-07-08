@@ -42,3 +42,7 @@ $toast-notification-width: 200px !default;
   align-items: center;
   justify-content: space-between;
 }
+
+.arm-toast-notification-close-button {
+  margin-left: $spacing-xsmall;
+}

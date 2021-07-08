@@ -111,14 +111,14 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange?.(event);
         const currentValue = event.currentTarget.value;
-        setBoundValue(currentValue);
+        setBoundValue?.(currentValue);
       },
       [setBoundValue, onBindValueChange, onChange]
     );
 
     const onValueChangeEvent = React.useCallback(
       (currentValue: string) => {
-        setBoundValue(currentValue);
+        setBoundValue?.(currentValue);
         onValueChange?.(currentValue);
       },
       [onValueChange, onBindValueChange, setBoundValue]

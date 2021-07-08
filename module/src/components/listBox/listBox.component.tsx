@@ -93,7 +93,7 @@ export const ListBox = React.forwardRef(
     const onChangeEvent = React.useCallback(
       (option: IListBoxOption<Id> | undefined) => {
         onSelectOption?.(option);
-        setBoundValue(option?.id ?? undefined!);
+        setBoundValue?.(option?.id ?? undefined!);
       },
       [onSelectOption, options, bind]
     );
@@ -157,7 +157,7 @@ export const ListBox = React.forwardRef(
           </div>
 
           {deleteButton && boundValue && (
-            <IconButton className="arm-listbox-delete" onClick={onClickDelete} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} iconOnly />
+            <IconButton className="arm-listbox-delete" onClick={onClickDelete} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} minimalStyle />
           )}
         </InputWrapper>
       </DropdownItems>

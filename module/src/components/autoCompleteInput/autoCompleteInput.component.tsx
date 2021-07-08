@@ -130,7 +130,7 @@ export const AutoCompleteInput = React.forwardRef(
 
     useDidUpdateEffect(() => {
       if (unsetOnClear && textInputInternalValue.length === 0) {
-        setBoundValue(undefined!);
+        setBoundValue?.(undefined!);
       }
     }, [textInputInternalValue]);
 
@@ -153,7 +153,7 @@ export const AutoCompleteInput = React.forwardRef(
           const selectedOption = options.find((option) => option.id === id);
           if (selectedOption) {
             setTextInputInternalValue(selectedOption.name ?? '');
-            setBoundValue(selectedOption.id);
+            setBoundValue?.(selectedOption.id);
           }
         }
       },
@@ -172,9 +172,9 @@ export const AutoCompleteInput = React.forwardRef(
         if (inputtedOptionIndex > -1) {
           const inputtedOption = options![inputtedOptionIndex];
 
-          setBoundValue(inputtedOption!.id);
+          setBoundValue?.(inputtedOption!.id);
         } else if (allowFreeText) {
-          setBoundValue(newTextInputValue as Id);
+          setBoundValue?.(newTextInputValue as Id);
         }
       },
       [setTextInputInternalValue, getOptionName, options]
@@ -239,6 +239,7 @@ export const AutoCompleteInput = React.forwardRef(
             currentValue={boundValue ? [boundValue] : []}
             openWhenClickInside
             openWhenFocusInside
+            closeWhenClickInside={false}
             childRootElementSelector=".arm-input-inner"
             searchTerm={textInputInternalValue}
             noItemsText={noItemsText}

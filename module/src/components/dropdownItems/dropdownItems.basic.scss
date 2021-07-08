@@ -6,7 +6,11 @@
 }
 
 .arm-modal.arm-dropdown-items-content {
-  padding: $spacing-xxsmall 0;
+  padding: 0;
+
+  .arm-dropdown-content-inner {
+    padding: $spacing-xxsmall 0;
+  }
 }
 
 .arm-dropdown-items-content {

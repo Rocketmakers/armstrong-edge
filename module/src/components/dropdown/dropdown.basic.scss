@@ -6,16 +6,15 @@ $arm-dropdown-height: 180px !default;
   user-select: none;
 }
 
-.arm-dropdown-content {
+.arm-modal.arm-dropdown-content {
   position: fixed;
   top: var(--arm-dropdown-top);
   left: var(--arm-dropdown-left);
   width: var(--arm-dropdown-width);
   min-width: $arm-dropdown-min-width;
-  overflow: auto;
-  max-height: min(#{$arm-dropdown-height}, calc(100vh));
   user-select: none;
   z-index: 2;
+  padding: 0;
 
   .arm-auto-resizer {
     width: 100%;
@@ -24,6 +23,17 @@ $arm-dropdown-height: 180px !default;
       width: 100%;
     }
   }
+
+  &[data-scrolling='true'] {
+    .arm-dropdown-content-inner {
+      max-height: min(#{$arm-dropdown-height}, calc(100vh));
+    }
+  }
+}
+
+.arm-dropdown-content-inner {
+  overflow: auto;
+  padding: $spacing-xsmall;
 }
 
 @include screen-phone {

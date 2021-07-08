@@ -154,5 +154,5 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
 
 Modal.defaultProps = {
   closeOnBackgroundClick: true,
-  closeTime: 500,
+  closeTime: 300,
 };

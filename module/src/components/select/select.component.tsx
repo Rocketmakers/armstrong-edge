@@ -82,7 +82,7 @@ export const Select = React.forwardRef(
         const selectedOption = options.find((option) => option.id.toString() === event.currentTarget.value);
 
         if (selectedOption) {
-          setBoundValue(selectedOption.id);
+          setBoundValue?.(selectedOption.id);
           onSelectOption?.(selectedOption);
         }
       },
@@ -128,7 +128,7 @@ export const Select = React.forwardRef(
               event.stopPropagation();
             }}
             icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
-            iconOnly
+            minimalStyle
           />
         )}
       </InputWrapper>

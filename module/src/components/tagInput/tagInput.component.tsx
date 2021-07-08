@@ -141,7 +141,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
     const addTag = React.useCallback(
       (newTag: string) => {
         if (newTag && (allowDuplicates || (!boundValue?.includes(newTag) && (!getCanAddTag || getCanAddTag(newTag))))) {
-          setBoundValue([...(boundValue || []), newTag.trim()]);
+          setBoundValue?.([...(boundValue || []), newTag.trim()]);
         }
         setTextInputInternalValue('');
         onAddTag?.(newTag);
@@ -151,7 +151,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
 
     const removeTag = React.useCallback(
       (tagToRemove: ArmstrongId) => {
-        setBoundValue((boundValue || []).filter((tag) => tag !== tagToRemove));
+        setBoundValue?.((boundValue || []).filter((tag) => tag !== tagToRemove));
         setTextInputInternalValue('');
         onRemoveTag?.(tagToRemove);
       },
@@ -159,7 +159,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
     );
 
     const clearTags = React.useCallback(() => {
-      setBoundValue([]);
+      setBoundValue?.([]);
       setTextInputInternalValue('');
       onRemoveAllTags?.();
     }, [setBoundValue, onRemoveAllTags]);
@@ -247,7 +247,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
         </div>
 
         {deleteAllButton && !!boundValue?.length && (
-          <IconButton iconOnly onClick={clearTags} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} />
+          <IconButton minimalStyle onClick={clearTags} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} />
         )}
       </InputWrapper>
     );

@@ -45,3 +45,8 @@ export const Error = StoryUtils.cloneTemplate(Template, {
   children: 'Click me please',
   error: true,
 });
+export const Minimal = StoryUtils.cloneTemplate(Template, {
+  leftIcon: { icon: 'weather-rain2', iconSet: 'Icomoon' },
+  children: 'Click me please',
+  minimalStyle: true,
+});

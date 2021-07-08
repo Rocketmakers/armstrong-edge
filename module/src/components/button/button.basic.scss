@@ -7,4 +7,14 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  user-select: none;
+  padding: 0;
+
+  &:not(.arm-button-minimal) {
+    background-color: $brand-primary;
+  }
+
+  &.arm-button-minimal {
+    color: inherit;
+  }
 }

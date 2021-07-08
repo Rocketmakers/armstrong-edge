@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
+import { Button } from '../button';
+import { IconUtils } from '../icon';
 import { Dropdown } from './dropdown.component';
 
 /** metadata */
@@ -18,7 +20,9 @@ export const Default = () => {
 
   return (
     <Dropdown isOpen={isOpen} onOpenChange={setIsOpen} dropdownContent={<p>I'm in a dropdown</p>}>
-      <p>Click on me for dropdown</p>
+      <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+        Click on me for dropdown
+      </Button>
     </Dropdown>
   );
 };

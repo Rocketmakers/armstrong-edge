@@ -31,6 +31,9 @@ export interface IDropdownProps
   /** should open when the user clicks on children */
   openWhenClickInside?: boolean;
 
+  /** should close when the user clicks on children and the dropdown is already open */
+  closeWhenClickInside?: boolean;
+
   /** should open when the user focuses inside children */
   openWhenFocusInside?: boolean;
 
@@ -39,6 +42,9 @@ export interface IDropdownProps
 
   /** should close if the user scrolls - replicates some browser experiences */
   closeOnScroll?: boolean;
+
+  /** should the height be limited and scrolling be enabled - defaults to true */
+  shouldScrollContent?: boolean;
 }
 
 export interface IDropdownRef {
@@ -66,7 +72,9 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       onMouseDown,
       childRootElementSelector,
       closeOnScroll,
+      closeWhenClickInside,
       onFocus,
+      shouldScrollContent,
       ...htmlProps
     },
     ref
@@ -150,12 +158,12 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onMouseDownEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         if (openWhenClickInside) {
-          onOpenChange(true);
+          onOpenChange(closeWhenClickInside ? !isOpen : true);
           setClicking(true);
         }
         onMouseDown?.(event);
       },
-      [openWhenClickInside, onOpenChange, onMouseDown, isOpen]
+      [openWhenClickInside, closeWhenClickInside, onOpenChange, onMouseDown, isOpen]
     );
 
     const onFocusEvent = React.useCallback(
@@ -216,8 +224,11 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           closeOnWindowBlur
           closeOnWindowClick
           closeOnBackgroundClick={false}
+          data-scrolling={shouldScrollContent}
         >
-          <AutoResizer>{dropdownContent}</AutoResizer>
+          <AutoResizer>
+            <div className="arm-dropdown-content-inner">{dropdownContent}</div>
+          </AutoResizer>
         </Modal>
       </div>
     );
@@ -227,4 +238,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
 Dropdown.defaultProps = {
   openWhenFocusInside: true,
   openWhenClickInside: true,
+  closeWhenClickInside: true,
+  shouldScrollContent: true,
 };

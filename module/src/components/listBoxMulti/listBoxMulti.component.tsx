@@ -78,7 +78,7 @@ export const ListBoxMulti = React.forwardRef(
 
     const removeItem = React.useCallback(
       (id: ArmstrongId) => {
-        setBoundValue(boundValue?.filter((item) => item !== id) || []);
+        setBoundValue?.(boundValue?.filter((item) => item !== id) || []);
       },
       [boundValue, setBoundValue]
     );
@@ -91,10 +91,10 @@ export const ListBoxMulti = React.forwardRef(
           if (boundValue?.find((item) => item === option.id)) {
             removeItem(option.id);
           } else {
-            setBoundValue([...(boundValue || []), option.id]);
+            setBoundValue?.([...(boundValue || []), option.id]);
           }
         } else {
-          setBoundValue([]);
+          setBoundValue?.([]);
         }
       },
       [onSelectOption, options, bind, boundValue, setBoundValue]
@@ -184,7 +184,7 @@ export const ListBoxMulti = React.forwardRef(
               onMouseDown={(event) => event.stopPropagation()}
               onMouseUp={(event) => event.stopPropagation()}
               icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
-              iconOnly
+              minimalStyle
             />
           )}
         </InputWrapper>

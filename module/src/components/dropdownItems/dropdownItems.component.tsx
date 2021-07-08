@@ -28,10 +28,10 @@ export interface IDropdownItemProps extends IDropdownItem {
   onMouseUp?: (event: React.MouseEvent) => void;
 
   /** fired when clicking on the dropdown item */
-  onClick: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
 
   /** fired when the cursor enters the dropdown item */
-  onMouseEnter: (event: React.MouseEvent) => void;
+  onMouseEnter?: (event: React.MouseEvent) => void;
 
   /** the item is selected by keyboard - adds a data-keyboard-selected attribute */
   isKeyboardSelected: boolean;
@@ -262,7 +262,10 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                     <DropdownItem
                       {...item}
                       key={item.id + index.toString()}
-                      onMouseUp={() => onSelectItem(item.id)}
+                      onMouseUp={(event) => {
+                        onSelectItem(item.id);
+                        event.preventDefault();
+                      }}
                       idPrefix={`${id}_item`}
                       onClick={() => onSelectItem(item.id, true)}
                       onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
