@@ -130,7 +130,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
 
   React.useLayoutEffect(() => {
     resetKeyboardSelectedItemIndex();
-  }, [items?.length]);
+  }, [items.length]);
 
   useDidUpdateEffect(() => {
     if (isOpen && searchTerm?.length) {
