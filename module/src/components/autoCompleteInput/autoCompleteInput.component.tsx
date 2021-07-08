@@ -6,7 +6,7 @@ import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { Objects } from '../../utils/objects';
-import { DropdownItems, IDropdownItem } from '../dropdownItems';
+import { DropdownItems, IDropdownItem, IDropdownItemsProps } from '../dropdownItems';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
 import { IPortalProps } from '../portal';
@@ -26,7 +26,8 @@ export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconW
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange' | 'ref'>,
-    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
+    Pick<IDropdownItemsProps, 'noItemsText'> {
   /** The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -85,6 +86,7 @@ export const AutoCompleteInput = React.forwardRef(
       showAllOptionsOnFocus,
       unsetOnClear,
       disabled,
+      noItemsText,
       ...textInputProps
     }: IAutoCompleteInputProps<Id>,
     ref
@@ -239,6 +241,7 @@ export const AutoCompleteInput = React.forwardRef(
             openWhenFocusInside
             childRootElementSelector=".arm-input-inner"
             searchTerm={textInputInternalValue}
+            noItemsText={noItemsText}
           >
             <TextInput
               {...textInputProps}

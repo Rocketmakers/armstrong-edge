@@ -6,6 +6,7 @@ import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
 import { Maths } from '../../utils/maths';
+import { AutoResizer } from '../autoResizer';
 import { Modal } from '../modal';
 import { IPortalProps } from '../portal';
 
@@ -216,7 +217,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           closeOnWindowClick
           closeOnBackgroundClick={false}
         >
-          {dropdownContent}
+          <AutoResizer>{dropdownContent}</AutoResizer>
         </Modal>
       </div>
     );

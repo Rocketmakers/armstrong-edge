@@ -118,6 +118,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
 
     const wrapperRef = useModalLayerElement();
 
+    /** Have a piece of isClosing state that depends on isOpen */
     const [delayedIsOpen, isClosing] = useDelayedDependentSwitch(isOpen, closeTime!);
 
     if (!delayedIsOpen && !isClosing) {

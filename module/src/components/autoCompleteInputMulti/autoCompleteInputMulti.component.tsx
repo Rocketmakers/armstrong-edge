@@ -23,6 +23,7 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
       | 'allowFreeText'
       | 'filterOptions'
       | 'allowKeyboardNavigationSelection'
+      | 'noItemsText'
     > {
   /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
@@ -59,6 +60,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
       allowKeyboardNavigationSelection,
       getSelectedOptionTag,
       placeholder,
+      noItemsText,
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
@@ -201,6 +203,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
             closeOnSelection={false}
             childRootElementSelector=".arm-input-inner"
             searchTerm={textInputInternalValue}
+            noItemsText={noItemsText}
           >
             <TagInput
               {...textInputProps}

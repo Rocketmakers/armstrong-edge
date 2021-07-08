@@ -32,5 +32,9 @@
   &[data-is-closing='true'] {
     opacity: 0;
     pointer-events: none;
+
+    .arm-modal {
+      pointer-events: none;
+    }
   }
 }

@@ -16,6 +16,14 @@ $arm-dropdown-height: 180px !default;
   max-height: min(#{$arm-dropdown-height}, calc(100vh));
   user-select: none;
   z-index: 2;
+
+  .arm-auto-resizer {
+    width: 100%;
+
+    .arm-auto-resizer-content {
+      width: 100%;
+    }
+  }
 }
 
 @include screen-phone {

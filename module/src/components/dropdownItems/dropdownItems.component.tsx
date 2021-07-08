@@ -88,6 +88,9 @@ export interface IDropdownItemsProps extends Omit<IDropdownProps, 'dropdownConte
 
   /** used to move the keyboard selection to an item that starts with the given term */
   searchTerm?: string;
+
+  /** Text used if there are no items in the items array */
+  noItemsText?: string;
 }
 
 /** A dropdown which renders a list of selectable options and allows keyboard navigation when its children are focused */
@@ -106,6 +109,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   onMouseDown,
   onOpenChange,
   id: htmlId,
+  noItemsText,
   ...dropdownProps
 }) => {
   const itemRefs = React.useRef<Record<string, HTMLLIElement | null>>({});
@@ -237,36 +241,42 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
       id={id}
       dropdownContent={
         <ul aria-labelledby={`${id}`} id={`${id}_list`} aria-activedescendant={`${id}_item_${currentValue?.[0]}`} role="listbox">
-          {groupedItems.map((group, groupIndex) => (
-            <React.Fragment key={group.key}>
-              {group.key && (
-                <li className="arm-dropdown-items-group-title">
-                  <p>{group.key}</p>
-                </li>
-              )}
+          {items.length === 0 ? (
+            <li className="arm-dropdown-items-no-item-text">
+              <p>{noItemsText}</p>
+            </li>
+          ) : (
+            groupedItems.map((group, groupIndex) => (
+              <React.Fragment key={group.key}>
+                {group.key && (
+                  <li className="arm-dropdown-items-group-title">
+                    <p>{group.key}</p>
+                  </li>
+                )}
 
-              {group.items.map((item, index) => {
-                // get overall index in array
-                const arrayIndex = Arrays.NestedArrays.getOverallIndex(index, groupIndex, groupedItems);
+                {group.items.map((item, index) => {
+                  // get overall index in array
+                  const arrayIndex = Arrays.NestedArrays.getOverallIndex(index, groupIndex, groupedItems);
 
-                return (
-                  <DropdownItem
-                    {...item}
-                    key={item.id + index.toString()}
-                    onMouseUp={() => onSelectItem(item.id)}
-                    idPrefix={`${id}_item`}
-                    onClick={() => onSelectItem(item.id, true)}
-                    onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
-                    isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
-                    isSelected={!!currentValue?.includes(item.id)}
-                    ref={(optionItemRef) => {
-                      itemRefs.current[item.id] = optionItemRef;
-                    }}
-                  />
-                );
-              })}
-            </React.Fragment>
-          ))}
+                  return (
+                    <DropdownItem
+                      {...item}
+                      key={item.id + index.toString()}
+                      onMouseUp={() => onSelectItem(item.id)}
+                      idPrefix={`${id}_item`}
+                      onClick={() => onSelectItem(item.id, true)}
+                      onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
+                      isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
+                      isSelected={!!currentValue?.includes(item.id)}
+                      ref={(optionItemRef) => {
+                        itemRefs.current[item.id] = optionItemRef;
+                      }}
+                    />
+                  );
+                })}
+              </React.Fragment>
+            ))
+          )}
         </ul>
       }
     >
@@ -277,4 +287,5 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
 
 DropdownItems.defaultProps = {
   closeOnSelection: true,
+  noItemsText: 'No results',
 };

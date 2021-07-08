@@ -15,27 +15,27 @@ export default StoryUtils.createMeta(TabSelect as any, 'Form', 'Tab Select', {})
 /** stories */
 
 export const Default = () => {
-  const [checked, setChecked] = React.useState('');
+  const [value, setValue] = React.useState('');
 
   return (
     <label>
       Favourite colour
-      <TabSelect tabs={[{ id: 'blue' }, { id: 'red' }, { id: 'green' }]} value={checked} onValueChange={setChecked} />
+      <TabSelect tabs={[{ id: 'blue' }, { id: 'red' }, { id: 'green' }]} value={value} onValueChange={setValue} />
     </label>
   );
 };
 export const Pending = () => {
-  const [checked, setChecked] = React.useState('');
+  const [value, setValue] = React.useState('');
 
   return (
     <label>
       Favourite colour
-      <TabSelect tabs={[{ id: 'blue' }, { id: 'red' }, { id: 'green' }]} value={checked} onValueChange={setChecked} pending />
+      <TabSelect tabs={[{ id: 'blue' }, { id: 'red' }, { id: 'green' }]} value={value} onValueChange={setValue} pending />
     </label>
   );
 };
 export const WithIcons = () => {
-  const [checked, setChecked] = React.useState('');
+  const [value, setValue] = React.useState('');
 
   return (
     <label>
@@ -46,8 +46,8 @@ export const WithIcons = () => {
           { id: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'star') },
           { id: 'green', leftIcon: IconUtils.getIconDefinition('Icomoon', 'sun') },
         ]}
-        value={checked}
-        onValueChange={setChecked}
+        value={value}
+        onValueChange={setValue}
       />
     </label>
   );
