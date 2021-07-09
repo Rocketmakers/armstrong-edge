@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
-import { DropdownItems } from './dropdownItems.component';
+import { Button, DropdownItems, IconUtils } from '..';
 
 /** metadata */
 
@@ -31,7 +31,9 @@ export const Default = () => {
         alert(item);
       }}
     >
-      <p onClick={() => setIsOpen(true)}>Click on me for dropdown items</p>
+      <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+        Click on me for dropdown items
+      </Button>
     </DropdownItems>
   );
 };
@@ -55,16 +57,9 @@ export const WithKeyboardNavigation = () => {
       allowKeyboardNavigation
       focusableWrapper
     >
-      <p>Click on me for some stuff, then use the up and down arrows while I'm focused</p>
-      {/* <input
-        placeholder="Type in me for some stuff"
-        onFocus={() => setIsOpen(true)}
-        onChange={(event) => {
-          setIsOpen(true);
-          setVal(event.currentTarget.value);
-        }}
-        value={val}
-      /> */}
+      <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+        Click on me for some stuff, then use the up and down arrows while I'm focused
+      </Button>
     </DropdownItems>
   );
 };
@@ -93,16 +88,9 @@ export const MultipleSelected = () => {
       allowKeyboardNavigation
       focusableWrapper
     >
-      <p>Click on me for some stuff, then use the up and down arrows while I'm focused</p>
-      {/* <input
-        placeholder="Type in me for some stuff"
-        onFocus={() => setIsOpen(true)}
-        onChange={(event) => {
-          setIsOpen(true);
-          setVal(event.currentTarget.value);
-        }}
-        value={val}
-      /> */}
+      <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+        Click on me for some stuff, then use the up and down arrows while I'm focused
+      </Button>
     </DropdownItems>
   );
 };
@@ -135,7 +123,9 @@ export const Scrolling = () => {
       allowKeyboardNavigation
       focusableWrapper
     >
-      <p onClick={() => setIsOpen(true)}>Click on me for dropdown items</p>
+      <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+        Click on me for dropdown items
+      </Button>
     </DropdownItems>
   );
 };
@@ -157,7 +147,9 @@ export const GroupedItems = () => {
         alert(item);
       }}
     >
-      <p onClick={() => setIsOpen(true)}>Click on me for dropdown items</p>
+      <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+        Click on me for dropdown items
+      </Button>
     </DropdownItems>
   );
 };

@@ -32,7 +32,7 @@ export const CharacterLimit: React.FC<ICharacterLimitProps> = ({ bind, limit, sh
 
   React.useLayoutEffect(() => {
     if (shouldEnforce && exceeded) {
-      setBoundValue(boundValue!.slice(0, limit));
+      setBoundValue?.(boundValue!.slice(0, limit));
     }
   }, [boundValue]);
 

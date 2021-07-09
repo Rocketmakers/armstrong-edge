@@ -141,7 +141,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
     const position = React.useMemo(() => {
       const positions = typeof tooltipPosition === 'string' ? [tooltipPosition] : tooltipPosition;
 
-      if (isOpen && positions?.length) {
+      if (positions?.length) {
         for (let index = 0; index < positions.length; index += 1) {
           const positionOption = positions[index];
 
@@ -153,7 +153,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
           }
         }
       }
-    }, [getPosition, tooltipPosition, isOpen]);
+    }, [getPosition, tooltipPosition]);
 
     const style = React.useMemo(
       () =>
@@ -187,10 +187,11 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
           style={style}
           data-position={position?.position}
           role="tooltip"
+          data-is-text={typeof content === 'string' || typeof content === 'number'}
           {...nativeProps}
         >
           <div id={generatedId} className="arm-tooltip-inner">
-            {typeof content === 'string' ? <p>{content}</p> : content}
+            {typeof content === 'string' || typeof content === 'number' ? <p>{content}</p> : content}
           </div>
         </Modal>
       </div>
@@ -202,5 +203,4 @@ Tooltip.defaultProps = {
   tooltipPosition: ['below', 'right', 'above', 'left'],
   edgeDetectionMargin: 5,
   openOnHover: true,
-  openOnFocus: true,
 };

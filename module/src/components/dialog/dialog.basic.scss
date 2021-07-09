@@ -13,7 +13,15 @@ $dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
   padding: 0;
 }
 
+.arm-dialog-close-button {
+  position: absolute;
+  top: $spacing-small;
+  right: $spacing-small;
+}
+
 .arm-dialog-top {
+  @include space-between-children-horizontal($spacing-xsmall);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,8 +29,6 @@ $dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
   .arm-dialog-close-button {
     position: initial;
   }
-
-  @include space-between-children-horizontal($spacing-xsmall);
 }
 
 .arm-dialog-title {
@@ -38,10 +44,4 @@ $dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
   .arm-button {
     margin-left: $spacing-xsmall;
   }
-}
-
-.arm-dialog-close-button {
-  position: absolute;
-  top: $spacing-small;
-  right: $spacing-small;
 }

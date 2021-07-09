@@ -22,7 +22,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
   ({ children, className, wrapperClassName, id: htmlId, title, onOpenChange, closeButtonIcon, titleIcon, ...modalProps }, ref) => {
     const id = useGeneratedId(htmlId);
 
-    const titleId = `${id}_label`;
+    const titleId = title && `${id}_label`;
 
     const onClickClose = React.useCallback(() => {
       onOpenChange?.(false);
@@ -34,7 +34,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
         wrapperClassName={ClassNames.concat('arm-dialog-wrapper', wrapperClassName)}
         darkenBackground
         id={id}
-        aria-labelledby={title && `${id}_label`}
+        aria-labelledby={titleId}
         onOpenChange={onOpenChange}
         ref={ref}
         {...modalProps}
@@ -49,10 +49,10 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
               </p>
             )}
 
-            <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} iconOnly onClick={onClickClose} />
+            <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={onClickClose} />
           </div>
         ) : (
-          <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} iconOnly onClick={onClickClose} />
+          <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={onClickClose} />
         )}
         <div className="arm-dialog-inner">{children}</div>
       </Modal>

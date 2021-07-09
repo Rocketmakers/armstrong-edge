@@ -53,7 +53,14 @@ export const ToastNotification: React.FC<IToastNotificationProps> = ({ onDismiss
             {title}
           </p>
 
-          {allowManualDismiss && <IconButton iconOnly icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} onClick={beginDismiss} />}
+          {allowManualDismiss && (
+            <IconButton
+              className="arm-toast-notification-close-button"
+              minimalStyle
+              icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+              onClick={beginDismiss}
+            />
+          )}
         </div>
 
         {timestampString && <p>{timestampString}</p>}

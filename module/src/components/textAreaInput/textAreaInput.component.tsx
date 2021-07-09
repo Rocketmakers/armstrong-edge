@@ -106,7 +106,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
         onChange?.(event);
         const currentValue = event.currentTarget.value;
         onValueChange?.(currentValue);
-        setBoundValue(currentValue);
+        setBoundValue?.(currentValue);
       },
       [bind, onChange, onValueChange, setBoundValue]
     );
@@ -114,7 +114,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
     const onValueChangeEvent = React.useCallback(
       (currentValue: string | undefined) => {
         onValueChange?.(currentValue ?? '');
-        setBoundValue(currentValue ?? '');
+        setBoundValue?.(currentValue ?? '');
       },
       [onValueChange, setBoundValue]
     );

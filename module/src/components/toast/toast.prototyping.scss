@@ -10,28 +10,28 @@
   &[data-type='success'] {
     .arm-toast-notification-inner {
       background-color: $color-positive;
-      color: white;
+      color: $white;
     }
   }
 
   &[data-type='error'] {
     .arm-toast-notification-inner {
       background-color: $color-negative;
-      color: white;
+      color: $white;
     }
   }
 
   &[data-type='info'] {
     .arm-toast-notification-inner {
       background-color: $color-info;
-      color: white;
+      color: $white;
     }
   }
 
   &[data-type='warning'] {
     .arm-toast-notification-inner {
       background-color: $color-warning;
-      color: white;
+      color: $white;
     }
   }
 }

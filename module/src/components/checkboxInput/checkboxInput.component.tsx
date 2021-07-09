@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Form } from '../..';
+import { useOverridableState } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
@@ -30,6 +31,9 @@ export interface ICheckboxInputProps
 
   /** the text or jsx element to render inside the checkbox's label */
   label?: React.ReactNode;
+
+  /** fired when the value changes */
+  onValueChange?: (newValue: boolean) => void;
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -52,6 +56,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       leftIcon,
       rightIcon,
       scrollValidationErrorsIntoView,
+      onValueChange,
       ...nativeProps
     }: ICheckboxInputProps,
     ref
@@ -61,11 +66,15 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       validationErrorMessages,
       validationErrorIcon: errorIcon,
       validationMode,
+      onChange: onValueChange,
     });
+
+    // use an overridable internal state so it can be used without a binding
+    const [isChecked, setIsChecked] = useOverridableState(false, boundValue, setBoundValue);
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        setBoundValue(event.currentTarget.checked);
+        setIsChecked(event.currentTarget.checked);
         onChange?.(event);
       },
       [bind, onChange]
@@ -77,7 +86,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
           className={ClassNames.concat('arm-input', 'arm-checkbox-input', className)}
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
-          data-checked={boundValue}
+          data-checked={isChecked}
         >
           <label>
             <div className="arm-checkbox-input-checkbox">
@@ -87,7 +96,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
                 {...nativeProps}
                 type="checkbox"
                 ref={ref}
-                checked={boundValue}
+                checked={isChecked}
               />
 
               {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}

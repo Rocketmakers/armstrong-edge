@@ -1,6 +1,19 @@
 $arm-progress-bar-thickness: 0.5rem !default;
 $arm-progress-bar-with-label-thickness: 1rem !default;
 
+.arm-progress-bar-progress {
+  @include absolute-fill;
+
+  overflow: hidden;
+
+  &::after {
+    @include init-pseudo;
+    @include fill;
+
+    background-color: var(--arm-progress-bar-color, $brand-primary);
+  }
+}
+
 .arm-progress-bar {
   background-color: $gray-light;
   position: relative;
@@ -50,28 +63,20 @@ $arm-progress-bar-with-label-thickness: 1rem !default;
   }
 }
 
-.arm-progress-bar-progress {
-  @include absolute-fill;
-  overflow: hidden;
-
-  &::after {
-    @include init-pseudo;
-    @include fill;
-    background-color: var(--arm-progress-bar-color, $brand-primary);
-  }
-}
-
 .arm-progress-bar-label {
-  color: white;
+  color: $white;
 
   &[data-variant='centre'] {
-    text-align: center;
     @include absolute-fill;
     @include flex-centre-content;
+
+    text-align: center;
     font-size: min(#{$arm-progress-bar-with-label-thickness * 0.7}, 1rem);
   }
 
   &[data-variant='centre-progress'] {
+    @include flex-centre-content;
+
     text-align: center;
     position: absolute;
     left: 0;
@@ -79,7 +84,6 @@ $arm-progress-bar-with-label-thickness: 1rem !default;
     bottom: 0;
     width: var(--arm-progress-bar-progress);
     overflow: hidden;
-    @include flex-centre-content;
     font-size: min(#{$arm-progress-bar-with-label-thickness * 0.7}, 1rem);
   }
 }

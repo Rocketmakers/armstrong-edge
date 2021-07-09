@@ -5,14 +5,14 @@
 .arm-input-base-input {
   flex-grow: 1;
   appearance: none;
-  border: none;
+  border: 0;
   outline: none;
   background-color: transparent;
   padding: $spacing-xsmall 0;
   height: $input-height;
 
   &:focus {
-    border: none;
+    border: 0;
     outline: none;
   }
 }

@@ -1,12 +1,16 @@
 .arm-dropdown-items {
   &:focus {
-    border: none;
+    border: 0;
     outline: none;
   }
 }
 
 .arm-modal.arm-dropdown-items-content {
-  padding: $spacing-xxsmall 0;
+  padding: 0;
+
+  .arm-dropdown-content-inner {
+    padding: $spacing-xxsmall 0;
+  }
 }
 
 .arm-dropdown-items-content {
@@ -17,8 +21,9 @@
 }
 
 .arm-dropdown-item {
+  @include space-between-children-horizontal($spacing-xsmall);
+
   cursor: pointer;
   display: flex;
   align-items: center;
-  @include space-between-children-horizontal($spacing-xsmall);
 }

@@ -6,7 +6,10 @@ import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 
 Armstrong exports a number of simple hooks that are used internally and available externally.
 
-Not all hooks are documented here, for others see the rest of the `Hooks` section of Storybook, or for the form hook, see `Form/Form Hook`
+Not all hooks are documented here:
+
+- for others see the rest of the `Hooks` section of Storybook
+- for the form hook, see `Form/Form Hook`
 
 ### useArrayState
 
@@ -59,6 +62,29 @@ Like a state hook, but also exports a "throttled" value (set after x amount of i
 ```tsx
 const [actualValue, setActualValue, debouncedValue, setDebouncedValue] = useDebounce(milliseconds, value, onValueChange);
 ```
+
+### useDelayedDependentSwitch
+
+A hook which takes a piece of boolean state and, when that is set to false, returns another piece of state which is true for a given time to act as a "closing" state
+
+Returns an array with two booleans, the first is the given value with it being set to false delayed for a render while settingToFalse is set to true, the second is the value for isSettingFalse which, when value is set to false, is true for the given length of time
+
+```tsx
+const MyComponent = () => {
+  const [isOpen, setIsOpen] = React.useState();
+
+  return <InnerComponent isOpen={isOpen} />;
+};
+
+const InnerComponent = ({ isOpen }) => {
+  const [delayedIsOpen, isClosing] = useDelayedDependentSwitch(isOpen, 500);
+
+  // treat delayedIsOpen as the real isOpen, as it's still true in the render immediately when isOpen is set to false
+  // see code for Modal for an example
+};
+```
+
+This was a very hard thing to describe so if you think you need this and my description wasn't good enough, drop me (pat) a message
 
 ### useDebug
 
@@ -355,7 +381,7 @@ return <div ref={ref} />;
 useState but the state returns to initialValue after a given amount of time from whenever setState is called
 
 ```tsx
-const [state, setState] = useTemporaryState(initialValue, time, onReset);
+const [state, setState, cancel] = useTemporaryState(initialValue, time, onReset);
 ```
 
 ### useThrottle

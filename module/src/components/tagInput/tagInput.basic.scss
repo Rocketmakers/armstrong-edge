@@ -1,7 +1,7 @@
 .arm-tag-input-input {
   flex-grow: 1;
   appearance: none;
-  border: none;
+  border: 0;
   outline: none;
   background-color: transparent;
   padding: $spacing-xsmall 0;
@@ -13,18 +13,20 @@
 }
 
 .arm-tag-input-inner {
-  overflow-x: auto;
-  flex-grow: 1;
   @include flex-centre-content;
   @include space-between-children-horizontal($spacing-xxsmall);
+
+  overflow-x: auto;
+  flex-grow: 1;
 }
 
 .arm-input-wrapper-above .arm-auto-resizer-content,
 .arm-input-wrapper-below .arm-auto-resizer-content {
+  @include space-between-children-horizontal($spacing-xxsmall);
+
   overflow-y: auto;
   display: flex;
   align-items: center;
-  @include space-between-children-horizontal($spacing-xxsmall);
   flex-wrap: wrap;
 
   .arm-tag {

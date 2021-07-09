@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useInterval } from '../..';
+import { Group, useInterval } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Button } from '../button';
 import { ProgressBar } from './progressBar.component';
@@ -80,12 +80,14 @@ export const UseProgressHook = () => {
     <>
       <ProgressBar progress={progress} />
 
-      <div className="buttons-wrapper">
+      <br />
+
+      <Group>
         <Button onClick={start}>Start</Button>
         <Button onClick={() => increment(10)}>Increment 10%</Button>
         <Button onClick={complete}>Complete</Button>
         <Button onClick={reset}>Reset</Button>
-      </div>
+      </Group>
     </>
   );
 };

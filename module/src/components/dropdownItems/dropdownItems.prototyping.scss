@@ -17,7 +17,7 @@
 
   &[data-selected='true'] {
     background-color: $brand-primary;
-    color: white;
+    color: $white;
 
     &[data-keyboard-selected='true'] {
       opacity: 0.7;
@@ -27,13 +27,18 @@
 
 .arm-dropdown-item-checkmark {
   font-size: 0.75rem;
+  color: $white;
+}
+
+.arm-dropdown-items-no-item-text,
+.arm-dropdown-items-group-title {
+  font-size: 0.75rem;
+  color: $gray-medium;
+  padding: $spacing-xxsmall $spacing-xsmall;
 }
 
 .arm-dropdown-items-group-title {
-  padding: $spacing-xsmall $spacing-xsmall $spacing-xxsmall $spacing-xsmall;
-  font-size: 0.75rem;
   text-transform: uppercase;
-  color: $gray-medium;
 }
 
 @include screen-phone {

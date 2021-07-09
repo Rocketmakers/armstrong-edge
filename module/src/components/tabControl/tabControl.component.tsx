@@ -34,6 +34,7 @@ export const TabControlTab = React.forwardRef(
         onClick={onClick}
         data-is-current={isCurrent}
         ref={ref}
+        minimalStyle
       >
         <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
           {computedContent && <p>{content ?? (!leftIcon && !rightIcon && id)}</p>}

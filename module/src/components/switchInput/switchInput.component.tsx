@@ -78,7 +78,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
     const onDragEnd = React.useCallback(
       ({ changePosition }: IDragReleaseCallbackArgs) => {
         if (!changePosition || changePosition.left === 0) {
-          setBoundValue(!boundValue);
+          setBoundValue?.(!boundValue);
         }
       },
       [setBoundValue, boundValue]
@@ -89,9 +89,9 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
     React.useEffect(() => {
       if (changePosition && changeOnDrag) {
         if (changePosition.left > 0) {
-          setBoundValue(true);
+          setBoundValue?.(true);
         } else if (changePosition.left < 0) {
-          setBoundValue(false);
+          setBoundValue?.(false);
         }
       }
     }, [changePosition?.left]);

@@ -1,7 +1,8 @@
 .arm-scroll-to-end-listener-status {
+  @include flex-centre-content;
+
   width: 100%;
   padding: $spacing-medium;
-  @include flex-centre-content;
 }
 
 .arm-scroll-to-end-listener-listener {

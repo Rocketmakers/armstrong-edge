@@ -144,7 +144,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
         <div className="arm-calendar-display-controls">
           <IconButton
             icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
-            iconOnly
+            minimalStyle
             className="arm-calendar-display-button arm-calendar-display-button-prev"
             onClick={onBackClicked}
           />
@@ -154,7 +154,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
 
           <IconButton
             icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
-            iconOnly
+            minimalStyle
             className="arm-calendar-display-button arm-calendar-display-button-next"
             onClick={onForwardClicked}
           />
@@ -187,6 +187,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
                 data-range-middle={displayDay.day.isRangeMiddle}
                 data-range-end={displayDay.day.isRangeEnd}
                 data-highlight={displayDay.day.isHighlighted}
+                minimalStyle
               >
                 <p>{displayDay.displayFormat}</p>
                 {displayDay.day.isHighlighted && <div className="arm-calendar-date-grid-day-highlight" />}

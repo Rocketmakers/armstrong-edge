@@ -42,49 +42,53 @@
 
 // SLIDES
 
-// options:
-// slide-in-y-up-large
-// slide-in-y-up-medium
-// slide-in-y-up-small
-// slide-in-y-down-large
-// slide-in-y-down-medium
-// slide-in-y-down-small
-// slide-in-x-up-large
-// slide-in-x-up-medium
-// slide-in-x-up-small
-// slide-in-x-down-large
-// slide-in-x-down-medium
-// slide-in-x-down-small
+// Slide the given div into place in a direction
 
-$large-slide-amount: 30px;
-$medium-slide-amount: 20px;
-$small-slide-amount: 10px;
+// options:
+// slide-in-up-large
+// slide-in-up-medium
+// slide-in-up-small
+// slide-in-down-large
+// slide-in-down-medium
+// slide-in-down-small
+// slide-in-up-large
+// slide-in-up-medium
+// slide-in-up-small
+// slide-in-down-large
+// slide-in-down-medium
+// slide-in-down-small
+
+$slide-amount-large: 30px;
+$slide-amount-medium: 20px;
+$slide-amount-small: 10px;
 
 @mixin slide-in-y($name, $amount) {
   @include transform-in(slide-in-#{$name}, translateY($amount));
 }
 
-@include slide-in-y(up-large, $large-slide-amount);
-@include slide-in-y(up-medium, $medium-slide-amount);
-@include slide-in-y(up-small, $small-slide-amount);
+@include slide-in-y(up-large, $slide-amount-large);
+@include slide-in-y(up-medium, $slide-amount-medium);
+@include slide-in-y(up-small, $slide-amount-small);
 
-@include slide-in-y(down-large, -$large-slide-amount);
-@include slide-in-y(down-medium, -$medium-slide-amount);
-@include slide-in-y(down-small, -$small-slide-amount);
+@include slide-in-y(down-large, -$slide-amount-large);
+@include slide-in-y(down-medium, -$slide-amount-medium);
+@include slide-in-y(down-small, -$slide-amount-small);
 
 @mixin slide-in-x($name, $amount) {
   @include transform-in(slide-in-#{$name}, translateX($amount));
 }
 
-@include slide-in-x(left-large, $large-slide-amount);
-@include slide-in-x(left-medium, $medium-slide-amount);
-@include slide-in-x(left-small, $small-slide-amount);
+@include slide-in-x(left-large, $slide-amount-large);
+@include slide-in-x(left-medium, $slide-amount-medium);
+@include slide-in-x(left-small, $slide-amount-small);
 
-@include slide-in-x(right-large, -$large-slide-amount);
-@include slide-in-x(right-medium, -$medium-slide-amount);
-@include slide-in-x(right-small, -$small-slide-amount);
+@include slide-in-x(right-large, -$slide-amount-large);
+@include slide-in-x(right-medium, -$slide-amount-medium);
+@include slide-in-x(right-small, -$slide-amount-small);
 
 // SCALES
+
+// Scale the div into place by a given amount to 1
 
 // scale-up-large
 // scale-up-medium
@@ -105,11 +109,13 @@ $scale-amount-small: 0.05;
 @include scale-in(up-medium, 1 - $scale-amount-medium);
 @include scale-in(up-small, 1 - $scale-amount-small);
 
-@include scale-in(down-large, $scale-amount-large);
-@include scale-in(down-medium, $scale-amount-medium);
-@include scale-in(down-small, $scale-amount-small);
+@include scale-in(down-large, 1 + $scale-amount-large);
+@include scale-in(down-medium, 1 + $scale-amount-medium);
+@include scale-in(down-small, 1 + $scale-amount-small);
 
 // ROTATES
+
+// Rotate the div into place by a given amount to 0
 
 // rotate-in-clockwise-large
 // rotate-in-clockwise-medium
@@ -119,8 +125,6 @@ $scale-amount-small: 0.05;
 // rotate-in-anticlockwise-medium
 // rotate-in-anticlockwise-small
 // rotate-in-anticlockwise-very-small
-// spin-clockwise
-// spin-anticlockwise
 
 $rotate-amount-large: 360deg;
 $rotate-amount-medium: 180deg;
@@ -141,10 +145,19 @@ $rotate-amount-very-small: 45deg;
 @include rotate-in(anticlockwise-small, $rotate-amount-small);
 @include rotate-in(anticlockwise-very-small, $rotate-amount-very-small);
 
+// SPINS
+
+// Spin the div
+
+// spin-clockwise
+// spin-anticlockwise
+
 @include transform-continuous(spin-clockwise, rotate(360deg));
-@include transform-continuous(spin-anti-clockwise, rotate(-360deg));
+@include transform-continuous(spin-anticlockwise, rotate(-360deg));
 
 // FADES
+
+// Fade the div's opacity
 
 @keyframes fade-in {
   from {
@@ -168,6 +181,10 @@ $rotate-amount-very-small: 45deg;
 
 // EXPANDS
 
+// Expand the div to an explicit max-height or max-width
+
+// This can alternatively be done using a computed max-height or max-width by using the AutoResizer or Expandable components.
+
 // expand-in-width-small
 // expand-in-width-medium
 // expand-in-width-large
@@ -175,9 +192,9 @@ $rotate-amount-very-small: 45deg;
 // expand-in-height-medium
 // expand-in-height-large
 
-$small-expand-max: 100px;
-$medium-expand-max: 300px;
-$large-expand-max: 700px;
+$expand-max-small: 100px;
+$expand-max-medium: 300px;
+$expand-max-large: 700px;
 
 @mixin expand-in-width($name, $max) {
   @keyframes expand-in-width-#{$name} {
@@ -201,10 +218,10 @@ $large-expand-max: 700px;
   }
 }
 
-@include expand-in-width(small, $small-expand-max);
-@include expand-in-width(medium, $medium-expand-max);
-@include expand-in-width(large, $large-expand-max);
+@include expand-in-width(small, $expand-max-small);
+@include expand-in-width(medium, $expand-max-medium);
+@include expand-in-width(large, $expand-max-large);
 
-@include expand-in-height(small, $small-expand-max);
-@include expand-in-height(medium, $medium-expand-max);
-@include expand-in-height(large, $large-expand-max);
+@include expand-in-height(small, $expand-max-small);
+@include expand-in-height(medium, $expand-max-medium);
+@include expand-in-height(large, $expand-max-large);

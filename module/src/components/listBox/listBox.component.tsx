@@ -4,7 +4,7 @@ import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils/classNames';
-import { DropdownItems, IDropdownItem } from '../dropdownItems';
+import { DropdownItems, IDropdownItem, IDropdownItemsProps } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IIconWrapperProps } from '../iconWrapper';
@@ -17,7 +17,7 @@ export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
     Pick<IDropdownItem, 'group'> {}
 
 /** A DOM recreation of a select element */
-export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps {
+export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps, Pick<IDropdownItemsProps, 'noItemsText'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
@@ -74,6 +74,7 @@ export const ListBox = React.forwardRef(
       disableOnPending,
       scrollValidationErrorsIntoView,
       wrapperClassName,
+      noItemsText,
     }: IListBoxProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -92,7 +93,7 @@ export const ListBox = React.forwardRef(
     const onChangeEvent = React.useCallback(
       (option: IListBoxOption<Id> | undefined) => {
         onSelectOption?.(option);
-        setBoundValue(option?.id ?? undefined!);
+        setBoundValue?.(option?.id ?? undefined!);
       },
       [onSelectOption, options, bind]
     );
@@ -125,6 +126,7 @@ export const ListBox = React.forwardRef(
         currentValue={[boundValue!]}
         childRootElementSelector=".arm-input-inner"
         className={ClassNames.concat('arm-listbox-wrapper', wrapperClassName)}
+        noItemsText={noItemsText}
       >
         <InputWrapper
           ref={internalRef}
@@ -155,7 +157,7 @@ export const ListBox = React.forwardRef(
           </div>
 
           {deleteButton && boundValue && (
-            <IconButton className="arm-listbox-delete" onClick={onClickDelete} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} iconOnly />
+            <IconButton className="arm-listbox-delete" onClick={onClickDelete} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} minimalStyle />
           )}
         </InputWrapper>
       </DropdownItems>

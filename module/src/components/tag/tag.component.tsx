@@ -23,7 +23,7 @@ export const Tag: React.FC<ITagProps> = ({ content, className, leftIcon, rightIc
 
     {onRemove && (
       <IconButton
-        iconOnly
+        minimalStyle
         className="arm-tag-close"
         onMouseDown={(event) => event.stopPropagation()}
         onClick={(event) => {

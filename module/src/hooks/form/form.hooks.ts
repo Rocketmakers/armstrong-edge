@@ -376,7 +376,7 @@ interface IUseBindingToolsReturnUtils<TData> {
   shouldShowValidationErrorMessage?: boolean;
 }
 
-type UseBindingToolsReturn<TData> = [TData | undefined, (newValue: TData) => void, IUseBindingToolsReturnUtils<TData>];
+type UseBindingToolsReturn<TData> = [TData | undefined, ((newValue: TData) => void) | undefined, IUseBindingToolsReturnUtils<TData>];
 
 /** Used as overrides for the bind functionality, for use with component props */
 interface IUseBindingToolsOverrides<TData> {
@@ -432,7 +432,7 @@ export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: 
 
   return [
     value,
-    onChange,
+    overrides?.onChange || bind?.setValue ? onChange : undefined,
     {
       getFormattedValueFromData,
       getFormattedValueToData,

@@ -1,31 +1,17 @@
 .arm-button.arm-tab-control-tab {
-  box-shadow: none;
-  border: $line-light;
-  border-radius: 0;
   font-weight: bold;
-
-  &:not(:last-child) {
-    border-right: transparent;
-  }
+  border-top: $line transparent;
+  border-bottom: $line-medium;
+  color: $gray-medium;
+  padding: $spacing-xsmall $spacing-small;
 
   &[data-is-current='true'] {
     border-color: $brand-primary;
-    background-color: $brand-primary;
-    color: white;
-
-    + .arm-button.arm-tab-control-tab {
-      border-left: transparent;
-    }
-  }
-
-  &:first-child {
+    color: $black;
+    border: $line-medium;
+    border-bottom: transparent;
     border-top-left-radius: $border-radius-small;
-    border-bottom-left-radius: $border-radius-small;
-  }
-
-  &:last-child {
     border-top-right-radius: $border-radius-small;
-    border-bottom-right-radius: $border-radius-small;
   }
 }
 

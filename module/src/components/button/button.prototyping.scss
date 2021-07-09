@@ -1,24 +1,27 @@
 .arm-button {
-  background-color: $brand-primary;
-  box-shadow: $shadow-xsmall;
-  color: white;
-  border-radius: $border-radius-small;
-  padding: $spacing-xsmall;
-  user-select: none;
-
   &[data-disabled='true'] {
     opacity: 0.5;
     pointer-events: none;
   }
 
-  &[data-error='true'] {
-    background-color: $color-negative;
+  &:not(.arm-button-minimal) {
+    box-shadow: $shadow-xsmall;
+    color: $white;
+    border-radius: $border-radius-small;
+    padding: $spacing-xsmall;
+
+    &[data-error='true'] {
+      background-color: $color-negative;
+    }
+
+    .arm-status {
+      .arm-icon.arm-status-error {
+        color: $white;
+      }
+    }
   }
 
   .arm-status {
-    .arm-icon.arm-status-error {
-      color: white;
-    }
     .arm-spinner {
       .arm-icon {
         font-size: 0.75rem;

@@ -13,18 +13,20 @@ export type useBoundingClientRectReturn = [DOMRect, () => void];
  * @param ref the html element to watch
  */
 export function useBoundingClientRect(ref: React.MutableRefObject<Element | undefined | null>): useBoundingClientRectReturn {
-  const [rect, setRect] = React.useState<DOMRect>({
-    bottom: 0,
-    height: 0,
-    left: 0,
-    right: 0,
-    top: 0,
-    width: 0,
-    x: 0,
-    y: 0,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    toJSON: () => {},
-  });
+  const [rect, setRect] = React.useState<DOMRect>(
+    ref.current?.getBoundingClientRect() || {
+      bottom: 0,
+      height: 0,
+      left: 0,
+      right: 0,
+      top: 0,
+      width: 0,
+      x: 0,
+      y: 0,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      toJSON: () => {},
+    }
+  );
 
   const setRectSize = React.useCallback(() => {
     if (ref.current) {

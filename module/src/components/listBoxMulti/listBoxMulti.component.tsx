@@ -12,7 +12,10 @@ import { Tag } from '../tag';
 
 export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
-    Pick<IListBoxProps<Id, TSelectData>, 'options' | 'onSelectOption' | 'selectOverlayIcon' | 'placeholder' | 'wrapperClassName' | 'deleteButton'> {
+    Pick<
+      IListBoxProps<Id, TSelectData>,
+      'options' | 'onSelectOption' | 'selectOverlayIcon' | 'placeholder' | 'wrapperClassName' | 'deleteButton' | 'noItemsText'
+    > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
 
@@ -56,6 +59,7 @@ export const ListBoxMulti = React.forwardRef(
       onValueChange,
       disableOnPending,
       wrapperClassName,
+      noItemsText,
     }: IListBoxMultiProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -74,7 +78,7 @@ export const ListBoxMulti = React.forwardRef(
 
     const removeItem = React.useCallback(
       (id: ArmstrongId) => {
-        setBoundValue(boundValue?.filter((item) => item !== id) || []);
+        setBoundValue?.(boundValue?.filter((item) => item !== id) || []);
       },
       [boundValue, setBoundValue]
     );
@@ -87,10 +91,10 @@ export const ListBoxMulti = React.forwardRef(
           if (boundValue?.find((item) => item === option.id)) {
             removeItem(option.id);
           } else {
-            setBoundValue([...(boundValue || []), option.id]);
+            setBoundValue?.([...(boundValue || []), option.id]);
           }
         } else {
-          setBoundValue([]);
+          setBoundValue?.([]);
         }
       },
       [onSelectOption, options, bind, boundValue, setBoundValue]
@@ -122,6 +126,7 @@ export const ListBoxMulti = React.forwardRef(
         childRootElementSelector=".arm-input-inner"
         closeOnSelection={false}
         className={ClassNames.concat('arm-listbox-multi-wrapper', wrapperClassName)}
+        noItemsText={noItemsText}
       >
         <InputWrapper
           ref={internalRef}
@@ -179,7 +184,7 @@ export const ListBoxMulti = React.forwardRef(
               onMouseDown={(event) => event.stopPropagation()}
               onMouseUp={(event) => event.stopPropagation()}
               icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
-              iconOnly
+              minimalStyle
             />
           )}
         </InputWrapper>

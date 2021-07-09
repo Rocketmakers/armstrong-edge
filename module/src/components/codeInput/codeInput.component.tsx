@@ -191,7 +191,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
           totalLength
         );
 
-        setBoundValue(newValue);
+        setBoundValue?.(newValue);
       },
       [boundValue, parts, goNext, totalLength]
     );

@@ -73,7 +73,7 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange?.(event);
         const newValue = event.currentTarget.valueAsNumber;
-        setBoundValue(newValue);
+        setBoundValue?.(newValue);
       },
       [onChange]
     );

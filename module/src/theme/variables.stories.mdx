@@ -11,6 +11,7 @@ These are all the defaults for variables exported by Armstorng - you can overrid
 - [Overriding](#overriding)
 - [Global](#global)
 - [Components](#components)
+- [Animations](#animations)
 
 ## <a name="overriding">Overriding</a>
 
@@ -35,7 +36,8 @@ $spacing-large 500px;
 ### Colors
 
 ```css
-$white: #ffffff;
+$black: #000
+$white: #fff;
 $brand-primary: #cd3939;
 $brand-secondary: #3d4144;
 
@@ -255,4 +257,27 @@ $toast-notification-width: 200px;
 ```css
 /* the max width of the tooltip */
 $arm-tooltip-max-width: 250px;
+```
+
+## <a name="animations">Animations</a>
+
+These are variables which dictate the animations described in `SCSS/animations`
+
+```css
+$slide-amount-large: 30px;
+$slide-amount-medium: 20px;
+$slide-amount-small: 10px;
+
+$scale-amount-large: 0.3;
+$scale-amount-medium: 0.2;
+$scale-amount-small: 0.05;
+
+$rotate-amount-large: 360deg;
+$rotate-amount-medium: 180deg;
+$rotate-amount-small: 90deg;
+$rotate-amount-very-small: 45deg;
+
+$expand-max-small: 100px;
+$expand-max-medium: 300px;
+$expand-max-large: 700px;
 ```

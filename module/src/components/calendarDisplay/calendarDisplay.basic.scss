@@ -17,7 +17,7 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
   flex-wrap: wrap;
 }
 
-.arm-button.arm-calendar-date-grid-day,
+.arm-calendar-date-grid-day,
 .arm-calendar-date-grid-heading,
 .arm-calendar-date-grid-day-empty {
   flex-basis: 14.2857%;
@@ -26,10 +26,11 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
 }
 
 .arm-calendar-display-controls {
+  @include space-between-children-horizontal($spacing-xsmall);
+
   display: flex;
   align-self: center;
   justify-content: space-between;
-  @include space-between-children-horizontal($spacing-xsmall);
   margin-bottom: $spacing-xsmall;
   padding: 0 $spacing-xxsmall;
 
@@ -41,11 +42,11 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
   }
 }
 
-.arm-button.arm-calendar-date-grid-day {
+.arm-calendar-date-grid-day {
   @include flex-centre-content;
-  background-color: transparent;
-  color: black;
+
   position: relative;
+  padding: $spacing-xsmall;
 
   p {
     position: relative;
@@ -57,12 +58,13 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
     @include init-pseudo;
     @include absolute-centre-self;
     @include circle($arm-calendar-display-date-circle);
+
     z-index: 2;
     box-sizing: border-box;
   }
 
   &[data-selected='true'] {
-    color: white;
+    color: $white;
 
     &::before {
       background-color: $brand-primary;
@@ -84,6 +86,7 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
   &[data-range-end='true'] {
     &::after {
       @include init-pseudo;
+
       z-index: 1;
       background-color: $brand-primary;
       opacity: 0.25;
@@ -113,10 +116,11 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
   }
 
   .arm-calendar-date-grid-day-highlight {
+    @include circle($arm-calendar-display-date-highlight-size);
+
     position: absolute;
     left: 50%;
     bottom: 0;
-    @include circle($arm-calendar-display-date-highlight-size);
     background-color: $brand-primary;
     transform: translateX(-50%);
   }

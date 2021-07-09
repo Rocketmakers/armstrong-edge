@@ -203,7 +203,7 @@ export const CalendarInput = React.forwardRef(
 
     const onDayClicked = React.useCallback(
       (day: Calendar.IDay) => {
-        setSelectedDate(calendarDayToDateLike(day, selectedDate ? typeof selectedDate : 'string', formatString, locale) as TValue);
+        setSelectedDate?.(calendarDayToDateLike(day, selectedDate ? typeof selectedDate : 'string', formatString, locale) as TValue);
         if (closeCalendarOnDayClick) {
           setCalendarOpen(false);
         }
@@ -221,7 +221,7 @@ export const CalendarInput = React.forwardRef(
         const date = new Date(formState.year, formState.month!, formState.day);
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
           const newDate = Dates.dateObjectToDateLike(date, selectedDate ? typeof selectedDate : 'string', formatString, locale);
-          setSelectedDate(newDate as TValue);
+          setSelectedDate?.(newDate as TValue);
         }
       }
     }, [formState]);
@@ -292,6 +292,7 @@ export const CalendarInput = React.forwardRef(
             contentClassName="arm-calendar-input-dropdown-content"
             openWhenClickInside={false}
             openWhenFocusInside={false}
+            shouldScrollContent={false}
           >
             <InputWrapper
               error={error}
@@ -309,7 +310,7 @@ export const CalendarInput = React.forwardRef(
               rightOverlay={rightOverlay}
             >
               {showCalendarButton && !keepCalendarOpen && (
-                <IconButton iconOnly icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={() => setCalendarOpen(!calendarOpen)} />
+                <IconButton minimalStyle icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={() => setCalendarOpen(!calendarOpen)} />
               )}
 
               {disableInputs ? (

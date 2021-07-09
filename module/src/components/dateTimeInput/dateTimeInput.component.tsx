@@ -110,7 +110,7 @@ export const DateTimeInput = React.forwardRef(
             return;
           }
           if (!selectedDateTime || !isSameMinute(finalDateSelected, Dates.dateLikeToDate(selectedDateTime)!)) {
-            setSelectedDateTime(
+            setSelectedDateTime?.(
               Dates.dateObjectToDateLike(finalDateSelected, selectedDateTime ? typeof selectedDateTime : 'string', formatString, locale) as TValue
             );
           }

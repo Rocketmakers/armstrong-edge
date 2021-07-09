@@ -27,6 +27,9 @@ export interface IButtonProps
 
   /** disable use */
   disabled?: boolean;
+
+  /** don't style beyond removing the default css styling */
+  minimalStyle?: boolean;
 }
 
 /** Renders an HTML button element with some useful additions */
@@ -42,6 +45,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
       leftIcon,
       rightIcon,
       children,
+      minimalStyle,
       statusPosition,
       hideIconOnStatus,
       ...nativeProps
@@ -57,7 +61,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
       <>
         <button
           {...nativeProps}
-          className={ClassNames.concat('arm-button', className)}
+          className={ClassNames.concat('arm-button', className, { 'arm-button-minimal': minimalStyle })}
           data-pending={pending}
           data-disabled={disabled || pending}
           data-error={shouldShowErrorIcon}

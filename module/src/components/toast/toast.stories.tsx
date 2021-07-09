@@ -3,6 +3,7 @@ import * as React from 'react';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Dates } from '../../utils/dates';
 import { Button } from '../button';
+import { Group } from '../group';
 import { useDispatchToast } from '.';
 import { ToastNotification } from './toast.component';
 import { ToastProvider, useToasts } from './toast.context';
@@ -56,12 +57,12 @@ const ToastTypesInner = () => {
   const dispatch = useDispatchToast();
 
   return (
-    <div className="buttons-wrapper">
-      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'error' })}>Click here to open a toast with type error</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'info' })}>Click here to open a toast with type info</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'warning' })}>Click here to open a toast with type warning</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'success' })}>Click here to open a toast with type success</Button>
-    </div>
+    <Group>
+      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'error' })}>Dispatch error</Button>
+      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'info' })}>Dispatch info</Button>
+      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'warning' })}>Dispatch warning</Button>
+      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'success' })}>Dispatch success</Button>
+    </Group>
   );
 };
 export const ToastTypes = () => {

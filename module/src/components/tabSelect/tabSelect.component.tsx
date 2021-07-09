@@ -67,7 +67,7 @@ export const TabSelect = React.forwardRef(
             errorIcon={bindConfig.validationErrorIcon}
             statusPosition={statusPosition}
           >
-            <TabControl currentTab={boundValue!} onTabChange={disabled ? setBoundValue : undefined} {...tabControlProps} ref={ref} />
+            <TabControl currentTab={boundValue!} onTabChange={disabled ? undefined : setBoundValue} {...tabControlProps} ref={ref} />
           </StatusWrapper>
         </div>
 

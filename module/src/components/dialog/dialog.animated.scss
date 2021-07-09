@@ -1,0 +1,13 @@
+.arm-dialog-wrapper {
+  .arm-dialog {
+    animation: scale-up-small $transition-quick;
+  }
+
+  &[data-is-closing='true'] {
+    .arm-dialog {
+      animation: none;
+      transition: transform $transition-quick;
+      transform: scale(#{1 - $scale-amount-small});
+    }
+  }
+}

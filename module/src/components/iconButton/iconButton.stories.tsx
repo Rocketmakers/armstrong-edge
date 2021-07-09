@@ -47,3 +47,7 @@ export const Error = StoryUtils.cloneTemplate(Template, {
   icon: IconUtils.getIconDefinition('Icomoon', 'rocket'),
   error: true,
 });
+export const Minimal = StoryUtils.cloneTemplate(Template, {
+  icon: IconUtils.getIconDefinition('Icomoon', 'rocket'),
+  minimalStyle: true,
+});

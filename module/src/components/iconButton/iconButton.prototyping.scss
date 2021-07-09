@@ -1,6 +1,9 @@
 .arm-icon-button {
-  @include circle(2rem);
   justify-content: center;
+
+  &:not(.arm-button-minimal) {
+    @include circle(2rem);
+  }
 
   > * {
     margin: initial;
@@ -10,14 +13,5 @@
   .arm-status .arm-spinner .arm-icon,
   .arm-status .arm-status-error {
     font-size: 1rem;
-  }
-
-  &[data-icon-only='true'] {
-    background-color: transparent;
-    color: inherit;
-    box-shadow: none;
-    width: initial;
-    height: initial;
-    padding: initial;
   }
 }

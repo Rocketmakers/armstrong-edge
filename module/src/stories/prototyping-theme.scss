@@ -1,24 +1,26 @@
 /** STORY BOOK SPECIFIC GENERAL STYLES **/
 
 // import variables
-@import '../../dist/imports.scss';
-@import '../../dist/animations.scss';
+@import '../../dist/imports';
+@import '../../dist/animations';
 
 // import custom variables
 @import './theme/variables';
 
 // import chosen icon font
-@import '../../dist/icomoon.scss';
-@import '../../dist/linearicons.scss';
+@import '../../dist/icomoon';
+@import '../../dist/linearicons';
 
 // import base component styles
-@import '../../dist/basic.scss';
+@import '../../dist/basic';
 
 // import styled component styles
-@import '../../dist/prototyping.scss';
+@import '../../dist/prototyping';
 
 // import animated component styles
-@import '../../dist/animated.scss';
+@import '../../dist/animated';
 
+// storybook specific styles
 @import './theme/fonts';
 @import './theme/layout';
+@import './theme/animation-demos';

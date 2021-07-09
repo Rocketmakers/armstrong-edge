@@ -163,7 +163,7 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
           const newTime = parseTimePartsToDate(formState as TimeParts, formatString!, locale);
 
           if (newTime !== selectedTime) {
-            setSelectedTime(newTime!);
+            setSelectedTime?.(newTime!);
           }
         } catch (e) {
           bind?.addValidationError(e.message);

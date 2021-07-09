@@ -28,6 +28,7 @@ export * from './components/emailInput';
 export * from './components/errorMessage';
 export * from './components/expandable';
 export * from './components/fixedProgressBar';
+export * from './components/group';
 export * from './components/icon';
 export * from './components/iconButton';
 export * from './components/iconWrapper';

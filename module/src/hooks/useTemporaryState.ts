@@ -8,7 +8,7 @@ import { useTimeout } from './useTimeout';
  * @param time the amount of time in ms to wait to return back to initialValue
  */
 
-export function useTemporaryState<T>(initialValue?: T, time = 500, onReset?: () => void): [T | undefined, (newValue: T) => void] {
+export function useTemporaryState<T>(initialValue?: T, time = 500, onReset?: () => void): [T | undefined, (newValue: T) => void, () => void] {
   const [value, setValue] = React.useState(initialValue);
 
   const onTimeout = React.useCallback(() => {
@@ -16,7 +16,7 @@ export function useTemporaryState<T>(initialValue?: T, time = 500, onReset?: () 
     onReset?.();
   }, [onReset, initialValue]);
 
-  const { set: setTimeout } = useTimeout(time, onTimeout);
+  const { set: setTimeout, clear: clearTimeout } = useTimeout(time, onTimeout);
 
   const set = React.useCallback(
     (newValue: T) => {
@@ -26,5 +26,10 @@ export function useTemporaryState<T>(initialValue?: T, time = 500, onReset?: () 
     [setTimeout]
   );
 
-  return [value, set];
+  const clear = React.useCallback(() => {
+    setValue(initialValue);
+    clearTimeout();
+  }, [clearTimeout]);
+
+  return [value, set, clear];
 }

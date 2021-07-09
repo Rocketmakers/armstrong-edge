@@ -7,20 +7,20 @@
 
 .arm-select-select {
   @include fill;
+
   height: $input-height;
   cursor: pointer;
   padding: $spacing-xsmall 0;
-
   appearance: none;
   background-color: transparent;
   resize: none;
   font-family: inherit;
   outline: none;
-  border: none;
+  border: 0;
 
   &:focus {
     outline: none;
-    border: none;
+    border: 0;
   }
 }
 

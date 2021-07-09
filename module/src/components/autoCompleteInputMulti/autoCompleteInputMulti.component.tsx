@@ -23,6 +23,7 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
       | 'allowFreeText'
       | 'filterOptions'
       | 'allowKeyboardNavigationSelection'
+      | 'noItemsText'
     > {
   /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
@@ -59,6 +60,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
       allowKeyboardNavigationSelection,
       getSelectedOptionTag,
       placeholder,
+      noItemsText,
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
@@ -97,7 +99,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
     // remove a given tag value from the array using its ID (the value which is bound)
     const onRemoveTag = React.useCallback(
       (id: ArmstrongId) => {
-        setBoundValue(boundValue?.filter((item) => item !== id) || []);
+        setBoundValue?.(boundValue?.filter((item) => item !== id) || []);
       },
       [boundValue, setBoundValue]
     );
@@ -108,7 +110,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
         if (boundValue?.find((item) => item === id)) {
           onRemoveTag(id);
         } else {
-          setBoundValue([...(boundValue || []), id!]);
+          setBoundValue?.([...(boundValue || []), id!]);
         }
       },
       [bind, boundValue, options, onRemoveTag]
@@ -144,7 +146,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
     const onAddTag = React.useCallback(
       (addedValue: string) => {
         if (allowFreeText && !boundValue?.find((item) => item === addedValue)) {
-          setBoundValue([...(boundValue || []), addedValue as Id]);
+          setBoundValue?.([...(boundValue || []), addedValue as Id]);
         }
       },
       [allowFreeText, boundValue, setBoundValue]
@@ -201,6 +203,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
             closeOnSelection={false}
             childRootElementSelector=".arm-input-inner"
             searchTerm={textInputInternalValue}
+            noItemsText={noItemsText}
+            closeWhenClickInside={false}
           >
             <TagInput
               {...textInputProps}
