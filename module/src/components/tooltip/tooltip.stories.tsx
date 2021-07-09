@@ -18,21 +18,32 @@ export default StoryUtils.createMeta(Tooltip, 'Layout', 'Tooltip', {});
 
 export const Default = () => {
   return (
-    <Tooltip content="HIYA" tooltipPosition={['above']}>
+    <Tooltip content="I'm in a tooltip" tooltipPosition={['above']}>
       <p>Hover over me for some cool stuff</p>
     </Tooltip>
   );
 };
 export const CustomisedPosition = () => {
   return (
-    <Tooltip content="HIYA" tooltipPosition={['left']}>
-      <p>Hover over me for some cool stuff</p>
-    </Tooltip>
+    <Group>
+      <Tooltip content="I'm in a tooltip" tooltipPosition={['left']}>
+        <p>left</p>
+      </Tooltip>
+      <Tooltip content="I'm in a tooltip" tooltipPosition={['above']}>
+        <p>above</p>
+      </Tooltip>
+      <Tooltip content="I'm in a tooltip" tooltipPosition={['below']}>
+        <p>below</p>
+      </Tooltip>
+      <Tooltip content="I'm in a tooltip" tooltipPosition={['right']}>
+        <p>right</p>
+      </Tooltip>
+    </Group>
   );
 };
 export const OpenOnFocus = () => {
   return (
-    <Tooltip content="HIYA" tooltipPosition={['below']} openOnHover={false} openOnFocus>
+    <Tooltip content="I'm in a tooltip" tooltipPosition={['below']} openOnHover={false} openOnFocus>
       <TextInput placeholder="focus on me to see some tooltip" />
     </Tooltip>
   );
@@ -41,7 +52,7 @@ export const CustomOpeningLogic = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <Tooltip content="HIYA" tooltipPosition={['above']} isOpen={isOpen} openOnHover={false}>
+    <Tooltip content="I'm in a tooltip" tooltipPosition={['above']} isOpen={isOpen} openOnHover={false}>
       <Button onClick={() => setIsOpen(!isOpen)}>Click here to open the tooltip</Button>
     </Tooltip>
   );
@@ -51,8 +62,6 @@ export const CustomContent = () => {
     <Tooltip
       content={
         <div className="custom-tooltip-example">
-          <p>Hey hey hey how's it going</p>
-          <br />
           <Group>
             <Button>Do thing</Button>
             <Button>Do other thing</Button>

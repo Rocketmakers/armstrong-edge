@@ -3,10 +3,10 @@ import * as React from 'react';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Dates } from '../../utils/dates';
 import { Button } from '../button';
+import { Group } from '../group';
 import { useDispatchToast } from '.';
 import { ToastNotification } from './toast.component';
 import { ToastProvider, useToasts } from './toast.context';
-import { Group } from '../group';
 
 /** metadata */
 

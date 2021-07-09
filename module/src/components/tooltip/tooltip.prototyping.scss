@@ -81,10 +81,16 @@
     width: 0;
     height: 0;
   }
+
+  &[data-is-text='true'] {
+    .arm-tooltip-inner {
+      padding: $spacing-xsmall $spacing-small;
+    }
+  }
 }
 
 .arm-tooltip-inner {
   background-color: $white;
-  padding: $spacing-xsmall $spacing-small;
+  padding: $spacing-xsmall;
   border-radius: $border-radius-small;
 }

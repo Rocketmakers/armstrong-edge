@@ -187,10 +187,11 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
           style={style}
           data-position={position?.position}
           role="tooltip"
+          data-is-text={typeof content === 'string' || typeof content === 'number'}
           {...nativeProps}
         >
           <div id={generatedId} className="arm-tooltip-inner">
-            {typeof content === 'string' ? <p>{content}</p> : content}
+            {typeof content === 'string' || typeof content === 'number' ? <p>{content}</p> : content}
           </div>
         </Modal>
       </div>
