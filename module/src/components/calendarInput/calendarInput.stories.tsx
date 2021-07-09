@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Form } from '../..';
+import { Dialog, Form } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { CalendarInput } from './calendarInput.component';
 
@@ -17,7 +17,11 @@ export default StoryUtils.createMeta(CalendarInput, 'Form', 'Calendar Input', {}
 export const Default = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} />;
+  return (
+    <Dialog isOpen>
+      <CalendarInput bind={formProp('date').bind() as any} />
+    </Dialog>
+  );
 };
 
 export const InputsOnly = () => {

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Form, IconSet } from '../..';
+import { useIsFocused } from '../../hooks';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
@@ -102,6 +103,8 @@ export const AutoCompleteInput = React.forwardRef(
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
+    const [isFocused, isFocusedProps] = useIsFocused();
+
     // log a piece of state to manage whether the options dropdown has just been opened, and no filtering has occurred
     const [justOpened, setJustOpened] = React.useState(optionsOpen);
     React.useEffect(() => {
@@ -190,15 +193,17 @@ export const AutoCompleteInput = React.forwardRef(
           setTextInputInternalValue('');
         }
       }
-    }, [allowFreeText, options, boundValue, getOptionName]);
+    }, [allowFreeText, Objects.contentDependency(options), boundValue, getOptionName]);
 
     useDidUpdateEffect(() => {
-      resetInputValue();
-    }, [boundValue, options]);
+      if (!isFocused) {
+        resetInputValue();
+      }
+    }, [boundValue, Objects.contentDependency(options)]);
 
     // when the user closes the dropdown, reset the input value
     useDidUpdateEffect(() => {
-      if (!optionsOpen) {
+      if (!optionsOpen && !isFocused) {
         resetInputValue();
       }
     }, [optionsOpen]);
@@ -206,7 +211,7 @@ export const AutoCompleteInput = React.forwardRef(
     // if allow free text is true, show the currently typed value at the top of the list of options
     const shouldShowFreeTextItemInDropdown = React.useMemo(
       () => allowFreeText && textInputInternalValue && !options?.find((option) => (option.name ?? option.id) === textInputInternalValue),
-      [allowFreeText, textInputInternalValue, options]
+      [allowFreeText, textInputInternalValue, Objects.contentDependency(options)]
     );
 
     return (
@@ -256,6 +261,7 @@ export const AutoCompleteInput = React.forwardRef(
               errorIcon={validationErrorIcon}
               disabled={disabled}
               disableOnPending={false}
+              {...isFocusedProps}
             />
           </DropdownItems>
         </div>

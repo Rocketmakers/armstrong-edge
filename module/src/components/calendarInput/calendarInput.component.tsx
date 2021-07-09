@@ -291,6 +291,7 @@ export const CalendarInput = React.forwardRef(
             dropdownContent={<CalendarDisplay {...calendarDisplayProps} />}
             contentClassName="arm-calendar-input-dropdown-content"
             openWhenClickInside={false}
+            closeWhenClickInside={false}
             openWhenFocusInside={false}
             shouldScrollContent={false}
           >
@@ -310,7 +311,14 @@ export const CalendarInput = React.forwardRef(
               rightOverlay={rightOverlay}
             >
               {showCalendarButton && !keepCalendarOpen && (
-                <IconButton minimalStyle icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={() => setCalendarOpen(!calendarOpen)} />
+                <IconButton
+                  minimalStyle
+                  icon={IconUtils.getIconDefinition('Icomoon', 'calendar')}
+                  onClick={(event) => {
+                    setCalendarOpen(!calendarOpen);
+                    event.stopPropagation();
+                  }}
+                />
               )}
 
               {disableInputs ? (
