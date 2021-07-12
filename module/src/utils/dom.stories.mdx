@@ -1,0 +1,37 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+
+<Meta title="Utilities/DOM" />
+
+## DOM
+
+Utilities for working with the DOM
+
+### clickIsInsideElement
+
+Check if the element that was clicked was inside a given element
+
+```ts
+function clickIsInsideElement(element: HTMLElement, event: React.MouseEvent<HTMLElement>): boolean;
+```
+
+```tsx
+import { Dom } from '@rocketmakers/armstrong';
+
+const MyComponent = () => {
+  const ref = React.useRef(null);
+
+  const onClick = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    const isInside = DOM.clickIsInsideElement(internalRef.current, event);
+
+    if (isInside) {
+      // do some stuff
+    }
+  }, []);
+
+  return (
+    <div className="thing">
+      <div className="inner-thing" onClick={onClick} />
+    </div>
+  );
+};
+```
