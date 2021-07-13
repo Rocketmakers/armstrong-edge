@@ -1,0 +1,1 @@
+export * from './iconWrapper.component';

@@ -1,0 +1,232 @@
+@use "sass:math";
+
+// animations.scss
+
+// CORE
+
+@mixin transform-in($name, $start-transform) {
+  @keyframes #{$name} {
+    from {
+      transform: $start-transform;
+      opacity: 0;
+    }
+
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}
+
+@mixin transform-out($name, $end-transform) {
+  @keyframes #{$name} {
+    from {
+      transform: none;
+      opacity: 1;
+    }
+
+    to {
+      transform: $end-transform;
+      opacity: 0;
+    }
+  }
+}
+
+@mixin transform-continuous($name, $end-transform) {
+  @keyframes #{$name} {
+    from {
+      transform: none;
+    }
+
+    to {
+      transform: $end-transform;
+    }
+  }
+}
+
+// SLIDES
+
+// Slide the given div into place in a direction
+
+// options:
+// slide-in-up-large
+// slide-in-up-medium
+// slide-in-up-small
+// slide-in-down-large
+// slide-in-down-medium
+// slide-in-down-small
+// slide-in-up-large
+// slide-in-up-medium
+// slide-in-up-small
+// slide-in-down-large
+// slide-in-down-medium
+// slide-in-down-small
+
+$slide-amount-large: 30px;
+$slide-amount-medium: 20px;
+$slide-amount-small: 10px;
+
+@mixin slide-in-y($name, $amount) {
+  @include transform-in(slide-in-#{$name}, translateY($amount));
+}
+
+@include slide-in-y(up-large, $slide-amount-large);
+@include slide-in-y(up-medium, $slide-amount-medium);
+@include slide-in-y(up-small, $slide-amount-small);
+
+@include slide-in-y(down-large, -$slide-amount-large);
+@include slide-in-y(down-medium, -$slide-amount-medium);
+@include slide-in-y(down-small, -$slide-amount-small);
+
+@mixin slide-in-x($name, $amount) {
+  @include transform-in(slide-in-#{$name}, translateX($amount));
+}
+
+@include slide-in-x(left-large, $slide-amount-large);
+@include slide-in-x(left-medium, $slide-amount-medium);
+@include slide-in-x(left-small, $slide-amount-small);
+
+@include slide-in-x(right-large, -$slide-amount-large);
+@include slide-in-x(right-medium, -$slide-amount-medium);
+@include slide-in-x(right-small, -$slide-amount-small);
+
+// SCALES
+
+// Scale the div into place by a given amount to 1
+
+// scale-up-large
+// scale-up-medium
+// scale-up-small
+// scale-down-large
+// scale-down-medium
+// scale-down-small
+
+$scale-amount-large: 0.3;
+$scale-amount-medium: 0.2;
+$scale-amount-small: 0.05;
+
+@mixin scale-in($name, $amount) {
+  @include transform-in(scale-#{$name}, scale($amount));
+}
+
+@include scale-in(up-large, 1 - $scale-amount-large);
+@include scale-in(up-medium, 1 - $scale-amount-medium);
+@include scale-in(up-small, 1 - $scale-amount-small);
+
+@include scale-in(down-large, 1 + $scale-amount-large);
+@include scale-in(down-medium, 1 + $scale-amount-medium);
+@include scale-in(down-small, 1 + $scale-amount-small);
+
+// ROTATES
+
+// Rotate the div into place by a given amount to 0
+
+// rotate-in-clockwise-large
+// rotate-in-clockwise-medium
+// rotate-in-clockwise-small
+// rotate-in-clockwise-very-small
+// rotate-in-anticlockwise-large
+// rotate-in-anticlockwise-medium
+// rotate-in-anticlockwise-small
+// rotate-in-anticlockwise-very-small
+
+$rotate-amount-large: 360deg;
+$rotate-amount-medium: 180deg;
+$rotate-amount-small: 90deg;
+$rotate-amount-very-small: 45deg;
+
+@mixin rotate-in($name, $amount) {
+  @include transform-in(rotate-in-#{$name}, rotate($amount));
+}
+
+@include rotate-in(clockwise-large, -$rotate-amount-large);
+@include rotate-in(clockwise-medium, -$rotate-amount-medium);
+@include rotate-in(clockwise-small, -$rotate-amount-small);
+@include rotate-in(clockwise-very-small, -$rotate-amount-very-small);
+
+@include rotate-in(anticlockwise-large, $rotate-amount-large);
+@include rotate-in(anticlockwise-medium, $rotate-amount-medium);
+@include rotate-in(anticlockwise-small, $rotate-amount-small);
+@include rotate-in(anticlockwise-very-small, $rotate-amount-very-small);
+
+// SPINS
+
+// Spin the div
+
+// spin-clockwise
+// spin-anticlockwise
+
+@include transform-continuous(spin-clockwise, rotate(360deg));
+@include transform-continuous(spin-anticlockwise, rotate(-360deg));
+
+// FADES
+
+// Fade the div's opacity
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+// EXPANDS
+
+// Expand the div to an explicit max-height or max-width
+
+// This can alternatively be done using a computed max-height or max-width by using the AutoResizer or Expandable components.
+
+// expand-in-width-small
+// expand-in-width-medium
+// expand-in-width-large
+// expand-in-height-small
+// expand-in-height-medium
+// expand-in-height-large
+
+$expand-max-small: 100px;
+$expand-max-medium: 300px;
+$expand-max-large: 700px;
+
+@mixin expand-in-width($name, $max) {
+  @keyframes expand-in-width-#{$name} {
+    from {
+      max-width: 0;
+    }
+    to {
+      max-width: $max;
+    }
+  }
+}
+
+@mixin expand-in-height($name, $max) {
+  @keyframes expand-in-height-#{$name} {
+    from {
+      max-height: 0;
+    }
+    to {
+      max-height: $max;
+    }
+  }
+}
+
+@include expand-in-width(small, $expand-max-small);
+@include expand-in-width(medium, $expand-max-medium);
+@include expand-in-width(large, $expand-max-large);
+
+@include expand-in-height(small, $expand-max-small);
+@include expand-in-height(medium, $expand-max-medium);
+@include expand-in-height(large, $expand-max-large);
+

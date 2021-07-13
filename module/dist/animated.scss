@@ -1,0 +1,220 @@
+@use "sass:math";
+
+// button.animated.scss
+
+.arm-button {
+  transition: opacity $transition-quick, background-color $transition-quick, transform $transition-quick;
+}
+
+// characterLimit.animated.scss
+
+.arm-character-limit {
+  .arm-icon {
+    animation: expand-in-width-small $transition-quick;
+
+    &::before {
+      animation: fade-in $transition-quick;
+    }
+  }
+}
+
+// checkboxInput.animated.scss
+
+.arm-checkbox-input-checkbox {
+  transition-duration: $transition-quick;
+  transition-property: background-color, border-color;
+}
+
+.arm-icon.arm-checkbox-input-checked-icon {
+  transition: opacity $transition-quick;
+}
+
+// dialog.animated.scss
+
+.arm-dialog-wrapper {
+  .arm-dialog {
+    animation: scale-up-small $transition-quick;
+  }
+
+  &[data-is-closing='true'] {
+    .arm-dialog {
+      animation: none;
+      transition: transform $transition-quick;
+      transform: scale(#{1 - $scale-amount-small});
+    }
+  }
+}
+
+// dropdown.animated.scss
+
+@include screen-phone {
+  .arm-dropdown-content {
+    animation: slide-in-up-large $transition-quick;
+  }
+}
+
+// fixedProgressBar.animated.scss
+
+.arm-progress-bar {
+  transition: transform $transition-quick;
+}
+
+// inputWrapper.animated.scss
+
+.arm-input-wrapper {
+  transition: opacity $transition-quick, border-color $transition-quick, box-shadow $transition-quick;
+}
+
+// modal.animated.scss
+
+.arm-modal-wrapper {
+  animation: fade-in $transition-quick;
+
+  &[data-is-closing='true'] {
+    animation: none;
+    transition: opacity $transition-quick;
+  }
+}
+
+// progressBar.animated.scss
+
+.arm-progress-bar-progress::after {
+  transition-duration: $transition-quick;
+  transition-property: background-color, transform;
+}
+
+.arm-progress-bar-label {
+  &[data-variant='centre-progress'] {
+    transition: width $transition-quick;
+  }
+}
+
+// radioInput.animated.scss
+
+.arm-radio-input-radio {
+  .arm-icon {
+    transition: opacity $transition-quick;
+  }
+}
+
+// sideMenu.animated.scss
+
+.arm-side-menu {
+  &[data-side='left'] {
+    animation: slide-in-right-large $transition-quick;
+  }
+
+  &[data-side='right'] {
+    animation: slide-in-left-large $transition-quick;
+  }
+}
+
+// status.animated.scss
+
+.arm-status {
+  .arm-spinner {
+    .arm-icon {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+.arm-status-error {
+  color: $color-negative;
+  font-size: 0.75rem;
+}
+
+// stepper.animated.scss
+
+.arm-stepper-step-icon {
+  transition-property: background-color, border-color;
+  transition-duration: $transition-quick;
+
+  &::after {
+    transition: background-color $transition-quick;
+  }
+}
+
+// switchInput.animated.scss
+
+.arm-switch-input {
+  .arm-switch-input-inner {
+    transition: background-color $transition-quick;
+
+    &::after {
+      transition: transform $transition-quick;
+    }
+
+    .arm-switch-input-checked-icon,
+    .arm-switch-input-unchecked-icon {
+      transition: opacity $transition-quick, transform $transition-quick;
+    }
+  }
+}
+
+// tabControl.animated.scss
+
+.arm-button.arm-tab-control-tab {
+  transition-duration: $transition-quick;
+  transition-property: background-color, color, border-color;
+}
+
+// tagInput.animated.scss
+
+.arm-tag-input {
+  .arm-tag {
+    animation: expand-in-width-medium $transition-quick linear;
+
+    > * {
+      animation: fade-in $transition-quick;
+    }
+  }
+}
+
+// toast.animated.scss
+
+// must be nested to ensure toasts don't animate like this when rendered on their own
+.arm-toast-notification-container {
+  .arm-toast-notification {
+    animation: expand-in-height-medium $transition-medium;
+    max-height: 300px;
+    position: relative;
+    display: flex;
+
+    &[data-dismissing='true'] {
+      animation: none;
+      transition: max-height $transition-quick, padding $transition-quick;
+      max-height: 0;
+      padding: 0;
+      pointer-events: none;
+
+      .arm-toast-notification-inner {
+        animation: none;
+        transform: scale(0.7);
+        opacity: 0;
+      }
+    }
+  }
+
+  .arm-toast-notification-inner {
+    animation: slide-in-left-large $transition-quick;
+    transition: transform $transition-quick, opacity $transition-quick;
+  }
+
+  .arm-toast-notification-container-left {
+    .arm-toast-notification-inner {
+      animation: slide-in-right-large $transition-quick;
+    }
+  }
+}
+
+// validationErrors.animated.scss
+
+.arm-validation-errors {
+  animation: expand-in-height-medium $transition-slow forwards linear;
+
+  .arm-error-message {
+    animation: slide-in-right-small $transition-quick;
+  }
+}
+
