@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { Button } from '../button';
-import { IconUtils } from '../icon';
+import { IconUtils } from '../icon/icons.utils';
 import { Dropdown } from './dropdown.component';
 
 /** metadata */

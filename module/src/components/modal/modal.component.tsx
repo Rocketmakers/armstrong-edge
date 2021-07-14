@@ -1,11 +1,9 @@
 import * as React from 'react';
 
-import { useEventListener, useModalLayerElement } from '../..';
-import { useDelayedDependentSwitch } from '../../hooks/useDelayedDependentSwitch';
-import { ClassNames } from '../../utils/classNames';
-import { DOM } from '../../utils/dom';
-import { Globals } from '../../utils/globals';
+import { useDelayedDependentSwitch, useEventListener } from '../../hooks';
+import { ClassNames, DOM, Globals } from '../../utils';
 import { IPortalProps, Portal } from '../portal';
+import { useModalLayerElement } from './modal.context';
 
 export interface IModalProps
   extends Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
@@ -71,7 +69,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     ref
   ) => {
     const internalRef = React.useRef<HTMLDivElement>(null);
-    React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+    React.useImperativeHandle(ref, () => internalRef.current!);
 
     const close = React.useCallback(() => {
       if (!disableClose) {

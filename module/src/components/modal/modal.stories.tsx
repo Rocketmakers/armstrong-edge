@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Button } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
+import { Button } from '../button';
 import { Modal } from './modal.component';
 
 /** metadata */

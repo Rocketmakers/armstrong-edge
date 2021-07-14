@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ClassNames } from '../../utils/classNames';
 import { Button, IButtonProps } from '../button';
 import { Dropdown } from '../dropdown/dropdown.component';
+import { IconUtils } from '../icon/icons.utils';
 
 export interface IDropdownButtonProps extends IButtonProps {
   /** the contents of the dropdown */
@@ -16,6 +17,7 @@ export const DropdownButton: React.FC<IDropdownButtonProps> = ({ dropdownContent
   return (
     <Dropdown
       isOpen={dropdownOpen}
+      // isOpen
       onOpenChange={setDropdownOpen}
       className={ClassNames.concat('arm-dropdown-button', className)}
       dropdownContent={dropdownContent}
@@ -23,4 +25,8 @@ export const DropdownButton: React.FC<IDropdownButtonProps> = ({ dropdownContent
       <Button {...buttonProps}>{children}</Button>
     </Dropdown>
   );
+};
+
+DropdownButton.defaultProps = {
+  rightIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
 };

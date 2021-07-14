@@ -30,5 +30,5 @@ export function useEventListener(
         }
       };
     }
-  }, [eventHandler]);
+  }, [eventHandler, element, type]);
 }

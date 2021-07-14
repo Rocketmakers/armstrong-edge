@@ -77,7 +77,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
               error={error}
               validationErrorMessages={validationErrorMessages}
             >
-              {typeof children === 'string' || typeof children === 'number' ? <p>{children}</p> : children}
+              {typeof children === 'string' || typeof children === 'number' ? <span>{children}</span> : children}
             </StatusWrapper>
           </IconWrapper>
         </button>

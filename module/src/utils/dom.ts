@@ -5,4 +5,9 @@ export namespace DOM {
   export function clickIsInsideElement(element: HTMLElement, event: React.MouseEvent<HTMLElement>): boolean {
     return (element && event.target === element) || element.contains(event.target as Node);
   }
+
+  export function domRectToObject(domRect: DOMRect) {
+    const { top, right, bottom, left, width, height, x, y } = domRect;
+    return { top, right, bottom, left, width, height, x, y };
+  }
 }
