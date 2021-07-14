@@ -10,7 +10,9 @@ import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.c
 type NativeInputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
 interface IDelayedInputBaseProps<TValue> extends NativeInputProps {
+  /** The time in ms to delay the debounce or throttle effect. */
   milliseconds: number;
+
   /** Called when the value changes, takes into account any delay values and other effects. */
   onValueChange: (value: TValue) => any;
 }

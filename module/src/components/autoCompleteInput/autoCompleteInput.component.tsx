@@ -61,6 +61,9 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
 
   /** Should setBoundValue to undefined if the user clears the text input - true by default */
   unsetOnClear?: boolean;
+
+  /** the className given to the content of the dropdown */
+  dropdownClassName?: string;
 }
 
 /** A text input which displays some options in a dropdown */
@@ -81,6 +84,7 @@ export const AutoCompleteInput = React.forwardRef(
       textInputValue,
       filterOptions,
       onChange,
+      dropdownClassName,
       value,
       allowFreeText,
       allowKeyboardNavigationSelection,
@@ -224,7 +228,7 @@ export const AutoCompleteInput = React.forwardRef(
           data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
-            contentClassName="arm-auto-complete-options"
+            contentClassName={ClassNames.concat('arm-auto-complete-options', dropdownClassName)}
             items={[
               ...(shouldShowFreeTextItemInDropdown ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
               ...filteredOptions.map((option) => ({

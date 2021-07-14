@@ -155,11 +155,11 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onScrollDocument = React.useCallback(
       (event: Event) => {
         if (
-          (closeOnScroll &&
-            // check if scrolling element is inside the dropdown content
-            event.target instanceof HTMLDivElement &&
-            !event.target.classList.contains('arm-dropdown-content')) ||
-          !(event.target instanceof HTMLDivElement)
+          isOpen &&
+          closeOnScroll &&
+          // check if scrolling element is inside the dropdown content
+          ((event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
+            !(event.target instanceof HTMLDivElement))
         ) {
           onOpenChange(false);
         }
@@ -167,8 +167,8 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       [onOpenChange, closeOnScroll]
     );
 
-    useEventListener('scroll', onScrollDocument, Globals.Document, { capture: true, passive: true }, isOpen && closeOnScroll);
-    useEventListener('resize', onScrollDocument, Globals.Document, { capture: true, passive: true }, isOpen && closeOnScroll);
+    useEventListener('scroll', onScrollDocument, Globals.Document, { capture: true, passive: true });
+    useEventListener('resize', onScrollDocument, Globals.Document, { capture: true, passive: true });
 
     // open on mouse down rather than click to better reflect native functionality
     const onMouseDownEvent = React.useCallback(

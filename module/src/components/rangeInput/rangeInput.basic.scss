@@ -29,7 +29,7 @@ $arm-range-input-track-thickness: 6px !default;
 .arm-range-input-track {
   position: relative;
   flex-grow: 1;
-  height: $input-height;
+  height: $arm-input-height;
 }
 
 .arm-range-input-input {

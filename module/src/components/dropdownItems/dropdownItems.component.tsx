@@ -107,6 +107,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   className,
   focusableWrapper,
   onMouseDown,
+  contentClassName,
   onOpenChange,
   id: htmlId,
   noItemsText,
@@ -240,7 +241,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     <Dropdown
       {...dropdownProps}
       className={ClassNames.concat('arm-dropdown-items', className)}
-      contentClassName="arm-dropdown-items-content"
+      contentClassName={ClassNames.concat('arm-dropdown-items-content', contentClassName)}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       onKeyDown={onKeyDownEvent}

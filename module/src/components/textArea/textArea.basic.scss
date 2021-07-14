@@ -7,7 +7,7 @@
 }
 
 .arm-text-area-textarea {
-  min-height: $input-height-large;
+  min-height: $arm-input-height-large;
   width: 100%;
   appearance: none;
   background-color: transparent;
@@ -15,6 +15,7 @@
   font-family: inherit;
   outline: none;
   border: 0;
+  color: inherit;
 
   &:focus {
     outline: none;
