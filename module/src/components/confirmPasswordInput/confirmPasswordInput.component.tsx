@@ -21,15 +21,12 @@ export const ConfirmPasswordInput = React.forwardRef<HTMLInputElement, IConfirmP
       validationErrorIcon: errorIcon,
     });
 
-    console.log(bind);
-
     const [inputValue, setInputValue] = React.useState('');
 
     const [showError, setShowError] = React.useState(false);
 
     const onBlur = React.useCallback(
       (event: React.FocusEvent<HTMLInputElement>) => {
-        console.log(inputValue, boundValue);
         if (boundValue && inputValue && inputValue !== boundValue) {
           setShowError(true);
           onBlurProp?.(event);
