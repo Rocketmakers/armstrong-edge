@@ -65,6 +65,7 @@ $color-info: #3498d8;
 ### Spacing
 
 ```css
+$spacing-xxxsmall: 0.125rem;
 $spacing-xxsmall: 0.25rem;
 $spacing-xsmall: 0.5rem;
 $spacing-small: 1rem;
@@ -240,7 +241,7 @@ $arm-switch-input-width: 50px;
 $arm-switch-input-height: 30px;
 
 /* the padding for the handle in the switch input */
-$arm-switch-input-handle-padding: math.div($spacing-xxsmall, 2);
+$arm-switch-input-handle-padding: $spacing-xxxsmall;
 
 /* the size of the handle, by default calculated using the given height and padding */
 $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input-handle-padding * 2});

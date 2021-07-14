@@ -2,7 +2,14 @@ import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 
 <Meta title="Armstrong Development/Internal SCSS" />
 
-## SCSS for Armstrong developers
+# SCSS for Armstrong developers
+
+### Some quick rules
+
+- Keep your SCSS as flat as possible to make sure it's easily overridable
+- Add important layout styles to `*.basic.scss` files that are necessary for the functionaing of the component, and add anything extra to make it look good to `*.prototyping.scss` files
+- Document any variables and mixins you add in Storybook
+- Don't do any SCSS functions (like darken or whatever) on SCSS variables - we want these to be able to work if overriden as CSS variables whose values aren't available to SCSS at build time
 
 ### SCSS concatenation implementation
 

@@ -56,7 +56,7 @@ $arm-stepper-icon-height-small: 1rem !default;
     .arm-stepper-step-icon {
       @include square($arm-stepper-icon-height-small);
 
-      margin-top: math.div($arm-stepper-icon-height, 2) - math.div($arm-stepper-icon-height-small, 2);
+      margin-top: calc(#{$arm-stepper-icon-height} / 2 - #{$arm-stepper-icon-height-small} / 2);
       font-size: 0.7rem;
     }
 
@@ -133,17 +133,17 @@ $arm-stepper-icon-height-small: 1rem !default;
 
       .arm-stepper-step-icon {
         &::after {
-          top: calc(#{math.div($arm-stepper-icon-height, 2)} - 1px);
+          top: calc(#{$arm-stepper-icon-height} / 2 - 1px);
           width: calc(100% - #{$arm-stepper-icon-height});
           height: 2px;
-          left: calc(50% + #{math.div($arm-stepper-icon-height, 2)});
+          left: calc(50% + #{$arm-stepper-icon-height} / 2);
         }
       }
 
       &[data-next-small='true'] {
         .arm-stepper-step-icon {
           &::after {
-            width: calc(100% - #{math.div($arm-stepper-icon-height-small, 2) + math.div($arm-stepper-icon-height, 2)});
+            width: calc(100% - #{$arm-stepper-icon-height-small} / 2 + #{$arm-stepper-icon-height} / 2);
           }
         }
       }
@@ -151,8 +151,8 @@ $arm-stepper-icon-height-small: 1rem !default;
       &[data-small='true'] {
         .arm-stepper-step-icon {
           &::after {
-            left: calc(50% + #{math.div($arm-stepper-icon-height-small, 2)});
-            width: calc(100% - #{math.div($arm-stepper-icon-height-small, 2) + math.div($arm-stepper-icon-height, 2)});
+            left: calc(50% + #{$arm-stepper-icon-height-small} / 2);
+            width: calc(100% - #{$arm-stepper-icon-height-small} / 2 + #{$arm-stepper-icon-height} / 2);
           }
         }
 
@@ -181,28 +181,28 @@ $arm-stepper-icon-height-small: 1rem !default;
         margin-right: $spacing-small;
 
         &::after {
-          left: calc(#{math.div($arm-stepper-icon-height, 2)} - 1px);
+          left: calc(#{$arm-stepper-icon-height} / 2 - 1px);
           height: calc(100% - #{$arm-stepper-icon-height});
           width: 2px;
-          top: calc(50% + #{math.div($arm-stepper-icon-height, 2)});
+          top: calc(50% + #{$arm-stepper-icon-height} / 2);
         }
       }
 
       &[data-next-small='true'] {
         .arm-stepper-step-icon {
           &::after {
-            height: calc(100% - #{math.div($arm-stepper-icon-height-small, 2) + math.div($arm-stepper-icon-height, 2)});
+            height: calc(100% - #{$arm-stepper-icon-height-small} / 2 + #{$arm-stepper-icon-height} / 2);
           }
         }
       }
 
       &[data-small='true'] {
         .arm-stepper-step-icon {
-          margin-left: math.div($arm-stepper-icon-height, 2) - math.div($arm-stepper-icon-height-small, 2);
+          margin-left: calc(#{$arm-stepper-icon-height} / 2 - #{$arm-stepper-icon-height-small} / 2);
 
           &::after {
-            top: calc(50% + #{math.div($arm-stepper-icon-height-small, 2)});
-            height: calc(100% - #{math.div($arm-stepper-icon-height-small, 2) + math.div($arm-stepper-icon-height, 2)});
+            top: calc(50% + #{$arm-stepper-icon-height-small} / 2);
+            height: calc(100% - #{$arm-stepper-icon-height-small} / 2 + #{arm-stepper-icon-height} / 2);
           }
         }
 
