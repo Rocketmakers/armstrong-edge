@@ -17,7 +17,7 @@ $arm-range-input-track-thickness: 6px !default;
 .arm-range-input {
   @include space-between-children-horizontal($spacing-xsmall);
 
-  width: $input-width;
+  width: $arm-input-width;
   display: flex;
   align-items: center;
 

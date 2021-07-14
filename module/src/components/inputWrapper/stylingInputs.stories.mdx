@@ -14,6 +14,21 @@ Almost all inputs in Armstrong use the `InputWrapper` component. This renders th
 
 This means, to set the styling for your inputs, this can happen in just one place.
 
+## Overriding variables
+
+As described in SCSS/variables there are a number of variables that can be overriden in your code. To change the default sizes you can use
+
+```css
+$arm-input-width: new-width;
+$arm-input-height: new-height;
+
+/* used for bigger inputs, like TextArea and DateTimeInput */
+$arm-input-width-large: new-width;
+$arm-input-height-large: new-height;
+```
+
+## Examples
+
 Here are some examples
 
 _not all of these inputs work, this is a limitation of Storybooks Canvas not being able to have its own state, so they can't actually be easily bound up_
