@@ -6,7 +6,7 @@ import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 
 This guide includes migration guides for form elements that have significantly changed, or been split up, or where those changes aren't clear from the types.
 
-### TextInput and TextAreaInput
+### TextInput and TextArea
 
 The TextInput's `multiLine` prop previously made the TextInput render a textarea instead of an input. This prop has been removed in favour of a new TextAreaInput component.
 
@@ -15,10 +15,12 @@ The TextInput's `multiLine` prop previously made the TextInput render a textarea
 <TextInput multiLine />
 
 // new
-<TextAreaInput />
+<TextArea />
 ```
 
-Additionally, TextInput has been split into a number of different components most of which just add `type=X` but NumberInput uses a numeric bind prop.
+Additionally, TextInput has been split into a number of different components most of which just add `type=X`.
+
+I.E. `NumberInput`, `NativeDateInput`, `PasswordInput`
 
 ### SelectInput
 
@@ -34,33 +36,33 @@ By default, it will handle filtering of the given options internally.
 
 ```tsx
 // old
-const { DataForm, bind } = useForm(initialData)
+const { DataForm, bind } = useForm(initialData);
 
 const { filter, options, setFilter } = useOptions([
-    {id: 'a', name: 'thing'},
-    {id: 'b', name: 'other thing'},
+  { id: 'a', name: 'thing' },
+  { id: 'b', name: 'other thing' },
 ]);
 
 return (
-    <DataForm> 
-        <AutoCompleteInput {...bind.autoCompleteInput('thing')} options={options} filter={filter} onFilterChange={setFilter} />
-    </DataForm>
-)
+  <DataForm>
+    <AutoCompleteInput {...bind.autoCompleteInput('thing')} options={options} filter={filter} onFilterChange={setFilter} />
+  </DataForm>
+);
 ```
 
 ```tsx
 // new
-const { formProp } = Form.use({ thing: '' })
+const { formProp } = Form.use({ thing: '' });
 
 return (
-    <AutoCompleteInput
-        bind={formProp.bind('thing')}
-        options={[
-            {id: 'a', name: 'thing'},
-            {id: 'b', name: 'other thing'},
-        ]} 
-    />
-)
+  <AutoCompleteInput
+    bind={formProp.bind('thing')}
+    options={[
+      { id: 'a', name: 'thing' },
+      { id: 'b', name: 'other thing' },
+    ]}
+  />
+);
 ```
 
 The above example will filter options based on whether they start with the value in the input

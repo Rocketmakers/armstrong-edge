@@ -1,10 +1,10 @@
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
-import { TextAreaInput } from './textAreaInput.component';
+import { TextArea } from './textArea.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(TextAreaInput, 'Form', 'Text Area Input', {
+export default StoryUtils.createMeta(TextArea, 'Form', 'Text Area', {
   placeholder: {
     control: { type: 'text' },
     description: 'Adds placeholder text to the input',
@@ -19,7 +19,7 @@ export default StoryUtils.createMeta(TextAreaInput, 'Form', 'Text Area Input', {
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(TextAreaInput);
+const Template = StoryUtils.createTemplate(TextArea);
 
 /** stories */
 
@@ -27,6 +27,6 @@ export const Default = StoryUtils.cloneTemplate(Template, {});
 export const WithIcons = StoryUtils.cloneTemplate(Template, { leftIcon: { iconSet: 'Icomoon', icon: 'certificate' } });
 export const WithValidationErrors = StoryUtils.cloneTemplate(Template, {
   validationErrorMessages: ['Uh oh your punctuation is bad'],
-  validationErrorIcon: IconUtils.getIconDefinition('LinearIcons', 'warning'),
+  errorIcon: IconUtils.getIconDefinition('LinearIcons', 'warning'),
   validationMode: 'message',
 });

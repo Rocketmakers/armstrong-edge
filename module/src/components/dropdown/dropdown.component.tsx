@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useResizeObserver } from '../../hooks';
+import { useEventListener, useResizeObserver } from '../../hooks';
 import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
@@ -48,6 +48,9 @@ export interface IDropdownProps
 
   /** the margin in px around the edge of the innerWindow used to detect whether the dropdown is intersecting the edge - used to reposition it */
   edgeDetectionMargin?: number;
+
+  /** if the user blurs then focuses the browser window while the element is focused, it should reopen */
+  reopenOnWindowFocusWhileFocused?: boolean;
 }
 
 export interface IDropdownRef {
@@ -79,6 +82,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       onFocus,
       shouldScrollContent,
       edgeDetectionMargin,
+      reopenOnWindowFocusWhileFocused,
       ...htmlProps
     },
     ref
@@ -89,6 +93,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
 
     const [rootRect, getRootRectContentRect] = useBoundingClientRect(elementToRenderBelowRef);
     const windowSize = useWindowSize();
+
+    // used to stop the dropdown from reopening if focused when the blurs then refocuses the window
+    // (if an element is focused in the browser window, the focus event on that element is retriggered when the window focuses, leading to a slightly weird behaviour)
+    const [windowBlurred, setWindowBlurred] = React.useState(false);
 
     useResizeObserver(getRootRectContentRect, {}, rootRef);
 
@@ -114,6 +122,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       setModalSize(size);
     }, []);
 
+    // get top position of modal from root rect and modal's size
     const top = React.useMemo(
       () =>
         rootRect &&
@@ -122,6 +131,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       [rootRect?.top, rootRect?.height, modalSize?.height, windowSize.innerHeight]
     );
 
+    // get left position of modal from root rect and modal's size
     const left = React.useMemo(
       () =>
         rootRect &&
@@ -141,6 +151,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       }
     }, [childRootElementSelector]);
 
+    // if closeOnScroll is true, close the dropdown
     const onScrollDocument = React.useCallback(
       (event: Event) => {
         if (
@@ -156,18 +167,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       [onOpenChange, closeOnScroll]
     );
 
-    React.useEffect(() => {
-      if (isOpen && closeOnScroll) {
-        Globals.Document?.addEventListener('scroll', onScrollDocument, { capture: true, passive: true });
-        Globals.Document?.body.addEventListener('resize', onScrollDocument, { capture: true, passive: true });
+    useEventListener('scroll', onScrollDocument, Globals.Document, { capture: true, passive: true }, isOpen && closeOnScroll);
+    useEventListener('resize', onScrollDocument, Globals.Document, { capture: true, passive: true }, isOpen && closeOnScroll);
 
-        return () => {
-          Globals.Document?.removeEventListener('scroll', onScrollDocument, { capture: true });
-          Globals.Document?.body.removeEventListener('resize', onScrollDocument, { capture: true });
-        };
-      }
-    }, [isOpen, closeOnScroll]);
-
+    // open on mouse down rather than click to better reflect native functionality
     const onMouseDownEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         if (openWhenClickInside) {
@@ -179,19 +182,22 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       [openWhenClickInside, closeWhenClickInside, onOpenChange, onMouseDown, isOpen]
     );
 
+    // open on focus
     const onFocusEvent = React.useCallback(
       (event: React.FocusEvent<HTMLDivElement>) => {
-        if (openWhenFocusInside) {
+        if (openWhenFocusInside && (!windowBlurred || reopenOnWindowFocusWhileFocused)) {
           onOpenChange(true);
         }
+
         onFocus?.(event);
       },
-      [openWhenFocusInside, onOpenChange, onFocus]
+      [openWhenFocusInside, onOpenChange, onFocus, windowBlurred, reopenOnWindowFocusWhileFocused]
     );
 
     const onScrollContent = React.useCallback((event: React.UIEvent) => event.stopPropagation(), []);
     const onMouseDownContent = React.useCallback((event: React.UIEvent) => event.stopPropagation(), []);
 
+    // assign sizing to css variables for consumption in CSS
     const modalStyle = React.useMemo(
       () =>
         ({
@@ -212,6 +218,12 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       },
       [onOpenChange, clicking]
     );
+
+    // logic for ensuring that when the window is focused, the dropdown doesn't reopen if the element is focused
+    const onWindowBlur = React.useCallback(() => setWindowBlurred(true), []);
+    const onWindowFocus = React.useCallback(() => setTimeout(() => setWindowBlurred(false)), []);
+    useEventListener('blur', onWindowBlur);
+    useEventListener('focus', onWindowFocus);
 
     return (
       <div

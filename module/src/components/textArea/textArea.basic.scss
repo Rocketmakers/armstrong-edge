@@ -1,4 +1,4 @@
-.arm-text-area-input {
+.arm-text-area {
   max-width: $input-width-large;
 
   .arm-input-inner {
@@ -6,7 +6,7 @@
   }
 }
 
-.arm-text-area-input-textarea {
+.arm-text-area-textarea {
   min-height: $input-height-large;
   width: 100%;
   appearance: none;

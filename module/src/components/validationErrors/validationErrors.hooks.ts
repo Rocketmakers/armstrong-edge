@@ -9,7 +9,7 @@ export function useMyValidationErrorMessages(bind?: IBindingProps<any>, validati
     () =>
       Arrays.flatten(
         validationErrorMessages,
-        bind?.myValidationErrors.map((error) => error.message)
+        bind?.myValidationErrors?.map((error) => error.message)
       ),
     [validationErrorMessages, bind?.myValidationErrors]
   );

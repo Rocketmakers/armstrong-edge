@@ -49,7 +49,7 @@ export * from './tabSelect';
 export * from './tag';
 export * from './tagInput';
 export * from './telInput';
-export * from './textAreaInput';
+export * from './textArea';
 export * from './textInput';
 export * from './timeInput';
 export * from './toast';

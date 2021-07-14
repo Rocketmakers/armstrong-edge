@@ -14,10 +14,11 @@ export function useEventListener(
   type: string,
   eventHandler: (e: any) => any,
   element: Pick<HTMLElement, 'addEventListener' | 'removeEventListener'> | undefined = Globals.Window,
-  options: boolean | AddEventListenerOptions | undefined = { passive: true }
+  options: boolean | AddEventListenerOptions | undefined = { passive: true },
+  enabled = true
 ) {
   React.useEffect(() => {
-    if (element) {
+    if (element && enabled) {
       element.addEventListener(type, eventHandler, options);
 
       return () => {
@@ -30,5 +31,5 @@ export function useEventListener(
         }
       };
     }
-  }, [eventHandler, element, type]);
+  }, [eventHandler, element, type, enabled]);
 }

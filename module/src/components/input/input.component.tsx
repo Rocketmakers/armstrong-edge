@@ -112,10 +112,12 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         onChange?.(event);
         const currentValue = event.currentTarget.value;
         setBoundValue?.(currentValue);
+        onValueChange?.(currentValue);
       },
       [setBoundValue, onBindValueChange, onChange]
     );
 
+    /** onChange used for throttled inputs */
     const onValueChangeEvent = React.useCallback(
       (currentValue: string) => {
         setBoundValue?.(currentValue);

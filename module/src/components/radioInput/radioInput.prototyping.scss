@@ -1,5 +1,13 @@
-.arm-radio-input label {
-  user-select: none;
+.arm-radio-input {
+  label {
+    user-select: none;
+  }
+
+  &[data-checked='true'] {
+    .arm-radio-input-radio {
+      border-color: $brand-primary;
+    }
+  }
 
   .arm-radio-input-radio {
     border-radius: 50%;
