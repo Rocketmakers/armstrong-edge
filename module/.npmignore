@@ -4,4 +4,8 @@ src/
 .eslintignore
 .prettierignore
 .prettierrc.yaml
-.vscode
+.stylelintrc.json
+*.tgz
+.vscode/
+.storybook/
+build/

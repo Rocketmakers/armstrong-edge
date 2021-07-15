@@ -86,6 +86,12 @@ export interface ICalendarDisplayProps {
    */
   calendarDayOfTheWeekHeadingDisplayFormat?: string;
 
+  /**
+   * Allows you to toggle the highlighting of todays date on the calendar
+   * - Defaults to true
+   */
+  highlightToday?: boolean;
+
   /** CSS className property */
   className?: string;
 }
@@ -113,6 +119,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
       calendarMonthSelectDisplayFormat,
       calendarYearSelectDisplayFormat,
       calendarDayOfTheWeekHeadingDisplayFormat,
+      highlightToday,
       className,
     },
     ref
@@ -181,7 +188,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
                 key={displayDay.day.numberInMonth}
                 data-selected={displayDay.day.isSelected}
                 disabled={displayDay.day.isDisabled}
-                data-today={displayDay.day.isToday}
+                data-today={highlightToday && displayDay.day.isToday}
                 aria-current={displayDay.day.isToday && 'date'}
                 data-range-start={displayDay.day.isRangeStart}
                 data-range-middle={displayDay.day.isRangeMiddle}
@@ -206,4 +213,5 @@ CalendarDisplay.defaultProps = {
   calendarMonthSelectDisplayFormat: 'MMMM',
   calendarYearSelectDisplayFormat: 'yyyy',
   calendarDayDisplayFormat: 'd',
+  highlightToday: true,
 };

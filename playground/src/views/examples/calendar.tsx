@@ -6,5 +6,5 @@ export const CalendarExample: React.FC = () => {
     myDate: ''
   })
 
-  return <CalendarInput bind={formProp("myDate").bind()} formatString="dd/MM/yyyy" displayMode="calendar" />
+  return <CalendarInput bind={formProp("myDate").bind()} formatString="dd/MM/yyyy" displayMode="calendar" keepCalendarOpen={true} highlightToday={false} />
 }

@@ -1,0 +1,30 @@
+name: Chromatic
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  chromatic:
+    name: Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+      - name: Set Node.js 14.16.1
+        uses: actions/setup-node@master
+        with:
+          node-version: 14.16.1 
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./module
+      - name: Build Armstrong
+        run: npm run build
+        working-directory: ./module
+      - name: Build Storybook
+        run: npm run build
+        working-directory: ./module
+      - name: Build Chromatic
+        run: npm run chromatic
+        working-directory: ./module

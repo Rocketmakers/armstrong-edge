@@ -1,5 +1,7 @@
 node_modules
 dist
 www
-module/README.md
+build-storybook.log
 storybook-static
+module/README.md
+*.tgz
