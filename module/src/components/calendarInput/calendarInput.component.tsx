@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import { Calendar, Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { Typescript } from '../../utils';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
@@ -17,6 +18,8 @@ import { IStatusWrapperProps } from '../statusWrapper';
 import { calendarDayToDateLike, getDaySelectOptions, validateDateSelection } from './calendarInput.utils';
 
 type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'>;
+
+export type CalendarInputPart = 'year' | 'month' | 'day';
 
 export type CalendarInputCalendarPosition = 'dropdown' | 'modal' | 'above' | 'below';
 export interface ICalendarInputProps<TValue extends Dates.DateLike>
@@ -58,7 +61,7 @@ export interface ICalendarInputProps<TValue extends Dates.DateLike>
    * The order of the three select inputs.
    * - Defaults to 'day-month-year'
    */
-  inputOrder?: 'day-month-year' | 'year-month-day';
+  inputOrder?: CalendarInputPart[];
 
   /**
    * Any additional props for the "day" autocomplete input
@@ -241,13 +244,6 @@ export const CalendarInput = React.forwardRef(
     const showCalendarButton = displayMode !== 'inputs';
     const disableInputs = displayMode === 'calendar';
 
-    const dayInputProps: IAutoCompleteInputProps<number> = { ...(additionalDayInputProps ?? {}), bind: formProp('day').bind(), options: dayOptions };
-    const yearInputProps: IAutoCompleteInputProps<number> = {
-      ...(additionalYearInputProps ?? {}),
-      bind: formProp('year').bind(),
-      options: yearOptions,
-    };
-
     const calendarDisplayProps = {
       weekdayStartIndex: weekdayStartIndex!,
       currentYearBinding: monthYearFormProp('viewingYear').bind(),
@@ -327,28 +323,66 @@ export const CalendarInput = React.forwardRef(
                 </div>
               ) : (
                 <>
-                  <AutoCompleteInput
-                    className="arm-calendar-select"
-                    {...(inputOrder === 'day-month-year' ? dayInputProps : yearInputProps)}
-                    placeholder={inputOrder === 'day-month-year' ? dayInputProps.placeholder || 'day' : yearInputProps.placeholder || 'year'}
-                    disabled={disableInputs}
-                  />
-                  {typeof betweenInputs === 'string' ? <p className="arm-calendar-input-between-inputs">{betweenInputs}</p> : betweenInputs}
-                  <AutoCompleteInput
-                    className="arm-calendar-select"
-                    {...(additionalMonthInputProps ?? {})}
-                    bind={formProp('month').bind()}
-                    disabled={disableInputs}
-                    options={monthOptions}
-                    placeholder={additionalMonthInputProps?.placeholder || 'month'}
-                  />
-                  {typeof betweenInputs === 'string' ? <p className="arm-calendar-input-between-inputs">{betweenInputs}</p> : betweenInputs}
-                  <AutoCompleteInput
-                    className="arm-calendar-select"
-                    {...(inputOrder === 'day-month-year' ? yearInputProps : dayInputProps)}
-                    placeholder={inputOrder === 'day-month-year' ? yearInputProps.placeholder || 'year' : dayInputProps.placeholder || 'day'}
-                    disabled={disableInputs}
-                  />
+                  {inputOrder!.map((part, index) => {
+                    const between =
+                      index < inputOrder!.length - 1 &&
+                      (typeof betweenInputs === 'string' ? <p className="arm-calendar-input-between-inputs">{betweenInputs}</p> : betweenInputs);
+
+                    switch (part) {
+                      case 'day': {
+                        return (
+                          <>
+                            <AutoCompleteInput
+                              key={part + index}
+                              className="arm-calendar-select"
+                              {...(additionalDayInputProps || {})}
+                              placeholder={additionalDayInputProps?.placeholder || 'day'}
+                              disabled={disableInputs}
+                              options={dayOptions}
+                              bind={formProp('day').bind()}
+                            />
+                            {between}
+                          </>
+                        );
+                      }
+                      case 'month': {
+                        return (
+                          <>
+                            <AutoCompleteInput
+                              key={part + index}
+                              className="arm-calendar-select"
+                              {...(additionalMonthInputProps || {})}
+                              placeholder={additionalMonthInputProps?.placeholder || 'month'}
+                              disabled={disableInputs}
+                              options={monthOptions}
+                              bind={formProp('month').bind()}
+                            />
+                            {between}
+                          </>
+                        );
+                      }
+                      case 'year': {
+                        return (
+                          <>
+                            <AutoCompleteInput
+                              key={part + index}
+                              className="arm-calendar-select"
+                              {...(additionalYearInputProps || {})}
+                              placeholder={additionalYearInputProps?.placeholder || 'year'}
+                              disabled={disableInputs}
+                              options={yearOptions}
+                              bind={formProp('year').bind()}
+                            />
+                            {between}
+                          </>
+                        );
+                      }
+                      default: {
+                        Typescript.assertNever(part);
+                      }
+                    }
+                    return null;
+                  })}
                 </>
               )}
             </InputWrapper>
@@ -371,7 +405,7 @@ CalendarInput.defaultProps = {
   monthInputDisplayFormat: 'M',
   yearInputDisplayFormat: 'yyyy',
   closeCalendarOnDayClick: true,
-  inputOrder: 'day-month-year',
+  inputOrder: ['day', 'month', 'year'],
   calendarPosition: 'dropdown',
   displayFormatString: 'dd/MM/yyyy',
   betweenInputs: '/',
