@@ -76,6 +76,11 @@ export interface ICalendarDisplayProps {
      * - Other options include: `eee` = (Sun - Sat). `eeee` = (Sunday - Saturday).
      */
     calendarDayOfTheWeekHeadingDisplayFormat?: string;
+    /**
+     * Allows you to toggle the highlighting of todays date on the calendar
+     * - Defaults to true
+     */
+    highlightToday?: boolean;
     /** CSS className property */
     className?: string;
 }

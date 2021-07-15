@@ -72,6 +72,11 @@ export interface ICalendarInputProps<TValue extends Dates.DateLike> extends Omit
     placeholder?: string;
     /** The character to show between the inputs, defaults to ":" */
     betweenInputs?: React.ReactNode;
+    /**
+     * Allows you to toggle the highlighting of todays date on the calendar
+     * - Defaults to true
+     */
+    highlightToday?: boolean;
 }
 /**
  * An input used for selecting a date. Supports the following input methods:

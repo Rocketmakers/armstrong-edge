@@ -22,7 +22,7 @@ var calendarInput_utils_1 = require("./calendarInput.utils");
  * - Date input via the keyboard in day/month/year format.
  */
 exports.CalendarInput = React.forwardRef(function (_a, ref) {
-    var bind = _a.bind, formatString = _a.formatString, highlights = _a.highlights, locale = _a.locale, max = _a.max, min = _a.min, rangeTo = _a.rangeTo, weekdayStartIndex = _a.weekdayStartIndex, dayInputDisplayFormat = _a.dayInputDisplayFormat, yearInputDisplayFormat = _a.yearInputDisplayFormat, monthInputDisplayFormat = _a.monthInputDisplayFormat, closeCalendarOnDayClick = _a.closeCalendarOnDayClick, additionalDayInputProps = _a.additionalDayInputProps, additionalMonthInputProps = _a.additionalMonthInputProps, additionalYearInputProps = _a.additionalYearInputProps, error = _a.error, errorIcon = _a.errorIcon, validationErrorMessages = _a.validationErrorMessages, calendarDayDisplayFormat = _a.calendarDayDisplayFormat, calendarDayOfTheWeekHeadingDisplayFormat = _a.calendarDayOfTheWeekHeadingDisplayFormat, calendarMonthSelectDisplayFormat = _a.calendarMonthSelectDisplayFormat, calendarYearSelectDisplayFormat = _a.calendarYearSelectDisplayFormat, pending = _a.pending, statusPosition = _a.statusPosition, validationMode = _a.validationMode, inputOrder = _a.inputOrder, displayMode = _a.displayMode, displayFormatString = _a.displayFormatString, placeholder = _a.placeholder, calendarPosition = _a.calendarPosition, keepCalendarOpen = _a.keepCalendarOpen, className = _a.className, onValueChange = _a.onValueChange, value = _a.value, leftIcon = _a.leftIcon, leftOverlay = _a.leftOverlay, rightIcon = _a.rightIcon, rightOverlay = _a.rightOverlay, betweenInputs = _a.betweenInputs;
+    var bind = _a.bind, formatString = _a.formatString, highlights = _a.highlights, locale = _a.locale, max = _a.max, min = _a.min, rangeTo = _a.rangeTo, weekdayStartIndex = _a.weekdayStartIndex, dayInputDisplayFormat = _a.dayInputDisplayFormat, yearInputDisplayFormat = _a.yearInputDisplayFormat, monthInputDisplayFormat = _a.monthInputDisplayFormat, closeCalendarOnDayClick = _a.closeCalendarOnDayClick, additionalDayInputProps = _a.additionalDayInputProps, additionalMonthInputProps = _a.additionalMonthInputProps, additionalYearInputProps = _a.additionalYearInputProps, error = _a.error, errorIcon = _a.errorIcon, validationErrorMessages = _a.validationErrorMessages, calendarDayDisplayFormat = _a.calendarDayDisplayFormat, calendarDayOfTheWeekHeadingDisplayFormat = _a.calendarDayOfTheWeekHeadingDisplayFormat, calendarMonthSelectDisplayFormat = _a.calendarMonthSelectDisplayFormat, calendarYearSelectDisplayFormat = _a.calendarYearSelectDisplayFormat, pending = _a.pending, statusPosition = _a.statusPosition, validationMode = _a.validationMode, inputOrder = _a.inputOrder, displayMode = _a.displayMode, displayFormatString = _a.displayFormatString, placeholder = _a.placeholder, calendarPosition = _a.calendarPosition, keepCalendarOpen = _a.keepCalendarOpen, className = _a.className, onValueChange = _a.onValueChange, value = _a.value, leftIcon = _a.leftIcon, leftOverlay = _a.leftOverlay, rightIcon = _a.rightIcon, rightOverlay = _a.rightOverlay, betweenInputs = _a.betweenInputs, highlightToday = _a.highlightToday;
     var _b = __1.Form.useBindingTools(bind, {
         validationErrorMessages: validationErrorMessages,
         validationMode: validationMode,
@@ -94,6 +94,7 @@ exports.CalendarInput = React.forwardRef(function (_a, ref) {
         calendarDayOfTheWeekHeadingDisplayFormat: calendarDayOfTheWeekHeadingDisplayFormat,
         calendarMonthSelectDisplayFormat: calendarMonthSelectDisplayFormat,
         calendarYearSelectDisplayFormat: calendarYearSelectDisplayFormat,
+        highlightToday: highlightToday,
     };
     var onClickWrapperEvent = React.useCallback(function () {
         if (displayMode === 'calendar') {
@@ -129,4 +130,5 @@ exports.CalendarInput.defaultProps = {
     calendarPosition: 'dropdown',
     displayFormatString: 'dd/MM/yyyy',
     betweenInputs: '/',
+    highlightToday: true,
 };

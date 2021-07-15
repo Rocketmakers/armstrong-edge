@@ -19,7 +19,7 @@ var calendarDisplay_utils_1 = require("./calendarDisplay.utils");
  * - For an interactive calendar view, use `CalendarDisplay`.
  */
 exports.CalendarDisplay = React.forwardRef(function (_a, ref) {
-    var onForwardClicked = _a.onForwardClicked, weekdayStartIndex = _a.weekdayStartIndex, onBackClicked = _a.onBackClicked, onDayClicked = _a.onDayClicked, locale = _a.locale, days = _a.days, months = _a.months, years = _a.years, currentMonthBinding = _a.currentMonthBinding, currentYearBinding = _a.currentYearBinding, calendarDayDisplayFormat = _a.calendarDayDisplayFormat, calendarMonthSelectDisplayFormat = _a.calendarMonthSelectDisplayFormat, calendarYearSelectDisplayFormat = _a.calendarYearSelectDisplayFormat, calendarDayOfTheWeekHeadingDisplayFormat = _a.calendarDayOfTheWeekHeadingDisplayFormat, className = _a.className;
+    var onForwardClicked = _a.onForwardClicked, weekdayStartIndex = _a.weekdayStartIndex, onBackClicked = _a.onBackClicked, onDayClicked = _a.onDayClicked, locale = _a.locale, days = _a.days, months = _a.months, years = _a.years, currentMonthBinding = _a.currentMonthBinding, currentYearBinding = _a.currentYearBinding, calendarDayDisplayFormat = _a.calendarDayDisplayFormat, calendarMonthSelectDisplayFormat = _a.calendarMonthSelectDisplayFormat, calendarYearSelectDisplayFormat = _a.calendarYearSelectDisplayFormat, calendarDayOfTheWeekHeadingDisplayFormat = _a.calendarDayOfTheWeekHeadingDisplayFormat, highlightToday = _a.highlightToday, className = _a.className;
     var dayOfWeekHeadings = React.useMemo(function () {
         return arrays_1.Arrays.reIndex(calendarDisplay_utils_1.getDayOfWeekHeadings(calendarDayOfTheWeekHeadingDisplayFormat, locale), weekdayStartIndex);
     }, [weekdayStartIndex, locale, calendarDayOfTheWeekHeadingDisplayFormat]);
@@ -48,7 +48,7 @@ exports.CalendarDisplay = React.forwardRef(function (_a, ref) {
             React.createElement("div", { className: "arm-calendar-date-grid-headings" }, dayOfWeekHeadings.map(function (heading, index) { return (React.createElement("div", { key: index, className: "arm-calendar-date-grid-heading" }, heading)); })),
             React.createElement("div", { className: "arm-calendar-date-grid-days" },
                 arrays_1.Arrays.repeat(blankDaysAtStartCount, function (index) { return (React.createElement("div", { key: index, className: "arm-calendar-date-grid-day arm-calendar-date-grid-day-empty" })); }),
-                displayDays.map(function (displayDay) { return (React.createElement(button_1.Button, { className: classNames_1.ClassNames.concat('arm-calendar-date-grid-day', displayDay.day.highlightedClassName), onClick: function () { return onDayClicked === null || onDayClicked === void 0 ? void 0 : onDayClicked(displayDay.day); }, key: displayDay.day.numberInMonth, "data-selected": displayDay.day.isSelected, disabled: displayDay.day.isDisabled, "data-today": displayDay.day.isToday, "aria-current": displayDay.day.isToday && 'date', "data-range-start": displayDay.day.isRangeStart, "data-range-middle": displayDay.day.isRangeMiddle, "data-range-end": displayDay.day.isRangeEnd, "data-highlight": displayDay.day.isHighlighted, minimalStyle: true },
+                displayDays.map(function (displayDay) { return (React.createElement(button_1.Button, { className: classNames_1.ClassNames.concat('arm-calendar-date-grid-day', displayDay.day.highlightedClassName), onClick: function () { return onDayClicked === null || onDayClicked === void 0 ? void 0 : onDayClicked(displayDay.day); }, key: displayDay.day.numberInMonth, "data-selected": displayDay.day.isSelected, disabled: displayDay.day.isDisabled, "data-today": highlightToday && displayDay.day.isToday, "aria-current": displayDay.day.isToday && 'date', "data-range-start": displayDay.day.isRangeStart, "data-range-middle": displayDay.day.isRangeMiddle, "data-range-end": displayDay.day.isRangeEnd, "data-highlight": displayDay.day.isHighlighted, minimalStyle: true },
                     React.createElement("p", null, displayDay.displayFormat),
                     displayDay.day.isHighlighted && React.createElement("div", { className: "arm-calendar-date-grid-day-highlight" }))); })))));
 });
@@ -58,4 +58,5 @@ exports.CalendarDisplay.defaultProps = {
     calendarMonthSelectDisplayFormat: 'MMMM',
     calendarYearSelectDisplayFormat: 'yyyy',
     calendarDayDisplayFormat: 'd',
+    highlightToday: true,
 };

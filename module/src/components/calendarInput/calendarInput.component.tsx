@@ -107,6 +107,12 @@ export interface ICalendarInputProps<TValue extends Dates.DateLike>
 
   /** The character to show between the inputs, defaults to ":" */
   betweenInputs?: React.ReactNode;
+
+  /**
+   * Allows you to toggle the highlighting of todays date on the calendar
+   * - Defaults to true
+   */
+  highlightToday?: boolean;
 }
 
 /** Type representing the internal form data within the calendar input */
@@ -169,6 +175,7 @@ export const CalendarInput = React.forwardRef(
       rightIcon,
       rightOverlay,
       betweenInputs,
+      highlightToday,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -262,6 +269,7 @@ export const CalendarInput = React.forwardRef(
       calendarDayOfTheWeekHeadingDisplayFormat,
       calendarMonthSelectDisplayFormat,
       calendarYearSelectDisplayFormat,
+      highlightToday,
     };
 
     const onClickWrapperEvent = React.useCallback(() => {
@@ -367,4 +375,5 @@ CalendarInput.defaultProps = {
   calendarPosition: 'dropdown',
   displayFormatString: 'dd/MM/yyyy',
   betweenInputs: '/',
+  highlightToday: true,
 };
