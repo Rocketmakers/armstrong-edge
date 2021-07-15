@@ -28,6 +28,7 @@ export interface ICalendarInputProps<TValue extends Dates.DateLike>
       | 'calendarMonthSelectDisplayFormat'
       | 'calendarYearSelectDisplayFormat'
       | 'calendarDayOfTheWeekHeadingDisplayFormat'
+      | 'highlightToday'
     >,
     IStatusWrapperProps,
     IIconWrapperProps<IconSet, IconSet>,
@@ -107,12 +108,6 @@ export interface ICalendarInputProps<TValue extends Dates.DateLike>
 
   /** The character to show between the inputs, defaults to ":" */
   betweenInputs?: React.ReactNode;
-
-  /**
-   * Allows you to toggle the highlighting of todays date on the calendar
-   * - Defaults to true
-   */
-  highlightToday?: boolean;
 }
 
 /** Type representing the internal form data within the calendar input */
