@@ -6,7 +6,7 @@ import { CalendarInput } from './calendarInput.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(CalendarInput, 'Form', 'Calendar Input', {});
+export default StoryUtils.createMeta(CalendarInput, 'Form', 'Calendar Input', {}, true);
 
 /** component template */
 

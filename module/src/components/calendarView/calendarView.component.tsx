@@ -19,6 +19,12 @@ export interface ICalendarViewProps extends Calendar.IConfig {
    */
   onDateClicked?: (date: Date, dateString: string) => void;
 
+  /**
+   * Allows you to toggle the highlighting of todays date on the calendar
+   * - Defaults to true
+   */
+  highlightToday?: boolean;
+
   /** CSS className property */
   className?: string;
 }
@@ -29,7 +35,7 @@ export interface ICalendarViewProps extends Calendar.IConfig {
  * - NOTE: Not a date input for a traditional form, please use `CalendarInput`
  */
 export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>(
-  ({ selectedDate, min, max, weekdayStartIndex, formatString, onDateClicked, locale, rangeTo, highlights, className }, ref) => {
+  ({ selectedDate, min, max, weekdayStartIndex, formatString, onDateClicked, locale, rangeTo, highlights, highlightToday, className }, ref) => {
     const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
       formatString,
       min,
@@ -70,6 +76,7 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
         onBackClicked={onBackClicked}
         onForwardClicked={onForwardClicked}
         onDayClicked={onDayClicked}
+        highlightToday={highlightToday}
       />
     );
   }

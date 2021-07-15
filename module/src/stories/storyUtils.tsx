@@ -55,12 +55,18 @@ export namespace StoryUtils {
     component: TComponent,
     folder: keyof typeof Folder,
     title: string,
-    argTypes?: ArgTypes<React.ComponentProps<TComponent>>
+    argTypes?: ArgTypes<React.ComponentProps<TComponent>>,
+    disableSnapshot?: boolean
   ): Meta {
     return {
       title: `${folder}/${title}`,
       component,
       argTypes: argTypes as RootArgTypes,
+      parameters: {
+        chromatic: {
+          disableSnapshot,
+        },
+      },
     };
   }
 

@@ -1,3 +1,4 @@
+import { Story } from '@storybook/react';
 import * as React from 'react';
 
 import { Calendar } from '../..';
@@ -7,7 +8,7 @@ import { CalendarDisplay } from './calendarDisplay.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(CalendarDisplay, 'Display', 'Calendar Display', {});
+export default StoryUtils.createMeta(CalendarDisplay, 'Display', 'Calendar Display', {}, true);
 
 /** component template */
 
@@ -144,3 +145,45 @@ export const PastOnly = () => {
     </>
   );
 };
+
+export const FixedDatesNoHighlight: Story = () => {
+  const initialDate = React.useMemo(() => {
+    return new Date(2021, 1, 15, 2, 45, 0, 0);
+  }, []);
+  const rangeTo = React.useMemo(() => {
+    return new Date(2021, 1, 20, 2, 45, 0, 0);
+  }, []);
+  const highlightedDate = React.useMemo(() => {
+    return new Date(2021, 1, 4, 2, 45, 0, 0);
+  }, []);
+  const [date, setDate] = React.useState(initialDate);
+
+  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
+    selectedDate: date,
+    rangeTo,
+    highlights: [
+      {
+        date: highlightedDate,
+      },
+    ],
+  });
+
+  return (
+    <>
+      <CalendarDisplay
+        days={days}
+        months={months}
+        years={years}
+        currentMonthBinding={monthYearFormProp('viewingMonth').bind()}
+        currentYearBinding={monthYearFormProp('viewingYear').bind()}
+        onBackClicked={() => stepMonth('back')}
+        onForwardClicked={() => stepMonth('forward')}
+        onDayClicked={(d) => setDate(d.date)}
+        highlightToday={false}
+      />
+    </>
+  );
+};
+
+// Enable the 'static' story for vis-diff testing in Chromatic
+FixedDatesNoHighlight.parameters.chromatic.disableSnapshot = false;

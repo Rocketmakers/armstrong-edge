@@ -1,3 +1,4 @@
+import { Story } from '@storybook/react';
 import * as React from 'react';
 
 import { Form } from '../..';
@@ -28,7 +29,7 @@ export const CustomIcon = StoryUtils.cloneTemplate(Template, {
   validationErrors: ["This doesn't look right", 'User error lol'],
   icon: IconUtils.getIconDefinition('Icomoon', 'weather-cloud-sun'),
 });
-export const ScrollIntoView = () => {
+export const ScrollIntoView: Story = () => {
   const { formProp } = Form.use({
     firstname: 'steve',
     lastname: 'jones',
@@ -61,7 +62,13 @@ export const ScrollIntoView = () => {
         <label>
           birthday
           <br />
-          <CalendarInput scrollValidationErrorsIntoView calendarPosition="below" keepCalendarOpen bind={formProp('birthday').bind() as any} />
+          <CalendarInput
+            scrollValidationErrorsIntoView
+            calendarPosition="below"
+            keepCalendarOpen
+            bind={formProp('birthday').bind() as any}
+            highlightToday={false}
+          />
         </label>
 
         <label>
