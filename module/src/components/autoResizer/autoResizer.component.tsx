@@ -33,7 +33,7 @@ export const AutoResizer: React.FC<IAutoResizerProps> = ({
     [onSizeChange]
   );
 
-  const [{ height, width }] = useBoundingClientRect(contentRef, onChange);
+  const [{ height, width }] = useBoundingClientRect(contentRef, onChange, false);
 
   return (
     <div

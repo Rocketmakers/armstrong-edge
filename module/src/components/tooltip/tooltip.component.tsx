@@ -67,8 +67,13 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
     const rootRef = React.useRef<HTMLDivElement>(null);
     const innerRef = React.useRef<HTMLDivElement>();
 
-    const [rootRect, getRootRect] = useBoundingClientRect(rootRef);
-    const [innerRect, getInnerRect] = useBoundingClientRect(innerRef);
+    const [isHovering, hoveringProps] = useIsHovering();
+    const [isFocused, focusedProps] = useIsFocused();
+
+    const isOpen = isOpenProp || (openOnHover && isHovering) || (openOnFocus && isFocused) || false;
+
+    const [rootRect, getRootRect] = useBoundingClientRect(rootRef, undefined, isOpen);
+    const [innerRect, getInnerRect] = useBoundingClientRect(innerRef, undefined, isOpen);
     const windowSize = useWindowSize();
 
     const setInnerRef = React.useCallback(
@@ -81,11 +86,6 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
     );
 
     React.useImperativeHandle(ref, () => ({ rootRef, modalRef: innerRef }), [rootRef, innerRef]);
-
-    const [isHovering, hoveringProps] = useIsHovering();
-    const [isFocused, focusedProps] = useIsFocused();
-
-    const isOpen = isOpenProp || (openOnHover && isHovering) || (openOnFocus && isFocused) || false;
 
     React.useEffect(() => {
       if (isOpen) {

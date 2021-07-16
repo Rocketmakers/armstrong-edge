@@ -25,14 +25,14 @@ html {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-
-    .bound-value {
-      position: absolute;
-      left: 0;
-      bottom: -$spacing-xlarge * 2;
-      white-space: nowrap;
-    }
   }
+}
+
+.bound-value {
+  position: absolute;
+  left: 0;
+  bottom: -$spacing-xlarge * 2;
+  white-space: nowrap;
 }
 
 .story-scroll-container {

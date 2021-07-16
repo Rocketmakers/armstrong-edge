@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Objects } from '../utils';
 import { DOM } from '../utils/dom';
 import { Globals } from '../utils/globals';
+import { useDidUpdateEffect } from './useDidUpdateEffect';
 import { useEventListener } from './useEventListener';
 import { useResizeObserver } from './useResizeObserver';
 
@@ -16,7 +17,8 @@ export type useBoundingClientRectReturn = [DOMRect, () => void];
  */
 export function useBoundingClientRect(
   ref: React.MutableRefObject<Element | undefined | null>,
-  onChange?: (newBoundingClientRect: DOMRect) => void
+  onChange?: (newBoundingClientRect: DOMRect) => void,
+  listenToScroll = true
 ): useBoundingClientRectReturn {
   const [rect, setRect] = React.useState<DOMRect>(
     ref.current?.getBoundingClientRect() || {
@@ -47,8 +49,20 @@ export function useBoundingClientRect(
   /** Run the callback to get the element's size whenever it resizes */
   useResizeObserver(setRectSize, {}, ref);
 
+  useDidUpdateEffect(() => {
+    if (listenToScroll) {
+      setRectSize();
+    }
+  }, [listenToScroll]);
+
+  const onScroll = React.useCallback(() => {
+    if (listenToScroll) {
+      setRectSize();
+    }
+  }, [listenToScroll, setRectSize]);
+
   useEventListener('resize', setRectSize, Globals.Document);
-  useEventListener('scroll', setRectSize, Globals.Document, { capture: true });
+  useEventListener('scroll', onScroll, Globals.Document, { capture: true });
 
   React.useEffect(() => setRectSize(), []);
 

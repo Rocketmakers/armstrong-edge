@@ -91,7 +91,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const elementToRenderBelowRef = React.useRef<Element>();
     const modalRef = React.useRef<HTMLDivElement>();
 
-    const [rootRect, getRootRectContentRect] = useBoundingClientRect(elementToRenderBelowRef);
+    const [rootRect, getRootRectContentRect] = useBoundingClientRect(elementToRenderBelowRef, undefined, isOpen);
     const windowSize = useWindowSize();
 
     // used to stop the dropdown from reopening if focused when the blurs then refocuses the window

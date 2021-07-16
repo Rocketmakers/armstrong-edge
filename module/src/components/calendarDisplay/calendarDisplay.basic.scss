@@ -101,17 +101,17 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
 
   &[data-range-end='true'] {
     &::after {
-      right: calc(50% - $arm-calendar-display-date-circle/ 2);
-      border-top-right-radius: calc(#{$arm-calendar-display-date-circle}, 2);
-      border-bottom-right-radius: calc(#{$arm-calendar-display-date-circle}, 2);
+      right: calc(50% - #{$arm-calendar-display-date-circle} / 2);
+      border-top-right-radius: calc(#{$arm-calendar-display-date-circle} / 2);
+      border-bottom-right-radius: calc(#{$arm-calendar-display-date-circle} / 2);
     }
   }
 
   &[data-range-start='true'] {
     &::after {
-      left: calc(50% - $arm-calendar-display-date-circle / 2);
-      border-top-left-radius: calc(#{$arm-calendar-display-date-circle}, 2);
-      border-bottom-left-radius: calc(#{$arm-calendar-display-date-circle}, 2);
+      left: calc(50% - #{$arm-calendar-display-date-circle} / 2);
+      border-top-left-radius: calc(#{$arm-calendar-display-date-circle} / 2);
+      border-bottom-left-radius: calc(#{$arm-calendar-display-date-circle} / 2);
     }
   }
 

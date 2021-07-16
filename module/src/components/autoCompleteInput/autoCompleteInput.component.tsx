@@ -189,25 +189,22 @@ export const AutoCompleteInput = React.forwardRef(
 
     // reset the input's value to reflect the bound value
     const resetInputValue = React.useCallback(() => {
-      if (!allowFreeText) {
-        const currentOption = options?.find((option) => option.id === boundValue);
-        if (currentOption) {
-          setTextInputInternalValue(getOptionName(currentOption));
-        } else {
-          setTextInputInternalValue('');
-        }
+      const currentOption = options?.find((option) => option.id === boundValue);
+
+      if (currentOption) {
+        setTextInputInternalValue(getOptionName(currentOption));
+      } else {
+        setTextInputInternalValue('');
       }
     }, [allowFreeText, Objects.contentDependency(options), boundValue, getOptionName]);
 
     useDidUpdateEffect(() => {
-      if (!isFocused) {
-        resetInputValue();
-      }
+      resetInputValue();
     }, [boundValue, Objects.contentDependency(options)]);
 
     // when the user closes the dropdown, reset the input value
     useDidUpdateEffect(() => {
-      if (!optionsOpen && !isFocused) {
+      if (!optionsOpen && !isFocused && !allowFreeText) {
         resetInputValue();
       }
     }, [optionsOpen]);
