@@ -25,6 +25,7 @@ export * from './components/dropdown';
 export * from './components/dropdownButton';
 export * from './components/dropdownItems';
 export * from './components/emailInput';
+export * from './components/passwordInput';
 export * from './components/errorMessage';
 export * from './components/expandable';
 export * from './components/fixedProgressBar';
