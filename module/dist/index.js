@@ -44,6 +44,7 @@ tslib_1.__exportStar(require("./components/listBoxMulti"), exports);
 tslib_1.__exportStar(require("./components/modal"), exports);
 tslib_1.__exportStar(require("./components/nativeDateInput"), exports);
 tslib_1.__exportStar(require("./components/numberInput"), exports);
+tslib_1.__exportStar(require("./components/passwordInput"), exports);
 tslib_1.__exportStar(require("./components/portal"), exports);
 tslib_1.__exportStar(require("./components/progressBar"), exports);
 tslib_1.__exportStar(require("./components/radioInput"), exports);
