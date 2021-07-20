@@ -5,7 +5,7 @@ import { CalendarView } from './calendarView.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(CalendarView, 'Display', 'Calendar View', {});
+export default StoryUtils.createMeta(CalendarView, 'Display', 'Calendar View', {}, true);
 
 /** component template */
 

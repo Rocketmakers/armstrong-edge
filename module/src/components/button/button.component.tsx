@@ -67,7 +67,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
           data-error={shouldShowErrorIcon}
           disabled={disabled || pending}
           ref={ref}
-          tabIndex={disabled ? -1 : nativeProps?.tabIndex}
+          tabIndex={disabled ? -1 : nativeProps.tabIndex}
         >
           <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
             <StatusWrapper
