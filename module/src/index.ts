@@ -40,6 +40,7 @@ export * from './components/listBoxMulti';
 export * from './components/modal';
 export * from './components/nativeDateInput';
 export * from './components/numberInput';
+export * from './components/passwordInput';
 export * from './components/portal';
 export * from './components/progressBar';
 export * from './components/radioInput';
