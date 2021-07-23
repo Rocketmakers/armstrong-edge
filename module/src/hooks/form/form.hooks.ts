@@ -143,7 +143,7 @@ function useFormBase<TData extends object>(
    */
   const pop = React.useCallback(
     (keyChain: KeyChain, currentValue: any[]) => {
-      if (isArrayValue(currentValue, 'formProp.insert')) {
+      if (isArrayValue(currentValue, 'formProp.pop')) {
         const newValue = [...(currentValue ?? [])];
         newValue.pop();
         dispatch({ type: 'set-path', keyChain, value: newValue });
