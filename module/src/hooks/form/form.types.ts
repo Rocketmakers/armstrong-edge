@@ -33,7 +33,7 @@ export interface BindingToolsStandard<TValue> {
    * @param newValue The value to set the field to.
    * @returns Binding props for chaining.
    */
-  set: (newValue: TValue) => BindingToolsStandard<TValue>;
+  set: (newValue: TValue) => BindingTools<TValue>;
   /**
    * Gets the current value for a field within the form state.
    * @returns the value if set, or undefined.
@@ -53,40 +53,42 @@ export interface BindingToolsStandard<TValue> {
 /**
  * The set of tools returned from `formProp` if the property in question is an array.
  */
-export interface BindingToolsArray<TValue extends any[]> extends BindingToolsStandard<TValue> {
-  /**
-   * Sets the value of a field in the form state.
-   * @param newValue The value to set the field to.
-   * @returns Binding props for chaining.
-   */
-  set: (newValue: TValue) => BindingToolsArray<TValue>;
+export interface BindingToolsArray<TValue> {
   /**
    * Adds a new item to an array field in the form state.
    * @param newItem The new item to add.
+   *
+   * WARNING: Available to array properties only
    */
-  add: (newItem: TValue[0]) => BindingToolsArray<TValue>;
+  add: TValue extends any[] ? (newItem: TValue[0]) => BindingTools<TValue> : never;
   /**
    * Removes the last item from an array field in the form state.
+   *
+   * WARNING: Available to array properties only
    */
-  pop: () => BindingToolsArray<TValue>;
+  pop: TValue extends any[] ? () => BindingTools<TValue> : never;
   /**
    * Inserts a new item into an array field at a specific index.
    * @param newItem The new item to add.
    * @param index The index at which to insert the new item.
+   *
+   * WARNING: Available to array properties only
    */
-  insert: (newItem: TValue[0], index: number) => BindingToolsArray<TValue>;
+  insert: TValue extends any[] ? (newItem: TValue[0], index: number) => BindingTools<TValue> : never;
   /**
    * Removes an item from an array field at a specific index.
    * @param index The index at which to insert the new item.
+   *
+   * WARNING: Available to array properties only
    */
-  remove: (index: number) => BindingToolsArray<TValue>;
+  remove: TValue extends any[] ? (index: number) => BindingTools<TValue> : never;
 }
 
 /**
  * The set of tools returned from `formProp`.
  * - This root type detects whether the value is an array and assigns the correct type accordingly.
  */
-export type BindingTools<TValue> = TValue extends any[] ? BindingToolsArray<TValue> : BindingToolsStandard<TValue>;
+export type BindingTools<TValue> = BindingToolsArray<TValue> & BindingToolsStandard<TValue>;
 
 /**
  * This abstract class is used to handle the typings for the args passed to `formProp`.
