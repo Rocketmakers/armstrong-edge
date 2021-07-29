@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import { Button } from '../button';
 import { IUseModalLayerPromiseComponentProps, useModalLayerPromise } from '../modal/modal.hooks';
