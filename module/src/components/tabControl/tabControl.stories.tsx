@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
