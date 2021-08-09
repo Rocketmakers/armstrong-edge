@@ -13,7 +13,6 @@ import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
 import { dataReducer, validationReducer } from './form.state';
 import {
   BindingTools,
-  BindingToolsArray,
   FormDispatcher,
   FormPropFactory,
   FormValidationMode,
@@ -24,7 +23,7 @@ import {
   IValidationError,
   KeyChain,
 } from './form.types';
-import { isBindingProps, validationErrorsByKeyChain, validationKeyStringFromKeyChain, valueByKeyChain } from './form.utils';
+import { isArrayValue, isBindingProps, validationErrorsByKeyChain, validationKeyStringFromKeyChain, valueByKeyChain } from './form.utils';
 
 /**
  * The base hook used by both of the `useForm` hooks.
@@ -101,10 +100,12 @@ function useFormBase<TData extends object>(
    * For adding an item to a target array property (will be available to array properties only.)
    */
   const add = React.useCallback(
-    (keyChain: KeyChain, currentValue: any[], newItem: any) => {
-      const newValue = [...(currentValue ?? [])];
-      newValue.push(newItem);
-      dispatch({ type: 'set-path', keyChain, value: newValue });
+    (keyChain: KeyChain, currentValue: any, newItem: any) => {
+      if (isArrayValue(currentValue, 'formProp.add')) {
+        const newValue = [...(currentValue ?? [])];
+        newValue.push(newItem);
+        dispatch({ type: 'set-path', keyChain, value: newValue });
+      }
     },
     [dispatch]
   );
@@ -114,9 +115,11 @@ function useFormBase<TData extends object>(
    */
   const remove = React.useCallback(
     (keyChain: KeyChain, currentValue: any[], index: number) => {
-      const newValue = [...(currentValue ?? [])];
-      newValue.splice(index, 1);
-      dispatch({ type: 'set-path', keyChain, value: newValue });
+      if (isArrayValue(currentValue, 'formProp.remove')) {
+        const newValue = [...(currentValue ?? [])];
+        newValue.splice(index, 1);
+        dispatch({ type: 'set-path', keyChain, value: newValue });
+      }
     },
     [dispatch]
   );
@@ -126,9 +129,11 @@ function useFormBase<TData extends object>(
    */
   const insert = React.useCallback(
     (keyChain: KeyChain, currentValue: any[], index: number, newItem: any) => {
-      const newValue = [...(currentValue ?? [])];
-      newValue.splice(index, 0, newItem);
-      dispatch({ type: 'set-path', keyChain, value: newValue });
+      if (isArrayValue(currentValue, 'formProp.insert')) {
+        const newValue = [...(currentValue ?? [])];
+        newValue.splice(index, 0, newItem);
+        dispatch({ type: 'set-path', keyChain, value: newValue });
+      }
     },
     [dispatch]
   );
@@ -138,9 +143,11 @@ function useFormBase<TData extends object>(
    */
   const pop = React.useCallback(
     (keyChain: KeyChain, currentValue: any[]) => {
-      const newValue = [...(currentValue ?? [])];
-      newValue.pop();
-      dispatch({ type: 'set-path', keyChain, value: newValue });
+      if (isArrayValue(currentValue, 'formProp.pop')) {
+        const newValue = [...(currentValue ?? [])];
+        newValue.pop();
+        dispatch({ type: 'set-path', keyChain, value: newValue });
+      }
     },
     [dispatch]
   );
@@ -186,28 +193,28 @@ function useFormBase<TData extends object>(
   const formProp = React.useCallback(
     (...keyChain: KeyChain): BindingTools<TData> => {
       const value = valueByKeyChain(formStateRef.current, keyChain);
-      const arrayMethods: BindingToolsArray<any> = {
+      const arrayMethods: BindingTools<any> = {
         bind: (bindConfig?: IBindConfig<any>) => bind(keyChain, bindConfig),
         set: (newValue: any) => {
           set(keyChain, newValue);
-          return formProp(...keyChain) as BindingToolsArray<any>;
+          return formProp(...keyChain) as BindingTools<any>;
         },
         get: () => value,
         add: (newItem: any) => {
           add(keyChain, value as any[], newItem);
-          return formProp(...keyChain) as BindingToolsArray<any>;
+          return formProp(...keyChain) as BindingTools<any>;
         },
         pop: () => {
           pop(keyChain, value as any[]);
-          return formProp(...keyChain) as BindingToolsArray<any>;
+          return formProp(...keyChain) as BindingTools<any>;
         },
         insert: (newItem: any, index: number) => {
           insert(keyChain, value as any[], index, newItem);
-          return formProp(...keyChain) as BindingToolsArray<any>;
+          return formProp(...keyChain) as BindingTools<any>;
         },
         remove: (index: number) => {
           remove(keyChain, value as any[], index);
-          return formProp(...keyChain) as BindingToolsArray<any>;
+          return formProp(...keyChain) as BindingTools<any>;
         },
         addValidationError: (...messages: string[]) => {
           addValidationErrorFromKeyChain(keyChain, messages);

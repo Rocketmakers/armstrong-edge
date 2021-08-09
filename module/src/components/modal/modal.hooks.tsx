@@ -63,7 +63,7 @@ export const useModalLayerPromise = <T, TArg = unknown>(
 
         const rejectPromise = () => {
           close();
-          reject();
+          reject?.();
         };
 
         const resolvePromise = (value: T | undefined) => {

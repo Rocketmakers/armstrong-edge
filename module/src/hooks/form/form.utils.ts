@@ -60,3 +60,20 @@ export function valueByKeyChain<TData, TValue>(state: TData, keyChain: KeyChain)
 export function isBindingProps<TValue>(item?: any): item is IBindingProps<TValue> {
   return !!item?.setValue && !!item?.dispatch && !!item?.keyChain && !!item?.myValidationErrors;
 }
+
+/**
+ * Checks an array specific action to make sure it's running on an array value. Throws a helpful error if not.
+ * @param value The value of the form prop to check.
+ * @param attemptedAction The action being attempted on the form prop.
+ * @returns Throws if not an array or returns true with a cast.
+ */
+export function isArrayValue(value: any, attemptedAction: string): value is any[] {
+  if (value && !Array.isArray(value)) {
+    throw new Error(
+      `"${attemptedAction}" cannot be used on a set form property that does not contain an array value, the current value of this property is: ${JSON.stringify(
+        value
+      )}`
+    );
+  }
+  return true;
+}
