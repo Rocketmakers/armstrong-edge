@@ -347,9 +347,8 @@ export const CalendarInput = React.forwardRef(
                     switch (part) {
                       case 'day': {
                         return (
-                          <>
+                          <React.Fragment key={part + index}>
                             <AutoCompleteInput
-                              key={part + index}
                               className="arm-calendar-select"
                               {...(additionalDayInputProps || {})}
                               placeholder={additionalDayInputProps?.placeholder || 'day'}
@@ -358,14 +357,13 @@ export const CalendarInput = React.forwardRef(
                               bind={formProp('day').bind()}
                             />
                             {between}
-                          </>
+                          </React.Fragment>
                         );
                       }
                       case 'month': {
                         return (
-                          <>
+                          <React.Fragment key={part + index}>
                             <AutoCompleteInput
-                              key={part + index}
                               className="arm-calendar-select"
                               {...(additionalMonthInputProps || {})}
                               placeholder={additionalMonthInputProps?.placeholder || 'month'}
@@ -374,14 +372,13 @@ export const CalendarInput = React.forwardRef(
                               bind={formProp('month').bind()}
                             />
                             {between}
-                          </>
+                          </React.Fragment>
                         );
                       }
                       case 'year': {
                         return (
-                          <>
+                          <React.Fragment key={part + index}>
                             <AutoCompleteInput
-                              key={part + index}
                               className="arm-calendar-select"
                               {...(additionalYearInputProps || {})}
                               placeholder={additionalYearInputProps?.placeholder || 'year'}
@@ -390,7 +387,7 @@ export const CalendarInput = React.forwardRef(
                               bind={formProp('year').bind()}
                             />
                             {between}
-                          </>
+                          </React.Fragment>
                         );
                       }
                       default: {
