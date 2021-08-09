@@ -14,7 +14,7 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<
       IListBoxProps<Id, TSelectData>,
-      'options' | 'onSelectOption' | 'selectOverlayIcon' | 'placeholder' | 'wrapperClassName' | 'deleteButton' | 'noItemsText'
+      'options' | 'onSelectOption' | 'selectOverlayIcon' | 'placeholder' | 'wrapperClassName' | 'deleteButton' | 'noItemsText' | 'dropdownClassName'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -60,6 +60,7 @@ export const ListBoxMulti = React.forwardRef(
       disableOnPending,
       wrapperClassName,
       noItemsText,
+      dropdownClassName,
     }: IListBoxMultiProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -127,6 +128,7 @@ export const ListBoxMulti = React.forwardRef(
         closeOnSelection={false}
         className={ClassNames.concat('arm-listbox-multi-wrapper', wrapperClassName)}
         noItemsText={noItemsText}
+        contentClassName={ClassNames.concat('arm-listbox-options', dropdownClassName)}
       >
         <InputWrapper
           ref={internalRef}

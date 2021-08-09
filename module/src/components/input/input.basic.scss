@@ -9,7 +9,8 @@
   outline: none;
   background-color: transparent;
   padding: $spacing-xsmall 0;
-  height: $input-height;
+  height: $arm-input-height;
+  color: inherit;
 
   &:focus {
     border: 0;

@@ -8,7 +8,7 @@ import { Button } from '../button';
 import { CalendarInput } from '../calendarInput';
 import { IconUtils } from '../icon';
 import { ListBox } from '../listBox';
-import { TextAreaInput } from '../textAreaInput';
+import { TextArea } from '../textArea';
 import { TextInput } from '../textInput';
 import { ValidationErrors } from './validationErrors.component';
 
@@ -91,7 +91,7 @@ export const ScrollIntoView: Story = () => {
 
         <label>
           bio
-          <TextAreaInput scrollValidationErrorsIntoView bind={formProp('bio').bind()} />
+          <TextArea scrollValidationErrorsIntoView bind={formProp('bio').bind()} />
         </label>
 
         <Button onClick={submit}>Submit</Button>

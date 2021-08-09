@@ -1,6 +1,7 @@
 export * from './useArrayState';
 export * from './useBoundingClientRect';
 export * from './useDebounce';
+export * from './useDelayedDependentSwitch';
 export * from './useDidMountEffect';
 export * from './useDidUpdateEffect';
 export * from './useDrag';

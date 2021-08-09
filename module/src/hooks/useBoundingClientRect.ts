@@ -1,6 +1,9 @@
 import * as React from 'react';
 
+import { Objects } from '../utils';
+import { DOM } from '../utils/dom';
 import { Globals } from '../utils/globals';
+import { useDidUpdateEffect } from './useDidUpdateEffect';
 import { useEventListener } from './useEventListener';
 import { useResizeObserver } from './useResizeObserver';
 
@@ -12,7 +15,11 @@ export type useBoundingClientRectReturn = [DOMRect, () => void];
  * use the callback which is the second item in the returned array to force a resize
  * @param ref the html element to watch
  */
-export function useBoundingClientRect(ref: React.MutableRefObject<Element | undefined | null>): useBoundingClientRectReturn {
+export function useBoundingClientRect(
+  ref: React.MutableRefObject<Element | undefined | null>,
+  onChange?: (newBoundingClientRect: DOMRect) => void,
+  listenToScroll = true
+): useBoundingClientRectReturn {
   const [rect, setRect] = React.useState<DOMRect>(
     ref.current?.getBoundingClientRect() || {
       bottom: 0,
@@ -32,16 +39,32 @@ export function useBoundingClientRect(ref: React.MutableRefObject<Element | unde
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
 
-      // todo - optimise so this is only run when one of its values changes - currently unnecessary re-renders will be called
-      setRect(boundingClientRect);
+      if (Objects.contentDependency(DOM.domRectToObject(boundingClientRect)) !== Objects.contentDependency(DOM.domRectToObject(rect))) {
+        onChange?.(boundingClientRect);
+        setRect(boundingClientRect);
+      }
     }
-  }, [ref.current]);
+  }, [ref.current, rect]);
 
   /** Run the callback to get the element's size whenever it resizes */
   useResizeObserver(setRectSize, {}, ref);
 
-  useEventListener('resize', setRectSize);
-  useEventListener('scroll', setRectSize, Globals.Window, { capture: true });
+  useDidUpdateEffect(() => {
+    if (listenToScroll) {
+      setRectSize();
+    }
+  }, [listenToScroll]);
+
+  const onScroll = React.useCallback(() => {
+    if (listenToScroll) {
+      setRectSize();
+    }
+  }, [listenToScroll, setRectSize]);
+
+  useEventListener('resize', setRectSize, Globals.Document);
+  useEventListener('scroll', onScroll, Globals.Document, { capture: true });
+
+  React.useEffect(() => setRectSize(), []);
 
   return [rect, setRectSize];
 }

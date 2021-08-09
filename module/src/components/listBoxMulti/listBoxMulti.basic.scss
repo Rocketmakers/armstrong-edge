@@ -1,6 +1,6 @@
 .arm-listbox-multi-wrapper {
   width: 100%;
-  max-width: $input-width;
+  max-width: $arm-input-width;
 }
 
 .arm-listbox-multi {
@@ -18,7 +18,7 @@
 }
 
 .arm-listbox-multi-content {
-  height: $input-height;
+  height: $arm-input-height;
   display: flex;
   align-items: center;
   margin-right: $spacing-large;

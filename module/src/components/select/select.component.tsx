@@ -108,7 +108,7 @@ export const Select = React.forwardRef(
           <select className="arm-select-select" {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
             {options.map((option) => (
               <option key={option.id} value={option.id} disabled={option.disabled}>
-                {option.name}
+                {option.name || option.id}
               </option>
             ))}
           </select>

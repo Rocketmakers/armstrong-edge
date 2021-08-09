@@ -58,9 +58,9 @@
 // slide-in-down-medium
 // slide-in-down-small
 
-$slide-amount-large: 30px;
-$slide-amount-medium: 20px;
-$slide-amount-small: 10px;
+$slide-amount-large: 30px !default;
+$slide-amount-medium: 20px !default;
+$slide-amount-small: 10px !default;
 
 @mixin slide-in-y($name, $amount) {
   @include transform-in(slide-in-#{$name}, translateY($amount));
@@ -97,9 +97,9 @@ $slide-amount-small: 10px;
 // scale-down-medium
 // scale-down-small
 
-$scale-amount-large: 0.3;
-$scale-amount-medium: 0.2;
-$scale-amount-small: 0.05;
+$scale-amount-large: 0.3 !default;
+$scale-amount-medium: 0.2 !default;
+$scale-amount-small: 0.05 !default;
 
 @mixin scale-in($name, $amount) {
   @include transform-in(scale-#{$name}, scale($amount));
@@ -126,10 +126,10 @@ $scale-amount-small: 0.05;
 // rotate-in-anticlockwise-small
 // rotate-in-anticlockwise-very-small
 
-$rotate-amount-large: 360deg;
-$rotate-amount-medium: 180deg;
-$rotate-amount-small: 90deg;
-$rotate-amount-very-small: 45deg;
+$rotate-amount-large: 360deg !default;
+$rotate-amount-medium: 180deg !default;
+$rotate-amount-small: 90deg !default;
+$rotate-amount-very-small: 45deg !default;
 
 @mixin rotate-in($name, $amount) {
   @include transform-in(rotate-in-#{$name}, rotate($amount));
@@ -192,9 +192,9 @@ $rotate-amount-very-small: 45deg;
 // expand-in-height-medium
 // expand-in-height-large
 
-$expand-max-small: 100px;
-$expand-max-medium: 300px;
-$expand-max-large: 700px;
+$expand-max-small: 100px !default;
+$expand-max-medium: 300px !default;
+$expand-max-large: 700px !default;
 
 @mixin expand-in-width($name, $max) {
   @keyframes expand-in-width-#{$name} {

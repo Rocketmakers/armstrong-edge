@@ -92,7 +92,11 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
           onClick={onClick}
           {...nativeProps}
         >
-          {above && <AutoResizer className="arm-input-wrapper-above">{above}</AutoResizer>}
+          {above && (
+            <AutoResizer className="arm-input-wrapper-above" resizeHorizontal={false}>
+              {above}
+            </AutoResizer>
+          )}
 
           <div className="arm-input-inner">
             <StatusWrapper
@@ -119,7 +123,11 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
             </StatusWrapper>
           </div>
 
-          {below && <AutoResizer className="arm-input-wrapper-below">{below}</AutoResizer>}
+          {below && (
+            <AutoResizer className="arm-input-wrapper-below" resizeHorizontal={false}>
+              {below}
+            </AutoResizer>
+          )}
         </div>
 
         {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (

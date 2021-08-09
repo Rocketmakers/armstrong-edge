@@ -191,6 +191,26 @@ Makes the element's children centred using flex
 }
 ```
 
+### flex-space-between-content
+
+Makes the element's children spaced out using flex
+
+```css
+/* definition */
+@mixin flex-space-between-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* use */
+@import '~@rocketmakers/armstrong/dist/imports.scss';
+
+.thing {
+  @include flex-space-between-content;
+}
+```
+
 ### square
 
 Adds an equal width and height property

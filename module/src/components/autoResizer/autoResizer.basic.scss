@@ -1,8 +1,20 @@
 .arm-auto-resizer {
-  width: var(--arm-auto-resizer-width);
-  height: var(--arm-auto-resizer-height);
   overflow: hidden;
-  transition: width $transition-quick, height $transition-quick;
+  transition-duration: $transition-quick;
+
+  &[data-animate-horizontal='true'] {
+    width: var(--arm-auto-resizer-width);
+    transition-property: width;
+  }
+
+  &[data-animate-vertical='true'] {
+    height: var(--arm-auto-resizer-height);
+    transition-property: height;
+  }
+
+  &[data-animate-vertical='true'][data-animate-horizontal='true'] {
+    transition-property: height, width;
+  }
 }
 
 .arm-auto-resizer-content {

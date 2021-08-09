@@ -1,13 +1,13 @@
-.arm-text-area-input {
-  max-width: $input-width-large;
+.arm-text-area {
+  max-width: $arm-input-width-large;
 
   .arm-input-inner {
     cursor: text;
   }
 }
 
-.arm-text-area-input-textarea {
-  min-height: $input-height-large;
+.arm-text-area-textarea {
+  min-height: $arm-input-height-large;
   width: 100%;
   appearance: none;
   background-color: transparent;
@@ -15,6 +15,7 @@
   font-family: inherit;
   outline: none;
   border: 0;
+  color: inherit;
 
   &:focus {
     outline: none;

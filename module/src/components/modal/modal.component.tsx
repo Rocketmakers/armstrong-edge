@@ -1,10 +1,9 @@
 import * as React from 'react';
 
-import { useEventListener, useModalLayerElement } from '../..';
-import { useDelayedDependentSwitch } from '../../hooks/useDelayedDependentSwitch';
-import { ClassNames } from '../../utils/classNames';
-import { Globals } from '../../utils/globals';
+import { useDelayedDependentSwitch, useEventListener } from '../../hooks';
+import { ClassNames, DOM, Globals } from '../../utils';
 import { IPortalProps, Portal } from '../portal';
+import { useModalLayerElement } from './modal.context';
 
 export interface IModalProps
   extends Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
@@ -60,7 +59,6 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       onClickWrapper,
       closeOnWindowClick,
       darkenBackground,
-      onClick,
       children,
       closeOnBackgroundClick,
       wrapperClassName,
@@ -70,6 +68,9 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     },
     ref
   ) => {
+    const internalRef = React.useRef<HTMLDivElement>(null);
+    React.useImperativeHandle(ref, () => internalRef.current!);
+
     const close = React.useCallback(() => {
       if (!disableClose) {
         onOpenChange?.(false);
@@ -77,11 +78,14 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     }, [onOpenChange, disableClose]);
 
     /** Close when the user clicks outside of the dropdown */
-    const onWindowClick = React.useCallback(() => {
-      if (isOpen && closeOnWindowClick) {
-        close();
-      }
-    }, [isOpen, close, closeOnWindowClick]);
+    const onWindowClick = React.useCallback(
+      (event: React.MouseEvent<HTMLElement>) => {
+        if (isOpen && closeOnWindowClick && (!internalRef.current || !DOM.clickIsInsideElement(internalRef.current, event))) {
+          close();
+        }
+      },
+      [isOpen, close, closeOnWindowClick]
+    );
 
     /** Close when the user blurs the window */
     const onWindowBlur = React.useCallback(() => {
@@ -93,23 +97,12 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     useEventListener('click', onWindowClick, Globals.Document);
     useEventListener('blur', onWindowBlur, Globals.Window);
 
-    /** Stop propagation when clicking on the modal, to stop modal clicks from also closing the window */
-    const onClickEvent = React.useCallback(
-      (event: React.MouseEvent<HTMLDivElement>) => {
-        onClick?.(event);
-
-        event.stopPropagation();
-        event.nativeEvent.stopImmediatePropagation();
-      },
-      [onClick]
-    );
-
     /** When the user clicks on the wrapper element, close if closeOnBackgroundClick is true */
     const onClickWrapperEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         onClickWrapper?.(event);
 
-        if (closeOnBackgroundClick) {
+        if (closeOnBackgroundClick && (!internalRef.current || !DOM.clickIsInsideElement(internalRef.current, event))) {
           close();
         }
       },
@@ -126,7 +119,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     }
 
     return (
-      <Portal portalTo={(!portalToSelector && wrapperRef?.current) || portalTo} portalToSelector={portalToSelector}>
+      <Portal portalTo={portalTo || (!portalToSelector && wrapperRef) || undefined} portalToSelector={portalToSelector}>
         <div
           className={ClassNames.concat('arm-modal-wrapper', wrapperClassName)}
           onClick={onClickWrapperEvent}
@@ -136,14 +129,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
           aria-hidden={isClosing}
           tabIndex={isClosing ? -1 : undefined}
         >
-          <div
-            role="dialog"
-            aria-modal="true"
-            {...nativeProps}
-            className={ClassNames.concat('arm-modal', className)}
-            ref={ref}
-            onClick={onClickEvent}
-          >
+          <div role="dialog" aria-modal="true" {...nativeProps} className={ClassNames.concat('arm-modal', className)} ref={internalRef}>
             {children}
           </div>
         </div>

@@ -18,7 +18,7 @@ export interface ITagProps
 export const Tag: React.FC<ITagProps> = ({ content, className, leftIcon, rightIcon, children, onRemove, ...nativeProps }) => (
   <div className={ClassNames.concat('arm-tag', className)} {...nativeProps}>
     <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-      {typeof children === 'string' || !children ? <p>{content}</p> : children}
+      {typeof children === 'string' || !children ? <span>{content}</span> : children}
     </IconWrapper>
 
     {onRemove && (
