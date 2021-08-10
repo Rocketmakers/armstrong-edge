@@ -32,6 +32,9 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   /** Called on change to get the  */
   onSelectOption?: (option?: ISelectOption<Id>) => void;
 
+  /** Text to show as a placeholder when nothing is selected */
+  placeholderOption?: string;
+
   /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
@@ -64,6 +67,7 @@ export const Select = React.forwardRef(
       deleteButton,
       disableOnPending,
       scrollValidationErrorsIntoView,
+      placeholderOption,
       ...nativeProps
     }: ISelectProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
@@ -106,6 +110,11 @@ export const Select = React.forwardRef(
       >
         <div className="arm-select-inner">
           <select className="arm-select-select" {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
+            {placeholderOption && (
+              <option value="" disabled selected>
+                {placeholderOption}
+              </option>
+            )}
             {options.map((option) => (
               <option key={option.id} value={option.id} disabled={option.disabled}>
                 {option.name}
