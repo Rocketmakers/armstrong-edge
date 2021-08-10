@@ -81,20 +81,27 @@ export const Select = React.forwardRef(
 
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, { value, validationErrorMessages });
 
+    const clearSelect = React.useCallback(() => {
+      onSelectOption?.(undefined);
+      bind?.setValue?.(undefined!);
+    }, [onSelectOption, bind?.setValue]);
+
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (onChange) {
           onChange(event);
         }
 
-        const selectedOption = options.find((option) => option.id.toString() === event.currentTarget.value);
-
+        const { value: newValue } = event.currentTarget;
+        const selectedOption = options.find((option) => option.id.toString() === newValue);
         if (selectedOption) {
           setBoundValue?.(selectedOption.id);
           onSelectOption?.(selectedOption);
+        } else if (!newValue && placeholderOption && placeholderOptionEnabled) {
+          clearSelect();
         }
       },
-      [onSelectOption, options, onChange, bind]
+      [onSelectOption, options, onChange, bind, placeholderOption, placeholderOptionEnabled, clearSelect, setBoundValue]
     );
 
     return (
@@ -144,8 +151,7 @@ export const Select = React.forwardRef(
           <IconButton
             className="arm-select-delete"
             onClick={(event) => {
-              onSelectOption?.(undefined);
-              bind?.setValue?.(undefined!);
+              clearSelect();
               event.stopPropagation();
             }}
             icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
