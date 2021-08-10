@@ -35,6 +35,9 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   /** Text to show as a placeholder when nothing is selected */
   placeholderOption?: string;
 
+  /** Should the placeholder option be re-selectable? effectively allows the select to be cleared by the user. */
+  placeholderOptionEnabled?: boolean;
+
   /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
@@ -68,6 +71,7 @@ export const Select = React.forwardRef(
       disableOnPending,
       scrollValidationErrorsIntoView,
       placeholderOption,
+      placeholderOptionEnabled,
       ...nativeProps
     }: ISelectProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
@@ -109,9 +113,17 @@ export const Select = React.forwardRef(
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
         <div className="arm-select-inner">
-          <select className="arm-select-select" {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
+          <select
+            className="arm-select-select"
+            {...nativeProps}
+            ref={internalRef}
+            onChange={onChangeEvent}
+            value={boundValue}
+            disabled={disabled}
+            defaultValue={placeholderOption && !nativeProps.defaultValue ? '' : nativeProps.defaultValue}
+          >
             {placeholderOption && (
-              <option value="" disabled selected>
+              <option value="" disabled={!placeholderOptionEnabled}>
                 {placeholderOption}
               </option>
             )}
