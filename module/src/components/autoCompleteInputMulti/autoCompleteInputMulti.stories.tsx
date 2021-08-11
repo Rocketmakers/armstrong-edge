@@ -139,3 +139,22 @@ export const WithValidationErrors = () => {
     </>
   );
 };
+
+export const WithCustomClasses = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        options={[
+          { id: 1, name: 'red', htmlProps: { className: 'group1' } },
+          { id: 2, name: 'blue', htmlProps: { className: 'group1' } },
+          { id: 3, name: 'purple', htmlProps: { className: 'group2' } },
+        ]}
+      />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
+  );
+};
