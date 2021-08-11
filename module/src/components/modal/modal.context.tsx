@@ -13,7 +13,7 @@ import { ClassNames } from '../../utils/classNames';
  */
 interface IModalContext {
   /** A ref to the modal layer element in the provider which modals should be portalled into */
-  modalLayerReference: React.MutableRefObject<HTMLDivElement | undefined>;
+  modalLayerReference: HTMLDivElement | undefined;
 
   /** An array of the currently dispatched modals using useModal */
   modals: React.FC[];
@@ -27,7 +27,7 @@ interface IModalContext {
 
 /** The React context object driving the modals */
 const ModalContext = React.createContext<IModalContext>({
-  modalLayerReference: { current: undefined },
+  modalLayerReference: undefined,
   modals: [],
   addModal: undefined,
   removeModal: undefined,
@@ -54,15 +54,12 @@ export interface IModalProviderProps {
  */
 export const ModalProvider = React.forwardRef<HTMLDivElement | null, React.PropsWithChildren<IModalProviderProps>>(
   ({ children, modalLayerProps }, ref) => {
-    const modalLayerRef = React.useRef<HTMLDivElement>();
-    React.useImperativeHandle<HTMLDivElement | null, HTMLDivElement | null>(ref, () => modalLayerRef.current!, [modalLayerRef]);
-
-    const { modalLayerReference } = useModalContext();
+    const [modalLayerReference, setModalLayerReference] = React.useState<HTMLDivElement>();
+    React.useImperativeHandle<HTMLDivElement | null, HTMLDivElement | null>(ref, () => modalLayerReference!, [modalLayerReference]);
 
     // set the reference to the modal layer element to context
     const setRef = React.useCallback((node: HTMLDivElement) => {
-      modalLayerRef.current = node;
-      modalLayerReference.current = node;
+      setModalLayerReference(node);
     }, []);
 
     const [modals, { push: addModal, pull: removeModal }] = useArrayState<IModalContext['modals'][number]>([]);

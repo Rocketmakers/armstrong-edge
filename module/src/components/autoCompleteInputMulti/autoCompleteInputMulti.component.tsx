@@ -24,6 +24,7 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
       | 'filterOptions'
       | 'allowKeyboardNavigationSelection'
       | 'noItemsText'
+      | 'dropdownClassName'
     > {
   /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
@@ -61,6 +62,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
       getSelectedOptionTag,
       placeholder,
       noItemsText,
+      dropdownClassName,
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
@@ -189,7 +191,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
           data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
-            contentClassName="arm-auto-complete-options"
+            contentClassName={ClassNames.concat('arm-auto-complete-options', dropdownClassName)}
             items={dropdownItems}
             isOpen={optionsOpen && !disabled && !!options?.length}
             onOpenChange={setOptionsOpen}

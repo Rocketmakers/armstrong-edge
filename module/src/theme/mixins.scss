@@ -69,6 +69,12 @@
   justify-content: center;
 }
 
+@mixin flex-space-between-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @mixin square($size) {
   width: $size;
   height: $size;

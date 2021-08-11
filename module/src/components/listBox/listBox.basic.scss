@@ -1,6 +1,6 @@
 .arm-listbox-wrapper {
   width: 100%;
-  max-width: $input-width;
+  max-width: $arm-input-width;
 }
 
 .arm-input.arm-listbox {
@@ -21,7 +21,7 @@
 }
 
 .arm-listbox-content {
-  height: $input-height;
+  height: $arm-input-height;
   display: flex;
   align-items: center;
   cursor: pointer;

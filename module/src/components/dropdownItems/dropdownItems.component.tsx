@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useDidUpdateEffect, useHasTimeElapsed } from '../../hooks';
+import { useDidUpdateEffect, useEventListener, useHasTimeElapsed } from '../../hooks';
 import { useGeneratedId } from '../../hooks/useGeneratedId';
 import { ArmstrongId } from '../../types';
 import { Arrays } from '../../utils/arrays';
@@ -107,6 +107,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   className,
   focusableWrapper,
   onMouseDown,
+  contentClassName,
   onOpenChange,
   id: htmlId,
   noItemsText,
@@ -203,13 +204,23 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   // used to ensure that clicks on the dropdown are not misread as a mouseUp on a dropdown item if the dropdown content is overlaying the click listener
   const [hasTimePassedSinceMouseDown, beginHasTimeElapsed, resetHasTimeElapsed] = useHasTimeElapsed(500);
 
+  // track if is on initial click to enable click and drag behaviour on dropdowns
+  const [isFirstClick, setIsFirstClick] = React.useState(false);
+
   const onMouseDownEvent = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       beginHasTimeElapsed();
       onMouseDown?.(event);
+      setIsFirstClick(true);
     },
     [onMouseDown, beginHasTimeElapsed]
   );
+
+  const onWindowMouseUpEvent = React.useCallback(() => {
+    setIsFirstClick(false);
+  }, []);
+
+  useEventListener('mouseup', onWindowMouseUpEvent);
 
   const onSelectItem = React.useCallback(
     (id: ArmstrongId, ignoreHasTimePassed?: boolean) => {
@@ -230,7 +241,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     <Dropdown
       {...dropdownProps}
       className={ClassNames.concat('arm-dropdown-items', className)}
-      contentClassName="arm-dropdown-items-content"
+      contentClassName={ClassNames.concat('arm-dropdown-items-content', contentClassName)}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       onKeyDown={onKeyDownEvent}
@@ -263,11 +274,16 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                       {...item}
                       key={item.id + index.toString()}
                       onMouseUp={(event) => {
-                        onSelectItem(item.id);
-                        event.preventDefault();
+                        if (isFirstClick) {
+                          onSelectItem(item.id);
+                          event.preventDefault();
+                        }
                       }}
                       idPrefix={`${id}_item`}
-                      onClick={() => onSelectItem(item.id, true)}
+                      onClick={(event) => {
+                        onSelectItem(item.id, true);
+                        event.preventDefault();
+                      }}
                       onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
                       isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
                       isSelected={!!currentValue?.includes(item.id)}

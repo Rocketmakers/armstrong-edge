@@ -6,6 +6,14 @@ import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 
 These are all the defaults for variables exported by Armstorng - you can override them yourself to update them and how they look throughough Armstrong.
 
+They can be used after an import of:
+
+```css
+@import '~@rocketmakers/armstrong/dist/imports.scss';
+```
+
+(see setup/scss for more info)
+
 ## Contents
 
 - [Overriding](#overriding)
@@ -57,6 +65,7 @@ $color-info: #3498d8;
 ### Spacing
 
 ```css
+$spacing-xxxsmall: 0.125rem;
 $spacing-xxsmall: 0.25rem;
 $spacing-xsmall: 0.5rem;
 $spacing-small: 1rem;
@@ -115,10 +124,10 @@ $transition-slow: 0.8s;
 ### Sizing
 
 ```css
-$input-width: 320px;
-$input-width-large: 420px;
-$input-height: 34px;
-$input-height-large: 70px;
+$arm-input-width: 320px;
+$arm-input-width-large: 420px;
+$arm-input-height: 34px;
+$arm-input-height-large: 70px;
 ```
 
 ### Lines
@@ -172,10 +181,10 @@ $arm-calendar-display-date-highlight-size: 0.4rem;
 
 ```css
 /* the width of an armstrong dialog */
-$dialog-width: 500px;
+$arm-dialog-width: 500px;
 
 /* the maximum height of an armstrong dialog */
-$dialog-height: calc(100vh - #{$spacing-medium * 2});
+$arm-dialog-height: calc(100vh - #{$spacing-medium * 2});
 ```
 
 ### Dropdown
@@ -202,7 +211,7 @@ $arm-progress-bar-with-label-thickness: 1rem;
 
 ```css
 /* the height of the range input's track */
-$range-input-track-thickness: 6px;
+$arm-range-input-track-thickness: 6px;
 ```
 
 ### SideMenu
@@ -232,7 +241,7 @@ $arm-switch-input-width: 50px;
 $arm-switch-input-height: 30px;
 
 /* the padding for the handle in the switch input */
-$arm-switch-input-handle-padding: math.div($spacing-xxsmall, 2);
+$arm-switch-input-handle-padding: $spacing-xxxsmall;
 
 /* the size of the handle, by default calculated using the given height and padding */
 $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input-handle-padding * 2});
@@ -249,7 +258,7 @@ $arm-time-input-width: 50px;
 
 ```css
 /* the width of the toast noficiation */
-$toast-notification-width: 200px;
+$arm-toast-notification-width: 200px;
 ```
 
 ### Tooltip
@@ -257,6 +266,13 @@ $toast-notification-width: 200px;
 ```css
 /* the max width of the tooltip */
 $arm-tooltip-max-width: 250px;
+```
+
+### Header
+
+```css
+/* the height of the header */
+$arm-header-height: 60px;
 ```
 
 ## <a name="animations">Animations</a>

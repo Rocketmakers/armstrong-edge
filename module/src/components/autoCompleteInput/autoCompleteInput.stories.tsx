@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { useDidUpdateEffect, useTemporaryState } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { AutoCompleteInput } from './autoCompleteInput.component';
@@ -25,20 +26,18 @@ export default StoryUtils.createMeta(AutoCompleteInput, 'Form', 'Auto Complete I
 
 /** stories */
 
+const options = [
+  { id: '1', name: 'red' },
+  { id: '2', name: 'blue' },
+  { id: '3', name: 'purple' },
+];
+
 export const Default = () => {
-  const [value, setValue] = React.useState<number>();
+  const [value, setValue] = React.useState<string>();
 
   return (
     <>
-      <AutoCompleteInput
-        value={value}
-        onChange={setValue}
-        options={[
-          { id: 1, name: 'red' },
-          { id: 2, name: 'blue' },
-          { id: 3, name: 'purple' },
-        ]}
-      />
+      <AutoCompleteInput value={value} onChange={setValue} options={options} />
       <p className="bound-value">bound value: {value}</p>
     </>
   );
@@ -48,16 +47,7 @@ export const AllowFreeText = () => {
 
   return (
     <>
-      <AutoCompleteInput
-        value={value}
-        onChange={setValue}
-        allowFreeText
-        options={[
-          { id: '1', name: 'red' },
-          { id: '2', name: 'blue' },
-          { id: '3', name: 'purple' },
-        ]}
-      />
+      <AutoCompleteInput value={value} onChange={setValue} allowFreeText options={options} />
       <p className="bound-value">bound value: {value}</p>
     </>
   );
@@ -67,16 +57,7 @@ export const DontFilter = () => {
 
   return (
     <>
-      <AutoCompleteInput
-        value={value}
-        onChange={setValue}
-        options={[
-          { id: '1', name: 'red' },
-          { id: '2', name: 'blue' },
-          { id: '3', name: 'purple' },
-        ]}
-        filterOptions={false}
-      />
+      <AutoCompleteInput value={value} onChange={setValue} options={options} filterOptions={false} />
       <p className="bound-value">bound value: {value}</p>
     </>
   );
@@ -134,6 +115,36 @@ export const WithValidationErrors = () => {
           { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
         ]}
         validationErrorMessages={['your taste in colours is terrible']}
+      />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
+export const AsyncOptions = () => {
+  const [value, setValue] = React.useState<string>();
+  const [filter, setFilter] = React.useState('');
+
+  const [filteredOptions, setFilteredOptions] = React.useState(options);
+
+  const [isFetching, setIsFetching] = useTemporaryState(false, 1000, () =>
+    setFilteredOptions(options.filter((option) => option.name.toLowerCase().includes(filter.toLowerCase())))
+  );
+
+  useDidUpdateEffect(() => {
+    setIsFetching(true);
+  }, [filter]);
+
+  return (
+    <>
+      <AutoCompleteInput
+        textInputValue={filter}
+        onTextInputChange={setFilter}
+        value={value}
+        onChange={setValue}
+        leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
+        options={filteredOptions}
+        filterOptions={false}
+        pending={isFetching}
       />
       <p className="bound-value">bound value: {value}</p>
     </>

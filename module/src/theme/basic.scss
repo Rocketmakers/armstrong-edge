@@ -1,9 +1,14 @@
-p {
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-inline-end: 0;
-}
-
-* {
+[class*='arm-'] {
   box-sizing: border-box;
+
+  p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-end: 0;
+    margin: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
 }

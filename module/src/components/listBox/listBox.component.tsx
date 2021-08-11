@@ -47,6 +47,9 @@ export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extend
 
   /** ClassName for the wrapper element */
   wrapperClassName?: string;
+
+  /** the className given to the content of the dropdown */
+  dropdownClassName?: string;
 }
 
 /** A select input which takes an array of options */
@@ -75,6 +78,7 @@ export const ListBox = React.forwardRef(
       scrollValidationErrorsIntoView,
       wrapperClassName,
       noItemsText,
+      dropdownClassName,
     }: IListBoxProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -127,6 +131,7 @@ export const ListBox = React.forwardRef(
         childRootElementSelector=".arm-input-inner"
         className={ClassNames.concat('arm-listbox-wrapper', wrapperClassName)}
         noItemsText={noItemsText}
+        contentClassName={ClassNames.concat('arm-listbox-options', dropdownClassName)}
       >
         <InputWrapper
           ref={internalRef}

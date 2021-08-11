@@ -1,4 +1,4 @@
-$toast-notification-width: 200px !default;
+$arm-toast-notification-width: 200px !default;
 
 .arm-toast-notification-container {
   @include fixed-fill;
@@ -15,7 +15,7 @@ $toast-notification-width: 200px !default;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
-  max-width: $toast-notification-width;
+  max-width: $arm-toast-notification-width;
 }
 
 .arm-toast-notification-toasts {

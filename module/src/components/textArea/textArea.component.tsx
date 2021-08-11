@@ -27,7 +27,7 @@ const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextA
       [setActualValue, onChange]
     );
 
-    return <textarea className="arm-text-area-input-textarea" ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+    return <textarea className="arm-text-area-textarea" ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
   }
 );
 
@@ -43,11 +43,11 @@ const ThrottledTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedText
       [setActualValue, onChange]
     );
 
-    return <textarea className="arm-text-area-input-textarea" ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+    return <textarea className="arm-text-area-textarea" ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
   }
 );
 
-export interface ITextAreaInputProps extends NativeTextAreaProps, Omit<IInputWrapperProps, 'onClick'> {
+export interface ITextAreaProps extends NativeTextAreaProps, Omit<IInputWrapperProps, 'onClick'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<string>;
 
@@ -64,7 +64,7 @@ export interface ITextAreaInputProps extends NativeTextAreaProps, Omit<IInputWra
   delay?: IDelayInputConfig;
 }
 
-export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInputProps>(
+export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
   (
     {
       bind,
@@ -127,7 +127,7 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
 
     return (
       <InputWrapper
-        className={ClassNames.concat('arm-text-area-input', className)}
+        className={ClassNames.concat('arm-text-area', className)}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
@@ -164,10 +164,10 @@ export const TextAreaInput = React.forwardRef<HTMLTextAreaElement, ITextAreaInpu
             ref={ref}
           />
         )}
-        {!delay?.milliseconds && <textarea className="arm-text-area-input-textarea" {...nativeProps} onChange={onChangeEvent} {...inputProps} />}
+        {!delay?.milliseconds && <textarea className="arm-text-area-textarea" {...nativeProps} onChange={onChangeEvent} {...inputProps} />}
       </InputWrapper>
     );
   }
 );
 
-TextAreaInput.defaultProps = {};
+TextArea.defaultProps = {};

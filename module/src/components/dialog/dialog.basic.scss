@@ -1,10 +1,10 @@
-$dialog-width: 500px !default;
-$dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
+$arm-dialog-width: 500px !default;
+$arm-dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
 
 .arm-dialog {
   width: 100%;
-  max-width: $dialog-width;
-  max-height: $dialog-height;
+  max-width: $arm-dialog-width;
+  max-height: $arm-dialog-height;
   overflow: auto;
   position: relative;
 }

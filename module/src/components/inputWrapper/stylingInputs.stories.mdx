@@ -1,0 +1,136 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+
+import { TextInput } from '../textInput';
+import { AutoCompleteInput } from '../autoCompleteInput';
+import { Select } from '../select';
+import { ListBox } from '../listBox';
+import { TextArea } from '../textArea';
+
+<Meta title="Form/Styling Inputs" />
+
+# Styling Inputs
+
+Almost all inputs in Armstrong use the `InputWrapper` component. This renders the div that gives them their style, and it wraps them in icons, adds a status, etc.
+
+This means, to set the styling for your inputs, this can happen in just one place.
+
+## Overriding variables
+
+As described in SCSS/variables there are a number of variables that can be overriden in your code. To change the default sizes you can use
+
+```css
+$arm-input-width: new-width;
+$arm-input-height: new-height;
+
+/* used for bigger inputs, like TextArea and DateTimeInput */
+$arm-input-width-large: new-width;
+$arm-input-height-large: new-height;
+```
+
+## Examples
+
+Here are some examples
+
+_not all of these inputs work, this is a limitation of Storybooks Canvas not being able to have its own state, so they can't actually be easily bound up_
+
+### Standard (with prototyping theme)
+
+<Canvas>
+  <div className="input-styling-demo">
+    <TextInput />
+    <AutoCompleteInput options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <Select options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <ListBox options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <TextArea />
+  </div>
+</Canvas>
+
+### Outlined
+
+```css
+.arm-input-wrapper {
+  border: 1px solid $gray-light;
+
+  &:focus-within,
+  &:focus {
+    border-color: $brand-primary;
+  }
+}
+```
+
+<Canvas>
+  <div className="input-styling-demo outlines">
+    <TextInput />
+    <AutoCompleteInput options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <Select options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <ListBox options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <TextArea />
+  </div>
+</Canvas>
+
+### Rounded
+
+```css
+.arm-input-wrapper {
+  border-radius: $arm-input-height / 2;
+}
+```
+
+<Canvas>
+  <div className="input-styling-demo rounded">
+    <TextInput />
+    <AutoCompleteInput options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <Select options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <ListBox options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <TextArea />
+  </div>
+</Canvas>
+
+### Underlined
+
+```css
+.arm-input-wrapper {
+  border-bottom: 2px solid $gray-light;
+
+  &:focus-within,
+  &:focus {
+    border-bottom-color: $brand-primary;
+  }
+}
+```
+
+<Canvas>
+  <div className="input-styling-demo underline">
+    <TextInput />
+    <AutoCompleteInput options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <Select options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <ListBox options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <TextArea />
+  </div>
+</Canvas>
+
+### Funky
+
+```css
+.arm-input-wrapper {
+  background-color: $gray-dark;
+  color: $white;
+  border-bottom: 2px solid $brand-primary;
+}
+
+.arm-dropdown-content {
+  background-color: $gray-dark;
+  color: $white;
+  border: 1px solid $gray-light;
+}
+```
+
+<Canvas>
+  <div className="input-styling-demo fancy">
+    <TextInput />
+    <AutoCompleteInput dropdownClassName="funky-dropdown" options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <Select dropdownClassName="funky-dropdown" options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <ListBox dropdownClassName="funky-dropdown" options={[{ id: 'hiya' }, { id: 'hello' }]} />
+    <TextArea />
+  </div>
+</Canvas>

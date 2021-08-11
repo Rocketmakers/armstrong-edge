@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Form, IconSet } from '../..';
+import { useIsFocused } from '../../hooks';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
@@ -60,6 +61,9 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
 
   /** Should setBoundValue to undefined if the user clears the text input - true by default */
   unsetOnClear?: boolean;
+
+  /** the className given to the content of the dropdown */
+  dropdownClassName?: string;
 }
 
 /** A text input which displays some options in a dropdown */
@@ -80,6 +84,7 @@ export const AutoCompleteInput = React.forwardRef(
       textInputValue,
       filterOptions,
       onChange,
+      dropdownClassName,
       value,
       allowFreeText,
       allowKeyboardNavigationSelection,
@@ -101,6 +106,8 @@ export const AutoCompleteInput = React.forwardRef(
     );
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
+
+    const [isFocused, isFocusedProps] = useIsFocused();
 
     // log a piece of state to manage whether the options dropdown has just been opened, and no filtering has occurred
     const [justOpened, setJustOpened] = React.useState(optionsOpen);
@@ -182,23 +189,22 @@ export const AutoCompleteInput = React.forwardRef(
 
     // reset the input's value to reflect the bound value
     const resetInputValue = React.useCallback(() => {
-      if (!allowFreeText) {
-        const currentOption = options?.find((option) => option.id === boundValue);
-        if (currentOption) {
-          setTextInputInternalValue(getOptionName(currentOption));
-        } else {
-          setTextInputInternalValue('');
-        }
+      const currentOption = options?.find((option) => option.id === boundValue);
+
+      if (currentOption) {
+        setTextInputInternalValue(getOptionName(currentOption));
+      } else {
+        setTextInputInternalValue('');
       }
-    }, [allowFreeText, options, boundValue, getOptionName]);
+    }, [allowFreeText, Objects.contentDependency(options), boundValue, getOptionName]);
 
     useDidUpdateEffect(() => {
       resetInputValue();
-    }, [boundValue, options]);
+    }, [boundValue, Objects.contentDependency(options)]);
 
     // when the user closes the dropdown, reset the input value
     useDidUpdateEffect(() => {
-      if (!optionsOpen) {
+      if (!optionsOpen && !isFocused && !allowFreeText) {
         resetInputValue();
       }
     }, [optionsOpen]);
@@ -206,7 +212,7 @@ export const AutoCompleteInput = React.forwardRef(
     // if allow free text is true, show the currently typed value at the top of the list of options
     const shouldShowFreeTextItemInDropdown = React.useMemo(
       () => allowFreeText && textInputInternalValue && !options?.find((option) => (option.name ?? option.id) === textInputInternalValue),
-      [allowFreeText, textInputInternalValue, options]
+      [allowFreeText, textInputInternalValue, Objects.contentDependency(options)]
     );
 
     return (
@@ -219,7 +225,7 @@ export const AutoCompleteInput = React.forwardRef(
           data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
-            contentClassName="arm-auto-complete-options"
+            contentClassName={ClassNames.concat('arm-auto-complete-options', dropdownClassName)}
             items={[
               ...(shouldShowFreeTextItemInDropdown ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
               ...filteredOptions.map((option) => ({
@@ -256,6 +262,7 @@ export const AutoCompleteInput = React.forwardRef(
               errorIcon={validationErrorIcon}
               disabled={disabled}
               disableOnPending={false}
+              {...isFocusedProps}
             />
           </DropdownItems>
         </div>

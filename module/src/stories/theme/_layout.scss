@@ -4,6 +4,7 @@ html {
 
   body {
     height: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -24,14 +25,14 @@ html {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-
-    .bound-value {
-      position: absolute;
-      left: 0;
-      bottom: -$spacing-xlarge * 2;
-      white-space: nowrap;
-    }
   }
+}
+
+.bound-value {
+  position: absolute;
+  left: 0;
+  bottom: -$spacing-xlarge * 2;
+  white-space: nowrap;
 }
 
 .story-scroll-container {
@@ -89,4 +90,23 @@ html {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+header,
+.sidebar {
+  position: fixed;
+  background-color: $white;
+  box-shadow: $shadow-small;
+}
+
+header {
+  left: 0;
+  top: 0;
+  right: 0;
+}
+
+.sidebar {
+  left: 0;
+  top: 0;
+  bottom: 0;
 }

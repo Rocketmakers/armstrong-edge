@@ -136,7 +136,7 @@ export const Select = React.forwardRef(
             )}
             {options.map((option) => (
               <option key={option.id} value={option.id} disabled={option.disabled}>
-                {option.name}
+                {option.name || option.id}
               </option>
             ))}
           </select>
