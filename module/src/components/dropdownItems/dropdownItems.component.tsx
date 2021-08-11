@@ -17,7 +17,7 @@ export interface IDropdownItem extends IIconWrapperProps<IconSet, IconSet> {
   id: ArmstrongId;
 
   /** props to spread onto the div element for the dropdown item */
-  htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
+  htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
 
   /** a group to show this item under */
   group?: string;

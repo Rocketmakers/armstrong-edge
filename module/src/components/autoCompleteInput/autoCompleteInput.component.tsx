@@ -17,7 +17,9 @@ import { TextInput } from '../textInput';
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
 // will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
-export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet>, Pick<IDropdownItem, 'group'> {
+export interface IAutoCompleteInputOption<Id extends ArmstrongId>
+  extends IIconWrapperProps<IconSet, IconSet>,
+    Pick<IDropdownItem, 'group' | 'htmlProps'> {
   /** the value to be bound */
   id: Id;
 
@@ -234,6 +236,7 @@ export const AutoCompleteInput = React.forwardRef(
                 leftIcon: option.leftIcon,
                 rightIcon: option.rightIcon,
                 group: option.group,
+                htmlProps: option.htmlProps,
               })),
             ]}
             isOpen={optionsOpen && !disabled && !!options?.length}

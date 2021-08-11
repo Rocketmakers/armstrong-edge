@@ -132,6 +132,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
             id: selectedOption.id,
             leftIcon: selectedOption.leftIcon,
             rightIcon: selectedOption.rightIcon,
+            htmlProps: selectedOption.htmlProps,
           };
         }
         return {
