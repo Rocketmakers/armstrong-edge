@@ -45,3 +45,7 @@ fieldset {
   flex-direction: column;
   @include space-between-children-vertical($spacing-xsmall);
 }
+
+.cool {
+  background-color: red !important;
+}
