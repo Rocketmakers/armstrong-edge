@@ -132,7 +132,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
             id: selectedOption.id,
             leftIcon: selectedOption.leftIcon,
             rightIcon: selectedOption.rightIcon,
-            htmlProps: selectedOption.htmlProps,
+            htmlProps: selectedOption.tagHtmlProps,
           };
         }
         return {
@@ -178,6 +178,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
           group: option.group,
+          htmlProps: option.dropDownItemHtmlProps,
         })),
       ];
     }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, parseOptionTag, getOptionName]);

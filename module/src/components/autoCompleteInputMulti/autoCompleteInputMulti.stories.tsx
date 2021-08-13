@@ -149,9 +149,9 @@ export const WithCustomClasses = () => {
         value={value}
         onChange={setValue}
         options={[
-          { id: 1, name: 'red', htmlProps: { className: 'group1' } },
-          { id: 2, name: 'blue', htmlProps: { className: 'group1' } },
-          { id: 3, name: 'purple', htmlProps: { className: 'group2' } },
+          { id: 1, name: 'red', tagHtmlProps: { className: 'group1' }, dropDownItemHtmlProps: { className: 'group1' } },
+          { id: 2, name: 'blue', tagHtmlProps: { className: 'group1' }, dropDownItemHtmlProps: { className: 'group2' } },
+          { id: 3, name: 'purple', tagHtmlProps: { className: 'group2' }, dropDownItemHtmlProps: { className: 'group1' } },
         ]}
       />
       <p className="bound-value">bound value: {value.join(', ')}</p>

@@ -17,14 +17,18 @@ import { TextInput } from '../textInput';
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
 // will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
-export interface IAutoCompleteInputOption<Id extends ArmstrongId>
-  extends IIconWrapperProps<IconSet, IconSet>,
-    Pick<IDropdownItem, 'group' | 'htmlProps'> {
+export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet>, Pick<IDropdownItem, 'group'> {
   /** the value to be bound */
   id: Id;
 
   /** the name to be rendered for the option */
   name?: string;
+
+  /** props to spread onto the li element for the dropdown item */
+  dropDownItemHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
+
+  /** props to spread onto the div element for the tag item */
+  tagHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onMouseUp' | 'ref'>;
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
@@ -236,7 +240,7 @@ export const AutoCompleteInput = React.forwardRef(
                 leftIcon: option.leftIcon,
                 rightIcon: option.rightIcon,
                 group: option.group,
-                htmlProps: option.htmlProps,
+                htmlProps: option.dropDownItemHtmlProps,
               })),
             ]}
             isOpen={optionsOpen && !disabled && !!options?.length}
