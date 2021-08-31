@@ -122,7 +122,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       <Portal portalTo={portalTo || (!portalToSelector && wrapperRef) || undefined} portalToSelector={portalToSelector}>
         <div
           className={ClassNames.concat('arm-modal-wrapper', wrapperClassName)}
-          onClick={onClickWrapperEvent}
+          onMouseDown={onClickWrapperEvent}
           data-close-on-background-click={!!closeOnBackgroundClick}
           data-darken-background={darkenBackground}
           data-is-closing={isClosing}
