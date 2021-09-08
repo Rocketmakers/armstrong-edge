@@ -236,7 +236,7 @@ export const CalendarInput = React.forwardRef(
         }
 
         if (bind?.myValidationErrors?.length === 1 && bind.myValidationErrors[0].message === invalidDateMessage) {
-          bind?.clearValidationErrors();
+          bind.clearValidationErrors();
         }
 
         const date = new Date(year, month, day);
