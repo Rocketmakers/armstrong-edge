@@ -223,18 +223,21 @@ export const CalendarInput = React.forwardRef(
     // when the value of the internal form changes, update the selected date
     React.useEffect(() => {
       // if parts of the date are omitted in inputOrder, use 1 or the given default
-      const day = formState?.day || (missingParts.includes('day') && (defaultIfOmitted?.day || 1));
-      const month = formState?.month || (missingParts.includes('month') && (defaultIfOmitted?.month || 1));
-      const year = formState?.year || (missingParts.includes('year') && (defaultIfOmitted?.year || 1));
+      const day = formState?.day ?? (missingParts.includes('day') && (defaultIfOmitted?.day ?? 1));
+      const month = formState?.month ?? (missingParts.includes('month') && (defaultIfOmitted?.month ?? 0));
+      const year = formState?.year ?? (missingParts.includes('year') && (defaultIfOmitted?.year ?? new Date().getFullYear()));
 
       // only bind if all parts that are included in
       if (typeof day === 'number' && typeof month === 'number' && typeof year === 'number') {
+        const invalidDateMessage = 'Invalid date selection';
         if (!validateDateSelection(day, month, year)) {
-          bind?.addValidationError('Invalid date selection');
+          bind?.addValidationError(invalidDateMessage);
           return;
         }
 
-        bind?.clearValidationErrors();
+        if (bind?.myValidationErrors?.length === 1 && bind.myValidationErrors[0].message === invalidDateMessage) {
+          bind?.clearValidationErrors();
+        }
 
         const date = new Date(year, month, day);
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
