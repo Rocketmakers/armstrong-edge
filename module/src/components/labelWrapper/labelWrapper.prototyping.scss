@@ -1,0 +1,15 @@
+.arm-label-wrapper {
+  border: $line-very-light;
+  border-radius: $border-radius-small;
+  padding: $spacing-xsmall;
+}
+
+.arm-label-wrapper-content {
+  font-size: 0.8rem;
+  margin-bottom: $spacing-xsmall;
+  margin-top: calc(-#{$spacing-xsmall} - 0.5rem);
+  background-color: $white;
+  width: max-content;
+  padding: 0 $spacing-xsmall;
+  color: $gray-medium;
+}

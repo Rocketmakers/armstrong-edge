@@ -4,7 +4,7 @@ import {
   TextInput,
   NumberInput,
   EmailInput,
-  TextAreaInput,
+  TextArea,
   Arrays,
   ListBox,
   SwitchInput,
@@ -92,7 +92,7 @@ export const UserEdit: React.FC = () => {
         <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition("Icomoon", "user")} validationErrorMessages={["no you"]} />
 
         <TextInput bind={formProp("lastName").bind()} leftIcon={IconUtils.getIconDefinition("Icomoon", "user")} />
-        <TextAreaInput bind={formProp("bio").bind()} />
+        <TextArea bind={formProp("bio").bind()} />
         <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
         <SwitchInput bind={formProp('isCool').bind()} validationErrorMessages={['uh oh']} />
