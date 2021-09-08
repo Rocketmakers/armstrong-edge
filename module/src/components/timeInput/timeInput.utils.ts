@@ -1,6 +1,4 @@
-import { addMinutes, getHours, getMinutes, isValid, parse, startOfDay } from 'date-fns';
-import { addHours } from 'date-fns/esm';
-import format from 'date-fns/format';
+import { addHours, addMinutes, format, getHours, getMinutes, isValid, parse, startOfDay } from 'date-fns';
 
 import { Dates } from '../../utils/dates';
 import { ISelectOption } from '../select';

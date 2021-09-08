@@ -70,7 +70,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
     });
 
     // use an overridable internal state so it can be used without a binding
-    const [isChecked, setIsChecked] = useOverridableState(false, boundValue, setBoundValue);
+    const [isChecked, setIsChecked] = useOverridableState(checked, boundValue, setBoundValue);
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {

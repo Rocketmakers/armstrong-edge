@@ -15,6 +15,9 @@ export interface ITag extends IIconWrapperProps<IconSet, IconSet> {
 
   /** the text to render inside the tag */
   name?: string;
+
+  /** props to spread onto the tag div element */
+  htmlProps?: React.BaseHTMLAttributes<HTMLDivElement>;
 }
 
 export interface ITagInputProps
@@ -197,6 +200,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       <>
         {currentTags?.map((tag, index) => (
           <Tag
+            {...tag.htmlProps}
             content={tag.name}
             leftIcon={tag.leftIcon}
             rightIcon={tag.rightIcon}

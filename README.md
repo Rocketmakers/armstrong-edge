@@ -31,15 +31,15 @@ const MyComponent: React.FC = () => {
 };
 ```
 
-See [Storybook](todo.com) for a list of all available components
+See [Storybook](https://rocketmakers.github.io/armstrong-edge/) for a list of all available components
 
-For details on how to import Armstrong's styling, see [SCSS](STORYBOOK LINK TODO)
+For details on how to import Armstrong's styling, see [SCSS](https://rocketmakers.github.io/armstrong-edge/?path=/story/setup-scss--page)
 
-For details on using Armstrong forms, see [Forms](STORYBOOK LINK TODO)
+For details on using Armstrong forms, see [Forms](https://rocketmakers.github.io/armstrong-edge/?path=/story/migration-guides-form-components--page)
 
 ### Issues / bug reports
 
-If you're internal to Rocketmakers, post in the `#armstrong` channel and raise a ticket in [JIRA](https://rocketmakers.atlassian.net/jira/software/projects/ARM/boards/154)
+If you're internal to Rocketmakers, post in the `#armstrong` channel and raise an issue [here](https://github.com/Rocketmakers/armstrong-edge/issues)
 
 Otherwise, raise an issue in Github and follow the issue template
 
@@ -94,10 +94,26 @@ We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to m
 
 ### Process
 
-Please work in feature branches named `feature/*` or if your branch is on a single ticket `feature/ARM-000/*`
+Please work in feature branches named `feature/*` branched from `main`
 
 When your work is ready, submit a merge request and (if you're internal) post a link to your merge request in the `#armstrong` slack channel for someone to review.
 
 There will be a CI which will run to check if your work passes linting and if Storybook can still build.
 
-One day we will talk about testing....
+One day we will talk about testing...
+
+### Release process
+
+Armstrong uses Semantic release https://semantic-release.gitbook.io/semantic-release/ for automatic versioning and publishing based on comittizen formatted messages. 
+The type of release will be worked out from all of the commit messages in your merge. So the highest of the following will dictate the version
+
+```
+fix: will be a patch 0.0.X
+feat: will be minor 0.X.0
+breaking: will be major X.0.0
+chore: won't trigger a release
+```
+
+So basically do your work on a branch `feature/` or `bugfix/`, make sure all of your commit messages go through comittizen and when your happy do a PR onto main. 
+
+When it gets approved and merged in the release type will automatically be worked out based on the highest (breaking > feat > fix) of all the commits that are part of that merge and a tag and version will be published to npm automatically.

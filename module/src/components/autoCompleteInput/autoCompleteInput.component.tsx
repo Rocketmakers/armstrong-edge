@@ -23,6 +23,12 @@ export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconW
 
   /** the name to be rendered for the option */
   name?: string;
+
+  /** props to spread onto the li element for the dropdown item */
+  dropDownItemHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
+
+  /** props to spread onto the div element for the tag item */
+  tagHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onMouseUp' | 'ref'>;
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
@@ -234,6 +240,7 @@ export const AutoCompleteInput = React.forwardRef(
                 leftIcon: option.leftIcon,
                 rightIcon: option.rightIcon,
                 group: option.group,
+                htmlProps: option.dropDownItemHtmlProps,
               })),
             ]}
             isOpen={optionsOpen && !disabled && !!options?.length}

@@ -32,6 +32,12 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   /** Called on change to get the  */
   onSelectOption?: (option?: ISelectOption<Id>) => void;
 
+  /** Text to show as a placeholder when nothing is selected */
+  placeholderOption?: string;
+
+  /** Should the placeholder option be re-selectable? effectively allows the select to be cleared by the user. */
+  placeholderOptionEnabled?: boolean;
+
   /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
@@ -64,6 +70,8 @@ export const Select = React.forwardRef(
       deleteButton,
       disableOnPending,
       scrollValidationErrorsIntoView,
+      placeholderOption,
+      placeholderOptionEnabled,
       ...nativeProps
     }: ISelectProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
@@ -73,20 +81,27 @@ export const Select = React.forwardRef(
 
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, { value, validationErrorMessages });
 
+    const clearSelect = React.useCallback(() => {
+      onSelectOption?.(undefined);
+      bind?.setValue?.(undefined!);
+    }, [onSelectOption, bind?.setValue]);
+
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (onChange) {
           onChange(event);
         }
 
-        const selectedOption = options.find((option) => option.id.toString() === event.currentTarget.value);
-
+        const { value: newValue } = event.currentTarget;
+        const selectedOption = options.find((option) => option.id.toString() === newValue);
         if (selectedOption) {
           setBoundValue?.(selectedOption.id);
           onSelectOption?.(selectedOption);
+        } else if (!newValue && placeholderOption && placeholderOptionEnabled) {
+          clearSelect();
         }
       },
-      [onSelectOption, options, onChange, bind]
+      [onSelectOption, options, onChange, bind, placeholderOption, placeholderOptionEnabled, clearSelect, setBoundValue]
     );
 
     return (
@@ -105,7 +120,20 @@ export const Select = React.forwardRef(
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
         <div className="arm-select-inner">
-          <select className="arm-select-select" {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
+          <select
+            className="arm-select-select"
+            {...nativeProps}
+            ref={internalRef}
+            onChange={onChangeEvent}
+            value={boundValue}
+            disabled={disabled}
+            defaultValue={placeholderOption && !nativeProps.defaultValue ? '' : nativeProps.defaultValue}
+          >
+            {placeholderOption && (
+              <option value="" disabled={!placeholderOptionEnabled}>
+                {placeholderOption}
+              </option>
+            )}
             {options.map((option) => (
               <option key={option.id} value={option.id} disabled={option.disabled}>
                 {option.name || option.id}
@@ -123,8 +151,7 @@ export const Select = React.forwardRef(
           <IconButton
             className="arm-select-delete"
             onClick={(event) => {
-              onSelectOption?.(undefined);
-              bind?.setValue?.(undefined!);
+              clearSelect();
               event.stopPropagation();
             }}
             icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
