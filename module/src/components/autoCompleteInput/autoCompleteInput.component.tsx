@@ -113,7 +113,7 @@ export const AutoCompleteInput = React.forwardRef(
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
-    const [isFocused, isFocusedProps] = useIsFocused();
+    const [isFocused, isFocusedProps] = useIsFocused({ onBlur: textInputProps.onBlur, onFocus: textInputProps.onFocus });
 
     // log a piece of state to manage whether the options dropdown has just been opened, and no filtering has occurred
     const [justOpened, setJustOpened] = React.useState(optionsOpen);
