@@ -229,15 +229,13 @@ export const CalendarInput = React.forwardRef(
 
       // only bind if all parts that are included in
       if (typeof day === 'number' && typeof month === 'number' && typeof year === 'number') {
-        const invalidDateMessage = 'Invalid date selection';
+        const invalidDateValidationId = 'ARM-inv-date';
         if (!validateDateSelection(day, month, year)) {
-          bind?.addValidationError(invalidDateMessage);
+          bind?.addValidationError('Invalid date selection', invalidDateValidationId);
           return;
         }
 
-        if (bind?.myValidationErrors?.length === 1 && bind.myValidationErrors[0].message === invalidDateMessage) {
-          bind.clearValidationErrors();
-        }
+        bind?.clearClientValidationErrors(invalidDateValidationId);
 
         const date = new Date(year, month, day);
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {

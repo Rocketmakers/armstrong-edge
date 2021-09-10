@@ -71,27 +71,30 @@ function useFormBase<TData extends object>(
    * For adding a validation error against a specific property from a keyChain.
    */
   const addValidationErrorFromKeyChain = React.useCallback(
-    (keyChain: KeyChain, messages: string | string[]) => {
+    (keyChain: KeyChain, messages: string | string[], identifier?: string) => {
       const messageArray = Array.isArray(messages) ? messages : [messages];
       const key = validationKeyStringFromKeyChain(keyChain, 'dots');
-      addValidationError(...messageArray.map((message) => ({ key, message })));
+      addValidationError(...messageArray.map((message) => ({ key, message, identifier })));
     },
     [clientValidationDispatch]
   );
 
-  const clearAllValidationErrors = React.useCallback(() => {
-    clientValidationDispatch({ type: 'clear-validation' });
-  }, [clientValidationDispatch]);
+  const clearClientValidationErrors = React.useCallback(
+    (...identifiers: string[]) => {
+      clientValidationDispatch({ type: 'clear-validation', identifiers });
+    },
+    [clientValidationDispatch]
+  );
 
   /**
    * For clearing all validation errors associated with a specific keyChain property
    */
   const clearValidationErrorsByKeyChain = React.useCallback(
-    (keyChain: KeyChain) => {
+    (keyChain: KeyChain, identifiers?: string[]) => {
       const dotKey = validationKeyStringFromKeyChain(keyChain, 'dots');
       const bracketKey = validationKeyStringFromKeyChain(keyChain, 'brackets');
-      clientValidationDispatch({ type: 'clear-validation', key: dotKey });
-      clientValidationDispatch({ type: 'clear-validation', key: bracketKey });
+      clientValidationDispatch({ type: 'clear-validation', key: dotKey, identifiers });
+      clientValidationDispatch({ type: 'clear-validation', key: bracketKey, identifiers });
     },
     [clientValidationDispatch]
   );
@@ -167,8 +170,8 @@ function useFormBase<TData extends object>(
         dispatch,
         keyChain,
         initialValue: valueByKeyChain(initialData, keyChain),
-        addValidationError: (...messages: string[]) => addValidationErrorFromKeyChain(keyChain, messages),
-        clearValidationErrors: () => clearValidationErrorsByKeyChain(keyChain),
+        addValidationError: (messages: string | string[], identifier?: string) => addValidationErrorFromKeyChain(keyChain, messages, identifier),
+        clearClientValidationErrors: (...identifiers: string[]) => clearValidationErrorsByKeyChain(keyChain, identifiers),
       };
     },
     [
@@ -216,11 +219,11 @@ function useFormBase<TData extends object>(
           remove(keyChain, value as any[], index);
           return formProp(...keyChain) as BindingTools<any>;
         },
-        addValidationError: (...messages: string[]) => {
-          addValidationErrorFromKeyChain(keyChain, messages);
+        addValidationError: (messages: string | string[], identifier?: string) => {
+          addValidationErrorFromKeyChain(keyChain, messages, identifier);
         },
-        clearClientValidationErrors: () => {
-          clearValidationErrorsByKeyChain(keyChain);
+        clearClientValidationErrors: (...identifiers: string[]) => {
+          clearValidationErrorsByKeyChain(keyChain, identifiers);
         },
       };
       return arrayMethods as BindingTools<TData>;
@@ -258,7 +261,7 @@ function useFormBase<TData extends object>(
     resetFormData,
     getFormData,
     setFormData,
-    clearAllValidationErrors,
+    clearClientValidationErrors,
     addValidationError,
   };
 }
