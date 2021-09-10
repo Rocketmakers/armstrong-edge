@@ -20,10 +20,18 @@ import {
   IBindConfig,
   IBindingProps,
   IFormConfig,
+  InitialDataFunction,
   IValidationError,
   KeyChain,
 } from './form.types';
-import { isArrayValue, isBindingProps, validationErrorsByKeyChain, validationKeyStringFromKeyChain, valueByKeyChain } from './form.utils';
+import {
+  initialDataIsCallback,
+  isArrayValue,
+  isBindingProps,
+  validationErrorsByKeyChain,
+  validationKeyStringFromKeyChain,
+  valueByKeyChain,
+} from './form.utils';
 
 /**
  * The base hook used by both of the `useForm` hooks.
@@ -269,13 +277,23 @@ function useFormBase<TData extends object>(
 /**
  * Turns a potentially complex nested object or array into a piece of live state and a set of helper tools designed to be used in a form.
  * @param initialData (optional) The initial value of the form data object.
+ * Can be passed as an object or a function which receives the live state and returns new state.
+ * WARNING: if passing a function, it must be a callback protected by dependencies as it will be called every time it's reference updates to receive the new data.
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-function useForm<TData extends object>(initialData: TData, formConfig?: IFormConfig): HookReturn<TData> {
-  const [formState, setFormState] = React.useState<TData>(initialData);
+function useForm<TData extends object>(initialData: TData | InitialDataFunction<TData>, formConfig?: IFormConfig): HookReturn<TData> {
+  const firstInitialData = React.useMemo<TData>(() => {
+    return initialDataIsCallback(initialData) ? initialData() : initialData;
+  }, []);
 
-  const formStateRef = React.useRef<TData>(initialData);
+  const [formState, setFormState] = React.useState<TData>(firstInitialData);
+
+  const formStateRef = React.useRef<TData>(firstInitialData);
+
+  const liveInitialData = React.useMemo<TData>(() => {
+    return initialDataIsCallback(initialData) ? initialData(formStateRef.current) : initialData;
+  }, [initialDataIsCallback(initialData) ? initialData : Objects.contentDependency(initialData)]);
 
   const dispatch = React.useCallback(
     (action) => {
@@ -287,10 +305,10 @@ function useForm<TData extends object>(initialData: TData, formConfig?: IFormCon
   );
 
   useDidUpdateLayoutEffect(() => {
-    dispatch({ type: 'set-all', data: initialData });
-  }, [Objects.contentDependency(initialData)]);
+    dispatch({ type: 'set-all', data: liveInitialData });
+  }, [Objects.contentDependency(liveInitialData)]);
 
-  return useFormBase<TData>(formState, formStateRef, dispatch, initialData, formConfig);
+  return useFormBase<TData>(formState, formStateRef, dispatch, liveInitialData, formConfig);
 }
 
 /**
@@ -353,8 +371,11 @@ export function use<TData extends object>(parentBinder: IBindingProps<TData>, fo
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-export function use<TData extends object>(initialData?: TData, formConfig?: IFormConfig): HookReturn<TData>;
-export function use<TData extends object>(dataOrBinder: TData | IBindingProps<TData>, formConfig?: IFormConfig): HookReturn<TData> {
+export function use<TData extends object>(initialData?: TData | InitialDataFunction<TData>, formConfig?: IFormConfig): HookReturn<TData>;
+export function use<TData extends object>(
+  dataOrBinder: TData | InitialDataFunction<TData> | IBindingProps<TData>,
+  formConfig?: IFormConfig
+): HookReturn<TData> {
   if (isBindingProps<TData>(dataOrBinder)) {
     return useChild(dataOrBinder, formConfig);
   }

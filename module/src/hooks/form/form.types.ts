@@ -443,3 +443,5 @@ export interface IClearValidationAction {
 }
 
 export type ValidationAction = IAddValidationAction | IClearValidationAction;
+
+export type InitialDataFunction<TData extends object> = (currentState?: TData) => TData;
