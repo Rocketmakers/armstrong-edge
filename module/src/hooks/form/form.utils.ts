@@ -3,6 +3,7 @@
  * A set of helper functions to support the form logic.
  ******************************************************* */
 
+import { InitialDataFunction } from '.';
 import { IBindingProps, IValidationError, KeyChain } from './form.types';
 
 /**
@@ -76,4 +77,15 @@ export function isArrayValue(value: any, attemptedAction: string): value is any[
     );
   }
   return true;
+}
+
+/**
+ * Detects whether the incoming initial form data is a callback or an object and casts appropriately.
+ * @param initialData Either some initial form data, or a function that returns initial form data.
+ * @returns true if param is a function, also casts appropriately.
+ */
+export function initialDataIsCallback<TData extends object>(
+  initialData?: TData | InitialDataFunction<TData>
+): initialData is InitialDataFunction<TData> {
+  return typeof initialData === 'function';
 }
