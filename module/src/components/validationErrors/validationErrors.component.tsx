@@ -1,12 +1,13 @@
 import * as React from 'react';
 
+import { ValidationMessage } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { ErrorMessage } from '../errorMessage';
 import { IconSet, IIcon } from '../icon';
 
 export interface IValidationErrorsProps {
   /** The errors to render */
-  validationErrors: string[];
+  validationErrors: ValidationMessage[];
 
   /** CSS className property */
   className?: string;
@@ -33,7 +34,7 @@ export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWith
     return (
       <div ref={internalRef} className={ClassNames.concat('arm-validation-errors', className)}>
         {validationErrors.map((error, index) => (
-          <ErrorMessage message={error} key={error + index} icon={icon} />
+          <ErrorMessage message={error} key={index} icon={icon} />
         ))}
       </div>
     );

@@ -1,11 +1,12 @@
 import * as React from 'react';
 
+import { ValidationMessage } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 
 export interface IErrorMessageProps {
   /** The error to render */
-  message: string;
+  message: ValidationMessage;
 
   /** CSS className property */
   className?: string;

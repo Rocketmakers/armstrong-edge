@@ -299,6 +299,7 @@ export type FormDispatcher<TData> = (action: FormAction<TData, any>) => TData;
  */
 export type FormValidationMode = 'icon' | 'message' | 'both';
 
+export type ValidationMessage = string | JSX.Element;
 /**
  * An individual validation error.
  */
@@ -314,7 +315,7 @@ export interface IValidationError {
   /**
    * The error message
    */
-  message: string;
+  message: ValidationMessage;
 }
 
 /**
