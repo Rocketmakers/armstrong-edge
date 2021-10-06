@@ -43,7 +43,7 @@ export interface BindingToolsStandard<TValue> {
    * Adds a validation error for a field within the form state.
    * @param messages The validation error message(s) to add.
    */
-  addValidationError: (...messages: string[]) => void;
+  addValidationError: (...messages: ValidationMessage[]) => void;
   /**
    * Clears all client created validation errors associated with a key.
    */
@@ -229,7 +229,7 @@ export interface IBindingProps<TValue> {
    * Adds a validation error for a field within the form state.
    * @param messages (string|string[]) The validation error message(s) to add.
    */
-  addValidationError: (...messages: string[]) => void;
+  addValidationError: (...messages: ValidationMessage[]) => void;
   /**
    * Clears all validation messages associated with a key.
    */
@@ -299,7 +299,7 @@ export type FormDispatcher<TData> = (action: FormAction<TData, any>) => TData;
  */
 export type FormValidationMode = 'icon' | 'message' | 'both';
 
-export type ValidationMessage = string | JSX.Element;
+export type ValidationMessage = string | { key: string; element: JSX.Element };
 /**
  * An individual validation error.
  */

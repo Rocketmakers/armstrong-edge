@@ -7,6 +7,7 @@ import { IconSet, IIcon } from '../icon';
 
 export interface IValidationErrorsProps {
   /** The errors to render */
+  /** Can be a string or {key, element} key is necessary for animating in new messages   */
   validationErrors: ValidationMessage[];
 
   /** CSS className property */
@@ -31,10 +32,18 @@ export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWith
       }
     }, [validationErrors.length]);
 
+    /** If the error is a JSX element use the assigned key */
+    const getKey = React.useCallback((error: ValidationMessage) => {
+      if (typeof error === 'string') {
+        return error;
+      }
+      return error.key;
+    }, []);
+
     return (
       <div ref={internalRef} className={ClassNames.concat('arm-validation-errors', className)}>
-        {validationErrors.map((error, index) => (
-          <ErrorMessage message={error} key={index} icon={icon} />
+        {validationErrors.map((error) => (
+          <ErrorMessage message={error} key={getKey(error)} icon={icon} />
         ))}
       </div>
     );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Form } from '../..';
-import { FormValidationMode, IBindingProps, IDelayInputConfig } from '../../hooks/form/form.types';
+import { FormValidationMode, IBindingProps, IDelayInputConfig, ValidationMessage } from '../../hooks/form/form.types';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useThrottle } from '../../hooks/useThrottle';
 import { ClassNames } from '../../utils/classNames';
@@ -52,7 +52,7 @@ export interface ITextAreaProps extends NativeTextAreaProps, Omit<IInputWrapperP
   bind?: IBindingProps<string>;
 
   /** array of validation errors to render */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** how to render the validation errors */
   validationMode?: FormValidationMode;

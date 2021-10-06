@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { ValidationMessage } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
@@ -14,7 +15,7 @@ export interface IButtonProps
   className?: string;
 
   /** array of validation errors to render */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** the icon to use for validation errors */
   errorIcon?: IIcon<IconSet>;
