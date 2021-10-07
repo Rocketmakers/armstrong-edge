@@ -42,7 +42,7 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
   }
 }
 
-.arm-button.arm-calendar-date-grid-day {
+.arm-calendar-date-grid-day {
   @include flex-centre-content;
 
   position: relative;

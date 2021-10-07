@@ -154,6 +154,7 @@ export const Select = React.forwardRef(
               clearSelect();
               event.stopPropagation();
             }}
+            onMouseDown={(e) => e.stopPropagation()}
             icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
             minimalStyle
           />

@@ -1,4 +1,5 @@
-.arm-button {
+.arm-button,
+.arm-button-minimal {
   @include space-between-children-horizontal($spacing-xsmall);
 
   border: 0;
@@ -9,10 +10,6 @@
   align-items: center;
   user-select: none;
   padding: 0;
-
-  &:not(.arm-button-minimal) {
-    background-color: $brand-primary;
-  }
 
   &.arm-button-minimal {
     color: inherit;
