@@ -3,6 +3,7 @@ import {
   TextInput,
   Button,
   useDialog,
+  useInterval,
 } from "@rocketmakers/armstrong-edge";
 import * as React from "react";
 
@@ -30,6 +31,9 @@ export const DialogExample: React.FC = () => {
 
     alert(result);
   }, [openDialog]);
+
+  const [counter, setCounter] = React.useState(0)
+  useInterval(() => setCounter(counter+1), 500, { setOnMount: true })
 
   return (
     <>

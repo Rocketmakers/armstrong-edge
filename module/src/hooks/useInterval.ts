@@ -10,12 +10,17 @@ export interface IUseIntervalReturn {
   clear: () => void;
 }
 
+export interface IUseIntervalConfig {
+  /** Should the interval begin firing from when the component mounts */
+  setOnMount?: boolean;
+}
+
 /**
  * set up a interval which is cleared automatically when the component unmounts
  * @param time the time in ms between each time the callback is fired
  * @param callback the callback to run after the given time
  */
-export function useInterval(callback: () => void, time?: number): IUseIntervalReturn {
+export function useInterval(callback: () => void, time?: number, config?: IUseIntervalConfig): IUseIntervalReturn {
   const interval = React.useRef<any>();
 
   const clear = React.useCallback(() => {
@@ -34,6 +39,10 @@ export function useInterval(callback: () => void, time?: number): IUseIntervalRe
   }, [callback]);
 
   React.useEffect(() => {
+    if (config?.setOnMount) {
+      set();
+    }
+
     return () => {
       clear();
     };

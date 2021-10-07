@@ -83,7 +83,7 @@ export const useModalLayerPromise = <T, TArg = unknown>(
         addModal(modalComponent);
         setIsOpen(true);
       }),
-    [addModal, removeModal]
+    [addModal, removeModal, Children]
   );
 
   // clean up promise and modal on unmount
