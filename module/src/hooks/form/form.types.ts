@@ -227,7 +227,8 @@ export interface IBindingProps<TValue> {
   initialValue: TValue | undefined;
   /**
    * Adds a validation error for a field within the form state.
-   * @param messages (string|string[]) The validation error message(s) to add.
+   * @param messages (ValidationMessage | ValidationMessage[]) The validation error message(s) to add.
+   * NOTE: A validation message can be a string or a JSX element, if using JSX please add a key to the element to keep the animations consistent
    */
   addValidationError: (...messages: ValidationMessage[]) => void;
   /**
@@ -299,7 +300,12 @@ export type FormDispatcher<TData> = (action: FormAction<TData, any>) => TData;
  */
 export type FormValidationMode = 'icon' | 'message' | 'both';
 
-export type ValidationMessage = string | { key: string; element: JSX.Element };
+/**
+ * The validation message
+ * Can be a string or an element
+ */
+export type ValidationMessage = string | JSX.Element;
+
 /**
  * An individual validation error.
  */

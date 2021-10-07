@@ -19,7 +19,7 @@ export interface IErrorMessageProps {
 export const ErrorMessage = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IErrorMessageProps>>(({ className, message, icon }, ref) => {
   return (
     <div ref={ref} className={ClassNames.concat('arm-error-message', className)}>
-      {icon && <Icon iconSet={icon.iconSet} icon={icon.icon} />} <span>{typeof message === 'string' ? message : message.element}</span>
+      {icon && <Icon iconSet={icon.iconSet} icon={icon.icon} />} <span>{message}</span>
     </div>
   );
 });

@@ -32,18 +32,18 @@ export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWith
       }
     }, [validationErrors.length]);
 
-    /** If the error is a JSX element use the assigned key */
-    const getKey = React.useCallback((error: ValidationMessage) => {
+    /** If the error is a JSX element use the key on the element or the index */
+    const getKey = React.useCallback((error: ValidationMessage, index: number) => {
       if (typeof error === 'string') {
-        return error;
+        return error + index;
       }
-      return error.key;
+      return error?.key ?? index;
     }, []);
 
     return (
       <div ref={internalRef} className={ClassNames.concat('arm-validation-errors', className)}>
-        {validationErrors.map((error) => (
-          <ErrorMessage message={error} key={getKey(error)} icon={icon} />
+        {validationErrors.map((error, i) => (
+          <ErrorMessage message={error} key={getKey(error, i)} icon={icon} />
         ))}
       </div>
     );
