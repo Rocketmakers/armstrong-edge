@@ -10,6 +10,7 @@ import { useMyValidationErrorMessages } from '../../components/validationErrors'
 import { Objects } from '../../utils/objects';
 import { Typescript } from '../../utils/typescript';
 import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
+import { ValidationMessage } from '.';
 import { dataReducer, validationReducer } from './form.state';
 import {
   BindingTools,
@@ -79,7 +80,7 @@ function useFormBase<TData extends object>(
    * For adding a validation error against a specific property from a keyChain.
    */
   const addValidationErrorFromKeyChain = React.useCallback(
-    (keyChain: KeyChain, messages: string | string[], identifier?: string) => {
+    (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[], identifier?: string) => {
       const messageArray = Array.isArray(messages) ? messages : [messages];
       const key = validationKeyStringFromKeyChain(keyChain, 'dots');
       addValidationError(...messageArray.map((message) => ({ key, message, identifier })));
@@ -178,7 +179,8 @@ function useFormBase<TData extends object>(
         dispatch,
         keyChain,
         initialValue: valueByKeyChain(initialData, keyChain),
-        addValidationError: (messages: string | string[], identifier?: string) => addValidationErrorFromKeyChain(keyChain, messages, identifier),
+        addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) =>
+          addValidationErrorFromKeyChain(keyChain, messages, identifier),
         clearClientValidationErrors: (...identifiers: string[]) => clearValidationErrorsByKeyChain(keyChain, identifiers),
       };
     },
@@ -227,7 +229,7 @@ function useFormBase<TData extends object>(
           remove(keyChain, value as any[], index);
           return formProp(...keyChain) as BindingTools<any>;
         },
-        addValidationError: (messages: string | string[], identifier?: string) => {
+        addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => {
           addValidationErrorFromKeyChain(keyChain, messages, identifier);
         },
         clearClientValidationErrors: (...identifiers: string[]) => {
@@ -392,7 +394,7 @@ interface IUseBindingToolsReturnUtils<TData> {
   getFormattedValueToData: (val?: TData) => TData | undefined;
 
   /** Validation errors from the binder concatenated with manually passed in errors */
-  validationErrorMessages: string[];
+  validationErrorMessages: ValidationMessage[];
 
   /** The current validation mode for the form */
   validationMode?: FormValidationMode;
@@ -418,7 +420,7 @@ interface IUseBindingToolsOverrides<TData> {
   onChange?: (newValue: TData) => void;
 
   /** Component level validation errors, will be concatenated with the validation errors from the binder */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** The current validation mode for the form */
   validationMode?: FormValidationMode;

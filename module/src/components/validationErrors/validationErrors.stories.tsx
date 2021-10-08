@@ -29,6 +29,16 @@ export const CustomIcon = StoryUtils.cloneTemplate(Template, {
   validationErrors: ["This doesn't look right", 'User error lol'],
   icon: IconUtils.getIconDefinition('Icomoon', 'weather-cloud-sun'),
 });
+
+export const JSX = StoryUtils.cloneTemplate(Template, {
+  validationErrors: [
+    <React.Fragment key="test1">
+      hello <b>this is bold</b> <i>this is italic</i>
+    </React.Fragment>,
+  ],
+  icon: IconUtils.getIconDefinition('Icomoon', 'code'),
+});
+
 export const ScrollIntoView: Story = () => {
   const { formProp } = Form.use({
     firstname: 'steve',

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { FormValidationMode } from '../../hooks/form';
+import { FormValidationMode, ValidationMessage } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { AutoResizer } from '../autoResizer';
 import { IconSet, IconUtils, IIcon } from '../icon';
@@ -19,7 +19,7 @@ export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet>,
   rightOverlay?: React.ReactNode;
 
   /** array of validation errors to render */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** how to render the validation errors */
   validationMode?: FormValidationMode;

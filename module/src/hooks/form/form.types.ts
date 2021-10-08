@@ -44,7 +44,7 @@ export interface BindingToolsStandard<TValue> {
    * @param messages The validation error message(s) to add.
    * @param identifier The identifier so use when adding the validation error(s), allows this group to be independently cleared.
    */
-  addValidationError: (messages: string | string[], identifier?: string) => void;
+  addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => void;
   /**
    * Clears all client validation errors for the current form state.
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
@@ -229,10 +229,10 @@ export interface IBindingProps<TValue> {
   initialValue: TValue | undefined;
   /**
    * Adds a validation error for a field within the form state.
-   * @param messages (string|string[]) The validation error message(s) to add.
+   * @param messages (ValidationMessage | ValidationMessage[]) The validation error message(s) to add. A validation message can be a string or a JSX element, if using JSX please add a key to the element to keep the animations consistent
    * @param identifier The identifier so use when adding the validation error(s), allows this group to be independently cleared.
    */
-  addValidationError: (messages: string | string[], identifier?: string) => void;
+  addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => void;
   /**
    * Clears all client validation errors for the current form state.
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
@@ -304,6 +304,12 @@ export type FormDispatcher<TData> = (action: FormAction<TData, any>) => TData;
 export type FormValidationMode = 'icon' | 'message' | 'both';
 
 /**
+ * The validation message
+ * Can be a string or an element
+ */
+export type ValidationMessage = string | JSX.Element;
+
+/**
  * An individual validation error.
  */
 export interface IValidationError {
@@ -318,7 +324,7 @@ export interface IValidationError {
   /**
    * The error message
    */
-  message: string;
+  message: ValidationMessage;
   /**
    * Identifier (optional)
    * - Can be used when dispatching validation errors client side so that they can be grouped and cleared in groups.

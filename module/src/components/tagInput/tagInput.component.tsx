@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ClassNames, Form, IIconWrapperProps } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types';
 import { IconSet, IconUtils } from '../icon';
@@ -27,7 +27,7 @@ export interface ITagInputProps
   bind?: IBindingProps<string[]>;
 
   /** array of validation errors to render */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** how to render the validation errors */
   validationMode?: FormValidationMode;
