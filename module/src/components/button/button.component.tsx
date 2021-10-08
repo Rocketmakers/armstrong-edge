@@ -62,7 +62,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
       <>
         <button
           {...nativeProps}
-          className={ClassNames.concat('arm-button', className, { 'arm-button-minimal': minimalStyle })}
+          className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
           data-pending={pending}
           data-disabled={disabled || pending}
           data-error={shouldShowErrorIcon}

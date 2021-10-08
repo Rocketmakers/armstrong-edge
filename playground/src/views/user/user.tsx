@@ -19,7 +19,6 @@ import { apiHooks } from "../../state/apiHooks";
 import { MemoryServer } from "../../servers/memory";
 import { IconUtils } from "@rocketmakers/armstrong-edge/dist/components/icon";
 import { IValidationError } from "@rocketmakers/armstrong-edge/dist/hooks/form";
-import { useState } from "@rocketmakers/armstrong-edge/node_modules/@types/react";
 
 type Role = MemoryServer.IUserRole;
 
@@ -32,7 +31,7 @@ const autocompleteOptions = [
 export const UserEdit: React.FC = () => {
   const { userId } = useParams<{ userId?: string }>();
 
-  const [{ data }] = apiHooks.user.getUser.useQuery({
+  const [{ data }, forceRefetch] = apiHooks.user.getUser.useQuery({
     parameters: { id: userId },
   });
 
@@ -47,21 +46,30 @@ export const UserEdit: React.FC = () => {
     [{ key: "firstName", message: "uh oh" }]
   );
 
-  const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(
-    {
-      firstName: "",
-      lastName: "",
-      email: "",
-      address: {
-        line1: "",
-        city: "",
-        postcode: "",
-      },
-      points: 0,
-      roles: [],
-      ...(data ?? {}),
+  const initialData = React.useCallback(
+    (currentState?: MemoryServer.IUser) => {
+      console.log("NEW CURRENT", currentState);
+      console.log("NEW REMOTE", data);
+      return {
+        firstName: "",
+        lastName: "",
+        email: "",
+        address: {
+          line1: "",
+          city: "",
+          postcode: "",
+        },
+        points: 0,
+        roles: [],
+        ...(currentState ?? {}),
+        ...(data ?? {}),
+      };
     },
+    [data]
+  );
 
+  const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(
+    initialData,
     {
       validationErrors,
       validationErrorIcon: IconUtils.getIconDefinition("LinearIcons", "alarm"),
@@ -191,6 +199,9 @@ export const UserEdit: React.FC = () => {
 
       <Button type="submit" onClick={submitData}>
         Submit
+      </Button>
+      <Button type="submit" onClick={() => forceRefetch()}>
+        Force Refetch
       </Button>
     </form>
   );

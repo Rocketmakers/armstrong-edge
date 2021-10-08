@@ -42,12 +42,14 @@ export interface BindingToolsStandard<TValue> {
   /**
    * Adds a validation error for a field within the form state.
    * @param messages The validation error message(s) to add.
+   * @param identifier The identifier so use when adding the validation error(s), allows this group to be independently cleared.
    */
-  addValidationError: (...messages: ValidationMessage[]) => void;
+  addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => void;
   /**
-   * Clears all client created validation errors associated with a key.
+   * Clears all client validation errors for the current form state.
+   * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
    */
-  clearClientValidationErrors: () => void;
+  clearClientValidationErrors: (...identifiers: string[]) => void;
 }
 
 /**
@@ -227,14 +229,15 @@ export interface IBindingProps<TValue> {
   initialValue: TValue | undefined;
   /**
    * Adds a validation error for a field within the form state.
-   * @param messages (ValidationMessage | ValidationMessage[]) The validation error message(s) to add.
-   * NOTE: A validation message can be a string or a JSX element, if using JSX please add a key to the element to keep the animations consistent
+   * @param messages (ValidationMessage | ValidationMessage[]) The validation error message(s) to add. A validation message can be a string or a JSX element, if using JSX please add a key to the element to keep the animations consistent
+   * @param identifier The identifier so use when adding the validation error(s), allows this group to be independently cleared.
    */
-  addValidationError: (...messages: ValidationMessage[]) => void;
+  addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => void;
   /**
-   * Clears all validation messages associated with a key.
+   * Clears all client validation errors for the current form state.
+   * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
    */
-  clearValidationErrors: () => void;
+  clearClientValidationErrors: (...identifiers: string[]) => void;
 }
 
 /**
@@ -322,6 +325,11 @@ export interface IValidationError {
    * The error message
    */
   message: ValidationMessage;
+  /**
+   * Identifier (optional)
+   * - Can be used when dispatching validation errors client side so that they can be grouped and cleared in groups.
+   */
+  identifier?: string;
 }
 
 /**
@@ -403,9 +411,10 @@ export interface HookReturn<TData extends object> {
    */
   setFormData: (newData: TData) => void;
   /**
-   * Clears all validation errors for the current form state.
+   * Clears all client validation errors for the current form state.
+   * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
    */
-  clearAllValidationErrors: () => void;
+  clearClientValidationErrors: (...identifiers: string[]) => void;
   /**
    * Adds one or more validation errors to the current form state.
    * - Validation errors consist of a key to target the property, and a message to display.
@@ -436,6 +445,9 @@ export interface IAddValidationAction {
 export interface IClearValidationAction {
   type: 'clear-validation';
   key?: string;
+  identifiers?: string[];
 }
 
 export type ValidationAction = IAddValidationAction | IClearValidationAction;
+
+export type InitialDataFunction<TData extends object> = (currentState?: TData) => TData;

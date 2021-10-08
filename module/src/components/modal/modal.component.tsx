@@ -44,7 +44,13 @@ export interface IModalProps
 
 /**
  * A component which will portal its children into a div on top of all existing DOM, with handlers to close it if the user clicks outside of that area.
+ *
  * By default, if inside a ModalProvider, it will portal into an element rendered by that, but that can be overridden by providing portalTo or portalToSelector
+ *
+ * To improve accessibility, you should manage the users focus yourself. Ensure that when a modal is open, everything else has aria-hidden="true", that
+ * focus is moved to the first element in the modal, and that focus is moved back when the modal closes
+ *
+ * see: https://www.w3.org/WAI/GL/wiki/Using_ARIA_role%3Ddialog_to_implement_a_modal_dialog_box
  */
 
 export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
@@ -122,7 +128,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       <Portal portalTo={portalTo || (!portalToSelector && wrapperRef) || undefined} portalToSelector={portalToSelector}>
         <div
           className={ClassNames.concat('arm-modal-wrapper', wrapperClassName)}
-          onClick={onClickWrapperEvent}
+          onMouseDown={onClickWrapperEvent}
           data-close-on-background-click={!!closeOnBackgroundClick}
           data-darken-background={darkenBackground}
           data-is-closing={isClosing}

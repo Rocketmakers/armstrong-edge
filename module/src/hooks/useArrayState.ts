@@ -40,7 +40,6 @@ type ArrayStateReturn<T> = [
 ];
 
 /** Store an array value in state, and access push, pull, clear methods to interact with that state - all contained within a reducer, meaning that multiple state updates can happen in a single thread without any unusual behaviors */
-
 export const useArrayState = <T>(
   /** The initial value of the state */
   initialValue: T[],
