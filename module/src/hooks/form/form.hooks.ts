@@ -26,6 +26,7 @@ import {
   KeyChain,
 } from './form.types';
 import {
+  childKeyChainStringFromParent,
   initialDataIsCallback,
   isArrayValue,
   isBindingProps,
@@ -327,9 +328,18 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
   }, [parentBinder.value]);
 
   const combinedConfig = React.useMemo<IFormConfig | undefined>(() => {
-    const combination: IFormConfig = { ...(parentBinder.formConfig ?? {}), ...(formConfig ?? {}) };
+    // format validation errors from parent
+    const parentBinderConfig: IFormConfig | undefined = parentBinder.formConfig && {
+      ...parentBinder.formConfig,
+      validationErrors: parentBinder.myValidationErrors?.map((ve) => ({
+        ...ve,
+        key: childKeyChainStringFromParent(ve.key, parentBinder.keyChain),
+      })),
+    };
+
+    const combination: IFormConfig = { ...(parentBinderConfig ?? {}), ...(formConfig ?? {}) };
     return Object.keys(combination).length ? combination : undefined;
-  }, [Objects.contentDependency(formConfig), Objects.contentDependency(parentBinder.formConfig)]);
+  }, [Objects.contentDependency(formConfig), Objects.contentDependency(parentBinder.formConfig), parentBinder.myValidationErrors]);
 
   const dispatch = React.useCallback<FormDispatcher<TData | undefined>>(
     (action) => {
