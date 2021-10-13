@@ -337,7 +337,7 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
       })),
     };
 
-    const combination: IFormConfig = { ...(parentBinderConfig ?? {}), ...(formConfig ?? {}) };
+    const combination: IFormConfig = Objects.mergeDeep(parentBinderConfig ?? {}, formConfig ?? {});
     return Object.keys(combination).length ? combination : undefined;
   }, [Objects.contentDependency(formConfig), Objects.contentDependency(parentBinder.formConfig), parentBinder.myValidationErrors]);
 

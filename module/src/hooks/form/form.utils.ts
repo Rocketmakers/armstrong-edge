@@ -32,15 +32,31 @@ export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots'
 }
 
 /**
+ * Checks whether an incoming validation either belongs to (or is a child of) a property keyChain.
+ * @param validationErrorKey The key of the validation error
+ * @param propertyKeyChainStrings The property keyChain strings to check
+ * @returns {boolean} `true` if the validation error belongs to (or is a child of) one of the passed property keyChains, else `false`.
+ */
+export function isMyValidationError(validationErrorKey: string, ...propertyKeyChainStrings: string[]): boolean {
+  return propertyKeyChainStrings.some((propertyKeyChain) => {
+    return (
+      propertyKeyChain === validationErrorKey ||
+      validationErrorKey.indexOf(`${propertyKeyChain}.`) === 0 ||
+      validationErrorKey.indexOf(`${propertyKeyChain}[`) === 0
+    );
+  });
+}
+
+/**
  * Filters a set of validation errors based on the `keyChain` of the property.
  * @param rootErrors The root set of validation errors for the entire form.
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
- * @returns {Array} A filtered set of validation errors that apply to the property in question and it's sub-properties.
+ * @returns {Array} A filtered set of validation errors that apply to the property in question and its sub-properties.
  */
 export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], keyChain: KeyChain = []): IValidationError[] {
   const keyChainAttrStringDots = validationKeyStringFromKeyChain(keyChain, 'dots');
   const keyChainAttrStringSquareArray = validationKeyStringFromKeyChain(keyChain, 'brackets');
-  return rootErrors.filter((error) => error.key.indexOf(keyChainAttrStringDots) === 0 || error.key.indexOf(keyChainAttrStringSquareArray) === 0);
+  return rootErrors.filter((error) => isMyValidationError(error.key, keyChainAttrStringDots, keyChainAttrStringSquareArray));
 }
 
 /**
