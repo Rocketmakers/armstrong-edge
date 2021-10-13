@@ -3,24 +3,20 @@ import * as React from 'react';
 import { useDidUpdateEffect, useEventListener, useHasTimeElapsed } from '../../hooks';
 import { useGeneratedId } from '../../hooks/useGeneratedId';
 import { ArmstrongId } from '../../types';
+import { IArmstrongExtendedOption } from '../../types/options';
 import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { Dropdown, IDropdownProps } from '../dropdown';
-import { Icon, IconSet } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { Icon } from '../icon';
+import { IconWrapper } from '../iconWrapper';
 
-export interface IDropdownItem extends IIconWrapperProps<IconSet, IconSet> {
+export interface IDropdownItem
+  extends Pick<
+    IArmstrongExtendedOption<ArmstrongId, Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>>,
+    'id' | 'htmlProps' | 'group' | 'leftIcon' | 'rightIcon'
+  > {
   /** The text content of the dropdown item */
   content: string;
-
-  /** The string to be passed into onItemSelected */
-  id: ArmstrongId;
-
-  /** props to spread onto the div element for the dropdown item */
-  htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
-
-  /** a group to show this item under */
-  group?: string;
 }
 
 export interface IDropdownItemProps extends IDropdownItem {

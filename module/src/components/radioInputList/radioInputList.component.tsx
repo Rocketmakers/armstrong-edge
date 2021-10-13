@@ -3,17 +3,17 @@ import * as React from 'react';
 import { Arrays, Form, IInputWrapperProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
+import { IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
-import { IconSet } from '../icon';
-import { IIconWrapperProps } from '../iconWrapper';
 import { IRadioInputProps, RadioInput } from '../radioInput/radioInput.component';
 import { ValidationErrors } from '../validationErrors';
 
-export interface IRadioInputListOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet> {
-  id: Id;
-  name?: string;
-  group?: string;
-}
+export interface IRadioInputListOption<Id extends ArmstrongId>
+  extends IArmstrongExtendedOptionWithInput<
+    Id,
+    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
+    IRadioInputProps['inputProps']
+  > {}
 
 export interface IRadioInputListProps<Id extends ArmstrongId>
   extends Pick<IRadioInputProps, 'checkedIcon' | 'uncheckedIcon'>,
@@ -87,6 +87,8 @@ export const RadioInputList = React.forwardRef(
                   name={option.name ?? option.id}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
+                  inputProps={option.htmlInputProps}
+                  {...option.htmlProps}
                 />
               ))}
             </React.Fragment>

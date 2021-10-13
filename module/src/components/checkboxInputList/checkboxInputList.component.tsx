@@ -3,16 +3,16 @@ import * as React from 'react';
 import { Arrays, Form, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
+import { IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { CheckboxInput, ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
-import { IconSet } from '../icon';
-import { IIconWrapperProps } from '../iconWrapper';
 
-export interface ICheckboxInputListOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet> {
-  id: Id;
-  name: string;
-  group?: string;
-}
+export interface ICheckboxInputListOption<Id extends ArmstrongId>
+  extends IArmstrongExtendedOptionWithInput<
+    Id,
+    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
+    ICheckboxInputProps['inputProps']
+  > {}
 
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
   extends Pick<ICheckboxInputProps, 'checkedIcon' | 'uncheckedIcon'>,
@@ -96,10 +96,12 @@ export const CheckboxInputList = React.forwardRef(
                   rightIcon={option.rightIcon}
                   checked={includesOption(option)}
                   onChange={() => onCheckboxInputChange(option)}
-                  name={option.name ?? option.id}
+                  name={option.name ?? option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
                   label={option.name ?? option.id}
+                  inputProps={option.htmlInputProps}
+                  {...option.htmlProps}
                 />
               ))}
             </React.Fragment>

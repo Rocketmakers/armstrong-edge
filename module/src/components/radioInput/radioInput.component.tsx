@@ -6,11 +6,11 @@ import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 
 export interface IRadioInputProps
   extends IIconWrapperProps<IconSet, IconSet>,
-    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'> {
+    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'> {
   /** fired when the user changes the current value */
   onChange?: (newValue: boolean) => void;
 
-  /** the name to render in a label, fallsd back to ID */
+  /** the name to render in a label */
   name: string;
 
   /** icon to render on the input when checked */
@@ -18,22 +18,25 @@ export interface IRadioInputProps
 
   /** icon to render on the input when not checked */
   uncheckedIcon?: IIcon<IconSet>;
+
+  /** props to spread onto the input element */
+  inputProps?: Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'type' | 'ref' | 'checked'>;
 }
 
 /** Render a single radio input */
 export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
-  ({ onChange, name, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, ...nativeProps }, ref) => {
+  ({ onChange, name, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, inputProps, ...nativeProps }, ref) => {
     return (
-      <div className={ClassNames.concat('arm-radio-input', className)} data-checked={checked} data-has-checked-icon={!!checkedIcon}>
+      <div className={ClassNames.concat('arm-radio-input', className)} data-checked={checked} data-has-checked-icon={!!checkedIcon} {...nativeProps}>
         <label>
           <div className="arm-radio-input-radio">
             <input
-              className="arm-radio-input-radio-input"
+              {...inputProps}
+              className={ClassNames.concat('arm-radio-input-radio-input', inputProps?.className)}
               ref={ref}
               type="radio"
               checked={checked}
               onChange={() => onChange?.(!checked)}
-              {...nativeProps}
             />
 
             {checkedIcon && <Icon className="arm-radio-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}

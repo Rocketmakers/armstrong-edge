@@ -11,7 +11,7 @@ import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
 export interface ICheckboxInputProps
-  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'type'>,
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type'>,
     IIconWrapperProps<IconSet, IconSet>,
     Pick<
       IInputWrapperProps,
@@ -34,6 +34,9 @@ export interface ICheckboxInputProps
 
   /** fired when the value changes */
   onValueChange?: (newValue: boolean) => void;
+
+  /** props to spread onto the input element */
+  inputProps?: Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'type' | 'ref' | 'checked'>;
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -57,6 +60,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       rightIcon,
       scrollValidationErrorsIntoView,
       onValueChange,
+      inputProps,
       ...nativeProps
     }: ICheckboxInputProps,
     ref
@@ -87,16 +91,17 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
           data-checked={isChecked}
+          {...nativeProps}
         >
           <label>
             <div className="arm-checkbox-input-checkbox">
               <input
                 className="arm-checkbox-input-checkbox-input"
                 onChange={onChangeEvent}
-                {...nativeProps}
                 type="checkbox"
                 ref={ref}
                 checked={isChecked}
+                {...inputProps}
               />
 
               {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}

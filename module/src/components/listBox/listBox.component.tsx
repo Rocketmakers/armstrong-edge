@@ -3,18 +3,17 @@ import * as React from 'react';
 import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types';
+import { IArmstrongExtendedOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
-import { DropdownItems, IDropdownItem, IDropdownItemsProps } from '../dropdownItems';
+import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
-import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { ISelectOption } from '../select';
 
 export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
-  extends IIconWrapperProps<IconSet, IconSet>,
-    ISelectOption<Id, TSelectData>,
-    Pick<IDropdownItem, 'group'> {}
+  extends IArmstrongExtendedOption<Id, Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onChange' | 'ref'>>,
+    Pick<ISelectOption<Id, TSelectData>, 'data'> {}
 
 /** A DOM recreation of a select element */
 export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps, Pick<IDropdownItemsProps, 'noItemsText'> {
@@ -123,6 +122,7 @@ export const ListBox = React.forwardRef(
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
           group: option.group,
+          htmlProps: option.htmlProps,
         }))}
         onItemSelected={(item) => onChangeEvent(options.find((option) => option.id === item)!)}
         allowKeyboardNavigation
