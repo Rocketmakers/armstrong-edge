@@ -13,6 +13,9 @@ export const OptionContent: React.FC<IOptionContentProps> = ({ name, content, le
     if (typeof content === 'string' || typeof content === 'number') {
       return content;
     }
+    if (content) {
+      return undefined;
+    }
     if (name) {
       return name;
     }
