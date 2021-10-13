@@ -23,7 +23,7 @@ export namespace Objects {
     return !!item && typeof item === 'object' && !Array.isArray(item);
   }
 
-  export function mergeDeep<TObject extends object, TValue>(target: TObject, keyChain: Array<string | number>, value: TValue): TObject {
+  export function mergeDeepFromKeyChain<TObject extends object, TValue>(target: TObject, keyChain: Array<string | number>, value: TValue): TObject {
     const output = (Array.isArray(target) || Number.isInteger(keyChain?.[0]) ? [...((target || []) as any[])] : { ...(target || {}) }) as TObject;
     let bookmarkRef: any = output;
     for (let i = 0; i < keyChain.length; i += 1) {
@@ -67,4 +67,33 @@ export namespace Objects {
     object: T,
     callback: (key: TKey, value: TValue, index: number) => void
   ) => Object.keys(object).forEach((key, index) => callback(key as TKey, object[key], index));
+
+  /**
+   * Deep merge two objects.
+   * @param target The target object to merge into
+   * @param source The new source objects
+   */
+  export function mergeDeep<TObject>(target: TObject, ...sources: Partial<TObject>[]) {
+    if (!isObject(target)) {
+      return target;
+    }
+    const newTarget = { ...target };
+    for (const source of sources) {
+      if (isObject(source)) {
+        Object.keys(source).forEach((key) => {
+          const targetValue = newTarget[key];
+          const sourceValue = source[key];
+          if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
+            newTarget[key] = [...targetValue, ...sourceValue];
+          } else if (isObject(targetValue) && isObject(sourceValue)) {
+            newTarget[key] = mergeDeep(targetValue, sourceValue);
+          } else {
+            newTarget[key] = sourceValue;
+          }
+        });
+      }
+    }
+
+    return newTarget;
+  }
 }
