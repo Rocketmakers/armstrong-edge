@@ -2,7 +2,8 @@ import * as React from 'react';
 
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { IIconWrapperProps } from '../iconWrapper';
+import { OptionContent } from '../optionContent';
 
 export interface IRadioInputProps
   extends IIconWrapperProps<IconSet, IconSet>,
@@ -11,7 +12,7 @@ export interface IRadioInputProps
   onChange?: (newValue: boolean) => void;
 
   /** the name to render in a label */
-  label: React.ReactChild;
+  label?: React.ReactChild;
 
   /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
@@ -21,13 +22,22 @@ export interface IRadioInputProps
 
   /** props to spread onto the input element */
   inputProps?: Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'type' | 'ref' | 'checked'>;
+
+  /** the direction for the content to flow */
+  direction?: 'horizontal' | 'vertical';
 }
 
 /** Render a single radio input */
 export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
-  ({ onChange, label, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, inputProps, ...nativeProps }, ref) => {
+  ({ onChange, label, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, inputProps, direction, name, ...nativeProps }, ref) => {
     return (
-      <div className={ClassNames.concat('arm-radio-input', className)} data-checked={checked} data-has-checked-icon={!!checkedIcon} {...nativeProps}>
+      <div
+        className={ClassNames.concat('arm-radio-input', className)}
+        data-checked={checked}
+        data-has-checked-icon={!!checkedIcon}
+        {...nativeProps}
+        data-direction={direction}
+      >
         <label>
           <div className="arm-radio-input-radio">
             <input
@@ -43,11 +53,13 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
             {uncheckedIcon && <Icon className="arm-radio-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
           </div>
 
-          <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-            {typeof label === 'string' || typeof label === 'number' ? <p>{label}</p> : label}
-          </IconWrapper>
+          <OptionContent content={label} name={name} leftIcon={leftIcon} rightIcon={rightIcon} />
         </label>
       </div>
     );
   }
 );
+
+RadioInput.defaultProps = {
+  direction: 'horizontal',
+};

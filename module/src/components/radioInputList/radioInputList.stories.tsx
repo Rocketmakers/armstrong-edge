@@ -36,6 +36,26 @@ export const Default = () => {
     </>
   );
 };
+export const Horizontal = () => {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <>
+      <RadioInputList
+        value={value}
+        onChange={setValue}
+        direction="horizontal"
+        options={[
+          { id: 'a', name: 'red' },
+          { id: 'b', name: 'blue' },
+          { id: 'c', name: 'pink' },
+          { id: 'd', name: 'brown' },
+        ]}
+      />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
 export const Grouped = () => {
   const [value, setValue] = React.useState('');
 

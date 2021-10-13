@@ -35,6 +35,9 @@ export interface IRadioInputListProps<Id extends ArmstrongId>
 
   /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
+
+  /** the direction for the options in the list to flow */
+  direction?: 'horizontal' | 'vertical';
 }
 
 /** Render a list of radio inputs which binds to a single string */
@@ -52,6 +55,7 @@ export const RadioInputList = React.forwardRef(
       checkedIcon,
       uncheckedIcon,
       error,
+      direction,
     }: IRadioInputListProps<Id>,
     ref
   ) => {
@@ -67,7 +71,12 @@ export const RadioInputList = React.forwardRef(
 
     return (
       <>
-        <div className={ClassNames.concat('arm-radio-input-list', className)} ref={ref} data-error={error || !!validationErrorMessages?.length}>
+        <div
+          className={ClassNames.concat('arm-radio-input-list', className)}
+          ref={ref}
+          data-error={error || !!validationErrorMessages?.length}
+          data-direction={direction}
+        >
           {groupedOptions.map((group) => (
             <React.Fragment key={group.key}>
               {group.key && (
@@ -88,6 +97,8 @@ export const RadioInputList = React.forwardRef(
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
                   inputProps={option.htmlInputProps}
+                  disabled={option.disabled}
+                  direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
                   {...option.htmlProps}
                 />
               ))}
@@ -106,3 +117,7 @@ export const RadioInputList = React.forwardRef(
 ) as (<Id extends ArmstrongId>(
   props: React.PropsWithChildren<IRadioInputListProps<Id>> & React.RefAttributes<HTMLSelectElement>
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<IRadioInputListProps<any>> };
+
+RadioInputList.defaultProps = {
+  direction: 'vertical',
+};

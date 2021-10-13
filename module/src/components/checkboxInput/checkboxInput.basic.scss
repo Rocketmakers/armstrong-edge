@@ -4,9 +4,21 @@
   display: flex;
   align-items: center;
 
-  label {
-    @include space-between-children-horizontal($spacing-xsmall);
+  &[data-direction='horizontal'] {
+    label {
+      @include space-between-children-horizontal($spacing-xxsmall);
+    }
+  }
 
+  &[data-direction='vertical'] {
+    label {
+      @include space-between-children-vertical($spacing-xxsmall);
+
+      flex-direction: column;
+    }
+  }
+
+  label {
     display: flex;
     align-items: center;
     cursor: pointer;

@@ -34,6 +34,9 @@ export interface ICheckboxInputListProps<Id extends ArmstrongId>
 
   /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
+
+  /** the direction for the options in the list to flow */
+  direction?: 'horizontal' | 'vertical';
 }
 
 /** A list of checkboxes which binds to an array of IDs */
@@ -52,6 +55,7 @@ export const CheckboxInputList = React.forwardRef(
       scrollValidationErrorsIntoView,
       error,
       validationErrorMessages,
+      direction,
     }: ICheckboxInputListProps<Id>,
     ref
   ) => {
@@ -80,7 +84,12 @@ export const CheckboxInputList = React.forwardRef(
 
     return (
       <>
-        <div className={ClassNames.concat('arm-checkbox-input-list', className)} data-error={error || !!validationErrorMessages?.length} ref={ref}>
+        <div
+          className={ClassNames.concat('arm-checkbox-input-list', className)}
+          data-error={error || !!validationErrorMessages?.length}
+          ref={ref}
+          data-direction={direction}
+        >
           {groupedOptions.map((group) => (
             <React.Fragment key={group.key}>
               {group.key && (
@@ -95,12 +104,14 @@ export const CheckboxInputList = React.forwardRef(
                   leftIcon={option.leftIcon}
                   rightIcon={option.rightIcon}
                   checked={includesOption(option)}
-                  onChange={() => onCheckboxInputChange(option)}
+                  onChange={() => !option.disabled && onCheckboxInputChange(option)}
                   name={option.name ?? option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
                   label={option.content ?? option.name ?? option.id}
                   inputProps={option.htmlInputProps}
+                  disabled={option.disabled}
+                  direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
                   {...option.htmlProps}
                 />
               ))}
@@ -123,3 +134,7 @@ export const CheckboxInputList = React.forwardRef(
 ) as (<Id extends ArmstrongId>(
   props: React.PropsWithChildren<ICheckboxInputListProps<Id>> & React.RefAttributes<HTMLSelectElement>
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<ICheckboxInputListProps<any>> };
+
+CheckboxInputList.defaultProps = {
+  direction: 'vertical',
+};

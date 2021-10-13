@@ -5,8 +5,9 @@ import { useOverridableState } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps } from '../inputWrapper';
+import { OptionContent } from '../optionContent';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
@@ -37,6 +38,9 @@ export interface ICheckboxInputProps
 
   /** props to spread onto the input element */
   inputProps?: Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'type' | 'ref' | 'checked'>;
+
+  /** the direction for the content to flow */
+  direction?: 'vertical' | 'horizontal';
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -61,6 +65,8 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       scrollValidationErrorsIntoView,
       onValueChange,
       inputProps,
+      direction,
+      name,
       ...nativeProps
     }: ICheckboxInputProps,
     ref
@@ -91,6 +97,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
           data-checked={isChecked}
+          data-direction={direction}
           {...nativeProps}
         >
           <label>
@@ -107,9 +114,8 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
               {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
               {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
             </div>
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-              {typeof label === 'string' || typeof label === 'number' ? <p>{label}</p> : label}
-            </IconWrapper>
+
+            <OptionContent content={label} name={name} leftIcon={leftIcon} rightIcon={rightIcon} />
           </label>
 
           <Status
@@ -134,4 +140,5 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
 CheckboxInput.defaultProps = {
   checkedIcon: IconUtils.getIconDefinition('Icomoon', 'checkmark3'),
   validationMode: 'both',
+  direction: 'horizontal',
 };

@@ -36,6 +36,29 @@ export const Default = () => {
     </>
   );
 };
+export const Horizontal = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <>
+      <CheckboxInputList
+        value={value}
+        onChange={setValue}
+        direction="horizontal"
+        options={[
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'pink' },
+          { id: 4, name: 'brown' },
+        ]}
+      />
+      <br />
+      <br />
+      <br />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
+  );
+};
 export const Grouped = () => {
   const [value, setValue] = React.useState([]);
 
