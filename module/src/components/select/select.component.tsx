@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { IArmstrongOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';

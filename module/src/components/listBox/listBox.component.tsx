@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';

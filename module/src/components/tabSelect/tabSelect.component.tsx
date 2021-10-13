@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { IBindingProps, useBindingTools } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps } from '../inputWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';

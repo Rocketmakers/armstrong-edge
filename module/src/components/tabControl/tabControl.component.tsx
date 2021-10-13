@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { Button } from '../button';
 import { IconSet } from '../icon';

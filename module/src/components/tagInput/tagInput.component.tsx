@@ -1,24 +1,20 @@
 import * as React from 'react';
 
-import { ClassNames, Form, IIconWrapperProps } from '../..';
+import { ClassNames, Form } from '../..';
 import { FormValidationMode, IBindingProps } from '../../hooks/form';
 import { useOverridableState } from '../../hooks/useOverridableState';
-import { ArmstrongId } from '../../types';
-import { IconSet, IconUtils } from '../icon';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
+import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag/tag.component';
 
-export interface ITag extends IIconWrapperProps<IconSet, IconSet> {
-  /** id used to keep track of the tag when used in tag lists */
-  id: ArmstrongId;
-
-  /** the text to render inside the tag */
-  name?: string;
-
-  /** props to spread onto the tag div element */
-  htmlProps?: React.BaseHTMLAttributes<HTMLDivElement>;
-}
+export interface ITag
+  extends Pick<
+    IArmstrongExtendedOption<ArmstrongId, React.BaseHTMLAttributes<HTMLDivElement>>,
+    'id' | 'name' | 'htmlProps' | 'leftIcon' | 'rightIcon'
+  > {}
 
 export interface ITagInputProps
   extends Omit<IInputWrapperProps, 'above' | 'below' | 'onClick'>,

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Form, IAutoCompleteInputOption } from '../..';
 import { useOverridableState } from '../../hooks/useOverridableState';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { IAutoCompleteInputProps } from '../autoCompleteInput/autoCompleteInput.component';
 import { DropdownItems, IDropdownItem } from '../dropdownItems';
@@ -173,7 +173,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
           })
           .map<IDropdownItem>((item) => ({ content: item.name || item.id.toString(), id: item.id })),
         ...filteredOptions.map((option) => ({
-          content: getOptionName(option),
+          content: option.content || getOptionName(option),
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,

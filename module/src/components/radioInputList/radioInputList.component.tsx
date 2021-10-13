@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Arrays, Form, IInputWrapperProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { IRadioInputProps, RadioInput } from '../radioInput/radioInput.component';
@@ -84,7 +84,7 @@ export const RadioInputList = React.forwardRef(
                   id={option.id}
                   checked={boundValue === option.id}
                   onChange={() => setBoundValue?.(option.id)}
-                  name={option.name ?? option.id}
+                  label={option.content ?? option.name ?? option.id}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
                   inputProps={option.htmlInputProps}

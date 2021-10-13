@@ -30,7 +30,7 @@ export interface ICheckboxInputProps
   uncheckedIcon?: IIcon<IconSet>;
 
   /** the text or jsx element to render inside the checkbox's label */
-  label?: React.ReactNode;
+  label?: React.ReactChild;
 
   /** fired when the value changes */
   onValueChange?: (newValue: boolean) => void;

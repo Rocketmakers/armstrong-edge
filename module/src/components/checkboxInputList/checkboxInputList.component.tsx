@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Arrays, Form, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { CheckboxInput, ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
@@ -99,7 +99,7 @@ export const CheckboxInputList = React.forwardRef(
                   name={option.name ?? option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
-                  label={option.name ?? option.id}
+                  label={option.content ?? option.name ?? option.id}
                   inputProps={option.htmlInputProps}
                   {...option.htmlProps}
                 />

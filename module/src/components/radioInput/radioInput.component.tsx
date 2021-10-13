@@ -11,7 +11,7 @@ export interface IRadioInputProps
   onChange?: (newValue: boolean) => void;
 
   /** the name to render in a label */
-  name: string;
+  label: React.ReactChild;
 
   /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
@@ -25,7 +25,7 @@ export interface IRadioInputProps
 
 /** Render a single radio input */
 export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
-  ({ onChange, name, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, inputProps, ...nativeProps }, ref) => {
+  ({ onChange, label, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, inputProps, ...nativeProps }, ref) => {
     return (
       <div className={ClassNames.concat('arm-radio-input', className)} data-checked={checked} data-has-checked-icon={!!checkedIcon} {...nativeProps}>
         <label>
@@ -44,7 +44,7 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
           </div>
 
           <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-            <p>{name}</p>
+            {typeof label === 'string' || typeof label === 'number' ? <p>{label}</p> : label}
           </IconWrapper>
         </label>
       </div>
