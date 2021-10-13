@@ -34,6 +34,7 @@ export * from './listBoxMulti';
 export * from './modal';
 export * from './nativeDateInput';
 export * from './numberInput';
+export * from './optionContent';
 export * from './passwordInput';
 export * from './portal';
 export * from './progressBar';
