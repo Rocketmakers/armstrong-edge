@@ -1,11 +1,10 @@
 import * as React from 'react';
 
-import { Form } from '../..';
+import { ArmstrongId, Form, IArmstrongExtendedOption } from '../..';
 import { useOverridableState } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps } from '../inputWrapper';
 import { OptionContent } from '../optionContent';
 import { Status } from '../status';
@@ -13,11 +12,11 @@ import { ValidationErrors } from '../validationErrors';
 
 export interface ICheckboxInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type'>,
-    IIconWrapperProps<IconSet, IconSet>,
     Pick<
       IInputWrapperProps,
       'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'disabled' | 'pending' | 'error' | 'validationErrorMessages'
-    > {
+    >,
+    Pick<IArmstrongExtendedOption<ArmstrongId>, 'content' | 'name' | 'leftIcon' | 'rightIcon'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
 
@@ -29,9 +28,6 @@ export interface ICheckboxInputProps
 
   /** icon to render on the input when not checked */
   uncheckedIcon?: IIcon<IconSet>;
-
-  /** the text or jsx element to render inside the checkbox's label */
-  label?: React.ReactChild;
 
   /** fired when the value changes */
   onValueChange?: (newValue: boolean) => void;
@@ -61,7 +57,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       checked,
       onChange,
       checkedIcon,
-      label,
+      content,
       uncheckedIcon,
       leftIcon,
       rightIcon,
@@ -121,7 +117,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
               </div>
             )}
 
-            <OptionContent content={label} name={name} leftIcon={leftIcon} rightIcon={rightIcon} />
+            <OptionContent content={content} name={name} leftIcon={leftIcon} rightIcon={rightIcon} isActive={checked} />
 
             <Status
               error={bindConfig.shouldShowValidationErrorIcon && (!!bindConfig?.validationErrorMessages?.length || error)}

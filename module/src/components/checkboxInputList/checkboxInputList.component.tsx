@@ -109,7 +109,7 @@ export const CheckboxInputList = React.forwardRef(
                   name={option.name ?? option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
-                  label={option.content ?? option.name ?? option.id}
+                  content={option.content}
                   inputProps={option.htmlInputProps}
                   disabled={option.disabled}
                   direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
