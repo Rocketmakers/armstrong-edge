@@ -156,21 +156,19 @@ export const NumericIds = () => {
 export const CustomContentWithoutCheckbox = () => {
   const [value, setValue] = React.useState(['']);
 
-  const content = (checked) =>
-    checked ? (
-      <>
-        <img width={50} src="https://cdn.pixabay.com/photo/2019/02/19/19/45/thumbs-up-4007573_960_720.png" />
-        <p>I'm checked</p>
-      </>
-    ) : (
-      <>
-        <img
-          width={50}
-          src="https://www.stylist.co.uk/images/app/uploads/2021/07/02125306/psychology-of-second-hand-sadness-1120x1120.jpg?w=1200&h=1&fit=max&auto=format%2Ccompress"
-        />
-        <p>I'm not checked</p>
-      </>
-    );
+  const content = (checked) => (
+    <>
+      <img
+        width={50}
+        src={
+          checked
+            ? 'https://cdn.pixabay.com/photo/2019/02/19/19/45/thumbs-up-4007573_960_720.png'
+            : 'https://www.stylist.co.uk/images/app/uploads/2021/07/02125306/psychology-of-second-hand-sadness-1120x1120.jpg?w=1200&h=1&fit=max&auto=format%2Ccompress'
+        }
+      />
+      <p>I'm {!checked && 'not'} checked</p>
+    </>
+  );
 
   return (
     <>
