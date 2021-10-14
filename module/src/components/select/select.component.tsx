@@ -2,22 +2,20 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
-export interface ISelectOption<Id extends ArmstrongId, TSelectData = any> {
-  /** the value to be bound */
-  id: Id;
-
-  /** the name to be rendered for the option */
-  name?: string;
-
+export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
+  extends IArmstrongOption<
+    Id,
+    Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>, 'ref' | 'onClick' | 'value' | 'disabled'>
+  > {
   /** data which will be passed into the onSelectOption callback */
   data?: TSelectData;
-  disabled?: boolean;
 }
 
 export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
@@ -44,6 +42,7 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   /** should allow deletion of value with a cross */
   deleteButton?: boolean;
 
+  /** the current value of the select */
   value?: Id;
 }
 
@@ -135,7 +134,7 @@ export const Select = React.forwardRef(
               </option>
             )}
             {options.map((option) => (
-              <option key={option.id} value={option.id} disabled={option.disabled}>
+              <option key={option.id} value={option.id} disabled={option.disabled} {...option.htmlProps}>
                 {option.name || option.id}
               </option>
             ))}

@@ -36,6 +36,26 @@ export const Default = () => {
     </>
   );
 };
+export const Horizontal = () => {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <>
+      <RadioInputList
+        value={value}
+        onChange={setValue}
+        direction="horizontal"
+        options={[
+          { id: 'a', name: 'red' },
+          { id: 'b', name: 'blue' },
+          { id: 'c', name: 'pink' },
+          { id: 'd', name: 'brown' },
+        ]}
+      />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
 export const Grouped = () => {
   const [value, setValue] = React.useState('');
 
@@ -120,6 +140,50 @@ export const NumericIds = () => {
           { id: 2, name: 'blue' },
           { id: 3, name: 'pink', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
           { id: 4, name: 'brown' },
+        ]}
+      />
+      <br />
+      <br />
+      <br />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
+
+export const CustomContent = () => {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <>
+      <RadioInputList
+        value={value}
+        onChange={setValue}
+        options={[
+          {
+            id: 'a',
+            content: (
+              <p>
+                <strong>I'm a big strong</strong> piece of text
+              </p>
+            ),
+          },
+          {
+            id: 'b',
+            content: (
+              <img
+                width={100}
+                src="https://media.istockphoto.com/photos/very-closeup-view-of-amazing-domestic-pet-in-mirror-round-fashion-is-picture-id1281804798?b=1&k=20&m=1281804798&s=170667a&w=0&h=HIWbeaP_cQSngCz7l9t3xwyE2eyzVgIy3K6xIqPhJQA="
+              />
+            ),
+          },
+          {
+            id: 'c',
+            content: (
+              <p>
+                Hello there <em>BUDDY</em>
+              </p>
+            ),
+          },
         ]}
       />
       <br />

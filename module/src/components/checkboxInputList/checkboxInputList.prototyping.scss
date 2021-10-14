@@ -6,7 +6,10 @@
 }
 
 .arm-checkbox-input-list {
-  .arm-checkbox-input + .arm-checkbox-input {
-    margin-top: $spacing-xxsmall;
+  &[data-direction='vertical'] {
+    @include space-between-children-vertical($spacing-xxsmall);
+  }
+  &[data-direction='horizontal'] {
+    @include space-between-children-horizontal($spacing-xxsmall);
   }
 }

@@ -5,13 +5,14 @@ import { useOverridableState } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps } from '../inputWrapper';
+import { OptionContent } from '../optionContent';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
 export interface ICheckboxInputProps
-  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'type'>,
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type'>,
     IIconWrapperProps<IconSet, IconSet>,
     Pick<
       IInputWrapperProps,
@@ -30,10 +31,19 @@ export interface ICheckboxInputProps
   uncheckedIcon?: IIcon<IconSet>;
 
   /** the text or jsx element to render inside the checkbox's label */
-  label?: React.ReactNode;
+  label?: React.ReactChild;
 
   /** fired when the value changes */
   onValueChange?: (newValue: boolean) => void;
+
+  /** props to spread onto the input element */
+  inputProps?: Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'type' | 'ref' | 'checked'>;
+
+  /** the direction for the content to flow */
+  direction?: 'vertical' | 'horizontal';
+
+  /** should hide the checkbox itself, showing only the label, allowing you to handle visualising the state of the input yourself */
+  hideCheckbox?: boolean;
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -57,6 +67,10 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       rightIcon,
       scrollValidationErrorsIntoView,
       onValueChange,
+      inputProps,
+      direction,
+      name,
+      hideCheckbox,
       ...nativeProps
     }: ICheckboxInputProps,
     ref
@@ -87,31 +101,34 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
           data-checked={isChecked}
+          data-direction={direction}
+          {...nativeProps}
         >
-          <label>
-            <div className="arm-checkbox-input-checkbox">
-              <input
-                className="arm-checkbox-input-checkbox-input"
-                onChange={onChangeEvent}
-                {...nativeProps}
-                type="checkbox"
-                ref={ref}
-                checked={isChecked}
-              />
-
-              {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
-              {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
-            </div>
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-              {typeof label === 'string' || typeof label === 'number' ? <p>{label}</p> : label}
-            </IconWrapper>
-          </label>
-
-          <Status
-            error={bindConfig.shouldShowValidationErrorIcon && (!!bindConfig?.validationErrorMessages?.length || error)}
-            pending={pending}
-            errorIcon={bindConfig.validationErrorIcon}
+          <input
+            className="arm-checkbox-input-checkbox-input"
+            onChange={onChangeEvent}
+            type="checkbox"
+            ref={ref}
+            checked={isChecked}
+            {...inputProps}
           />
+
+          <label>
+            {!hideCheckbox && (
+              <div className="arm-checkbox-input-checkbox">
+                {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
+                {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
+              </div>
+            )}
+
+            <OptionContent content={label} name={name} leftIcon={leftIcon} rightIcon={rightIcon} />
+
+            <Status
+              error={bindConfig.shouldShowValidationErrorIcon && (!!bindConfig?.validationErrorMessages?.length || error)}
+              pending={pending}
+              errorIcon={bindConfig.validationErrorIcon}
+            />
+          </label>
         </div>
 
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
@@ -129,4 +146,5 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
 CheckboxInput.defaultProps = {
   checkedIcon: IconUtils.getIconDefinition('Icomoon', 'checkmark3'),
   validationMode: 'both',
+  direction: 'horizontal',
 };

@@ -2,26 +2,19 @@ import * as React from 'react';
 
 import { useDidUpdateEffect, useEventListener, useHasTimeElapsed } from '../../hooks';
 import { useGeneratedId } from '../../hooks/useGeneratedId';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
 import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { Dropdown, IDropdownProps } from '../dropdown';
-import { Icon, IconSet } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { Icon } from '../icon';
+import { OptionContent } from '../optionContent/optionContent.component';
 
-export interface IDropdownItem extends IIconWrapperProps<IconSet, IconSet> {
-  /** The text content of the dropdown item */
-  content: string;
-
-  /** The string to be passed into onItemSelected */
-  id: ArmstrongId;
-
-  /** props to spread onto the div element for the dropdown item */
-  htmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
-
-  /** a group to show this item under */
-  group?: string;
-}
+export interface IDropdownItem
+  extends IArmstrongExtendedOption<
+    ArmstrongId,
+    Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref' | 'onClick' | 'onMouseEnter'>
+  > {}
 
 export interface IDropdownItemProps extends IDropdownItem {
   /** fired when clicking on the dropdown item */
@@ -44,7 +37,10 @@ export interface IDropdownItemProps extends IDropdownItem {
 }
 
 export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
-  ({ content, htmlProps, onMouseUp, isKeyboardSelected, isSelected, onMouseEnter, leftIcon, rightIcon, onClick, id, idPrefix }, ref) => {
+  (
+    { content, htmlProps, onMouseUp, isKeyboardSelected, isSelected, onMouseEnter, leftIcon, rightIcon, onClick, id, idPrefix, name, disabled },
+    ref
+  ) => {
     return (
       <li
         {...htmlProps}
@@ -57,10 +53,9 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
         data-selected={isSelected}
         onMouseEnter={onMouseEnter}
         id={`${idPrefix}_${id}`}
+        data-disabled={disabled}
       >
-        <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-          <p>{content}</p>
-        </IconWrapper>
+        <OptionContent leftIcon={leftIcon} rightIcon={rightIcon} name={name} content={content} id={id} />
         {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
       </li>
     );
@@ -135,7 +130,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
 
   useDidUpdateEffect(() => {
     if (isOpen && searchTerm?.length) {
-      const newIndex = items.findIndex((item) => item.content.startsWith(searchTerm));
+      const newIndex = items.findIndex((item) => item.name?.startsWith(searchTerm));
 
       if (newIndex > -1) {
         setKeyboardSelectedItemIndex(newIndex);
