@@ -4,6 +4,16 @@ import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 
 # SCSS Setup
 
+### Packages
+
+Armstrong is written to be used with [dart-sass](https://sass-lang.com/dart-sass), which (as it's the primary version of sass currently) is installed using the [sass](https://www.npmjs.com/package/sass) package on npm
+
+If used with [node-sass](https://www.npmjs.com/package/node-sass), which is deprecated and lacks some newer sass features, there is a decent chance some stuff won't build as it's not fully tested
+
+If you're on a project that uses Webpack with sass-loader (which includes many tools like Gatsby under the hood) ensure that the node-sass package is uninstalled, and the sass package is installed, as sass-loader uses whichever is available
+
+### Imports
+
 Armstrong uses SCSS which isn't compiled down before build, allowing the consuming app to handle compiling and use our exported variables and mixins.
 
 To use SCSS from Armstrong, it must be imported into your app's SCSS:
@@ -18,7 +28,7 @@ To use SCSS from Armstrong, it must be imported into your app's SCSS:
 // basic theme - includes only functional and layout styling
 @import '~@rocketmakers/armstrong/dist/basic.scss';
 
-// prototyping theme - includes more production-ready styling, like drop shadows and colours
+// OPTIONAL prototyping theme - includes more production-ready styling, like drop shadows and colours
 // must be imported on top of basic theme
 @import '~@rocketmakers/armstrong/dist/prototyping.scss';
 ```
