@@ -55,7 +55,7 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
         id={`${idPrefix}_${id}`}
         data-disabled={disabled}
       >
-        <OptionContent leftIcon={leftIcon} rightIcon={rightIcon} name={name} content={content} id={id} />
+        <OptionContent leftIcon={leftIcon} rightIcon={rightIcon} name={name} content={content} id={id} isActive={isSelected} />
         {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
       </li>
     );

@@ -94,7 +94,8 @@ export const RadioInputList = React.forwardRef(
                   id={option.id}
                   checked={boundValue === option.id}
                   onChange={() => setBoundValue?.(option.id)}
-                  label={option.content ?? option.name ?? option.id}
+                  content={option.content}
+                  name={option.name || option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
                   inputProps={option.htmlInputProps}
