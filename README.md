@@ -96,7 +96,7 @@ We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to m
 
 Please work in feature branches named `feature/*` branched from `main`
 
-When your work is ready, submit a merge request and (if you're internal) post a link to your merge request in the `#armstrong` slack channel for someone to review.
+When your work is ready, submit a merge request and (if you're internal) post a link to your merge request in the `#armstrong-dev` slack channel for someone to review.
 
 There will be a CI which will run to check if your work passes linting and if Storybook can still build.
 
@@ -104,7 +104,7 @@ One day we will talk about testing...
 
 ### Release process
 
-Armstrong uses Semantic release https://semantic-release.gitbook.io/semantic-release/ for automatic versioning and publishing based on comittizen formatted messages. 
+Armstrong uses Semantic release https://semantic-release.gitbook.io/semantic-release/ for automatic versioning and publishing based on comittizen formatted messages.
 The type of release will be worked out from all of the commit messages in your merge. So the highest of the following will dictate the version
 
 ```
@@ -114,6 +114,6 @@ breaking: will be major X.0.0
 chore: won't trigger a release
 ```
 
-So basically do your work on a branch `feature/` or `bugfix/`, make sure all of your commit messages go through comittizen and when your happy do a PR onto main. 
+So basically do your work on a branch `feature/` or `bugfix/`, make sure all of your commit messages go through comittizen and when your happy do a PR onto main.
 
 When it gets approved and merged in the release type will automatically be worked out based on the highest (breaking > feat > fix) of all the commits that are part of that merge and a tag and version will be published to npm automatically.

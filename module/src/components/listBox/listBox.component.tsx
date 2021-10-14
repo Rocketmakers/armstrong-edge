@@ -1,9 +1,8 @@
 import * as React from 'react';
 
 import { Form } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types/core';
-import { IArmstrongExtendedOption } from '../../types/options';
+import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
+import { ArmstrongId, IArmstrongExtendedOption } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
@@ -27,7 +26,7 @@ export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extend
   onSelectOption?: (option?: IListBoxOption<Id>) => void;
 
   /** array of validation errors to render */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** how to render the validation errors */
   validationMode?: FormValidationMode;

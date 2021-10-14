@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ClassNames, Form } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
@@ -23,7 +23,7 @@ export interface ITagInputProps
   bind?: IBindingProps<string[]>;
 
   /** array of validation errors to render */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** how to render the validation errors */
   validationMode?: FormValidationMode;

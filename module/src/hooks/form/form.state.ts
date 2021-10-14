@@ -20,7 +20,7 @@ export function dataReducer<TData extends object>(state: TData, action: FormActi
           : { ...(state || {}), [action.propertyKey]: action.value }
       ) as TData;
     case 'set-path':
-      return Objects.mergeDeep(state, action.keyChain, action.value);
+      return Objects.mergeDeepFromKeyChain(state, action.keyChain, action.value);
     case 'set-all':
       return (Array.isArray(action.data) ? [...action.data] : { ...action.data }) as TData;
     default:
