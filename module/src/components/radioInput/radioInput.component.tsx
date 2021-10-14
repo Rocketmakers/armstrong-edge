@@ -1,19 +1,15 @@
 import * as React from 'react';
 
-import { useGeneratedId } from '../..';
+import { ArmstrongId, IArmstrongExtendedOption, useGeneratedId } from '../..';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IIcon } from '../icon';
-import { IIconWrapperProps } from '../iconWrapper';
 import { OptionContent } from '../optionContent';
 
 export interface IRadioInputProps
-  extends IIconWrapperProps<IconSet, IconSet>,
-    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'> {
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
+    Pick<IArmstrongExtendedOption<ArmstrongId>, 'content' | 'name' | 'leftIcon' | 'rightIcon'> {
   /** fired when the user changes the current value */
   onChange?: (newValue: boolean) => void;
-
-  /** the name to render in a label */
-  label?: React.ReactChild;
 
   /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
@@ -34,7 +30,21 @@ export interface IRadioInputProps
 /** Render a single radio input */
 export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
   (
-    { onChange, label, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, inputProps, direction, name, hideRadio, ...nativeProps },
+    {
+      onChange,
+      content,
+      className,
+      checked,
+      leftIcon,
+      rightIcon,
+      checkedIcon,
+      uncheckedIcon,
+      inputProps,
+      direction,
+      name,
+      hideRadio,
+      ...nativeProps
+    },
     ref
   ) => {
     const generatedId = useGeneratedId('radio_input', inputProps?.id);
@@ -65,7 +75,7 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
             </div>
           )}
 
-          <OptionContent content={label} name={name} leftIcon={leftIcon} rightIcon={rightIcon} />
+          <OptionContent content={content} name={name} leftIcon={leftIcon} rightIcon={rightIcon} isActive={checked} />
         </label>
       </div>
     );
