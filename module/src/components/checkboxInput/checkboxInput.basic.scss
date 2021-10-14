@@ -1,18 +1,17 @@
 .arm-input.arm-checkbox-input {
-  @include space-between-children-horizontal($spacing-xsmall);
-
+  position: relative;
   display: flex;
   align-items: center;
 
   &[data-direction='horizontal'] {
     label {
-      @include space-between-children-horizontal($spacing-xxsmall);
+      @include space-between-children-horizontal($spacing-xsmall);
     }
   }
 
   &[data-direction='vertical'] {
     label {
-      @include space-between-children-vertical($spacing-xxsmall);
+      @include space-between-children-vertical($spacing-xsmall);
 
       flex-direction: column;
     }
@@ -28,6 +27,16 @@
   &[data-disabled='true'] {
     opacity: 0.5;
     pointer-events: none;
+  }
+
+  &[data-checked='true'] {
+    .arm-checkbox-input-checked-icon {
+      opacity: 1;
+    }
+
+    .arm-checkbox-input-unchecked-icon {
+      opacity: 0;
+    }
   }
 }
 
@@ -57,7 +66,7 @@
 }
 
 .arm-checkbox-input-checkbox-input {
-  @include fill;
+  @include absolute-fill;
 
   cursor: pointer;
   appearance: none;
@@ -65,13 +74,5 @@
   outline: none;
   background-color: transparent;
   padding: $spacing-xsmall;
-  height: $arm-input-height;
-
-  &:checked ~ .arm-checkbox-input-checked-icon {
-    opacity: 1;
-  }
-
-  &:checked ~ .arm-checkbox-input-unchecked-icon {
-    opacity: 0;
-  }
+  margin: 0;
 }

@@ -16,7 +16,7 @@ export interface IRadioInputListOption<Id extends ArmstrongId>
   > {}
 
 export interface IRadioInputListProps<Id extends ArmstrongId>
-  extends Pick<IRadioInputProps, 'checkedIcon' | 'uncheckedIcon'>,
+  extends Pick<IRadioInputProps, 'checkedIcon' | 'uncheckedIcon' | 'hideRadio'>,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
@@ -56,6 +56,7 @@ export const RadioInputList = React.forwardRef(
       uncheckedIcon,
       error,
       direction,
+      hideRadio,
     }: IRadioInputListProps<Id>,
     ref
   ) => {
@@ -99,6 +100,7 @@ export const RadioInputList = React.forwardRef(
                   inputProps={option.htmlInputProps}
                   disabled={option.disabled}
                   direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
+                  hideRadio={hideRadio}
                   {...option.htmlProps}
                 />
               ))}

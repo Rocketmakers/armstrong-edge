@@ -41,6 +41,9 @@ export interface ICheckboxInputProps
 
   /** the direction for the content to flow */
   direction?: 'vertical' | 'horizontal';
+
+  /** should hide the checkbox itself, showing only the label, allowing you to handle visualising the state of the input yourself */
+  hideCheckbox?: boolean;
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -67,6 +70,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       inputProps,
       direction,
       name,
+      hideCheckbox,
       ...nativeProps
     }: ICheckboxInputProps,
     ref
@@ -100,29 +104,31 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
           data-direction={direction}
           {...nativeProps}
         >
-          <label>
-            <div className="arm-checkbox-input-checkbox">
-              <input
-                className="arm-checkbox-input-checkbox-input"
-                onChange={onChangeEvent}
-                type="checkbox"
-                ref={ref}
-                checked={isChecked}
-                {...inputProps}
-              />
+          <input
+            className="arm-checkbox-input-checkbox-input"
+            onChange={onChangeEvent}
+            type="checkbox"
+            ref={ref}
+            checked={isChecked}
+            {...inputProps}
+          />
 
-              {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
-              {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
-            </div>
+          <label>
+            {!hideCheckbox && (
+              <div className="arm-checkbox-input-checkbox">
+                {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
+                {uncheckedIcon && <Icon className="arm-checkbox-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
+              </div>
+            )}
 
             <OptionContent content={label} name={name} leftIcon={leftIcon} rightIcon={rightIcon} />
-          </label>
 
-          <Status
-            error={bindConfig.shouldShowValidationErrorIcon && (!!bindConfig?.validationErrorMessages?.length || error)}
-            pending={pending}
-            errorIcon={bindConfig.validationErrorIcon}
-          />
+            <Status
+              error={bindConfig.shouldShowValidationErrorIcon && (!!bindConfig?.validationErrorMessages?.length || error)}
+              pending={pending}
+              errorIcon={bindConfig.validationErrorIcon}
+            />
+          </label>
         </div>
 
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (

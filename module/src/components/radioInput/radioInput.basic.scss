@@ -31,15 +31,17 @@
 }
 
 .arm-radio-input {
+  position: relative;
+
   &[data-direction='horizontal'] {
     label {
-      @include space-between-children-horizontal($spacing-xxsmall);
+      @include space-between-children-horizontal($spacing-xsmall);
     }
   }
 
   &[data-direction='vertical'] {
     label {
-      @include space-between-children-vertical($spacing-xxsmall);
+      @include space-between-children-vertical($spacing-xsmall);
 
       flex-direction: column;
     }
@@ -65,6 +67,14 @@
         opacity: 1;
       }
     }
+
+    .arm-icon.arm-radio-input-checked-icon {
+      opacity: 1;
+    }
+
+    .arm-icon.arm-radio-input-unchecked-icon {
+      opacity: 0;
+    }
   }
 }
 
@@ -74,12 +84,4 @@
   appearance: none;
   margin: 0;
   cursor: pointer;
-
-  &:checked ~ .arm-icon.arm-radio-input-checked-icon {
-    opacity: 1;
-  }
-
-  &:checked ~ .arm-icon.arm-radio-input-unchecked-icon {
-    opacity: 0;
-  }
 }
