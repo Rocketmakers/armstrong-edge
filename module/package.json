@@ -1,5 +1,7 @@
 {
   "name": "@rocketmakers/armstrong-edge",
+  "sideEffects": false,
+  "module": "true",
   "version": "0.0.0-development",
   "description": "Armstrong is a React component library made by Rocketmakers written in Typescript and SCSS.",
   "main": "./dist/index.js",
