@@ -1,8 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "es5",
-    "module": "ES2015",
     "strict": true,
     "isolatedModules": false,
     "experimentalDecorators": true,
@@ -15,11 +13,9 @@
     "noLib": false,
     "preserveConstEnums": false,
     "suppressImplicitAnyIndexErrors": true,
-    "outDir": "../dist",
     "importHelpers": true,
     "moduleResolution": "node",
-    "lib": ["es2016", "dom"],
-    "esModuleInterop": true
+    "lib": ["es2016", "dom"]
   },
   "exclude": ["node_modules", "stories", "**/*.stories.*"]
 }
