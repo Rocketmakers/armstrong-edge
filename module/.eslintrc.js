@@ -38,7 +38,7 @@ module.exports = {
     ['import/prefer-default-export']: off,
     ['import/no-cycle']: off,
     ['import/extensions']: off,
-    ["import/no-extraneous-dependencies"]: ["error", {"devDependencies":  [ "**/*.stories.tsx"]}],
+    ['import/no-extraneous-dependencies']: ['error', { devDependencies: ['**/*.stories.tsx', '**/*.cy-test.tsx'] }],
 
     ['no-unused-vars']: off,
     ['no-use-before-define']: off,

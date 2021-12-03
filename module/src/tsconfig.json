@@ -19,7 +19,8 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "lib": ["es2016", "dom"],
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "stories", "**/*.stories.*"]
 }
