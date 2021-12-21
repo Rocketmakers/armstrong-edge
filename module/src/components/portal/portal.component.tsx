@@ -20,7 +20,9 @@ export const Portal: React.FunctionComponent<IPortalProps> = ({ portalToSelector
     if (portalToSelector) {
       const element = Globals.Document?.querySelector(portalToSelector);
 
-      setSelectedRootElement(element || undefined);
+      if (element) {
+        setSelectedRootElement(element || undefined);
+      }
     } else if (portalTo) {
       setSelectedRootElement(portalTo);
     } else {

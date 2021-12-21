@@ -12,13 +12,12 @@ import {
   NativeDateInput,
   TagInput,
   Select,
+  IconUtils,
 } from "@rocketmakers/armstrong-edge";
 import { useParams } from "react-router";
 
 import { apiHooks } from "../../state/apiHooks";
 import { MemoryServer } from "../../servers/memory";
-import { IconUtils } from "@rocketmakers/armstrong-edge/dist/components/icon";
-import { IValidationError } from "@rocketmakers/armstrong-edge/dist/hooks/form";
 
 type Role = MemoryServer.IUserRole;
 
@@ -40,7 +39,7 @@ export const UserEdit: React.FC = () => {
   const [updateUser, { processed: updateUserProcessed }] =
     apiHooks.user.updateUser.useMutation();
 
-  const validationErrors: IValidationError[] = Arrays.flatten(
+  const validationErrors: Form.IValidationError[] = Arrays.flatten(
     addUserProcessed?.validationErrors,
     updateUserProcessed?.validationErrors,
     [{ key: "firstName", message: "uh oh" }]

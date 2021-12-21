@@ -3,16 +3,22 @@ import * as React from 'react';
 import { Arrays, Form, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongId } from '../../types/core';
-import { IArmstrongExtendedOptionWithInput } from '../../types/options';
+import { IArmstrongExtendedOption, IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { CheckboxInput, ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
 
 export interface ICheckboxInputListOption<Id extends ArmstrongId>
-  extends IArmstrongExtendedOptionWithInput<
-    Id,
-    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
-    ICheckboxInputProps['inputProps']
-  > {}
+  extends Omit<
+    IArmstrongExtendedOptionWithInput<
+      Id,
+      Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
+      ICheckboxInputProps['inputProps']
+    >,
+    'content'
+  > {
+  /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
+  label: IArmstrongExtendedOption<Id>['content'];
+}
 
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
   extends Pick<ICheckboxInputProps, 'checkedIcon' | 'uncheckedIcon' | 'hideCheckbox'>,
@@ -109,7 +115,7 @@ export const CheckboxInputList = React.forwardRef(
                   name={option.name ?? option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
-                  content={option.content}
+                  label={option.label}
                   inputProps={option.htmlInputProps}
                   disabled={option.disabled}
                   direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}

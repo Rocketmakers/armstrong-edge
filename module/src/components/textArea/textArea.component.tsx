@@ -10,7 +10,9 @@ import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.c
 type NativeTextAreaProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>;
 
 interface IDelayedTextAreaBaseProps extends NativeTextAreaProps {
+  /** Time interval in milliseconds to delay input */
   milliseconds: number;
+
   /** Called when the value changes, takes into account any delay values and other effects. */
   onValueChange: (value: string | undefined) => any;
 }

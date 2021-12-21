@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { AutoCompleteInput, Form, IAutoCompleteInputProps, ISelectOption } from '../..';
+import { AutoCompleteInput, DataAttributes, Form, IAutoCompleteInputProps, ISelectOption } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
@@ -11,7 +11,7 @@ import { IStatusWrapperProps } from '../statusWrapper';
 import { TimeParts } from './timeInput.types';
 import { getHourOptions, getMinuteOptions, parseTimePartsToDate, parseTimeStringToParts } from './timeInput.utils';
 
-type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'>;
+type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'> & DataAttributes;
 
 export interface ITimeInputProps
   extends IStatusWrapperProps,
@@ -166,7 +166,7 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
             setSelectedTime?.(newTime!);
           }
         } catch (e) {
-          bind?.addValidationError(e.message);
+          bind?.addValidationError((e as { message: string }).message);
         }
       }
     }, [formState]);

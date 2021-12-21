@@ -5,7 +5,7 @@ import { Portal } from './portal.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(Portal, 'Layout', 'Tab Control', {});
+export default StoryUtils.createMeta(Portal, 'Layout', 'Portal', {});
 
 /** component template */
 
@@ -18,7 +18,7 @@ export const PortalIntoBody = () => {
     <>
       <p>I'm in a normal p tag</p>
 
-      <Portal portalToSelector="body">
+      <Portal>
         <p>I've been portaled to the end of the body</p>
       </Portal>
     </>
@@ -28,8 +28,8 @@ export const PortalIntoBody = () => {
 export const PortalIntoDiv = () => {
   return (
     <>
-      <div id="#one">I'm in a div</div>
-      <div id="#two">I'm in another div</div>
+      <div id="one">I'm in a div</div>
+      <div id="two">I'm in another div</div>
 
       <Portal portalToSelector="#two">
         <p>I'm portaled into #two despite being elsewhere in the virtual DOM</p>
@@ -38,15 +38,17 @@ export const PortalIntoDiv = () => {
   );
 };
 
-export const PortalUsingRef = () => {
-  const div = React.useRef<HTMLDivElement>(null);
+export const PortalUsingReferenceToDiv = () => {
+  // in this example, this must be done using a useState rather than a useRef, as the ref callback runs after the initial render, meaning it would
+  // be undefined when the Portal's logic is first run
+  const [div, setDiv] = React.useState<HTMLDivElement>(null);
 
   return (
     <>
-      <div ref={div}>I'm a div</div>
+      <div ref={(r) => setDiv(r)}>I'm a div</div>
 
-      <Portal portalTo={div.current}>
-        <p>I'm portaled into the div using a ref</p>
+      <Portal portalTo={div}>
+        <p>I'm portaled into the div using a reference</p>
       </Portal>
     </>
   );

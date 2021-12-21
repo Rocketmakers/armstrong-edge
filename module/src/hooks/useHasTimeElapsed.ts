@@ -9,7 +9,7 @@ export function useHasTimeElapsed(time: number, onTimeElapse?: () => void): [boo
     setHasTimeElapsed(true);
     onTimeElapse?.();
   }, []);
-  const { set } = useTimeout(time, onTimeout);
+  const { set } = useTimeout(onTimeout, time);
   const begin = React.useCallback(() => set(), []);
   const reset = React.useCallback(() => setHasTimeElapsed(false), []);
 
