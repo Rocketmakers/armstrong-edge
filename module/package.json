@@ -1,12 +1,19 @@
 {
   "name": "@rocketmakers/armstrong-edge",
+  "sideEffects": ["*.scss"],
   "version": "0.0.0-development",
   "description": "Armstrong is a React component library made by Rocketmakers written in Typescript and SCSS.",
   "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
   "typings": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "copy-readme": "shx cp ../README.md .",
-    "build-ts": "tsc --pretty --extendedDiagnostics -p src -d",
+    "build-cjs": "tsc --pretty --extendedDiagnostics -p src/tsconfig-cjs.json -d",
+    "build-esm": "tsc --pretty --extendedDiagnostics -p src/tsconfig-esm.json -d",
+    "build-ts": "npm run build-cjs && npm run build-esm",
     "build": "npm run build-ts && npm run build-sass && npm run copy-readme",
     "link": "npm link",
     "test": "echo \"Error: no test specified\" && exit 1",
