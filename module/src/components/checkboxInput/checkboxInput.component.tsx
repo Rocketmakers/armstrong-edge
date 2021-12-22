@@ -14,14 +14,11 @@ export interface ICheckboxInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type'>,
     Pick<
       IInputWrapperProps,
-      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'disabled' | 'pending' | 'error' | 'validationErrorMessages'
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'disabled' | 'pending' | 'error' | 'validationErrorMessages' | 'className'
     >,
     Pick<IArmstrongExtendedOption<ArmstrongId>, 'name' | 'leftIcon' | 'rightIcon'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
-
-  /** CSS className property */
-  className?: string;
 
   /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
@@ -84,7 +81,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
     });
 
     // use an overridable internal state so it can be used without a binding
-    const [isChecked, setIsChecked] = useOverridableState(checked, boundValue, setBoundValue);
+    const [isChecked, setIsChecked] = useOverridableState(checked ?? false, boundValue, setBoundValue);
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {

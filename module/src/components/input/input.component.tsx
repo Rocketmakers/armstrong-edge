@@ -130,7 +130,8 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
 
     const inputProps: NativeInputProps = {
       className: 'arm-input-base-input',
-      value: boundValue,
+      /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
+      value: boundValue ?? (bind && ''),
       disabled,
     };
 

@@ -440,8 +440,9 @@ interface IUseBindingToolsOverrides<TData> {
 }
 
 /**
- * An optional hook for internal form component use. Takes a bind and some optional overrides and ensures that onChange and value
- * use the bind's formatters
+ * An optional hook for internal form component use.
+ *
+ * Returns all relevant state for an input component to interact with a form's bind and allows overrides for these from specific props
  */
 
 export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingToolsOverrides<TData>): UseBindingToolsReturn<TData> {

@@ -13,11 +13,13 @@ import {
   TagInput,
   Select,
   IconUtils,
+  CheckboxInput,
 } from "@rocketmakers/armstrong-edge";
 import { useParams } from "react-router";
 
 import { apiHooks } from "../../state/apiHooks";
 import { MemoryServer } from "../../servers/memory";
+import { useBindingTools } from "@rocketmakers/armstrong-edge/dist/hooks/form";
 
 type Role = MemoryServer.IUserRole;
 
@@ -52,20 +54,22 @@ export const UserEdit: React.FC = () => {
       return {
         firstName: "",
         lastName: "",
-        email: "",
+        email: undefined,
         address: {
           line1: "",
           city: "",
           postcode: "",
         },
-        points: 0,
+        points: undefined,
         roles: [],
         ...(currentState ?? {}),
-        ...(data ?? {}),
+        // ...(data ?? {}),
       };
     },
-    [data]
+    // [data]
+    []
   );
+
 
   const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(
     initialData,
@@ -114,6 +118,10 @@ export const UserEdit: React.FC = () => {
         <TextInput
           bind={formProp("lastName").bind()}
           leftIcon={IconUtils.getIconDefinition("Icomoon", "user")}
+          />
+        <NumberInput
+          bind={formProp("points").bind()}
+          leftIcon={IconUtils.getIconDefinition("Icomoon", "glass")}
         />
         <TextArea bind={formProp("bio").bind()} />
         <EmailInput
@@ -155,6 +163,8 @@ export const UserEdit: React.FC = () => {
           spaceCreatesTags
           tagPosition="above"
         />
+
+        <CheckboxInput label="I'm the label" />
 
         <NativeDateInput />
 
