@@ -1,6 +1,3 @@
-import * as React from 'react';
-
-import { Form } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Input } from './input.component';
 

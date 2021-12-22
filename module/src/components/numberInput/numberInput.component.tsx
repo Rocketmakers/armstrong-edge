@@ -6,6 +6,7 @@ import { IInputProps } from '../input/input.component';
 import { InputWrapper } from '../inputWrapper';
 
 export interface INumberInputProps extends Omit<IInputProps<number>, 'type'> {
+  /** The current value of the input as a number */
   value?: number;
 }
 
