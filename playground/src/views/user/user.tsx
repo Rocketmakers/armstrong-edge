@@ -19,7 +19,6 @@ import { useParams } from "react-router";
 
 import { apiHooks } from "../../state/apiHooks";
 import { MemoryServer } from "../../servers/memory";
-import { useBindingTools } from "@rocketmakers/armstrong-edge/dist/hooks/form";
 
 type Role = MemoryServer.IUserRole;
 

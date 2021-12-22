@@ -19,7 +19,9 @@ export function useHasTimeElapsed(time: number, onTimeElapse?: () => void): [boo
 /** Returns true once a given amount of time has elapsed since the component mounted */
 export function useHasTimeElapsedSinceMount(time: number, onTimeElapse?: () => void) {
   const [hasTimeElapsed, begin] = useHasTimeElapsed(time, onTimeElapse);
-  React.useEffect(() => begin(), []);
+  React.useEffect(() => {
+    begin();
+  }, []);
 
   return hasTimeElapsed;
 }
