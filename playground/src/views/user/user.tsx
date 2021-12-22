@@ -54,13 +54,13 @@ export const UserEdit: React.FC = () => {
       return {
         firstName: "",
         lastName: "",
-        email: undefined,
+        email: undefined as any as string,
         address: {
           line1: "",
           city: "",
           postcode: "",
         },
-        points: undefined,
+        points: undefined as any as number,
         roles: [],
         ...(currentState ?? {}),
         // ...(data ?? {}),
@@ -87,11 +87,11 @@ export const UserEdit: React.FC = () => {
 
   React.useEffect(() => {
     console.log("NEW ADDRESS STATE", formState);
-  }, [formState.address]);
+  }, [formState?.address]);
 
   const submitData = React.useCallback(async () => {
     const user = getFormData();
-    if (user.id) {
+    if (user?.id) {
       await updateUser({ id: user.id, data: user });
     } else {
       await addUser({ data: user });
@@ -180,7 +180,7 @@ export const UserEdit: React.FC = () => {
           pending={isFetchingSauces}
         /> */}
 
-        <p>you've chosen: {formState.favouriteCuisine}</p>
+        <p>you've chosen: {formState?.favouriteCuisine}</p>
         <br />
         <br />
         <br />
@@ -192,7 +192,7 @@ export const UserEdit: React.FC = () => {
       <fieldset>
         <h2>Roles</h2>
 
-        {formState.roles.map((role, index) => (
+        {formState?.roles.map((role, index) => (
           <div key={index}>
             <TextInput bind={formProp("address", "line2").bind()} />
             <Button onClick={() => formProp("roles").remove(index)}>

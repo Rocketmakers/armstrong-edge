@@ -46,6 +46,11 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   value?: Id;
 }
 
+/** The type for a Select component that takes a generic for its value and for the ID on each option */
+export type SelectComponent = (<Id extends ArmstrongId, TSelectData = any>(
+  props: React.PropsWithRef<ISelectProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
+) => ReturnType<React.FC>) & { defaultProps?: Partial<ISelectProps<any, any>> };
+
 /** A select input which takes an array of options */
 export const Select = React.forwardRef(
   <Id extends ArmstrongId, TSelectData = any>(
@@ -163,9 +168,7 @@ export const Select = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: React.PropsWithRef<ISelectProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<ISelectProps<any, any>> };
+) as SelectComponent;
 
 Select.defaultProps = {
   selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
