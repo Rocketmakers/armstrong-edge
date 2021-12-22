@@ -15,9 +15,3 @@ export const TextInput = React.forwardRef(
     return <Input {...props} className={ClassNames.concat('arm-text-input', className)} ref={ref} type="text" />;
   }
 ) as TextInputComponent;
-
-const a = () => {
-  const [aa, aaa] = React.useState('');
-
-  return <TextInput<string> value={aa} onValueChange={aaa} />;
-};

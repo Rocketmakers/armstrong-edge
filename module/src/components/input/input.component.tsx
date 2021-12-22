@@ -49,7 +49,7 @@ const ThrottledInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseP
   }
 );
 
-export interface IInputProps<TValue> extends NativeInputProps, Omit<IInputWrapperProps, 'onClick'> {
+export interface IInputProps<TValue> extends Omit<NativeInputProps, 'value'>, Omit<IInputWrapperProps, 'onClick'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TValue>;
 
@@ -58,6 +58,8 @@ export interface IInputProps<TValue> extends NativeInputProps, Omit<IInputWrappe
 
   /** The delay config, used to set throttle and debounce values. */
   delay?: IDelayInputConfig;
+
+  value?: TValue;
 }
 
 /** A component which wraps up a native input element with some binding logic and some repeated elements (icons and stuff) for components which only contain a single input element. */
