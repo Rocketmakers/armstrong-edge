@@ -25,6 +25,10 @@ module.exports = {
           loader: 'postcss-loader',
           options: {
             sourceMap: isDevelopment,
+            postcssOptions: {
+              implementation: require('postcss'),
+              plugins: [require('autoprefixer')],
+            },
           },
         },
         {

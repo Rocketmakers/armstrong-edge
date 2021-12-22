@@ -17,5 +17,5 @@
     "moduleResolution": "node",
     "lib": ["es2016", "dom"]
   },
-  "exclude": ["node_modules", "stories", "**/*.stories.*"]
+  "exclude": ["node_modules", "stories", "**/*.stories.*", "**/*.cy-test.tsx"]
 }

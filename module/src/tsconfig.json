@@ -22,5 +22,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "stories", "**/*.stories.*"]
+  "exclude": ["node_modules", "stories", "**/*.stories.*", "**/*.cy-test.tsx"]
 }
