@@ -36,7 +36,7 @@ export interface ICheckboxInputListProps<Id extends ArmstrongId>
   value?: Id[];
 
   /** fired when the value of the checkbox input changes */
-  onChange?: (newValue: Id[]) => void;
+  onChange?: (newValue: Id[] | undefined) => void;
 
   /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;

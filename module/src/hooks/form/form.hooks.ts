@@ -419,7 +419,7 @@ interface IUseBindingToolsReturnUtils<TData> {
   shouldShowValidationErrorMessage?: boolean;
 }
 
-type UseBindingToolsReturn<TData> = [TData | undefined, ((newValue: TData) => void) | undefined, IUseBindingToolsReturnUtils<TData>];
+type UseBindingToolsReturn<TData> = [TData | undefined, ((newValue: TData | undefined) => void) | undefined, IUseBindingToolsReturnUtils<TData>];
 
 /** Used as overrides for the bind functionality, for use with component props */
 interface IUseBindingToolsOverrides<TData> {
@@ -452,8 +452,8 @@ export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: 
   );
 
   const onChange = React.useCallback(
-    (newValue: TData) => {
-      overrides?.onChange?.(newValue);
+    (newValue: TData | undefined) => {
+      overrides?.onChange?.(newValue!);
       bind?.setValue?.(bind.bindConfig?.format?.toData?.(newValue) ?? newValue);
     },
     [overrides?.onChange, bind?.setValue, bind?.bindConfig?.format?.toData]

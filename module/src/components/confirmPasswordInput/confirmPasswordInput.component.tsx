@@ -21,7 +21,7 @@ export const ConfirmPasswordInput = React.forwardRef<HTMLInputElement, IConfirmP
       validationErrorIcon: errorIcon,
     });
 
-    const [inputValue, setInputValue] = React.useState('');
+    const [inputValue, setInputValue] = React.useState<string | undefined>('');
 
     const [showError, setShowError] = React.useState(false);
 
