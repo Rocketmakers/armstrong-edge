@@ -1,5 +1,5 @@
 {
-  "componentFolder": "src",
+  "componentFolder": "./.cypress/components",
   "downloadsFolder": "./.cypress/downloads",
   "fixturesFolder": "./.cypress/fixtures",
   "integrationFolder": "./.cypress/integration",

@@ -3,5 +3,5 @@
   "compilerOptions": {
     "types": ["node", "cypress"]
   },
-  "include": ["**/*.ts", "types/index.d.ts", "plugins/index.js", "support/index.ts"]
+  "include": ["components/*.ts?", "types/index.d.ts", "plugins/index.js", "support/index.ts"]
 }

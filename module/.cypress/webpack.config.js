@@ -7,7 +7,7 @@ module.exports = () => {
       historyApiFallback: true,
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.scss'], // search for files ending with these extensions when importing
+      extensions: ['.ts', '.tsx', '.js', '.scss', '.css'], // search for files ending with these extensions when importing
       fallback: {
         path: require.resolve('path-browserify'),
       },
@@ -16,7 +16,7 @@ module.exports = () => {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader', // compile typescript
+          loader: 'ts-loader',
         },
         {
           test: /\.(jpg|ttf|svg|woff2?|eot|png|mp4|mp3)$/, // add extensions for new file types here
