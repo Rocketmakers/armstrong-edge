@@ -16,13 +16,3 @@ const Template = StoryUtils.createTemplate(Input);
 
 export const Default = StoryUtils.cloneTemplate(Template, {});
 export const WithIcons = StoryUtils.cloneTemplate(Template, { leftIcon: { icon: 'phone', iconSet: 'Icomoon' } });
-
-export const TEST = () => {
-  const { formProp } = Form.use();
-
-  return (
-    <>
-      <Input type="text" bind={formProp.bind('aaa')} />
-    </>
-  );
-};
