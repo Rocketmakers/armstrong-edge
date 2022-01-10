@@ -5,10 +5,6 @@ import './showCode';
 import { ModalProvider } from '../src/components/modal/modal.context';
 import { addParameters } from '@storybook/react';
 
-import { withTests } from '@storybook/addon-jest';
-
-import results from '../.jest/.jest-test-results.json';
-
 export const decorators = [
   (Story) => {
     return (
@@ -21,9 +17,6 @@ export const decorators = [
       </div>
     );
   },
-  withTests({
-    results,
-  }),
 ];
 
 export const parameters = {

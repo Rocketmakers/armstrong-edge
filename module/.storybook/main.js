@@ -1,6 +1,6 @@
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-jest'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-a11y'],
   core: {
     builder: 'webpack5',
   },
@@ -39,6 +39,14 @@ module.exports = {
         },
       ],
     });
+
+    config.resolve = {
+      ...config.resolve,
+      alias: {
+        ...config.resolve.alias,
+        path: require.resolve('path-browserify'),
+      },
+    };
 
     // Return the altered config
     return config;
