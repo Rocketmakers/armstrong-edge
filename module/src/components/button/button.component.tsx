@@ -97,35 +97,27 @@ export const Button = React.forwardRef(
     } = props;
     const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
 
+    const elementProps = {
+      className: ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className),
+      'data-pending': pending,
+      'data-disabled': disabled || pending,
+      'data-error': shouldShowErrorIcon,
+      disabled: disabled || pending,
+      tabIndex: disabled ? -1 : nativeProps.tabIndex,
+    };
+
     return (
       <>
         {elementTag === 'button' && (
           // due to a typescript limitation, the elementTag === 'button' above isn't causing the conditional types to be inferred so this cast is necessary
-          <button
-            {...(nativeProps as ButtonHTMLProps)}
-            className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
-            data-pending={pending}
-            data-disabled={disabled || pending}
-            data-error={shouldShowErrorIcon}
-            disabled={disabled || pending}
-            ref={ref as React.ForwardedRef<ButtonElementTagElement<'button'>>}
-            tabIndex={disabled ? -1 : nativeProps.tabIndex}
-          >
+          <button {...(nativeProps as ButtonHTMLProps)} ref={ref as React.ForwardedRef<ButtonElementTagElement<'button'>>} {...elementProps}>
             <ButtonInner {...props} />
           </button>
         )}
 
         {elementTag === 'div' && (
-          <div
-            // due to a typescript limitation, the elementTag === 'button' above isn't causing the conditional types to be inferred so this cast is necessary
-            {...(nativeProps as DivHTMLProps)}
-            className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
-            data-pending={pending}
-            data-disabled={disabled || pending}
-            data-error={shouldShowErrorIcon}
-            ref={ref as React.ForwardedRef<ButtonElementTagElement<'div'>>}
-            tabIndex={disabled ? -1 : nativeProps.tabIndex}
-          >
+          // due to a typescript limitation, the elementTag === 'button' above isn't causing the conditional types to be inferred so this cast is necessary
+          <div {...(nativeProps as DivHTMLProps)} ref={ref as React.ForwardedRef<ButtonElementTagElement<'div'>>} {...elementProps}>
             <ButtonInner {...props} />
           </div>
         )}
