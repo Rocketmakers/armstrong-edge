@@ -71,8 +71,8 @@ export const useProgress = ({ trickle, trickleAmount, trickleInterval, maximum, 
     if (trickle) {
       increment(Math.min((100 - progressRef.current) * 0.05, trickleAmount || 2));
 
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define, @typescript-eslint/no-floating-promises
-      setInterval();
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      void setInterval();
     }
   }, [increment, trickle]);
 
