@@ -50,13 +50,3 @@ export const Minimal = StoryUtils.cloneTemplate(Template, {
   children: 'Click me please',
   minimalStyle: true,
 });
-export const RenderDiv = StoryUtils.cloneTemplate(Template, { children: 'Use me inside a tags and such', elementTag: 'div' });
-export const RenderDivWithOtherStuff = StoryUtils.cloneTemplate(Template, {
-  children: 'Use me inside a tags and such',
-  elementTag: 'div',
-  leftIcon: { icon: '8ball', iconSet: 'Icomoon' },
-  rightIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
-  hideIconOnStatus: false,
-  pending: true,
-  statusPosition: 'left',
-});

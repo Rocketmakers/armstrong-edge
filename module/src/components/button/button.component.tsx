@@ -10,10 +10,8 @@ import { ValidationErrors } from '../validationErrors';
 export type ButtonElementTag = 'button' | 'div';
 
 type ButtonHTMLProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
-type DivHTMLProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
-export type IButtonProps<TTag extends ButtonElementTag = 'button'> = IIconWrapperProps<IconSet, IconSet> &
-  Omit<TTag extends 'button' ? ButtonHTMLProps : DivHTMLProps, 'ref'> &
+export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
   IStatusWrapperProps & {
     /** CSS className property */
     className?: string;
@@ -35,13 +33,12 @@ export type IButtonProps<TTag extends ButtonElementTag = 'button'> = IIconWrappe
 
     /** don't style beyond removing the default css styling */
     minimalStyle?: boolean;
-
-    /** what tag to use for the button element - use div if nesting inside an a tag (i.e. in a <Link />) */
-    elementTag?: TTag;
   };
 
+export type IButtonProps = IButtonCoreProps & ButtonHTMLProps & { to?: never };
+
 /** Renders the inside of a button, for use in altering the tag used for the wrapper */
-export const ButtonInner: React.FC<IButtonProps<any>> = ({
+export const ButtonInner: React.FC<IButtonCoreProps> = ({
   validationErrorMessages,
   errorIcon,
   pending,
@@ -72,69 +69,51 @@ export const ButtonInner: React.FC<IButtonProps<any>> = ({
   );
 };
 
-type ButtonElementTagElement<TTag extends ButtonElementTag> = TTag extends 'button' ? HTMLButtonElement : HTMLDivElement;
-
-// this component uses a generic to ensure that the ref is the correct type - this should be inferred from the value of the "elementTag" prop which defaults to "button"
-
 /** Renders an HTML button element with some useful additions */
-export const Button = React.forwardRef(
-  <TTag extends ButtonElementTag = 'button'>(props: IButtonProps<TTag>, ref?: React.ForwardedRef<ButtonElementTagElement<TTag> | null>) => {
-    const {
-      className,
-      disabled,
-      minimalStyle,
-      elementTag,
-      validationErrorMessages,
-      error,
-      errorIcon,
-      pending,
-      leftIcon,
-      rightIcon,
-      children,
-      statusPosition,
-      hideIconOnStatus,
-      ...nativeProps
-    } = props;
-    const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
+export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>((props, ref) => {
+  const {
+    className,
+    disabled,
+    minimalStyle,
+    validationErrorMessages,
+    error,
+    errorIcon,
+    pending,
+    leftIcon,
+    rightIcon,
+    children,
+    statusPosition,
+    hideIconOnStatus,
+    ...nativeProps
+  } = props;
 
-    const elementProps = {
-      className: ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className),
-      'data-pending': pending,
-      'data-disabled': disabled || pending,
-      'data-error': shouldShowErrorIcon,
-      disabled: disabled || pending,
-      tabIndex: disabled ? -1 : nativeProps.tabIndex,
-    };
+  const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
 
-    return (
-      <>
-        {elementTag === 'button' && (
-          // due to a typescript limitation, the elementTag === 'button' above isn't causing the conditional types to be inferred so this cast is necessary
-          <button {...(nativeProps as ButtonHTMLProps)} ref={ref as React.ForwardedRef<ButtonElementTagElement<'button'>>} {...elementProps}>
-            <ButtonInner {...props} />
-          </button>
-        )}
+  const elementProps = {};
 
-        {elementTag === 'div' && (
-          // due to a typescript limitation, the elementTag === 'button' above isn't causing the conditional types to be inferred so this cast is necessary
-          <div {...(nativeProps as DivHTMLProps)} ref={ref as React.ForwardedRef<ButtonElementTagElement<'div'>>} {...elementProps}>
-            <ButtonInner {...props} />
-          </div>
-        )}
+  return (
+    <>
+      <button
+        className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
+        data-pending={pending}
+        data-disabled={disabled || pending}
+        data-error={shouldShowErrorIcon}
+        disabled={disabled || pending}
+        tabIndex={disabled ? -1 : nativeProps.tabIndex}
+        {...(nativeProps as ButtonHTMLProps)}
+        ref={ref}
+        {...elementProps}
+      >
+        <ButtonInner {...props} />
+      </button>
 
-        {!!validationErrorMessages?.length && <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} />}
-      </>
-    );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TTag extends ButtonElementTag = 'button'>(
-  props: React.PropsWithRef<IButtonProps<TTag>> & React.RefAttributes<ButtonElementTagElement<TTag>>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IButtonProps<any>> };
+      {!!validationErrorMessages?.length && <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} />}
+    </>
+  );
+});
 
 Button.defaultProps = {
   errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
   statusPosition: 'right',
   hideIconOnStatus: true,
-  elementTag: 'button',
 };
