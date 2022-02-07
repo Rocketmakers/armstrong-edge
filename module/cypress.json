@@ -1,5 +1,6 @@
 {
   "componentFolder": "./.cypress/components",
+  "customSnapshotsDir": "./.cypress/snapshots",
   "downloadsFolder": "./.cypress/downloads",
   "fixturesFolder": "./.cypress/fixtures",
   "integrationFolder": "./.cypress/integration",
