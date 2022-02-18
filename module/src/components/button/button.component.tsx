@@ -7,9 +7,7 @@ import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
 
-export type ButtonElementTag = 'button' | 'div';
-
-type ButtonHTMLProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+type ButtonHTMLProps = Omit<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'ref'>;
 
 export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
   IStatusWrapperProps & {
@@ -89,8 +87,6 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>((props, 
 
   const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
 
-  const elementProps = {};
-
   return (
     <>
       <button
@@ -100,9 +96,8 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>((props, 
         data-error={shouldShowErrorIcon}
         disabled={disabled || pending}
         tabIndex={disabled ? -1 : nativeProps.tabIndex}
-        {...(nativeProps as ButtonHTMLProps)}
         ref={ref}
-        {...elementProps}
+        {...nativeProps}
       >
         <ButtonInner {...props} />
       </button>
