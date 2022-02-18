@@ -14,10 +14,11 @@ export interface ICheckboxInputListOption<Id extends ArmstrongId>
       Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
       ICheckboxInputProps['inputProps']
     >,
+    // omitted for replaced JSDoc below
     'content'
   > {
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
-  label: IArmstrongExtendedOption<Id>['content'];
+  content: IArmstrongExtendedOption<Id>['content'];
 }
 
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
@@ -115,7 +116,7 @@ export const CheckboxInputList = React.forwardRef(
                   name={option.name ?? option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
-                  label={option.label}
+                  content={option.content}
                   inputProps={option.htmlInputProps}
                   disabled={option.disabled}
                   direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
