@@ -3,7 +3,7 @@ import * as React from 'react';
 import './showCode';
 
 import { ModalProvider } from '../src/components/modal/modal.context';
-import { addParameters } from '@storybook/react';
+// import { addParameters } from '@storybook/react';
 
 export const decorators = [
   (Story) => {

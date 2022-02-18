@@ -1,5 +1,6 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import { useHasTimeElapsed, useHasTimeElapsedSinceMount } from '../../../src/hooks/useHasTimeElapsed';
+import { act, renderHook } from '@testing-library/react-hooks';
+
+import { useHasTimeElapsed, useHasTimeElapsedSinceMount } from './useHasTimeElapsed';
 
 describe('useHasTimeElapsed', () => {
   beforeEach(() => {
@@ -8,7 +9,7 @@ describe('useHasTimeElapsed', () => {
 
   it('should indicate that the required time has passed', async () => {
     // Assign
-    const dummyFunc = jest.fn(() => {});
+    const dummyFunc = jest.fn(() => null);
     const time = 25;
     jest.useFakeTimers();
 

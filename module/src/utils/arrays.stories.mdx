@@ -68,7 +68,7 @@ const things = [
   { type: 'animal', name: 'cat' },
 ];
 
-const result = Arrays.arrayToArrayDictionary(things, 'type');
+const result = Arrays.arrayToArrayDictionary(things, (item) => item.type);
 
 // result
 {
@@ -97,7 +97,7 @@ const things = [
   { type: 'animal', name: 'cat' },
 ];
 
-const result = Arrays.arrayToArraysByKey(things, 'type');
+const result = Arrays.arrayToArraysByKey(things, (item) => item.type);
 
 // result
 [
@@ -196,29 +196,12 @@ function getArrayIndex<T>(innerIndex: number, outerIndex: number, arrays: { item
 ```ts
 import { Arrays } from '@rocketmakers/armstrong';
 
-const things = [
-  { type: 'plant', name: 'rose' },
-  { type: 'plant', name: 'tree' },
-  { type: 'animal', name: 'cat' },
-];
+const nestedArrays = [{ items: ['a', 'b', 'c'] }, { items: ['d', 'e', 'f'] }, { items: ['g', 'h', 'i'] }];
 
-const nestedArrays = Arrays.arrayToArraysByKey(things, 'type');
+const result = Arrays.NestedArrays.getArrayIndex(1, 1, nestedArrays);
 
-// loop through nested arrays
-for (let outerIndex = 0; outerIndex < nestedArrays.length; outerIndex++) {
-  // loop through items inside this item in the outer array
-  for (let innerIndex = 0; outerIndex < nestedArrays[outerIndex].items.length; outerIndex++) {
-    // get the overall index from the inner index and outer index
-    const index = Arrays.NestedArrays.getArrayIndex(outerIndex, innerIndex, nestedArrays);
-
-    console.log(index);
-  }
-}
-
-// console
-0;
-1;
-2;
+// result
+4;
 ```
 
 ### getAtIndex
@@ -234,16 +217,10 @@ function getAtOverallIndex<T>(index: number, arrays: { items: T[] }[]);
 ```ts
 import { Arrays } from '@rocketmakers/armstrong';
 
-const things = [
-  { type: 'plant', name: 'rose' },
-  { type: 'plant', name: 'tree' },
-  { type: 'animal', name: 'cat' },
-];
+const nestedArrays = [{ items: ['a', 'b', 'c'] }, { items: ['d', 'e', 'f'] }, { items: ['g', 'h', 'i'] }];
 
-const nestedArrays = Arrays.arrayToArraysByKey(things, 'type');
-
-const result = Arrays.NestedArrays.getAtOverallIndex(2, nestedArrays);
+const result = Arrays.NestedArrays.getAtOverallIndex(5, nestedArrays);
 
 // result
-{type: 'animal', name: 'cat'}
+f;
 ```
