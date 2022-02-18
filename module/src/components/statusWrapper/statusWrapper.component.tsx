@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { FormValidationMode } from '../../hooks/form';
+import { FormValidationMode, ValidationMessage } from '../../hooks/form';
 import { IconSet, IIcon } from '../icon';
 import { Status } from '../status/status.component';
 
@@ -15,7 +15,7 @@ export interface IStatusWrapperProps {
   pending?: boolean;
 
   /** array of validation errors used to calculate if there is an error in wrapping component */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** how to render the validation errors */
   validationMode?: FormValidationMode;

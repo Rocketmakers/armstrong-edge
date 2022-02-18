@@ -26,4 +26,12 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+
+  &[data-disabled='true'] {
+    pointer-events: none;
+
+    > * {
+      opacity: 0.5;
+    }
+  }
 }

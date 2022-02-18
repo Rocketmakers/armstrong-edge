@@ -1,28 +1,28 @@
 import * as React from 'react';
 
-import { Form, IconSet } from '../..';
+import { Form } from '../..';
 import { useIsFocused } from '../../hooks';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { useOverridableState } from '../../hooks/useOverridableState';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { Objects } from '../../utils/objects';
-import { DropdownItems, IDropdownItem, IDropdownItemsProps } from '../dropdownItems';
-import { IIconWrapperProps } from '../iconWrapper';
+import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
 import { IInputProps } from '../input';
 import { IPortalProps } from '../portal';
 import { TextInput } from '../textInput';
 
-// internally, the autocompleteinput binds two values - the actual content of the text input, and the selected value
+// internally, the AutoCompleteInput binds two values - the actual content of the text input, and the selected value
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound
 // will use bindConfig.fromData to parse the data in options allowing for a pattern where the displayed stuff is different to the bound data
 
-export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet>, Pick<IDropdownItem, 'group'> {
-  /** the value to be bound */
-  id: Id;
+export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends Omit<IArmstrongExtendedOption<Id, never>, 'htmlProps'> {
+  /** props to spread onto the li element for the dropdown item */
+  dropDownItemHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onMouseUp' | 'ref'>;
 
-  /** the name to be rendered for the option */
-  name?: string;
+  /** props to spread onto the div element for the tag item */
+  tagHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onMouseUp' | 'ref'>;
 }
 
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
@@ -107,7 +107,7 @@ export const AutoCompleteInput = React.forwardRef(
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
-    const [isFocused, isFocusedProps] = useIsFocused();
+    const [isFocused, isFocusedProps] = useIsFocused({ onBlur: textInputProps.onBlur, onFocus: textInputProps.onFocus });
 
     // log a piece of state to manage whether the options dropdown has just been opened, and no filtering has occurred
     const [justOpened, setJustOpened] = React.useState(optionsOpen);
@@ -229,11 +229,12 @@ export const AutoCompleteInput = React.forwardRef(
             items={[
               ...(shouldShowFreeTextItemInDropdown ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
               ...filteredOptions.map((option) => ({
-                content: getOptionName(option),
+                content: option.content || getOptionName(option),
                 id: option.id,
                 leftIcon: option.leftIcon,
                 rightIcon: option.rightIcon,
                 group: option.group,
+                htmlProps: option.dropDownItemHtmlProps,
               })),
             ]}
             isOpen={optionsOpen && !disabled && !!options?.length}

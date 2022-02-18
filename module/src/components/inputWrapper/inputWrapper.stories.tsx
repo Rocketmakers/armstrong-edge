@@ -28,5 +28,5 @@ export const WithEverything = StoryUtils.cloneTemplate(Template, {
   above: <p style={{ padding: '5px' }}>I'm above</p>,
   below: <p style={{ padding: '5px' }}>I'm below</p>,
   hideIconOnStatus: false,
-  validationErrorIcon: IconUtils.getIconDefinition('LinearIcons', 'alarm'),
+  errorIcon: IconUtils.getIconDefinition('LinearIcons', 'alarm'),
 });

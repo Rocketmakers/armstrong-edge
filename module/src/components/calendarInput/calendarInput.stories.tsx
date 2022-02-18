@@ -33,7 +33,14 @@ export const CustomInputFormats = () => {
 };
 
 export const CustomInputOrder = () => {
-  const { formProp, formState } = Form.use({ date: undefined, date2: undefined, monthDate: undefined, yearDate: undefined, backwards: undefined });
+  const { formProp, formState } = Form.use({
+    date: undefined,
+    date2: undefined,
+    monthDate: undefined,
+    month: undefined,
+    yearDate: undefined,
+    backwards: undefined,
+  });
 
   return (
     <>
@@ -41,7 +48,21 @@ export const CustomInputOrder = () => {
       <br />
       <CalendarInput bind={formProp('date2').bind() as any} inputOrder={['month', 'day', 'year']} formatString="dd-MM-yyyy" />
       <br />
-      <CalendarInput bind={formProp('monthDate').bind() as any} inputOrder={['month', 'year']} displayMode="inputs" formatString="MM-yyyy" />
+      <CalendarInput
+        bind={formProp('monthDate').bind() as any}
+        inputOrder={['month', 'year']}
+        displayMode="inputs"
+        formatString="MM-yyyy"
+        monthInputDisplayFormat="LLLL"
+      />
+      <br />
+      <CalendarInput
+        bind={formProp('month').bind() as any}
+        inputOrder={['month']}
+        displayMode="inputs"
+        formatString="MM"
+        monthInputDisplayFormat="LLLL"
+      />
       <br />
       <CalendarInput bind={formProp('yearDate').bind() as any} inputOrder={['year']} displayMode="inputs" formatString="yyyy" />
       <br />
@@ -50,8 +71,9 @@ export const CustomInputOrder = () => {
         <p>1 (UK) - {formState.date}</p>
         <p>2 (US) - {formState.date2}</p>
         <p>3 (month) - {formState.monthDate}</p>
-        <p>4 (year) - {formState.yearDate}</p>
-        <p>5 (backwards) - {formState.backwards}</p>
+        <p>4 (just month) - {formState.month}</p>
+        <p>5 (year) - {formState.yearDate}</p>
+        <p>6 (backwards) - {formState.backwards}</p>
       </div>
     </>
   );

@@ -73,7 +73,7 @@ export const useModalLayerPromise = <T, TArg = unknown>(
 
         // add the internal props to the wrapper (taking hold of isOpen and onOpenChange) and pass promise callbacks into the child component
         const modalComponent: React.FC = () => (
-          <Wrapper isOpen onOpenChange={(shouldOpen) => shouldOpen === false && rejectPromise()}>
+          <Wrapper isOpen onOpenChange={(shouldOpen) => shouldOpen === false && resolvePromise(undefined)}>
             <Children close={() => resolvePromise(undefined)} reject={rejectPromise} resolve={resolvePromise} argument={argument} />
           </Wrapper>
         );
@@ -83,7 +83,7 @@ export const useModalLayerPromise = <T, TArg = unknown>(
         addModal(modalComponent);
         setIsOpen(true);
       }),
-    [addModal, removeModal]
+    [addModal, removeModal, Children, Wrapper]
   );
 
   // clean up promise and modal on unmount

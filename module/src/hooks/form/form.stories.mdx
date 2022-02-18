@@ -42,9 +42,9 @@ return (
 );
 ```
 
-### Initial state vs typings vs both
+### Initial data vs typings vs both
 
-In the above example, the initial state is supplied as the first argument to the form hook, in this example, the types for `formProp` and `formState` will be derived from the shape of the object passed. In this case:
+In the above example, the initial data is supplied as the first argument to the form hook, in this example, the types for `formProp` and `formState` will be derived from the shape of the object passed. In this case:
 
 ```
 {
@@ -53,7 +53,7 @@ In the above example, the initial state is supplied as the first argument to the
 }
 ```
 
-The form hook can also received it's type via a generic, with this approach the initial state object becomes optional as the form hook can build the state on the fly, so the above example could have looked like this:
+The form hook can also received it's type via a generic, with this approach the initial data object becomes optional as the form hook can build the state on the fly, so the above example could have looked like this:
 
 ```tsx
 interface ILoginRequest {
@@ -81,6 +81,51 @@ return (
 
 With a type supplied, the initial state can either be complete, partial or missing entirely.
 **NOTE:** Bear in mind that with a type based approach, the `formState` object will only contain properties passed in as initial state alongside data added by the user, so you'll need to fill in the gaps and use null checks accordingly.
+
+### Initial data as a callback
+
+Initial state can also be passed as a React callback. The callback will be executed:
+1. Once initially with no parameters passed to it, it will be expected to return the initial state for the form binder.
+2. Again each time it's dependencies update, in this case it will receive the current form state as a param and be expected to return updated form state.
+
+This is extremely useful when a form relies on remote data that could update at any time, it allows the form to update with the latest changes from the server without losing the user's current edits by completely replacing the form data with the remote update.
+
+**NOTE:** When using an initial data function, be aware that it will be executed to provide initial data whenever it's reference updates. It's essential therefore that any initial data function is a callback with a carefully selected set of dependencies, rather than an anonymous function or constant function.
+
+Here's an example:
+```tsx
+// this is data from the server that can be updated at any time.
+const { data } = useGetProfileData<IUser>();
+
+// Using an initial data callback here ensures that when the remote data updates, the form will
+// reflect the changes but also maintain live user edits to the uneffected areas of the form.
+const initialData = React.useCallback((currentFormState?: IUser) => {
+  return {
+    firstName: "",
+    lastName: "",
+    email: ""
+    ...(currentFormState ?? {}),
+    ...(data ?? {})
+  }
+}, [data]);
+
+const { formProp, formState } = Form.use(initialData);
+
+const submitData = React.useCallback(async () => {
+  await updateProfile(formState);
+}, [formState]);
+
+return (
+  <form>
+    <TextInput bind={formProp('firstName').bind()} />
+    <TextInput bind={formProp('lastName').bind()} />
+    <EmailInput bind={formProp('email').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Update
+    </Button>
+  </form>
+);
+```
 
 ## <a name="tools">Tools returned from the hook</a>
 
