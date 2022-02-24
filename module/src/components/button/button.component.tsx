@@ -31,6 +31,9 @@ export interface IButtonProps
 
   /** don't style beyond removing the default css styling */
   minimalStyle?: boolean;
+
+  /** identifier for driving this component with Cypress */
+  cypressTag?: string;
 }
 
 /** Renders an HTML button element with some useful additions */
@@ -49,6 +52,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
       minimalStyle,
       statusPosition,
       hideIconOnStatus,
+      cypressTag,
       ...nativeProps
     },
     ref
@@ -69,6 +73,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
           disabled={disabled || pending}
           ref={ref}
           tabIndex={disabled ? -1 : nativeProps.tabIndex}
+          data-cy={cypressTag}
         >
           <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
             <StatusWrapper
