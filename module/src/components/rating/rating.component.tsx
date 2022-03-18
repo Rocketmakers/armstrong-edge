@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Form, ValidationErrors } from '../..';
+import { Form, useOverridableState, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import { Arrays } from '../../utils';
+import { Arrays, Maths } from '../../utils';
 import { ClassNames } from '../../utils/classNames';
 import { Button } from '../button';
 import { Icon, IconSet, IIcon } from '../icon';
@@ -15,20 +15,28 @@ export interface IRatingPartProps extends Pick<IRatingProps, 'filledIcon' | 'emp
 }
 
 export const RatingPart: React.FC<IRatingPartProps> = ({ index, value, onSelectPart, filledIcon, emptyIcon, step }) => {
-  const steps = 1 / (step || 1);
+  const steps = Math.floor(1 / (step || 1));
 
   return (
     <div
       className="arm-rating-part"
-      style={value ? ({ '--rating-amount': (value - index) % 1 } as React.CSSProperties) : undefined}
-      data-filled={value && value > index}
+      style={value ? ({ '--rating-amount': `${Maths.clamp((value - index) * 100, 0, 100)}%` } as React.CSSProperties) : undefined}
+      data-filled={value && value >= index + 1}
+      data-part={value && value < index + 1 && value > index}
     >
-      {filledIcon && <Icon className="arm-rating-part-filled" {...filledIcon} />}
-      {emptyIcon && <Icon className="arm-rating-part-empty" {...emptyIcon} />}
+      <div className="arm-rating-part-icon-wrapper">
+        {emptyIcon && <Icon className="arm-rating-part-icon arm-rating-part-empty" {...emptyIcon} />}
+        {filledIcon && <Icon className="arm-rating-part-icon arm-rating-part-filled" {...filledIcon} />}
+      </div>
 
       <div className="arm-rating-part-buttons">
         {Arrays.repeat(steps, (buttonIndex) => (
-          <Button key={buttonIndex} minimalStyle onClick={() => onSelectPart(steps * buttonIndex)} aria-label={`${index + steps * buttonIndex}`} />
+          <Button
+            key={buttonIndex}
+            minimalStyle
+            onClick={() => onSelectPart((step || 1) * (buttonIndex + 1))}
+            aria-label={`${index + steps * (buttonIndex + 1)}`}
+          />
         ))}
       </div>
     </div>
@@ -61,6 +69,7 @@ export const Rating: React.FC<IRatingProps> = ({
   validationMode,
   errorIcon,
   scrollValidationErrorsIntoView,
+  step,
   ...htmlProps
 }) => {
   const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
@@ -71,6 +80,9 @@ export const Rating: React.FC<IRatingProps> = ({
     validationErrorIcon: errorIcon,
   });
 
+  // use an overridable internal state so it can be used without a binding
+  const [ratingValue, setRatingValue] = useOverridableState(0, boundValue, setBoundValue);
+
   return (
     <>
       <div className={ClassNames.concat('arm-rating', className)} {...htmlProps}>
@@ -80,8 +92,9 @@ export const Rating: React.FC<IRatingProps> = ({
             index={index}
             filledIcon={filledIcon}
             emptyIcon={emptyIcon}
-            value={boundValue}
-            onSelectPart={(proportion) => setBoundValue?.(index + proportion)}
+            value={ratingValue}
+            onSelectPart={(proportion) => setRatingValue?.(index + proportion)}
+            step={step}
           />
         ))}
       </div>
