@@ -229,5 +229,5 @@ Rating.defaultProps = {
   filledIcon: { iconSet: 'Icomoon', icon: 'star-full' },
   emptyIcon: { iconSet: 'Icomoon', icon: 'star-empty' },
   step: 1,
-  mode: 'range',
+  mode: 'button',
 };

@@ -94,6 +94,15 @@ export const WithStatusAndIcons = () => {
   );
 };
 
+export const Radio = () => {
+  const { formProp } = Form.use({ rating: 0 });
+
+  return (
+    <div>
+      <Rating bind={formProp('rating').bind()} mode="radio" />
+    </div>
+  );
+};
 export const Buttons = () => {
   const { formProp } = Form.use({ rating: 0 });
 
@@ -103,12 +112,12 @@ export const Buttons = () => {
     </div>
   );
 };
-export const Radio = () => {
+export const Range = () => {
   const { formProp } = Form.use({ rating: 0 });
 
   return (
     <div>
-      <Rating bind={formProp('rating').bind()} mode="radio" />
+      <Rating bind={formProp('rating').bind()} mode="range" />
     </div>
   );
 };
