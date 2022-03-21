@@ -36,6 +36,29 @@ export const Default = () => {
     </>
   );
 };
+export const Horizontal = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <>
+      <CheckboxInputList
+        value={value}
+        onChange={setValue}
+        direction="horizontal"
+        options={[
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'pink' },
+          { id: 4, name: 'brown' },
+        ]}
+      />
+      <br />
+      <br />
+      <br />
+      <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
+  );
+};
 export const Grouped = () => {
   const [value, setValue] = React.useState([]);
 
@@ -126,6 +149,54 @@ export const NumericIds = () => {
       <br />
       <br />
       <p className="bound-value">bound value: {value.join(', ')}</p>
+    </>
+  );
+};
+
+export const CustomContentWithoutCheckbox = () => {
+  const [value, setValue] = React.useState(['']);
+
+  const content = (checked) => (
+    <>
+      <img
+        width={50}
+        src={
+          checked
+            ? 'https://cdn.pixabay.com/photo/2019/02/19/19/45/thumbs-up-4007573_960_720.png'
+            : 'https://www.stylist.co.uk/images/app/uploads/2021/07/02125306/psychology-of-second-hand-sadness-1120x1120.jpg?w=1200&h=1&fit=max&auto=format%2Ccompress'
+        }
+      />
+      <p>I'm {!checked && 'not'} checked</p>
+    </>
+  );
+
+  return (
+    <>
+      <CheckboxInputList
+        value={value}
+        onChange={setValue}
+        direction="horizontal"
+        hideCheckbox
+        options={[
+          {
+            id: 'a',
+            content,
+          },
+          {
+            id: 'b',
+            content,
+          },
+          {
+            id: 'c',
+            content,
+          },
+          {
+            id: 'd',
+            content,
+          },
+        ]}
+      />
+      <p className="bound-value">bound value: {value}</p>
     </>
   );
 };

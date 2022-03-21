@@ -1,5 +1,4 @@
-import { getDaysInMonth } from 'date-fns';
-import format from 'date-fns/format';
+import { format, getDaysInMonth } from 'date-fns';
 
 import { Calendar, ISelectOption } from '../..';
 import { Dates } from '../../utils/dates';

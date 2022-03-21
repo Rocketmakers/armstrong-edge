@@ -36,6 +36,26 @@ export const Default = () => {
     </>
   );
 };
+export const Horizontal = () => {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <>
+      <RadioInputList
+        value={value}
+        onChange={setValue}
+        direction="horizontal"
+        options={[
+          { id: 'a', name: 'red' },
+          { id: 'b', name: 'blue' },
+          { id: 'c', name: 'pink' },
+          { id: 'd', name: 'brown' },
+        ]}
+      />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
 export const Grouped = () => {
   const [value, setValue] = React.useState('');
 
@@ -125,6 +145,97 @@ export const NumericIds = () => {
       <br />
       <br />
       <br />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
+
+export const CustomContent = () => {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <>
+      <RadioInputList
+        value={value}
+        onChange={setValue}
+        options={[
+          {
+            id: 'a',
+            content: (
+              <p>
+                <strong>I'm a big strong</strong> piece of text
+              </p>
+            ),
+          },
+          {
+            id: 'b',
+            content: (
+              <img
+                width={100}
+                src="https://media.istockphoto.com/photos/very-closeup-view-of-amazing-domestic-pet-in-mirror-round-fashion-is-picture-id1281804798?b=1&k=20&m=1281804798&s=170667a&w=0&h=HIWbeaP_cQSngCz7l9t3xwyE2eyzVgIy3K6xIqPhJQA="
+              />
+            ),
+          },
+          {
+            id: 'c',
+            content: (
+              <p>
+                Hello there <em>BUDDY</em>
+              </p>
+            ),
+          },
+        ]}
+      />
+      <br />
+      <br />
+      <br />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
+export const CustomContentWithoutRadio = () => {
+  const [value, setValue] = React.useState('');
+
+  const content = (checked) => (
+    <>
+      <img
+        width={50}
+        src={
+          checked
+            ? 'https://cdn.pixabay.com/photo/2019/02/19/19/45/thumbs-up-4007573_960_720.png'
+            : 'https://www.stylist.co.uk/images/app/uploads/2021/07/02125306/psychology-of-second-hand-sadness-1120x1120.jpg?w=1200&h=1&fit=max&auto=format%2Ccompress'
+        }
+      />
+      <p>I'm {!checked && 'not'} checked</p>
+    </>
+  );
+
+  return (
+    <>
+      <RadioInputList
+        value={value}
+        onChange={setValue}
+        direction="horizontal"
+        hideRadio
+        options={[
+          {
+            id: 'a',
+            content,
+          },
+          {
+            id: 'b',
+            content,
+          },
+          {
+            id: 'c',
+            content,
+          },
+          {
+            id: 'd',
+            content,
+          },
+        ]}
+      />
       <p className="bound-value">bound value: {value}</p>
     </>
   );

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Form, IListBoxOption, IListBoxProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';

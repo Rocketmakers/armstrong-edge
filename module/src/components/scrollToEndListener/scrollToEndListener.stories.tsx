@@ -22,11 +22,11 @@ export const Default = () => {
 
   return (
     <div className="story-scroll-container" style={{ padding: '5px' }}>
-      {things.map((thing) => (
-        <div style={{ marginBottom: '5px', border: '1px solid black', borderRadius: '5px', width: '100%', height: '300px' }} key={thing} />
-      ))}
-
-      <ScrollToEndListener onScrollToEnd={() => setPending(true)} pending={pending} />
+      <ScrollToEndListener onScrollToEnd={() => setPending(true)} pending={pending}>
+        {things.map((thing) => (
+          <div style={{ margin: '0 auto 5px auto', border: '1px solid black', borderRadius: '5px', width: '300px', height: '160px' }} key={thing} />
+        ))}
+      </ScrollToEndListener>
     </div>
   );
 };
@@ -36,9 +36,10 @@ export const Error = () => {
 
   return (
     <div className="story-scroll-container" style={{ padding: '5px' }}>
-      <ScrollToEndListener error onScrollToEnd={() => ''}>
+      {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+      <ScrollToEndListener error onScrollToEnd={() => {}}>
         {things.map((thing) => (
-          <div style={{ marginBottom: '5px', border: '1px solid black', borderRadius: '5px', width: '100%', height: '300px' }} key={thing} />
+          <div style={{ margin: '0 auto 5px auto', border: '1px solid black', borderRadius: '5px', width: '300px', height: '160px' }} key={thing} />
         ))}
       </ScrollToEndListener>
     </div>

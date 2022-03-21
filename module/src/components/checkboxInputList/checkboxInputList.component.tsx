@@ -2,20 +2,20 @@ import * as React from 'react';
 
 import { Arrays, Form, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { CheckboxInput, ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
-import { IconSet } from '../icon';
-import { IIconWrapperProps } from '../iconWrapper';
 
-export interface ICheckboxInputListOption<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet> {
-  id: Id;
-  name: string;
-  group?: string;
-}
+export interface ICheckboxInputListOption<Id extends ArmstrongId>
+  extends IArmstrongExtendedOptionWithInput<
+    Id,
+    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
+    ICheckboxInputProps['inputProps']
+  > {}
 
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
-  extends Pick<ICheckboxInputProps, 'checkedIcon' | 'uncheckedIcon'>,
+  extends Pick<ICheckboxInputProps, 'checkedIcon' | 'uncheckedIcon' | 'hideCheckbox'>,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -34,6 +34,9 @@ export interface ICheckboxInputListProps<Id extends ArmstrongId>
 
   /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
+
+  /** the direction for the options in the list to flow */
+  direction?: 'horizontal' | 'vertical';
 }
 
 /** A list of checkboxes which binds to an array of IDs */
@@ -52,6 +55,8 @@ export const CheckboxInputList = React.forwardRef(
       scrollValidationErrorsIntoView,
       error,
       validationErrorMessages,
+      direction,
+      hideCheckbox,
     }: ICheckboxInputListProps<Id>,
     ref
   ) => {
@@ -80,7 +85,12 @@ export const CheckboxInputList = React.forwardRef(
 
     return (
       <>
-        <div className={ClassNames.concat('arm-checkbox-input-list', className)} data-error={error || !!validationErrorMessages?.length} ref={ref}>
+        <div
+          className={ClassNames.concat('arm-checkbox-input-list', className)}
+          data-error={error || !!validationErrorMessages?.length}
+          ref={ref}
+          data-direction={direction}
+        >
           {groupedOptions.map((group) => (
             <React.Fragment key={group.key}>
               {group.key && (
@@ -95,11 +105,16 @@ export const CheckboxInputList = React.forwardRef(
                   leftIcon={option.leftIcon}
                   rightIcon={option.rightIcon}
                   checked={includesOption(option)}
-                  onChange={() => onCheckboxInputChange(option)}
-                  name={option.name ?? option.id}
+                  onChange={() => !option.disabled && onCheckboxInputChange(option)}
+                  name={option.name ?? option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
-                  label={option.name ?? option.id}
+                  content={option.content}
+                  inputProps={option.htmlInputProps}
+                  disabled={option.disabled}
+                  direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
+                  hideCheckbox={hideCheckbox}
+                  {...option.htmlProps}
                 />
               ))}
             </React.Fragment>
@@ -121,3 +136,7 @@ export const CheckboxInputList = React.forwardRef(
 ) as (<Id extends ArmstrongId>(
   props: React.PropsWithChildren<ICheckboxInputListProps<Id>> & React.RefAttributes<HTMLSelectElement>
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<ICheckboxInputListProps<any>> };
+
+CheckboxInputList.defaultProps = {
+  direction: 'vertical',
+};

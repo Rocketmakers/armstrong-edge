@@ -1,21 +1,20 @@
 import * as React from 'react';
 
-import { ClassNames, Form, IIconWrapperProps } from '../..';
-import { FormValidationMode, IBindingProps } from '../../hooks/form';
+import { ClassNames, Form } from '../..';
+import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
 import { useOverridableState } from '../../hooks/useOverridableState';
-import { ArmstrongId } from '../../types';
-import { IconSet, IconUtils } from '../icon';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
+import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag/tag.component';
 
-export interface ITag extends IIconWrapperProps<IconSet, IconSet> {
-  /** id used to keep track of the tag when used in tag lists */
-  id: ArmstrongId;
-
-  /** the text to render inside the tag */
-  name?: string;
-}
+export interface ITag
+  extends Pick<
+    IArmstrongExtendedOption<ArmstrongId, React.BaseHTMLAttributes<HTMLDivElement>>,
+    'id' | 'name' | 'htmlProps' | 'leftIcon' | 'rightIcon'
+  > {}
 
 export interface ITagInputProps
   extends Omit<IInputWrapperProps, 'above' | 'below' | 'onClick'>,
@@ -24,7 +23,7 @@ export interface ITagInputProps
   bind?: IBindingProps<string[]>;
 
   /** array of validation errors to render */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** how to render the validation errors */
   validationMode?: FormValidationMode;
@@ -197,6 +196,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       <>
         {currentTags?.map((tag, index) => (
           <Tag
+            {...tag.htmlProps}
             content={tag.name}
             leftIcon={tag.leftIcon}
             rightIcon={tag.rightIcon}

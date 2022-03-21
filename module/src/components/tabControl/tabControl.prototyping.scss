@@ -1,4 +1,4 @@
-.arm-button.arm-tab-control-tab {
+.arm-tab-control-tab {
   font-weight: bold;
   border-top: $line transparent;
   border-bottom: $line-medium;
@@ -16,7 +16,7 @@
 }
 
 @include screen-phone {
-  .arm-button.arm-tab-control-tab {
+  .arm-tab-control-tab {
     padding: $spacing-xsmall;
   }
 }

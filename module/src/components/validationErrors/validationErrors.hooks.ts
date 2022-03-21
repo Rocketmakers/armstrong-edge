@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { IBindingProps } from '../../hooks/form';
+import { IBindingProps, ValidationMessage } from '../../hooks/form';
 import { Arrays } from '../../utils/arrays';
 
 /** For internal component use - combine validation errors from a prop with those from a bind */
-export function useMyValidationErrorMessages(bind?: IBindingProps<any>, validationErrorMessages?: string[]) {
+export function useMyValidationErrorMessages(bind?: IBindingProps<any>, validationErrorMessages?: ValidationMessage[]) {
   return React.useMemo(
     () =>
       Arrays.flatten(

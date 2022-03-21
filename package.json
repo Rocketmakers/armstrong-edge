@@ -18,7 +18,7 @@
     "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i",
     "storybook": "(cd module && npm run storybook)",
     "build-storybook": "(cd module && npm run build-storybook)",
-    "lint": "(cd module && npm run lint)"
+    "lint": "(cd module && npm run lint && npm run lint-scss)"
   },
   "repository": {
     "type": "git",

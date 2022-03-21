@@ -3,6 +3,7 @@
  * A set of helper functions to support the form logic.
  ******************************************************* */
 
+import { InitialDataFunction } from '.';
 import { IBindingProps, IValidationError, KeyChain } from './form.types';
 
 /**
@@ -31,15 +32,31 @@ export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots'
 }
 
 /**
+ * Checks whether an incoming validation either belongs to (or is a child of) a property keyChain.
+ * @param validationErrorKey The key of the validation error
+ * @param propertyKeyChainStrings The property keyChain strings to check
+ * @returns {boolean} `true` if the validation error belongs to (or is a child of) one of the passed property keyChains, else `false`.
+ */
+export function isMyValidationError(validationErrorKey: string, ...propertyKeyChainStrings: string[]): boolean {
+  return propertyKeyChainStrings.some((propertyKeyChain) => {
+    return (
+      propertyKeyChain === validationErrorKey ||
+      validationErrorKey.indexOf(`${propertyKeyChain}.`) === 0 ||
+      validationErrorKey.indexOf(`${propertyKeyChain}[`) === 0
+    );
+  });
+}
+
+/**
  * Filters a set of validation errors based on the `keyChain` of the property.
  * @param rootErrors The root set of validation errors for the entire form.
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
- * @returns {Array} A filtered set of validation errors that apply to the property in question.
+ * @returns {Array} A filtered set of validation errors that apply to the property in question and its sub-properties.
  */
 export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], keyChain: KeyChain = []): IValidationError[] {
   const keyChainAttrStringDots = validationKeyStringFromKeyChain(keyChain, 'dots');
   const keyChainAttrStringSquareArray = validationKeyStringFromKeyChain(keyChain, 'brackets');
-  return rootErrors.filter((error) => error.key === keyChainAttrStringDots || error.key === keyChainAttrStringSquareArray);
+  return rootErrors.filter((error) => isMyValidationError(error.key, keyChainAttrStringDots, keyChainAttrStringSquareArray));
 }
 
 /**
@@ -76,4 +93,30 @@ export function isArrayValue(value: any, attemptedAction: string): value is any[
     );
   }
   return true;
+}
+
+/**
+ * Detects whether the incoming initial form data is a callback or an object and casts appropriately.
+ * @param initialData Either some initial form data, or a function that returns initial form data.
+ * @returns true if param is a function, also casts appropriately.
+ */
+export function initialDataIsCallback<TData extends object>(
+  initialData?: TData | InitialDataFunction<TData>
+): initialData is InitialDataFunction<TData> {
+  return typeof initialData === 'function';
+}
+
+/**
+ * Removes the parent key data from the beginning of a keyChain string so that it will work in a child binder.
+ * @param childKeyChainString The keyChain string passed to the child binder.
+ * @param parentKeyChain The parent keyChain to be stripped from the front.
+ * @returns A new keyChain string targeted at the child binding rather than the parent.
+ */
+export function childKeyChainStringFromParent(childKeyChainString: string, parentKeyChain: KeyChain): string {
+  // make the parent key regex safe
+  const regexSafeParent = parentKeyChain.join('.').replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  // remove the parent keyChain from the beginning of the child string.
+  const childWithoutParent = childKeyChainString.replace(new RegExp(`^${regexSafeParent}`), '');
+  // strip accessor tokens (. | [n].) from the beginning of the child keyChain string and return.
+  return childWithoutParent.replace(/^.*?\./, '');
 }
