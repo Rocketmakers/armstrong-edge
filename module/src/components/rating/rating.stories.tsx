@@ -66,6 +66,24 @@ export const CustomIcons = () => {
     </div>
   );
 };
+export const CustomDOM = () => {
+  const { formProp } = Form.use({ rating: 0 });
+
+  return (
+    <div>
+      <Rating bind={formProp('rating').bind()} emptyIcon={<p>X</p>} filledIcon={<p>X</p>} />
+    </div>
+  );
+};
+export const CustomDOMFromIndex = () => {
+  const { formProp } = Form.use({ rating: 0 });
+
+  return (
+    <div>
+      <Rating bind={formProp('rating').bind()} emptyIcon={(index) => <p>{index + 1}</p>} filledIcon={(index) => <p>{index + 1}</p>} />
+    </div>
+  );
+};
 export const WithStatusAndIcons = () => {
   const { formProp } = Form.use({ rating: 0 });
 
@@ -90,7 +108,7 @@ export const Radio = () => {
 
   return (
     <div>
-      <Rating bind={formProp('rating').bind()} mode="radio" step={0.5} />
+      <Rating bind={formProp('rating').bind()} mode="radio" />
     </div>
   );
 };

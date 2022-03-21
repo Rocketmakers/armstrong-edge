@@ -6,19 +6,39 @@ import { IBindingProps } from '../../hooks/form';
 import { Arrays, Maths } from '../../utils';
 import { ClassNames } from '../../utils/classNames';
 import { Button } from '../button';
-import { Icon, IconSet, IIcon } from '../icon';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IInputWrapperProps } from '../inputWrapper';
 
-export interface IRatingPartProps extends Pick<IRatingProps, 'filledIcon' | 'emptyIcon' | 'step' | 'mode'> {
+export interface IRatingPartProps extends Pick<IRatingProps, 'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'name'> {
+  /** the index of this rating part */
   index: number;
+
+  /** the value of the Rating */
   value?: number;
+
+  /** triggered when a user selects this part - only used in mode="radio" and mode="buttons"  */
   onSelectPart: (portion: number) => void;
+
+  /** has an onChange or bind been passed to the parent Rating - if not, will just render icons */
   readOnly?: boolean;
-  name?: string;
 }
 
 export const RatingPart: React.FC<IRatingPartProps> = ({ index, value, onSelectPart, filledIcon, emptyIcon, step, mode, readOnly, name }) => {
   const steps = Math.floor(1 / (step || 1));
+
+  const filledIconJsx = React.useMemo(() => {
+    const calculated = typeof filledIcon === 'function' ? filledIcon(index) : filledIcon;
+    if (calculated) {
+      return IconUtils.isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
+    }
+  }, [filledIcon, index]);
+
+  const emptyIconJsx = React.useMemo(() => {
+    const calculated = typeof emptyIcon === 'function' ? emptyIcon(index) : emptyIcon;
+    if (calculated) {
+      return IconUtils.isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
+    }
+  }, [emptyIcon, index]);
 
   return (
     <div
@@ -28,8 +48,17 @@ export const RatingPart: React.FC<IRatingPartProps> = ({ index, value, onSelectP
       data-part={value && value < index + 1 && value > index}
     >
       <div className="arm-rating-part-icon-wrapper">
-        {emptyIcon && <Icon className="arm-rating-part-icon arm-rating-part-empty" {...emptyIcon} />}
-        {filledIcon && <Icon className="arm-rating-part-icon arm-rating-part-filled" {...filledIcon} />}
+        {filledIcon && (
+          <div className="arm-rating-part-icon arm-rating-part-filled">
+            <div className="arm-rating-part-icon-inner">{filledIconJsx}</div>
+          </div>
+        )}
+
+        {emptyIcon && (
+          <div className="arm-rating-part-icon arm-rating-part-empty">
+            <div className="arm-rating-part-icon-inner">{emptyIconJsx}</div>
+          </div>
+        )}
       </div>
 
       {!readOnly && mode === 'buttons' && (
@@ -69,6 +98,8 @@ export const RatingPart: React.FC<IRatingPartProps> = ({ index, value, onSelectP
   );
 };
 
+export type RatingIcon = IIcon<IconSet> | JSX.Element | ((index: number) => IIcon<IconSet> | JSX.Element);
+
 export interface IRatingProps
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'>,
@@ -77,11 +108,22 @@ export interface IRatingProps
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<number>;
 
+  /** current value, as a number, of the rating */
   value?: number;
+
+  /** called when the value of the input changes */
   onValueChange?: (newValue: number) => void;
-  filledIcon?: IIcon<IconSet>;
-  emptyIcon?: IIcon<IconSet>;
+
+  /** the icon to use for a filled star - can take an icon definition, some JSX, or a function which returns the former options from an index */
+  filledIcon?: RatingIcon;
+
+  /** the icon to use for an empty star - can take an icon definition, some JSX, or a function which returns the former options from an index */
+  emptyIcon?: RatingIcon;
+
+  /** the maximum possible value of the rating */
   maximum?: number;
+
+  /** the size of each possible step - defaults to 1, set to 0.5 to allow half stars */
   step?: number;
 
   /**
