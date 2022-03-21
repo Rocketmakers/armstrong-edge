@@ -12,7 +12,7 @@ export interface IRadioInputProps
   onChange?: (newValue: boolean) => void;
 
   /** the name to render in a label, falls back to ID */
-  name: string;
+  name?: string;
 
   /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
