@@ -10,7 +10,7 @@ Link is an internal Armstrong component used to give Armstrong components access
 
 For example, the `LinkButton` component replicates a `Button` but uses `Link` as its root tag instead of a
 
-By default it renders a simple a tag, but this can be swapped for a Link from a routing library like `react-router`
+By default it renders a simple anchor tag, but this can be swapped for a Link from a routing library like `react-router`
 
 ### Use
 
@@ -81,6 +81,7 @@ export const App: React.FC = () => {
 Then to use the Link
 
 ```tsx
+
 import { Link } from '@rocketmakers/armstrong';
 import { LinkProps } from 'react-router';
 

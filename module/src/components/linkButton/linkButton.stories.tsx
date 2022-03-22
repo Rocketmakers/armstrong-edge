@@ -68,12 +68,12 @@ export const CustomLinkComponent = () => {
         </div>
       )}
     >
-      <LinkButton to="https://rocketmakers.com">Use this to hook into routing libraries</LinkButton>
+      <LinkButton to="/something">Use this to hook into routing libraries</LinkButton>
     </LinkProvider>
   );
 };
 export const ReactRouter = () => {
-  // pretend this is an import from react router
+  // pretend this is an import from react router, this needs to be here for Storybook to build without us adding a dependency
   const Link: React.FC<any> = () => <></>;
 
   return (
@@ -85,7 +85,7 @@ export const ReactRouter = () => {
         </Link>
       )}
     >
-      <LinkButton to="https://rocketmakers.com">Use this to hook into routing libraries</LinkButton>
+      <LinkButton to="/something">Use this to hook into routing libraries</LinkButton>
     </LinkProvider>
   );
 };
