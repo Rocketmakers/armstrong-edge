@@ -9,6 +9,7 @@ export * from './characterLimit';
 export * from './checkboxInput';
 export * from './checkboxInputList';
 export * from './codeInput';
+export * from './config';
 export * from './confirmButton';
 export * from './confirmPasswordInput';
 export * from './dateTimeInput';
