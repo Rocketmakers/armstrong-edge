@@ -8,7 +8,7 @@ import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 
 Link is an internal Armstrong component used to give Armstrong components access to routing libraries.
 
-For example, the `LinkButton` component replicates a `Button` but uses `Link` as its root tag instead of a
+For example, the `LinkButton` component replicates a `Button` but uses `Link` as its root instead of a `button` element
 
 By default it renders a simple anchor tag, but this can be swapped for a Link from a routing library like `react-router`
 
@@ -33,29 +33,31 @@ export const MyComponent: React.FC = () => {
 To customise the link component, use the provider at your entrypoint
 
 ```tsx
-import { LinkProvider } from '@rocketmakers/armstrong';
+import { ArmstrongConfigProvider } from '@rocketmakers/armstrong';
 
 export const App: React.FC = () => {
   return (
-    <LinkProvider
-      Component={({ to, children, ...props }) => (
-        <a href={to} {...props}>
-          {children}
-        </a>
-      )}
+    <ArmstrongConfigProvider
+      routingConfig={{
+        LinkComponent: ({ to, children, ...props }) => (
+          <a href={to} {...props}>
+            {children}
+          </a>
+        ),
+      }}
     >
       {/* the rest of the app */}
-    </LinkProvider>
+    </ArmstrongConfigProvider>
   );
 };
 ```
 
-It is important to spread the remaining props from the LinkProvider Component into your root element so that any props added when the Link is used are also spread
+It is important to spread the remaining props from the Component function into your root element so that any props added when the Link is used are also spread
 
 ### React router
 
 ```tsx
-import { LinkProvider } from '@rocketmakers/armstrong';
+import { ArmstrongConfigProvider } from '@rocketmakers/armstrong';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 
 export const App: React.FC = () => {
@@ -63,17 +65,19 @@ export const App: React.FC = () => {
   const { push, replace } = useHistory();
 
   return (
-    <LinkProvider
-      Component={({ to, children, ...props }) => (
-        <Link to={to} {...props}>
-          {children}
-        </Link>
-      )}
-      navigate={(to, action) => (action === 'push' ? push(to) : replace(to))}
-      location={location}
+    <ArmstrongConfigProvider
+      routingConfig={{
+        LinkComponent: ({ to, children, ...props }) => (
+          <Link to={to} {...props}>
+            {children}
+          </Link>
+        ),
+        navigate: (to, action) => (action === 'push' ? push(to) : replace(to)),
+        location: location,
+      }}
     >
       {/* the rest of the app */}
-    </LinkProvider>
+    </ArmstrongConfigProvider>
   );
 };
 ```
@@ -96,14 +100,14 @@ export const MyComponent: React.FC = () => {
 };
 ```
 
-If you use the generic type on the component, it means the rest of the props on the link will be typed
+If you use the generic type on the component, it means the rest of the props on the link will be typed - you may want to wrap this up in your own Link component to avoid repetition of the generic
 
 ### Gatsby
 
 or import directly from `@reach/router` if using reach but not Gatsby
 
 ```tsx
-import { LinkProvider } from '@rocketmakers/armstrong';
+import { ArmstrongConfigProvider } from '@rocketmakers/armstrong';
 import { useLocation } from '@reach/router';
 import { Link, navigate } from 'gatsby';
 
@@ -112,17 +116,19 @@ export const App: React.FC = () => {
   const { push, replace } = useHistory();
 
   return (
-    <LinkProvider
-      Component={({ to, children, ...props }) => (
-        <Link to={to} {...props}>
-          {children}
-        </Link>
-      )}
-      navigate={(to, action) => (action === 'push' ? push(to) : replace(to))}
-      location={location}
+    <ArmstrongConfigProvider
+      routingConfig={{
+        LinkComponent: ({ to, children, ...props }) => (
+          <Link to={to} {...props}>
+            {children}
+          </Link>
+        ),
+        navigate: (to, action) => (action === 'push' ? push(to) : replace(to)),
+        location: location,
+      }}
     >
       {/* the rest of the app */}
-    </LinkProvider>
+    </ArmstrongConfigProvider>
   );
 };
 ```
@@ -144,4 +150,4 @@ export const MyComponent: React.FC = () => {
 };
 ```
 
-If you use the generic type on the component, it means the rest of the props on the link will be typed
+If you use the generic type on the component, it means the rest of the props on the link will be typed - you may want to wrap this up in your own Link component to avoid repetition of the generic

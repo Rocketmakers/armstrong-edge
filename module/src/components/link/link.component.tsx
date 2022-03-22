@@ -1,43 +1,34 @@
 import * as React from 'react';
 
-import { ClassNames, Globals } from '../..';
+import { ClassNames } from '../..';
+import { useArmstrongConfig } from '../config/config.context';
 
 interface ILinkPropsCore {
+  /** the url to push to history on click - is passed to routingContext.LinkComponent in  */
   to: string;
   className?: string;
 }
 
 export type ILinkProps<T extends Record<string, any>> = T & ILinkPropsCore;
 
-const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children, ...additionalProps }) => (
+export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children, ...additionalProps }) => (
   <a {...additionalProps} className={className} href={to}>
     {children}
   </a>
 );
 
-interface ILinkContext {
-  Component: React.FC<ILinkProps<any>>;
-  location?: Location | undefined;
-  navigate?: (to: string, action: 'push' | 'replace') => void;
-}
-
-const LinkContext = React.createContext<ILinkContext>({
-  Component: DefaultLink,
-  location: undefined,
-  navigate: (to, action) =>
-    action === 'replace' ? Globals.Window?.history?.replaceState({}, '', to) : Globals.Window?.history?.pushState({}, '', to),
-});
-
-export const LinkProvider: React.FC<ILinkContext> = ({ Component, navigate, children }) => {
-  return <LinkContext.Provider value={{ Component, navigate, location: undefined }}>{children}</LinkContext.Provider>;
-};
+/**
+ * A component that renders an anchor tag or renders the LinkComponent given to routingConfig on the ArmstrongConfigContext
+ *
+ * For internal Armstrong use for components that needs to be able to access routing i.e. LinkButton rather than for consumers to use directly
+ */
 
 export const Link = <T extends Record<string, any>>({ to, className, children, ...additionalProps }: React.PropsWithChildren<ILinkProps<T>>) => {
-  const { Component } = React.useContext(LinkContext);
+  const { routingConfig } = useArmstrongConfig();
 
   return (
-    <Component {...additionalProps} to={to} className={ClassNames.concat('arm-link', className)}>
+    <routingConfig.LinkComponent {...additionalProps} to={to} className={ClassNames.concat('arm-link', className)}>
       {children}
-    </Component>
+    </routingConfig.LinkComponent>
   );
 };
