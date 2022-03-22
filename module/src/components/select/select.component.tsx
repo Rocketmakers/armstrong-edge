@@ -2,22 +2,20 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
-export interface ISelectOption<Id extends ArmstrongId, TSelectData = any> {
-  /** the value to be bound */
-  id: Id;
-
-  /** the name to be rendered for the option */
-  name?: string;
-
+export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
+  extends IArmstrongOption<
+    Id,
+    Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>, 'ref' | 'onClick' | 'value' | 'disabled'>
+  > {
   /** data which will be passed into the onSelectOption callback */
   data?: TSelectData;
-  disabled?: boolean;
 }
 
 export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
@@ -32,12 +30,19 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   /** Called on change to get the  */
   onSelectOption?: (option?: ISelectOption<Id>) => void;
 
+  /** Text to show as a placeholder when nothing is selected */
+  placeholderOption?: string;
+
+  /** Should the placeholder option be re-selectable? effectively allows the select to be cleared by the user. */
+  placeholderOptionEnabled?: boolean;
+
   /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
   /** should allow deletion of value with a cross */
   deleteButton?: boolean;
 
+  /** the current value of the select */
   value?: Id;
 }
 
@@ -64,6 +69,8 @@ export const Select = React.forwardRef(
       deleteButton,
       disableOnPending,
       scrollValidationErrorsIntoView,
+      placeholderOption,
+      placeholderOptionEnabled,
       ...nativeProps
     }: ISelectProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
@@ -73,20 +80,27 @@ export const Select = React.forwardRef(
 
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, { value, validationErrorMessages });
 
+    const clearSelect = React.useCallback(() => {
+      onSelectOption?.(undefined);
+      bind?.setValue?.(undefined!);
+    }, [onSelectOption, bind?.setValue]);
+
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (onChange) {
           onChange(event);
         }
 
-        const selectedOption = options.find((option) => option.id.toString() === event.currentTarget.value);
-
+        const { value: newValue } = event.currentTarget;
+        const selectedOption = options.find((option) => option.id.toString() === newValue);
         if (selectedOption) {
           setBoundValue?.(selectedOption.id);
           onSelectOption?.(selectedOption);
+        } else if (!newValue && placeholderOption && placeholderOptionEnabled) {
+          clearSelect();
         }
       },
-      [onSelectOption, options, onChange, bind]
+      [onSelectOption, options, onChange, bind, placeholderOption, placeholderOptionEnabled, clearSelect, setBoundValue]
     );
 
     return (
@@ -105,9 +119,22 @@ export const Select = React.forwardRef(
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
         <div className="arm-select-inner">
-          <select className="arm-select-select" {...nativeProps} ref={internalRef} onChange={onChangeEvent} value={boundValue} disabled={disabled}>
+          <select
+            className="arm-select-select"
+            {...nativeProps}
+            ref={internalRef}
+            onChange={onChangeEvent}
+            value={boundValue}
+            disabled={disabled}
+            defaultValue={placeholderOption && !nativeProps.defaultValue ? '' : nativeProps.defaultValue}
+          >
+            {placeholderOption && (
+              <option value="" disabled={!placeholderOptionEnabled}>
+                {placeholderOption}
+              </option>
+            )}
             {options.map((option) => (
-              <option key={option.id} value={option.id} disabled={option.disabled}>
+              <option key={option.id} value={option.id} disabled={option.disabled} {...option.htmlProps}>
                 {option.name || option.id}
               </option>
             ))}
@@ -123,10 +150,10 @@ export const Select = React.forwardRef(
           <IconButton
             className="arm-select-delete"
             onClick={(event) => {
-              onSelectOption?.(undefined);
-              bind?.setValue?.(undefined!);
+              clearSelect();
               event.stopPropagation();
             }}
+            onMouseDown={(e) => e.stopPropagation()}
             icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
             minimalStyle
           />

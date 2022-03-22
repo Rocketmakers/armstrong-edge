@@ -50,3 +50,11 @@ export const WithValidationError = StoryUtils.cloneTemplate(Template, {
   ],
   validationErrorMessages: ['This colour is actually a bad one sorry'],
 });
+
+export const WithPlaceholder = StoryUtils.cloneTemplate(Template, {
+  placeholderOption: 'Select a color...',
+  options: [
+    { id: 1, name: 'red' },
+    { id: 2, name: 'blue' },
+  ],
+});

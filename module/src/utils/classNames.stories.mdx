@@ -16,3 +16,17 @@ const className = ClassNames.concat('thing', 'other-thing', { ['another-thing']:
 // className
 ('thing other-thing another-thing hello there');
 ```
+
+This is a common example with a component with a className prop:
+
+```tsx
+import { ClassNames } from '@rocketmakers/armstrong';
+
+interface IMyCoolProps {
+  className?: string;
+}
+
+const MyCoolComponent: React.FC<IMyCoolProps> = ({ className }) => {
+  return <div className={ClassNames.concat('my-cool-component', className)} />;
+};
+```

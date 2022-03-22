@@ -1,12 +1,14 @@
 import * as React from 'react';
 
+import { ValidationMessage } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { ErrorMessage } from '../errorMessage';
 import { IconSet, IIcon } from '../icon';
 
 export interface IValidationErrorsProps {
   /** The errors to render */
-  validationErrors: string[];
+  /** Can be a string or {key, element} key is necessary for animating in new messages   */
+  validationErrors: ValidationMessage[];
 
   /** CSS className property */
   className?: string;
@@ -30,10 +32,18 @@ export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWith
       }
     }, [validationErrors.length]);
 
+    /** If the error is a JSX element use the key on the element or the index */
+    const getKey = React.useCallback((error: ValidationMessage, index: number) => {
+      if (typeof error === 'string') {
+        return error + index;
+      }
+      return error?.key ?? index;
+    }, []);
+
     return (
       <div ref={internalRef} className={ClassNames.concat('arm-validation-errors', className)}>
-        {validationErrors.map((error, index) => (
-          <ErrorMessage message={error} key={error + index} icon={icon} />
+        {validationErrors.map((error, i) => (
+          <ErrorMessage message={error} key={getKey(error, i)} icon={icon} />
         ))}
       </div>
     );

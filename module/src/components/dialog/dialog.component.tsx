@@ -17,7 +17,14 @@ export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
   closeButtonIcon?: IIcon<IconSet>;
 }
 
-/** Extends the Modal component (see docs for modal) with some extra features and styling for simple dialog popups */
+/**
+ * Extends the Modal component (see docs for modal) with some extra features and styling for simple dialog popups
+ *
+ * To improve accessibility, you should manage the users focus yourself. Ensure that when a dialog is open, everything else has aria-hidden="true", that
+ * focus is moved to the first element in the modal, and that focus is moved back when the modal closes
+ *
+ * see: https://www.w3.org/WAI/GL/wiki/Using_ARIA_role%3Ddialog_to_implement_a_modal_dialog_box
+ */
 export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
   ({ children, className, wrapperClassName, id: htmlId, title, onOpenChange, closeButtonIcon, titleIcon, ...modalProps }, ref) => {
     const id = useGeneratedId(htmlId);

@@ -1,50 +1,87 @@
 import * as React from 'react';
 
+import { ArmstrongId, IArmstrongExtendedOption, useGeneratedId } from '../..';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { OptionContent } from '../optionContent';
 
 export interface IRadioInputProps
-  extends IIconWrapperProps<IconSet, IconSet>,
-    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'> {
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
+    Pick<IArmstrongExtendedOption<ArmstrongId>, 'content' | 'name' | 'leftIcon' | 'rightIcon'> {
   /** fired when the user changes the current value */
   onChange?: (newValue: boolean) => void;
-
-  /** the name to render in a label, fallsd back to ID */
-  name: string;
 
   /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
 
   /** icon to render on the input when not checked */
   uncheckedIcon?: IIcon<IconSet>;
+
+  /** props to spread onto the input element */
+  inputProps?: Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'type' | 'ref' | 'checked'>;
+
+  /** the direction for the content to flow */
+  direction?: 'horizontal' | 'vertical';
+
+  /** should hide the circular radio, showing only the label, allowing you to handle visualising the state of the input yourself */
+  hideRadio?: boolean;
 }
 
 /** Render a single radio input */
 export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
-  ({ onChange, name, className, checked, leftIcon, rightIcon, checkedIcon, uncheckedIcon, ...nativeProps }, ref) => {
+  (
+    {
+      onChange,
+      content,
+      className,
+      checked,
+      leftIcon,
+      rightIcon,
+      checkedIcon,
+      uncheckedIcon,
+      inputProps,
+      direction,
+      name,
+      hideRadio,
+      ...nativeProps
+    },
+    ref
+  ) => {
+    const generatedId = useGeneratedId('radio_input', inputProps?.id);
+
     return (
-      <div className={ClassNames.concat('arm-radio-input', className)} data-checked={checked} data-has-checked-icon={!!checkedIcon}>
-        <label>
-          <div className="arm-radio-input-radio">
-            <input
-              className="arm-radio-input-radio-input"
-              ref={ref}
-              type="radio"
-              checked={checked}
-              onChange={() => onChange?.(!checked)}
-              {...nativeProps}
-            />
+      <div
+        className={ClassNames.concat('arm-radio-input', className)}
+        {...nativeProps}
+        data-checked={checked}
+        data-has-checked-icon={!!checkedIcon}
+        data-direction={direction}
+      >
+        <input
+          {...inputProps}
+          className={ClassNames.concat('arm-radio-input-radio-input', inputProps?.className)}
+          ref={ref}
+          type="radio"
+          checked={checked}
+          onChange={() => onChange?.(!checked)}
+          id={generatedId}
+        />
 
-            {checkedIcon && <Icon className="arm-radio-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
-            {uncheckedIcon && <Icon className="arm-radio-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
-          </div>
+        <label htmlFor={generatedId}>
+          {!hideRadio && (
+            <div className="arm-radio-input-radio">
+              {checkedIcon && <Icon className="arm-radio-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}
+              {uncheckedIcon && <Icon className="arm-radio-input-unchecked-icon" iconSet={uncheckedIcon.iconSet} icon={uncheckedIcon.icon} />}
+            </div>
+          )}
 
-          <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-            <p>{name}</p>
-          </IconWrapper>
+          <OptionContent content={content} name={name} leftIcon={leftIcon} rightIcon={rightIcon} isActive={checked} />
         </label>
       </div>
     );
   }
 );
+
+RadioInput.defaultProps = {
+  direction: 'horizontal',
+};

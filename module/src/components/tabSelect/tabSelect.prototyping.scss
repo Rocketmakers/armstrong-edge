@@ -1,5 +1,5 @@
 .arm-tab-select {
-  .arm-button.arm-tab-control-tab {
+  .arm-tab-control-tab {
     border-radius: 0;
     border: $line-light;
 
@@ -8,7 +8,7 @@
       color: $white;
       border-color: $brand-primary;
 
-      + .arm-button.arm-tab-control-tab {
+      + .arm-tab-control-tab {
         border-left: transparent;
       }
     }

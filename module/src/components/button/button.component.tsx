@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { ValidationMessage } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { IconSet, IconUtils, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
@@ -14,7 +15,7 @@ export interface IButtonProps
   className?: string;
 
   /** array of validation errors to render */
-  validationErrorMessages?: string[];
+  validationErrorMessages?: ValidationMessage[];
 
   /** the icon to use for validation errors */
   errorIcon?: IIcon<IconSet>;
@@ -61,7 +62,7 @@ export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
       <>
         <button
           {...nativeProps}
-          className={ClassNames.concat('arm-button', className, { 'arm-button-minimal': minimalStyle })}
+          className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
           data-pending={pending}
           data-disabled={disabled || pending}
           data-error={shouldShowErrorIcon}

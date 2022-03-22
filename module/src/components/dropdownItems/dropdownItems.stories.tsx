@@ -153,3 +153,26 @@ export const GroupedItems = () => {
     </DropdownItems>
   );
 };
+export const CustomContent = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <DropdownItems
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+      items={[
+        { content: <Button>Check me out</Button>, id: 'a', group: 'Good things' },
+        { content: <Button>No check me out</Button>, id: 'b', group: 'Good things' },
+      ]}
+      onItemSelected={(item) => {
+        setIsOpen(false);
+        // eslint-disable-next-line no-alert
+        alert(item);
+      }}
+    >
+      <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+        Click on me for dropdown items
+      </Button>
+    </DropdownItems>
+  );
+};

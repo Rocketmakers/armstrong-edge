@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ArmstrongId } from '../../types';
+import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { Button } from '../button';
 import { IconSet } from '../icon';
@@ -37,7 +37,7 @@ export const TabControlTab = React.forwardRef(
         minimalStyle
       >
         <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-          {computedContent && <p>{content ?? (!leftIcon && !rightIcon && id)}</p>}
+          {computedContent && <p>{computedContent}</p>}
         </IconWrapper>
       </Button>
     );

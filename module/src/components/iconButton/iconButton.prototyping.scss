@@ -1,10 +1,6 @@
 .arm-icon-button {
   justify-content: center;
 
-  &:not(.arm-button-minimal) {
-    @include circle(2rem);
-  }
-
   > * {
     margin: initial;
   }
@@ -14,4 +10,8 @@
   .arm-status .arm-status-error {
     font-size: 1rem;
   }
+}
+
+.arm-button.arm-icon-button {
+  @include circle(2rem);
 }
