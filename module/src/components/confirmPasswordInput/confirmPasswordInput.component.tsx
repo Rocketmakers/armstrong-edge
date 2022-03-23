@@ -14,7 +14,7 @@ export const ConfirmPasswordInput = React.forwardRef<HTMLInputElement, IConfirmP
     { passwordsDontMatchMessage, errorIcon, bind, validationMode, value, onFocus: onFocusProp, onBlur: onBlurProp, onValueChange, ...inputProps },
     ref
   ) => {
-    const [boundValue, , bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, , bindConfig] = Form.useBindingState(bind, {
       value: value?.toString(),
       onChange: onValueChange,
       validationMode,

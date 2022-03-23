@@ -117,7 +117,7 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
     },
     ref
   ) => {
-    const [selectedTime, setSelectedTime, bindConfig] = Form.useBindingTools(bind, {
+    const [selectedTime, setSelectedTime, bindConfig] = Form.useBindingState(bind, {
       validationErrorMessages,
       validationMode,
       validationErrorIcon: errorIcon,
