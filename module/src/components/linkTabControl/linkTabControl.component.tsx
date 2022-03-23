@@ -51,7 +51,7 @@ export interface ILinkTabControlProps<Id extends ArmstrongId> extends Omit<ITabC
   isCurrentTab?: (location: IArmstrongLocation, tab: ILinkTabControlTab<Id>) => boolean;
 }
 
-/** Render an array of tabs, which use the url */
+/** Render a TabControl which uses Links and the browser location rather than buttons - see docs on Links and ArmstrongConfigContext.routing */
 export const LinkTabControl = React.forwardRef(
   <Id extends ArmstrongId>({ tabs, className, isCurrentTab, ...nativeProps }: ILinkTabControlProps<Id>, ref: React.ForwardedRef<HTMLDivElement>) => {
     const location = useLocation();
