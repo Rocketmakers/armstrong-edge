@@ -30,6 +30,8 @@ export * from './image';
 export * from './input';
 export * from './inputWrapper';
 export * from './labelWrapper';
+export * from './link';
+export * from './linkButton';
 export * from './listBox';
 export * from './listBoxMulti';
 export * from './modal';

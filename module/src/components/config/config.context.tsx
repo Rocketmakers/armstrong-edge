@@ -3,7 +3,28 @@ import * as React from 'react';
 import { Globals } from '../../utils';
 import { DefaultLink, ILinkProps } from '../link/link.component';
 
-interface IArmstrongConfigContext {
+export interface IArmstrongLocation {
+  /**
+   * A URL pathname, beginning with a /.
+   *
+   * @see https://github.com/ReactTraining/history/tree/master/docs/api-reference.md#location.pathname
+   */
+  pathname: string;
+  /**
+   * A URL search string, beginning with a ?.
+   *
+   * @see https://github.com/ReactTraining/history/tree/master/docs/api-reference.md#location.search
+   */
+  search: string;
+  /**
+   * A URL fragment identifier, beginning with a #.
+   *
+   * @see https://github.com/ReactTraining/history/tree/master/docs/api-reference.md#location.hash
+   */
+  hash: string;
+}
+
+export interface IArmstrongConfigContext {
   /** configuration for internal Links */
   routingConfig: {
     /**
@@ -28,7 +49,7 @@ interface IArmstrongConfigContext {
     LinkComponent: React.FC<ILinkProps<any>>;
 
     /** used to allow Armstrong to hook into the current location - should be used with a location that will update state and trigger rerenders in subscribed components, i.e. useLocation from react router */
-    location?: Location | undefined;
+    location?: IArmstrongLocation | undefined;
 
     /** used to allow Armstrong to programatically push or replace to the history using live state i.e. push or replace from useHistory from react router */
     navigate?: (to: string, action: 'push' | 'replace') => void;
