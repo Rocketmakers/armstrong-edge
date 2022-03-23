@@ -26,7 +26,7 @@ export interface IArmstrongLocation {
 
 export interface IArmstrongConfigContext {
   /** configuration for internal Links */
-  routingConfig: {
+  routing: {
     /**
      * a component to be used to agnostically allow Armstrong's Link, LinkButton, and other routing based components to hook into external routing libraries
      *
@@ -35,7 +35,7 @@ export interface IArmstrongConfigContext {
 
      * export const App: React.FC = () => 
      *   <ArmstrongConfigProvider
-     *     routingConfig={{
+     *     routing={{
      *       LinkComponent: ({ to, children, ...props }) => (
      *         <Link to={to} {...props}>
      *             {children}
@@ -57,7 +57,7 @@ export interface IArmstrongConfigContext {
 }
 
 const ArmstrongConfigContext = React.createContext<IArmstrongConfigContext>({
-  routingConfig: {
+  routing: {
     LinkComponent: DefaultLink,
     location: undefined,
     navigate: (to, action) =>
@@ -71,8 +71,8 @@ const ArmstrongConfigContext = React.createContext<IArmstrongConfigContext>({
  * Currently only used for routing integration - see Link docs for more information
  */
 
-export const ArmstrongConfigProvider: React.FC<IArmstrongConfigContext> = ({ routingConfig, children }) => {
-  return <ArmstrongConfigContext.Provider value={{ routingConfig }}>{children}</ArmstrongConfigContext.Provider>;
+export const ArmstrongConfigProvider: React.FC<IArmstrongConfigContext> = ({ routing, children }) => {
+  return <ArmstrongConfigContext.Provider value={{ routing }}>{children}</ArmstrongConfigContext.Provider>;
 };
 
 /** Access Armstrong's configuration - for internal Armstrong use */

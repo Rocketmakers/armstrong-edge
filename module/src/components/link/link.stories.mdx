@@ -38,7 +38,7 @@ import { ArmstrongConfigProvider } from '@rocketmakers/armstrong';
 export const App: React.FC = () => {
   return (
     <ArmstrongConfigProvider
-      routingConfig={{
+      routing={{
         LinkComponent: ({ to, children, ...props }) => (
           <a href={to} {...props}>
             {children}
@@ -66,7 +66,7 @@ export const App: React.FC = () => {
 
   return (
     <ArmstrongConfigProvider
-      routingConfig={{
+      routing={{
         LinkComponent: ({ to, children, ...props }) => (
           <Link to={to} {...props}>
             {children}
@@ -117,7 +117,7 @@ export const App: React.FC = () => {
 
   return (
     <ArmstrongConfigProvider
-      routingConfig={{
+      routing={{
         LinkComponent: ({ to, children, ...props }) => (
           <Link to={to} {...props}>
             {children}

@@ -18,17 +18,17 @@ export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children,
 );
 
 /**
- * A component that renders an anchor tag or renders the LinkComponent given to routingConfig on the ArmstrongConfigContext
+ * A component that renders an anchor tag or renders the LinkComponent given to routing on the ArmstrongConfigContext
  *
  * For internal Armstrong use for components that needs to be able to access routing i.e. LinkButton rather than for consumers to use directly
  */
 
 export const Link = <T extends Record<string, any>>({ to, className, children, ...additionalProps }: React.PropsWithChildren<ILinkProps<T>>) => {
-  const { routingConfig } = useArmstrongConfig();
+  const { routing } = useArmstrongConfig();
 
   return (
-    <routingConfig.LinkComponent {...additionalProps} to={to} className={ClassNames.concat('arm-link', className)}>
+    <routing.LinkComponent {...additionalProps} to={to} className={ClassNames.concat('arm-link', className)}>
       {children}
-    </routingConfig.LinkComponent>
+    </routing.LinkComponent>
   );
 };
