@@ -9,7 +9,7 @@ export interface ILinkPropsCore {
   className?: string;
 }
 
-export type ILinkProps<T extends Record<string, any>> = T & ILinkPropsCore;
+export type ILinkProps<TLinkProps extends Record<string, any>> = TLinkProps & ILinkPropsCore;
 
 export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children, ...additionalProps }) => (
   <a {...additionalProps} className={className} href={to}>
