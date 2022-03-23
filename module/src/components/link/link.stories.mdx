@@ -67,11 +67,7 @@ export const App: React.FC = () => {
   return (
     <ArmstrongConfigProvider
       routing={{
-        LinkComponent: ({ to, children, ...props }) => (
-          <Link to={to} {...props}>
-            {children}
-          </Link>
-        ),
+        LinkComponent: Link,
         navigate: (to, action) => (action === 'push' ? push(to) : replace(to)),
         location: location,
       }}
@@ -102,7 +98,31 @@ export const MyComponent: React.FC = () => {
 
 If you use the generic type on the component, it means the rest of the props on the link will be typed - you may want to wrap this up in your own Link component to avoid repetition of the generic
 
-### Gatsby
+Alternatively, for more customised use, you can create a new component for LinkComponent that wraps up a react-router Link
+
+```tsx
+import { ArmstrongConfigProvider } from '@rocketmakers/armstrong';
+import { Link, useLocation, useHistory } from 'react-router-dom';
+
+export const App: React.FC = () => {
+  const location = useLocation();
+  const { push, replace } = useHistory();
+
+  return (
+    <ArmstrongConfigProvider
+      routing={{
+        LinkComponent: ({ to, ...additionalProps }) => <Link {...additionalProps} to={to} className="" />,
+        navigate: (to, action) => (action === 'push' ? push(to) : replace(to)),
+        location: location,
+      }}
+    >
+      {/* the rest of the app */}
+    </ArmstrongConfigProvider>
+  );
+};
+```
+
+### Gatsby (reach router)
 
 or import directly from `@reach/router` if using reach but not Gatsby
 
@@ -118,11 +138,7 @@ export const App: React.FC = () => {
   return (
     <ArmstrongConfigProvider
       routing={{
-        LinkComponent: ({ to, children, ...props }) => (
-          <Link to={to} {...props}>
-            {children}
-          </Link>
-        ),
+        LinkComponent: Link,
         navigate: (to, action) => (action === 'push' ? push(to) : replace(to)),
         location: location,
       }}
