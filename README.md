@@ -4,7 +4,7 @@ Armstrong is a React component library made by [Rocketmakers](rocketmakers.com/)
 
 By default, Armstrong doesn't pre-compile its SCSS into CSS, allowing consuming projects to make use of its various SCSS variables and mixins.
 
-[JIRA board](https://rocketmakers.atlassian.net/jira/software/projects/ARM/boards/154) (for internal use)
+[JIRA board](https://rocketmakers.atlassian.net/jira/software/projects/ARM/boards/154) (for internal use only)
 
 ## Using Armstrong
 
