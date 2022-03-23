@@ -1,12 +1,11 @@
+import { LinkButton } from "@rocketmakers/armstrong-edge"
 import * as React from "react"
-import { useHistory } from "react-router"
 import { apiHooks } from "../../state/apiHooks"
 
 import "./home.scss"
 
 export const Home: React.FC = () => {
   const [{ data }] = apiHooks.user.getUserList.useQuery()
-  const history = useHistory()
 
   return (
     <table>
@@ -16,11 +15,13 @@ export const Home: React.FC = () => {
           <th>Last Name</th>
           <th>Email</th>
         </tr>
+        
         {data?.map((user) => (
-          <tr key={user.id} onClick={() => history.push(`/edit/${user.id}`)}>
+          <tr key={user.id} >
             <th>{user.firstName}</th>
             <th>{user.lastName}</th>
             <th>{user.email}</th>
+            <th><LinkButton to={`/edit/${user.id}`}>Go</LinkButton></th>
           </tr>
         ))}
       </tbody>
