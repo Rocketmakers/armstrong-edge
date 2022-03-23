@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils';
+import { IArmstrongLocation } from '../config';
 import { useLocation } from '../link/link.hooks';
 import { LinkButton } from '../linkButton/linkButton.component';
 import { OptionContent } from '../optionContent/optionContent.component';
@@ -42,20 +43,17 @@ export const LinkTabControlTab = React.forwardRef(
   props: React.PropsWithRef<ILinkTabControlTabProps<Id>> & React.RefAttributes<HTMLButtonElement>
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<ILinkTabControlTabProps<any>> };
 
-export interface ILinkTabControlProps<Id extends ArmstrongId> extends Omit<ITabControlProps<Id>, 'tabs' | 'currentTab'> {
+export interface ILinkTabControlProps<Id extends ArmstrongId> extends Omit<ITabControlProps<Id>, 'tabs' | 'currentTab' | 'onTabChange'> {
   /** The tabs to render in the TabControl */
   tabs: ILinkTabControlTab<Id>[];
 
-  /** Get if the current tab is a given tab using the location - defaults to checking pathname */
-  isCurrentTab?: (location: Location, tab: ILinkTabControlTab<Id>) => boolean;
+  /** Get if the current tab is a given tab using the location - defaults to checking if pathname is equal to tab.to */
+  isCurrentTab?: (location: IArmstrongLocation, tab: ILinkTabControlTab<Id>) => boolean;
 }
 
 /** Render an array of tabs, which use the url */
 export const LinkTabControl = React.forwardRef(
-  <Id extends ArmstrongId>(
-    { tabs, className, onTabChange, isCurrentTab, ...nativeProps }: ILinkTabControlProps<Id>,
-    ref: React.ForwardedRef<HTMLDivElement>
-  ) => {
+  <Id extends ArmstrongId>({ tabs, className, isCurrentTab, ...nativeProps }: ILinkTabControlProps<Id>, ref: React.ForwardedRef<HTMLDivElement>) => {
     const location = useLocation();
 
     return (

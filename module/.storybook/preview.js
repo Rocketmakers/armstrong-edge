@@ -29,6 +29,7 @@ export const parameters = {
         'FormUtils',
         'Button',
         'Layout',
+        'Link',
         'Display',
         'Hooks',
         'SCSS Utilities',

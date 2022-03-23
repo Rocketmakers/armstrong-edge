@@ -15,8 +15,9 @@ import {
   IconUtils,
   CheckboxInput,
   useArmstrongConfig,
+  LinkTabControl,
 } from "@rocketmakers/armstrong-edge";
-import { useParams } from "react-router";
+import { Route, useParams } from "react-router";
 
 import { apiHooks } from "../../state/apiHooks";
 import { MemoryServer } from "../../servers/memory";
@@ -108,65 +109,72 @@ export const UserEdit: React.FC = () => {
   return (
     <form>
       <fieldset>
-        <h2>Basic Info</h2>
-        <TextInput
-          bind={formProp("firstName").bind()}
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "user")}
-          validationErrorMessages={["no you"]}
-        />
+        <LinkTabControl tabs={[{ id: 'First Stuff',  to: `/edit/${data?.id}` }, { id: 'More Stuff',  to: `/edit/${data?.id}/2` }]} />
 
-        <TextInput
-          bind={formProp("lastName").bind()}
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "user")}
+        <Route path={`/edit/${data?.id}`} exact>
+          <h2>Basic Info</h2>
+          <TextInput
+            bind={formProp("firstName").bind()}
+            leftIcon={IconUtils.getIconDefinition("Icomoon", "user")}
+            validationErrorMessages={["no you"]}
           />
-        <NumberInput
-          bind={formProp("points").bind()}
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "glass")}
-        />
-        <TextArea bind={formProp("bio").bind()} />
-        <EmailInput
-          bind={formProp("email").bind()}
-          leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")}
-        />
-        <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
-        <SwitchInput
-          bind={formProp("isCool").bind()}
-          validationErrorMessages={["uh oh"]}
-        />
-        <TagInput
-          bind={formProp("sauces").bind()}
-          spaceCreatesTags
-          tagPosition="inside"
-        />
-        <ListBox
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
-          bind={formProp("favouriteColour").bind()}
-          options={[
-            { id: "blue", name: "Blue" },
-            { id: "red", name: "red" },
-            { id: "something else", name: "Something else" },
-          ]}
-          ref={selectRef}
-        />
-        <Select
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
-          bind={formProp("favouriteColour").bind()}
-          options={[
-            { id: "blue", name: "Blue" },
-            { id: "red", name: "red" },
-            { id: "something else", name: "Something else" },
-          ]}
-          ref={selectRef}
-        />
-        <TagInput
-          bind={formProp("sauces").bind()}
-          spaceCreatesTags
-          tagPosition="above"
-        />
 
-        <CheckboxInput content="I'm the label" />
+          <TextInput
+            bind={formProp("lastName").bind()}
+            leftIcon={IconUtils.getIconDefinition("Icomoon", "user")}
+            />
+          <NumberInput
+            bind={formProp("points").bind()}
+            leftIcon={IconUtils.getIconDefinition("Icomoon", "glass")}
+          />
+          <TextArea bind={formProp("bio").bind()} />
+          <EmailInput
+            bind={formProp("email").bind()}
+            leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")}
+          />
+          <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
+          <SwitchInput
+            bind={formProp("isCool").bind()}
+            validationErrorMessages={["uh oh"]}
+          />
+        </Route>
 
-        <NativeDateInput />
+        <Route path={`/edit/${data?.id}/2`}>
+          <TagInput
+            bind={formProp("sauces").bind()}
+            spaceCreatesTags
+            tagPosition="inside"
+          />
+          <ListBox
+            leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
+            bind={formProp("favouriteColour").bind()}
+            options={[
+              { id: "blue", name: "Blue" },
+              { id: "red", name: "red" },
+              { id: "something else", name: "Something else" },
+            ]}
+            ref={selectRef}
+          />
+          <Select
+            leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
+            bind={formProp("favouriteColour").bind()}
+            options={[
+              { id: "blue", name: "Blue" },
+              { id: "red", name: "red" },
+              { id: "something else", name: "Something else" },
+            ]}
+            ref={selectRef}
+          />
+          <TagInput
+            bind={formProp("sauces").bind()}
+            spaceCreatesTags
+            tagPosition="above"
+          />
+
+          <CheckboxInput label="I'm the label" />
+
+          <NativeDateInput />
+        </Route>
 
         {/* <AutoCompleteInput
           bind={formProp("favouriteCuisine").bind({ format: { fromData: (value) => sauces?.find((sauce) => sauce.id === value)?.name } })}
