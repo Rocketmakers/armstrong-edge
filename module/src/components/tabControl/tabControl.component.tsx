@@ -14,8 +14,9 @@ export interface ITabControlTabPropsCore<Id extends ArmstrongId> extends ITab<Id
 }
 
 export interface ITabControlTabProps<Id extends ArmstrongId>
-  extends ITabControlTabPropsCore<Id>,
-    Omit<React.HTMLAttributes<HTMLButtonElement>, 'id' | 'ref'> {}
+  extends ITab<Id>,
+    Omit<React.HTMLAttributes<HTMLButtonElement>, 'id' | 'ref'>,
+    ITabControlTabPropsCore<Id> {}
 
 /** A single tab used in the TabControl component */
 export const TabControlTab = React.forwardRef(
