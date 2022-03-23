@@ -61,7 +61,7 @@ export const CustomLinkComponent = () => {
   return (
     // add to root providers
     <ArmstrongConfigProvider
-      routingConfig={{
+      routing={{
         LinkComponent: ({ children, className, to, ...props }) => (
           // eslint-disable-next-line no-alert
           <div {...props} className={ClassNames.concat('my-custom-link-component', className)} onClick={() => alert(`Go to ${to}`)}>
@@ -81,7 +81,7 @@ export const ReactRouter = () => {
   return (
     // add to root providers
     <ArmstrongConfigProvider
-      routingConfig={{
+      routing={{
         LinkComponent: ({ children, className, to, ...props }) => (
           <Link to={to} {...props} className={className}>
             {children}

@@ -11,7 +11,7 @@ const ConfigProvider: React.FC = ({children}) => {
   const location = useLocation()
   const { push, replace } = useHistory()
 
-  return <ArmstrongConfigProvider routingConfig={{ LinkComponent: Link, location, navigate: (to, action) => action === 'push' ? push(to) : replace(to) }}>{children}</ArmstrongConfigProvider>
+  return <ArmstrongConfigProvider routing={{ LinkComponent: Link, location, navigate: (to, action) => action === 'push' ? push(to) : replace(to) }}>{children}</ArmstrongConfigProvider>
 }
 
 class App extends React.Component {
