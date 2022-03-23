@@ -4,9 +4,9 @@ import { ClassNames } from '../..';
 import { ButtonInner, IButtonCoreProps, ValidationErrors } from '..';
 import { ILinkProps, Link } from '../link';
 
-export type ILinkButtonProps<T extends Record<string, any>> = IButtonCoreProps & ILinkProps<T>;
+export type ILinkButtonProps<TLinkProps extends Record<string, any>> = IButtonCoreProps & ILinkProps<TLinkProps>;
 
-export const LinkButton = <T extends Record<string, any>>(props: React.PropsWithChildren<ILinkButtonProps<T>>) => {
+export const LinkButton = <TLinkProps extends Record<string, any>>(props: React.PropsWithChildren<ILinkButtonProps<TLinkProps>>) => {
   const { className, disabled, minimalStyle, validationErrorMessages, error, errorIcon, pending, to, rootElementProps } = props;
 
   const shouldShowErrorIcon = !!validationErrorMessages?.length || error;

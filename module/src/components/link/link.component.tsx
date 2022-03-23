@@ -9,7 +9,7 @@ interface ILinkPropsCore {
   className?: string;
 }
 
-export type ILinkProps<T extends Record<string, any>> = T & ILinkPropsCore;
+export type ILinkProps<TLinkProps extends Record<string, any>> = TLinkProps & ILinkPropsCore;
 
 export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children, ...additionalProps }) => (
   <a {...additionalProps} className={className} href={to}>
@@ -23,7 +23,12 @@ export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children,
  * For internal Armstrong use for components that needs to be able to access routing i.e. LinkButton rather than for consumers to use directly
  */
 
-export const Link = <T extends Record<string, any>>({ to, className, children, ...additionalProps }: React.PropsWithChildren<ILinkProps<T>>) => {
+export const Link = <TLinkProps extends Record<string, any>>({
+  to,
+  className,
+  children,
+  ...additionalProps
+}: React.PropsWithChildren<ILinkProps<TLinkProps>>) => {
   const { routingConfig } = useArmstrongConfig();
 
   return (
