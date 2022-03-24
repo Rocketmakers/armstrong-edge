@@ -442,9 +442,9 @@ interface IUseBindingStateOverrides<TData> {
 /**
  * An optional hook for internal form component use
  *
- * Returns a value and setter for the current input's state in a Form.use from a bind
+ * Returns a value and setter for the current input's state in a Form.use from a bind, allows overrides, and can return validation errors
  *
- * Refer to internal Armstrong code for Input for a clear example
+ * Refer to internal Armstrong code for the Input component for an example of its use
  */
 
 export function useBindingState<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingStateOverrides<TData>): UseBindingStateReturn<TData> {

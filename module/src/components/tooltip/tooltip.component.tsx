@@ -34,6 +34,12 @@ export interface ITooltipProps
 
   /** should open when anything within the children is focused - true by default */
   openOnFocus?: boolean;
+
+  /** should open if the user within the children */
+  openOnClick?: boolean;
+
+  /** render as a centred dialog if on a mobile-sized device */
+  centreOnMobile?: boolean;
 }
 
 export interface ITooltipRef {
@@ -60,6 +66,8 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
       openOnHover,
       openOnFocus,
       id,
+      openOnClick,
+      centreOnMobile,
       ...nativeProps
     },
     ref
@@ -69,8 +77,9 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
 
     const [isHovering, hoveringProps] = useIsHovering();
     const [isFocused, focusedProps] = useIsFocused();
+    const [hasClicked, setHasClicked] = React.useState(false);
 
-    const isOpen = isOpenProp || (openOnHover && isHovering) || (openOnFocus && isFocused) || false;
+    const isOpen = isOpenProp || (openOnHover && isHovering) || (openOnFocus && isFocused) || (openOnClick && hasClicked) || false;
 
     const [rootRect, getRootRect] = useBoundingClientRect(rootRef, undefined, isOpen);
     const [innerRect, getInnerRect] = useBoundingClientRect(innerRef, undefined, isOpen);
@@ -173,6 +182,8 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
 
     const generatedId = useGeneratedId(id);
 
+    console.log(centreOnMobile);
+
     return (
       <div
         {...(wrapperAttributes || {})}
@@ -181,6 +192,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
         {...hoveringProps}
         {...focusedProps}
         aria-describedby={generatedId}
+        onClick={() => setHasClicked(!hasClicked)}
       >
         {children}
 
@@ -194,6 +206,9 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
           data-position={position?.position}
           role="tooltip"
           data-is-text={typeof content === 'string' || typeof content === 'number'}
+          closeOnWindowClick={openOnClick}
+          closeOnWindowBlur
+          data-centre-on-mobile={centreOnMobile}
           {...nativeProps}
         >
           <div id={generatedId} className="arm-tooltip-inner" ref={setInnerRef}>

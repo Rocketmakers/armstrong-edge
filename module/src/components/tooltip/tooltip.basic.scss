@@ -11,3 +11,20 @@ $arm-tooltip-max-width: 250px !default;
   position: fixed;
   background-color: transparent;
 }
+
+.arm-tooltip-content {
+  background-color: $white;
+}
+
+@include screen-phone {
+  .arm-tooltip {
+    &[data-centre-on-mobile='true'] {
+      @include absolute-fill;
+      @include flex-centre-content;
+
+      max-width: initial;
+      left: 0;
+      top: 0;
+    }
+  }
+}

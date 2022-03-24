@@ -48,6 +48,13 @@ export const OpenOnFocus = () => {
     </Tooltip>
   );
 };
+export const OpenOnClick = () => {
+  return (
+    <Tooltip content="HIYA" tooltipPosition={['above']} openOnClick openOnHover={false}>
+      <p>Oh hey hey look at this here</p>
+    </Tooltip>
+  );
+};
 export const CustomOpeningLogic = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -70,6 +77,13 @@ export const CustomContent = () => {
       }
       tooltipPosition={['above']}
     >
+      <p>Oh hey hey look at this here</p>
+    </Tooltip>
+  );
+};
+export const CentreOnMobile = () => {
+  return (
+    <Tooltip content="HIYA" tooltipPosition={['above']} centreOnMobile openOnClick>
       <p>Oh hey hey look at this here</p>
     </Tooltip>
   );

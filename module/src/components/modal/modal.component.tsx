@@ -8,10 +8,10 @@ import { useModalLayerElement } from './modal.context';
 export interface IModalProps
   extends Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
     Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'> {
-  /** should the dropdown be rendered */
+  /** should be rendered */
   isOpen: boolean;
 
-  /** fired when the user attempts to close the modal by clicking outside of it (or other behaviors depending on the values of other props) */
+  /** fired when the user attempts to close by clicking outside of the modal (or other behaviors depending on the values of other props) */
   onOpenChange?: (open: boolean) => void;
 
   /** the modal will close if the user blurs the window */

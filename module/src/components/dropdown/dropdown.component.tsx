@@ -7,23 +7,15 @@ import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
 import { Maths } from '../../utils/maths';
 import { AutoResizer } from '../autoResizer';
-import { Modal } from '../modal';
+import { IModalProps, Modal } from '../modal';
 import { IPortalProps } from '../portal';
 
 export interface IDropdownProps
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>,
-    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
-  /** should the dropdown be rendered */
-  isOpen: boolean;
-
-  /** fired when the user attempts to close the dropdown */
-  onOpenChange: (open: boolean) => void;
-
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
+    Pick<IModalProps, 'closeOnWindowClick' | 'isOpen' | 'onOpenChange'> {
   /** rendered inside the dropdown */
   dropdownContent: JSX.Element;
-
-  /** CSS className property */
-  className?: string;
 
   /** CSS className for content wrapper */
   contentClassName?: string;
@@ -83,6 +75,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       shouldScrollContent,
       edgeDetectionMargin,
       reopenOnWindowFocusWhileFocused,
+      closeOnWindowClick,
       ...htmlProps
     },
     ref
@@ -94,7 +87,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const [rootRect, getRootRectContentRect] = useBoundingClientRect(elementToRenderBelowRef, undefined, isOpen);
     const windowSize = useWindowSize();
 
-    // used to stop the dropdown from reopening if focused when the blurs then refocuses the window
+    // used to stop the dropdown from reopening if focused when the user blurs then refocuses the window
     // (if an element is focused in the browser window, the focus event on that element is retriggered when the window focuses, leading to a slightly weird behaviour)
     const [windowBlurred, setWindowBlurred] = React.useState(false);
 
@@ -161,7 +154,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           ((event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
             !(event.target instanceof HTMLDivElement))
         ) {
-          onOpenChange(false);
+          onOpenChange?.(false);
         }
       },
       [onOpenChange, closeOnScroll]
@@ -174,7 +167,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onMouseDownEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         if (openWhenClickInside) {
-          onOpenChange(closeWhenClickInside ? !isOpen : true);
+          onOpenChange?.(closeWhenClickInside ? !isOpen : true);
           setClicking(true);
         }
         onMouseDown?.(event);
@@ -186,7 +179,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onFocusEvent = React.useCallback(
       (event: React.FocusEvent<HTMLDivElement>) => {
         if (openWhenFocusInside && (!windowBlurred || reopenOnWindowFocusWhileFocused)) {
-          onOpenChange(true);
+          onOpenChange?.(true);
         }
 
         onFocus?.(event);
@@ -213,7 +206,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         if (clicking && !newIsOpen) {
           setClicking(false);
         } else {
-          onOpenChange(newIsOpen);
+          onOpenChange?.(newIsOpen);
         }
       },
       [onOpenChange, clicking]
@@ -247,7 +240,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           onScroll={onScrollContent}
           onMouseDown={onMouseDownContent}
           closeOnWindowBlur
-          closeOnWindowClick
+          closeOnWindowClick={closeOnWindowClick}
           closeOnBackgroundClick={false}
           data-scrolling={shouldScrollContent}
         >
@@ -265,5 +258,6 @@ Dropdown.defaultProps = {
   openWhenClickInside: true,
   closeWhenClickInside: true,
   shouldScrollContent: true,
+  closeOnWindowClick: true,
   edgeDetectionMargin: 10,
 };
