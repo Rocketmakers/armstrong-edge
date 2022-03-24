@@ -52,6 +52,7 @@ export * from './tabControl';
 export * from './tabSelect';
 export * from './tag';
 export * from './tagInput';
+export * from './tail';
 export * from './telInput';
 export * from './textArea';
 export * from './textInput';
