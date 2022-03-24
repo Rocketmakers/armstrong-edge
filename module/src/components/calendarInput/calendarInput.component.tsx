@@ -350,7 +350,7 @@ export const CalendarInput = React.forwardRef(
                         return (
                           <React.Fragment key={part + index}>
                             <AutoCompleteInput
-                              className="arm-calendar-select"
+                              className="arm-calendar-select arm-calendar-select-day"
                               {...(additionalDayInputProps || {})}
                               placeholder={additionalDayInputProps?.placeholder || 'day'}
                               disabled={disableInputs}
@@ -365,7 +365,7 @@ export const CalendarInput = React.forwardRef(
                         return (
                           <React.Fragment key={part + index}>
                             <AutoCompleteInput
-                              className="arm-calendar-select"
+                              className="arm-calendar-select arm-calendar-select-month"
                               {...(additionalMonthInputProps || {})}
                               placeholder={additionalMonthInputProps?.placeholder || 'month'}
                               disabled={disableInputs}
@@ -380,7 +380,7 @@ export const CalendarInput = React.forwardRef(
                         return (
                           <React.Fragment key={part + index}>
                             <AutoCompleteInput
-                              className="arm-calendar-select"
+                              className="arm-calendar-select arm-calendar-select-year"
                               {...(additionalYearInputProps || {})}
                               placeholder={additionalYearInputProps?.placeholder || 'year'}
                               disabled={disableInputs}

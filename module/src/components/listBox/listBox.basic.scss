@@ -1,8 +1,3 @@
-.arm-listbox-wrapper {
-  width: 100%;
-  max-width: $arm-input-width;
-}
-
 .arm-input.arm-listbox {
   cursor: pointer;
 }
@@ -25,6 +20,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  min-width: 160px;
 
   .placeholder {
     color: $gray-light;
