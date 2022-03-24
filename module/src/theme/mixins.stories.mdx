@@ -10,6 +10,7 @@ Utility mixins for use in SCSS. To use, simply import them from Armstrong or imp
 
 - [Pseudo Elements](#pseudo)
 - [Layout](#layout)
+- [Shapes](#shapes)
 - [Responsiveness](#responsiveness)
 
 ## <a name="pseudo">Pseudo elements</a>
@@ -211,44 +212,6 @@ Makes the element's children spaced out using flex
 }
 ```
 
-### square
-
-Adds an equal width and height property
-
-```css
-/* definition */
-@mixin square($size) {
-  width: $size;
-  height: $size;
-}
-
-/* use */
-@import '~@rocketmakers/armstrong/dist/imports.scss';
-
-.thing {
-  @include square(50px);
-}
-```
-
-### circle
-
-Adds an equal width and height property and a 50% border radius
-
-```css
-/* definition */
-@mixin circle($size) {
-  @include square($size);
-  border-radius: 50%;
-}
-
-/* use */
-@import '~@rocketmakers/armstrong/dist/imports.scss';
-
-.thing {
-  @include circle(50px);
-}
-```
-
 ### space-between-children-horizontal
 
 Add a horizontal margin between children, using `margin-right` on all except the last
@@ -372,6 +335,126 @@ Covers an image or video in the frame of an img or video tag, like doing `backgr
 
 .thing {
   @include object-cover;
+}
+```
+
+## <a name="shapes">Shapes</a>
+
+### square
+
+Adds an equal width and height property
+
+```css
+/* definition */
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+
+/* use */
+@import '~@rocketmakers/armstrong/dist/imports.scss';
+
+.thing {
+  @include square(50px);
+}
+```
+
+### circle
+
+Adds an equal width and height property and a 50% border radius
+
+```css
+/* definition */
+@mixin circle($size) {
+  @include square($size);
+  border-radius: 50%;
+}
+
+/* use */
+@import '~@rocketmakers/armstrong/dist/imports.scss';
+
+.thing {
+  @include circle(50px);
+}
+```
+
+### triangle-up
+
+Make the element a upwards pointing triangle with a given colour and size
+
+```css
+/* definition */
+@mixin triangle-up($size, $colour) {
+  border-left: $arm-tail-size solid transparent;
+  border-right: $arm-tail-size solid transparent;
+  border-bottom: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
+}
+
+/* use */
+@import '~@rocketmakers/armstrong/dist/imports.scss';
+
+.thing {
+  @include triangle-($(40px, white);
+}
+```
+
+### triangle-down
+
+Make the element a downwards pointing triangle with a given colour and size
+
+```css
+/* definition */
+@mixin triangle-down($size, $colour) {
+  border-left: $arm-tail-size solid transparent;
+  border-right: $arm-tail-size solid transparent;
+  border-top: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
+}
+
+/* use */
+@import '~@rocketmakers/armstrong/dist/imports.scss';
+
+.thing {
+  @include triangle-down(40px, white);
+}
+```
+
+### triangle-left
+
+Make the element a leftwards pointing triangle with a given colour and size
+
+```css
+/* definition */
+@mixin triangle-left($size, $colour) {
+  border-top: $arm-tail-size solid transparent;
+  border-bottom: $arm-tail-size solid transparent;
+  border-right: $arm-tail-size solid var(--arm-tail-colour, $tail-colour);
+}
+
+/* use */
+@import '~@rocketmakers/armstrong/dist/imports.scss';
+
+.thing {
+  @include triangle-left(40px, white);
+}
+```
+
+### triangle-right
+
+Make the element a rightwards pointing triangle with a given colour and size
+
+```css
+/* definition */
+@mixin triangle-right($size, $colour) {
+  border-top: $arm-tail-size solid transparent;
+  border-bottom: $arm-tail-size solid transparent;
+  border-left: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
+}
+
+/* use */
+@import '~@rocketmakers/armstrong/dist/imports.scss';
+
+.thing {
+  @include triangle-righ(40px, white);
 }
 ```
 

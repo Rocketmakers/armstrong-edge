@@ -160,7 +160,7 @@ $screen-size-tablet: 1024px;
 
 ## <a name="components">Components</a>
 
-More specific variables used in components which can be overriden to make restyling them a bit easier, usually for values that are repeated throughought the component.
+More specific variables used in components which can be overriden to make restyling them a bit easier, usually for values that are repeated throughought the component and used as a basis of for calculating other things.
 
 Not all components need to use scss variables other than the global ones and should be more self explanatory to override through inspection.
 
@@ -266,6 +266,18 @@ $arm-toast-notification-width: 200px;
 ```css
 /* the max width of the tooltip */
 $arm-tooltip-max-width: 250px;
+```
+
+### Tail
+
+```css
+/* the background colour of the tail */
+$arm-tail-colour: $white;
+
+/** can also be overriden with a CSS variable to override per tail */
+--arm-tail-colour: $white;
+
+$arm-tail-size: $spacing-small;
 ```
 
 ### Header

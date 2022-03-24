@@ -75,17 +75,6 @@
   justify-content: space-between;
 }
 
-@mixin square($size) {
-  width: $size;
-  height: $size;
-}
-
-@mixin circle($size) {
-  @include square($size);
-
-  border-radius: 50%;
-}
-
 @mixin space-between-children-horizontal($spacing) {
   > *:not(:last-child) {
     margin-right: $spacing;
@@ -120,6 +109,40 @@
 @mixin object-cover {
   object-fit: cover;
   object-position: center;
+}
+
+// shapes
+
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin circle($size) {
+  @include square($size);
+
+  border-radius: 50%;
+}
+
+@mixin triangle-up($size, $colour) {
+  border-left: $arm-tail-size solid transparent;
+  border-right: $arm-tail-size solid transparent;
+  border-bottom: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
+}
+@mixin triangle-down($size, $colour) {
+  border-left: $arm-tail-size solid transparent;
+  border-right: $arm-tail-size solid transparent;
+  border-top: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
+}
+@mixin triangle-left($size, $colour) {
+  border-top: $arm-tail-size solid transparent;
+  border-bottom: $arm-tail-size solid transparent;
+  border-right: $arm-tail-size solid var(--arm-tail-colour, $tail-colour);
+}
+@mixin triangle-right($size, $colour) {
+  border-top: $arm-tail-size solid transparent;
+  border-bottom: $arm-tail-size solid transparent;
+  border-left: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
 }
 
 // responsiveness

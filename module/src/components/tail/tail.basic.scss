@@ -1,0 +1,75 @@
+$arm-tail-colour: $white;
+$arm-tail-size: $spacing-xsmall;
+
+.arm-tail-wrapper {
+  display: flex;
+  align-items: center;
+
+  &[data-position='right'],
+  &[data-position='below'] {
+    &::after {
+      @include init-pseudo;
+
+      background-color: transparent;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &[data-position='above'],
+  &[data-position='left'] {
+    &::before {
+      @include init-pseudo;
+
+      background-color: transparent;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &[data-position='below'],
+  &[data-position='above'] {
+    flex-direction: column;
+  }
+
+  &[data-position='below'] {
+    padding-bottom: $arm-tail-size;
+
+    &::after {
+      @include triangle-down($arm-tail-size, var(--arm-tail-colour, $arm-tail-colour));
+    }
+  }
+
+  &[data-position='above'] {
+    padding-top: $arm-tail-size;
+
+    &::before {
+      @include triangle-up($arm-tail-size, var(--arm-tail-colour, $arm-tail-colour));
+    }
+  }
+
+  &[data-position='right'] {
+    padding-right: $arm-tail-size;
+
+    &::after {
+      @include triangle-right($arm-tail-size, var(--arm-tail-colour, $arm-tail-colour));
+    }
+  }
+
+  &[data-position='left'] {
+    padding-left: $arm-tail-size;
+
+    &::before {
+      @include triangle-left($arm-tail-size, var(--arm-tail-colour, $arm-tail-colour));
+    }
+  }
+
+  &::before,
+  &::after {
+    @include init-pseudo;
+
+    background-color: transparent;
+    width: 0;
+    height: 0;
+  }
+}
