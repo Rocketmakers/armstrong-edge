@@ -260,4 +260,5 @@ AutoCompleteInputMulti.defaultProps = {
   allowKeyboardNavigationSelection: true,
   filterOptions: true,
   placeholder: 'Begin typing to filter options...',
+  closeOnSelection: false,
 };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Form } from '../..';
-import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
+import { IBindingProps } from '../../hooks/form';
 import { ArmstrongId, IArmstrongExtendedOption } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
@@ -15,7 +15,12 @@ export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
     Pick<ISelectOption<Id, TSelectData>, 'data'> {}
 
 /** A DOM recreation of a select element */
-export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extends IInputWrapperProps, Pick<IDropdownItemsProps, 'noItemsText'> {
+export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any>
+  extends IInputWrapperProps,
+    Pick<
+      IDropdownItemsProps,
+      'noItemsText' | 'closeOnScroll' | 'closeOnWindowBlur' | 'closeOnWindowClick' | 'closeOnBackgroundClick' | 'closeOnSelection'
+    > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
@@ -24,12 +29,6 @@ export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extend
 
   /** Called on change to get the  */
   onSelectOption?: (option?: IListBoxOption<Id>) => void;
-
-  /** array of validation errors to render */
-  validationErrorMessages?: ValidationMessage[];
-
-  /** how to render the validation errors */
-  validationMode?: FormValidationMode;
 
   /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
@@ -41,7 +40,7 @@ export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any> extend
   placeholder?: string;
 
   /** should allow deletion of value with a cross */
-  deleteButton?: boolean;
+  deleteButton?: boolean | IIcon<IconSet>;
 
   /** ClassName for the wrapper element */
   wrapperClassName?: string;
@@ -77,6 +76,11 @@ export const ListBox = React.forwardRef(
       wrapperClassName,
       noItemsText,
       dropdownClassName,
+      closeOnBackgroundClick,
+      closeOnScroll,
+      closeOnWindowBlur,
+      closeOnWindowClick,
+      closeOnSelection,
     }: IListBoxProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -131,6 +135,11 @@ export const ListBox = React.forwardRef(
         className={ClassNames.concat('arm-listbox-wrapper', wrapperClassName)}
         noItemsText={noItemsText}
         contentClassName={ClassNames.concat('arm-listbox-options', dropdownClassName)}
+        closeOnBackgroundClick={closeOnBackgroundClick}
+        closeOnScroll={closeOnScroll}
+        closeOnWindowBlur={closeOnWindowBlur}
+        closeOnWindowClick={closeOnWindowClick}
+        closeOnSelection={closeOnSelection}
       >
         <InputWrapper
           ref={internalRef}
@@ -161,7 +170,12 @@ export const ListBox = React.forwardRef(
           </div>
 
           {deleteButton && boundValue && (
-            <IconButton className="arm-listbox-delete" onClick={onClickDelete} icon={IconUtils.getIconDefinition('Icomoon', 'cross2')} minimalStyle />
+            <IconButton
+              className="arm-listbox-delete"
+              onClick={onClickDelete}
+              icon={typeof deleteButton === 'boolean' ? IconUtils.getIconDefinition('Icomoon', 'cross2') : deleteButton}
+              minimalStyle
+            />
           )}
         </InputWrapper>
       </DropdownItems>
