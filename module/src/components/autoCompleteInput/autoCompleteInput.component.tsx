@@ -120,10 +120,10 @@ export const AutoCompleteInput = React.forwardRef(
     const [justOpened, setJustOpened] = React.useState(optionsOpen);
 
     const onOptionsOpenChange = React.useCallback((open: boolean) => {
-      setOptionsOpen(open);
-      if (open) {
+      if (open && !optionsOpen) {
         setJustOpened(true);
       }
+      setOptionsOpen(open);
     }, []);
 
     // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided

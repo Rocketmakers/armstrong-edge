@@ -57,7 +57,8 @@ export const DontClose = () => {
         closeOnWindowBlur={false}
         closeOnWindowClick={false}
         closeOnSelection={false}
-        placeholder="this is very useful for development"
+        placeholder="this is very useful for inspecting"
+        filterOptions={false}
       />
       <p className="bound-value">bound value: {value}</p>
     </>
