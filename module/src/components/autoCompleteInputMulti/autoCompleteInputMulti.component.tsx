@@ -25,6 +25,11 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
       | 'allowKeyboardNavigationSelection'
       | 'noItemsText'
       | 'dropdownClassName'
+      | 'closeOnBackgroundClick'
+      | 'closeOnScroll'
+      | 'closeOnWindowBlur'
+      | 'closeOnWindowClick'
+      | 'closeOnSelection'
     > {
   /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
@@ -63,6 +68,11 @@ export const AutoCompleteInputMulti = React.forwardRef(
       placeholder,
       noItemsText,
       dropdownClassName,
+      closeOnBackgroundClick,
+      closeOnScroll,
+      closeOnWindowBlur,
+      closeOnWindowClick,
+      closeOnSelection,
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
@@ -204,11 +214,15 @@ export const AutoCompleteInputMulti = React.forwardRef(
             currentValue={boundValue || []}
             openWhenClickInside
             openWhenFocusInside
-            closeOnSelection={false}
+            closeOnSelection={closeOnSelection}
             childRootElementSelector=".arm-input-inner"
             searchTerm={textInputInternalValue}
             noItemsText={noItemsText}
             closeWhenClickInside={false}
+            closeOnBackgroundClick={closeOnBackgroundClick}
+            closeOnScroll={closeOnScroll}
+            closeOnWindowBlur={closeOnWindowBlur}
+            closeOnWindowClick={closeOnWindowClick}
           >
             <TagInput
               {...textInputProps}

@@ -28,7 +28,10 @@ export interface IAutoCompleteInputOption<Id extends ArmstrongId> extends Omit<I
 export interface IAutoCompleteInputProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange' | 'ref'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
-    Pick<IDropdownItemsProps, 'noItemsText'> {
+    Pick<
+      IDropdownItemsProps,
+      'noItemsText' | 'closeOnScroll' | 'closeOnWindowBlur' | 'closeOnWindowClick' | 'closeOnBackgroundClick' | 'closeOnSelection'
+    > {
   /** The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
 
@@ -92,6 +95,11 @@ export const AutoCompleteInput = React.forwardRef(
       unsetOnClear,
       disabled,
       noItemsText,
+      closeOnBackgroundClick,
+      closeOnScroll,
+      closeOnWindowBlur,
+      closeOnWindowClick,
+      closeOnSelection,
       ...textInputProps
     }: IAutoCompleteInputProps<Id>,
     ref
@@ -105,17 +113,18 @@ export const AutoCompleteInput = React.forwardRef(
       }
     );
 
-    const [optionsOpen, setOptionsOpen] = React.useState(false);
-
     const [isFocused, isFocusedProps] = useIsFocused({ onBlur: textInputProps.onBlur, onFocus: textInputProps.onFocus });
 
-    // log a piece of state to manage whether the options dropdown has just been opened, and no filtering has occurred
+    const [optionsOpen, setOptionsOpen] = React.useState(false);
+    // keep a piece of state to manage whether the options dropdown has been reopened since the last time filtering has occurred
     const [justOpened, setJustOpened] = React.useState(optionsOpen);
-    React.useEffect(() => {
-      if (optionsOpen) {
+
+    const onOptionsOpenChange = React.useCallback((open: boolean) => {
+      setOptionsOpen(open);
+      if (open) {
         setJustOpened(true);
       }
-    }, [optionsOpen]);
+    }, []);
 
     // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided
     const getOptionName = React.useCallback(
@@ -238,7 +247,7 @@ export const AutoCompleteInput = React.forwardRef(
               })),
             ]}
             isOpen={optionsOpen && !disabled && !!options?.length}
-            onOpenChange={setOptionsOpen}
+            onOpenChange={onOptionsOpenChange}
             portalToSelector={portalToSelector}
             portalTo={portalTo}
             onItemSelected={(id) => onSelectOption(id as Id)}
@@ -246,10 +255,15 @@ export const AutoCompleteInput = React.forwardRef(
             currentValue={boundValue ? [boundValue] : []}
             openWhenClickInside
             openWhenFocusInside
-            closeWhenClickInside={false}
             childRootElementSelector=".arm-input-inner"
             searchTerm={textInputInternalValue}
             noItemsText={noItemsText}
+            closeWhenClickInside={false}
+            closeOnBackgroundClick={closeOnBackgroundClick}
+            closeOnScroll={closeOnScroll}
+            closeOnWindowBlur={closeOnWindowBlur}
+            closeOnWindowClick={closeOnWindowClick}
+            closeOnSelection={closeOnSelection}
           >
             <TextInput
               {...textInputProps}

@@ -42,6 +42,28 @@ export const Default = () => {
     </>
   );
 };
+
+export const DontClose = () => {
+  const [value, setValue] = React.useState<string>();
+
+  return (
+    <>
+      <AutoCompleteInput
+        value={value}
+        onChange={setValue}
+        options={options}
+        closeOnBackgroundClick={false}
+        closeOnScroll={false}
+        closeOnWindowBlur={false}
+        closeOnWindowClick={false}
+        closeOnSelection={false}
+        placeholder="this is very useful for development"
+      />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
+
 export const AllowFreeText = () => {
   const [value, setValue] = React.useState('');
 
