@@ -23,6 +23,9 @@ export interface IModalProps
    */
   closeOnWindowClick?: boolean;
 
+  /** will close when the user clicks on the modal content */
+  closeOnClick?: boolean;
+
   /** the modal will close if the user clicks on the div rendered as its background */
   closeOnBackgroundClick?: boolean;
 
@@ -70,6 +73,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       wrapperClassName,
       disableClose,
       closeTime,
+      closeOnClick,
       ...nativeProps
     },
     ref
@@ -135,7 +139,18 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
           aria-hidden={isClosing}
           tabIndex={isClosing ? -1 : undefined}
         >
-          <div role="dialog" aria-modal="true" {...nativeProps} className={ClassNames.concat('arm-modal', className)} ref={internalRef}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            {...nativeProps}
+            className={ClassNames.concat('arm-modal', className)}
+            ref={internalRef}
+            onClick={() => {
+              if (closeOnClick) {
+                close();
+              }
+            }}
+          >
             {children}
           </div>
         </div>

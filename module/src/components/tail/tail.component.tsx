@@ -10,10 +10,10 @@ export interface ITailProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 /** a simple visual component used for adding a tail (notch, arrow, nubbin, etc.) in a pseudo element beside its child */
-export const Tail: React.FC<ITailProps> = ({ position, children, className, ...htmlProps }) => {
+export const Tail = React.forwardRef<HTMLDivElement, ITailProps>(({ position, children, className, ...htmlProps }, ref) => {
   return (
-    <div {...htmlProps} className={ClassNames.concat('arm-tail-wrapper', className)} data-position={position}>
+    <div {...htmlProps} ref={ref} className={ClassNames.concat('arm-tail-wrapper', className)} data-position={position}>
       {children}
     </div>
   );
-};
+});

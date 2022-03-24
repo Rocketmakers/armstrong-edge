@@ -23,19 +23,27 @@ export const Default = () => {
     </Tooltip>
   );
 };
+
+export const WithTail = () => {
+  return (
+    <Tooltip content="I'm in a tooltip" tooltipPosition={['above']} showTail>
+      <p>Hover over me for some cool stuff</p>
+    </Tooltip>
+  );
+};
 export const CustomisedPosition = () => {
   return (
     <Group>
-      <Tooltip content="I'm in a tooltip" tooltipPosition={['left']}>
+      <Tooltip content="I'm in a tooltip" tooltipPosition={['left']} showTail>
         <p>left</p>
       </Tooltip>
-      <Tooltip content="I'm in a tooltip" tooltipPosition={['above']}>
+      <Tooltip content="I'm in a tooltip" tooltipPosition={['above']} showTail>
         <p>above</p>
       </Tooltip>
-      <Tooltip content="I'm in a tooltip" tooltipPosition={['below']}>
+      <Tooltip content="I'm in a tooltip" tooltipPosition={['below']} showTail>
         <p>below</p>
       </Tooltip>
-      <Tooltip content="I'm in a tooltip" tooltipPosition={['right']}>
+      <Tooltip content="I'm in a tooltip" tooltipPosition={['right']} showTail>
         <p>right</p>
       </Tooltip>
     </Group>
@@ -83,7 +91,7 @@ export const CustomContent = () => {
 };
 export const CentreOnMobile = () => {
   return (
-    <Tooltip content="HIYA" tooltipPosition={['above']} centreOnMobile openOnClick>
+    <Tooltip content="HIYA" tooltipPosition={['above']} centreOnMobile openOnClick openOnHover={false}>
       <p>Oh hey hey look at this here</p>
     </Tooltip>
   );

@@ -7,7 +7,9 @@ import { useIsFocused } from '../../hooks/useIsFocused';
 import { useIsHovering } from '../../hooks/useIsHovering';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { ClassNames } from '../../utils/classNames';
+import { Directions } from '../../utils/directions';
 import { Modal } from '../modal';
+import { Tail } from '../tail/tail.component';
 
 export type TooltipPosition = 'above' | 'below' | 'left' | 'right';
 
@@ -35,11 +37,14 @@ export interface ITooltipProps
   /** should open when anything within the children is focused - true by default */
   openOnFocus?: boolean;
 
-  /** should open if the user within the children */
+  /** should open if the user within the children - should be set with openOnHover={false} to avoid unusual behaviour */
   openOnClick?: boolean;
 
   /** render as a centred dialog if on a mobile-sized device */
   centreOnMobile?: boolean;
+
+  /** should have a tail pointing towards the element the tooltip has come from */
+  showTail?: boolean;
 }
 
 export interface ITooltipRef {
@@ -68,6 +73,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
       id,
       openOnClick,
       centreOnMobile,
+      showTail,
       ...nativeProps
     },
     ref
@@ -119,22 +125,22 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
           case 'above': {
             const top = rootRect.top - innerRect.height;
             const left = rootRect.left + rootRect.width / 2 - innerRect.width / 2;
-            return { top, left, outside: !getIsInside(top, left), position: 'above' };
+            return { top, left, outside: !getIsInside(top, left), position: 'above' as TooltipPosition };
           }
           case 'below': {
             const top = rootRect.top + rootRect.height;
             const left = rootRect.left + rootRect.width / 2 - innerRect.width / 2;
-            return { top, left, outside: !getIsInside(top, left), position: 'below' };
+            return { top, left, outside: !getIsInside(top, left), position: 'below' as TooltipPosition };
           }
           case 'left': {
             const left = rootRect.left - innerRect.width;
             const top = rootRect.top + rootRect.height / 2 - innerRect.height / 2;
-            return { left, top, outside: !getIsInside(top, left), position: 'left' };
+            return { left, top, outside: !getIsInside(top, left), position: 'left' as TooltipPosition };
           }
           case 'right': {
             const left = rootRect.left + rootRect.width;
             const top = rootRect.top + rootRect.height / 2 - innerRect.height / 2;
-            return { left, top, outside: !getIsInside(top, left), position: 'right' };
+            return { left, top, outside: !getIsInside(top, left), position: 'right' as TooltipPosition };
           }
           default: {
             break;
@@ -182,6 +188,10 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
 
     const generatedId = useGeneratedId(id);
 
+    const tooltipInner = (
+      <div className="arm-tooltip-content">{typeof content === 'string' || typeof content === 'number' ? <p>{content}</p> : content}</div>
+    );
+
     return (
       <div
         {...(wrapperAttributes || {})}
@@ -199,19 +209,26 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
           portalTo={portalTo}
           portalToSelector={portalToSelector}
           isOpen={isOpen}
-          closeOnBackgroundClick={false}
           style={style}
           data-position={position?.position}
           role="tooltip"
           data-is-text={typeof content === 'string' || typeof content === 'number'}
-          closeOnWindowClick={openOnClick}
+          closeOnBackgroundClick={openOnClick}
+          closeOnClick={openOnClick}
           closeOnWindowBlur
           data-centre-on-mobile={centreOnMobile}
+          onClick={() => setHasClicked(!hasClicked)}
           {...nativeProps}
         >
-          <div id={generatedId} className="arm-tooltip-inner" ref={setInnerRef}>
-            <div className="arm-tooltip-content">{typeof content === 'string' || typeof content === 'number' ? <p>{content}</p> : content}</div>
-          </div>
+          {showTail ? (
+            <Tail id={generatedId} className="arm-tooltip-inner" ref={setInnerRef} position={Directions.swapPosition(position?.position || 'below')}>
+              {tooltipInner}
+            </Tail>
+          ) : (
+            <div id={generatedId} className="arm-tooltip-inner" ref={setInnerRef}>
+              {tooltipInner}
+            </div>
+          )}
         </Modal>
       </div>
     );

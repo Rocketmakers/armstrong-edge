@@ -125,24 +125,27 @@
 }
 
 @mixin triangle-up($size, $colour) {
-  border-left: $arm-tail-size solid transparent;
-  border-right: $arm-tail-size solid transparent;
-  border-bottom: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
+  border-left: $size solid transparent;
+  border-right: $size solid transparent;
+  border-bottom: $size solid $colour;
 }
+
 @mixin triangle-down($size, $colour) {
-  border-left: $arm-tail-size solid transparent;
-  border-right: $arm-tail-size solid transparent;
-  border-top: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
+  border-left: $size solid transparent;
+  border-right: $size solid transparent;
+  border-top: $size solid $colour;
 }
+
 @mixin triangle-left($size, $colour) {
-  border-top: $arm-tail-size solid transparent;
-  border-bottom: $arm-tail-size solid transparent;
-  border-right: $arm-tail-size solid var(--arm-tail-colour, $tail-colour);
+  border-top: $size solid transparent;
+  border-bottom: $size solid transparent;
+  border-right: $size solid $colour;
 }
+
 @mixin triangle-right($size, $colour) {
-  border-top: $arm-tail-size solid transparent;
-  border-bottom: $arm-tail-size solid transparent;
-  border-left: $arm-tail-size solid var(--arm-tail-colour, $arm-tail-colour);
+  border-top: $size solid transparent;
+  border-bottom: $size solid transparent;
+  border-left: $size solid $colour;
 }
 
 // responsiveness

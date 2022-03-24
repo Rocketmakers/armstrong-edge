@@ -15,15 +15,17 @@ export default StoryUtils.createMeta(Tail, 'Display', 'Tail', {});
 
 export const Default = () => {
   return (
-    <Tail position="above">
-      <p>Check out my fun tail</p>
-    </Tail>
+    <div style={{ '--arm-tail-colour': 'black' } as React.CSSProperties}>
+      <Tail position="above">
+        <p>Check out my fun tail</p>
+      </Tail>
+    </div>
   );
 };
 
 export const OtherDirections = () => {
   return (
-    <>
+    <div style={{ '--arm-tail-colour': 'black' } as React.CSSProperties}>
       <Tail position="above">
         <p>Check out my fun tail</p>
       </Tail>
@@ -36,6 +38,6 @@ export const OtherDirections = () => {
       <Tail position="right">
         <p>Check out my fun tail</p>
       </Tail>
-    </>
+    </div>
   );
 };
