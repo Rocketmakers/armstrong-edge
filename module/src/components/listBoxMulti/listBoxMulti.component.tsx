@@ -40,7 +40,7 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   /** fired when the value changes */
   onValueChange?: (neWValue: Id[]) => void;
 
-  /** if set, will render a string like "X selected" instead of the selected values as tags */
+  /** if set, will render the result of this function instead of Tags, i.e. a string like "X selected" or a custom component */
   renderPreview?: (selectedOptions: IListBoxOption<Id, TSelectData>[]) => React.ReactChild;
 }
 
