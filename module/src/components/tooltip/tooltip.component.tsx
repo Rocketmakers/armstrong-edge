@@ -182,8 +182,6 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
 
     const generatedId = useGeneratedId(id);
 
-    console.log(centreOnMobile);
-
     return (
       <div
         {...(wrapperAttributes || {})}
