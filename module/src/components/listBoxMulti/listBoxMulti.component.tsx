@@ -142,7 +142,7 @@ export const ListBoxMulti = React.forwardRef(
         focusableWrapper
         currentValue={boundValue}
         childRootElementSelector=".arm-input-inner"
-        closeOnSelection={false}
+        closeOnSelection={closeOnSelection}
         className={ClassNames.concat('arm-listbox-multi-wrapper', wrapperClassName)}
         noItemsText={noItemsText}
         contentClassName={ClassNames.concat('arm-listbox-options', dropdownClassName)}
