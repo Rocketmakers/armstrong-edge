@@ -14,7 +14,19 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<
       IListBoxProps<Id, TSelectData>,
-      'options' | 'onSelectOption' | 'selectOverlayIcon' | 'placeholder' | 'wrapperClassName' | 'deleteButton' | 'noItemsText' | 'dropdownClassName'
+      | 'options'
+      | 'onSelectOption'
+      | 'selectOverlayIcon'
+      | 'placeholder'
+      | 'wrapperClassName'
+      | 'deleteButton'
+      | 'noItemsText'
+      | 'dropdownClassName'
+      | 'closeOnScroll'
+      | 'closeOnWindowBlur'
+      | 'closeOnWindowClick'
+      | 'closeOnBackgroundClick'
+      | 'closeOnSelection'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -61,6 +73,11 @@ export const ListBoxMulti = React.forwardRef(
       wrapperClassName,
       noItemsText,
       dropdownClassName,
+      closeOnScroll,
+      closeOnWindowBlur,
+      closeOnWindowClick,
+      closeOnBackgroundClick,
+      closeOnSelection,
     }: IListBoxMultiProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -129,6 +146,10 @@ export const ListBoxMulti = React.forwardRef(
         className={ClassNames.concat('arm-listbox-multi-wrapper', wrapperClassName)}
         noItemsText={noItemsText}
         contentClassName={ClassNames.concat('arm-listbox-options', dropdownClassName)}
+        closeOnScroll={closeOnScroll}
+        closeOnWindowBlur={closeOnWindowBlur}
+        closeOnWindowClick={closeOnWindowClick}
+        closeOnBackgroundClick={closeOnBackgroundClick}
       >
         <InputWrapper
           ref={internalRef}
@@ -202,4 +223,5 @@ export const ListBoxMulti = React.forwardRef(
 ListBoxMulti.defaultProps = {
   selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
   deleteButton: true,
+  closeOnSelection: false,
 };
