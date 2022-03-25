@@ -4,6 +4,7 @@ import {
   Button,
   useDialog,
   useInterval,
+  Modal,
 } from "@rocketmakers/armstrong-edge";
 import * as React from "react";
 
@@ -35,9 +36,17 @@ export const DialogExample: React.FC = () => {
   const [counter, setCounter] = React.useState(0)
   useInterval(() => setCounter(counter+1), 500, { setOnMount: true })
 
+  const [isOpen, setIsOpen ] = React.useState(false)
+
   return (
     <>
       <Button onClick={getThing}>open le dialog</Button>
+      <br/>
+      <Button onClick={()=>setIsOpen(true)}>open le modal</Button>
+
+      <Modal isOpen={isOpen} onOpenChange={setIsOpen} closeTime={0}>
+        HELLO
+      </Modal>
     </>
   );
 };
