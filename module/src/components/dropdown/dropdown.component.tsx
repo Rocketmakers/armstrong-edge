@@ -7,18 +7,13 @@ import { ClassNames } from '../../utils/classNames';
 import { Globals } from '../../utils/globals';
 import { Maths } from '../../utils/maths';
 import { AutoResizer } from '../autoResizer';
-import { Modal } from '../modal';
+import { IModalProps, Modal } from '../modal';
 import { IPortalProps } from '../portal';
 
 export interface IDropdownProps
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>,
-    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
-  /** should the dropdown be rendered */
-  isOpen: boolean;
-
-  /** fired when the user attempts to close the dropdown */
-  onOpenChange: (open: boolean) => void;
-
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
+    Pick<IModalProps, 'isOpen' | 'onOpenChange' | 'closeOnWindowBlur' | 'closeOnWindowClick' | 'closeOnBackgroundClick'> {
   /** rendered inside the dropdown */
   dropdownContent: JSX.Element;
 
@@ -83,6 +78,9 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       shouldScrollContent,
       edgeDetectionMargin,
       reopenOnWindowFocusWhileFocused,
+      closeOnWindowBlur,
+      closeOnWindowClick,
+      closeOnBackgroundClick,
       ...htmlProps
     },
     ref
@@ -161,10 +159,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           ((event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
             !(event.target instanceof HTMLDivElement))
         ) {
-          onOpenChange(false);
+          onOpenChange?.(false);
         }
       },
-      [onOpenChange, closeOnScroll]
+      [onOpenChange, closeOnScroll, isOpen]
     );
 
     useEventListener('scroll', onScrollDocument, Globals.Document, { capture: true, passive: true });
@@ -174,7 +172,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onMouseDownEvent = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         if (openWhenClickInside) {
-          onOpenChange(closeWhenClickInside ? !isOpen : true);
+          onOpenChange?.(closeWhenClickInside ? !isOpen : true);
           setClicking(true);
         }
         onMouseDown?.(event);
@@ -186,7 +184,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const onFocusEvent = React.useCallback(
       (event: React.FocusEvent<HTMLDivElement>) => {
         if (openWhenFocusInside && (!windowBlurred || reopenOnWindowFocusWhileFocused)) {
-          onOpenChange(true);
+          onOpenChange?.(true);
         }
 
         onFocus?.(event);
@@ -213,7 +211,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         if (clicking && !newIsOpen) {
           setClicking(false);
         } else {
-          onOpenChange(newIsOpen);
+          onOpenChange?.(newIsOpen);
         }
       },
       [onOpenChange, clicking]
@@ -246,9 +244,9 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           onOpenChange={modalOnOpenChange}
           onScroll={onScrollContent}
           onMouseDown={onMouseDownContent}
-          closeOnWindowBlur
-          closeOnWindowClick
-          closeOnBackgroundClick={false}
+          closeOnWindowBlur={closeOnWindowBlur}
+          closeOnWindowClick={closeOnWindowClick}
+          closeOnBackgroundClick={closeOnBackgroundClick}
           data-scrolling={shouldScrollContent}
         >
           <AutoResizer onSizeChange={onSizeChange} resizeHorizontal={false}>
@@ -266,4 +264,6 @@ Dropdown.defaultProps = {
   closeWhenClickInside: true,
   shouldScrollContent: true,
   edgeDetectionMargin: 10,
+  closeOnWindowBlur: true,
+  closeOnWindowClick: true,
 };

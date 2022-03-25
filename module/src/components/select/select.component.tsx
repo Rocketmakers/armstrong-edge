@@ -39,8 +39,8 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   /** the icon overlaying the select element to the right, usually a down arrow */
   selectOverlayIcon?: IIcon<IconSet> | JSX.Element;
 
-  /** should allow deletion of value with a cross */
-  deleteButton?: boolean;
+  /** should allow deletion of value with a button with a cross or a given icon */
+  deleteButton?: boolean | IIcon<IconSet>;
 
   /** the current value of the select */
   value?: Id;
@@ -146,6 +146,7 @@ export const Select = React.forwardRef(
               selectOverlayIcon
             ))}
         </div>
+
         {deleteButton && boundValue && (
           <IconButton
             className="arm-select-delete"
@@ -154,7 +155,7 @@ export const Select = React.forwardRef(
               event.stopPropagation();
             }}
             onMouseDown={(e) => e.stopPropagation()}
-            icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+            icon={typeof deleteButton === 'boolean' ? IconUtils.getIconDefinition('Icomoon', 'cross2') : deleteButton}
             minimalStyle
           />
         )}
