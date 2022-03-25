@@ -40,6 +40,9 @@ export interface IModalProps
 
   /** The amount of time, in ms, to set data-closing true on the dialog before it has closed - can be used to animate out the modal */
   closeTime?: number;
+
+  /** should centre the modal (adds data-centred="true" attribute) */
+  centred?: boolean;
 }
 
 /**
@@ -70,6 +73,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
       wrapperClassName,
       disableClose,
       closeTime,
+      centred,
       ...nativeProps
     },
     ref
@@ -134,6 +138,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
           data-is-closing={isClosing}
           aria-hidden={isClosing}
           tabIndex={isClosing ? -1 : undefined}
+          data-centred={centred}
         >
           <div role="dialog" aria-modal="true" {...nativeProps} className={ClassNames.concat('arm-modal', className)} ref={internalRef}>
             {children}
@@ -147,4 +152,5 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
 Modal.defaultProps = {
   closeOnBackgroundClick: true,
   closeTime: 300,
+  centred: true,
 };
