@@ -34,7 +34,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
 
     const titleId = title && `${id}_label`;
 
-    const onClickClose = React.useCallback(async () => {
+    const close = React.useCallback(async () => {
       if (!disableClose) {
         const shouldClose = await onClose?.();
 
@@ -68,10 +68,10 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
               </p>
             )}
 
-            <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={onClickClose} />
+            <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={close} />
           </div>
         ) : (
-          <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={onClickClose} />
+          <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={close} />
         )}
         <div className="arm-dialog-inner">{children}</div>
       </Modal>
