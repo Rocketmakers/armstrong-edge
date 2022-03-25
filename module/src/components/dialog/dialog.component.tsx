@@ -5,6 +5,7 @@ import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IModalProps, Modal } from '../modal';
+import { ModalUtils } from '../modal/modal.utils';
 
 export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
   /** the value to render as the title, will have necessary aria tag added */
@@ -34,16 +35,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
 
     const titleId = title && `${id}_label`;
 
-    const close = React.useCallback(async () => {
-      if (!disableClose) {
-        const shouldClose = await onClose?.();
-
-        if (typeof shouldClose === 'boolean' && shouldClose === false) {
-          return;
-        }
-        onOpenChange?.(false);
-      }
-    }, [onOpenChange]);
+    const close = React.useCallback(() => ModalUtils.closeModal({ disableClose, onClose, onOpenChange }), [onOpenChange, disableClose, onClose]);
 
     return (
       <Modal

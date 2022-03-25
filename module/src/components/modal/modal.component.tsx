@@ -4,6 +4,7 @@ import { useDelayedDependentSwitch, useEventListener } from '../../hooks';
 import { ClassNames, Globals } from '../../utils';
 import { IPortalProps, Portal } from '../portal';
 import { useModalLayerElement } from './modal.context';
+import { ModalUtils } from './modal.utils';
 
 export interface IModalProps
   extends Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
@@ -85,17 +86,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     const internalRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!);
 
-    const close = React.useCallback(async () => {
-      if (!disableClose) {
-        const shouldClose = await onClose?.();
-
-        if (typeof shouldClose === 'boolean' && shouldClose === false) {
-          return;
-        }
-
-        onOpenChange?.(false);
-      }
-    }, [onOpenChange, disableClose, onClose]);
+    const close = React.useCallback(() => ModalUtils.closeModal({ disableClose, onClose, onOpenChange }), [onOpenChange, disableClose, onClose]);
 
     /** ensure that clicks initiated inside the modal don't count as clicks on the wrapper if they end outside it (i.e. if a user drags the mouse from inside the modal to the background, it'll still count as a click on that background) */
     const [mouseDownIsInsideModal, setMouseDownIsInsideModal] = React.useState(false);
