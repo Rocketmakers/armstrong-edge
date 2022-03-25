@@ -38,7 +38,7 @@ export interface IModalProps
   /** should darken the background */
   darkenBackground?: boolean;
 
-  /** The amount of time, in ms, to set data-closing true on the dialog before it has closed */
+  /** The amount of time, in ms, to set data-closing true on the dialog before it has closed - can be used to animate out the modal */
   closeTime?: number;
 }
 

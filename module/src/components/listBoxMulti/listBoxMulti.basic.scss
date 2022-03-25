@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   margin-right: $spacing-large;
-  min-width: 160px;
+  min-width: $arm-listbox-min-width;
 
   .arm-tag {
     margin-right: $spacing-xsmall;
