@@ -194,6 +194,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
           data-position={position?.position}
           role="tooltip"
           data-is-text={typeof content === 'string' || typeof content === 'number'}
+          centred={false}
           {...nativeProps}
         >
           <div id={generatedId} className="arm-tooltip-inner" ref={setInnerRef}>
