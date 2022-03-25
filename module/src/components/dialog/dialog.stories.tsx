@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button } from '../..';
+import { Button, useConfirmationDialog } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { Dialog } from './dialog.component';
@@ -66,6 +66,22 @@ export const CustomCloseIcon = () => {
 
       <Dialog isOpen={open} onOpenChange={setOpen} title="I'm the dialog" closeButtonIcon={IconUtils.getIconDefinition('Icomoon', 'station')}>
         I'm in a Dialog
+      </Dialog>
+    </>
+  );
+};
+
+export const HandleClose = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const [openConfirmationDialog] = useConfirmationDialog({ content: 'Are you sure you want to close this dialog?' });
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>open dialog</Button>
+
+      <Dialog isOpen={open} onOpenChange={setOpen} onClose={() => openConfirmationDialog()}>
+        Try and close me
       </Dialog>
     </>
   );

@@ -42,8 +42,8 @@ export interface IModalProps
   /** The amount of time, in ms, to set data-closing true on the dialog before it has closed - can be used to animate out the modal */
   closeTime?: number;
 
-  /** Run whenever the modal is closed internally */
-  onClose?: () => void;
+  /** Run whenever the modal is closed internally - can also return a boolean to tell the modal whether to close, and can be async (i.e. if you want to make a request or pop up another dialog before closing this one) */
+  onClose?: () => void | boolean | Promise<boolean>;
 }
 
 /**
@@ -85,12 +85,17 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     const internalRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!);
 
-    const close = React.useCallback(() => {
+    const close = React.useCallback(async () => {
       if (!disableClose) {
-        onClose?.();
+        const shouldClose = await onClose?.();
+
+        if (typeof shouldClose === 'boolean' && shouldClose === false) {
+          return;
+        }
+
         onOpenChange?.(false);
       }
-    }, [onOpenChange, disableClose]);
+    }, [onOpenChange, disableClose, onClose]);
 
     /** ensure that clicks initiated inside the modal don't count as clicks on the wrapper if they end outside it (i.e. if a user drags the mouse from inside the modal to the background, it'll still count as a click on that background) */
     const [mouseDownIsInsideModal, setMouseDownIsInsideModal] = React.useState(false);

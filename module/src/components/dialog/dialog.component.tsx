@@ -26,17 +26,28 @@ export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
  * see: https://www.w3.org/WAI/GL/wiki/Using_ARIA_role%3Ddialog_to_implement_a_modal_dialog_box
  */
 export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
-  ({ children, className, wrapperClassName, id: htmlId, title, onOpenChange, closeButtonIcon, titleIcon, ...modalProps }, ref) => {
+  (
+    { children, className, wrapperClassName, id: htmlId, title, onOpenChange, closeButtonIcon, titleIcon, onClose, disableClose, ...modalProps },
+    ref
+  ) => {
     const id = useGeneratedId(htmlId);
 
     const titleId = title && `${id}_label`;
 
-    const onClickClose = React.useCallback(() => {
-      onOpenChange?.(false);
+    const onClickClose = React.useCallback(async () => {
+      if (!disableClose) {
+        const shouldClose = await onClose?.();
+
+        if (typeof shouldClose === 'boolean' && shouldClose === false) {
+          return;
+        }
+        onOpenChange?.(false);
+      }
     }, [onOpenChange]);
 
     return (
       <Modal
+        {...modalProps}
         className={ClassNames.concat('arm-dialog', className)}
         wrapperClassName={ClassNames.concat('arm-dialog-wrapper', wrapperClassName)}
         darkenBackground
@@ -44,7 +55,8 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
         aria-labelledby={titleId}
         onOpenChange={onOpenChange}
         ref={ref}
-        {...modalProps}
+        onClose={onClose}
+        disableClose={disableClose}
       >
         {!!title || !!titleIcon ? (
           <div className="arm-dialog-top">
