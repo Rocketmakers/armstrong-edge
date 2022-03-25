@@ -1,4 +1,4 @@
-$arm-calendar-select-min-width: 60px;
+$arm-calendar-select-width: 57px;
 
 .arm-calendar-select {
   margin-right: 0;
@@ -28,7 +28,7 @@ $arm-calendar-select-min-width: 60px;
 }
 
 .arm-dropdown-content.arm-calendar-input-dropdown-content {
-  width: $arm-calendar-select-min-width;
+  width: $arm-calendar-display-width;
 
   .arm-calendar-display {
     max-width: none;
