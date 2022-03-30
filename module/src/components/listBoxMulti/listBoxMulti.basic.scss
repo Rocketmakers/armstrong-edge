@@ -1,8 +1,3 @@
-.arm-listbox-multi-wrapper {
-  width: 100%;
-  max-width: $arm-input-width;
-}
-
 .arm-listbox-multi {
   cursor: pointer;
 
@@ -22,6 +17,7 @@
   display: flex;
   align-items: center;
   margin-right: $spacing-large;
+  min-width: $arm-listbox-min-width;
 
   .arm-tag {
     margin-right: $spacing-xsmall;

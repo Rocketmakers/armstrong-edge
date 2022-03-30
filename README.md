@@ -50,6 +50,7 @@ Otherwise, raise an issue in Github and follow the issue template
 First cd into the root of the repo and run
 
 ```sh
+asdf install
 npm install
 ```
 

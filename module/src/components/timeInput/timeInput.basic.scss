@@ -1,14 +1,6 @@
-$arm-time-input-width: 47px !default;
-
 .arm-time-input {
-  max-width: max-content;
-
   .arm-input {
     margin-right: 0;
-
-    .arm-input-base-input {
-      width: $arm-time-input-width;
-    }
   }
 
   .arm-time-input-between-inputs {
