@@ -17,10 +17,10 @@ export interface IDropdownProps
   /** rendered inside the dropdown */
   dropdownContent: JSX.Element;
 
-  /** CSS className property */
+  /** CSS className property - applied to the element wrapping its children, for the actual dropdown itself see contentClassName and modalHtmlProps */
   className?: string;
 
-  /** CSS className for content wrapper */
+  /** CSS className for the div that wraps the actual dropdown */
   contentClassName?: string;
 
   /** should open when the user clicks on children */
@@ -41,11 +41,14 @@ export interface IDropdownProps
   /** should the height be limited and scrolling be enabled - defaults to true */
   shouldScrollContent?: boolean;
 
-  /** the margin in px around the edge of the innerWindow used to detect whether the dropdown is intersecting the edge - used to reposition it */
+  /** the margin in px around the edge of the innerWindow used to detect whether the dropdown is intersecting the edge, used to reposition it */
   edgeDetectionMargin?: number;
 
-  /** if the user blurs then focuses the browser window while the element is focused, it should reopen */
+  /** if the user blurs then focuses the browser window while the element is still focused, it should reopen - false by default */
   reopenOnWindowFocusWhileFocused?: boolean;
+
+  /** props to spread into the modal's root div */
+  modalHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>;
 }
 
 export interface IDropdownRef {
@@ -56,7 +59,12 @@ export interface IDropdownRef {
   modalRef: React.RefObject<HTMLDivElement | undefined>;
 }
 
-/** Extends the modal (see component modal docs) but positions the modal below the children of the component */
+/**
+ * Extends the modal (see component modal docs) but positions the modal below the children of the component
+ *
+ * Default html props given to this component are applied to the static div that wraps its children. To supply html props to the modal div
+ * see modalHtmlProps
+ */
 export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<IDropdownProps>>(
   (
     {
@@ -81,7 +89,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       closeOnWindowBlur,
       closeOnWindowClick,
       closeOnBackgroundClick,
-      onClick,
+      modalHtmlProps,
       ...htmlProps
     },
     ref
@@ -180,11 +188,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       },
       [openWhenClickInside, closeWhenClickInside, onOpenChange, onMouseDown, isOpen]
     );
-
-    const onClickEvent = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-      onClick?.(event);
-    }, []);
-
     // open on focus
     const onFocusEvent = React.useCallback(
       (event: React.FocusEvent<HTMLDivElement>) => {
@@ -242,9 +245,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
         </div>
 
         <Modal
+          {...modalHtmlProps}
           portalTo={portalTo}
           portalToSelector={portalToSelector}
-          className={ClassNames.concat('arm-dropdown-content', contentClassName)}
+          className={ClassNames.concat('arm-dropdown-content', contentClassName, modalHtmlProps?.className)}
           style={modalStyle}
           ref={setModalRef}
           isOpen={isOpen}
