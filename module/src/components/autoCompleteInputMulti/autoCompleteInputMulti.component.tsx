@@ -77,7 +77,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
     }: IAutoCompleteInputMultiProps<Id>,
     ref
   ) => {
-    const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingTools(
+    const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingState(
       bind,
       {
         value,

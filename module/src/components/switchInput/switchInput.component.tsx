@@ -67,7 +67,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
     },
     ref
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value: checked,
       validationErrorMessages,
       onChange,

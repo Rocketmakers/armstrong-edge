@@ -2,7 +2,7 @@ import { isSameMinute, isValid } from 'date-fns';
 import * as React from 'react';
 
 import { Form } from '../..';
-import { IBindingProps, useBindingTools } from '../../hooks/form';
+import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ClassNames, Dates } from '../../utils';
 import { CalendarInput, ICalendarInputProps } from '../calendarInput';
 import { InputWrapper } from '../inputWrapper';
@@ -73,7 +73,7 @@ export const DateTimeInput = React.forwardRef(
     }: IDateTimeInputProps<TValue>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
-    const [selectedDateTime, setSelectedDateTime, bindConfig] = useBindingTools(bind, {
+    const [selectedDateTime, setSelectedDateTime, bindConfig] = useBindingState(bind, {
       validationErrorIcon: errorIcon,
       validationErrorMessages,
       validationMode,

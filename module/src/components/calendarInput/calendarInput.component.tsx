@@ -174,7 +174,7 @@ export const CalendarInput = React.forwardRef(
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const [selectedDate, setSelectedDate, bindConfig] = Form.useBindingTools(bind, {
+    const [selectedDate, setSelectedDate, bindConfig] = Form.useBindingState(bind, {
       validationErrorMessages,
       validationMode,
       validationErrorIcon: errorIcon,

@@ -394,9 +394,9 @@ export function use<TData extends object>(
   return useForm(dataOrBinder, formConfig);
 }
 
-/** The values and callbacks returned from the useBindingTools hook */
+/** The values and callbacks returned from the useBindingState hook */
 
-interface IUseBindingToolsReturnUtils<TData> {
+interface IUseBindingStateReturnUtils<TData> {
   /** Take any value and use the fromData formatter on it */
   getFormattedValueFromData: (val?: TData) => TData | undefined;
 
@@ -419,10 +419,10 @@ interface IUseBindingToolsReturnUtils<TData> {
   shouldShowValidationErrorMessage?: boolean;
 }
 
-type UseBindingToolsReturn<TData> = [TData | undefined, ((newValue: TData) => void) | undefined, IUseBindingToolsReturnUtils<TData>];
+type UseBindingStateReturn<TData> = [TData | undefined, ((newValue: TData) => void) | undefined, IUseBindingStateReturnUtils<TData>];
 
 /** Used as overrides for the bind functionality, for use with component props */
-interface IUseBindingToolsOverrides<TData> {
+interface IUseBindingStateOverrides<TData> {
   /** The current value, will override the value from bind if both are provided */
   value?: TData;
 
@@ -440,11 +440,14 @@ interface IUseBindingToolsOverrides<TData> {
 }
 
 /**
- * An optional hook for internal form component use. Takes a bind and some optional overrides and ensures that onChange and value
- * use the bind's formatters
+ * An optional hook for internal form component use
+ *
+ * Returns a value and setter for the current input's state in a Form.use from a bind
+ *
+ * Refer to internal Armstrong code for Input for a clear example
  */
 
-export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingToolsOverrides<TData>): UseBindingToolsReturn<TData> {
+export function useBindingState<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingStateOverrides<TData>): UseBindingStateReturn<TData> {
   const value = React.useMemo(
     () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind.value) ?? bind?.value,
     [overrides?.value, bind?.bindConfig?.format?.fromData, bind?.value]
@@ -486,4 +489,14 @@ export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: 
       shouldShowValidationErrorMessage: validationMode === 'message' || validationMode === 'both',
     },
   ];
+}
+
+/** DEPRECATED - useBindingTools has been renamed useBindingState */
+export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingStateOverrides<TData>): UseBindingStateReturn<TData> {
+  React.useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.warn('useBindingTools has been renamed useBindingState - please update this usage of it');
+  }, []);
+
+  return useBindingState<TData>(bind, overrides);
 }

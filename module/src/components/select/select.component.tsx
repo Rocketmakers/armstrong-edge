@@ -78,7 +78,7 @@ export const Select = React.forwardRef(
     const internalRef = React.useRef<HTMLSelectElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, { value, validationErrorMessages });
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, { value, validationErrorMessages });
 
     const clearSelect = React.useCallback(() => {
       onSelectOption?.(undefined);

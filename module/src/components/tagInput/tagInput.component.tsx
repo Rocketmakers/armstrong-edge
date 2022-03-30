@@ -116,7 +116,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
       onChange,
       validationErrorMessages,

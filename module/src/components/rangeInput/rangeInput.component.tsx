@@ -59,7 +59,7 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
     },
     ref
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
       onChange: onValueChange,
       validationErrorMessages,

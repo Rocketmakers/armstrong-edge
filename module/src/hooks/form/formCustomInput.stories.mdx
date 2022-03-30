@@ -18,7 +18,7 @@ interface ICustomTextInputProps {
 }
 
 const CustomTextInput: React.FC<ICustomTextInputProps> = (props) => {
-  const [boundValue, boundOnChange, { myValidationErrorMessages }] = Form.useBindingTools(props.bind);
+  const [boundValue, boundOnChange, { myValidationErrorMessages }] = Form.useBindingState(props.bind);
 
   return (
     <>
@@ -30,7 +30,7 @@ const CustomTextInput: React.FC<ICustomTextInputProps> = (props) => {
 };
 ```
 
-There are plenty of advanced tools within the bind prop, and the use of the `useBindingTools` prop is entirely optional, as long as you're careful to implement the features of the form binder within your custom input then you're good to go!
+There are plenty of advanced tools within the bind prop, and the use of the `useBindingState` prop is entirely optional, as long as you're careful to implement the features of the form binder within your custom input then you're good to go!
 
 Here's the full list of tools contained within a `bind` that your custom inputs can interface with:
 

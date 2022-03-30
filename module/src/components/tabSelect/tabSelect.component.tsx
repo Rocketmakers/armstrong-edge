@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IBindingProps, useBindingTools } from '../../hooks/form';
+import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps } from '../inputWrapper';
@@ -45,7 +45,7 @@ export const TabSelect = React.forwardRef(
     }: ITabSelectProps<Id>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       onChange: onValueChange,
       value,
       validationErrorMessages,
