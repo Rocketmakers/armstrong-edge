@@ -16,6 +16,7 @@
     "@rocketmakers/api-hooks": "^1.1.5",
     "@rocketmakers/armstrong": "0.0.1-alpha.69",
     "history": "^5.0.0",
+    "react-fastclick": "^3.0.2",
     "react-router-dom": "^5.2.0",
     "sass": "^1.35.2",
     "uuid": "^8.3.2"
