@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IBindingProps, useBindingTools } from '../../hooks/form';
+import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 
@@ -26,7 +26,7 @@ export interface ICharacterLimitProps {
 
 /** Render a character limit from a bound value, showing as an error if the user  */
 export const CharacterLimit: React.FC<ICharacterLimitProps> = ({ bind, limit, shouldEnforce, value, className, exceedsIcon }) => {
-  const [boundValue, setBoundValue] = useBindingTools(bind, { value });
+  const [boundValue, setBoundValue] = useBindingState(bind, { value });
 
   const exceeded = boundValue && boundValue.length > limit;
 

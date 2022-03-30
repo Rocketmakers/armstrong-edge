@@ -104,7 +104,7 @@ export const AutoCompleteInput = React.forwardRef(
     }: IAutoCompleteInputProps<Id>,
     ref
   ) => {
-    const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingTools(
+    const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingState(
       bind,
       {
         value,

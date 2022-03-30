@@ -60,7 +60,7 @@ export const RadioInputList = React.forwardRef(
     }: IRadioInputListProps<Id>,
     ref
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
       validationErrorMessages,
       validationErrorIcon: errorIcon,

@@ -52,6 +52,7 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input
   @include fill;
 
   appearance: none;
+  -webkit-appearance: none;
   border: 0;
   outline: none;
   background-color: transparent;
