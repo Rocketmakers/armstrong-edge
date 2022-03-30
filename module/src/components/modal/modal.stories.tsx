@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { StoryUtils } from '../../stories/storyUtils';
 import { Button } from '../button';
+import { useConfirmationDialog } from '../dialog';
 import { Modal } from './modal.component';
 
 /** metadata */
@@ -22,6 +23,20 @@ export const Default = () => {
       <Button onClick={() => setOpen(true)}>open modal</Button>
 
       <Modal isOpen={open} onOpenChange={setOpen}>
+        I'm in a modal
+      </Modal>
+    </>
+  );
+};
+
+export const NotCentred = () => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>open modal</Button>
+
+      <Modal isOpen={open} onOpenChange={setOpen} centred={false}>
         I'm in a modal
       </Modal>
     </>
@@ -71,6 +86,22 @@ export const CloseOnWindowBlur = () => {
 
       <Modal isOpen={open} onOpenChange={setOpen} closeOnBackgroundClick={false} closeOnWindowBlur>
         Click outside the browser window to close
+      </Modal>
+    </>
+  );
+};
+
+export const HandleClose = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const [openConfirmationDialog] = useConfirmationDialog({ content: 'Are you sure you want to close this modal?' });
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>open modal</Button>
+
+      <Modal isOpen={open} onOpenChange={setOpen} onClose={() => openConfirmationDialog()} darkenBackground>
+        Try and close me
       </Modal>
     </>
   );

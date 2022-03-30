@@ -1,10 +1,8 @@
 .arm-text-area {
-  textarea {
-    border: 0;
-    padding: $spacing-xsmall 0;
+  max-width: $arm-input-width-large;
+  width: 100%;
 
-    &:focus {
-      border: 0;
-    }
+  textarea {
+    padding: $spacing-xsmall 0;
   }
 }
