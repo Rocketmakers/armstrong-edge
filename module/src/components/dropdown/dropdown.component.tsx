@@ -81,6 +81,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       closeOnWindowBlur,
       closeOnWindowClick,
       closeOnBackgroundClick,
+      onClick,
       ...htmlProps
     },
     ref
@@ -180,6 +181,10 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       [openWhenClickInside, closeWhenClickInside, onOpenChange, onMouseDown, isOpen]
     );
 
+    const onClickEvent = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+      onClick?.(event);
+    }, []);
+
     // open on focus
     const onFocusEvent = React.useCallback(
       (event: React.FocusEvent<HTMLDivElement>) => {
@@ -224,15 +229,17 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     useEventListener('focus', onWindowFocus);
 
     return (
-      <div
-        {...htmlProps}
-        className={ClassNames.concat('arm-dropdown', className)}
-        onMouseDown={onMouseDownEvent}
-        ref={rootRef}
-        data-is-open={isOpen}
-        onFocus={onFocusEvent}
-      >
-        {children}
+      <>
+        <div
+          {...htmlProps}
+          className={ClassNames.concat('arm-dropdown', className)}
+          onMouseDown={onMouseDownEvent}
+          ref={rootRef}
+          data-is-open={isOpen}
+          onFocus={onFocusEvent}
+        >
+          {children}
+        </div>
 
         <Modal
           portalTo={portalTo}
@@ -254,7 +261,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
             <div className="arm-dropdown-content-inner">{dropdownContent}</div>
           </AutoResizer>
         </Modal>
-      </div>
+      </>
     );
   }
 );
