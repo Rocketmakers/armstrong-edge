@@ -73,6 +73,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
       closeOnWindowBlur,
       closeOnWindowClick,
       closeOnSelection,
+
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
@@ -173,7 +174,9 @@ export const AutoCompleteInputMulti = React.forwardRef(
         allowFreeText && textInputInternalValue && !options?.find((option) => getOptionName(option) === textInputInternalValue);
 
       return [
+        // spread in a value that is the currently typed option to allow that to be bound if free text is allowed
         ...(showCurrentlyTypingOption ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
+        // spread in the current value, if it is not currently in the list of options (i.e. options are remote and current option isn't currently given)
         ...(boundValue || [])
           .map((item) => parseOptionTag(item))
           .filter((item) => {
@@ -182,6 +185,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
             return notAnOption && filterByTextInputValue;
           })
           .map<IDropdownItem>((item) => ({ content: item.name || item.id.toString(), id: item.id })),
+        // spread in given options
         ...filteredOptions.map((option) => ({
           content: option.content || getOptionName(option),
           id: option.id,
@@ -223,6 +227,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
             closeOnScroll={closeOnScroll}
             closeOnWindowBlur={closeOnWindowBlur}
             closeOnWindowClick={closeOnWindowClick}
+            stretch
           >
             <TagInput
               {...textInputProps}

@@ -140,6 +140,7 @@ export const ListBox = React.forwardRef(
         closeOnWindowBlur={closeOnWindowBlur}
         closeOnWindowClick={closeOnWindowClick}
         closeOnSelection={closeOnSelection}
+        stretch
       >
         <InputWrapper
           ref={internalRef}

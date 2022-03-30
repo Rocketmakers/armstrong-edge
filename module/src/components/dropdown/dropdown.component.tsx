@@ -49,6 +49,12 @@ export interface IDropdownProps
 
   /** props to spread into the modal's root div */
   modalHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>;
+
+  /** should the modal attempt to fill the width of the parent element */
+  stretch?: boolean;
+
+  /** how should the dropdown align horizontally to the child element - if stretch is true, used if wider than the child element */
+  alignment?: 'left' | 'centre' | 'right';
 }
 
 export interface IDropdownRef {
@@ -90,6 +96,8 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       closeOnWindowClick,
       closeOnBackgroundClick,
       modalHtmlProps,
+      alignment,
+      stretch,
       ...htmlProps
     },
     ref
@@ -139,14 +147,28 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     );
 
     // get left position of modal from root rect and modal's size
-    const left = React.useMemo(
-      () =>
-        rootRect &&
-        modalSize &&
-        Maths.clamp(rootRect.left, edgeDetectionMargin!, (windowSize.innerWidth || 0) - modalSize.width - edgeDetectionMargin!),
-      [rootRect?.left, modalSize?.width, windowSize.innerWidth, edgeDetectionMargin]
-    );
+    const left = React.useMemo(() => {
+      if (rootRect && modalSize) {
+        let leftToClamp = 0;
 
+        switch (alignment) {
+          case 'left':
+          default:
+            leftToClamp = rootRect.left;
+            break;
+          case 'centre':
+            leftToClamp = rootRect.left + rootRect.width / 2 - modalSize.width / 2;
+            break;
+          case 'right':
+            leftToClamp = rootRect.right - modalSize.width;
+            break;
+        }
+
+        return Maths.clamp(leftToClamp, edgeDetectionMargin!, (windowSize.innerWidth || 0) - modalSize.width - edgeDetectionMargin!);
+      }
+    }, [rootRect?.left, modalSize?.width, windowSize.innerWidth, edgeDetectionMargin]);
+
+    /** only used if stretch is true */
     const width = React.useMemo(() => rootRect?.width, [rootRect?.width]);
 
     // assign the element given to render the dropdown items below to a ref so we don't have to reselect it every time
@@ -260,6 +282,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           closeOnBackgroundClick={closeOnBackgroundClick}
           data-scrolling={shouldScrollContent}
           centred={false}
+          data-stretch={stretch}
         >
           <AutoResizer onSizeChange={onSizeChange} resizeHorizontal={false}>
             <div className="arm-dropdown-content-inner">{dropdownContent}</div>
@@ -278,4 +301,5 @@ Dropdown.defaultProps = {
   edgeDetectionMargin: 10,
   closeOnWindowBlur: true,
   closeOnWindowClick: true,
+  alignment: 'centre',
 };

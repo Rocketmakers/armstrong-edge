@@ -264,6 +264,7 @@ export const AutoCompleteInput = React.forwardRef(
             closeOnWindowBlur={closeOnWindowBlur}
             closeOnWindowClick={closeOnWindowClick}
             closeOnSelection={closeOnSelection}
+            stretch
           >
             <TextInput
               {...textInputProps}

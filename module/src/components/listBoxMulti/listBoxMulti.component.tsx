@@ -150,6 +150,7 @@ export const ListBoxMulti = React.forwardRef(
         closeOnWindowBlur={closeOnWindowBlur}
         closeOnWindowClick={closeOnWindowClick}
         closeOnBackgroundClick={closeOnBackgroundClick}
+        stretch
       >
         <InputWrapper
           ref={internalRef}
