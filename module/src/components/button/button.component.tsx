@@ -10,30 +10,30 @@ import { ValidationErrors } from '../validationErrors';
 type ButtonHTMLProps = Omit<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'ref'>;
 
 export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
-  IStatusWrapperProps & {
-    /** CSS className property */
-    className?: string;
+  IStatusWrapperPr ops & {
+    /** CSS class Name property */
+    className ?: string;
 
-    /** array of validation errors to render */
-    validationErrorMessages?: ValidationMessage[];
+    /** array of validation  errors to render */
+    validationErrorMessages?: Valida tionMessage[];
 
     /** the icon to use for validation errors */
-    errorIcon?: IIcon<IconSet>;
+    errorIcon ?: IIcon<IconSet>;
 
-    /** show a spinner and disable */
+    /** s how a spinner and disable */
     pending?: boolean;
 
-    /** hide the icon on the same side as the status if there is an active status - defaults to true */
-    hideIconOnStatus?: boolean;
+    /** hide the icon on the same side as the status if there is an act ive status - defaults to true */
+    h ideIconOnStatu s?: boolean;
 
-    /** disable use */
+    /** disable  use */
     disabled?: boolean;
 
-    /** don't style beyond removing the default css styling */
+    /** don't style be yond removing the default css styl ing */
     minimalStyle?: boolean;
   };
 
-export type IButtonProps = IButtonCoreProps & ButtonHTMLProps & { to?: never };
+export type IButton Props = IButtonCoreProps & ButtonHTMLProps & { to?: never };
 
 /** Renders the inside of a button, for use in altering the tag used for the wrapper */
 export const ButtonInner: React.FC<IButtonCoreProps> = ({
