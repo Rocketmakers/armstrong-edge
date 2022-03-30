@@ -9,6 +9,7 @@ $arm-dropdown-height: 180px !default;
 .arm-modal.arm-dropdown-content {
   position: fixed;
   top: var(--arm-dropdown-top);
+  bottom: var(--arm-dropdown-bottom);
   left: var(--arm-dropdown-left);
   max-width: 100vw;
   user-select: none;

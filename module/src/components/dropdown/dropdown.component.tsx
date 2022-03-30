@@ -23,13 +23,13 @@ export interface IDropdownProps
   /** CSS className for the div that wraps the actual dropdown */
   contentClassName?: string;
 
-  /** should open when the user clicks on children */
+  /** should open when the user clicks on the component's children */
   openWhenClickInside?: boolean;
 
-  /** should close when the user clicks on children and the dropdown is already open */
+  /** should close when the user clicks on the component's children and the dropdown is already open - irrelevant if closeOnBackgroundClick is true, as that renders a modal background div over the top that gets the click first */
   closeWhenClickInside?: boolean;
 
-  /** should open when the user focuses inside children */
+  /** should open when the user focuses inside the component's children */
   openWhenFocusInside?: boolean;
 
   /** selector for the element to visually render the content below - by default will render below the wrapper element */
@@ -55,6 +55,9 @@ export interface IDropdownProps
 
   /** how should the dropdown align horizontally to the child element - if stretch is true, used if wider than the child element */
   alignment?: 'left' | 'centre' | 'right';
+
+  /** how should the dropdown be positioned vertically */
+  position?: 'above' | 'below';
 }
 
 export interface IDropdownRef {
@@ -98,6 +101,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       modalHtmlProps,
       alignment,
       stretch,
+      position,
       ...htmlProps
     },
     ref
@@ -137,14 +141,29 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       setModalSize(size);
     }, []);
 
-    // get top position of modal from root rect and modal's size
-    const top = React.useMemo(
-      () =>
-        rootRect &&
-        modalSize &&
-        Maths.clamp(rootRect.top + rootRect.height, edgeDetectionMargin!, (windowSize.innerHeight || 0) - modalSize.height - edgeDetectionMargin!),
-      [rootRect?.top, rootRect?.height, modalSize?.height, windowSize.innerHeight]
-    );
+    // get top position of modal from root rect and modal's size if position is below
+    const top = React.useMemo(() => {
+      if (rootRect && modalSize && position === 'below') {
+        return Maths.clamp(
+          rootRect.top + rootRect.height,
+          edgeDetectionMargin!,
+          (windowSize.innerHeight || 0) - modalSize.height - edgeDetectionMargin!
+        );
+      }
+    }, [rootRect?.top, rootRect?.height, modalSize?.height, windowSize.innerHeight, position]);
+
+    // get bottom position of modal from root rect and modal's size if position is above
+    const bottom = React.useMemo(() => {
+      if (rootRect && modalSize && position === 'above') {
+        return Maths.clamp(
+          windowSize.innerHeight - rootRect.top,
+          edgeDetectionMargin!,
+          (windowSize.innerHeight || 0) - modalSize.height - edgeDetectionMargin!
+        );
+      }
+    }, [rootRect?.top, rootRect?.height, modalSize?.height, windowSize.innerHeight, position]);
+
+    console.log(bottom, rootRect.height, rootRect.bottom);
 
     // get left position of modal from root rect and modal's size
     const left = React.useMemo(() => {
@@ -166,7 +185,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
 
         return Maths.clamp(leftToClamp, edgeDetectionMargin!, (windowSize.innerWidth || 0) - modalSize.width - edgeDetectionMargin!);
       }
-    }, [rootRect?.left, modalSize?.width, windowSize.innerWidth, edgeDetectionMargin]);
+    }, [rootRect?.left, modalSize?.width, windowSize.innerWidth, edgeDetectionMargin, alignment, rootRect?.width]);
 
     /** only used if stretch is true */
     const width = React.useMemo(() => rootRect?.width, [rootRect?.width]);
@@ -229,11 +248,12 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
     const modalStyle = React.useMemo(
       () =>
         ({
-          '--arm-dropdown-top': `${top}px`,
+          '--arm-dropdown-top': top && `${top}px`,
+          '--arm-dropdown-bottom': bottom && `${bottom}px`,
           '--arm-dropdown-left': `${left}px`,
           '--arm-dropdown-width': `${width}px`,
         } as React.CSSProperties),
-      [top, left, width]
+      [top, left, width, bottom]
     );
 
     const modalOnOpenChange = React.useCallback(
@@ -302,4 +322,5 @@ Dropdown.defaultProps = {
   closeOnWindowBlur: true,
   closeOnWindowClick: true,
   alignment: 'centre',
+  position: 'below',
 };

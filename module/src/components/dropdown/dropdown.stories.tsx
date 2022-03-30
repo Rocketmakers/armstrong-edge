@@ -70,3 +70,26 @@ export const Alignments = () => {
     </div>
   );
 };
+
+export const Positions = () => {
+  const [isOpenAbove, setIsOpenAbove] = React.useState(false);
+  const [isOpenBelow, setIsOpenBelow] = React.useState(false);
+
+  return (
+    <div>
+      <Dropdown isOpen={isOpenAbove} onOpenChange={setIsOpenAbove} dropdownContent={<p>I'm in a dropdown</p>} position="above">
+        <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+          Above
+        </Button>
+      </Dropdown>
+
+      <br />
+
+      <Dropdown isOpen={isOpenBelow} onOpenChange={setIsOpenBelow} dropdownContent={<p>I'm in a dropdown</p>} position="below">
+        <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+          Below
+        </Button>
+      </Dropdown>
+    </div>
+  );
+};
