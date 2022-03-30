@@ -29,6 +29,20 @@ export const Default = () => {
   );
 };
 
+export const NotCentred = () => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>open modal</Button>
+
+      <Modal isOpen={open} onOpenChange={setOpen} centred={false}>
+        I'm in a modal
+      </Modal>
+    </>
+  );
+};
+
 export const DarkenBackground = () => {
   const [open, setOpen] = React.useState(false);
 

@@ -248,6 +248,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           closeOnWindowClick={closeOnWindowClick}
           closeOnBackgroundClick={closeOnBackgroundClick}
           data-scrolling={shouldScrollContent}
+          centred={false}
         >
           <AutoResizer onSizeChange={onSizeChange} resizeHorizontal={false}>
             <div className="arm-dropdown-content-inner">{dropdownContent}</div>
