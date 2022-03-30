@@ -7,6 +7,7 @@
     "selector-max-id": 1,
     "max-nesting-depth": 10,
     "selector-max-compound-selectors": 10,
-    "no-descending-specificity": null
+    "no-descending-specificity": null,
+    "property-no-vendor-prefix": null
   }
 }

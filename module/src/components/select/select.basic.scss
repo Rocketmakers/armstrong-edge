@@ -11,7 +11,7 @@
   height: $arm-input-height;
   cursor: pointer;
   padding: $spacing-xsmall 0;
-  appearance: none;
+  -webkit-appearance: none;
   background-color: transparent;
   resize: none;
   font-family: inherit;

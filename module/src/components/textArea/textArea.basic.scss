@@ -7,6 +7,7 @@
 .arm-text-area-textarea {
   min-height: $arm-input-height-large;
   appearance: none;
+  -webkit-appearance: none;
   background-color: transparent;
   resize: none;
   font-family: inherit;
