@@ -27,6 +27,8 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
       | 'closeOnWindowClick'
       | 'closeOnBackgroundClick'
       | 'closeOnSelection'
+      | 'alignment'
+      | 'position'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -78,6 +80,8 @@ export const ListBoxMulti = React.forwardRef(
       closeOnWindowClick,
       closeOnBackgroundClick,
       closeOnSelection,
+      alignment,
+      position,
     }: IListBoxMultiProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -151,6 +155,8 @@ export const ListBoxMulti = React.forwardRef(
         closeOnWindowClick={closeOnWindowClick}
         closeOnBackgroundClick={closeOnBackgroundClick}
         stretch
+        alignment={alignment}
+        position={position}
       >
         <InputWrapper
           ref={internalRef}

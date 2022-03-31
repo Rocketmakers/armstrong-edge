@@ -30,6 +30,8 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
       | 'closeOnWindowBlur'
       | 'closeOnWindowClick'
       | 'closeOnSelection'
+      | 'alignment'
+      | 'position'
     > {
   /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
@@ -73,7 +75,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
       closeOnWindowBlur,
       closeOnWindowClick,
       closeOnSelection,
-
+      alignment,
+      position,
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
@@ -228,6 +231,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
             closeOnWindowBlur={closeOnWindowBlur}
             closeOnWindowClick={closeOnWindowClick}
             stretch
+            alignment={alignment}
+            position={position}
           >
             <TagInput
               {...textInputProps}
