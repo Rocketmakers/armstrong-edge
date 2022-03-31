@@ -23,17 +23,21 @@ export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children,
  * For internal Armstrong use for components that needs to be able to access routing i.e. LinkButton rather than for consumers to use directly
  */
 
-export const Link = <TLinkProps extends Record<string, any>>({
-  to,
-  className,
-  children,
-  ...additionalProps
-}: React.PropsWithChildren<ILinkProps<TLinkProps>>) => {
-  const { routing } = useArmstrongConfig();
+export const Link = React.forwardRef(
+  <TLinkProps extends Record<string, any>, TRef>(
+    { to, className, children, ...additionalProps }: React.PropsWithChildren<ILinkProps<TLinkProps>>,
+    ref: TRef
+  ) => {
+    const { routing } = useArmstrongConfig();
 
-  return (
-    <routing.LinkComponent {...additionalProps} to={to} className={ClassNames.concat('arm-link', className)}>
-      {children}
-    </routing.LinkComponent>
-  );
+    return (
+      <routing.LinkComponent {...additionalProps} to={to} className={ClassNames.concat('arm-link', className)} ref={ref}>
+        {children}
+      </routing.LinkComponent>
+    );
+  }
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TLinkProps extends Record<string, any>, TRef>(props: ILinkProps<TLinkProps> & React.RefAttributes<TRef>) => ReturnType<React.FC>) & {
+  defaultProps?: Partial<ILinkProps<any>>;
 };
