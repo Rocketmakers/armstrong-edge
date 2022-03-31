@@ -38,7 +38,7 @@ $arm-dropdown-height: 180px !default;
 }
 
 @include screen-phone {
-  .arm-dropdown-content {
+  .arm-modal.arm-dropdown-content {
     left: $spacing-xsmall;
     width: calc(100vw - #{$spacing-xsmall * 2});
   }
