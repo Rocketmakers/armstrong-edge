@@ -1,0 +1,15 @@
+$arm-time-input-width: 47px !default;
+
+.arm-time-input {
+  max-width: initial;
+  width: initial;
+
+  .arm-input {
+    width: auto;
+    max-width: initial;
+  }
+
+  .arm-input-base-input {
+    max-width: $arm-time-input-width;
+  }
+}

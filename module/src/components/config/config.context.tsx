@@ -29,6 +29,8 @@ export interface IArmstrongConfigContext {
   routing: {
     /**
      * a component to be used to agnostically allow Armstrong's Link, LinkButton, and other routing based components to hook into external routing libraries
+     * 
+     * the first value given on mount is permanently memoised so this will stay as the component given on mount
      *
      * ```tsx
      * import { Link } from 'react-router-dom';
@@ -68,11 +70,14 @@ const ArmstrongConfigContext = React.createContext<IArmstrongConfigContext>({
 /**
  * Configuration for Armstrong
  *
- * Currently only used for routing integration - see Link docs for more information
+ * Currently only used for routing integration - see Link in storybook for more information
  */
-
 export const ArmstrongConfigProvider: React.FC<IArmstrongConfigContext> = ({ routing, children }) => {
-  return <ArmstrongConfigContext.Provider value={{ routing }}>{children}</ArmstrongConfigContext.Provider>;
+  // ensure LinkComponent is memoised so that state changes that the config depends on (i.e. in location) don't cause all Links to remount - otherwise, each
+  // new render would pass this a new Link meaning all references to it would be reinstantiated and remount
+  const LinkComponent = React.useMemo(() => routing.LinkComponent, []);
+
+  return <ArmstrongConfigContext.Provider value={{ routing: { ...routing, LinkComponent } }}>{children}</ArmstrongConfigContext.Provider>;
 };
 
 /** Access Armstrong's configuration - for internal Armstrong use */

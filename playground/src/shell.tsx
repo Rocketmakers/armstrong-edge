@@ -8,8 +8,13 @@ import { SelectExample } from "./views/examples/select";
 import { TimeExample } from "./views/examples/time";
 import { Home } from "./views/home/home";
 import { UserEdit } from "./views/user/user";
+import initReactFastclick from 'react-fastclick';
 
 export const Shell: React.FC = () => {
+  React.useEffect(() => {
+    initReactFastclick();
+  }, []);
+
   return (
     <ModalProvider>
       <div className="shell">

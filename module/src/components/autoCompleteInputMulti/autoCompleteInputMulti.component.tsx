@@ -25,6 +25,11 @@ export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
       | 'allowKeyboardNavigationSelection'
       | 'noItemsText'
       | 'dropdownClassName'
+      | 'closeOnBackgroundClick'
+      | 'closeOnScroll'
+      | 'closeOnWindowBlur'
+      | 'closeOnWindowClick'
+      | 'closeOnSelection'
     > {
   /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
@@ -63,11 +68,16 @@ export const AutoCompleteInputMulti = React.forwardRef(
       placeholder,
       noItemsText,
       dropdownClassName,
+      closeOnBackgroundClick,
+      closeOnScroll,
+      closeOnWindowBlur,
+      closeOnWindowClick,
+      closeOnSelection,
       ...textInputProps
     }: IAutoCompleteInputMultiProps<Id>,
     ref
   ) => {
-    const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingTools(
+    const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingState(
       bind,
       {
         value,
@@ -204,11 +214,15 @@ export const AutoCompleteInputMulti = React.forwardRef(
             currentValue={boundValue || []}
             openWhenClickInside
             openWhenFocusInside
-            closeOnSelection={false}
+            closeOnSelection={closeOnSelection}
             childRootElementSelector=".arm-input-inner"
             searchTerm={textInputInternalValue}
             noItemsText={noItemsText}
             closeWhenClickInside={false}
+            closeOnBackgroundClick={closeOnBackgroundClick}
+            closeOnScroll={closeOnScroll}
+            closeOnWindowBlur={closeOnWindowBlur}
+            closeOnWindowClick={closeOnWindowClick}
           >
             <TagInput
               {...textInputProps}
@@ -246,4 +260,5 @@ AutoCompleteInputMulti.defaultProps = {
   allowKeyboardNavigationSelection: true,
   filterOptions: true,
   placeholder: 'Begin typing to filter options...',
+  closeOnSelection: false,
 };

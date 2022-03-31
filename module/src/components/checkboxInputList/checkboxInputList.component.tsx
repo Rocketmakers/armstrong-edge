@@ -66,7 +66,7 @@ export const CheckboxInputList = React.forwardRef(
     }: ICheckboxInputListProps<Id>,
     ref
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       validationErrorIcon: errorIcon,
       validationErrorMessages,
       validationMode,
