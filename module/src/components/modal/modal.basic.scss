@@ -12,6 +12,10 @@
   height: 100vh;
   z-index: 4;
 
+  &[data-centred='true'] {
+    @include flex-centre-content;
+  }
+
   &[data-close-on-background-click='false'] {
     pointer-events: none;
 

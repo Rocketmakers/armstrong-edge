@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useInViewport } from '../../hooks/useIsInViewport';
 import { IStatusProps, Status } from '../status';
 
-export interface IScrollToEndListenerProps extends IStatusProps {
+export interface IScrollToEndListenerProps extends IStatusProps, React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
   /** the callback to fire when the element rendered by this component at the end of a scrolling list comes into the viewport */
   onScrollToEnd: () => void;
 
@@ -24,7 +24,7 @@ export const ScrollToEndListener: React.FC<IScrollToEndListenerProps> = ({ child
   useInViewport(ref, { rootMargin, onEnter: onScrollToEnd });
 
   return (
-    <>
+    <div className="arm-scroll-to-end-listener">
       {children}
 
       {(statusProps.error || statusProps.pending) && (
@@ -34,7 +34,7 @@ export const ScrollToEndListener: React.FC<IScrollToEndListenerProps> = ({ child
       )}
 
       <div className="arm-scroll-to-end-listener-listener" ref={ref} />
-    </>
+    </div>
   );
 };
 

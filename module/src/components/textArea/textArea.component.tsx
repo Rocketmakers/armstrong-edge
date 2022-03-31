@@ -96,7 +96,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
     const internalRef = React.useRef<HTMLTextAreaElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value: value?.toString(),
       validationErrorMessages,
       validationMode,

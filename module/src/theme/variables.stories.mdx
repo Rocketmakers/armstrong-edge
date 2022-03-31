@@ -123,6 +123,8 @@ $transition-slow: 0.8s;
 
 ### Sizing
 
+arm-input-width is only used in the prototyping theme - if you're just on basic, you don't need to worry about it
+
 ```css
 $arm-input-width: 320px;
 $arm-input-width-large: 420px;
@@ -252,6 +254,20 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input
 ```css
 /* the width of the time input */
 $arm-time-input-width: 50px;
+```
+
+### CalendarInput
+
+```css
+/* the minimum width of a part of the calendar input - default value is wide enough to fit default values */
+$arm-calendar-select-min-width: 60px;
+```
+
+### Listbox
+
+```css
+/* the minimum width of the listbox (as there's no input inside it to manage the size nicely natively) */
+$arm-listbox-min-width: 160px;
 ```
 
 ### ToastNotification

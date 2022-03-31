@@ -1,0 +1,10 @@
+.arm-radio-options-list {
+  width: 100%;
+  max-width: $arm-input-width;
+
+  .arm-radio-input {
+    &[data-checked='true'] {
+      color: $brand-primary;
+    }
+  }
+}

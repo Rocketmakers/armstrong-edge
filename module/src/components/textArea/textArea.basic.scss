@@ -1,6 +1,4 @@
 .arm-text-area {
-  max-width: $arm-input-width-large;
-
   .arm-input-inner {
     cursor: text;
   }
@@ -8,8 +6,8 @@
 
 .arm-text-area-textarea {
   min-height: $arm-input-height-large;
-  width: 100%;
   appearance: none;
+  -webkit-appearance: none;
   background-color: transparent;
   resize: none;
   font-family: inherit;
