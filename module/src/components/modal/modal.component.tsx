@@ -105,7 +105,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     /** Close when the user clicks outside of the dropdown */
     const onWindowClick = React.useCallback(() => {
       if (isOpen && closeOnWindowClick && !mouseDownIsInsideModal) {
-        close();
+        void close();
       }
       setMouseDownIsInsideModal(false);
     }, [isOpen, close, closeOnWindowClick, mouseDownIsInsideModal]);
@@ -115,7 +115,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
     /** Close when the user blurs the window */
     const onWindowBlur = React.useCallback(() => {
       if (isOpen && closeOnWindowBlur) {
-        close();
+        void close();
       }
     }, [isOpen, close, closeOnWindowBlur]);
 
@@ -127,7 +127,7 @@ export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
         onClickWrapper?.(event);
 
         if (closeOnBackgroundClick && !mouseDownIsInsideModal) {
-          close();
+          void close();
         }
       },
       [onClickWrapper, close, closeOnBackgroundClick, mouseDownIsInsideModal]
