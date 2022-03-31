@@ -14,7 +14,6 @@ import {
   Select,
   IconUtils,
   CheckboxInput,
-  useArmstrongConfig,
   LinkTabControl,
 } from "@rocketmakers/armstrong-edge";
 import { Route, useParams } from "react-router";
