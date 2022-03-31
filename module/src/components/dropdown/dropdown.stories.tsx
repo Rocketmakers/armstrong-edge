@@ -78,7 +78,7 @@ export const Positions = () => {
   return (
     <div>
       <Dropdown isOpen={isOpenAbove} onOpenChange={setIsOpenAbove} dropdownContent={<p>I'm in a dropdown</p>} position="above">
-        <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-down4')} minimalStyle>
+        <Button rightIcon={IconUtils.getIconDefinition('Icomoon', 'arrow-up4')} minimalStyle>
           Above
         </Button>
       </Dropdown>

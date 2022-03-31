@@ -163,8 +163,6 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
       }
     }, [rootRect?.top, rootRect?.height, modalSize?.height, windowSize.innerHeight, position]);
 
-    console.log(bottom, rootRect.height, rootRect.bottom);
-
     // get left position of modal from root rect and modal's size
     const left = React.useMemo(() => {
       if (rootRect && modalSize) {
