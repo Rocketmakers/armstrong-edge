@@ -20,7 +20,7 @@ yarn add @rocketmakers/armstrong
 Then to use a component in your project
 
 ```tsx
-import { Button } from "@rocketmakers/armstrong";
+import { Button } from '@rocketmakers/armstrong';
 
 const MyComponent: React.FC = () => {
   return (
@@ -92,6 +92,16 @@ Armstrong uses eslint, style-lint, and prettier for linting.
 Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/`
 
 We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to make errors show in vscode, and to allow auto fixing functionality.
+
+### Testing
+
+Armstrong uses Jest for unit testing, @testing-library/react-hooks for hook testing, and Cypress via Storybook for component testing.
+
+Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.cypress` respectively.
+
+Tests can be run using `npm test` for all tests, or `npm test-jest` and `npm test-cypress` respectively.
+
+Due to the nature of the codebase it is not currently possible to use custom commands in Cypress.
 
 ### Process
 
