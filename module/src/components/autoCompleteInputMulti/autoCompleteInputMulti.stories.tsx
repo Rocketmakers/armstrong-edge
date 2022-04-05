@@ -43,6 +43,33 @@ export const Default = () => {
     </>
   );
 };
+
+export const DontClose = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <>
+      <AutoCompleteInputMulti
+        value={value}
+        onChange={setValue}
+        options={[
+          { id: 1, name: 'red' },
+          { id: 2, name: 'blue' },
+          { id: 3, name: 'purple' },
+        ]}
+        closeOnBackgroundClick={false}
+        closeOnScroll={false}
+        closeOnWindowBlur={false}
+        closeOnWindowClick={false}
+        closeOnSelection={false}
+        placeholder="this is very useful for inspecting"
+        filterOptions={false}
+      />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
+
 export const tagsAbove = () => {
   const [value, setValue] = React.useState([]);
 

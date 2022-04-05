@@ -8,9 +8,6 @@
 }
 
 .arm-input-wrapper {
-  max-width: $arm-input-width;
-  width: 100%;
-
   &[data-disabled='true'] {
     pointer-events: none;
     user-select: none;

@@ -41,7 +41,6 @@ module.exports = {
     ['import/no-cycle']: off,
     ['import/extensions']: off,
     ['import/no-extraneous-dependencies']: ['error', { devDependencies: ['**/*.stories.tsx', '**/*.spec.ts', '**/*.cy-test.tsx'] }],
-
     ['no-unused-vars']: off,
     ['no-use-before-define']: off,
     ['no-inner-declarations']: off,
@@ -72,7 +71,7 @@ module.exports = {
     ['@typescript-eslint/unbound-method']: off /* allow requiring of assets */,
     ['@typescript-eslint/explicit-module-boundary-types']: off,
     ['@typescript-eslint/no-var-requires']: off,
-    ['@typescript-eslint/no-floating-promises']: error,
+    ['@typescript-eslint/no-floating-promises']: off,
     ['@typescript-eslint/no-namespace']: off,
     ['@typescript-eslint/interface-name-prefix']: off,
     ['@typescript-eslint/explicit-function-return-type']: off,

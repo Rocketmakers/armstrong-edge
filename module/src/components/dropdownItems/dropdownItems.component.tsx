@@ -32,7 +32,7 @@ export interface IDropdownItemProps extends IDropdownItem {
   /** the item is selected - adds a data-selected attribute */
   isSelected: boolean;
 
-  /** the prefix for the html ID - used for aria stuff */
+  /** the prefix for the html ID - used for aria stuff to keep track of options in the dropdown */
   idPrefix?: string;
 }
 
@@ -144,7 +144,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
       onKeyDown?.(event);
 
       if (!isOpen && allowKeyboardNavigation && event.key !== 'Tab' && event.key !== 'Escape') {
-        onOpenChange(true);
+        onOpenChange?.(true);
       }
 
       if (isOpen && allowKeyboardNavigation) {
@@ -170,7 +170,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
               onItemSelected(selectedItem.id);
 
               if (closeOnSelection) {
-                onOpenChange(false);
+                onOpenChange?.(false);
               }
             }
             event.preventDefault();
@@ -178,7 +178,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
           }
           case 'Tab':
           case 'Escape': {
-            onOpenChange(false);
+            onOpenChange?.(false);
             break;
           }
           default:
@@ -222,7 +222,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     (id: ArmstrongId, ignoreHasTimePassed?: boolean) => {
       if (ignoreHasTimePassed || hasTimePassedSinceMouseDown) {
         if (closeOnSelection) {
-          onOpenChange(false);
+          onOpenChange?.(false);
         }
         onItemSelected?.(id);
         resetHasTimeElapsed();

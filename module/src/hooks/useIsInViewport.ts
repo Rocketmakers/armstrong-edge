@@ -38,7 +38,7 @@ export function useInViewport(ref: React.MutableRefObject<HTMLElement | undefine
         setIsInViewport(false);
       }
     },
-    [options.onEnter, options.onExit, options.once]
+    [options.onEnter, options.onExit, options.once, isInViewport]
   );
 
   const intersectionObserverOptions = React.useMemo<IntersectionObserverInit>(
