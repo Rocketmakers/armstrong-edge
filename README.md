@@ -95,7 +95,7 @@ We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to m
 
 ### Testing
 
-Armstrong uses Jest for unit testing, @testing-library/react-hooks for hook testing, and Cypress via Storybook for component testing.
+Armstrong uses [Jest](https://jestjs.io/docs/using-matchers) for unit testing, [@testing-library/react-hooks](https://github.com/testing-library/react-hooks-testing-library) for hook testing, and [Cypress](https://docs.cypress.io/guides/getting-started/writing-your-first-test) via Storybook for component testing.
 
 Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.cypress` respectively.
 
