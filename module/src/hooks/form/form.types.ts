@@ -202,7 +202,7 @@ export interface IBindingProps<TValue> {
   /**
    * Sets a new value for the targeted property within the form data.
    */
-  setValue: (value: TValue) => void;
+  setValue: (value: TValue | undefined) => void;
   /**
    * The root dispatcher for all form actions, can be used to send complex state changes to the form binder as a whole.
    */

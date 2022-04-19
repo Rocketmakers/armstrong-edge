@@ -19,10 +19,10 @@ export const ToastNotification: React.FC<IToastNotificationProps> = ({ onDismiss
   const [dismissing, setDismissing] = useTemporaryState(false, 500, onDismiss);
   const beginDismiss = React.useCallback(() => setDismissing(true), []);
 
-  const { set: setAutoDismissTimeout, clear: clearAutoDismissTimeout } = useTimeout(autoDismissTime, beginDismiss);
+  const { set: setAutoDismissTimeout, clear: clearAutoDismissTimeout } = useTimeout(beginDismiss, autoDismissTime);
 
   React.useEffect(() => {
-    setAutoDismissTimeout();
+    void setAutoDismissTimeout();
   }, []);
 
   const id = useGeneratedId('arm-tst_', htmlProps?.id);

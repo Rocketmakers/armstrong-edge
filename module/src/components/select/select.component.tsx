@@ -70,7 +70,9 @@ export const Select = React.forwardRef(
       disableOnPending,
       scrollValidationErrorsIntoView,
       placeholderOption,
+      statusPosition,
       placeholderOptionEnabled,
+      hideIconOnStatus,
       ...nativeProps
     }: ISelectProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLSelectElement>
@@ -117,6 +119,8 @@ export const Select = React.forwardRef(
         disabled={disabled}
         disableOnPending={disableOnPending}
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
+        statusPosition={statusPosition}
+        hideIconOnStatus={hideIconOnStatus}
       >
         <div className="arm-select-inner">
           <select
@@ -126,7 +130,7 @@ export const Select = React.forwardRef(
             onChange={onChangeEvent}
             value={boundValue}
             disabled={disabled}
-            defaultValue={placeholderOption && !nativeProps.defaultValue ? '' : nativeProps.defaultValue}
+            defaultValue={placeholderOption && !nativeProps.defaultValue && !boundValue ? '' : nativeProps.defaultValue}
           >
             {placeholderOption && (
               <option value="" disabled={!placeholderOptionEnabled}>

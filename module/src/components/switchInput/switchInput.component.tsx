@@ -1,39 +1,22 @@
 import * as React from 'react';
 
-import { Form, IInputWrapperProps } from '../..';
+import { Form, ICheckboxInputProps, IInputWrapperProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { IDragReleaseCallbackArgs, useDrag } from '../../hooks/useDrag';
 import { ClassNames } from '../../utils/classNames';
-import { Icon, IconSet, IIcon } from '../icon';
+import { Icon } from '../icon';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
 export interface ISwitchInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'>,
-    Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
+    Pick<
+      IInputWrapperProps,
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages' | 'error' | 'pending' | 'disabled' | 'className'
+    >,
+    Pick<ICheckboxInputProps, 'checkedIcon' | 'uncheckedIcon' | 'checked'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
-
-  /** CSS className property */
-  className?: string;
-
-  /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
-  error?: boolean;
-
-  /** show a spinner and disable */
-  pending?: boolean;
-
-  /** disable use */
-  disabled?: boolean;
-
-  /** icon to render on the input when checked */
-  checkedIcon?: IIcon<IconSet>;
-
-  /** icon to render on the input when not checked */
-  uncheckedIcon?: IIcon<IconSet>;
-
-  /** the current value of the switch input */
-  checked?: boolean;
 
   /** called when the user updates the switch value */
   onChange?: (newValue: boolean) => void;
@@ -113,7 +96,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
               type="checkbox"
               // eslint-disable-next-line @typescript-eslint/no-empty-function
               onChange={() => {}}
-              checked={boundValue}
+              checked={boundValue || (bind && false)}
               disabled={disabled}
               {...dragProps}
             />

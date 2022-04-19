@@ -23,6 +23,7 @@ const Template = StoryUtils.createTemplate(PasswordInput);
 /** stories */
 
 export const Default = StoryUtils.cloneTemplate(Template, {});
+export const ShowPasswordButton = StoryUtils.cloneTemplate(Template, { showPasswordButton: true });
 export const WithIcons = StoryUtils.cloneTemplate(Template, { leftIcon: { icon: 'key', iconSet: 'LinearIcons' } });
 export const WithValidationErrors = StoryUtils.cloneTemplate(Template, {
   leftIcon: { icon: 'key', iconSet: 'LinearIcons' },

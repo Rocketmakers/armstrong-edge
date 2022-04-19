@@ -177,6 +177,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
           }
           case 'Tab':
           case 'Escape': {
+            event.stopPropagation();
             onOpenChange?.(false);
             break;
           }
