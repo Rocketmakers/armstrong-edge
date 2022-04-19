@@ -173,3 +173,14 @@ export const AsyncOptions = () => {
     </>
   );
 };
+
+export const Above = () => {
+  const [value, setValue] = React.useState<string>();
+
+  return (
+    <>
+      <AutoCompleteInput value={value} onChange={setValue} options={options} position="above" />
+      <p className="bound-value">bound value: {value}</p>
+    </>
+  );
+};
