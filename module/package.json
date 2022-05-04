@@ -1,6 +1,8 @@
 {
   "name": "@rocketmakers/armstrong-edge",
-  "sideEffects": ["*.scss"],
+  "sideEffects": [
+    "*.scss"
+  ],
   "version": "0.0.0-development",
   "description": "Armstrong is a React component library made by Rocketmakers written in Typescript and SCSS.",
   "main": "./dist/index.js",
@@ -73,7 +75,7 @@
     "@typescript-eslint/parser": "4.28.3",
     "babel-loader": "8.2.2",
     "chokidar": "3.5.2",
-    "chromatic": "^5.9.2",
+    "chromatic": "6.5.4",
     "css-loader": "5.2.6",
     "ejs": "3.1.6",
     "eslint": "7.30.0",
