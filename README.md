@@ -93,28 +93,31 @@ Packages for these are managed as dev dependencies in NPM, and configuration fil
 
 We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to make errors show in vscode, and to allow auto fixing functionality.
 
-### Process
+### Branching
 
-Please work in feature branches named `feature/*` branched from `main`
+Work in feature branches named `feature/*` branched from `develop`
 
-When your work is ready, submit a merge request and (if you're internal) post a link to your merge request in the `#armstrong-dev` slack channel for someone to review.
+When your work is ready, submit a PR into `develop` and (if you're internal) post a link to your PR in the `#armstrong-dev` slack channel for someone to review.
 
 There will be a CI which will run to check if your work passes linting and if Storybook can still build.
 
-One day we will talk about testing...
+Once code has been approved and the CI has passed, your code can be merged into develop
 
-### Release process
+### Releasing Armstrong
+
+When ready to release, open a new PR from `develop` into `main`
+
+Code changes on `main` trigger releases automatically.
 
 Armstrong uses Semantic release https://semantic-release.gitbook.io/semantic-release/ for automatic versioning and publishing based on comittizen formatted messages.
+
 The type of release will be worked out from all of the commit messages in your merge. So the highest of the following will dictate the version
 
 ```
 fix: will be a patch 0.0.X
 feat: will be minor 0.X.0
 breaking: will be major X.0.0
-chore: won't trigger a release
+chore, style, etc: won't trigger a release
 ```
 
-So basically do your work on a branch `feature/` or `bugfix/`, make sure all of your commit messages go through comittizen and when your happy do a PR onto main.
-
-When it gets approved and merged in the release type will automatically be worked out based on the highest (breaking > feat > fix) of all the commits that are part of that merge and a tag and version will be published to npm automatically.
+When code is merged into `main`, the release type will automatically be worked out based on the highest (breaking > feat > fix) of all the commits that are part of that merge and a tag and version will be published to npm automatically.

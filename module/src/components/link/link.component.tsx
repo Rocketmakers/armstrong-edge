@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { ClassNames } from '../..';
+import { DataAttributes } from '../../types';
 import { useArmstrongConfig } from '../config/config.context';
 
 interface ILinkPropsCore {
@@ -9,7 +10,7 @@ interface ILinkPropsCore {
   className?: string;
 }
 
-export type ILinkProps<TLinkProps extends Record<string, any>> = TLinkProps & ILinkPropsCore;
+export type ILinkProps<TLinkProps> = TLinkProps & ILinkPropsCore & DataAttributes;
 
 export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children, ...additionalProps }) => (
   <a {...additionalProps} className={className} href={to}>
@@ -24,8 +25,8 @@ export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children,
  */
 
 export const Link = React.forwardRef(
-  <TLinkProps extends Record<string, any>, TRef>(
-    { to, className, children, ...additionalProps }: React.PropsWithChildren<ILinkProps<TLinkProps>>,
+  <TLinkProps, TRef>(
+    { to, className, children, ...additionalProps }: React.PropsWithChildren<ILinkProps<TLinkProps> & DataAttributes>,
     ref: TRef
   ) => {
     const { routing } = useArmstrongConfig();
@@ -38,6 +39,6 @@ export const Link = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TLinkProps extends Record<string, any>, TRef>(props: ILinkProps<TLinkProps> & React.RefAttributes<TRef>) => ReturnType<React.FC>) & {
+) as (<TLinkProps, TRef>(props: ILinkProps<TLinkProps> & React.RefAttributes<TRef> & DataAttributes) => ReturnType<React.FC>) & {
   defaultProps?: Partial<ILinkProps<any>>;
 };

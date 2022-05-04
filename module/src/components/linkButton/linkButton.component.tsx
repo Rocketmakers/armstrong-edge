@@ -4,10 +4,10 @@ import { ClassNames } from '../..';
 import { ButtonInner, IButtonCoreProps, ValidationErrors } from '..';
 import { ILinkProps, Link } from '../link';
 
-export type ILinkButtonProps<TLinkProps extends Record<string, any>> = IButtonCoreProps & ILinkProps<TLinkProps>;
+export type ILinkButtonProps<TLinkProps> = IButtonCoreProps & ILinkProps<TLinkProps>;
 
 export const LinkButton = React.forwardRef(
-  <TLinkProps extends Record<string, any>, TRef>(props: React.PropsWithChildren<ILinkButtonProps<TLinkProps>>, ref: TRef) => {
+  <TLinkProps, TRef>(props: React.PropsWithChildren<ILinkButtonProps<TLinkProps>>, ref: TRef) => {
     const { className, disabled, minimalStyle, validationErrorMessages, error, errorIcon, pending, to, ...rootElementProps } = props;
 
     const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
@@ -21,7 +21,7 @@ export const LinkButton = React.forwardRef(
           {...rootElementProps}
           to={to}
           className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', 'arm-link-button', className)}
-          ref={ref}
+          ref={ref as any}
         >
           <ButtonInner {...props} />
         </Link>
@@ -32,6 +32,6 @@ export const LinkButton = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TLinkProps extends Record<string, any>, TRef>(props: ILinkButtonProps<TLinkProps> & React.RefAttributes<TRef>) => ReturnType<React.FC>) & {
+) as (<TLinkProps, TRef>(props: ILinkButtonProps<TLinkProps> & React.RefAttributes<TRef>) => ReturnType<React.FC>) & {
   defaultProps?: Partial<ILinkButtonProps<any>>;
 };
