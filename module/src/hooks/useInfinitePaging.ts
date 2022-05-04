@@ -6,7 +6,7 @@ export type PageToken = string | number;
 
 export interface IInfinitePagingResult<T> {
   data: T[];
-  nextPageToken?: PageToken;
+  nextPageToken: PageToken;
 }
 
 export type InfinitePagingKey<T> = keyof T | ((item: T) => string);

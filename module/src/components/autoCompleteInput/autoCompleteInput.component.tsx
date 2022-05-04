@@ -30,7 +30,14 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
     Pick<
       IDropdownItemsProps,
-      'noItemsText' | 'closeOnScroll' | 'closeOnWindowBlur' | 'closeOnWindowClick' | 'closeOnBackgroundClick' | 'closeOnSelection'
+      | 'noItemsText'
+      | 'closeOnScroll'
+      | 'closeOnWindowBlur'
+      | 'closeOnWindowClick'
+      | 'closeOnBackgroundClick'
+      | 'closeOnSelection'
+      | 'alignment'
+      | 'position'
     > {
   /** The options to render when the input is focused */
   options?: IAutoCompleteInputOption<Id>[];
@@ -100,6 +107,8 @@ export const AutoCompleteInput = React.forwardRef(
       closeOnWindowBlur,
       closeOnWindowClick,
       closeOnSelection,
+      alignment,
+      position,
       ...textInputProps
     }: IAutoCompleteInputProps<Id>,
     ref
@@ -264,6 +273,9 @@ export const AutoCompleteInput = React.forwardRef(
             closeOnWindowBlur={closeOnWindowBlur}
             closeOnWindowClick={closeOnWindowClick}
             closeOnSelection={closeOnSelection}
+            stretch
+            alignment={alignment}
+            position={position}
           >
             <TextInput
               {...textInputProps}

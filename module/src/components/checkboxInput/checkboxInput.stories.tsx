@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { CheckboxInput } from './checkboxInput.component';
@@ -34,3 +36,10 @@ export const UncheckedIcon = StoryUtils.cloneTemplate(Template, {
   checkedIcon: IconUtils.getIconDefinition('Icomoon', 'sun'),
   uncheckedIcon: IconUtils.getIconDefinition('Icomoon', 'moon'),
 });
+export const SwitchingLabel = StoryUtils.cloneTemplate(Template, {
+  label: (checked) => (checked ? 'Wow now it is cool fun time' : 'Check me for cool fun time'),
+});
+export const UsingState = () => {
+  const [checked, setChecked] = React.useState(true);
+  return <CheckboxInput checked={checked} onValueChange={setChecked} label="I'm the thing" />;
+};

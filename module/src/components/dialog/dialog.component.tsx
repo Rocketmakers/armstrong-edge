@@ -44,7 +44,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
         wrapperClassName={ClassNames.concat('arm-dialog-wrapper', wrapperClassName)}
         darkenBackground
         id={id}
-        aria-labelledby={titleId}
+        aria-labelledby={title && titleId}
         onOpenChange={onOpenChange}
         ref={ref}
         onClose={onClose}

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconSet } from '../components/icon/icon.component';
 import { IIconWrapperProps } from '../components/iconWrapper/iconWrapper.component';
-import { ArmstrongId } from './core';
+import { ArmstrongId, DataAttributes } from './core';
 
 /** an option in an array of options, intended for use in a component like a Select or RadioList */
 export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
@@ -13,7 +13,7 @@ export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
   name?: string;
 
   /** props to spread onto the root element of the option */
-  htmlProps?: HtmlProps;
+  htmlProps?: HtmlProps & DataAttributes;
 
   /** is the option available - if not, will be greyed out and unable to select */
   disabled?: boolean;
@@ -26,11 +26,11 @@ export interface IArmstrongExtendedOption<Id extends ArmstrongId, HtmlProps = un
   /** a group to show this item under */
   group?: string;
 
-  /** JSX to render inside the option - replaces name, can take a function which receives the active state of the option */
+  /** JSX to render inside the option - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
   content?: React.ReactChild | ((active: boolean) => React.ReactChild);
 }
 
 export interface IArmstrongExtendedOptionWithInput<Id extends ArmstrongId, HtmlProps, InputProps> extends IArmstrongExtendedOption<Id, HtmlProps> {
   /** props to spread onto the input element */
-  htmlInputProps?: InputProps;
+  htmlInputProps?: InputProps & DataAttributes;
 }

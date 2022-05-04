@@ -9,7 +9,7 @@ export function useHasTimeElapsed(time: number, onTimeElapse?: () => void): [boo
     setHasTimeElapsed(true);
     onTimeElapse?.();
   }, []);
-  const { set } = useTimeout(time, onTimeout);
+  const { set } = useTimeout(onTimeout, time);
   const begin = React.useCallback(() => set(), []);
   const reset = React.useCallback(() => setHasTimeElapsed(false), []);
 
@@ -19,7 +19,9 @@ export function useHasTimeElapsed(time: number, onTimeElapse?: () => void): [boo
 /** Returns true once a given amount of time has elapsed since the component mounted */
 export function useHasTimeElapsedSinceMount(time: number, onTimeElapse?: () => void) {
   const [hasTimeElapsed, begin] = useHasTimeElapsed(time, onTimeElapse);
-  React.useEffect(() => begin(), []);
+  React.useEffect(() => {
+    begin();
+  }, []);
 
   return hasTimeElapsed;
 }
