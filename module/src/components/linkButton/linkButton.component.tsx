@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { ClassNames } from '../..';
-import { ButtonInner, IButtonCoreProps, ValidationErrors } from '..';
+import { ClassNames } from '../../index';
+import { ButtonInner, IButtonCoreProps, ValidationErrors } from '../index';
 import { ILinkProps, Link } from '../link';
 
 export type ILinkButtonProps<T extends Record<string, any>> = IButtonCoreProps & ILinkProps<T>;
