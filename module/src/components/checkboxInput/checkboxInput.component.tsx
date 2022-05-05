@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ArmstrongId, Form, IArmstrongExtendedOption } from '../..';
+import { ArmstrongId, DataAttributes, Form, IArmstrongExtendedOption } from '../..';
 import { useOverridableState } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
@@ -14,14 +14,11 @@ export interface ICheckboxInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type'>,
     Pick<
       IInputWrapperProps,
-      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'disabled' | 'pending' | 'error' | 'validationErrorMessages'
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'disabled' | 'pending' | 'error' | 'validationErrorMessages' | 'className'
     >,
-    Pick<IArmstrongExtendedOption<ArmstrongId>, 'content' | 'name' | 'leftIcon' | 'rightIcon'> {
+    Pick<IArmstrongExtendedOption<ArmstrongId>, 'name' | 'leftIcon' | 'rightIcon'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<boolean>;
-
-  /** CSS className property */
-  className?: string;
 
   /** icon to render on the input when checked */
   checkedIcon?: IIcon<IconSet>;
@@ -33,13 +30,17 @@ export interface ICheckboxInputProps
   onValueChange?: (newValue: boolean) => void;
 
   /** props to spread onto the input element */
-  inputProps?: Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'type' | 'ref' | 'checked'>;
+  inputProps?: Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'type' | 'ref' | 'checked'> &
+    DataAttributes;
 
   /** the direction for the content to flow */
   direction?: 'vertical' | 'horizontal';
 
   /** should hide the checkbox itself, showing only the label, allowing you to handle visualising the state of the input yourself */
   hideCheckbox?: boolean;
+
+  /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
+  content?: IArmstrongExtendedOption<ArmstrongId>['content'];
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -71,7 +72,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
     }: ICheckboxInputProps,
     ref
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value: checked,
       validationErrorMessages,
       validationErrorIcon: errorIcon,
@@ -80,7 +81,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
     });
 
     // use an overridable internal state so it can be used without a binding
-    const [isChecked, setIsChecked] = useOverridableState(checked, boundValue, setBoundValue);
+    const [isChecked, setIsChecked] = useOverridableState(checked ?? false, boundValue, setBoundValue);
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,7 +118,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
               </div>
             )}
 
-            <OptionContent content={content} name={name} leftIcon={leftIcon} rightIcon={rightIcon} isActive={checked} />
+            <OptionContent content={content} name={name} leftIcon={leftIcon} rightIcon={rightIcon} isActive={isChecked} />
 
             <Status
               error={bindConfig.shouldShowValidationErrorIcon && (!!bindConfig?.validationErrorMessages?.length || error)}

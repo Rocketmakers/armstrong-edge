@@ -1,7 +1,7 @@
 import { isSameDay } from 'date-fns';
 import * as React from 'react';
 
-import { Calendar, Form } from '../..';
+import { Calendar, DataAttributes, Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { Typescript } from '../../utils';
 import { ClassNames } from '../../utils/classNames';
@@ -17,7 +17,7 @@ import { Modal } from '../modal';
 import { IStatusWrapperProps } from '../statusWrapper';
 import { calendarDayToDateLike, getDaySelectOptions, validateDateSelection } from './calendarInput.utils';
 
-type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'>;
+type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'> & DataAttributes;
 
 export type CalendarInputPart = 'year' | 'month' | 'day';
 
@@ -174,7 +174,7 @@ export const CalendarInput = React.forwardRef(
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const [selectedDate, setSelectedDate, bindConfig] = Form.useBindingTools(bind, {
+    const [selectedDate, setSelectedDate, bindConfig] = Form.useBindingState(bind, {
       validationErrorMessages,
       validationMode,
       validationErrorIcon: errorIcon,

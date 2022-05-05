@@ -177,6 +177,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
           }
           case 'Tab':
           case 'Escape': {
+            event.stopPropagation();
             onOpenChange?.(false);
             break;
           }
@@ -236,7 +237,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
     <Dropdown
       {...dropdownProps}
       className={ClassNames.concat('arm-dropdown-items', className)}
-      contentClassName={ClassNames.concat('arm-dropdown-items-content', contentClassName)}
+      contentClassName={ClassNames.concat('arm-dropdown-items-content', contentClassName, dropdownProps.modalHtmlProps?.className)}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       onKeyDown={onKeyDownEvent}

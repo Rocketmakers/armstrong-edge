@@ -5,4 +5,4 @@ dist
 *.gen.*
 *.generated.*
 **/stories/
-.eslintrc.js
+./.eslintrc.js

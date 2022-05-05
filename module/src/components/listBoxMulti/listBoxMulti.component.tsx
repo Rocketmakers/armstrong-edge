@@ -27,6 +27,8 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
       | 'closeOnWindowClick'
       | 'closeOnBackgroundClick'
       | 'closeOnSelection'
+      | 'alignment'
+      | 'position'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -78,13 +80,15 @@ export const ListBoxMulti = React.forwardRef(
       closeOnWindowClick,
       closeOnBackgroundClick,
       closeOnSelection,
+      alignment,
+      position,
     }: IListBoxMultiProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
       validationErrorMessages,
       validationErrorIcon,
@@ -150,6 +154,9 @@ export const ListBoxMulti = React.forwardRef(
         closeOnWindowBlur={closeOnWindowBlur}
         closeOnWindowClick={closeOnWindowClick}
         closeOnBackgroundClick={closeOnBackgroundClick}
+        stretch
+        alignment={alignment}
+        position={position}
       >
         <InputWrapper
           ref={internalRef}

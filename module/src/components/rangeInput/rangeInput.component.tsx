@@ -59,7 +59,7 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
     },
     ref
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
       onChange: onValueChange,
       validationErrorMessages,
@@ -85,7 +85,7 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
           style={
             {
               '--arm-range-input-percent': `${currentPercent}%`,
-              '--arm-range-input-value': value,
+              '--arm-range-input-value': boundValue,
               '--arm-range-input-minimum': minimum,
               '--arm-range-input-maximum': maximum,
             } as React.CSSProperties
@@ -111,7 +111,7 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
                   min={minimum}
                   max={maximum}
                   step={step}
-                  value={value}
+                  value={boundValue || (bind && minimum)}
                   onChange={onChangeEvent}
                   disabled={disabled || pending}
                 />

@@ -54,6 +54,7 @@ module.exports = {
     ['no-case-declarations']: off,
     ['no-only-tests/no-only-tests']: error,
     ['consistent-return']: off,
+    ['no-void']: ['error', { allowAsStatement: true }],
 
     'simple-import-sort/imports': error,
     'simple-import-sort/exports': error,
@@ -70,7 +71,12 @@ module.exports = {
     ['@typescript-eslint/unbound-method']: off /* allow requiring of assets */,
     ['@typescript-eslint/explicit-module-boundary-types']: off,
     ['@typescript-eslint/no-var-requires']: off,
-    ['@typescript-eslint/no-floating-promises']: off,
+    ['@typescript-eslint/no-floating-promises']: [
+      'error',
+      {
+        ignoreVoid: true,
+      },
+    ],
     ['@typescript-eslint/no-namespace']: off,
     ['@typescript-eslint/interface-name-prefix']: off,
     ['@typescript-eslint/explicit-function-return-type']: off,

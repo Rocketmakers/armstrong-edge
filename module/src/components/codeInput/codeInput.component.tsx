@@ -133,7 +133,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
   ) => {
     const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
 
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
       onChange,
       validationErrorMessages,
