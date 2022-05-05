@@ -4,7 +4,7 @@ import { ClassNames } from '../..';
 import { DataAttributes } from '../../types';
 import { useArmstrongConfig } from '../config/config.context';
 
-interface ILinkPropsCore {
+export interface ILinkPropsCore {
   /** the url to push to history on click - is passed to routingContext.LinkComponent in  */
   to: string;
   className?: string;
