@@ -11,12 +11,14 @@ const projects = [
   path.resolve(__dirname, 'src', 'tsconfig.json'),
   path.resolve(__dirname, 'build', 'tsconfig.json'),
   path.resolve(__dirname, 'src', 'stories', 'tsconfig.json'),
+  path.resolve(__dirname, '.cypress', 'tsconfig.json'),
 ];
 
 module.exports = {
   env: {
     es2020: true,
     node: true,
+    mocha: true,
   },
   parser: '@typescript-eslint/parser',
   plugins: ['no-only-tests', 'simple-import-sort'],
@@ -38,8 +40,7 @@ module.exports = {
     ['import/prefer-default-export']: off,
     ['import/no-cycle']: off,
     ['import/extensions']: off,
-    ['import/no-extraneous-dependencies']: ['error', { devDependencies: ['**/*.stories.tsx'] }],
-
+    ['import/no-extraneous-dependencies']: ['error', { devDependencies: ['**/*.stories.tsx', '**/*.spec.ts', '**/*.cy-test.tsx'] }],
     ['no-unused-vars']: off,
     ['no-use-before-define']: off,
     ['no-inner-declarations']: off,
@@ -93,10 +94,6 @@ module.exports = {
     ['@typescript-eslint/no-use-before-define']: error,
     ['@typescript-eslint/ban-types']: off,
     ['@typescript-eslint/no-non-null-assertion']: off,
-  },
-  env: {
-    mocha: true,
-    node: true,
   },
   settings: {
     react: {

@@ -280,6 +280,7 @@ export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<I
           ref={rootRef}
           data-is-open={isOpen}
           onFocus={onFocusEvent}
+          data-cy="dropdown"
         >
           {children}
         </div>

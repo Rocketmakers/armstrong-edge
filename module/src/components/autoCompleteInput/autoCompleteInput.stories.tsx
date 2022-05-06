@@ -37,7 +37,7 @@ export const Default = () => {
 
   return (
     <>
-      <AutoCompleteInput value={value} onChange={setValue} options={options} />
+      <AutoCompleteInput value={value} onChange={setValue} options={options} cypressTag="autocomplete" />
       <p className="bound-value">bound value: {value}</p>
     </>
   );

@@ -17,7 +17,7 @@ export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
 /** Renders a spinner centred in the div that's being wrapped */
 export const Spinner: React.FunctionComponent<ISpinnerProps> = ({ children, className, icon, fillContainer, label, ...HTMLProps }) => (
   <div className={ClassNames.concat('arm-spinner', className)} {...HTMLProps} data-fill-container={fillContainer}>
-    <div className="arm-spinner-inner">{children || (icon && <Icon iconSet={icon.iconSet} icon={icon.icon} />)}</div>
+    <div className="arm-spinner-inner">{children || (icon && <Icon iconSet={icon.iconSet} icon={icon.icon} cypressTag="spinner" />)}</div>
     {label && <p className="arm-spinner-label">{label}</p>}
   </div>
 );

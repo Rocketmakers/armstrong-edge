@@ -6,3 +6,7 @@ storybook-static
 module/README.md
 *.tgz
 .eslintcache
+**/.cypress/downloads
+**/.cypress/screenshots
+**/.cypress/snapshots/__diff_output__
+**/.cypress/videos

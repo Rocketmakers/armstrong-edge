@@ -1,5 +1,4 @@
 {
-    "cSpell.words": [
-        "listbox"
-    ]
+  "cSpell.words": ["listbox"],
+  "jest.jestCommandLine": "npm run jest-vscode-runner --"
 }
