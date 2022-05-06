@@ -29,13 +29,13 @@ export interface IArmstrongConfigContext {
   routing: {
     /**
      * a component to be used to agnostically allow Armstrong's Link, LinkButton, and other routing based components to hook into external routing libraries
-     * 
+     *
      * the first value given on mount is permanently memoised so this will stay as the component given on mount
      *
      * ```tsx
      * import { Link } from 'react-router-dom';
 
-     * export const App: React.FC = () => 
+     * export const App: React.FC = () =>
      *   <ArmstrongConfigProvider
      *     routing={{
      *       LinkComponent: ({ to, children, ...props }) => (
@@ -53,7 +53,7 @@ export interface IArmstrongConfigContext {
     /** used to allow Armstrong to hook into the current location - should be used with a location that will update state and trigger rerenders in subscribed components, i.e. useLocation from react router */
     location?: IArmstrongLocation | undefined;
 
-    /** used to allow Armstrong to programatically push or replace to the history using live state i.e. push or replace from useHistory from react router */
+    /** used to allow Armstrong to programmatically push or replace to the history using live state i.e. push or replace from useHistory from react router */
     navigate?: (to: string, action: 'push' | 'replace') => void;
   };
 }
