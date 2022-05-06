@@ -11,10 +11,10 @@ type ButtonHTMLProps = Omit<React.DetailedHTMLProps<React.ButtonHTMLAttributes<H
 
 export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
   IStatusWrapperProps & {
-    /** CSS class Name property */
+    /** CSS className property */
     className?: string;
 
-    /** array of validation  errors to render */
+    /** array of validation errors to render */
     validationErrorMessages?: ValidationMessage[];
 
     /** the icon to use for validation errors */
@@ -23,13 +23,13 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
     /** show a spinner and disable */
     pending?: boolean;
 
-    /** hide the icon on the same side as the status if there is an act ive status - defaults to true */
+    /** hide the icon on the same side as the status if there is an active status - defaults to true */
     hideIconOnStatus?: boolean;
 
-    /** disable  use */
+    /** disable use */
     disabled?: boolean;
 
-    /** don't style be yond removing the default css styling */
+    /** don't style beyond removing the default css styling */
     minimalStyle?: boolean;
   };
 
