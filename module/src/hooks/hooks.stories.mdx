@@ -397,7 +397,59 @@ const [actualValue, setActualValue, throttleValue, setThrottledValue] = useThrot
 Set up a timeout which is cleared automatically when the component unmounts
 
 ```tsx
-const { set, clear } = useTimeout(timeoutTime, onTimeout);
+const { set, clear, waiting } = useTimeout(callback, time);
+```
+
+i.e.
+
+```tsx
+const { set } = useTimeout(() => console.log('DONE'), 500);
+
+set();
+```
+
+Values can also be overriden at the function call
+
+```tsx
+const { set } = useTimeout();
+
+set(() => console.log('DONE'), 500);
+```
+
+FYI - don't actually call set in your render method, you'll cause an infinite loop and everything will explode.
+
+You can also use `useTimeout` like a boolean `useTemporaryState`. In this example, on the button click, hasClickedTheThing will be true for 1000ms
+
+```tsx
+const { waiting: hasClickedTheThing, set: onClickTheThing } = useTimeout(undefined, 1000);
+
+return <Button onClick={onClickTheThing} />;
+```
+
+Finally, you can also use `set` as a promise
+
+```tsx
+const { set } = useTimeout(undefined, 1000);
+
+const run = useCallback(async () => {
+  await set();
+  // 1000 ms has passed
+}, [set]);
+```
+
+which can resolve to something
+
+```tsx
+const { set } = useTimeout(() => {
+  return 'hello';
+}, 1000);
+
+const run = useCallback(async () => {
+  const value = await set();
+
+  console.log(value);
+  // logs "hello"
+}, [set]);
 ```
 
 ### useWillUnmountEffect

@@ -82,6 +82,7 @@
   @include absolute-fill;
 
   appearance: none;
+  -webkit-appearance: none;
   margin: 0;
   cursor: pointer;
 }

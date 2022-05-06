@@ -44,6 +44,7 @@
   @include square(1.3rem);
 
   flex-shrink: 0;
+  pointer-events: none;
   cursor: pointer;
   position: relative;
 
@@ -52,7 +53,6 @@
     @include flex-centre-content;
 
     transition: opacity $transition-quick;
-    pointer-events: none;
     font-size: 0.75rem;
   }
 }
@@ -70,6 +70,7 @@
 
   cursor: pointer;
   appearance: none;
+  -webkit-appearance: none;
   border: 0;
   outline: none;
   background-color: transparent;

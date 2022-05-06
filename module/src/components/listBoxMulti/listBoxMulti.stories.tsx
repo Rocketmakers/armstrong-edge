@@ -122,3 +122,22 @@ export const WithGroupsAndIcons = () => {
     />
   );
 };
+
+export const Above = () => {
+  const [value, setValue] = React.useState([]);
+
+  return (
+    <ListBoxMulti
+      value={value}
+      placeholder="Please pick something...."
+      onValueChange={setValue}
+      options={[
+        { id: 'a', name: 'red' },
+        { id: 'b', name: 'blue' },
+        { id: 'c', name: 'pink' },
+        { id: 'd', name: 'brown' },
+      ]}
+      position="above"
+    />
+  );
+};

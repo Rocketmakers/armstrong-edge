@@ -44,12 +44,14 @@ $arm-range-input-track-thickness: 6px !default;
     opacity: 0;
     background-color: transparent;
     appearance: none;
+    -webkit-appearance: none;
   }
 
   @include range-input-track {
     opacity: 0;
     background-color: transparent;
     appearance: none;
+    -webkit-appearance: none;
   }
 
   &:active {

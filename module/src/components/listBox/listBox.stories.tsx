@@ -104,3 +104,22 @@ export const WithGroupsAndIcons = () => {
     />
   );
 };
+
+export const Above = () => {
+  const [value, setValue] = React.useState<number>();
+
+  return (
+    <ListBox
+      value={value}
+      placeholder="Please pick something...."
+      onSelectOption={(option) => setValue(option?.id)}
+      options={[
+        { id: 1, name: 'red' },
+        { id: 2, name: 'blue' },
+        { id: 3, name: 'pink' },
+        { id: 4, name: 'brown' },
+      ]}
+      position="above"
+    />
+  );
+};

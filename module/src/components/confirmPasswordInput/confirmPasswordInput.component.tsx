@@ -14,14 +14,14 @@ export const ConfirmPasswordInput = React.forwardRef<HTMLInputElement, IConfirmP
     { passwordsDontMatchMessage, errorIcon, bind, validationMode, value, onFocus: onFocusProp, onBlur: onBlurProp, onValueChange, ...inputProps },
     ref
   ) => {
-    const [boundValue, , bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, , bindConfig] = Form.useBindingState(bind, {
       value: value?.toString(),
       onChange: onValueChange,
       validationMode,
       validationErrorIcon: errorIcon,
     });
 
-    const [inputValue, setInputValue] = React.useState('');
+    const [inputValue, setInputValue] = React.useState<string | undefined>('');
 
     const [showError, setShowError] = React.useState(false);
 

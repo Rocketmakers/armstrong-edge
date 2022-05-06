@@ -19,7 +19,14 @@ export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<
       IDropdownItemsProps,
-      'noItemsText' | 'closeOnScroll' | 'closeOnWindowBlur' | 'closeOnWindowClick' | 'closeOnBackgroundClick' | 'closeOnSelection'
+      | 'noItemsText'
+      | 'closeOnScroll'
+      | 'closeOnWindowBlur'
+      | 'closeOnWindowClick'
+      | 'closeOnBackgroundClick'
+      | 'closeOnSelection'
+      | 'alignment'
+      | 'position'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
@@ -81,13 +88,15 @@ export const ListBox = React.forwardRef(
       closeOnWindowBlur,
       closeOnWindowClick,
       closeOnSelection,
+      alignment,
+      position,
     }: IListBoxProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
       validationErrorMessages,
       validationErrorIcon,
@@ -140,6 +149,9 @@ export const ListBox = React.forwardRef(
         closeOnWindowBlur={closeOnWindowBlur}
         closeOnWindowClick={closeOnWindowClick}
         closeOnSelection={closeOnSelection}
+        stretch
+        alignment={alignment}
+        position={position}
       >
         <InputWrapper
           ref={internalRef}

@@ -4,7 +4,7 @@ import { useDidUpdateEffect } from './useDidUpdateEffect';
 
 export interface IUseIntervalReturn {
   /** Set the interval, optionally give a callback which will override the one set at hook level */
-  set: (callback?: () => void) => void;
+  set: (callback?: () => void, time?: number) => void;
 
   /** Clear the interval before its time has finished */
   clear: () => void;
@@ -27,10 +27,13 @@ export function useInterval(callback: () => void, time?: number, config?: IUseIn
     clearInterval(interval.current);
   }, []);
 
-  const set = React.useCallback(() => {
-    clear();
-    interval.current = setInterval(callback, time);
-  }, [time, callback]);
+  const set = React.useCallback(
+    (overrideCallback?: () => void, overrideTime?: number) => {
+      clear();
+      interval.current = setInterval(overrideCallback ?? callback, overrideTime ?? time);
+    },
+    [time, callback]
+  );
 
   useDidUpdateEffect(() => {
     if (interval.current) {
