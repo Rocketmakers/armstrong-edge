@@ -1,44 +1,32 @@
 import * as React from 'react';
 
 import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
 import { Button } from '../button';
-import { IconSet } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { OptionContent } from '../optionContent';
 
-export interface ITab<Id extends ArmstrongId> extends IIconWrapperProps<IconSet, IconSet> {
-  /** The ID of the tab, to be passed into onTabChange */
-  id: Id;
+export interface ITab<Id extends ArmstrongId>
+  extends Pick<IArmstrongExtendedOption<Id, never>, 'content' | 'leftIcon' | 'rightIcon' | 'id' | 'name'> {}
 
-  /** The text to render inside the tab, falls back to id if not given and no icon is set */
-  content?: string;
-}
-
-export interface ITabControlTabProps<Id extends ArmstrongId> extends ITab<Id>, Omit<React.HTMLAttributes<HTMLButtonElement>, 'id' | 'ref'> {
+export interface ITabControlTabPropsCore<Id extends ArmstrongId> extends ITab<Id> {
   /** adds a data-is-current data attribute */
   isCurrent?: boolean;
 }
 
+export interface ITabControlTabProps<Id extends ArmstrongId>
+  extends ITabControlTabPropsCore<Id>,
+    Omit<React.HTMLAttributes<HTMLButtonElement>, 'id' | 'ref'> {}
+
 /** A single tab used in the TabControl component */
 export const TabControlTab = React.forwardRef(
   <Id extends ArmstrongId>(
-    { onClick, isCurrent, id, content, className, leftIcon, rightIcon, ...nativeProps }: ITabControlTabProps<Id>,
+    { isCurrent, id, content, className, leftIcon, rightIcon, name, ...nativeProps }: ITabControlTabProps<Id>,
     ref: React.ForwardedRef<HTMLButtonElement>
   ) => {
-    const computedContent = content ?? (!leftIcon && !rightIcon && id);
-
     return (
-      <Button
-        {...nativeProps}
-        className={ClassNames.concat('arm-tab-control-tab', className)}
-        onClick={onClick}
-        data-is-current={isCurrent}
-        ref={ref}
-        minimalStyle
-      >
-        <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-          {computedContent && <p>{computedContent}</p>}
-        </IconWrapper>
+      <Button {...nativeProps} className={ClassNames.concat('arm-tab-control-tab', className)} data-is-current={isCurrent} ref={ref} minimalStyle>
+        <OptionContent leftIcon={leftIcon} rightIcon={rightIcon} content={content} id={id} name={name} isActive={isCurrent} />
       </Button>
     );
   }
@@ -49,9 +37,19 @@ export const TabControlTab = React.forwardRef(
   props: React.PropsWithRef<ITabControlTabProps<Id>> & React.RefAttributes<HTMLButtonElement>
 ) => ReturnType<React.FC>) & { defaultProps?: Partial<ITabControlTabProps<any>> };
 
+export interface ITabControlWrapperProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'ref'> {}
+
+export const TabControlWrapper = React.forwardRef<HTMLDivElement, ITabControlWrapperProps>(({ className, children, ...nativeProps }, ref) => {
+  return (
+    <div {...nativeProps} className={ClassNames.concat('arm-tab-control', className)} ref={ref}>
+      {children}
+    </div>
+  );
+});
+
 export interface ITabControlProps<Id extends ArmstrongId> extends Omit<React.HTMLAttributes<HTMLDivElement>, 'ref'> {
   /** The tabs to render in the TabControl */
-  tabs: ITab<Id>[];
+  tabs: (ITab<Id> | Id)[];
 
   /** The tab to be displayed as the current tab (adds a data-is-current data attribute to the tab with the given ID) */
   currentTab?: Id;
@@ -67,11 +65,15 @@ export const TabControl = React.forwardRef(
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     return (
-      <div {...nativeProps} className={ClassNames.concat('arm-tab-control', className)} ref={ref}>
-        {tabs.map((tab) => (
-          <TabControlTab {...tab} key={tab.id} isCurrent={currentTab === tab.id} onClick={() => onTabChange?.(tab.id)} />
-        ))}
-      </div>
+      <TabControlWrapper {...nativeProps} ref={ref}>
+        {tabs.map((tab) =>
+          typeof tab === 'string' || typeof tab === 'number' ? (
+            <TabControlTab name={tab.toString()} id={tab} key={tab} isCurrent={currentTab === tab} onClick={() => onTabChange?.(tab)} />
+          ) : (
+            <TabControlTab {...tab} key={tab.id} isCurrent={currentTab === tab.id} onClick={() => onTabChange?.(tab.id)} />
+          )
+        )}
+      </TabControlWrapper>
     );
   }
 

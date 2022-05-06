@@ -166,7 +166,7 @@ export const TimeInput = React.forwardRef<HTMLInputElement, ITimeInputProps>(
             setSelectedTime?.(newTime!);
           }
         } catch (e) {
-          bind?.addValidationError((e as { message: string }).message);
+          bind?.addValidationError((e as Error).message);
         }
       }
     }, [formState]);
