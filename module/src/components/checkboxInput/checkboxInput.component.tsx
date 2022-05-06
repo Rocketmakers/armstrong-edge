@@ -40,7 +40,7 @@ export interface ICheckboxInputProps
   hideCheckbox?: boolean;
 
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
-  label?: IArmstrongExtendedOption<ArmstrongId>['content'];
+  content?: IArmstrongExtendedOption<ArmstrongId>['content'];
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -58,7 +58,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
       checked,
       onChange,
       checkedIcon,
-      label,
+      content,
       uncheckedIcon,
       leftIcon,
       rightIcon,
@@ -118,7 +118,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, ICheckboxInputPr
               </div>
             )}
 
-            <OptionContent content={label} name={name} leftIcon={leftIcon} rightIcon={rightIcon} isActive={isChecked} />
+            <OptionContent content={content} name={name} leftIcon={leftIcon} rightIcon={rightIcon} isActive={isChecked} />
 
             <Status
               error={bindConfig.shouldShowValidationErrorIcon && (!!bindConfig?.validationErrorMessages?.length || error)}
