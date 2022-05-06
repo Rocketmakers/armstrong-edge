@@ -4,8 +4,10 @@ import { Button, IButtonProps } from '../button';
 import { IUseConfirmationDialogConfig, useConfirmationDialog, UseDialogDialogProps } from '../dialog';
 
 export interface IConfirmButtonProps extends IButtonProps {
+  /** copy to show in the confirmation dialog */
   confirmationDialogConfig?: IUseConfirmationDialogConfig;
 
+  /** props to be passed to the confirmation dialog */
   dialogProps?: UseDialogDialogProps;
 }
 

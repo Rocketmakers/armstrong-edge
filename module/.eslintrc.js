@@ -85,7 +85,12 @@ module.exports = {
     ['@typescript-eslint/no-parameter-properties']: off,
     ['@typescript-eslint/explicit-member-accessibility']: off,
     ['@typescript-eslint/no-empty-interface']: off,
-    ['@typescript-eslint/no-unused-vars']: error,
+    ['@typescript-eslint/no-unused-vars']: [
+      error,
+      {
+        ignoreRestSiblings: true,
+      },
+    ],
     ['@typescript-eslint/no-use-before-define']: error,
     ['@typescript-eslint/ban-types']: off,
     ['@typescript-eslint/no-non-null-assertion']: off,

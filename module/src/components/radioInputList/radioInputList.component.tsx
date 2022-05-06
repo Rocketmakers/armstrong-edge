@@ -100,7 +100,7 @@ export const RadioInputList = React.forwardRef(
                   uncheckedIcon={uncheckedIcon}
                   inputProps={option.htmlInputProps}
                   disabled={option.disabled}
-                  direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
+                  direction={direction}
                   hideRadio={hideRadio}
                   {...option.htmlProps}
                 />

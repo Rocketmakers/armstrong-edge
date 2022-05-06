@@ -19,15 +19,12 @@ export const Default = () => {
 
   return (
     <>
-      <TabControl
-        currentTab={value}
-        onTabChange={(id) => setValue(id as string)}
-        tabs={[{ id: "I'm a tab" }, { id: "I'm another tab" }, { id: "I'm also a tab" }]}
-      />
+      <TabControl currentTab={value} onTabChange={(id) => setValue(id as string)} tabs={["I'm a tab", "I'm another tab", "I'm also a tab"]} />
     </>
   );
 };
-export const WithIcons = () => {
+
+export const DifferentIdBoundToContent = () => {
   const [value, setValue] = React.useState("I'm a tab");
 
   return (
@@ -36,14 +33,35 @@ export const WithIcons = () => {
         currentTab={value}
         onTabChange={(id) => setValue(id as string)}
         tabs={[
-          { id: "I'm a tab", content: "I'm a tab", leftIcon: IconUtils.getIconDefinition('LinearIcons', 'sun') },
+          { id: 'tab1', content: "I'm a tab" },
           {
-            id: "I'm another tab",
+            id: 'tab2',
+            content: "I'm another tab",
+          },
+          { id: 'tab3', content: "I'm also a tab" },
+        ]}
+      />
+    </>
+  );
+};
+
+export const WithIcons = () => {
+  const [value, setValue] = React.useState('tab1');
+
+  return (
+    <>
+      <TabControl
+        currentTab={value}
+        onTabChange={(id) => setValue(id as string)}
+        tabs={[
+          { id: 'tab1', content: "I'm a tab", leftIcon: IconUtils.getIconDefinition('LinearIcons', 'sun') },
+          {
+            id: 'tab2',
             content: "I'm another tab",
             leftIcon: IconUtils.getIconDefinition('LinearIcons', 'moon'),
             rightIcon: IconUtils.getIconDefinition('LinearIcons', 'star'),
           },
-          { id: "I'm also a tab", content: "I'm also a tab", leftIcon: IconUtils.getIconDefinition('LinearIcons', 'cloud') },
+          { id: 'tab3', content: "I'm also a tab", leftIcon: IconUtils.getIconDefinition('LinearIcons', 'cloud') },
         ]}
       />
     </>

@@ -163,7 +163,7 @@ export const UserEdit: React.FC = () => {
           tagPosition="above"
         />
 
-        <CheckboxInput label="I'm the label" />
+        <CheckboxInput content="I'm the label" />
 
         <NativeDateInput />
 
