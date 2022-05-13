@@ -77,6 +77,7 @@ export const CodeInputPart = React.forwardRef(
         onKeyDown={onKeyDown}
         style={{ ...(textInputProps.style || {}), '--arm-code-input-length': length } as React.CSSProperties}
         data-length={length}
+        onClick={(event) => event.currentTarget.select()}
         {...textInputProps}
       />
     );
