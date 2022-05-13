@@ -16,20 +16,19 @@ export default StoryUtils.createMeta(CalendarInput, 'Form', 'Calendar Input', {}
 
 export const Default = () => {
   const { formProp } = Form.use({ date: undefined });
-
-  return <CalendarInput bind={formProp('date').bind() as any} />;
+  return <CalendarInput bind={formProp('date').bind()} />;
 };
 
 export const InputsOnly = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} displayMode="inputs" />;
+  return <CalendarInput bind={formProp('date').bind()} displayMode="inputs" />;
 };
 
 export const CustomInputFormats = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput dayInputDisplayFormat="EEEE d" monthInputDisplayFormat="LLLL" bind={formProp('date').bind() as any} displayMode="inputs" />;
+  return <CalendarInput dayInputDisplayFormat="EEEE d" monthInputDisplayFormat="LLLL" bind={formProp('date').bind()} displayMode="inputs" />;
 };
 
 export const CustomInputOrder = () => {
@@ -44,29 +43,23 @@ export const CustomInputOrder = () => {
 
   return (
     <>
-      <CalendarInput bind={formProp('date').bind() as any} inputOrder={['year', 'month', 'day']} formatString="dd-MM-yyyy" />
+      <CalendarInput bind={formProp('date').bind()} inputOrder={['year', 'month', 'day']} formatString="dd-MM-yyyy" />
       <br />
-      <CalendarInput bind={formProp('date2').bind() as any} inputOrder={['month', 'day', 'year']} formatString="dd-MM-yyyy" />
+      <CalendarInput bind={formProp('date2').bind()} inputOrder={['month', 'day', 'year']} formatString="dd-MM-yyyy" />
       <br />
       <CalendarInput
-        bind={formProp('monthDate').bind() as any}
+        bind={formProp('monthDate').bind()}
         inputOrder={['month', 'year']}
         displayMode="inputs"
         formatString="MM-yyyy"
         monthInputDisplayFormat="LLLL"
       />
       <br />
-      <CalendarInput
-        bind={formProp('month').bind() as any}
-        inputOrder={['month']}
-        displayMode="inputs"
-        formatString="MM"
-        monthInputDisplayFormat="LLLL"
-      />
+      <CalendarInput bind={formProp('month').bind()} inputOrder={['month']} displayMode="inputs" formatString="MM" monthInputDisplayFormat="LLLL" />
       <br />
-      <CalendarInput bind={formProp('yearDate').bind() as any} inputOrder={['year']} displayMode="inputs" formatString="yyyy" />
+      <CalendarInput bind={formProp('yearDate').bind()} inputOrder={['year']} displayMode="inputs" formatString="yyyy" />
       <br />
-      <CalendarInput bind={formProp('backwards').bind() as any} inputOrder={['year', 'month', 'day']} formatString="dd-MM-yyyy" />
+      <CalendarInput bind={formProp('backwards').bind()} inputOrder={['year', 'month', 'day']} formatString="dd-MM-yyyy" />
       <div className="bound-value">
         <p>1 (UK) - {formState.date}</p>
         <p>2 (US) - {formState.date2}</p>
@@ -82,70 +75,70 @@ export const CustomInputOrder = () => {
 export const CalendarOnly = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} displayMode="calendar" />;
+  return <CalendarInput bind={formProp('date').bind()} displayMode="calendar" />;
 };
 
 export const CustomWeekStart = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} weekdayStartIndex={1} />;
+  return <CalendarInput bind={formProp('date').bind()} weekdayStartIndex={1} />;
 };
 
 export const DontCloseOnSelect = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} closeCalendarOnDayClick={false} />;
+  return <CalendarInput bind={formProp('date').bind()} closeCalendarOnDayClick={false} />;
 };
 
 export const Below = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} calendarPosition="below" />;
+  return <CalendarInput bind={formProp('date').bind()} calendarPosition="below" />;
 };
 
 export const Above = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} calendarPosition="above" />;
+  return <CalendarInput bind={formProp('date').bind()} calendarPosition="above" />;
 };
 
 export const KeepCalendarOpen = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} calendarPosition="below" keepCalendarOpen />;
+  return <CalendarInput bind={formProp('date').bind()} calendarPosition="below" keepCalendarOpen />;
 };
 
 export const Modal = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <CalendarInput bind={formProp('date').bind() as any} calendarPosition="modal" />;
+  return <CalendarInput bind={formProp('date').bind()} calendarPosition="modal" />;
 };
 
 export const RangeExample = () => {
-  const { formProp, formState } = Form.use({ startDate: undefined as string, endDate: undefined as string });
+  const { formProp, formState } = Form.use({ startDate: undefined, endDate: undefined });
 
   return (
     <div className="story-cols">
       <label>
         <CalendarInput
           displayMode="calendar"
-          bind={formProp('startDate').bind() as any}
+          bind={formProp('startDate').bind()}
           calendarPosition="below"
           keepCalendarOpen
           max={formState.endDate}
           placeholder="start date"
-          rangeTo={formProp('endDate').get()}
+          rangeTo={formState.endDate}
         />
       </label>
       <label>
         <CalendarInput
           placeholder="end date"
           displayMode="calendar"
-          bind={formProp('endDate').bind() as any}
+          bind={formProp('endDate').bind()}
           calendarPosition="below"
           keepCalendarOpen
           min={formState.startDate}
-          rangeTo={formProp('startDate').get()}
+          rangeTo={formState.startDate}
         />
       </label>
     </div>

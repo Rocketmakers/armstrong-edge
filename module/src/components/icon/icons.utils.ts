@@ -11,10 +11,10 @@ export namespace IconUtils {
   }
 
   /**
-   * Get an icon defintion
+   * Get an icon definition
    * @param iconSet The set to be used (Icomoon | LinearIcon)
    * @param icon The name of the icon in the set given in iconSet
-   * @returns an icon defintion, can be spread into an <Icon /> or used for icon props
+   * @returns an icon definition, can be spread into an <Icon /> or used for icon props
    */
   export function getIconDefinition<T extends IconSet>(iconSet: T, icon: IconName<T>): IIcon<T> {
     return { iconSet, icon };

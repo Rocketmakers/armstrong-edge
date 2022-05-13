@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Form, IListBoxOption, IListBoxProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
@@ -125,7 +126,7 @@ export const ListBoxMulti = React.forwardRef(
     const currentOptions = React.useMemo(
       () =>
         boundValue?.map<IListBoxOption<Id, TSelectData>>(
-          (item) => options.find((option) => option.id === item) || { id: item, name: item.toString() }
+          (item) => options.find((option) => option.id === item) || { id: item, name: item?.toString() }
         ),
       [boundValue, options]
     );
@@ -135,7 +136,7 @@ export const ListBoxMulti = React.forwardRef(
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
         items={options.map((option) => ({
-          content: option.name ?? option.id.toString(),
+          content: option.name ?? option.id?.toString(),
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
@@ -182,7 +183,7 @@ export const ListBoxMulti = React.forwardRef(
                     ? renderPreview(currentOptions)
                     : currentOptions.map((tag) => (
                         <Tag
-                          content={tag.name ?? tag.id.toString()}
+                          content={tag.name ?? tag.id?.toString()}
                           leftIcon={tag.leftIcon}
                           rightIcon={tag.rightIcon}
                           key={tag.id}
@@ -224,8 +225,9 @@ export const ListBoxMulti = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: React.PropsWithChildren<IListBoxMultiProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IListBoxMultiProps<any, any>> };
+  props: ArmstrongFCProps<IListBoxMultiProps<Id, TSelectData>, HTMLSelectElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IListBoxMultiProps<any, any>>;
 
 ListBoxMulti.defaultProps = {
   selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),

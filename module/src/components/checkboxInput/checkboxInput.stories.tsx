@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Form } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { CheckboxInput } from './checkboxInput.component';
@@ -25,21 +26,25 @@ const Template = StoryUtils.createTemplate(CheckboxInput);
 
 /** stories */
 
-export const Default = StoryUtils.cloneTemplate(Template, { label: 'Check me for cool fun time' });
-export const Pending = StoryUtils.cloneTemplate(Template, { pending: true, label: 'Include thing' });
+export const Default = StoryUtils.cloneTemplate(Template, { content: 'Check me for cool fun time' });
+export const Pending = StoryUtils.cloneTemplate(Template, { pending: true, content: 'Include thing' });
 export const CustomIcon = StoryUtils.cloneTemplate(Template, {
-  label: 'Use light theme?',
+  content: 'Use light theme?',
   checkedIcon: IconUtils.getIconDefinition('Icomoon', 'sun'),
 });
 export const UncheckedIcon = StoryUtils.cloneTemplate(Template, {
-  label: 'Theme',
+  content: 'Theme',
   checkedIcon: IconUtils.getIconDefinition('Icomoon', 'sun'),
   uncheckedIcon: IconUtils.getIconDefinition('Icomoon', 'moon'),
 });
 export const SwitchingLabel = StoryUtils.cloneTemplate(Template, {
-  label: (checked) => (checked ? 'Wow now it is cool fun time' : 'Check me for cool fun time'),
+  content: (checked) => (checked ? 'Wow now it is cool fun time' : 'Check me for cool fun time'),
 });
 export const UsingState = () => {
   const [checked, setChecked] = React.useState(true);
-  return <CheckboxInput checked={checked} onValueChange={setChecked} label="I'm the thing" />;
+  return <CheckboxInput checked={checked} onValueChange={setChecked} content="I'm the thing" />;
+};
+export const UsingForm = () => {
+  const { formProp } = Form.use({ value: false });
+  return <CheckboxInput bind={formProp('value').bind()} content="I'm the thing" />;
 };

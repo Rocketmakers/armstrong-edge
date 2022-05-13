@@ -2,39 +2,40 @@ import * as React from 'react';
 
 import { Form, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { Maths } from '../../utils/maths';
 import { Icon, IconSet, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 
-export interface IRangeInputProps
-  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'min' | 'max'>,
+export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'min' | 'max' | 'value'>,
     IIconWrapperProps<IconSet, IconSet>,
     IStatusWrapperProps,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<number>;
+  bind?: IBindingProps<TBind>;
 
   /** called when the value is updated after an on change event */
-  onValueChange?: (newValue: number) => void;
+  onValueChange?: (newValue: TBind) => void;
 
   /** the current value of the range input */
-  value?: number;
+  value?: TBind;
 
-  /** the minimum boundable value */
+  /** the minimum bindable value */
   minimum: number;
 
-  /** the minimum boundable value */
+  /** the minimum bindable value */
   maximum: number;
 
   /** the icon the render on the handle */
   handleIcon?: IIcon<IconSet>;
 }
 
-/** Render a range input where the visuals are recerated using DOM */
-export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
-  (
+/** Render a range input where the visuals are recreated using DOM */
+export const RangeInput = React.forwardRef(
+  <TBind extends NullOrUndefined<number>>(
     {
       onValueChange,
       value,
@@ -56,8 +57,8 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
       error,
       disabled,
       ...nativeProps
-    },
-    ref
+    }: IRangeInputProps<TBind>,
+    ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
@@ -67,13 +68,13 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
       validationErrorIcon: errorIcon,
     });
 
-    const currentPercent = React.useMemo(() => Maths.getPercent((boundValue || 0) - minimum, maximum - minimum), [boundValue, minimum, maximum]);
+    const currentPercent = React.useMemo(() => Maths.getPercent((boundValue ?? 0) - minimum, maximum - minimum), [boundValue, minimum, maximum]);
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange?.(event);
         const newValue = event.currentTarget.valueAsNumber;
-        setBoundValue?.(newValue);
+        setBoundValue?.(newValue as TBind);
       },
       [onChange]
     );
@@ -133,4 +134,7 @@ export const RangeInput = React.forwardRef<HTMLInputElement, IRangeInputProps>(
       </>
     );
   }
-);
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TBind extends NullOrUndefined<number>>(props: ArmstrongVFCProps<IRangeInputProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IRangeInputProps<any>>;

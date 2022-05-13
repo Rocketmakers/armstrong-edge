@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
@@ -39,13 +40,15 @@ export const TabControlTab = React.forwardRef(
 
 export interface ITabControlWrapperProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'ref'> {}
 
-export const TabControlWrapper = React.forwardRef<HTMLDivElement, ITabControlWrapperProps>(({ className, children, ...nativeProps }, ref) => {
-  return (
-    <div {...nativeProps} className={ClassNames.concat('arm-tab-control', className)} ref={ref}>
-      {children}
-    </div>
-  );
-});
+export const TabControlWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITabControlWrapperProps>>(
+  ({ className, children, ...nativeProps }, ref) => {
+    return (
+      <div {...nativeProps} className={ClassNames.concat('arm-tab-control', className)} ref={ref}>
+        {children}
+      </div>
+    );
+  }
+);
 
 export interface ITabControlProps<Id extends ArmstrongId> extends Omit<React.HTMLAttributes<HTMLDivElement>, 'ref'> {
   /** The tabs to render in the TabControl */
@@ -70,7 +73,7 @@ export const TabControl = React.forwardRef(
           typeof tab === 'string' || typeof tab === 'number' ? (
             <TabControlTab name={tab.toString()} id={tab} key={tab} isCurrent={currentTab === tab} onClick={() => onTabChange?.(tab)} />
           ) : (
-            <TabControlTab {...tab} key={tab.id} isCurrent={currentTab === tab.id} onClick={() => onTabChange?.(tab.id)} />
+            tab && <TabControlTab {...tab} key={tab.id} isCurrent={currentTab === tab.id} onClick={() => onTabChange?.(tab.id)} />
           )
         )}
       </TabControlWrapper>
@@ -79,6 +82,5 @@ export const TabControl = React.forwardRef(
 
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: React.PropsWithRef<ITabControlProps<Id>> & React.RefAttributes<HTMLDivElement>) => ReturnType<React.FC>) & {
-  defaultProps?: Partial<ITabControlProps<any>>;
-};
+) as (<Id extends ArmstrongId>(props: ArmstrongFCProps<ITabControlProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ITabControlProps<any>>;

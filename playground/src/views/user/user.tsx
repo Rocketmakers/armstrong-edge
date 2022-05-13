@@ -1,142 +1,93 @@
-import * as React from "react";
-import {
-  Form,
-  TextInput,
-  NumberInput,
-  EmailInput,
-  TextArea,
-  Arrays,
-  ListBox,
-  SwitchInput,
-  Button,
-  NativeDateInput,
-  TagInput,
-  Select,
-  IconUtils,
-  CheckboxInput,
-} from "@rocketmakers/armstrong-edge";
-import { useParams } from "react-router";
+import * as React from "react"
+import { Form, TextInput, NumberInput, EmailInput, TextArea, Arrays, ListBox, SwitchInput, Button, NativeDateInput, TagInput, Select, IconUtils, CheckboxInput } from "@rocketmakers/armstrong-edge"
+import { useParams } from "react-router"
 
-import { apiHooks } from "../../state/apiHooks";
-import { MemoryServer } from "../../servers/memory";
+import { apiHooks } from "../../state/apiHooks"
+import { MemoryServer } from "../../servers/memory"
 
-type Role = MemoryServer.IUserRole;
+type Role = MemoryServer.IUserRole
 
 const autocompleteOptions = [
   { id: "a", name: "pizza" },
   { id: "b", name: "chips" },
   { id: "c", name: "pints" },
-];
+]
 
 export const UserEdit: React.FC = () => {
-  const { userId } = useParams<{ userId?: string }>();
+  const { userId } = useParams<{ userId?: string }>()
 
   const [{ data }, forceRefetch] = apiHooks.user.getUser.useQuery({
-    parameters: { id: userId },
-  });
+    parameters: { id: userId! },
+  })
 
-  const [addUser, { processed: addUserProcessed }] =
-    apiHooks.user.addUser.useMutation();
-  const [updateUser, { processed: updateUserProcessed }] =
-    apiHooks.user.updateUser.useMutation();
+  const [addUser, { processed: addUserProcessed }] = apiHooks.user.addUser.useMutation()
+  const [updateUser, { processed: updateUserProcessed }] = apiHooks.user.updateUser.useMutation()
 
-  const validationErrors: Form.IValidationError[] = Arrays.flatten(
-    addUserProcessed?.validationErrors,
-    updateUserProcessed?.validationErrors,
-    [{ key: "firstName", message: "uh oh" }]
-  );
+  const validationErrors: Form.IValidationError[] = Arrays.flatten(addUserProcessed?.validationErrors, updateUserProcessed?.validationErrors, [{ key: "firstName", message: "uh oh" }])
 
-  const initialData = React.useCallback(
-    (currentState?: MemoryServer.IUser) => {
-      console.log("NEW CURRENT", currentState);
-      console.log("NEW REMOTE", data);
-      return {
-        firstName: "",
-        lastName: "",
-        email: undefined,
-        address: {
-          line1: "",
-          city: "",
-          postcode: "",
-        },
-        points: undefined,
-        roles: [],
-        ...(currentState ?? {}),
-        // ...(data ?? {}),
-      };
-    },
-    // [data]
-    []
-  );
-
-
-  const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(
-    initialData,
-    {
-      validationErrors,
-      validationErrorIcon: IconUtils.getIconDefinition("LinearIcons", "alarm"),
+  const initialData = React.useCallback<(currentState?: MemoryServer.IUser) => MemoryServer.IUser>((currentState) => {
+    console.log("NEW CURRENT", currentState)
+    console.log("NEW REMOTE", data)
+    return {
+      firstName: "",
+      lastName: "",
+      email: "",
+      address: {
+        line1: "",
+        city: "",
+        postcode: "",
+      },
+      points: 0,
+      roles: [],
+      ...(currentState ?? {}),
+      // ...(data ?? {}),
     }
-  );
+  }, [])
 
-  const selectRef = React.useRef<HTMLSelectElement>();
+  const { formProp, formState, getFormData } = Form.use<MemoryServer.IUser>(initialData, {
+    validationErrors,
+    validationErrorIcon: IconUtils.getIconDefinition("LinearIcons", "alarm"),
+  })
+
+  const selectRef = React.useRef<any>()
 
   React.useEffect(() => {
-    console.log("NEW STATE", formState);
-  }, [formState]);
+    console.log("NEW STATE", formState)
+  }, [formState])
 
   React.useEffect(() => {
-    console.log("NEW ADDRESS STATE", formState);
-  }, [formState.address]);
+    console.log("NEW ADDRESS STATE", formState)
+  }, [formState?.address])
 
   const submitData = React.useCallback(async () => {
-    const user = getFormData();
-    if (user.id) {
-      await updateUser({ id: user.id, data: user });
+    const user = getFormData()
+    if (user?.id) {
+      await updateUser({ id: user.id, data: user })
     } else {
-      await addUser({ data: user });
+      await addUser({ data: user })
     }
-  }, [getFormData]);
+  }, [getFormData])
 
   const swapRoleAtIndex = React.useCallback(
     (index: number, role: Role) => {
-      formProp("roles").remove(index).insert(role, index);
+      formProp("roles").remove(index).insert(role, index)
     },
     [formProp]
-  );
+  )
 
   return (
     <form>
       <fieldset>
         <h2>Basic Info</h2>
-        <TextInput
-          bind={formProp("firstName").bind()}
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "user")}
-          validationErrorMessages={["no you"]}
-        />
+        <TextInput bind={formProp("firstName").bind()} leftIcon={IconUtils.getIconDefinition("Icomoon", "user")} validationErrorMessages={["no you"]} />
 
-        <TextInput
-          bind={formProp("lastName").bind()}
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "user")}
-          />
-        <NumberInput
-          bind={formProp("points").bind()}
-          leftIcon={IconUtils.getIconDefinition("Icomoon", "glass")}
-        />
+        <TextInput bind={formProp("lastName").bind()} leftIcon={IconUtils.getIconDefinition("Icomoon", "user")} />
+        <NumberInput bind={formProp("points").bind()} leftIcon={IconUtils.getIconDefinition("Icomoon", "glass")} />
         <TextArea bind={formProp("bio").bind()} />
-        <EmailInput
-          bind={formProp("email").bind()}
-          leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")}
-        />
+        <EmailInput bind={formProp("email").bind()} leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")} />
         <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
-        <SwitchInput
-          bind={formProp("isCool").bind()}
-          validationErrorMessages={["uh oh"]}
-        />
-        <TagInput
-          bind={formProp("sauces").bind()}
-          spaceCreatesTags
-          tagPosition="inside"
-        />
+        <SwitchInput bind={formProp("isCool").bind()} validationErrorMessages={["uh oh"]} />
+        <TagInput bind={formProp("sauces").bind()} spaceCreatesTags tagPosition="inside" />
         <ListBox
           leftIcon={IconUtils.getIconDefinition("Icomoon", "paint-format")}
           bind={formProp("favouriteColour").bind()}
@@ -157,11 +108,7 @@ export const UserEdit: React.FC = () => {
           ]}
           ref={selectRef}
         />
-        <TagInput
-          bind={formProp("sauces").bind()}
-          spaceCreatesTags
-          tagPosition="above"
-        />
+        <TagInput bind={formProp("sauces").bind()} spaceCreatesTags tagPosition="above" />
 
         <CheckboxInput content="I'm the label" />
 
@@ -179,7 +126,7 @@ export const UserEdit: React.FC = () => {
           pending={isFetchingSauces}
         /> */}
 
-        <p>you've chosen: {formState.favouriteCuisine}</p>
+        <p>you've chosen: {formState?.favouriteCuisine}</p>
         <br />
         <br />
         <br />
@@ -191,18 +138,14 @@ export const UserEdit: React.FC = () => {
       <fieldset>
         <h2>Roles</h2>
 
-        {formState.roles.map((role, index) => (
+        {formState?.roles.map((role, index) => (
           <div key={index}>
             <TextInput bind={formProp("address", "line2").bind()} />
-            <Button onClick={() => formProp("roles").remove(index)}>
-              Remove
-            </Button>
+            <Button onClick={() => formProp("roles").remove(index)}>Remove</Button>
           </div>
         ))}
 
-        <Button onClick={() => swapRoleAtIndex(0, { name: "horse" })}>
-          Add role
-        </Button>
+        <Button onClick={() => swapRoleAtIndex(0, { name: "horse" })}>Add role</Button>
       </fieldset>
 
       <Button type="submit" onClick={submitData}>
@@ -212,17 +155,17 @@ export const UserEdit: React.FC = () => {
         Force Refetch
       </Button>
     </form>
-  );
-};
+  )
+}
 
 // ADDRESS FORM
 
 interface IAddressFormProps {
-  bind: Form.IBindingProps<MemoryServer.IUserAddress>;
+  bind: Form.IBindingProps<MemoryServer.IUserAddress>
 }
 
 const AddressForm: React.FC<IAddressFormProps> = ({ bind }) => {
-  const { formProp } = Form.use(bind);
+  const { formProp } = Form.use(bind)
 
   return (
     <fieldset>
@@ -232,5 +175,5 @@ const AddressForm: React.FC<IAddressFormProps> = ({ bind }) => {
       <TextInput bind={formProp("city").bind()} />
       <TextInput bind={formProp("postcode").bind()} />
     </fieldset>
-  );
-};
+  )
+}

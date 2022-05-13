@@ -9,13 +9,22 @@ export interface ISideMenuProps extends Omit<IModalProps, 'darkenBackground' | '
 }
 
 /** Extends the Modal component (see docs for modal) with some extra features and styling to work as a slide in sidebar */
-export const SideMenu: React.FC<ISideMenuProps> = ({ className, children, side, ...modalProps }) => {
-  return (
-    <Modal data-side={side} className={ClassNames.concat('arm-side-menu', className)} {...modalProps} darkenBackground centred={false}>
-      {children}
-    </Modal>
-  );
-};
+export const SideMenu = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ISideMenuProps>>(
+  ({ className, children, side, ...modalProps }, forwardedRef) => {
+    return (
+      <Modal
+        ref={forwardedRef}
+        data-side={side}
+        className={ClassNames.concat('arm-side-menu', className)}
+        {...modalProps}
+        darkenBackground
+        centred={false}
+      >
+        {children}
+      </Modal>
+    );
+  }
+);
 
 SideMenu.defaultProps = {
   side: 'left',

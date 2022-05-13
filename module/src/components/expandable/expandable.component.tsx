@@ -12,18 +12,21 @@ export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProp
 }
 
 /** A div which expands to fit its children when isOpen is true, otherwise it takes up no space - can work horizontally or vertically */
-export const Expandable: React.FC<IExpandableProps> = ({ isOpen, className, direction, ...nativeProps }) => {
-  return (
-    <AutoResizer
-      tabIndex={isOpen ? undefined : -1}
-      aria-hidden={!isOpen}
-      className={ClassNames.concat('arm-expandable', className)}
-      data-direction={direction}
-      data-is-open={!!isOpen}
-      {...nativeProps}
-    />
-  );
-};
+export const Expandable = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IExpandableProps>>(
+  ({ isOpen, className, direction, ref, ...nativeProps }, forwardedRef) => {
+    return (
+      <AutoResizer
+        ref={forwardedRef}
+        tabIndex={isOpen ? undefined : -1}
+        aria-hidden={!isOpen}
+        className={ClassNames.concat('arm-expandable', className)}
+        data-direction={direction}
+        data-is-open={!!isOpen}
+        {...nativeProps}
+      />
+    );
+  }
+);
 
 Expandable.defaultProps = {
   direction: 'vertical',

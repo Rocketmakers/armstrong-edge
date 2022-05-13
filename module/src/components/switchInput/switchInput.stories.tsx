@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Form } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { SwitchInput } from './switchInput.component';
@@ -15,29 +16,27 @@ export default StoryUtils.createMeta(SwitchInput as any, 'Form', 'Switch Input',
 /** stories */
 
 export const Default = () => {
-  const [checked, setChecked] = React.useState(false);
+  const { formProp } = Form.use({ isSwitched: false });
 
-  return <SwitchInput checked={checked} onChange={setChecked} />;
+  return <SwitchInput bind={formProp('isSwitched').bind()} />;
 };
 export const WithIcons = () => {
-  const [checked, setChecked] = React.useState(false);
+  const { formProp } = Form.use({ isSwitched: false });
 
   return (
     <SwitchInput
-      checked={checked}
-      onChange={setChecked}
+      bind={formProp('isSwitched').bind()}
       checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
       uncheckedIcon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
     />
   );
 };
 export const WithIconsOnHandle = () => {
-  const [checked, setChecked] = React.useState(false);
+  const { formProp } = Form.use({ isSwitched: false });
 
   return (
     <SwitchInput
-      checked={checked}
-      onChange={setChecked}
+      bind={formProp('isSwitched').bind()}
       checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
       uncheckedIcon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
       iconStyle="on-handle"

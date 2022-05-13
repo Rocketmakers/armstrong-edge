@@ -49,7 +49,7 @@ const ThrottledInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseP
   }
 );
 
-export interface IInputProps<TValue> extends NativeInputProps, Omit<IInputWrapperProps, 'onClick'> {
+export interface IInputProps<TValue> extends NativeInputProps, Omit<IInputWrapperProps, 'onClick' | 'onValueChange'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TValue>;
 
@@ -155,7 +155,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         hideIconOnStatus={hideIconOnStatus}
         onClick={() => internalRef.current?.focus()}
       >
-        {delay?.mode === 'debounce' && delay.milliseconds && (
+        {delay?.mode === 'debounce' && !!delay.milliseconds && (
           <DebounceInputBase
             {...nativeProps}
             milliseconds={delay.milliseconds}
@@ -165,7 +165,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
             ref={internalRef}
           />
         )}
-        {delay?.mode === 'throttle' && delay.milliseconds && (
+        {delay?.mode === 'throttle' && !!delay.milliseconds && (
           <ThrottledInputBase
             {...nativeProps}
             milliseconds={delay.milliseconds}

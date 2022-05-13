@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Form } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
 import { TagInput } from './tagInput.component';
 
@@ -14,50 +15,49 @@ export default StoryUtils.createMeta(TagInput, 'Form', 'Tag Input', {});
 /** stories */
 
 export const Default = () => {
-  const [tags, setTags] = React.useState([]);
+  const { formProp } = Form.use({ tags: [] });
 
-  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." />;
+  return <TagInput bind={formProp('tags').bind()} placeholder="Please add some tags..." />;
 };
 export const NoDeletingWithButton = () => {
-  const [tags, setTags] = React.useState([]);
+  const { formProp } = Form.use({ tags: [] });
 
-  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." deleteButton={false} />;
+  return <TagInput bind={formProp('tags').bind()} placeholder="Please add some tags..." deleteButton={false} />;
 };
 export const SpaceAddsTags = () => {
-  const [tags, setTags] = React.useState([]);
+  const { formProp } = Form.use({ tags: [] });
 
-  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." spaceCreatesTags />;
+  return <TagInput bind={formProp('tags').bind()} placeholder="Please add some tags..." spaceCreatesTags />;
 };
 export const DuplicatesAllowed = () => {
-  const [tags, setTags] = React.useState([]);
+  const { formProp } = Form.use({ tags: [] });
 
-  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." allowDuplicates />;
+  return <TagInput bind={formProp('tags').bind()} placeholder="Please add some tags..." allowDuplicates />;
 };
 export const WithValidationErrors = () => {
-  const [tags, setTags] = React.useState([]);
+  const { formProp, formState } = Form.use({ tags: [] });
 
   return (
     <TagInput
-      value={tags}
-      onChange={setTags}
+      bind={formProp('tags').bind()}
       placeholder="Please add some tags..."
-      validationErrorMessages={tags?.length < 3 && ['Must have at least 3 tags']}
+      validationErrorMessages={formState?.tags?.length < 3 && ['Must have at least 3 tags']}
       spaceCreatesTags
     />
   );
 };
 export const Above = () => {
-  const [tags, setTags] = React.useState([]);
+  const { formProp } = Form.use({ tags: [] });
 
-  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." tagPosition="above" />;
+  return <TagInput bind={formProp('tags').bind()} placeholder="Please add some tags..." tagPosition="above" />;
 };
 export const Below = () => {
-  const [tags, setTags] = React.useState([]);
+  const { formProp } = Form.use({ tags: [] });
 
-  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." tagPosition="below" />;
+  return <TagInput bind={formProp('tags').bind()} placeholder="Please add some tags..." tagPosition="below" />;
 };
 export const Pending = () => {
-  const [tags, setTags] = React.useState(['thing', 'other thing', 'tag time']);
+  const { formProp } = Form.use({ tags: ['thing', 'other thing', 'tag time'] });
 
-  return <TagInput value={tags} onChange={setTags} placeholder="Please add some tags..." tagPosition="below" pending />;
+  return <TagInput bind={formProp('tags').bind()} placeholder="Please add some tags..." tagPosition="below" pending />;
 };

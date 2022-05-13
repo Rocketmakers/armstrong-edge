@@ -9,23 +9,25 @@ export interface IHeaderProps extends IPortalProps, React.HTMLProps<HTMLDivEleme
 }
 
 /** Render some content in a menu fixed to the top of the screen */
-export const Header: React.FC<IHeaderProps> = ({ className, children, portalTo, shouldPortal, portalToSelector, ...htmlProps }) => {
-  const content = (
-    <header className={ClassNames.concat('arm-header', className)} {...htmlProps}>
-      {children}
-    </header>
-  );
+export const Header = React.forwardRef<HTMLElement, IHeaderProps>(
+  ({ className, children, portalTo, shouldPortal, portalToSelector, ref, ...htmlProps }, forwardedRef) => {
+    const content = (
+      <header ref={forwardedRef} className={ClassNames.concat('arm-header', className)} {...htmlProps}>
+        {children}
+      </header>
+    );
 
-  if (!shouldPortal) {
-    return content;
+    if (!shouldPortal) {
+      return content;
+    }
+
+    return (
+      <Portal portalTo={portalTo} portalToSelector={portalToSelector}>
+        {content}
+      </Portal>
+    );
   }
-
-  return (
-    <Portal portalTo={portalTo} portalToSelector={portalToSelector}>
-      {content}
-    </Portal>
-  );
-};
+);
 
 Header.defaultProps = {
   shouldPortal: true,

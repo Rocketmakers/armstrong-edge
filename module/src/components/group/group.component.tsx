@@ -9,13 +9,20 @@ export interface IGroupProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 /** Incredibly simple component designed to take some of the boilerplate out of making some elements appear in a row */
-export const Group: React.FC<IGroupProps> = ({ children, className, title, id: htmlId, ...htmlProps }) => {
+export const Group = React.forwardRef<HTMLDivElement, IGroupProps>(({ children, className, title, id: htmlId, ref, ...htmlProps }, forwardedRef) => {
   const id = useGeneratedId('arm-grp', htmlId);
 
   const labelId = title && `${id}_label`;
 
   return (
-    <div className={ClassNames.concat('arm-group', className)} {...htmlProps} data-has-title={!!title} id={id} aria-labelledby={labelId}>
+    <div
+      className={ClassNames.concat('arm-group', className)}
+      ref={forwardedRef}
+      {...htmlProps}
+      data-has-title={!!title}
+      id={id}
+      aria-labelledby={labelId}
+    >
       {title && (
         <p className="arm-group-title" id={labelId}>
           {title}
@@ -24,4 +31,4 @@ export const Group: React.FC<IGroupProps> = ({ children, className, title, id: h
       <div className="arm-group-inner">{children}</div>
     </div>
   );
-};
+});

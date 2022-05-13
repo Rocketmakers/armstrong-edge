@@ -12,7 +12,7 @@ export interface IPortalProps {
 }
 
 /** Will portal its children into a given root element */
-export const Portal: React.FunctionComponent<IPortalProps> = ({ portalToSelector, children, portalTo }) => {
+export const Portal: React.FunctionComponent<React.PropsWithChildren<IPortalProps>> = ({ portalToSelector, children, portalTo }) => {
   const [selectedRootElement, setSelectedRootElement] = React.useState<Element>();
 
   // the root element is not always available as a result of that query selection on the initial render, so must be assigned to a piece of state

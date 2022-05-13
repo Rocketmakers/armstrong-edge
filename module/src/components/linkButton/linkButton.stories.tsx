@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ClassNames } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
-import { LinkProvider } from '../link';
+import { ArmstrongConfigProvider } from '../config';
 import { LinkButton } from './linkButton.component';
 
 /** metadata */
@@ -60,16 +60,18 @@ export const Minimal = StoryUtils.cloneTemplate(Template, {
 export const CustomLinkComponent = () => {
   return (
     // add to root providers
-    <LinkProvider
-      Component={({ children, className, to, ...props }) => (
-        // eslint-disable-next-line no-alert
-        <div {...props} className={ClassNames.concat('my-custom-link-component', className)} onClick={() => alert(`Go to ${to}`)}>
-          {children}
-        </div>
-      )}
+    <ArmstrongConfigProvider
+      routing={{
+        LinkComponent: ({ children, className, to, ...props }) => (
+          // eslint-disable-next-line no-alert
+          <div {...props} className={ClassNames.concat('my-custom-link-component', className)} onClick={() => alert(`Go to ${to}`)}>
+            {children}
+          </div>
+        ),
+      }}
     >
       <LinkButton to="/something">Use this to hook into routing libraries</LinkButton>
-    </LinkProvider>
+    </ArmstrongConfigProvider>
   );
 };
 export const ReactRouter = () => {
@@ -78,14 +80,16 @@ export const ReactRouter = () => {
 
   return (
     // add to root providers
-    <LinkProvider
-      Component={({ children, className, to, ...props }) => (
-        <Link to={to} {...props} className={className}>
-          {children}
-        </Link>
-      )}
+    <ArmstrongConfigProvider
+      routing={{
+        LinkComponent: ({ children, className, to, ...props }) => (
+          <Link to={to} {...props} className={className}>
+            {children}
+          </Link>
+        ),
+      }}
     >
       <LinkButton to="/something">Use this to hook into routing libraries</LinkButton>
-    </LinkProvider>
+    </ArmstrongConfigProvider>
   );
 };

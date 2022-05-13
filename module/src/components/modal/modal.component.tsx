@@ -61,7 +61,7 @@ export interface IModalProps
  * see: https://www.w3.org/WAI/GL/wiki/Using_ARIA_role%3Ddialog_to_implement_a_modal_dialog_box
  */
 
-export const Modal = React.forwardRef<HTMLDivElement, IModalProps>(
+export const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IModalProps>>(
   (
     {
       portalToSelector,

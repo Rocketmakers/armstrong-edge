@@ -24,7 +24,13 @@ export const Default = () => {
 export const WithIcons = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <DateTimeInput leftIcon={IconUtils.getIconDefinition('LinearIcons', 'clock')} bind={formProp('date').bind() as any} />;
+  return (
+    <DateTimeInput
+      additionalTimeInputProps={{ leftIcon: IconUtils.getIconDefinition('LinearIcons', 'clock') }}
+      additionalCalendarInputProps={{ leftIcon: IconUtils.getIconDefinition('LinearIcons', 'calendar-full') }}
+      bind={formProp('date').bind()}
+    />
+  );
 };
 
 export const Pending = () => {
@@ -36,5 +42,5 @@ export const Pending = () => {
 export const ValidationErrors = () => {
   const { formProp } = Form.use({ date: undefined });
 
-  return <DateTimeInput validationErrorMessages={['Uh oh', "That's way too early dude"]} bind={formProp('date').bind() as any} />;
+  return <DateTimeInput validationErrorMessages={['Uh oh', "That's way too early dude"]} bind={formProp('date').bind()} />;
 };

@@ -6,7 +6,7 @@
     "importHelpers": true,
     "isolatedModules": false,
     "jsx": "react",
-    "strict": false,
+    "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "declaration": false,

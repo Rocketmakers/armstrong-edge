@@ -24,7 +24,7 @@ export interface IStatusWrapperProps {
   errorIcon?: IIcon<IconSet>;
 }
 
-export const StatusWrapper: React.FC<IStatusWrapperProps> = ({
+export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps>> = ({
   statusPosition,
   error,
   pending,

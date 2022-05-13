@@ -34,7 +34,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, INumberInputProps>
     },
     ref
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingTools(bind, {
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
       validationErrorMessages,
       validationMode,

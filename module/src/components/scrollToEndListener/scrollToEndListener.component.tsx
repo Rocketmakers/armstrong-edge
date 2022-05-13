@@ -18,25 +18,27 @@ export interface IScrollToEndListenerProps extends IStatusProps, React.DetailedH
  *
  * As this doesn't render a wrapping div, it's up to the styling of whatever you're rendering this component inside to ensure the .arm-scroll-to-end-listener-listener div is rendered at the bottom of the container
  */
-export const ScrollToEndListener: React.FC<IScrollToEndListenerProps> = ({ children, onScrollToEnd, rootMargin, ...statusProps }) => {
-  const ref = React.useRef<HTMLDivElement>(null);
+export const ScrollToEndListener = React.forwardRef<HTMLDivElement, IScrollToEndListenerProps>(
+  ({ children, onScrollToEnd, rootMargin, ref, ...statusProps }, forwardedRef) => {
+    const listenerRef = React.useRef<HTMLDivElement>(null);
 
-  useInViewport(ref, { rootMargin, onEnter: onScrollToEnd });
+    useInViewport(listenerRef, { rootMargin, onEnter: onScrollToEnd });
 
-  return (
-    <div className="arm-scroll-to-end-listener">
-      {children}
+    return (
+      <div className="arm-scroll-to-end-listener" ref={forwardedRef}>
+        {children}
 
-      {(statusProps.error || statusProps.pending) && (
-        <div className="arm-scroll-to-end-listener-status">
-          <Status {...statusProps} />
-        </div>
-      )}
+        {(statusProps.error || statusProps.pending) && (
+          <div className="arm-scroll-to-end-listener-status">
+            <Status {...statusProps} />
+          </div>
+        )}
 
-      <div className="arm-scroll-to-end-listener-listener" ref={ref} />
-    </div>
-  );
-};
+        <div className="arm-scroll-to-end-listener-listener" ref={listenerRef} />
+      </div>
+    );
+  }
+);
 
 ScrollToEndListener.defaultProps = {
   rootMargin: '200px',
