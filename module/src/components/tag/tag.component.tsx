@@ -15,7 +15,7 @@ export interface ITagProps
   onRemove?: () => void;
 }
 
-export const Tag = React.forwardRef<HTMLDivElement, ITagProps>(
+export const Tag = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITagProps>>(
   ({ content, className, leftIcon, rightIcon, children, onRemove, ...nativeProps }, ref) => (
     <div ref={ref} className={ClassNames.concat('arm-tag', className)} {...nativeProps}>
       <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>

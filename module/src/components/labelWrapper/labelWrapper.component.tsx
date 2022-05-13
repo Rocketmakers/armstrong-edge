@@ -7,7 +7,7 @@ export interface ILabelWrapperProps extends React.HTMLProps<HTMLLabelElement> {
   labelContent?: string;
 }
 
-export const LabelWrapper = React.forwardRef<HTMLLabelElement, ILabelWrapperProps>(
+export const LabelWrapper = React.forwardRef<HTMLLabelElement, React.PropsWithChildren<ILabelWrapperProps>>(
   ({ labelContent, className, children, ref, ...htmlProps }, forwardedRef) => {
     return (
       <label ref={forwardedRef} {...htmlProps} className={ClassNames.concat('arm-label-wrapper', className)}>

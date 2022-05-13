@@ -73,7 +73,15 @@ export const TabControl = React.forwardRef(
           typeof tab === 'string' || typeof tab === 'number' ? (
             <TabControlTab name={tab.toString()} id={tab} key={tab} isCurrent={currentTab === tab} onClick={() => onTabChange?.(tab)} />
           ) : (
-            tab && <TabControlTab {...tab} key={tab.id} isCurrent={currentTab === tab.id} onClick={() => onTabChange?.(tab.id)} />
+            tab && (
+              <TabControlTab
+                {...tab}
+                name={tab.name ?? tab.id?.toString()}
+                key={tab.id}
+                isCurrent={currentTab === tab.id}
+                onClick={() => onTabChange?.(tab.id)}
+              />
+            )
           )
         )}
       </TabControlWrapper>

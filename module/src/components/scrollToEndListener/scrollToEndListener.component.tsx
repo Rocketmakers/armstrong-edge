@@ -18,7 +18,7 @@ export interface IScrollToEndListenerProps extends IStatusProps, React.DetailedH
  *
  * As this doesn't render a wrapping div, it's up to the styling of whatever you're rendering this component inside to ensure the .arm-scroll-to-end-listener-listener div is rendered at the bottom of the container
  */
-export const ScrollToEndListener = React.forwardRef<HTMLDivElement, IScrollToEndListenerProps>(
+export const ScrollToEndListener = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IScrollToEndListenerProps>>(
   ({ children, onScrollToEnd, rootMargin, ref, ...statusProps }, forwardedRef) => {
     const listenerRef = React.useRef<HTMLDivElement>(null);
 
