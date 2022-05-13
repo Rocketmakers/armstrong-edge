@@ -14,7 +14,7 @@ export type ILinkTabControlTab<Id extends ArmstrongId, TLinkProps extends Record
 /** A single tab used in the TabControl component */
 export const LinkTabControlTab = React.forwardRef(
   <Id extends ArmstrongId, TLinkProps extends Record<string, any>>(
-    { isCurrent, id, content, className, leftIcon, rightIcon, onTouchCancel, to, name, ref, ...linkProps }: ILinkTabControlTab<Id, TLinkProps>,
+    { isCurrent, id, content, className, leftIcon, rightIcon, onTouchCancel, to, name, ...linkProps }: ILinkTabControlTab<Id, TLinkProps>,
     forwardedRef: React.ForwardedRef<HTMLElement>
   ) => {
     return (

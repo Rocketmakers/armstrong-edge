@@ -32,14 +32,14 @@ export interface IIconProps<TIconSet extends IconSet>
 /** Render an icon using one of the supported icon sets */
 export const Icon = React.forwardRef(
   <TIconSet extends IconSet>(
-    { className, iconSet, icon, onClick, cypressTag, ref, ...nativeProps }: IIconProps<TIconSet>,
+    { className, iconSet, icon, onClick, cypressTag, ...nativeProps }: IIconProps<TIconSet>,
     forwardedRef: React.ForwardedRef<HTMLDivElement>
   ) => {
     return (
       <div
-        ref={forwardedRef}
         aria-hidden
         {...nativeProps}
+        ref={forwardedRef}
         data-icon-set={iconSet}
         data-i={icon}
         className={ClassNames.concat('arm-icon', className)}
@@ -55,11 +55,11 @@ export const Icon = React.forwardRef(
 type IIconsetIconProps<TIconSet extends IconSet> = Omit<IIconProps<TIconSet>, 'iconSet'>;
 
 /** Renders an Icomoon icon - requires the consuming application to have manually added the Icomoon font file */
-export const IcomoonIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'Icomoon'>>(({ icon, ref, ...props }, forwardedRef) => (
-  <Icon ref={forwardedRef} {...props} iconSet="Icomoon" icon={icon} />
+export const IcomoonIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'Icomoon'>>(({ icon, ...props }, forwardedRef) => (
+  <Icon {...props} ref={forwardedRef} iconSet="Icomoon" icon={icon} />
 ));
 
 /** Renders an LinearIcon icon - requires the consuming application to have manually added the LinearIcon font file */
-export const LinearIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'LinearIcons'>>(({ icon, ref, ...props }, forwardedRef) => (
-  <Icon ref={forwardedRef} {...props} iconSet="LinearIcons" icon={icon} />
+export const LinearIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'LinearIcons'>>(({ icon, ...props }, forwardedRef) => (
+  <Icon {...props} ref={forwardedRef} iconSet="LinearIcons" icon={icon} />
 ));

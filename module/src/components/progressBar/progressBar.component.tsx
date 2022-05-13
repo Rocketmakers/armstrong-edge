@@ -29,7 +29,7 @@ export interface IProgressBarProps extends React.DetailedHTMLProps<React.HTMLPro
 
 /** Show a progress bar using a progress property */
 export const ProgressBar = React.forwardRef<HTMLDivElement, IProgressBarProps>(
-  ({ progress, direction, labelText, labelVariant, colorBreakpoints, className, ref, ...nativeProps }, forwardedRef) => {
+  ({ progress, direction, labelText, labelVariant, colorBreakpoints, className, ...nativeProps }, forwardedRef) => {
     const color = React.useMemo(
       () => !!colorBreakpoints?.length && Colors.RGBToHex(Colors.multiLerpRGB(colorBreakpoints.map(Colors.colorToRGB), progress)),
       [colorBreakpoints, progress]
@@ -37,7 +37,6 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, IProgressBarProps>(
 
     return (
       <div
-        ref={forwardedRef}
         className={ClassNames.concat('arm-progress-bar', className)}
         data-direction={direction}
         data-has-label={!!labelText}
@@ -48,6 +47,7 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, IProgressBarProps>(
         aria-valuemax={100}
         aria-valuetext={labelText}
         {...nativeProps}
+        ref={forwardedRef}
       >
         <div className="arm-progress-bar-progress" />
         {labelText && (

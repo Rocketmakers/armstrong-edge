@@ -10,9 +10,9 @@ export interface IHeaderProps extends IPortalProps, React.HTMLProps<HTMLDivEleme
 
 /** Render some content in a menu fixed to the top of the screen */
 export const Header = React.forwardRef<HTMLElement, React.PropsWithChildren<IHeaderProps>>(
-  ({ className, children, portalTo, shouldPortal, portalToSelector, ref, ...htmlProps }, forwardedRef) => {
+  ({ className, children, portalTo, shouldPortal, portalToSelector, ...htmlProps }, forwardedRef) => {
     const content = (
-      <header ref={forwardedRef} className={ClassNames.concat('arm-header', className)} {...htmlProps}>
+      <header className={ClassNames.concat('arm-header', className)} {...htmlProps} ref={forwardedRef}>
         {children}
       </header>
     );

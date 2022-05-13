@@ -150,7 +150,7 @@ export const TagInput = React.forwardRef(
 
     const removeTag = React.useCallback(
       (tagToRemove: ArmstrongId) => {
-        setBoundValue?.((boundValue || [])?.filter((tag) => tag !== tagToRemove) as TBind);
+        setBoundValue?.(((boundValue as string[]) || []).filter((tag) => tag !== tagToRemove) as TBind);
         setTextInputInternalValue('');
         onRemoveTag?.(tagToRemove);
       },

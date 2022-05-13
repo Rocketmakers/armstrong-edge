@@ -16,7 +16,7 @@ export interface IGlobalProgressBarProps extends IProgressBarProps, IPortalProps
 
 /** A ProgressBar which is portaled into a fixed position on the edge of the screen */
 export const FixedProgressBar = React.forwardRef<HTMLDivElement, IGlobalProgressBarProps>(
-  ({ className, portalToSelector, portalTo, hidden, position, direction, ref, ...progressBarProps }, forwardedRef) => {
+  ({ className, portalToSelector, portalTo, hidden, position, direction, ...progressBarProps }, forwardedRef) => {
     // ensure that direction is one that is compatible with position
     const fixedDirection = React.useMemo(() => {
       if ((position === 'top' || position === 'bottom') && !(direction === 'left' || direction === 'right')) {
@@ -31,12 +31,12 @@ export const FixedProgressBar = React.forwardRef<HTMLDivElement, IGlobalProgress
     return (
       <Portal portalToSelector={portalToSelector} portalTo={portalTo}>
         <ProgressBar
+          {...progressBarProps}
           ref={forwardedRef}
           data-hidden={hidden}
           direction={fixedDirection}
           data-position={position}
           className={ClassNames.concat('arm-global-progress-bar', className)}
-          {...progressBarProps}
         />
       </Portal>
     );
