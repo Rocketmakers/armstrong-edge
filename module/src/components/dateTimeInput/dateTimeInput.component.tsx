@@ -5,6 +5,7 @@ import { Form } from '../..';
 import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { ClassNames, Dates } from '../../utils';
+import { JavaScript } from '../../utils/javascript';
 import { CalendarInput, ICalendarInputProps } from '../calendarInput';
 import { InputWrapper } from '../inputWrapper';
 import { IStatusWrapperProps } from '../statusWrapper';
@@ -113,9 +114,10 @@ export const DateTimeInput = React.forwardRef(
             bind?.addValidationError('Invalid date selection');
             return;
           }
-          if (!selectedDateTime || !isSameMinute(finalDateSelected, Dates.dateLikeToDate(selectedDateTime)!)) {
+          const unset = JavaScript.isNullOrUndefined(selectedDateTime);
+          if (unset || !isSameMinute(finalDateSelected, Dates.dateLikeToDate(selectedDateTime)!)) {
             setSelectedDateTime?.(
-              Dates.dateObjectToDateLike(finalDateSelected, selectedDateTime ? typeof selectedDateTime : 'string', formatString, locale) as TValue
+              Dates.dateObjectToDateLike(finalDateSelected, !unset ? typeof selectedDateTime : 'string', formatString, locale) as TValue
             );
           }
         }

@@ -78,7 +78,7 @@ export interface IConfig {
    * A formatter to apply to all passed in date strings.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
    * - If date strings are used without this prop, strict ISO format will be assumed.
-   * - This format will not be used if dates are passed as `Date` objects rather than strings.
+   * - This format will not be used if a date is passed as `Date` object or `number` rather than string.
    */
   formatString?: string;
   /**
