@@ -3,16 +3,20 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { IBindingProps, useBindingState } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { ClassNames, Dates } from '../../utils';
 import { CalendarInput, ICalendarInputProps } from '../calendarInput';
 import { InputWrapper } from '../inputWrapper';
 import { IStatusWrapperProps } from '../statusWrapper';
 import { ITimeInputProps, TimeInput } from '../timeInput';
 
-type AdditionalCalendarInputProps<TValue extends Dates.DateLike> = Omit<ICalendarInputProps<TValue>, 'bind' | 'formatString' | 'locale'>;
-type AdditionalTimeInputProps = Omit<ITimeInputProps, 'bind' | 'formatString' | 'locale'>;
+type AdditionalCalendarInputProps<TValue extends NullOrUndefined<Dates.DateLike>> = Omit<
+  ICalendarInputProps<TValue>,
+  'bind' | 'formatString' | 'locale'
+>;
+type AdditionalTimeInputProps = Omit<ITimeInputProps<any>, 'bind' | 'formatString' | 'locale'>;
 
-export interface IDateTimeInputProps<TValue extends Dates.DateLike> extends IStatusWrapperProps {
+export interface IDateTimeInputProps<TValue extends NullOrUndefined<Dates.DateLike>> extends IStatusWrapperProps {
   /** The binding for the input. */
   bind?: IBindingProps<TValue>;
 
@@ -54,7 +58,7 @@ export interface IDateTimeInputProps<TValue extends Dates.DateLike> extends ISta
 const innerTimeInputFormat = 'HH:mm';
 
 export const DateTimeInput = React.forwardRef(
-  <TValue extends Dates.DateLike>(
+  <TValue extends NullOrUndefined<Dates.DateLike>>(
     {
       additionalCalendarInputProps,
       className,
@@ -71,7 +75,7 @@ export const DateTimeInput = React.forwardRef(
       formatString,
       locale,
     }: IDateTimeInputProps<TValue>,
-    ref: React.ForwardedRef<HTMLDivElement>
+    ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [selectedDateTime, setSelectedDateTime, bindConfig] = useBindingState(bind, {
       validationErrorIcon: errorIcon,
@@ -135,6 +139,7 @@ export const DateTimeInput = React.forwardRef(
       </InputWrapper>
     );
   }
-) as (<TValue extends Dates.DateLike>(
-  props: React.PropsWithChildren<IDateTimeInputProps<TValue>> & React.RefAttributes<HTMLInputElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IDateTimeInputProps<any>> };
+) as (<TValue extends NullOrUndefined<Dates.DateLike>>(
+  props: ArmstrongVFCProps<IDateTimeInputProps<TValue>, HTMLInputElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IDateTimeInputProps<any>>;

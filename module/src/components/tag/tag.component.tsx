@@ -15,23 +15,25 @@ export interface ITagProps
   onRemove?: () => void;
 }
 
-export const Tag: React.FC<ITagProps> = ({ content, className, leftIcon, rightIcon, children, onRemove, ...nativeProps }) => (
-  <div className={ClassNames.concat('arm-tag', className)} {...nativeProps}>
-    <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-      {typeof children === 'string' || !children ? <span>{content}</span> : children}
-    </IconWrapper>
+export const Tag = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITagProps>>(
+  ({ content, className, leftIcon, rightIcon, children, onRemove, ...nativeProps }, ref) => (
+    <div ref={ref} className={ClassNames.concat('arm-tag', className)} {...nativeProps}>
+      <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+        {typeof children === 'string' || !children ? <span>{content}</span> : children}
+      </IconWrapper>
 
-    {onRemove && (
-      <IconButton
-        minimalStyle
-        className="arm-tag-close"
-        onMouseDown={(event) => event.stopPropagation()}
-        onClick={(event) => {
-          onRemove();
-          event.stopPropagation();
-        }}
-        icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
-      />
-    )}
-  </div>
+      {onRemove && (
+        <IconButton
+          minimalStyle
+          className="arm-tag-close"
+          onMouseDown={(event) => event.stopPropagation()}
+          onClick={(event) => {
+            onRemove();
+            event.stopPropagation();
+          }}
+          icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+        />
+      )}
+    </div>
+  )
 );

@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps } from '../inputWrapper';
@@ -84,6 +85,5 @@ export const TabSelect = React.forwardRef(
 
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: React.PropsWithRef<ITabSelectProps<Id>> & React.RefAttributes<HTMLDivElement>) => ReturnType<React.FC>) & {
-  defaultProps?: Partial<ITabSelectProps<any>>;
-};
+) as (<Id extends ArmstrongId>(props: ArmstrongFCProps<ITabSelectProps<Id>, React.RefAttributes<HTMLDivElement>>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ITabSelectProps<any>>;

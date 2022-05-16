@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Form, IconSet, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
@@ -10,9 +11,9 @@ import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { TextInput } from '../textInput';
 import { CodeInputUtils } from '.';
 
-export interface ICodeInputInput
+export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
-    IInputProps<string>,
+    IInputProps<TBind>,
     'onChange' | 'value' | 'delay' | 'onValueChange' | 'validationErrorMessages' | 'validationMode' | 'ref' | 'maxLength' | 'onKeyDown' | 'bind'
   > {
   length: number;
@@ -22,10 +23,10 @@ export interface ICodeInputInput
  * Can be a string representing a piece of text inbetween inputs I.E. [1,1,'-',1,1]
  * Can be an object representing an input with some properties
  */
-export type CodeInputPartDefinition = ICodeInputInput | string | number;
+export type CodeInputPartDefinition<TBind extends NullOrUndefined<string>> = ICodeInputInput<TBind> | string | number;
 
-export interface ICodeInputPartProps {
-  part: CodeInputPartDefinition;
+export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
+  part: CodeInputPartDefinition<TBind>;
 
   /** the current value of this part */
   value: string;
@@ -39,46 +40,55 @@ export interface ICodeInputPartProps {
 
 /** an individual input from the CodeInput */
 
-export const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps>(({ part, onChange, onKeyDown, value }, ref) => {
-  const length = React.useMemo(() => CodeInputUtils.getLengthFromPart(part), [part]);
+export const CodeInputPart = React.forwardRef(
+  <TBind extends NullOrUndefined<string>>(
+    { part, onChange, onKeyDown, value }: ICodeInputPartProps<TBind>,
+    ref: React.ForwardedRef<HTMLInputElement>
+  ) => {
+    const length = React.useMemo(() => CodeInputUtils.getLengthFromPart(part), [part]);
 
-  if (typeof part === 'string') {
-    return <p className="arm-code-input-part-text">{part}</p>;
-  }
+    if (typeof part === 'string') {
+      return <p className="arm-code-input-part-text">{part}</p>;
+    }
 
-  if (typeof part === 'number') {
+    if (typeof part === 'number') {
+      return (
+        <TextInput
+          ref={ref}
+          className="arm-code-input-part-input"
+          onChange={onChange}
+          value={value}
+          onKeyDown={onKeyDown}
+          style={{ '--arm-code-input-length': length } as React.CSSProperties}
+          data-length={length}
+          onClick={(event) => event.currentTarget.select()}
+        />
+      );
+    }
+
+    const { className, ...textInputProps } = part;
+
     return (
       <TextInput
         ref={ref}
-        className="arm-code-input-part-input"
+        className={ClassNames.concat('arm-code-input-part-input', className)}
         onChange={onChange}
         value={value}
         onKeyDown={onKeyDown}
-        style={{ '--arm-code-input-length': length } as React.CSSProperties}
+        style={{ ...(textInputProps.style || {}), '--arm-code-input-length': length } as React.CSSProperties}
         data-length={length}
         onClick={(event) => event.currentTarget.select()}
+        {...textInputProps}
       />
     );
   }
-
-  const { className, ...textInputProps } = part;
-
-  return (
-    <TextInput
-      ref={ref}
-      className={ClassNames.concat('arm-code-input-part-input', className)}
-      onChange={onChange}
-      value={value}
-      onKeyDown={onKeyDown}
-      style={{ ...(textInputProps.style || {}), '--arm-code-input-length': length } as React.CSSProperties}
-      data-length={length}
-      {...textInputProps}
-    />
-  );
-});
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TBind extends NullOrUndefined<string>>(props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ICodeInputPartProps<any>>;
 
 /** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
-export interface ICodeInputProps
+export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   extends IIconWrapperProps<IconSet, IconSet>,
     Pick<
       IInputWrapperProps,
@@ -92,13 +102,13 @@ export interface ICodeInputProps
       | 'validationErrorMessages'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<string>;
+  bind?: IBindingProps<TBind>;
 
   /** the current value */
-  value?: string;
+  value?: TBind;
 
   /** Fired when the code input changes */
-  onChange?: (newValue: string) => void;
+  onChange?: (newValue: TBind) => void;
 
   /**
    * the parts of the code input
@@ -106,13 +116,13 @@ export interface ICodeInputProps
    * Can be a string representing a piece of text inbetween inputs I.E. [1,1,'-',1,1]
    * Can be an object representing an input with some properties
    */
-  parts: CodeInputPartDefinition[];
+  parts: CodeInputPartDefinition<TBind>[];
 
   className?: string;
 }
 
-export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
-  (
+export const CodeInput = React.forwardRef(
+  <TBind extends NullOrUndefined<string>>(
     {
       className,
       parts,
@@ -128,10 +138,10 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
       leftIcon,
       rightIcon,
       scrollValidationErrorsIntoView,
-    },
-    ref
+    }: ICodeInputProps<TBind>,
+    ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
+    const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
@@ -191,7 +201,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
           totalLength
         );
 
-        setBoundValue?.(newValue);
+        setBoundValue?.(newValue as TBind);
       },
       [boundValue, parts, goNext, totalLength]
     );
@@ -263,4 +273,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps>(
       </>
     );
   }
-);
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TBind extends NullOrUndefined<string>>(props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ICodeInputProps<any>>;

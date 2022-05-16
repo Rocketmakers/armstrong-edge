@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Form } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { RadioInputList } from './radioInputList.component';
@@ -15,13 +16,12 @@ export default StoryUtils.createMeta(RadioInputList as any, 'Form', 'Radio Input
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use<{ value: string }>();
 
   return (
     <>
       <RadioInputList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={[
           { id: 'a', name: 'red' },
           { id: 'b', name: 'blue' },
@@ -32,18 +32,17 @@ export const Default = () => {
       <br />
       <br />
       <br />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 export const Horizontal = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use<{ value: string }>();
 
   return (
     <>
       <RadioInputList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         direction="horizontal"
         options={[
           { id: 'a', name: 'red' },
@@ -52,18 +51,17 @@ export const Horizontal = () => {
           { id: 'd', name: 'brown' },
         ]}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 export const Grouped = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use<{ value: string }>();
 
   return (
     <>
       <RadioInputList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={[
           { id: 'a', name: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
           { id: 'b', name: 'blue', group: 'primary' },
@@ -74,18 +72,17 @@ export const Grouped = () => {
       <br />
       <br />
       <br />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 export const CheckedIcon = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use<{ value: string }>();
 
   return (
     <>
       <RadioInputList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
         options={[
           { id: 'a', name: 'red', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
@@ -97,18 +94,17 @@ export const CheckedIcon = () => {
       <br />
       <br />
       <br />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 export const UncheckedIcon = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use<{ value: string }>();
 
   return (
     <>
       <RadioInputList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
         uncheckedIcon={IconUtils.getIconDefinition('Icomoon', 'cross3')}
         options={[
@@ -121,18 +117,17 @@ export const UncheckedIcon = () => {
       <br />
       <br />
       <br />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 export const NumericIds = () => {
-  const [value, setValue] = React.useState<number>();
+  const { formProp, formState } = Form.use<{ value: number }>();
 
   return (
     <>
       <RadioInputList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
         uncheckedIcon={IconUtils.getIconDefinition('Icomoon', 'cross3')}
         options={[
@@ -145,19 +140,18 @@ export const NumericIds = () => {
       <br />
       <br />
       <br />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 
 export const CustomContent = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use<{ value: string }>();
 
   return (
     <>
       <RadioInputList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={[
           {
             id: 'a',
@@ -189,14 +183,14 @@ export const CustomContent = () => {
       <br />
       <br />
       <br />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 export const CustomContentWithoutRadio = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use<{ value: string }>();
 
-  const content = (checked) => (
+  const content = (checked: boolean) => (
     <>
       <img
         width={50}
@@ -213,8 +207,7 @@ export const CustomContentWithoutRadio = () => {
   return (
     <>
       <RadioInputList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         direction="horizontal"
         hideRadio
         options={[
@@ -236,7 +229,7 @@ export const CustomContentWithoutRadio = () => {
           },
         ]}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };

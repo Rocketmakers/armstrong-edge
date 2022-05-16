@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { ClassNames } from '../../index';
+import { ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
 import { ButtonInner, IButtonCoreProps, ValidationErrors } from '../index';
 import { ILinkProps, Link } from '../link';
 
@@ -35,6 +36,6 @@ export const LinkButton = React.forwardRef(
 
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TLinkProps extends Record<string, any>>(props: ILinkButtonProps<TLinkProps> & React.RefAttributes<any>) => ReturnType<React.FC>) & {
+) as (<TLinkProps extends Record<string, any>>(props: ArmstrongFCProps<ILinkButtonProps<TLinkProps>, any>) => ArmstrongFCReturn) & {
   defaultProps?: Partial<ILinkButtonProps<any>>;
 };

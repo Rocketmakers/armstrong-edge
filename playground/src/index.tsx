@@ -1,17 +1,17 @@
 import { ApiHooksStore } from "@rocketmakers/api-hooks"
 import { ToastProvider, ModalProvider, ArmstrongConfigProvider } from "@rocketmakers/armstrong-edge"
 import * as React from "react"
-import * as ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import { HashRouter, Link, useHistory, useLocation } from "react-router-dom"
 import { Shell } from "./shell"
 
 import "./theme/theme.scss"
 
-const ConfigProvider: React.FC = ({children}) => {
+const ConfigProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const location = useLocation()
   const { push, replace } = useHistory()
 
-  return <ArmstrongConfigProvider routing={{ LinkComponent: Link, location, navigate: (to, action) => action === 'push' ? push(to) : replace(to) }}>{children}</ArmstrongConfigProvider>
+  return <ArmstrongConfigProvider routing={{ LinkComponent: Link, location, navigate: (to, action) => (action === "push" ? push(to) : replace(to)) }}>{children}</ArmstrongConfigProvider>
 }
 
 class App extends React.Component {
@@ -36,4 +36,14 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("host"))
+function render() {
+  const rootElementId = "host"
+  const container = document.getElementById(rootElementId)
+  if (!container) {
+    throw new Error(`Root element ${rootElementId} not found in page`)
+  }
+  const root = createRoot(container)
+  root.render(<App />)
+}
+
+render()

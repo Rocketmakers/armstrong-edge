@@ -11,10 +11,12 @@ export interface ILinkPropsCore {
 
 export type ILinkProps<TLinkProps extends Record<string, any>> = TLinkProps & ILinkPropsCore;
 
-export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children, ...additionalProps }) => (
-  <a {...additionalProps} className={className} href={to}>
-    {children}
-  </a>
+export const DefaultLink = React.forwardRef<HTMLAnchorElement, React.PropsWithChildren<ILinkPropsCore>>(
+  ({ to, className, children, ...additionalProps }, forwardedRef) => (
+    <a ref={forwardedRef} {...additionalProps} className={className} href={to}>
+      {children}
+    </a>
+  )
 );
 
 /**
@@ -24,7 +26,10 @@ export const DefaultLink: React.FC<ILinkPropsCore> = ({ to, className, children,
  */
 
 export const Link = React.forwardRef(
-  <T extends Record<string, any>>({ to, className, children, ...additionalProps }: React.PropsWithChildren<ILinkProps<T>>, ref: any) => {
+  <T extends Record<string, any>>(
+    { to, className, children, ...additionalProps }: React.PropsWithChildren<ILinkProps<T>>,
+    ref: React.ForwardedRef<HTMLElement>
+  ) => {
     const { routing } = useArmstrongConfig();
 
     return (

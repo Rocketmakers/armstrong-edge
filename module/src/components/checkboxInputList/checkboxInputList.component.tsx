@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Arrays, Form, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOption, IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
@@ -12,7 +13,7 @@ export interface ICheckboxInputListOption<Id extends ArmstrongId>
     IArmstrongExtendedOptionWithInput<
       Id,
       Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
-      ICheckboxInputProps['inputProps']
+      ICheckboxInputProps<any>['inputProps']
     >,
     // omitted for replaced JSDoc below
     'content'
@@ -22,7 +23,7 @@ export interface ICheckboxInputListOption<Id extends ArmstrongId>
 }
 
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
-  extends Pick<ICheckboxInputProps, 'checkedIcon' | 'uncheckedIcon' | 'hideCheckbox'>,
+  extends Pick<ICheckboxInputProps<any>, 'checkedIcon' | 'uncheckedIcon' | 'hideCheckbox'>,
     Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -65,7 +66,7 @@ export const CheckboxInputList = React.forwardRef(
       direction,
       hideCheckbox,
     }: ICheckboxInputListProps<Id>,
-    ref
+    ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       validationErrorIcon: errorIcon,
@@ -140,9 +141,8 @@ export const CheckboxInputList = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(
-  props: React.PropsWithChildren<ICheckboxInputListProps<Id>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<ICheckboxInputListProps<any>> };
+) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxInputListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ICheckboxInputListProps<any>>;
 
 CheckboxInputList.defaultProps = {
   direction: 'vertical',

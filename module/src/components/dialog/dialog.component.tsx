@@ -26,7 +26,7 @@ export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
  *
  * see: https://www.w3.org/WAI/GL/wiki/Using_ARIA_role%3Ddialog_to_implement_a_modal_dialog_box
  */
-export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
+export const Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IDialogProps>>(
   (
     { children, className, wrapperClassName, id: htmlId, title, onOpenChange, closeButtonIcon, titleIcon, onClose, disableClose, ...modalProps },
     ref

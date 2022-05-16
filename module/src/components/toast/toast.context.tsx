@@ -52,7 +52,13 @@ export interface IToastProviderProps extends Pick<IPortalProps, 'portalTo' | 'po
 }
 
 /** Provides the context for Armstrong toast notifications, and by default renders a ToastContainer which will display all dispatched toasts */
-export const ToastProvider: React.FC<IToastProviderProps> = ({ children, portalTo, portalToSelector, renderToastContainer, ...config }) => {
+export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps>> = ({
+  children,
+  portalTo,
+  portalToSelector,
+  renderToastContainer,
+  ...config
+}) => {
   const [toasts, dispatchAction] = React.useReducer(toastReducer, []);
 
   /** Dispatch a new toast notification */

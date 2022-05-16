@@ -45,7 +45,7 @@ export interface ITooltipRef {
 }
 
 /** Portals a piece of text or some JSX into a floating element next to its children when the children are hovered or focused */
-export const Tooltip = React.forwardRef<ITooltipRef, ITooltipProps>(
+export const Tooltip = React.forwardRef<ITooltipRef, React.PropsWithChildren<ITooltipProps>>(
   (
     {
       content,

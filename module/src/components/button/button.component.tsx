@@ -39,7 +39,7 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
 export type IButtonProps = IButtonCoreProps & ButtonHTMLProps & { to?: never };
 
 /** Renders the inside of a button, for use in altering the tag used for the wrapper */
-export const ButtonInner: React.FC<IButtonCoreProps> = ({
+export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps>> = ({
   validationErrorMessages,
   errorIcon,
   pending,
@@ -71,7 +71,7 @@ export const ButtonInner: React.FC<IButtonCoreProps> = ({
 };
 
 /** Renders an HTML button element with some useful additions */
-export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>((props, ref) => {
+export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IButtonProps>>((props, ref) => {
   const {
     className,
     disabled,

@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Form } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { ListBoxMulti } from './listBoxMulti.component';
@@ -15,13 +16,11 @@ export default StoryUtils.createMeta(ListBoxMulti, 'Form', 'Listbox Multi', {});
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState([]);
-
+  const { formProp } = Form.use({ value: [] });
   return (
     <ListBoxMulti
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
-      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },
@@ -32,13 +31,11 @@ export const Default = () => {
   );
 };
 export const CustomPreview = () => {
-  const [value, setValue] = React.useState([]);
-
+  const { formProp } = Form.use({ value: [] });
   return (
     <ListBoxMulti
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
-      onValueChange={setValue}
       renderPreview={(items) => <p>{items.length} colours selected</p>}
       options={[
         { id: 'a', name: 'red' },
@@ -50,13 +47,11 @@ export const CustomPreview = () => {
   );
 };
 export const WithCustomDropDownIcon = () => {
-  const [value, setValue] = React.useState([]);
-
+  const { formProp } = Form.use({ value: [] });
   return (
     <ListBoxMulti
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
-      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },
@@ -68,14 +63,12 @@ export const WithCustomDropDownIcon = () => {
   );
 };
 export const WithIcons = () => {
-  const [value, setValue] = React.useState([]);
-
+  const { formProp } = Form.use({ value: [] });
   return (
     <ListBoxMulti
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },
@@ -86,14 +79,12 @@ export const WithIcons = () => {
   );
 };
 export const WithValidationError = () => {
-  const [value, setValue] = React.useState([]);
-
+  const { formProp } = Form.use({ value: [] });
   return (
     <ListBoxMulti
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },
@@ -105,14 +96,12 @@ export const WithValidationError = () => {
   );
 };
 export const WithGroupsAndIcons = () => {
-  const [value, setValue] = React.useState([]);
-
+  const { formProp } = Form.use({ value: [] });
   return (
     <ListBoxMulti
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
         { id: 'b', name: 'blue', group: 'primary' },
@@ -124,13 +113,11 @@ export const WithGroupsAndIcons = () => {
 };
 
 export const Above = () => {
-  const [value, setValue] = React.useState([]);
-
+  const { formProp } = Form.use({ value: [] });
   return (
     <ListBoxMulti
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
-      onValueChange={setValue}
       options={[
         { id: 'a', name: 'red' },
         { id: 'b', name: 'blue' },

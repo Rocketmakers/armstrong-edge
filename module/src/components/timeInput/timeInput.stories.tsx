@@ -16,7 +16,7 @@ export default StoryUtils.createMeta(TimeInput, 'Form', 'Time Input', {});
 /** stories */
 
 export const Default = () => {
-  const { formProp } = Form.use({ date: undefined as string });
+  const { formProp } = Form.use({ date: undefined });
 
   return <TimeInput bind={formProp('date').bind()} />;
 };

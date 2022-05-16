@@ -3,23 +3,24 @@ import * as React from 'react';
 import { Form, ICheckboxInputProps, IInputWrapperProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { IDragReleaseCallbackArgs, useDrag } from '../../hooks/useDrag';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { Icon } from '../icon';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
-export interface ISwitchInputProps
-  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'>,
+export interface ISwitchInputProps<TBind extends NullOrUndefined<boolean>>
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'checked'>,
     Pick<
       IInputWrapperProps,
       'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages' | 'error' | 'pending' | 'disabled' | 'className'
     >,
-    Pick<ICheckboxInputProps, 'checkedIcon' | 'uncheckedIcon' | 'checked'> {
+    Pick<ICheckboxInputProps<TBind>, 'checkedIcon' | 'uncheckedIcon' | 'checked'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<boolean>;
+  bind?: IBindingProps<TBind>;
 
   /** called when the user updates the switch value */
-  onChange?: (newValue: boolean) => void;
+  onChange?: (newValue: TBind) => void;
 
   /** where to render the icon, will either follow the handle or stay in place */
   iconStyle?: 'on-handle' | 'static';
@@ -28,8 +29,8 @@ export interface ISwitchInputProps
   changeOnDrag?: boolean;
 }
 
-export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>(
-  (
+export const SwitchInput = React.forwardRef(
+  <TBind extends NullOrUndefined<boolean>>(
     {
       bind,
       checked,
@@ -47,8 +48,8 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
       iconStyle,
       changeOnDrag,
       ...nativeProps
-    },
-    ref
+    }: ISwitchInputProps<TBind>,
+    ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value: checked,
@@ -61,7 +62,7 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
     const onDragEnd = React.useCallback(
       ({ changePosition }: IDragReleaseCallbackArgs) => {
         if (!changePosition || changePosition.left === 0) {
-          setBoundValue?.(!boundValue);
+          setBoundValue?.(!boundValue as TBind);
         }
       },
       [setBoundValue, boundValue]
@@ -72,9 +73,9 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
     React.useEffect(() => {
       if (changePosition && changeOnDrag) {
         if (changePosition.left > 0) {
-          setBoundValue?.(true);
+          setBoundValue?.(true as TBind);
         } else if (changePosition.left < 0) {
-          setBoundValue?.(false);
+          setBoundValue?.(false as TBind);
         }
       }
     }, [changePosition?.left]);
@@ -121,7 +122,10 @@ export const SwitchInput = React.forwardRef<HTMLInputElement, ISwitchInputProps>
       </>
     );
   }
-);
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TBind extends NullOrUndefined<boolean>>(props: ArmstrongFCProps<ISwitchInputProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ISwitchInputProps<any>>;
 
 SwitchInput.defaultProps = {
   changeOnDrag: true,

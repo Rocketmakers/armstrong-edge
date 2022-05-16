@@ -21,17 +21,24 @@ export interface IStatusProps {
 }
 
 /** Render a status icon which can either be pending or errored */
-export const Status: React.FunctionComponent<IStatusProps> = ({ pending, error, errorIcon, spinnerIcon, cypressTag }) => {
+export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(({ pending, error, errorIcon, spinnerIcon, cypressTag }, ref) => {
   if (!error && !pending) {
     return null;
   }
   return (
-    <div className="arm-status" data-active={!!pending || !!error} data-error={!!error && !pending} data-pending={pending} data-cy={cypressTag}>
+    <div
+      ref={ref}
+      className="arm-status"
+      data-active={!!pending || !!error}
+      data-error={!!error && !pending}
+      data-pending={pending}
+      data-cy={cypressTag}
+    >
       {error && !pending && <Icon className="arm-status-error" iconSet={errorIcon!.iconSet} icon={errorIcon!.icon} />}
       {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />}
     </div>
   );
-};
+});
 
 Status.defaultProps = {
   errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),

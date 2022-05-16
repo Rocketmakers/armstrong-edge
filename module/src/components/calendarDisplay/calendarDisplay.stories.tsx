@@ -184,6 +184,3 @@ export const FixedDatesNoHighlight: Story = () => {
     </>
   );
 };
-
-// Enable the 'static' story for vis-diff testing in Chromatic
-FixedDatesNoHighlight.parameters.chromatic.disableSnapshot = false;

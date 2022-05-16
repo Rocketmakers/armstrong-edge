@@ -11,7 +11,7 @@ export interface IDropdownButtonProps extends IButtonProps {
 }
 
 /** A button which opens a dropdown below it */
-export const DropdownButton: React.FC<IDropdownButtonProps> = ({ dropdownContent, className, children, ...buttonProps }) => {
+export const DropdownButton: React.FC<React.PropsWithChildren<IDropdownButtonProps>> = ({ dropdownContent, className, children, ...buttonProps }) => {
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
   return (

@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types/reactExtensions';
 import { ClassNames } from '../../utils/classNames';
 import { Icons } from './icon.icons';
 
@@ -29,36 +30,36 @@ export interface IIconProps<TIconSet extends IconSet>
 }
 
 /** Render an icon using one of the supported icon sets */
-export const Icon = <TIconSet extends IconSet>({
-  className,
-  iconSet,
-  icon,
-  onClick,
-  cypressTag,
-  ...nativeProps
-}: React.PropsWithChildren<IIconProps<TIconSet>>) => {
-  return (
-    <div
-      aria-hidden
-      {...nativeProps}
-      data-icon-set={iconSet}
-      data-i={icon}
-      className={ClassNames.concat('arm-icon', className)}
-      data-clickable={!!onClick}
-      onClick={onClick}
-      data-cy={cypressTag}
-    />
-  );
-};
+export const Icon = React.forwardRef(
+  <TIconSet extends IconSet>(
+    { className, iconSet, icon, onClick, cypressTag, ...nativeProps }: IIconProps<TIconSet>,
+    forwardedRef: React.ForwardedRef<HTMLDivElement>
+  ) => {
+    return (
+      <div
+        aria-hidden
+        {...nativeProps}
+        ref={forwardedRef}
+        data-icon-set={iconSet}
+        data-i={icon}
+        className={ClassNames.concat('arm-icon', className)}
+        data-clickable={!!onClick}
+        onClick={onClick}
+        data-cy={cypressTag}
+      />
+    );
+  }
+) as (<TIconSet extends IconSet>(props: ArmstrongVFCProps<IIconProps<TIconSet>, HTMLDivElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IIconProps<IconSet>>;
 
 type IIconsetIconProps<TIconSet extends IconSet> = Omit<IIconProps<TIconSet>, 'iconSet'>;
 
 /** Renders an Icomoon icon - requires the consuming application to have manually added the Icomoon font file */
-export const IcomoonIcon: React.FunctionComponent<IIconsetIconProps<'Icomoon'>> = ({ icon, ...props }) => (
-  <Icon {...props} iconSet="Icomoon" icon={icon} />
-);
+export const IcomoonIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'Icomoon'>>(({ icon, ...props }, forwardedRef) => (
+  <Icon {...props} ref={forwardedRef} iconSet="Icomoon" icon={icon} />
+));
 
 /** Renders an LinearIcon icon - requires the consuming application to have manually added the LinearIcon font file */
-export const LinearIcon: React.FunctionComponent<IIconsetIconProps<'LinearIcons'>> = ({ icon, ...props }) => (
-  <Icon {...props} iconSet="LinearIcons" icon={icon} />
-);
+export const LinearIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'LinearIcons'>>(({ icon, ...props }, forwardedRef) => (
+  <Icon {...props} ref={forwardedRef} iconSet="LinearIcons" icon={icon} />
+));

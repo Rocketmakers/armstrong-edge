@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ArmstrongId } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, ArmstrongId } from '../../types';
 import { ClassNames } from '../../utils';
 import { LinkButton } from '../linkButton/linkButton.component';
 import { OptionContent } from '../optionContent/optionContent.component';
@@ -15,14 +15,14 @@ export type ILinkTabControlTab<Id extends ArmstrongId, TLinkProps extends Record
 export const LinkTabControlTab = React.forwardRef(
   <Id extends ArmstrongId, TLinkProps extends Record<string, any>>(
     { isCurrent, id, content, className, leftIcon, rightIcon, onTouchCancel, to, name, ...linkProps }: ILinkTabControlTab<Id, TLinkProps>,
-    ref: React.ForwardedRef<HTMLButtonElement>
+    forwardedRef: React.ForwardedRef<HTMLElement>
   ) => {
     return (
       <LinkButton
         {...linkProps}
         className={ClassNames.concat('arm-tab-control-tab', className)}
         data-is-current={isCurrent}
-        ref={ref}
+        ref={forwardedRef}
         minimalStyle
         to={to}
       >
@@ -34,5 +34,6 @@ export const LinkTabControlTab = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId, TLinkProps extends Record<string, any>>(
-  props: React.PropsWithRef<ILinkTabControlTab<Id, TLinkProps>> & React.RefAttributes<HTMLButtonElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<ILinkTabControlTab<any, any>> };
+  props: ArmstrongFCProps<ILinkTabControlTab<Id, TLinkProps>, HTMLElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ILinkTabControlTab<any, any>>;

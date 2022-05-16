@@ -4,6 +4,7 @@ import { Form } from '../..';
 import { useIsFocused } from '../../hooks';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { useOverridableState } from '../../hooks/useOverridableState';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
@@ -303,9 +304,8 @@ export const AutoCompleteInput = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(
-  props: React.PropsWithChildren<IAutoCompleteInputProps<Id>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IAutoCompleteInputProps<any>> };
+) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IAutoCompleteInputProps<Id>, HTMLSelectElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IAutoCompleteInputProps<any>>;
 
 AutoCompleteInput.defaultProps = {
   validationMode: 'both',
