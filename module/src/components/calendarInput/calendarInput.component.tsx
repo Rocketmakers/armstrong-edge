@@ -7,6 +7,7 @@ import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUnde
 import { Typescript } from '../../utils';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
+import { JavaScript } from '../../utils/javascript';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 import { Dropdown } from '../dropdown';
@@ -208,7 +209,9 @@ export const CalendarInput = React.forwardRef(
     // when day is clicked inside calendar display, set it to the bound value
     const onDayClicked = React.useCallback(
       (day: Calendar.IDay) => {
-        setSelectedDate?.(calendarDayToDateLike(day, selectedDate ? typeof selectedDate : 'string', formatString, locale) as TValue);
+        setSelectedDate?.(
+          calendarDayToDateLike(day, !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string', formatString, locale) as TValue
+        );
 
         if (closeCalendarOnDayClick) {
           setCalendarOpen(false);
@@ -241,7 +244,12 @@ export const CalendarInput = React.forwardRef(
 
         const date = new Date(year, month, day);
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
-          const newDate = Dates.dateObjectToDateLike(date, selectedDate ? typeof selectedDate : 'string', formatString, locale);
+          const newDate = Dates.dateObjectToDateLike(
+            date,
+            !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string',
+            formatString,
+            locale
+          );
           setSelectedDate?.(newDate as TValue);
         }
       }
