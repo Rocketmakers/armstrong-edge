@@ -70,7 +70,13 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
               const inputValue = index + steps * (buttonIndex + 1);
 
               return (
-                <Button key={buttonIndex} minimalStyle onClick={() => onSelectPart((step || 1) * (buttonIndex + 1))} aria-label={`${inputValue}`} />
+                <Button
+                  type="button"
+                  key={buttonIndex}
+                  minimalStyle
+                  onClick={() => onSelectPart((step || 1) * (buttonIndex + 1))}
+                  aria-label={`${inputValue}`}
+                />
               );
             })}
           </div>

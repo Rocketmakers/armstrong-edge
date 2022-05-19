@@ -206,6 +206,7 @@ export const ListBoxMulti = React.forwardRef(
 
           {deleteButton && !!boundValue?.length && (
             <IconButton
+              type="button"
               className="arm-listbox-multi-delete"
               onClick={(event) => {
                 onItemSelected(undefined);

@@ -336,6 +336,7 @@ export const CalendarInput = React.forwardRef(
             >
               {showCalendarButton && !keepCalendarOpen && (
                 <IconButton
+                  type="button"
                   minimalStyle
                   icon={IconUtils.getIconDefinition('Icomoon', 'calendar')}
                   onClick={(event) => {

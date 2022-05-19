@@ -150,6 +150,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
       <div ref={ref} className={ClassNames.concat('arm-calendar-display', className)}>
         <div className="arm-calendar-display-controls">
           <IconButton
+            type="button"
             icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
             minimalStyle
             className="arm-calendar-display-button arm-calendar-display-button-prev"
@@ -183,6 +184,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
 
             {displayDays.map((displayDay) => (
               <Button
+                type="button"
                 className={ClassNames.concat('arm-calendar-date-grid-day', displayDay.day.highlightedClassName)}
                 onClick={() => onDayClicked?.(displayDay.day)}
                 key={displayDay.day.numberInMonth}
