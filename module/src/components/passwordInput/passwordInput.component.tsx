@@ -27,7 +27,7 @@ export const PasswordInput = React.forwardRef(
         rightOverlay={
           showPasswordButton &&
           showPasswordButtonIcon && (
-            <IconButton icon={showPasswordButtonIcon(showPassword)} onClick={() => setShowPassword(!showPassword)} minimalStyle />
+            <IconButton type="button" icon={showPasswordButtonIcon(showPassword)} onClick={() => setShowPassword(!showPassword)} minimalStyle />
           )
         }
       />

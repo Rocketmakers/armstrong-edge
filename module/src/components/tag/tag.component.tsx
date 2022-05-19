@@ -24,6 +24,7 @@ export const Tag = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITag
 
       {onRemove && (
         <IconButton
+          type="button"
           minimalStyle
           className="arm-tag-close"
           onMouseDown={(event) => event.stopPropagation()}

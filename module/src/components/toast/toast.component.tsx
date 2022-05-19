@@ -57,6 +57,7 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
 
             {allowManualDismiss && (
               <IconButton
+                type="button"
                 className="arm-toast-notification-close-button"
                 minimalStyle
                 icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}

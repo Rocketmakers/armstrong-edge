@@ -32,10 +32,10 @@ export const useConfirmationDialog = (config: IUseConfirmationDialogConfig = {},
       <>
         {!config.content || typeof config.content === 'string' ? <p>{config.content || 'Are you sure?'}</p> : config.content}
         <div className="arm-confirmation-dialog-buttons">
-          <Button className="arm-confirmation-dialog-no-button" onClick={() => resolve(false)}>
+          <Button type="button" className="arm-confirmation-dialog-no-button" onClick={() => resolve(false)}>
             {config.buttons?.no || 'No'}
           </Button>
-          <Button className="arm-confirmation-dialog-yes-button" onClick={() => resolve(true)}>
+          <Button type="button" className="arm-confirmation-dialog-yes-button" onClick={() => resolve(true)}>
             {config.buttons?.yes || 'Yes'}
           </Button>
         </div>
