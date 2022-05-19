@@ -154,6 +154,7 @@ export const Select = React.forwardRef(
 
         {deleteButton && boundValue && (
           <IconButton
+            type="button"
             className="arm-select-delete"
             onClick={(event) => {
               clearSelect();

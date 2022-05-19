@@ -184,6 +184,7 @@ export const ListBox = React.forwardRef(
 
           {deleteButton && boundValue && (
             <IconButton
+              type="button"
               className="arm-listbox-delete"
               onClick={onClickDelete}
               icon={typeof deleteButton === 'boolean' ? IconUtils.getIconDefinition('Icomoon', 'cross2') : deleteButton}

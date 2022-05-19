@@ -60,10 +60,10 @@ export const Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<I
               </p>
             )}
 
-            <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={close} />
+            <IconButton type="button" className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={close} />
           </div>
         ) : (
-          <IconButton className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={close} />
+          <IconButton type="button" className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={close} />
         )}
         <div className="arm-dialog-inner">{children}</div>
       </Modal>
