@@ -27,7 +27,7 @@ export type UseModalLayerPromiseReturn<T, TArg> = [(argument?: TArg) => Promise<
 /** Returns a callback which will add an element to the modal layer and return a promise - mostly for internal use, you likely want to use useModal, but you can use this to use a completely custom Modal component */
 export const useModalLayerPromise = <T, TArg = unknown>(
   Children: React.FC<IUseModalLayerPromiseComponentProps<T, TArg>>,
-  Wrapper: React.FC<Pick<IModalProps, 'isOpen' | 'onOpenChange'>>
+  Wrapper: React.FC<React.PropsWithChildren<Pick<IModalProps, 'isOpen' | 'onOpenChange'>>>
 ): UseModalLayerPromiseReturn<T, TArg> => {
   const { addModal, removeModal } = useModalContext();
   const [isOpen, setIsOpen] = React.useState(false);

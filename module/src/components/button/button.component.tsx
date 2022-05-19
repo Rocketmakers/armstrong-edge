@@ -7,87 +7,110 @@ import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
 
-export interface IButtonProps
-  extends IIconWrapperProps<IconSet, IconSet>,
-    Omit<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'ref'>,
-    IStatusWrapperProps {
-  /** CSS className property */
-  className?: string;
+type ButtonHTMLProps = Omit<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'ref'>;
 
-  /** array of validation errors to render */
-  validationErrorMessages?: ValidationMessage[];
+export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
+  IStatusWrapperProps & {
+    /** CSS className property */
+    className?: string;
 
-  /** the icon to use for validation errors */
-  errorIcon?: IIcon<IconSet>;
+    /** array of validation errors to render */
+    validationErrorMessages?: ValidationMessage[];
 
-  /** show a spinner and disable */
-  pending?: boolean;
+    /** the icon to use for validation errors */
+    errorIcon?: IIcon<IconSet>;
 
-  /** hide the icon on the same side as the status if there is an active status - defaults to true */
-  hideIconOnStatus?: boolean;
+    /** show a spinner and disable */
+    pending?: boolean;
 
-  /** disable use */
-  disabled?: boolean;
+    /** hide the icon on the same side as the status if there is an active status - defaults to true */
+    hideIconOnStatus?: boolean;
 
-  /** don't style beyond removing the default css styling */
-  minimalStyle?: boolean;
-}
+    /** disable use */
+    disabled?: boolean;
+
+    /** don't style beyond removing the default css styling */
+    minimalStyle?: boolean;
+
+    /** identifier for driving this component with Cypress */
+    cypressTag?: string;
+  };
+
+export type IButtonProps = IButtonCoreProps & ButtonHTMLProps & { to?: never };
+
+/** Renders the inside of a button, for use in altering the tag used for the wrapper */
+export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps>> = ({
+  validationErrorMessages,
+  errorIcon,
+  pending,
+  error,
+  leftIcon,
+  rightIcon,
+  children,
+  statusPosition,
+  hideIconOnStatus,
+}) => {
+  const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
+
+  const showLeftIcon = statusPosition !== 'left' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+  const showRightIcon = statusPosition !== 'right' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+
+  return (
+    <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
+      <StatusWrapper
+        pending={pending}
+        errorIcon={errorIcon}
+        statusPosition={statusPosition}
+        error={error}
+        validationErrorMessages={validationErrorMessages}
+      >
+        {typeof children === 'string' || typeof children === 'number' ? <span>{children}</span> : children}
+      </StatusWrapper>
+    </IconWrapper>
+  );
+};
 
 /** Renders an HTML button element with some useful additions */
-export const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
-  (
-    {
-      className,
-      validationErrorMessages,
-      errorIcon,
-      pending,
-      disabled,
-      error,
-      leftIcon,
-      rightIcon,
-      children,
-      minimalStyle,
-      statusPosition,
-      hideIconOnStatus,
-      ...nativeProps
-    },
-    ref
-  ) => {
-    const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
+export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IButtonProps>>((props, ref) => {
+  const {
+    className,
+    disabled,
+    minimalStyle,
+    validationErrorMessages,
+    error,
+    errorIcon,
+    pending,
+    leftIcon,
+    rightIcon,
+    children,
+    statusPosition,
+    hideIconOnStatus,
+    cypressTag,
+    ...nativeProps
+  } = props;
 
-    const showLeftIcon = statusPosition !== 'left' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
-    const showRightIcon = statusPosition !== 'right' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+  const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
 
-    return (
-      <>
-        <button
-          {...nativeProps}
-          className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
-          data-pending={pending}
-          data-disabled={disabled || pending}
-          data-error={shouldShowErrorIcon}
-          disabled={disabled || pending}
-          ref={ref}
-          tabIndex={disabled ? -1 : nativeProps.tabIndex}
-        >
-          <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
-            <StatusWrapper
-              pending={pending}
-              errorIcon={errorIcon}
-              statusPosition={statusPosition}
-              error={error}
-              validationErrorMessages={validationErrorMessages}
-            >
-              {typeof children === 'string' || typeof children === 'number' ? <span>{children}</span> : children}
-            </StatusWrapper>
-          </IconWrapper>
-        </button>
+  return (
+    <>
+      <button
+        className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
+        data-pending={pending}
+        data-disabled={disabled || pending}
+        data-error={shouldShowErrorIcon}
+        disabled={disabled || pending}
+        tabIndex={disabled ? -1 : nativeProps.tabIndex}
+        ref={ref}
+        data-cy={cypressTag}
+        {...nativeProps}
+      >
+        <ButtonInner {...props} />
+      </button>
 
-        {!!validationErrorMessages?.length && <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} />}
-      </>
-    );
-  }
-);
+      {!!validationErrorMessages?.length && <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} />}
+    </>
+  );
+});
 
 Button.defaultProps = {
   errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),

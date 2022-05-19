@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Form } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { RadioOptionsList } from './radioOptionsList.component';
 
@@ -14,13 +15,12 @@ export default StoryUtils.createMeta(RadioOptionsList as any, 'Form', 'Radio Opt
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use<{ value: string }>();
 
   return (
     <>
       <RadioOptionsList
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={[
           { id: 'a', name: 'red' },
           { id: 'b', name: 'blue' },
@@ -31,7 +31,7 @@ export const Default = () => {
       <br />
       <br />
       <br />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };

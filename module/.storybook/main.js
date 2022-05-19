@@ -1,9 +1,10 @@
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-a11y'],
   core: {
-    "builder": "webpack5"
+    builder: 'webpack5',
   },
+  staticDirs: [],
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
@@ -25,6 +26,10 @@ module.exports = {
           loader: 'postcss-loader',
           options: {
             sourceMap: isDevelopment,
+            postcssOptions: {
+              implementation: require('postcss'),
+              plugins: [require('autoprefixer')],
+            },
           },
         },
         {
@@ -35,6 +40,14 @@ module.exports = {
         },
       ],
     });
+
+    config.resolve = {
+      ...config.resolve,
+      alias: {
+        ...config.resolve.alias,
+        path: require.resolve('path-browserify'),
+      },
+    };
 
     // Return the altered config
     return config;

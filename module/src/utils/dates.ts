@@ -2,6 +2,7 @@ import { format, formatISO, parse, parseISO } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 
 import { Calendar, ISelectOption } from '..';
+import { NullOrUndefined } from '../types';
 
 /** Set of utilities and types relating to the native JS date object */
 export namespace Dates {
@@ -27,14 +28,14 @@ export namespace Dates {
    * @param locale The locale to use if `date` is a string, if not passed, will use the system default locale of `en-GB`.
    * @returns The parsed `Date` object, or `undefined` if no `date` was passed.
    */
-  export function dateLikeToDate(date: DateLike | undefined, formatString?: string, locale: Locale = defaultLocale): Date | undefined {
+  export function dateLikeToDate(date: NullOrUndefined<DateLike>, formatString?: string, locale: Locale = defaultLocale): Date | undefined {
     if (typeof date === 'string') {
       return formatString ? parse(date, formatString, new Date(), { locale }) : parseISO(date);
     }
     if (typeof date === 'number') {
       return new Date(date);
     }
-    return date;
+    return date ?? undefined;
   }
 
   /**

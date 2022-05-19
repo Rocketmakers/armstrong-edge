@@ -4,6 +4,7 @@ import { Form } from '../..';
 import { FormValidationMode, IBindingProps, IDelayInputConfig, ValidationMessage } from '../../hooks/form/form.types';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useThrottle } from '../../hooks/useThrottle';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { ClassNames } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
@@ -49,9 +50,11 @@ const ThrottledTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedText
   }
 );
 
-export interface ITextAreaProps extends NativeTextAreaProps, Omit<IInputWrapperProps, 'onClick'> {
+export interface ITextAreaProps<TBind extends NullOrUndefined<string>>
+  extends Omit<NativeTextAreaProps, 'value'>,
+    Omit<IInputWrapperProps, 'onClick'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<string>;
+  bind?: IBindingProps<TBind>;
 
   /** array of validation errors to render */
   validationErrorMessages?: ValidationMessage[];
@@ -59,15 +62,18 @@ export interface ITextAreaProps extends NativeTextAreaProps, Omit<IInputWrapperP
   /** how to render the validation errors */
   validationMode?: FormValidationMode;
 
+  /** Current value of the input. */
+  value?: TBind;
+
   /** Called when the value changes, takes into account any delay values and other effects. */
-  onValueChange?: (value: string) => any;
+  onValueChange?: (value: TBind) => any;
 
   /** The delay config, used to set throttle and debounce values. */
   delay?: IDelayInputConfig;
 }
 
-export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
-  (
+export const TextArea = React.forwardRef(
+  <TBind extends NullOrUndefined<string>>(
     {
       bind,
       onChange,
@@ -90,14 +96,14 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
       delay,
       onValueChange,
       ...nativeProps
-    },
-    ref
+    }: ITextAreaProps<TBind>,
+    ref: React.ForwardedRef<HTMLTextAreaElement>
   ) => {
     const internalRef = React.useRef<HTMLTextAreaElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
-      value: value?.toString(),
+      value: value?.toString() as TBind,
       validationErrorMessages,
       validationMode,
       validationErrorIcon,
@@ -106,7 +112,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(event);
-        const currentValue = event.currentTarget.value;
+        const currentValue = event.currentTarget.value as TBind;
         onValueChange?.(currentValue);
         setBoundValue?.(currentValue);
       },
@@ -115,14 +121,15 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
 
     const onValueChangeEvent = React.useCallback(
       (currentValue: string | undefined) => {
-        onValueChange?.(currentValue ?? '');
-        setBoundValue?.(currentValue ?? '');
+        const val = (currentValue ?? '') as TBind;
+        onValueChange?.(val);
+        setBoundValue?.(val);
       },
       [onValueChange, setBoundValue]
     );
 
     const inputProps: NativeTextAreaProps = {
-      value: boundValue,
+      value: boundValue ?? undefined,
       disabled,
       ref: internalRef,
     };
@@ -146,7 +153,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
         onClick={() => internalRef.current?.focus()}
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
-        {delay?.mode === 'debounce' && delay.milliseconds && (
+        {delay?.mode === 'debounce' && !!delay.milliseconds && (
           <DebounceTextAreaBase
             {...nativeProps}
             milliseconds={delay.milliseconds}
@@ -156,7 +163,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
             ref={ref}
           />
         )}
-        {delay?.mode === 'throttle' && delay.milliseconds && (
+        {delay?.mode === 'throttle' && !!delay.milliseconds && (
           <ThrottledTextAreaBase
             {...nativeProps}
             milliseconds={delay.milliseconds}
@@ -170,6 +177,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
       </InputWrapper>
     );
   }
-);
+) as (<TBind extends NullOrUndefined<string>>(props: ArmstrongVFCProps<ITextAreaProps<TBind>, HTMLTextAreaElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ITextAreaProps<any>>;
 
 TextArea.defaultProps = {};

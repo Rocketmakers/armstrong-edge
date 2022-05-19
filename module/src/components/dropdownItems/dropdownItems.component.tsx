@@ -54,9 +54,10 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
         onMouseEnter={onMouseEnter}
         id={`${idPrefix}_${id}`}
         data-disabled={disabled}
+        data-cy="dropdown-item"
       >
         <OptionContent leftIcon={leftIcon} rightIcon={rightIcon} name={name} content={content} id={id} isActive={isSelected} />
-        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
+        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" cypressTag="dropdown-item-icon" />}
       </li>
     );
   }
@@ -89,7 +90,7 @@ export interface IDropdownItemsProps extends Omit<IDropdownProps, 'dropdownConte
 }
 
 /** A dropdown which renders a list of selectable options and allows keyboard navigation when its children are focused */
-export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
+export const DropdownItems: React.FunctionComponent<React.PropsWithChildren<IDropdownItemsProps>> = ({
   items,
   allowKeyboardNavigation,
   onItemSelected,
@@ -151,14 +152,14 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
           case 'ArrowDown': {
             const newItemIndex = Math.min((items.length || 0) - 1, keyboardSelectedItemIndex + 1);
             setKeyboardSelectedItemIndex(newItemIndex);
-            itemRefs.current?.[items[newItemIndex].id]?.scrollIntoView(false);
+            itemRefs.current?.[items[newItemIndex].id!]?.scrollIntoView(false);
             event.preventDefault();
             break;
           }
           case 'ArrowUp': {
             const newItemIndex = Math.max(0, keyboardSelectedItemIndex - 1);
             setKeyboardSelectedItemIndex(newItemIndex);
-            itemRefs.current?.[items[newItemIndex].id]?.scrollIntoView();
+            itemRefs.current?.[items[newItemIndex].id!]?.scrollIntoView();
             event.preventDefault();
             break;
           }
@@ -192,7 +193,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
   useDidUpdateEffect(() => {
     if (isOpen) {
       setTimeout(() => {
-        itemRefs.current?.[items[keyboardSelectedItemIndex].id]?.scrollIntoView({ block: 'center' });
+        itemRefs.current?.[items[keyboardSelectedItemIndex].id!]?.scrollIntoView({ block: 'center' });
       });
     }
   }, [isOpen]);
@@ -249,7 +250,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
       dropdownContent={
         <ul aria-labelledby={`${id}`} id={`${id}_list`} aria-activedescendant={`${id}_item_${currentValue?.[0]}`} role="listbox">
           {items.length === 0 ? (
-            <li className="arm-dropdown-items-no-item-text">
+            <li className="arm-dropdown-items-no-item-text" data-cy="dropdown-empty">
               <p>{noItemsText}</p>
             </li>
           ) : (
@@ -284,7 +285,7 @@ export const DropdownItems: React.FunctionComponent<IDropdownItemsProps> = ({
                       isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
                       isSelected={!!currentValue?.includes(item.id)}
                       ref={(optionItemRef) => {
-                        itemRefs.current[item.id] = optionItemRef;
+                        itemRefs.current[item.id!] = optionItemRef;
                       }}
                     />
                   );

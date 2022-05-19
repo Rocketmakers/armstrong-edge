@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Form } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { AutoCompleteInputMulti } from './autoCompleteInputMulti.component';
@@ -26,32 +27,30 @@ export default StoryUtils.createMeta(AutoCompleteInputMulti, 'Form', 'Auto Compl
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={[
           { id: 1, name: 'red' },
           { id: 2, name: 'blue' },
           { id: 3, name: 'purple' },
         ]}
       />
-      <p className="bound-value">bound value: {value.join(', ')}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };
 
 export const DontClose = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={[
           { id: 1, name: 'red' },
           { id: 2, name: 'blue' },
@@ -65,19 +64,18 @@ export const DontClose = () => {
         placeholder="this is very useful for inspecting"
         filterOptions={false}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };
 
 export const tagsAbove = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         tagPosition="above"
         options={[
           { id: 1, name: 'red' },
@@ -85,18 +83,17 @@ export const tagsAbove = () => {
           { id: 3, name: 'purple' },
         ]}
       />
-      <p className="bound-value">bound value: {value.join(', ')}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };
 export const AllowFreeText = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         allowFreeText
         options={[
           { id: 1, name: 'red' },
@@ -104,18 +101,17 @@ export const AllowFreeText = () => {
           { id: 3, name: 'purple' },
         ]}
       />
-      <p className="bound-value">bound value: {value.join(', ')}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };
 export const WithIcons = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
         options={[
           { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2') },
@@ -123,18 +119,17 @@ export const WithIcons = () => {
           { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css') },
         ]}
       />
-      <p className="bound-value">bound value: {value.join(', ')}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };
 export const WithGroups = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
         options={[
           { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
@@ -142,18 +137,17 @@ export const WithGroups = () => {
           { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
         ]}
       />
-      <p className="bound-value">bound value: {value.join(', ')}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };
 export const WithValidationErrors = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
         options={[
           { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
@@ -162,38 +156,36 @@ export const WithValidationErrors = () => {
         ]}
         validationErrorMessages={['your taste in colours is terrible']}
       />
-      <p className="bound-value">bound value: {value.join(', ')}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };
 
 export const WithCustomClasses = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={[
           { id: 1, name: 'red', tagHtmlProps: { className: 'group1' }, dropDownItemHtmlProps: { className: 'group1' } },
           { id: 2, name: 'blue', tagHtmlProps: { className: 'group1' }, dropDownItemHtmlProps: { className: 'group2' } },
           { id: 3, name: 'purple', tagHtmlProps: { className: 'group2' }, dropDownItemHtmlProps: { className: 'group1' } },
         ]}
       />
-      <p className="bound-value">bound value: {value.join(', ')}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };
 
 export const Above = () => {
-  const [value, setValue] = React.useState([]);
+  const { formProp, formState } = Form.use({ value: [] });
 
   return (
     <>
       <AutoCompleteInputMulti
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={[
           { id: 1, name: 'red' },
           { id: 2, name: 'blue' },
@@ -201,7 +193,7 @@ export const Above = () => {
         ]}
         position="above"
       />
-      <p className="bound-value">bound value: {value.join(', ')}</p>
+      <p className="bound-value">bound value: {formState?.value.join(', ')}</p>
     </>
   );
 };

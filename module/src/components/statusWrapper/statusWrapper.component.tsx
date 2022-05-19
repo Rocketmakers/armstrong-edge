@@ -24,7 +24,7 @@ export interface IStatusWrapperProps {
   errorIcon?: IIcon<IconSet>;
 }
 
-export const StatusWrapper: React.FC<IStatusWrapperProps> = ({
+export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps>> = ({
   statusPosition,
   error,
   pending,
@@ -37,9 +37,9 @@ export const StatusWrapper: React.FC<IStatusWrapperProps> = ({
 
   return (
     <>
-      {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} />}
+      {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} cypressTag="status-left" />}
       {children}
-      {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} />}
+      {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} cypressTag="status-right" />}
     </>
   );
 };

@@ -4,6 +4,7 @@ import { Form } from '../..';
 import { useIsFocused } from '../../hooks';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { useOverridableState } from '../../hooks/useOverridableState';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
@@ -74,6 +75,9 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
 
   /** the className given to the content of the dropdown */
   dropdownClassName?: string;
+
+  /** identifier for driving this component with Cypress */
+  cypressTag?: string;
 }
 
 /** A text input which displays some options in a dropdown */
@@ -102,6 +106,7 @@ export const AutoCompleteInput = React.forwardRef(
       unsetOnClear,
       disabled,
       noItemsText,
+      cypressTag,
       closeOnBackgroundClick,
       closeOnScroll,
       closeOnWindowBlur,
@@ -241,6 +246,7 @@ export const AutoCompleteInput = React.forwardRef(
           data-pending={pending}
           data-disabled={disabled}
           data-is-option={allowFreeText || textInputValue === boundValue}
+          data-cy={cypressTag}
         >
           <DropdownItems
             contentClassName={ClassNames.concat('arm-auto-complete-options', dropdownClassName)}
@@ -298,9 +304,8 @@ export const AutoCompleteInput = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(
-  props: React.PropsWithChildren<IAutoCompleteInputProps<Id>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IAutoCompleteInputProps<any>> };
+) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IAutoCompleteInputProps<Id>, HTMLSelectElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IAutoCompleteInputProps<any>>;
 
 AutoCompleteInput.defaultProps = {
   validationMode: 'both',

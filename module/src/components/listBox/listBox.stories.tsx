@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Form } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { ListBox } from './listBox.component';
@@ -15,13 +16,12 @@ export default StoryUtils.createMeta(ListBox, 'Form', 'Listbox', {});
 /** stories */
 
 export const Default = () => {
-  const [value, setValue] = React.useState<number>();
+  const { formProp } = Form.use<{ value: number }>();
 
   return (
     <ListBox
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
-      onSelectOption={(option) => setValue(option?.id)}
       options={[
         { id: 1, name: 'red' },
         { id: 2, name: 'blue' },
@@ -32,13 +32,12 @@ export const Default = () => {
   );
 };
 export const WithCustomDropDownIcon = () => {
-  const [value, setValue] = React.useState<number>();
+  const { formProp } = Form.use<{ value: number }>();
 
   return (
     <ListBox
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
-      onSelectOption={(option) => setValue(option?.id)}
       options={[
         { id: 1, name: 'red' },
         { id: 2, name: 'blue' },
@@ -50,14 +49,13 @@ export const WithCustomDropDownIcon = () => {
   );
 };
 export const WithIcons = () => {
-  const [value, setValue] = React.useState<number>();
+  const { formProp } = Form.use<{ value: number }>();
 
   return (
     <ListBox
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onSelectOption={(option) => setValue(option?.id)}
       options={[
         { id: 1, name: 'red' },
         { id: 2, name: 'blue' },
@@ -68,14 +66,13 @@ export const WithIcons = () => {
   );
 };
 export const WithValidationError = () => {
-  const [value, setValue] = React.useState<number>();
+  const { formProp } = Form.use<{ value: number }>();
 
   return (
     <ListBox
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onSelectOption={(option) => setValue(option?.id)}
       options={[
         { id: 1, name: 'red' },
         { id: 2, name: 'blue' },
@@ -87,14 +84,13 @@ export const WithValidationError = () => {
   );
 };
 export const WithGroupsAndIcons = () => {
-  const [value, setValue] = React.useState<number>();
+  const { formProp } = Form.use<{ value: number }>();
 
   return (
     <ListBox
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
       leftIcon={IconUtils.getIconDefinition('Icomoon', 'alarm')}
-      onSelectOption={(option) => setValue(option?.id)}
       options={[
         { id: 1, name: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
         { id: 2, name: 'blue', group: 'primary' },
@@ -106,13 +102,12 @@ export const WithGroupsAndIcons = () => {
 };
 
 export const Above = () => {
-  const [value, setValue] = React.useState<number>();
+  const { formProp } = Form.use<{ value: number }>();
 
   return (
     <ListBox
-      value={value}
+      bind={formProp('value').bind()}
       placeholder="Please pick something...."
-      onSelectOption={(option) => setValue(option?.id)}
       options={[
         { id: 1, name: 'red' },
         { id: 2, name: 'blue' },

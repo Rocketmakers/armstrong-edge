@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongOption } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
@@ -43,7 +44,7 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
   deleteButton?: boolean | IIcon<IconSet>;
 
   /** the current value of the select */
-  value?: Id;
+  value?: NonNullable<Id>;
 }
 
 /** A select input which takes an array of options */
@@ -94,7 +95,7 @@ export const Select = React.forwardRef(
         }
 
         const { value: newValue } = event.currentTarget;
-        const selectedOption = options.find((option) => option.id.toString() === newValue);
+        const selectedOption = options.find((option) => option.id?.toString() === newValue);
         if (selectedOption) {
           setBoundValue?.(selectedOption.id);
           onSelectOption?.(selectedOption);
@@ -128,7 +129,7 @@ export const Select = React.forwardRef(
             {...nativeProps}
             ref={internalRef}
             onChange={onChangeEvent}
-            value={boundValue}
+            value={boundValue ?? undefined}
             disabled={disabled}
             defaultValue={placeholderOption && !nativeProps.defaultValue && !boundValue ? '' : nativeProps.defaultValue}
           >
@@ -138,7 +139,7 @@ export const Select = React.forwardRef(
               </option>
             )}
             {options.map((option) => (
-              <option key={option.id} value={option.id} disabled={option.disabled} {...option.htmlProps}>
+              <option key={option.id} value={option.id ?? undefined} disabled={option.disabled} {...option.htmlProps}>
                 {option.name || option.id}
               </option>
             ))}
@@ -168,9 +169,8 @@ export const Select = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: React.PropsWithRef<ISelectProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<ISelectProps<any, any>> };
+) as (<Id extends ArmstrongId, TSelectData = any>(props: ArmstrongVFCProps<ISelectProps<Id, TSelectData>, HTMLSelectElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ISelectProps<any, any>>;
 
 Select.defaultProps = {
   selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),

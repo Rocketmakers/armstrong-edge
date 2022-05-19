@@ -9,7 +9,8 @@
   "scripts": {
     "start-playground": "(cd playground && npm start)",
     "start": "npm-run-all start-playground watch-build-module",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "(cd module && npm run test)",
+    "jest-vscode-runner": "(cd module && npm run jest-vscode-runner)",
     "postinstall": "(cd module && npm i) && (cd playground && npm i) && npm run link-module",
     "build-module": "(cd module && npm run build)",
     "link-module": "npm run build-module && (cd module && npm run link) && (cd playground && npm run link-module)",

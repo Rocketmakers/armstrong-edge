@@ -10,32 +10,26 @@ export interface IOptionContentProps
   isActive?: boolean;
 }
 
-/** Incredibly simple utility component for use in options, used to optionally render JSX, a piece of text, or fallback to an ID - for use with components which render an array of the IArmstrongOption (or similar) type */
+/** Incredibly simple utility component for use in options, used to optionally render JSX, a piece of text, or fallback to an ID and wrap it in Icons - for use with components which render an array of the IArmstrongOption (or similar) type */
 export const OptionContent: React.FC<IOptionContentProps> = ({ name, content, leftIcon, rightIcon, id, isActive }) => {
-  const textContent = React.useMemo(() => {
-    if (typeof content === 'string' || typeof content === 'number') {
-      return content;
-    }
-    if (content) {
-      return undefined;
-    }
-    if (name) {
-      return name;
-    }
-    if (id) {
-      return id;
-    }
-  }, [content, name, id]);
-
   const renderedContent = React.useMemo(() => {
-    if (textContent) {
-      return <p>{textContent}</p>;
+    // if content is a string or number, render content in a span
+    if (typeof content === 'string' || typeof content === 'number') {
+      return <span>{content}</span>;
     }
+    // if content is a function that takes the active state returns a reactChild, render that
     if (typeof content === 'function') {
       return content(!!isActive);
     }
-    return content;
-  }, [content, textContent, isActive]);
+    // content should be JSX if we get here - render that
+    if (content) {
+      return content;
+    }
+    // render the given name if provided
+    if (name) {
+      return <span>{name}</span>;
+    }
+  }, [content, name, id, isActive, leftIcon, rightIcon]);
 
   return (
     <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>

@@ -1,11 +1,18 @@
 import { ApiHooksStore } from "@rocketmakers/api-hooks"
-import { ToastProvider, DialogProvider } from "@rocketmakers/armstrong"
+import { ToastProvider, ModalProvider, ArmstrongConfigProvider } from "@rocketmakers/armstrong-edge"
 import * as React from "react"
-import * as ReactDOM from "react-dom"
-import { HashRouter } from "react-router-dom"
+import { createRoot } from "react-dom/client"
+import { HashRouter, Link, useHistory, useLocation } from "react-router-dom"
 import { Shell } from "./shell"
 
 import "./theme/theme.scss"
+
+const ConfigProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  const location = useLocation()
+  const { push, replace } = useHistory()
+
+  return <ArmstrongConfigProvider routing={{ LinkComponent: Link, location, navigate: (to, action) => (action === "push" ? push(to) : replace(to)) }}>{children}</ArmstrongConfigProvider>
+}
 
 class App extends React.Component {
   componentDidCatch() {
@@ -16,15 +23,27 @@ class App extends React.Component {
     return (
       <ApiHooksStore.Provider>
         <ToastProvider>
-          <DialogProvider>
+          <ModalProvider>
             <HashRouter>
-              <Shell />
+              <ConfigProvider>
+                <Shell />
+              </ConfigProvider>
             </HashRouter>
-          </DialogProvider>
+          </ModalProvider>
         </ToastProvider>
       </ApiHooksStore.Provider>
     )
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("host"))
+function render() {
+  const rootElementId = "host"
+  const container = document.getElementById(rootElementId)
+  if (!container) {
+    throw new Error(`Root element ${rootElementId} not found in page`)
+  }
+  const root = createRoot(container)
+  root.render(<App />)
+}
+
+render()

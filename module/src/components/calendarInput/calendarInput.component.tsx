@@ -3,9 +3,11 @@ import * as React from 'react';
 
 import { Calendar, DataAttributes, Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { Typescript } from '../../utils';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
+import { JavaScript } from '../../utils/javascript';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 import { Dropdown } from '../dropdown';
@@ -22,7 +24,7 @@ type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'opti
 export type CalendarInputPart = 'year' | 'month' | 'day';
 
 export type CalendarInputCalendarPosition = 'dropdown' | 'modal' | 'above' | 'below';
-export interface ICalendarInputProps<TValue extends Dates.DateLike>
+export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLike>>
   extends Omit<Calendar.IConfig, 'selectedDate'>,
     Pick<
       ICalendarDisplayProps,
@@ -35,7 +37,7 @@ export interface ICalendarInputProps<TValue extends Dates.DateLike>
     >,
     IStatusWrapperProps,
     IIconWrapperProps<IconSet, IconSet>,
-    Pick<IInputWrapperProps, 'leftOverlay' | 'rightOverlay'> {
+    Pick<IInputWrapperProps, 'leftOverlay' | 'rightOverlay' | 'scrollValidationErrorsIntoView'> {
   /** CSS className property */
   className?: string;
 
@@ -171,6 +173,7 @@ export const CalendarInput = React.forwardRef(
       betweenInputs,
       highlightToday,
       defaultIfOmitted,
+      scrollValidationErrorsIntoView,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -206,7 +209,9 @@ export const CalendarInput = React.forwardRef(
     // when day is clicked inside calendar display, set it to the bound value
     const onDayClicked = React.useCallback(
       (day: Calendar.IDay) => {
-        setSelectedDate?.(calendarDayToDateLike(day, selectedDate ? typeof selectedDate : 'string', formatString, locale) as TValue);
+        setSelectedDate?.(
+          calendarDayToDateLike(day, !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string', formatString, locale) as TValue
+        );
 
         if (closeCalendarOnDayClick) {
           setCalendarOpen(false);
@@ -239,7 +244,12 @@ export const CalendarInput = React.forwardRef(
 
         const date = new Date(year, month, day);
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
-          const newDate = Dates.dateObjectToDateLike(date, selectedDate ? typeof selectedDate : 'string', formatString, locale);
+          const newDate = Dates.dateObjectToDateLike(
+            date,
+            !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string',
+            formatString,
+            locale
+          );
           setSelectedDate?.(newDate as TValue);
         }
       }
@@ -322,6 +332,7 @@ export const CalendarInput = React.forwardRef(
               rightIcon={rightIcon}
               leftOverlay={leftOverlay}
               rightOverlay={rightOverlay}
+              scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
             >
               {showCalendarButton && !keepCalendarOpen && (
                 <IconButton
@@ -409,9 +420,10 @@ export const CalendarInput = React.forwardRef(
       </>
     );
   }
-) as (<TValue extends Dates.DateLike>(
-  props: React.PropsWithChildren<ICalendarInputProps<TValue>> & React.RefAttributes<HTMLInputElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<ICalendarInputProps<any>> };
+) as (<TValue extends NullOrUndefined<Dates.DateLike>>(
+  props: ArmstrongVFCProps<ICalendarInputProps<TValue>, HTMLInputElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ICalendarInputProps<any>>;
 
 CalendarInput.defaultProps = {
   weekdayStartIndex: 0,

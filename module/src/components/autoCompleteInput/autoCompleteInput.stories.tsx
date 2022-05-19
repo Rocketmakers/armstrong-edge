@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useDidUpdateEffect, useTemporaryState } from '../../hooks';
+import { Form, useDidUpdateEffect, useTemporaryState } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
 import { IconUtils } from '../icon';
 import { AutoCompleteInput } from './autoCompleteInput.component';
@@ -33,24 +33,23 @@ const options = [
 ];
 
 export const Default = () => {
-  const [value, setValue] = React.useState<string>();
+  const { formProp, formState } = Form.use({ value: '' });
 
   return (
-    <>
-      <AutoCompleteInput value={value} onChange={setValue} options={options} />
-      <p className="bound-value">bound value: {value}</p>
-    </>
+    <form>
+      <AutoCompleteInput bind={formProp('value').bind()} options={options} cypressTag="autocomplete" />
+      <p className="bound-value">bound value: {formState?.value}</p>
+    </form>
   );
 };
 
 export const DontClose = () => {
-  const [value, setValue] = React.useState<string>();
+  const { formProp, formState } = Form.use({ value: '' });
 
   return (
     <>
       <AutoCompleteInput
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         options={options}
         closeOnBackgroundClick={false}
         closeOnScroll={false}
@@ -60,39 +59,38 @@ export const DontClose = () => {
         placeholder="this is very useful for inspecting"
         filterOptions={false}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 
 export const AllowFreeText = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use({ value: '' });
 
   return (
-    <>
-      <AutoCompleteInput value={value} onChange={setValue} allowFreeText options={options} />
-      <p className="bound-value">bound value: {value}</p>
-    </>
+    <form>
+      <AutoCompleteInput bind={formProp('value').bind()} allowFreeText options={options} />
+      <p className="bound-value">bound value: {formState?.value}</p>
+    </form>
   );
 };
 export const DontFilter = () => {
-  const [value, setValue] = React.useState('');
+  const { formProp, formState } = Form.use({ value: '' });
 
   return (
-    <>
-      <AutoCompleteInput value={value} onChange={setValue} options={options} filterOptions={false} />
-      <p className="bound-value">bound value: {value}</p>
-    </>
+    <form>
+      <AutoCompleteInput bind={formProp('value').bind()} options={options} filterOptions={false} />
+      <p className="bound-value">bound value: {formState?.value}</p>
+    </form>
   );
 };
 export const WithIcons = () => {
-  const [value, setValue] = React.useState(2);
+  const { formProp, formState } = Form.use({ value: 2 });
 
   return (
-    <>
+    <form>
       <AutoCompleteInput
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
         options={[
           { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2') },
@@ -100,18 +98,17 @@ export const WithIcons = () => {
           { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css') },
         ]}
       />
-      <p className="bound-value">bound value: {value}</p>
-    </>
+      <p className="bound-value">bound value: {formState?.value}</p>
+    </form>
   );
 };
 export const WithGroups = () => {
-  const [value, setValue] = React.useState(2);
+  const { formProp, formState } = Form.use({ value: 2 });
 
   return (
     <>
       <AutoCompleteInput
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
         options={[
           { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
@@ -119,18 +116,17 @@ export const WithGroups = () => {
           { id: 3, name: 'purple', leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-css'), group: 'secondary' },
         ]}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 export const WithValidationErrors = () => {
-  const [value, setValue] = React.useState(2);
+  const { formProp, formState } = Form.use({ value: 2 });
 
   return (
     <>
       <AutoCompleteInput
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
         options={[
           { id: 1, name: 'red', leftIcon: IconUtils.getIconDefinition('Icomoon', 'chopper2'), group: 'primary' },
@@ -139,12 +135,12 @@ export const WithValidationErrors = () => {
         ]}
         validationErrorMessages={['your taste in colours is terrible']}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 export const AsyncOptions = () => {
-  const [value, setValue] = React.useState<string>();
+  const { formProp, formState } = Form.use({ value: '' });
   const [filter, setFilter] = React.useState('');
 
   const [filteredOptions, setFilteredOptions] = React.useState(options);
@@ -162,25 +158,24 @@ export const AsyncOptions = () => {
       <AutoCompleteInput
         textInputValue={filter}
         onTextInputChange={setFilter}
-        value={value}
-        onChange={setValue}
+        bind={formProp('value').bind()}
         leftIcon={IconUtils.getIconDefinition('Icomoon', 'brush')}
         options={filteredOptions}
         filterOptions={false}
         pending={isFetching}
       />
-      <p className="bound-value">bound value: {value}</p>
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };
 
 export const Above = () => {
-  const [value, setValue] = React.useState<string>();
+  const { formProp, formState } = Form.use({ value: '' });
 
   return (
     <>
-      <AutoCompleteInput value={value} onChange={setValue} options={options} position="above" />
-      <p className="bound-value">bound value: {value}</p>
+      <AutoCompleteInput bind={formProp('value').bind()} options={options} position="above" />
+      <p className="bound-value">bound value: {formState?.value}</p>
     </>
   );
 };

@@ -19,7 +19,9 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "lib": ["es2016", "dom"],
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
+  "include": ["**/*.ts*", "../.eslintrc.js", "../jest.config.js"],
   "exclude": ["node_modules", "stories", "**/*.stories.*"]
 }

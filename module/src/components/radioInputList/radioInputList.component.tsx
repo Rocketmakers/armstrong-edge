@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Arrays, Form, IInputWrapperProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { ClassNames } from '../../utils/classNames';
@@ -58,7 +59,7 @@ export const RadioInputList = React.forwardRef(
       direction,
       hideRadio,
     }: IRadioInputListProps<Id>,
-    ref
+    ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
       value,
@@ -100,7 +101,7 @@ export const RadioInputList = React.forwardRef(
                   uncheckedIcon={uncheckedIcon}
                   inputProps={option.htmlInputProps}
                   disabled={option.disabled}
-                  direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
+                  direction={direction}
                   hideRadio={hideRadio}
                   {...option.htmlProps}
                 />
@@ -117,9 +118,8 @@ export const RadioInputList = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(
-  props: React.PropsWithChildren<IRadioInputListProps<Id>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IRadioInputListProps<any>> };
+) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioInputListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IRadioInputListProps<any>>;
 
 RadioInputList.defaultProps = {
   direction: 'vertical',

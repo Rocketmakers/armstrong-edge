@@ -11,11 +11,13 @@ export interface IIconButtonProps extends Omit<IButtonProps, 'leftIcon' | 'right
 }
 
 /** A button that only renders an icon without text */
-export const IconButton: React.FunctionComponent<IIconButtonProps> = ({ icon, pending, error, errorIcon, className, ...buttonProps }) => {
-  return (
-    <Button {...buttonProps} className={ClassNames.concat('arm-icon-button', className)} statusPosition={undefined}>
-      {!pending && !error && <Icon iconSet={icon.iconSet} icon={icon.icon} />}
-      <Status errorIcon={errorIcon} pending={pending} error={error} />
-    </Button>
-  );
-};
+export const IconButton = React.forwardRef<HTMLButtonElement, IIconButtonProps>(
+  ({ icon, pending, error, errorIcon, className, ...buttonProps }, ref) => {
+    return (
+      <Button ref={ref} {...buttonProps} className={ClassNames.concat('arm-icon-button', className)} statusPosition={undefined}>
+        {!pending && !error && <Icon iconSet={icon.iconSet} icon={icon.icon} />}
+        <Status errorIcon={errorIcon} pending={pending} error={error} />
+      </Button>
+    );
+  }
+);

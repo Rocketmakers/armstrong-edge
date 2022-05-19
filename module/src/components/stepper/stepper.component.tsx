@@ -43,7 +43,7 @@ export interface IStepperStepProps extends IStepperStep, Pick<IStatusProps, 'spi
   nextIsSmall?: boolean;
 }
 
-export const StepperStep = React.forwardRef<HTMLButtonElement, IStepperStepProps>(
+export const StepperStep = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IStepperStepProps>>(
   (
     {
       isCurrent,
@@ -130,7 +130,7 @@ export interface IStepperProps extends Pick<IStepperStepProps, 'completeIcon'>, 
 }
 
 /** R */
-export const Stepper = React.forwardRef<HTMLDivElement, IStepperProps>(
+export const Stepper = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IStepperProps>>(
   ({ steps, stepIndex, onStepIndexChange, children, completeIcon, showIndex, direction, spinnerIcon, errorIcon }, ref) => {
     return (
       <div

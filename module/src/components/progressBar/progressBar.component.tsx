@@ -28,42 +28,37 @@ export interface IProgressBarProps extends React.DetailedHTMLProps<React.HTMLPro
 }
 
 /** Show a progress bar using a progress property */
-export const ProgressBar: React.FC<IProgressBarProps> = ({
-  progress,
-  direction,
-  labelText,
-  labelVariant,
-  colorBreakpoints,
-  className,
-  ...nativeProps
-}) => {
-  const color = React.useMemo(
-    () => !!colorBreakpoints?.length && Colors.RGBToHex(Colors.multiLerpRGB(colorBreakpoints.map(Colors.colorToRGB), progress)),
-    [colorBreakpoints, progress]
-  );
+export const ProgressBar = React.forwardRef<HTMLDivElement, IProgressBarProps>(
+  ({ progress, direction, labelText, labelVariant, colorBreakpoints, className, ...nativeProps }, forwardedRef) => {
+    const color = React.useMemo(
+      () => !!colorBreakpoints?.length && Colors.RGBToHex(Colors.multiLerpRGB(colorBreakpoints.map(Colors.colorToRGB), progress)),
+      [colorBreakpoints, progress]
+    );
 
-  return (
-    <div
-      className={ClassNames.concat('arm-progress-bar', className)}
-      data-direction={direction}
-      data-has-label={!!labelText}
-      style={{ '--arm-progress-bar-color': color, '--arm-progress-bar-progress': `${progress}%` } as React.CSSProperties}
-      role="progressbar"
-      aria-valuenow={progress}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuetext={labelText}
-      {...nativeProps}
-    >
-      <div className="arm-progress-bar-progress" />
-      {labelText && (
-        <div className="arm-progress-bar-label" data-variant={labelVariant}>
-          <p>{labelText}</p>
-        </div>
-      )}
-    </div>
-  );
-};
+    return (
+      <div
+        className={ClassNames.concat('arm-progress-bar', className)}
+        data-direction={direction}
+        data-has-label={!!labelText}
+        style={{ '--arm-progress-bar-color': color, '--arm-progress-bar-progress': `${progress}%` } as React.CSSProperties}
+        role="progressbar"
+        aria-valuenow={progress}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuetext={labelText}
+        {...nativeProps}
+        ref={forwardedRef}
+      >
+        <div className="arm-progress-bar-progress" />
+        {labelText && (
+          <div className="arm-progress-bar-label" data-variant={labelVariant}>
+            <p>{labelText}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
 ProgressBar.defaultProps = {
   direction: 'right',

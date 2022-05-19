@@ -16,7 +16,7 @@ export interface IErrorMessageProps {
 }
 
 /** Render a simple error with a message and an icon - mainly used for validation errors in form inputs */
-export const ErrorMessage = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IErrorMessageProps>>(({ className, message, icon }, ref) => {
+export const ErrorMessage = React.forwardRef<HTMLDivElement, IErrorMessageProps>(({ className, message, icon }, ref) => {
   return (
     <div ref={ref} className={ClassNames.concat('arm-error-message', className)}>
       {icon && <Icon iconSet={icon.iconSet} icon={icon.icon} />} <span>{message}</span>

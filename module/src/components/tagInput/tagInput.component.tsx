@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { ClassNames, Form } from '../..';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, ClassNames, Form } from '../..';
 import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
 import { useOverridableState } from '../../hooks/useOverridableState';
-import { ArmstrongId } from '../../types/core';
+import { ArmstrongId, NullOrUndefined } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
 import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
@@ -16,11 +16,11 @@ export interface ITag
     'id' | 'name' | 'htmlProps' | 'leftIcon' | 'rightIcon'
   > {}
 
-export interface ITagInputProps
+export interface ITagInputProps<TBind extends NullOrUndefined<string[]>>
   extends Omit<IInputWrapperProps, 'above' | 'below' | 'onClick'>,
     Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'value'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<string[]>;
+  bind?: IBindingProps<TBind>;
 
   /** array of validation errors to render */
   validationErrorMessages?: ValidationMessage[];
@@ -29,13 +29,13 @@ export interface ITagInputProps
   validationMode?: FormValidationMode;
 
   /** array of tags */
-  value?: string[];
+  value?: TBind;
 
   /** overrides value to render a custom array of tags - should still be used in conjunction with a bound value */
   tags?: ITag[];
 
   /** event fired when the array of tags changes */
-  onChange?: (newValue: string[]) => void;
+  onChange?: (newValue: TBind) => void;
 
   /** fired when the internal text input changes */
   onTextInputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -74,8 +74,8 @@ export interface ITagInputProps
   onRemoveAllTags?: () => void;
 }
 
-export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
-  (
+export const TagInput = React.forwardRef(
+  <TBind extends NullOrUndefined<string[]>>(
     {
       className,
       bind,
@@ -110,8 +110,8 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       placeholder,
       disableOnPending,
       ...nativeProps
-    },
-    ref
+    }: ITagInputProps<TBind>,
+    ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
@@ -140,7 +140,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
     const addTag = React.useCallback(
       (newTag: string) => {
         if (newTag && (allowDuplicates || (!boundValue?.includes(newTag) && (!getCanAddTag || getCanAddTag(newTag))))) {
-          setBoundValue?.([...(boundValue || []), newTag.trim()]);
+          setBoundValue?.([...(boundValue ?? []), newTag.trim()] as TBind);
         }
         setTextInputInternalValue('');
         onAddTag?.(newTag);
@@ -150,7 +150,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
 
     const removeTag = React.useCallback(
       (tagToRemove: ArmstrongId) => {
-        setBoundValue?.((boundValue || []).filter((tag) => tag !== tagToRemove));
+        setBoundValue?.(((boundValue as string[]) || []).filter((tag) => tag !== tagToRemove) as TBind);
         setTextInputInternalValue('');
         onRemoveTag?.(tagToRemove);
       },
@@ -158,7 +158,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
     );
 
     const clearTags = React.useCallback(() => {
-      setBoundValue?.([]);
+      setBoundValue?.([] as string[] as TBind);
       setTextInputInternalValue('');
       onRemoveAllTags?.();
     }, [setBoundValue, onRemoveAllTags]);
@@ -252,7 +252,10 @@ export const TagInput = React.forwardRef<HTMLInputElement, ITagInputProps>(
       </InputWrapper>
     );
   }
-);
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TBind extends NullOrUndefined<string[]>>(props: ArmstrongFCProps<ITagInputProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ITagInputProps<any>>;
 
 TagInput.defaultProps = {
   tagPosition: 'inside',

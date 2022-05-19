@@ -67,36 +67,32 @@ export const useProgress = ({ trickle, trickleAmount, trickleInterval, maximum, 
     [set]
   );
 
-  const onTimeout = React.useCallback(async () => {
+  const { set: setProgInterval, clear: clearProgInterval } = useTimeout(async () => {
     if (trickle) {
       increment(Math.min((100 - progressRef.current) * 0.05, trickleAmount || 2));
-
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      void setInterval();
+      void setProgInterval();
     }
-  }, [increment, trickle]);
-
-  const { set: setInterval, clear: clearInterval } = useTimeout(onTimeout, trickleInterval || 750);
+  }, trickleInterval || 750);
 
   const completeStopStarted = React.useCallback(() => setStarted(false), []);
   const { set: setCompleteInterval } = useTimeout(completeStopStarted, 500);
 
   const complete = React.useCallback(() => {
     setProgress(100);
-    clearInterval();
+    clearProgInterval();
     void setCompleteInterval();
-  }, [clearInterval]);
+  }, [clearProgInterval]);
 
   const start = React.useCallback(() => {
     setStarted(true);
     set(minimum || 5);
-    clearInterval();
-    void setInterval();
-  }, [set, setInterval, clearInterval]);
+    clearProgInterval();
+    void setProgInterval();
+  }, [set, setProgInterval, clearProgInterval]);
 
   const reset = React.useCallback(() => {
     setProgress(0);
-    clearInterval();
+    clearProgInterval();
     void setCompleteInterval();
   }, []);
 

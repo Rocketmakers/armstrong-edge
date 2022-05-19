@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongId, IArmstrongExtendedOption } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types/reactExtensions';
 import { ClassNames } from '../../utils/classNames';
 import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
@@ -93,7 +94,7 @@ export const ListBox = React.forwardRef(
     }: IListBoxProps<Id, TSelectData>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
-    const internalRef = React.useRef<HTMLInputElement>(null);
+    const internalRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
@@ -129,7 +130,7 @@ export const ListBox = React.forwardRef(
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
         items={options.map((option) => ({
-          content: option.name ?? bindConfig.getFormattedValueFromData(option.id)?.toString() ?? option.id.toString(),
+          content: option.name ?? bindConfig.getFormattedValueFromData(option.id)?.toString() ?? option.id?.toString(),
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
@@ -195,9 +196,8 @@ export const ListBox = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: React.PropsWithChildren<IListBoxProps<Id, TSelectData>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IListBoxProps<any, any>> };
+) as (<Id extends ArmstrongId, TSelectData = any>(props: ArmstrongFCProps<IListBoxProps<Id, TSelectData>, HTMLDivElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IListBoxProps<any, any>>;
 
 ListBox.defaultProps = {
   selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),

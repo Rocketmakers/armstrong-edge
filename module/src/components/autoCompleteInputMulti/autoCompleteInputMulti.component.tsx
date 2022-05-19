@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Form, IAutoCompleteInputOption } from '../..';
 import { useOverridableState } from '../../hooks/useOverridableState';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { ClassNames } from '../../utils/classNames';
 import { IAutoCompleteInputProps } from '../autoCompleteInput/autoCompleteInput.component';
@@ -12,7 +13,7 @@ import { ITag, ITagInputProps, TagInput } from '../tagInput';
 
 export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
-    Pick<ITagInputProps, 'tagPosition'>,
+    Pick<ITagInputProps<any>, 'tagPosition'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
     Pick<
       IAutoCompleteInputProps<Id>,
@@ -94,7 +95,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
 
     // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided
     const getOptionName = React.useCallback(
-      (option: IAutoCompleteInputOption<Id>) => option.name ?? option.id.toString(),
+      (option: IAutoCompleteInputOption<Id>) => option.name ?? option.id?.toString(),
       [getFormattedValueFromData]
     );
 
@@ -105,7 +106,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
     const filteredOptions = React.useMemo(() => {
       if (filterOptions && options) {
         if (filterOptions === true) {
-          return options.filter((option) => getOptionName(option).toLowerCase().startsWith(textInputInternalValue.toLowerCase()));
+          return options.filter((option) => getOptionName(option)?.toLowerCase().startsWith(textInputInternalValue.toLowerCase()));
         }
         return options.filter((option) => filterOptions(option, textInputInternalValue));
       }
@@ -142,7 +143,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
         const selectedOption = options?.find((option) => item === option.id);
         if (selectedOption) {
           return {
-            name: selectedOption.name || selectedOption.id.toString(),
+            name: selectedOption.name || selectedOption.id?.toString(),
             id: selectedOption.id,
             leftIcon: selectedOption.leftIcon,
             rightIcon: selectedOption.rightIcon,
@@ -150,7 +151,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
           };
         }
         return {
-          name: item.toString(),
+          name: item?.toString(),
           id: item,
         };
       },
@@ -184,10 +185,10 @@ export const AutoCompleteInputMulti = React.forwardRef(
           .map((item) => parseOptionTag(item))
           .filter((item) => {
             const notAnOption = !options?.find((option) => option.id === item.id);
-            const filterByTextInputValue = !textInputInternalValue || (item.name || item.id).toString().startsWith(textInputInternalValue);
+            const filterByTextInputValue = !textInputInternalValue || (item.name || item.id)?.toString().startsWith(textInputInternalValue);
             return notAnOption && filterByTextInputValue;
           })
-          .map<IDropdownItem>((item) => ({ content: item.name || item.id.toString(), id: item.id })),
+          .map<IDropdownItem>((item) => ({ content: item.name || item.id?.toString(), id: item.id })),
         // spread in given options
         ...filteredOptions.map((option) => ({
           content: option.content || getOptionName(option),
@@ -261,9 +262,8 @@ export const AutoCompleteInputMulti = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(
-  props: React.PropsWithChildren<IAutoCompleteInputMultiProps<Id>> & React.RefAttributes<HTMLSelectElement>
-) => ReturnType<React.FC>) & { defaultProps?: Partial<IAutoCompleteInputMultiProps<any>> };
+) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IAutoCompleteInputMultiProps<Id>, HTMLSelectElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IAutoCompleteInputMultiProps<any>>;
 
 AutoCompleteInputMulti.defaultProps = {
   validationMode: 'both',
