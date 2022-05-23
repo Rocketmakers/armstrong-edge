@@ -36,7 +36,7 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
     cypressTag?: string;
   };
 
-export type IButtonProps = IButtonCoreProps & ButtonHTMLProps & { to?: never };
+export type IButtonProps = IButtonCoreProps & ButtonHTMLProps;
 
 /** Renders the inside of a button, for use in altering the tag used for the wrapper */
 export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps>> = ({
