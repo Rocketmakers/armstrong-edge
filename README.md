@@ -20,7 +20,7 @@ yarn add @rocketmakers/armstrong
 Then to use a component in your project
 
 ```tsx
-import { Button } from "@rocketmakers/armstrong";
+import { Button } from '@rocketmakers/armstrong';
 
 const MyComponent: React.FC = () => {
   return (
