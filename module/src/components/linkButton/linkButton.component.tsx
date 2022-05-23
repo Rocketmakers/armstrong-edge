@@ -16,12 +16,10 @@ export const LinkButton = React.forwardRef(
     return (
       <>
         <Link
-          rootElementProps={{
-            'data-pending': pending,
-            'data-disabled': disabled || pending,
-            'data-error': shouldShowErrorIcon,
-            ...rootElementProps,
-          }}
+          {...rootElementProps}
+          data-pending={pending}
+          data-disabled={disabled || pending}
+          data-error={shouldShowErrorIcon}
           to={to}
           className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', 'arm-link-button', className)}
           ref={ref}

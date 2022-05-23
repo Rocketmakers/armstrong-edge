@@ -19,7 +19,7 @@ export const Default = StoryUtils.cloneTemplate(Template, { to: 'https://rocketm
 export const PropsPassedToLink = StoryUtils.cloneTemplate(Template, {
   to: 'https://rocketmakers.com',
   children: 'Click me please',
-  rootElementProps: { target: '_blank' },
+  target: '_blank',
 });
 export const WithIcons = StoryUtils.cloneTemplate(Template, {
   to: 'https://rocketmakers.com',
