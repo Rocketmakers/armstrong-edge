@@ -1,7 +1,9 @@
 import * as React from 'react';
 
-import { ClassNames } from '../..';
-import { ButtonInner, IButtonCoreProps, ILinkProps, Link, ValidationErrors } from '..';
+import { ClassNames } from '../../utils/classNames';
+import { ButtonInner, IButtonCoreProps } from '../button/button.component';
+import { ILinkProps, Link } from '../link/link.component';
+import { ValidationErrors } from '../validationErrors/validationErrors.component';
 
 export type ILinkButtonProps<TLinkProps> = IButtonCoreProps & ILinkProps<TLinkProps>;
 
