@@ -20,7 +20,7 @@ yarn add @rocketmakers/armstrong
 Then to use a component in your project
 
 ```tsx
-import { Button } from '@rocketmakers/armstrong';
+import { Button } from "@rocketmakers/armstrong";
 
 const MyComponent: React.FC = () => {
   return (
@@ -105,17 +105,20 @@ Due to the nature of the codebase it is not currently possible to use custom com
 
 ### Process
 
-Please work in feature branches named `feature/*` branched from `main`
+Please work in feature branches named `feature/*` branched from `develop`
 
-When your work is ready, submit a merge request and (if you're internal) post a link to your merge request in the `#armstrong-dev` slack channel for someone to review.
+When your work is ready, submit a pull request into `develop` and (if you're internal to Rocketmakers) post a link to your pull request in the `#armstrong-dev` slack channel for someone to review.
 
-There will be a CI which will run to check if your work passes linting and if Storybook can still build.
+Github will run an Action to test linting and to see if Storybook builds before your branch can be merged.
 
-One day we will talk about testing...
+Ensure [Commitizen](https://github.com/commitizen/cz-cli) is installed for templating your commit messages.
 
 ### Release process
 
-Armstrong uses Semantic release https://semantic-release.gitbook.io/semantic-release/ for automatic versioning and publishing based on comittizen formatted messages.
+When you are ready to release your work, open a pull request from `develop` into `main` named `Release`, and list all upcoming changes. Once all actions have passed, this can be merged in, where it'll be released automatically.
+
+Armstrong uses [Semantic release](https://semantic-release.gitbook.io/semantic-release/) for automatic versioning and publishing based on Commitizen formatted messages from main.
+
 The type of release will be worked out from all of the commit messages in your merge. So the highest of the following will dictate the version
 
 ```
@@ -125,6 +128,10 @@ breaking: will be major X.0.0
 chore: won't trigger a release
 ```
 
-So basically do your work on a branch `feature/` or `bugfix/`, make sure all of your commit messages go through comittizen and when your happy do a PR onto main.
+So basically, do your work on a branch `feature/*`, make sure all of your commit messages go through Commitizen, and when you're happy open a PR onto main.
 
-When it gets approved and merged in the release type will automatically be worked out based on the highest (breaking > feat > fix) of all the commits that are part of that merge and a tag and version will be published to npm automatically.
+When it gets approved and merged in, the release type will automatically be worked out based on the highest (breaking > feat > fix) of all the commits that are part of that merge and a tag and version will be published to npm automatically.
+
+This release happens in a Github Action labelled release. [Logs can be found here](https://github.com/Rocketmakers/armstrong-edge/actions/workflows/release.yml)
+
+Once a release is complete, please post a cursory message in the `#armstrong` Slack channel with a list of changes.
