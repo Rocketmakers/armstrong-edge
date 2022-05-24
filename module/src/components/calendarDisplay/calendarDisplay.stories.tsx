@@ -1,9 +1,11 @@
 import { Story } from '@storybook/react';
 import * as React from 'react';
 
-import { Calendar } from '../..';
+import { Calendar, IconUtils } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
+import { Button } from '../button';
 import { ErrorMessage } from '../errorMessage';
+import { IconButton } from '../iconButton';
 import { CalendarDisplay } from './calendarDisplay.component';
 
 /** metadata */
@@ -180,6 +182,34 @@ export const FixedDatesNoHighlight: Story = () => {
         onForwardClicked={() => stepMonth('forward')}
         onDayClicked={(d) => setDate(d.date)}
         highlightToday={false}
+      />
+    </>
+  );
+};
+
+export const CustomButtons = () => {
+  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use();
+
+  return (
+    <>
+      <CalendarDisplay
+        days={days}
+        months={months}
+        years={years}
+        currentMonthBinding={monthYearFormProp('viewingMonth').bind()}
+        currentYearBinding={monthYearFormProp('viewingYear').bind()}
+        onBackClicked={() => stepMonth('back')}
+        onForwardClicked={() => stepMonth('forward')}
+        backButton={(onClick) => (
+          <Button leftIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-left')} minimalStyle onClick={onClick}>
+            back
+          </Button>
+        )}
+        forwardsButton={(onClick) => (
+          <Button rightIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-right')} minimalStyle onClick={onClick}>
+            next
+          </Button>
+        )}
       />
     </>
   );

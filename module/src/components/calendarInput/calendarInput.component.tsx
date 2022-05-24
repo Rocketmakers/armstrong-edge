@@ -311,28 +311,13 @@ export const CalendarInput = React.forwardRef(
       }
     }, [displayMode, selectedDate, displayFormatString]);
 
-    const calendarButton = React.useMemo(() => {
-      if (showCalendarButton && !keepCalendarOpen) {
-        if (openCalendarButton) {
-          return openCalendarButton((event) => {
-            setCalendarOpen(!calendarOpen);
-            event.stopPropagation();
-          }, calendarOpen || !!keepCalendarOpen);
-        }
-        return (
-          <IconButton
-            type="button"
-            minimalStyle
-            icon={IconUtils.getIconDefinition('Icomoon', 'calendar')}
-            onClick={(event) => {
-              setCalendarOpen(!calendarOpen);
-              event.stopPropagation();
-            }}
-          />
-        );
-      }
-      return null;
-    }, [openCalendarButton, calendarOpen, keepCalendarOpen]);
+    const onClickCalendarButton = React.useCallback(
+      (event: React.MouseEvent<HTMLElement>) => {
+        setCalendarOpen(!calendarOpen);
+        event.stopPropagation();
+      },
+      [calendarOpen]
+    );
 
     return (
       <>
@@ -371,7 +356,11 @@ export const CalendarInput = React.forwardRef(
               rightOverlay={rightOverlay}
               scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
             >
-              <>{calendarButton}</>
+              {showCalendarButton &&
+                !keepCalendarOpen &&
+                (openCalendarButton?.(onClickCalendarButton, calendarOpen || !!keepCalendarOpen) || (
+                  <IconButton type="button" minimalStyle icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={onClickCalendarButton} />
+                ))}
 
               {disableInputs ? (
                 <div className="arm-calendar-input-preview">

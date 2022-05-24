@@ -52,11 +52,11 @@ export interface ICalendarDisplayProps {
   /**
    * Optional callback for when the back button has been clicked, usually goes to the previous month.
    */
-  onBackClicked?: () => void;
+  onBackClicked?: (event: React.MouseEvent<HTMLElement>) => void;
   /**
    * Optional callback for when the forward button has been clicked, usually goes to the next month.
    */
-  onForwardClicked?: () => void;
+  onForwardClicked?: (event: React.MouseEvent<HTMLElement>) => void;
   /**
    * A formatter to apply when displaying the days inside the calendar.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
@@ -94,6 +94,12 @@ export interface ICalendarDisplayProps {
 
   /** CSS className property */
   className?: string;
+
+  /** Override the back button JSX used to move the calendar back a month */
+  backButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
+
+  /** Override the forwards button JSX used to move the calendar forwards a month */
+  forwardsButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
 }
 
 /**
@@ -121,6 +127,8 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
       calendarDayOfTheWeekHeadingDisplayFormat,
       highlightToday,
       className,
+      backButton,
+      forwardsButton,
     },
     ref
   ) => {
@@ -149,23 +157,28 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
     return (
       <div ref={ref} className={ClassNames.concat('arm-calendar-display', className)}>
         <div className="arm-calendar-display-controls">
-          <IconButton
-            type="button"
-            icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
-            minimalStyle
-            className="arm-calendar-display-button arm-calendar-display-button-prev"
-            onClick={onBackClicked}
-          />
+          {onBackClicked &&
+            (backButton?.(onBackClicked) || (
+              <IconButton
+                icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
+                minimalStyle
+                className="arm-calendar-display-button arm-calendar-display-button-prev"
+                onClick={onBackClicked}
+              />
+            ))}
 
           <Select className="arm-calendar-display-select arm-calendar-display-select-month" bind={currentMonthBinding} options={monthOptions} />
           <Select className="arm-calendar-display-select arm-calendar-display-select-year" bind={currentYearBinding} options={yearOptions} />
 
-          <IconButton
-            icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
-            minimalStyle
-            className="arm-calendar-display-button arm-calendar-display-button-next"
-            onClick={onForwardClicked}
-          />
+          {onForwardClicked &&
+            (forwardsButton?.(onForwardClicked) || (
+              <IconButton
+                icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
+                minimalStyle
+                className="arm-calendar-display-button arm-calendar-display-button-next"
+                onClick={onForwardClicked}
+              />
+            ))}
         </div>
 
         <div className="arm-calendar-date-grid">
