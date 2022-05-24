@@ -117,7 +117,7 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
   betweenInputs?: React.ReactNode;
 
   /** Override the button used to open the calendar (useful if working without Icomoon) */
-  openCalendarButton?: JSX.Element | string | ((isOpen?: boolean) => JSX.Element | string);
+  openCalendarButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void, isOpen?: boolean) => JSX.Element | string;
 }
 
 /** Type representing the internal form data within the calendar input */
@@ -311,14 +311,27 @@ export const CalendarInput = React.forwardRef(
       }
     }, [displayMode, selectedDate, displayFormatString]);
 
-    const showCalendarButtonOutput = React.useMemo(() => {
-      if (openCalendarButton) {
-        if (typeof openCalendarButton === 'function') {
-          return openCalendarButton(calendarOpen || !!keepCalendarOpen);
+    const calendarButton = React.useMemo(() => {
+      if (showCalendarButton && !keepCalendarOpen) {
+        if (openCalendarButton) {
+          return openCalendarButton((event) => {
+            setCalendarOpen(!calendarOpen);
+            event.stopPropagation();
+          }, calendarOpen || !!keepCalendarOpen);
         }
-        return openCalendarButton;
+        return (
+          <IconButton
+            type="button"
+            minimalStyle
+            icon={IconUtils.getIconDefinition('Icomoon', 'calendar')}
+            onClick={(event) => {
+              setCalendarOpen(!calendarOpen);
+              event.stopPropagation();
+            }}
+          />
+        );
       }
-      return <IconButton type="button" minimalStyle icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} />;
+      return null;
     }, [openCalendarButton, calendarOpen, keepCalendarOpen]);
 
     return (
@@ -358,17 +371,7 @@ export const CalendarInput = React.forwardRef(
               rightOverlay={rightOverlay}
               scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
             >
-              {showCalendarButton && !keepCalendarOpen && (
-                <span
-                  onClick={(event) => {
-                    setCalendarOpen(!calendarOpen);
-                    event.stopPropagation();
-                  }}
-                  className="arm-calendar-input-open-calendar-button-wrapper"
-                >
-                  {showCalendarButtonOutput}
-                </span>
-              )}
+              <>{calendarButton}</>
 
               {disableInputs ? (
                 <div className="arm-calendar-input-preview">
