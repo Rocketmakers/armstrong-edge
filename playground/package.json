@@ -4,7 +4,7 @@
   "description": "Front-end React playground area for testing the API Hooks library",
   "main": "./src/index.tsx",
   "scripts": {
-    "start": "npx webpack serve",
+    "start": "webpack serve",
     "postinstall": "npm run link-react",
     "link-react": "npm link ../module/node_modules/react && npm link ../module/node_modules/react-dom",
     "link-module": "npm link @rocketmakers/armstrong-edge"
