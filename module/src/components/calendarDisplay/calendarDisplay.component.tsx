@@ -45,7 +45,7 @@ export interface ICalendarDisplayProps {
    */
   currentYearBinding: IBindingProps<number>;
   /** Jump to the page which contains a date */
-  jumpTo: (date: Date) => void;
+  jumpTo: (date: Dates.DateLike) => void;
   /**
    * An optional function to call when a day is clicked.
    * @param day The day that has been clicked.
@@ -107,10 +107,10 @@ export interface ICalendarDisplayProps {
   controls?: boolean;
 
   /** An array of dates to appear as buttons below the calendar to allow quick navigation */
-  jumpList?: { name: string; date: Date; buttonProps?: IButtonProps }[];
+  jumpList?: { name: string; date: Dates.DateLike; buttonProps?: IButtonProps }[];
 
   /** */
-  onClickJumpList?: (date: Date) => void;
+  onClickJumpList?: (date: Dates.DateLike) => void;
 }
 
 /**
@@ -176,6 +176,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
             {onBackClicked &&
               (backButton?.(onBackClicked) || (
                 <IconButton
+                  type="button"
                   icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
                   minimalStyle
                   className="arm-calendar-display-button arm-calendar-display-button-prev"
@@ -189,6 +190,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
             {onForwardClicked &&
               (forwardsButton?.(onForwardClicked) || (
                 <IconButton
+                  type="button"
                   icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
                   minimalStyle
                   className="arm-calendar-display-button arm-calendar-display-button-next"
@@ -247,6 +249,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
                   onClickJumpList?.(jump.date);
                   jump.buttonProps?.onClick?.(event);
                 }}
+                type="button"
               >
                 {jump.name}
               </Button>

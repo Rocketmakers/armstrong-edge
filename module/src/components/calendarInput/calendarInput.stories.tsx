@@ -225,16 +225,12 @@ export const CustomJumplist = () => {
   const jumpList = React.useMemo<ICalendarDisplayProps['jumpList']>(() => {
     const date = new Date();
 
-    const yesterday = new Date(date);
-    yesterday.setDate(date.getDate() - 1);
-
-    const tomorrow = new Date(date);
-    tomorrow.setDate(date.getDate() + 1);
+    const threeMonthsAgo = new Date(date);
+    threeMonthsAgo.setMonth(date.getMonth() - 3);
 
     return [
-      { date: yesterday, name: 'Yesterday', buttonProps: { leftIcon: IconUtils.getIconDefinition('Icomoon', 'tree') } },
+      { date: threeMonthsAgo, name: '3 Months Ago', buttonProps: { leftIcon: IconUtils.getIconDefinition('Icomoon', 'tree') } },
       { date, name: 'Today' },
-      { date: tomorrow, name: 'Tomorrow', buttonProps: { leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-down3') } },
     ];
   }, []);
 

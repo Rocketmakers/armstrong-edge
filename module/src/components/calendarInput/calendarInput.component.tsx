@@ -58,6 +58,12 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
   closeCalendarOnDayClick?: boolean;
 
   /**
+   * Should the calendar close when a date is selected from the jumplist?
+   * - Defaults to `true`
+   */
+  closeCalendarOnJumplistClick?: boolean;
+
+  /**
    * The binding for the input.
    * - Can be bound to a string, number or Date object.
    * - WARNING: If no initial value is passed it will assume the type is string.
@@ -194,6 +200,7 @@ export const CalendarInput = React.forwardRef(
       forwardsButton,
       controls,
       jumpList,
+      closeCalendarOnJumplistClick,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -242,17 +249,10 @@ export const CalendarInput = React.forwardRef(
 
     // when day is clicked inside calendar display, set it to the bound value
     const onClickJumpList = React.useCallback(
-      (date: Date) => {
-        setSelectedDate?.(
-          Dates.dateObjectToDateLike(
-            date,
-            !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string',
-            formatString,
-            locale
-          ) as TValue
-        );
+      (date: Dates.DateLike) => {
+        setSelectedDate?.(date as TValue);
 
-        if (closeCalendarOnDayClick) {
+        if (closeCalendarOnJumplistClick) {
           setCalendarOpen(false);
         }
       },

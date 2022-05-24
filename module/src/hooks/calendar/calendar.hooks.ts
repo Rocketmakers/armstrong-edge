@@ -90,8 +90,10 @@ export const use = ({ formatString, locale, highlights, max, min, rangeTo, selec
   );
 
   const jumpTo = React.useCallback(
-    (date: Date) => {
-      if ((!minParsed || date > minParsed) && (!maxParsed || date < maxParsed)) {
+    (dateLike: Dates.DateLike) => {
+      const date = Dates.dateLikeToDate(dateLike);
+
+      if (date && (!minParsed || date > minParsed) && (!maxParsed || date < maxParsed)) {
         formProp('viewingMonth').set(date.getMonth());
         formProp('viewingYear').set(date.getFullYear());
       }
