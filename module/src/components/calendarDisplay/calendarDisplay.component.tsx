@@ -100,6 +100,8 @@ export interface ICalendarDisplayProps {
 
   /** Override the forwards button JSX used to move the calendar forwards a month */
   forwardsButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
+
+  controls?: boolean;
 }
 
 /**
@@ -129,6 +131,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
       className,
       backButton,
       forwardsButton,
+      controls,
     },
     ref
   ) => {
@@ -156,30 +159,32 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
 
     return (
       <div ref={ref} className={ClassNames.concat('arm-calendar-display', className)}>
-        <div className="arm-calendar-display-controls">
-          {onBackClicked &&
-            (backButton?.(onBackClicked) || (
-              <IconButton
-                icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
-                minimalStyle
-                className="arm-calendar-display-button arm-calendar-display-button-prev"
-                onClick={onBackClicked}
-              />
-            ))}
+        {controls && (
+          <div className="arm-calendar-display-controls">
+            {onBackClicked &&
+              (backButton?.(onBackClicked) || (
+                <IconButton
+                  icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
+                  minimalStyle
+                  className="arm-calendar-display-button arm-calendar-display-button-prev"
+                  onClick={onBackClicked}
+                />
+              ))}
 
-          <Select className="arm-calendar-display-select arm-calendar-display-select-month" bind={currentMonthBinding} options={monthOptions} />
-          <Select className="arm-calendar-display-select arm-calendar-display-select-year" bind={currentYearBinding} options={yearOptions} />
+            <Select className="arm-calendar-display-select arm-calendar-display-select-month" bind={currentMonthBinding} options={monthOptions} />
+            <Select className="arm-calendar-display-select arm-calendar-display-select-year" bind={currentYearBinding} options={yearOptions} />
 
-          {onForwardClicked &&
-            (forwardsButton?.(onForwardClicked) || (
-              <IconButton
-                icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
-                minimalStyle
-                className="arm-calendar-display-button arm-calendar-display-button-next"
-                onClick={onForwardClicked}
-              />
-            ))}
-        </div>
+            {onForwardClicked &&
+              (forwardsButton?.(onForwardClicked) || (
+                <IconButton
+                  icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
+                  minimalStyle
+                  className="arm-calendar-display-button arm-calendar-display-button-next"
+                  onClick={onForwardClicked}
+                />
+              ))}
+          </div>
+        )}
 
         <div className="arm-calendar-date-grid">
           <div className="arm-calendar-date-grid-headings">
@@ -229,4 +234,5 @@ CalendarDisplay.defaultProps = {
   calendarYearSelectDisplayFormat: 'yyyy',
   calendarDayDisplayFormat: 'd',
   highlightToday: true,
+  controls: true,
 };

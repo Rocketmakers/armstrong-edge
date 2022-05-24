@@ -36,6 +36,7 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
       | 'highlightToday'
       | 'backButton'
       | 'forwardsButton'
+      | 'controls'
     >,
     IStatusWrapperProps,
     IIconWrapperProps<IconSet, IconSet>,
@@ -190,6 +191,7 @@ export const CalendarInput = React.forwardRef(
       openCalendarButton,
       backButton,
       forwardsButton,
+      controls,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -303,6 +305,7 @@ export const CalendarInput = React.forwardRef(
       highlightToday,
       backButton,
       forwardsButton,
+      controls,
     };
 
     const onClickWrapperEvent = React.useCallback(() => {

@@ -213,3 +213,20 @@ export const CustomButtons = () => {
     </>
   );
 };
+
+export const NoControls = () => {
+  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use();
+
+  return (
+    <CalendarDisplay
+      days={days}
+      months={months}
+      years={years}
+      currentMonthBinding={monthYearFormProp('viewingMonth').bind()}
+      currentYearBinding={monthYearFormProp('viewingYear').bind()}
+      onBackClicked={() => stepMonth('back')}
+      onForwardClicked={() => stepMonth('forward')}
+      controls={false}
+    />
+  );
+};

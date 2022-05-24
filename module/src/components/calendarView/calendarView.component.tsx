@@ -5,7 +5,7 @@ import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 
-export interface ICalendarViewProps extends Calendar.IConfig, Pick<ICalendarDisplayProps, 'forwardsButton' | 'backButton'> {
+export interface ICalendarViewProps extends Calendar.IConfig, Pick<ICalendarDisplayProps, 'forwardsButton' | 'backButton' | 'controls'> {
   /**
    * An optional "day of the week" index to be the first day of the week.
    * - By default, weeks will start on Sunday (index 0)
@@ -50,6 +50,7 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
       className,
       forwardsButton,
       backButton,
+      controls,
     },
     ref
   ) => {
@@ -96,6 +97,7 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
         highlightToday={highlightToday}
         forwardsButton={forwardsButton}
         backButton={backButton}
+        controls={controls}
       />
     );
   }
