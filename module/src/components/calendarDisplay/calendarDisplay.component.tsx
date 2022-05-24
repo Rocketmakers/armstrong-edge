@@ -6,7 +6,7 @@ import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
-import { Button } from '../button';
+import { Button, IButtonProps } from '../button';
 import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarDisplay.utils';
@@ -44,6 +44,8 @@ export interface ICalendarDisplayProps {
    * Allows an external form to bind to the year selector.
    */
   currentYearBinding: IBindingProps<number>;
+  /** Jump to the page which contains a date */
+  jumpTo: (date: Date) => void;
   /**
    * An optional function to call when a day is clicked.
    * @param day The day that has been clicked.
@@ -103,6 +105,12 @@ export interface ICalendarDisplayProps {
 
   /** Should show pagination and picker controls (next,prev,select month, select year) */
   controls?: boolean;
+
+  /** An array of dates to appear as buttons below the calendar to allow quick navigation */
+  jumpList?: { name: string; date: Date; buttonProps?: IButtonProps }[];
+
+  /** */
+  onClickJumpList?: (date: Date) => void;
 }
 
 /**
@@ -133,6 +141,9 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
       backButton,
       forwardsButton,
       controls,
+      jumpList,
+      jumpTo,
+      onClickJumpList,
     },
     ref
   ) => {
@@ -223,6 +234,25 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
             ))}
           </div>
         </div>
+
+        {!!jumpList?.length && (
+          <div className="arm-calendar-jump-list">
+            {jumpList.map((jump) => (
+              <Button
+                minimalStyle
+                {...jump.buttonProps}
+                key={jump.name}
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  jumpTo(jump.date);
+                  onClickJumpList?.(jump.date);
+                  jump.buttonProps?.onClick?.(event);
+                }}
+              >
+                {jump.name}
+              </Button>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -236,4 +266,5 @@ CalendarDisplay.defaultProps = {
   calendarDayDisplayFormat: 'd',
   highlightToday: true,
   controls: true,
+  jumpList: [{ date: new Date(), name: 'Today' }],
 };

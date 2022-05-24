@@ -54,7 +54,7 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
     },
     ref
   ) => {
-    const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
+    const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use({
       formatString,
       min,
       highlights,
@@ -80,6 +80,13 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
       [onDateClicked, formatString, locale]
     );
 
+    const onClickJumpList = React.useCallback(
+      (date: Date) => {
+        onDateClicked?.(date, Dates.dateToString(date, formatString, locale));
+      },
+      [onDateClicked, formatString, locale]
+    );
+
     return (
       <CalendarDisplay
         className={ClassNames.concat('arm-calendar-view', className)}
@@ -98,6 +105,8 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
         forwardsButton={forwardsButton}
         backButton={backButton}
         controls={controls}
+        jumpTo={jumpTo}
+        onClickJumpList={onClickJumpList}
       />
     );
   }

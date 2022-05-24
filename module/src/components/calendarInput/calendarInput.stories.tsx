@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Form, IconUtils } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Button } from '../button';
+import { ICalendarDisplayProps } from '../calendarDisplay';
 import { CalendarInput } from './calendarInput.component';
 
 /** metadata */
@@ -211,4 +212,31 @@ export const RangeExample = () => {
 export const NoControls = () => {
   const { formProp } = Form.use({ date: undefined });
   return <CalendarInput bind={formProp('date').bind()} controls={false} />;
+};
+
+export const NoJumplist = () => {
+  const { formProp } = Form.use({ date: undefined });
+  return <CalendarInput bind={formProp('date').bind()} jumpList={[]} />;
+};
+
+export const CustomJumplist = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  const jumpList = React.useMemo<ICalendarDisplayProps['jumpList']>(() => {
+    const date = new Date();
+
+    const yesterday = new Date(date);
+    yesterday.setDate(date.getDate() - 1);
+
+    const tomorrow = new Date(date);
+    tomorrow.setDate(date.getDate() + 1);
+
+    return [
+      { date: yesterday, name: 'Yesterday', buttonProps: { leftIcon: IconUtils.getIconDefinition('Icomoon', 'tree') } },
+      { date, name: 'Today' },
+      { date: tomorrow, name: 'Tomorrow', buttonProps: { leftIcon: IconUtils.getIconDefinition('Icomoon', 'circle-down3') } },
+    ];
+  }, []);
+
+  return <CalendarInput bind={formProp('date').bind()} jumpList={jumpList} />;
 };

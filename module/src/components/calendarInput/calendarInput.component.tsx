@@ -37,6 +37,7 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
       | 'backButton'
       | 'forwardsButton'
       | 'controls'
+      | 'jumpList'
     >,
     IStatusWrapperProps,
     IIconWrapperProps<IconSet, IconSet>,
@@ -192,6 +193,7 @@ export const CalendarInput = React.forwardRef(
       backButton,
       forwardsButton,
       controls,
+      jumpList,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -203,7 +205,7 @@ export const CalendarInput = React.forwardRef(
       value,
     });
 
-    const { monthYearFormProp, stepMonth, days, months, years, selectedDateParsed } = Calendar.use({
+    const { monthYearFormProp, stepMonth, days, months, years, selectedDateParsed, jumpTo } = Calendar.use({
       formatString,
       min,
       highlights,
@@ -229,6 +231,25 @@ export const CalendarInput = React.forwardRef(
       (day: Calendar.IDay) => {
         setSelectedDate?.(
           calendarDayToDateLike(day, !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string', formatString, locale) as TValue
+        );
+
+        if (closeCalendarOnDayClick) {
+          setCalendarOpen(false);
+        }
+      },
+      [selectedDate, setSelectedDate, formatString, locale, closeCalendarOnDayClick, setCalendarOpen]
+    );
+
+    // when day is clicked inside calendar display, set it to the bound value
+    const onClickJumpList = React.useCallback(
+      (date: Date) => {
+        setSelectedDate?.(
+          Dates.dateObjectToDateLike(
+            date,
+            !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string',
+            formatString,
+            locale
+          ) as TValue
         );
 
         if (closeCalendarOnDayClick) {
@@ -293,6 +314,7 @@ export const CalendarInput = React.forwardRef(
       currentYearBinding: monthYearFormProp('viewingYear').bind(),
       currentMonthBinding: monthYearFormProp('viewingMonth').bind(),
       onDayClicked,
+      onClickJumpList,
       onBackClicked: () => stepMonth('back'),
       onForwardClicked: () => stepMonth('forward'),
       days,
@@ -306,6 +328,8 @@ export const CalendarInput = React.forwardRef(
       backButton,
       forwardsButton,
       controls,
+      jumpTo,
+      jumpList,
     };
 
     const onClickWrapperEvent = React.useCallback(() => {
