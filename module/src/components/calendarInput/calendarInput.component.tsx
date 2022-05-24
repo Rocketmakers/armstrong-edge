@@ -10,7 +10,7 @@ import { Dates } from '../../utils/dates';
 import { JavaScript } from '../../utils/javascript';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
-import { Dropdown } from '../dropdown';
+import { Dropdown, IDropdownProps } from '../dropdown';
 import { IconSet, IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { IIconWrapperProps } from '../iconWrapper';
@@ -93,6 +93,12 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
   /** The position to show the calendar - can show below the input in a dropdown, in a modal, or above or below the input */
   calendarPosition?: CalendarInputCalendarPosition;
 
+  /** with calendarPosition: 'dropdown', how should the dropdown align horizontally to the child element - if stretch is true, used if wider than the child element */
+  dropdownAlignment?: IDropdownProps['alignment'];
+
+  /** with calendarPosition: 'dropdown', how should the dropdown be positioned vertically */
+  dropdownPosition?: IDropdownProps['position'];
+
   /** Should the calendar stay open? - useful in conjunction with calendarPosition, not compatible with calendarPosition="modal" */
   keepCalendarOpen?: boolean;
 
@@ -174,6 +180,8 @@ export const CalendarInput = React.forwardRef(
       highlightToday,
       defaultIfOmitted,
       scrollValidationErrorsIntoView,
+      dropdownAlignment,
+      dropdownPosition,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -317,6 +325,8 @@ export const CalendarInput = React.forwardRef(
             closeWhenClickInside={false}
             openWhenFocusInside={false}
             shouldScrollContent={false}
+            alignment={dropdownAlignment}
+            position={dropdownPosition}
           >
             <InputWrapper
               error={error}

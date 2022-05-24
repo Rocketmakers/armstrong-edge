@@ -114,6 +114,18 @@ export const Modal = () => {
   return <CalendarInput bind={formProp('date').bind()} calendarPosition="modal" />;
 };
 
+export const ModalCalendarOnly = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return <CalendarInput bind={formProp('date').bind()} calendarPosition="modal" displayMode="calendar" />;
+};
+
+export const CustomiseDropdown = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return <CalendarInput bind={formProp('date').bind()} dropdownAlignment="right" dropdownPosition="above" />;
+};
+
 export const RangeExample = () => {
   const { formProp, formState } = Form.use({ startDate: undefined, endDate: undefined });
 
