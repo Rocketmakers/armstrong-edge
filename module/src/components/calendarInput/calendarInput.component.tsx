@@ -34,6 +34,8 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
       | 'calendarYearSelectDisplayFormat'
       | 'calendarDayOfTheWeekHeadingDisplayFormat'
       | 'highlightToday'
+      | 'backButton'
+      | 'forwardsButton'
     >,
     IStatusWrapperProps,
     IIconWrapperProps<IconSet, IconSet>,
@@ -186,6 +188,8 @@ export const CalendarInput = React.forwardRef(
       dropdownAlignment,
       dropdownPosition,
       openCalendarButton,
+      backButton,
+      forwardsButton,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -297,6 +301,8 @@ export const CalendarInput = React.forwardRef(
       calendarMonthSelectDisplayFormat,
       calendarYearSelectDisplayFormat,
       highlightToday,
+      backButton,
+      forwardsButton,
     };
 
     const onClickWrapperEvent = React.useCallback(() => {

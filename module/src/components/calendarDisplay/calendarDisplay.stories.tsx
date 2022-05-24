@@ -5,7 +5,6 @@ import { Calendar, IconUtils } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Button } from '../button';
 import { ErrorMessage } from '../errorMessage';
-import { IconButton } from '../iconButton';
 import { CalendarDisplay } from './calendarDisplay.component';
 
 /** metadata */

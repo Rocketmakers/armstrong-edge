@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Calendar } from '../..';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
-import { CalendarDisplay } from '../calendarDisplay/calendarDisplay.component';
+import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 
-export interface ICalendarViewProps extends Calendar.IConfig {
+export interface ICalendarViewProps extends Calendar.IConfig, Pick<ICalendarDisplayProps, 'forwardsButton' | 'backButton'> {
   /**
    * An optional "day of the week" index to be the first day of the week.
    * - By default, weeks will start on Sunday (index 0)
@@ -35,7 +35,24 @@ export interface ICalendarViewProps extends Calendar.IConfig {
  * - NOTE: Not a date input for a traditional form, please use `CalendarInput`
  */
 export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>(
-  ({ selectedDate, min, max, weekdayStartIndex, formatString, onDateClicked, locale, rangeTo, highlights, highlightToday, className }, ref) => {
+  (
+    {
+      selectedDate,
+      min,
+      max,
+      weekdayStartIndex,
+      formatString,
+      onDateClicked,
+      locale,
+      rangeTo,
+      highlights,
+      highlightToday,
+      className,
+      forwardsButton,
+      backButton,
+    },
+    ref
+  ) => {
     const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
       formatString,
       min,
@@ -77,6 +94,8 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
         onForwardClicked={onForwardClicked}
         onDayClicked={onDayClicked}
         highlightToday={highlightToday}
+        forwardsButton={forwardsButton}
+        backButton={backButton}
       />
     );
   }

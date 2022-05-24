@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Form } from '../..';
+import { Form, IconUtils } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
 import { Button } from '../button';
 import { CalendarInput } from './calendarInput.component';
@@ -151,6 +151,26 @@ export const CustomOpenButtonWithState = () => {
       openCalendarButton={(onClick, isOpen) => (
         <Button onClick={onClick} minimalStyle>
           {isOpen ? 'Close' : 'Open'}
+        </Button>
+      )}
+    />
+  );
+};
+
+export const CustomPaginationButtons = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return (
+    <CalendarInput
+      bind={formProp('date').bind()}
+      backButton={(onClick) => (
+        <Button leftIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-left')} minimalStyle onClick={onClick}>
+          back
+        </Button>
+      )}
+      forwardsButton={(onClick) => (
+        <Button rightIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-right')} minimalStyle onClick={onClick}>
+          next
         </Button>
       )}
     />
