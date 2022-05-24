@@ -207,3 +207,8 @@ export const RangeExample = () => {
     </div>
   );
 };
+
+export const NoControls = () => {
+  const { formProp } = Form.use({ date: undefined });
+  return <CalendarInput bind={formProp('date').bind()} controls={false} />;
+};

@@ -101,6 +101,7 @@ export interface ICalendarDisplayProps {
   /** Override the forwards button JSX used to move the calendar forwards a month */
   forwardsButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
 
+  /** Should show pagination and picker controls (next,prev,select month, select year) */
   controls?: boolean;
 }
 
