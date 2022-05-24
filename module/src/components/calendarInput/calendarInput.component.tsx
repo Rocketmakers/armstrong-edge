@@ -115,6 +115,9 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
 
   /** The character to show between the inputs, defaults to ":" */
   betweenInputs?: React.ReactNode;
+
+  /** Override the button used to open the calendar (useful if working without Icomoon) */
+  openCalendarButton?: JSX.Element | string | ((isOpen?: boolean) => JSX.Element | string);
 }
 
 /** Type representing the internal form data within the calendar input */
@@ -182,6 +185,7 @@ export const CalendarInput = React.forwardRef(
       scrollValidationErrorsIntoView,
       dropdownAlignment,
       dropdownPosition,
+      openCalendarButton,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -307,6 +311,16 @@ export const CalendarInput = React.forwardRef(
       }
     }, [displayMode, selectedDate, displayFormatString]);
 
+    const showCalendarButtonOutput = React.useMemo(() => {
+      if (openCalendarButton) {
+        if (typeof openCalendarButton === 'function') {
+          return openCalendarButton(calendarOpen || !!keepCalendarOpen);
+        }
+        return openCalendarButton;
+      }
+      return <IconButton type="button" minimalStyle icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} />;
+    }, [openCalendarButton, calendarOpen, keepCalendarOpen]);
+
     return (
       <>
         <div
@@ -345,15 +359,15 @@ export const CalendarInput = React.forwardRef(
               scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
             >
               {showCalendarButton && !keepCalendarOpen && (
-                <IconButton
-                  type="button"
-                  minimalStyle
-                  icon={IconUtils.getIconDefinition('Icomoon', 'calendar')}
+                <span
                   onClick={(event) => {
                     setCalendarOpen(!calendarOpen);
                     event.stopPropagation();
                   }}
-                />
+                  className="arm-calendar-input-open-calendar-button-wrapper"
+                >
+                  {showCalendarButtonOutput}
+                </span>
               )}
 
               {disableInputs ? (

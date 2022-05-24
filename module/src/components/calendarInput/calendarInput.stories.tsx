@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Form } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
+import { Button } from '../button';
 import { CalendarInput } from './calendarInput.component';
 
 /** metadata */
@@ -124,6 +125,18 @@ export const CustomiseDropdown = () => {
   const { formProp } = Form.use({ date: undefined });
 
   return <CalendarInput bind={formProp('date').bind()} dropdownAlignment="right" dropdownPosition="above" />;
+};
+
+export const CustomOpenButton = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return <CalendarInput bind={formProp('date').bind()} openCalendarButton={<Button minimalStyle>Open</Button>} />;
+};
+
+export const CustomOpenButtonWithState = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return <CalendarInput bind={formProp('date').bind()} openCalendarButton={(isOpen) => <Button minimalStyle>{isOpen ? 'Close' : 'Open'}</Button>} />;
 };
 
 export const RangeExample = () => {
