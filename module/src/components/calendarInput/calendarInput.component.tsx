@@ -288,8 +288,8 @@ export const CalendarInput = React.forwardRef(
     };
 
     const onClickWrapperEvent = React.useCallback(() => {
-      if (displayMode === 'calendar') {
-        setCalendarOpen(!calendarOpen);
+      if (displayMode === 'calendar' && !calendarOpen) {
+        setCalendarOpen(true);
       }
     }, [calendarOpen, displayMode]);
 
