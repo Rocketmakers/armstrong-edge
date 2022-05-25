@@ -81,8 +81,11 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
     );
 
     const onClickJumpList = React.useCallback(
-      (date: Date) => {
-        onDateClicked?.(date, Dates.dateToString(date, formatString, locale));
+      (dateLike: Dates.DateLike) => {
+        const date = Dates.dateLikeToDate(dateLike, formatString, locale);
+        if (date) {
+          onDateClicked?.(date, Dates.dateToString(date, formatString, locale));
+        }
       },
       [onDateClicked, formatString, locale]
     );
