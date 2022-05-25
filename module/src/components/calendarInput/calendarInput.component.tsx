@@ -10,7 +10,7 @@ import { Dates } from '../../utils/dates';
 import { JavaScript } from '../../utils/javascript';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
-import { Dropdown } from '../dropdown';
+import { Dropdown, IDropdownProps } from '../dropdown';
 import { IconSet, IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { IIconWrapperProps } from '../iconWrapper';
@@ -34,6 +34,10 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
       | 'calendarYearSelectDisplayFormat'
       | 'calendarDayOfTheWeekHeadingDisplayFormat'
       | 'highlightToday'
+      | 'backButton'
+      | 'forwardsButton'
+      | 'controls'
+      | 'jumpList'
     >,
     IStatusWrapperProps,
     IIconWrapperProps<IconSet, IconSet>,
@@ -52,6 +56,12 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
    * - Defaults to `true`
    */
   closeCalendarOnDayClick?: boolean;
+
+  /**
+   * Should the calendar close when a date is selected from the jumplist?
+   * - Defaults to `true`
+   */
+  closeCalendarOnJumplistClick?: boolean;
 
   /**
    * The binding for the input.
@@ -93,6 +103,12 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
   /** The position to show the calendar - can show below the input in a dropdown, in a modal, or above or below the input */
   calendarPosition?: CalendarInputCalendarPosition;
 
+  /** with calendarPosition: 'dropdown', how should the dropdown align horizontally to the child element - if stretch is true, used if wider than the child element */
+  dropdownAlignment?: IDropdownProps['alignment'];
+
+  /** with calendarPosition: 'dropdown', how should the dropdown be positioned vertically */
+  dropdownPosition?: IDropdownProps['position'];
+
   /** Should the calendar stay open? - useful in conjunction with calendarPosition, not compatible with calendarPosition="modal" */
   keepCalendarOpen?: boolean;
 
@@ -109,6 +125,9 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
 
   /** The character to show between the inputs, defaults to ":" */
   betweenInputs?: React.ReactNode;
+
+  /** Override the button used to open the calendar (useful if working without Icomoon) */
+  openCalendarButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void, isOpen?: boolean) => JSX.Element | string;
 }
 
 /** Type representing the internal form data within the calendar input */
@@ -174,6 +193,14 @@ export const CalendarInput = React.forwardRef(
       highlightToday,
       defaultIfOmitted,
       scrollValidationErrorsIntoView,
+      dropdownAlignment,
+      dropdownPosition,
+      openCalendarButton,
+      backButton,
+      forwardsButton,
+      controls,
+      jumpList,
+      closeCalendarOnJumplistClick,
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
@@ -185,7 +212,7 @@ export const CalendarInput = React.forwardRef(
       value,
     });
 
-    const { monthYearFormProp, stepMonth, days, months, years, selectedDateParsed } = Calendar.use({
+    const { monthYearFormProp, stepMonth, days, months, years, selectedDateParsed, jumpTo } = Calendar.use({
       formatString,
       min,
       highlights,
@@ -214,6 +241,18 @@ export const CalendarInput = React.forwardRef(
         );
 
         if (closeCalendarOnDayClick) {
+          setCalendarOpen(false);
+        }
+      },
+      [selectedDate, setSelectedDate, formatString, locale, closeCalendarOnDayClick, setCalendarOpen]
+    );
+
+    // when day is clicked inside calendar display, set it to the bound value
+    const onClickJumpList = React.useCallback(
+      (date: Dates.DateLike) => {
+        setSelectedDate?.(date as TValue);
+
+        if (closeCalendarOnJumplistClick) {
           setCalendarOpen(false);
         }
       },
@@ -275,6 +314,7 @@ export const CalendarInput = React.forwardRef(
       currentYearBinding: monthYearFormProp('viewingYear').bind(),
       currentMonthBinding: monthYearFormProp('viewingMonth').bind(),
       onDayClicked,
+      onClickJumpList,
       onBackClicked: () => stepMonth('back'),
       onForwardClicked: () => stepMonth('forward'),
       days,
@@ -285,11 +325,16 @@ export const CalendarInput = React.forwardRef(
       calendarMonthSelectDisplayFormat,
       calendarYearSelectDisplayFormat,
       highlightToday,
+      backButton,
+      forwardsButton,
+      controls,
+      jumpTo,
+      jumpList,
     };
 
     const onClickWrapperEvent = React.useCallback(() => {
-      if (displayMode === 'calendar') {
-        setCalendarOpen(!calendarOpen);
+      if (displayMode === 'calendar' && !calendarOpen) {
+        setCalendarOpen(true);
       }
     }, [calendarOpen, displayMode]);
 
@@ -298,6 +343,14 @@ export const CalendarInput = React.forwardRef(
         return Dates.dateToString(Dates.dateLikeToDate(selectedDate)!, displayFormatString);
       }
     }, [displayMode, selectedDate, displayFormatString]);
+
+    const onClickCalendarButton = React.useCallback(
+      (event: React.MouseEvent<HTMLElement>) => {
+        setCalendarOpen(!calendarOpen);
+        event.stopPropagation();
+      },
+      [calendarOpen]
+    );
 
     return (
       <>
@@ -317,6 +370,8 @@ export const CalendarInput = React.forwardRef(
             closeWhenClickInside={false}
             openWhenFocusInside={false}
             shouldScrollContent={false}
+            alignment={dropdownAlignment}
+            position={dropdownPosition}
           >
             <InputWrapper
               error={error}
@@ -334,17 +389,11 @@ export const CalendarInput = React.forwardRef(
               rightOverlay={rightOverlay}
               scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
             >
-              {showCalendarButton && !keepCalendarOpen && (
-                <IconButton
-                  type="button"
-                  minimalStyle
-                  icon={IconUtils.getIconDefinition('Icomoon', 'calendar')}
-                  onClick={(event) => {
-                    setCalendarOpen(!calendarOpen);
-                    event.stopPropagation();
-                  }}
-                />
-              )}
+              {showCalendarButton &&
+                !keepCalendarOpen &&
+                (openCalendarButton?.(onClickCalendarButton, calendarOpen || !!keepCalendarOpen) || (
+                  <IconButton type="button" minimalStyle icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={onClickCalendarButton} />
+                ))}
 
               {disableInputs ? (
                 <div className="arm-calendar-input-preview">

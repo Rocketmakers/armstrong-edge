@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Calendar } from '../..';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
-import { CalendarDisplay } from '../calendarDisplay/calendarDisplay.component';
+import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 
-export interface ICalendarViewProps extends Calendar.IConfig {
+export interface ICalendarViewProps extends Calendar.IConfig, Pick<ICalendarDisplayProps, 'forwardsButton' | 'backButton' | 'controls'> {
   /**
    * An optional "day of the week" index to be the first day of the week.
    * - By default, weeks will start on Sunday (index 0)
@@ -35,8 +35,26 @@ export interface ICalendarViewProps extends Calendar.IConfig {
  * - NOTE: Not a date input for a traditional form, please use `CalendarInput`
  */
 export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>(
-  ({ selectedDate, min, max, weekdayStartIndex, formatString, onDateClicked, locale, rangeTo, highlights, highlightToday, className }, ref) => {
-    const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
+  (
+    {
+      selectedDate,
+      min,
+      max,
+      weekdayStartIndex,
+      formatString,
+      onDateClicked,
+      locale,
+      rangeTo,
+      highlights,
+      highlightToday,
+      className,
+      forwardsButton,
+      backButton,
+      controls,
+    },
+    ref
+  ) => {
+    const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use({
       formatString,
       min,
       highlights,
@@ -62,6 +80,16 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
       [onDateClicked, formatString, locale]
     );
 
+    const onClickJumpList = React.useCallback(
+      (dateLike: Dates.DateLike) => {
+        const date = Dates.dateLikeToDate(dateLike, formatString, locale);
+        if (date) {
+          onDateClicked?.(date, Dates.dateToString(date, formatString, locale));
+        }
+      },
+      [onDateClicked, formatString, locale]
+    );
+
     return (
       <CalendarDisplay
         className={ClassNames.concat('arm-calendar-view', className)}
@@ -77,6 +105,11 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
         onForwardClicked={onForwardClicked}
         onDayClicked={onDayClicked}
         highlightToday={highlightToday}
+        forwardsButton={forwardsButton}
+        backButton={backButton}
+        controls={controls}
+        jumpTo={jumpTo}
+        onClickJumpList={onClickJumpList}
       />
     );
   }
