@@ -1,7 +1,9 @@
 import * as React from 'react';
 
-import { Form } from '../..';
+import { Form, IconUtils } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
+import { Button } from '../button';
+import { ICalendarDisplayProps } from '../calendarDisplay';
 import { CalendarInput } from './calendarInput.component';
 
 /** metadata */
@@ -114,6 +116,68 @@ export const Modal = () => {
   return <CalendarInput bind={formProp('date').bind()} calendarPosition="modal" />;
 };
 
+export const ModalCalendarOnly = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return <CalendarInput bind={formProp('date').bind()} calendarPosition="modal" displayMode="calendar" />;
+};
+
+export const CustomiseDropdown = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return <CalendarInput bind={formProp('date').bind()} dropdownAlignment="right" dropdownPosition="above" />;
+};
+
+export const CustomOpenButton = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return (
+    <CalendarInput
+      bind={formProp('date').bind()}
+      openCalendarButton={(onClick) => (
+        <Button minimalStyle onClick={onClick}>
+          Open
+        </Button>
+      )}
+    />
+  );
+};
+
+export const CustomOpenButtonWithState = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return (
+    <CalendarInput
+      bind={formProp('date').bind()}
+      openCalendarButton={(onClick, isOpen) => (
+        <Button onClick={onClick} minimalStyle>
+          {isOpen ? 'Close' : 'Open'}
+        </Button>
+      )}
+    />
+  );
+};
+
+export const CustomPaginationButtons = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  return (
+    <CalendarInput
+      bind={formProp('date').bind()}
+      backButton={(onClick) => (
+        <Button leftIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-left')} minimalStyle onClick={onClick}>
+          back
+        </Button>
+      )}
+      forwardsButton={(onClick) => (
+        <Button rightIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-right')} minimalStyle onClick={onClick}>
+          next
+        </Button>
+      )}
+    />
+  );
+};
+
 export const RangeExample = () => {
   const { formProp, formState } = Form.use({ startDate: undefined, endDate: undefined });
 
@@ -143,4 +207,32 @@ export const RangeExample = () => {
       </label>
     </div>
   );
+};
+
+export const NoControls = () => {
+  const { formProp } = Form.use({ date: undefined });
+  return <CalendarInput bind={formProp('date').bind()} controls={false} />;
+};
+
+export const NoJumplist = () => {
+  const { formProp } = Form.use({ date: undefined });
+  return <CalendarInput bind={formProp('date').bind()} jumpList={[]} />;
+};
+
+export const CustomJumplist = () => {
+  const { formProp } = Form.use({ date: undefined });
+
+  const jumpList = React.useMemo<ICalendarDisplayProps['jumpList']>(() => {
+    const date = new Date();
+
+    const threeMonthsAgo = new Date(date);
+    threeMonthsAgo.setMonth(date.getMonth() - 3);
+
+    return [
+      { date: threeMonthsAgo, name: '3 Months Ago', buttonProps: { leftIcon: IconUtils.getIconDefinition('Icomoon', 'tree') } },
+      { date, name: 'Today' },
+    ];
+  }, []);
+
+  return <CalendarInput bind={formProp('date').bind()} jumpList={jumpList} />;
 };

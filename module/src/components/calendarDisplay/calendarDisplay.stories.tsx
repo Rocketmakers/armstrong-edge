@@ -1,8 +1,9 @@
 import { Story } from '@storybook/react';
 import * as React from 'react';
 
-import { Calendar } from '../..';
+import { Calendar, IconUtils } from '../..';
 import { StoryUtils } from '../../stories/storyUtils';
+import { Button } from '../button';
 import { ErrorMessage } from '../errorMessage';
 import { CalendarDisplay } from './calendarDisplay.component';
 
@@ -17,7 +18,7 @@ export default StoryUtils.createMeta(CalendarDisplay, 'Display', 'Calendar Displ
 /** stories */
 
 export const Default = () => {
-  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use();
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use();
 
   return (
     <>
@@ -29,13 +30,14 @@ export const Default = () => {
         currentYearBinding={monthYearFormProp('viewingYear').bind()}
         onBackClicked={() => stepMonth('back')}
         onForwardClicked={() => stepMonth('forward')}
+        jumpTo={jumpTo}
       />
       <ErrorMessage message="You probably don't want to use this component- use the CalendarView or CalendarInput instead" />
     </>
   );
 };
 export const CustomStartDay = () => {
-  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use();
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use();
 
   return (
     <CalendarDisplay
@@ -47,6 +49,7 @@ export const CustomStartDay = () => {
       onBackClicked={() => stepMonth('back')}
       onForwardClicked={() => stepMonth('forward')}
       weekdayStartIndex={1}
+      jumpTo={jumpTo}
     />
   );
 };
@@ -57,7 +60,7 @@ export const SelectedDate = () => {
     return date;
   }, []);
   const [date, setDate] = React.useState(initialDate);
-  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({ selectedDate: date });
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use({ selectedDate: date });
 
   return (
     <CalendarDisplay
@@ -69,6 +72,7 @@ export const SelectedDate = () => {
       onBackClicked={() => stepMonth('back')}
       onForwardClicked={() => stepMonth('forward')}
       onDayClicked={(d) => setDate(d.date)}
+      jumpTo={jumpTo}
     />
   );
 };
@@ -84,7 +88,7 @@ export const SelectedDateRange = () => {
     return date;
   }, []);
   const [date, setDate] = React.useState(initialDate);
-  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use({
     selectedDate: date,
     rangeTo,
   });
@@ -99,6 +103,7 @@ export const SelectedDateRange = () => {
       onBackClicked={() => stepMonth('back')}
       onForwardClicked={() => stepMonth('forward')}
       onDayClicked={(d) => setDate(d.date)}
+      jumpTo={jumpTo}
     />
   );
 };
@@ -113,7 +118,9 @@ export const Highlights = () => {
     date.setDate(date.getDate() - 6);
     return date;
   }, []);
-  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({ highlights: [{ date: highlightedDate }, { date: highlightedDate2 }] });
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use({
+    highlights: [{ date: highlightedDate }, { date: highlightedDate2 }],
+  });
 
   return (
     <CalendarDisplay
@@ -124,12 +131,13 @@ export const Highlights = () => {
       currentYearBinding={monthYearFormProp('viewingYear').bind()}
       onBackClicked={() => stepMonth('back')}
       onForwardClicked={() => stepMonth('forward')}
+      jumpTo={jumpTo}
     />
   );
 };
 
 export const PastOnly = () => {
-  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({ max: new Date() });
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use({ max: new Date() });
 
   return (
     <>
@@ -141,6 +149,7 @@ export const PastOnly = () => {
         currentYearBinding={monthYearFormProp('viewingYear').bind()}
         onBackClicked={() => stepMonth('back')}
         onForwardClicked={() => stepMonth('forward')}
+        jumpTo={jumpTo}
       />
     </>
   );
@@ -158,7 +167,7 @@ export const FixedDatesNoHighlight: Story = () => {
   }, []);
   const [date, setDate] = React.useState(initialDate);
 
-  const { days, months, years, monthYearFormProp, stepMonth } = Calendar.use({
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use({
     selectedDate: date,
     rangeTo,
     highlights: [
@@ -180,7 +189,55 @@ export const FixedDatesNoHighlight: Story = () => {
         onForwardClicked={() => stepMonth('forward')}
         onDayClicked={(d) => setDate(d.date)}
         highlightToday={false}
+        jumpTo={jumpTo}
       />
     </>
+  );
+};
+
+export const CustomButtons = () => {
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use();
+
+  return (
+    <>
+      <CalendarDisplay
+        days={days}
+        months={months}
+        years={years}
+        currentMonthBinding={monthYearFormProp('viewingMonth').bind()}
+        currentYearBinding={monthYearFormProp('viewingYear').bind()}
+        onBackClicked={() => stepMonth('back')}
+        onForwardClicked={() => stepMonth('forward')}
+        backButton={(onClick) => (
+          <Button leftIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-left')} minimalStyle onClick={onClick}>
+            back
+          </Button>
+        )}
+        forwardsButton={(onClick) => (
+          <Button rightIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-right')} minimalStyle onClick={onClick}>
+            next
+          </Button>
+        )}
+        jumpTo={jumpTo}
+      />
+    </>
+  );
+};
+
+export const NoControls = () => {
+  const { days, months, years, monthYearFormProp, stepMonth, jumpTo } = Calendar.use();
+
+  return (
+    <CalendarDisplay
+      days={days}
+      months={months}
+      years={years}
+      currentMonthBinding={monthYearFormProp('viewingMonth').bind()}
+      currentYearBinding={monthYearFormProp('viewingYear').bind()}
+      onBackClicked={() => stepMonth('back')}
+      onForwardClicked={() => stepMonth('forward')}
+      controls={false}
+      jumpTo={jumpTo}
+    />
   );
 };
