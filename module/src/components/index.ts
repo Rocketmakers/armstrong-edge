@@ -47,6 +47,7 @@ export * from './rangeInput';
 export * from './rating';
 export * from './scrollToEndListener';
 export * from './select';
+export * from './sideMenu';
 export * from './spinner';
 export * from './status';
 export * from './statusWrapper';
