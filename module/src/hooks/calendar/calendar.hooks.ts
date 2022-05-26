@@ -89,6 +89,18 @@ export const use = ({ formatString, locale, highlights, max, min, rangeTo, selec
     [formState, formProp, selectableMonths, selectableYears]
   );
 
+  const jumpTo = React.useCallback(
+    (dateLike: Dates.DateLike) => {
+      const date = Dates.dateLikeToDate(dateLike);
+
+      if (date && (!minParsed || date > minParsed) && (!maxParsed || date < maxParsed)) {
+        formProp('viewingMonth').set(date.getMonth());
+        formProp('viewingYear').set(date.getFullYear());
+      }
+    },
+    [minParsed, maxParsed, formProp]
+  );
+
   return {
     days: selectableDays,
     months: selectableMonths,
@@ -97,5 +109,6 @@ export const use = ({ formatString, locale, highlights, max, min, rangeTo, selec
     monthYearFormState: formState,
     monthYearFormProp: formProp,
     stepMonth,
+    jumpTo,
   };
 };

@@ -19,7 +19,11 @@ export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
   ({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => (
     <div ref={ref} className={ClassNames.concat('arm-spinner', className)} {...HTMLProps} data-fill-container={fillContainer}>
       <div className="arm-spinner-inner">{children || (icon && <Icon iconSet={icon.iconSet} icon={icon.icon} cypressTag="spinner" />)}</div>
-      {label && <p className="arm-spinner-label">{label}</p>}
+      {label && (
+        <div className="arm-spinner-label">
+          <span>{label}</span>
+        </div>
+      )}
     </div>
   )
 );

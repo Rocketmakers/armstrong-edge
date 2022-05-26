@@ -42,6 +42,13 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
   }
 }
 
+.arm-calendar-jump-list {
+  padding: $spacing-xsmall;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-small;
+}
+
 .arm-calendar-date-grid-day {
   @include flex-centre-content;
 

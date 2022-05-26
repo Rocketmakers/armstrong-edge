@@ -6,7 +6,7 @@ import { Arrays } from '../../utils/arrays';
 import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
-import { Button } from '../button';
+import { Button, IButtonProps } from '../button';
 import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarDisplay.utils';
@@ -44,6 +44,8 @@ export interface ICalendarDisplayProps {
    * Allows an external form to bind to the year selector.
    */
   currentYearBinding: IBindingProps<number>;
+  /** Jump to the page which contains a date */
+  jumpTo: (date: Dates.DateLike) => void;
   /**
    * An optional function to call when a day is clicked.
    * @param day The day that has been clicked.
@@ -52,11 +54,11 @@ export interface ICalendarDisplayProps {
   /**
    * Optional callback for when the back button has been clicked, usually goes to the previous month.
    */
-  onBackClicked?: () => void;
+  onBackClicked?: (event: React.MouseEvent<HTMLElement>) => void;
   /**
    * Optional callback for when the forward button has been clicked, usually goes to the next month.
    */
-  onForwardClicked?: () => void;
+  onForwardClicked?: (event: React.MouseEvent<HTMLElement>) => void;
   /**
    * A formatter to apply when displaying the days inside the calendar.
    * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
@@ -94,6 +96,21 @@ export interface ICalendarDisplayProps {
 
   /** CSS className property */
   className?: string;
+
+  /** Override the back button JSX used to move the calendar back a month */
+  backButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
+
+  /** Override the forwards button JSX used to move the calendar forwards a month */
+  forwardsButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
+
+  /** Should show pagination and picker controls (next,prev,select month, select year) */
+  controls?: boolean;
+
+  /** An array of dates to appear as buttons below the calendar to allow quick navigation */
+  jumpList?: { name: string; date: Dates.DateLike; buttonProps?: IButtonProps }[];
+
+  /** */
+  onClickJumpList?: (date: Dates.DateLike) => void;
 }
 
 /**
@@ -121,6 +138,12 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
       calendarDayOfTheWeekHeadingDisplayFormat,
       highlightToday,
       className,
+      backButton,
+      forwardsButton,
+      controls,
+      jumpList,
+      jumpTo,
+      onClickJumpList,
     },
     ref
   ) => {
@@ -148,25 +171,34 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
 
     return (
       <div ref={ref} className={ClassNames.concat('arm-calendar-display', className)}>
-        <div className="arm-calendar-display-controls">
-          <IconButton
-            type="button"
-            icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
-            minimalStyle
-            className="arm-calendar-display-button arm-calendar-display-button-prev"
-            onClick={onBackClicked}
-          />
+        {controls && (
+          <div className="arm-calendar-display-controls">
+            {onBackClicked &&
+              (backButton?.(onBackClicked) || (
+                <IconButton
+                  type="button"
+                  icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
+                  minimalStyle
+                  className="arm-calendar-display-button arm-calendar-display-button-prev"
+                  onClick={onBackClicked}
+                />
+              ))}
 
-          <Select className="arm-calendar-display-select arm-calendar-display-select-month" bind={currentMonthBinding} options={monthOptions} />
-          <Select className="arm-calendar-display-select arm-calendar-display-select-year" bind={currentYearBinding} options={yearOptions} />
+            <Select className="arm-calendar-display-select arm-calendar-display-select-month" bind={currentMonthBinding} options={monthOptions} />
+            <Select className="arm-calendar-display-select arm-calendar-display-select-year" bind={currentYearBinding} options={yearOptions} />
 
-          <IconButton
-            icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
-            minimalStyle
-            className="arm-calendar-display-button arm-calendar-display-button-next"
-            onClick={onForwardClicked}
-          />
-        </div>
+            {onForwardClicked &&
+              (forwardsButton?.(onForwardClicked) || (
+                <IconButton
+                  type="button"
+                  icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
+                  minimalStyle
+                  className="arm-calendar-display-button arm-calendar-display-button-next"
+                  onClick={onForwardClicked}
+                />
+              ))}
+          </div>
+        )}
 
         <div className="arm-calendar-date-grid">
           <div className="arm-calendar-date-grid-headings">
@@ -204,6 +236,26 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
             ))}
           </div>
         </div>
+
+        {!!jumpList?.length && (
+          <div className="arm-calendar-jump-list">
+            {jumpList.map((jump) => (
+              <Button
+                minimalStyle
+                {...jump.buttonProps}
+                key={jump.name}
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  jumpTo(jump.date);
+                  onClickJumpList?.(jump.date);
+                  jump.buttonProps?.onClick?.(event);
+                }}
+                type="button"
+              >
+                {jump.name}
+              </Button>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -216,4 +268,6 @@ CalendarDisplay.defaultProps = {
   calendarYearSelectDisplayFormat: 'yyyy',
   calendarDayDisplayFormat: 'd',
   highlightToday: true,
+  controls: true,
+  jumpList: [{ date: new Date(), name: 'Today' }],
 };
