@@ -6,6 +6,7 @@
  ******************************************************* */
 
 import { IconSet, IIcon } from '../../components/icon';
+import { Merge, NeverUndefined } from '../../types';
 
 /**
  * Works out whether some data is an object, and array, or another type.
@@ -180,6 +181,67 @@ export declare abstract class FormPropFactory<TData extends object> {
     ]
   ): BindingTools<TData5[TDataKey5]>;
 }
+
+/**
+ * Used to limit the KeyChain template type (part of the client side validation schema.)
+ * NOTE: This config currently limits the max nesting depth within a single form state to `5` levels, matching the `formProp` method.
+ * If deeper nesting is required, you should probably be using child binders to split the form.
+ */
+export type KeyChainTemplateLimitMap = [never, 0, 1, 2, 3, 4, 5];
+
+/**
+ * A single client validation method
+ * @param value The user inputted field value.
+ * @returns `true` if the inputted value is valid, else `false`.
+ */
+export type Validator<TValue> = (value: TValue) => boolean;
+
+/**
+ * Builds a client validation message incorporating on an inputted value.
+ * @param value The user inputted field value.
+ * @returns A string to show as the validation message.
+ */
+export type ValidationMessageBuilder<TValue> = (value: TValue) => string;
+
+/**
+ * The client validation config for a single field.
+ */
+export interface IClientValidatorFieldConfig<TValue> {
+  /**
+   * A validator method to run against a field value
+   */
+  validator: Validator<TValue>;
+  /**
+   * A validation message to show if validation fails.
+   * - Can be a flat string or a builder function which incorporates the user entered value.
+   */
+  message: string | ValidationMessageBuilder<TValue>;
+}
+
+/**
+ * Maps a form state object into it's corresponding client validator schema.
+ */
+export type ClientValidationObjectMap<TLimit extends number, TData extends object> = {
+  [K in keyof Merge<TData>]?: ClientValidationConfig<Merge<TData>[K], KeyChainTemplateLimitMap[TLimit]>;
+};
+
+// TODO - hook the below type into form config.
+
+/**
+ * Root client validation schema for a form state object.
+ * - Generates a nested validation schema type matching the form state structure.
+ * - Unpacks arrays of objects into nested fields.
+ * - Supports `5` levels of form nesting (matching the `formProp` method.)o
+ */
+type ClientValidationConfig<TData, TLimit extends number = 5> = TLimit extends never
+  ? never
+  : TData extends any[]
+  ? TData[0] extends object
+    ? ClientValidationObjectMap<TLimit, TData[0]>
+    : NeverUndefined<TData[0], IClientValidatorFieldConfig<TData[0]>>
+  : TData extends object
+  ? ClientValidationObjectMap<TLimit, TData>
+  : NeverUndefined<TData, IClientValidatorFieldConfig<TData>>;
 
 /**
  * Either a `string` key used to index an object or a `number` index used to index an array.
