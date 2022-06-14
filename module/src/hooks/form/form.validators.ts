@@ -28,11 +28,7 @@ export const validateKeyChainProperty = (
     const value = valueByKeyChain(formState, keychain);
 
     if (!validator(value)) {
-      if (isValidationMessageBuilder(message)) {
-        onValidate(keychain, message(value));
-      } else {
-        onValidate(keychain, message);
-      }
+      onValidate(keychain, isValidationMessageBuilder(message) ? message(value) : message);
     }
   });
 };
