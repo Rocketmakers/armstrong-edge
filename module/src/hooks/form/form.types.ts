@@ -201,7 +201,7 @@ export type Validator<TValue> = (value: TValue) => boolean;
  * @param value The user inputted field value.
  * @returns A string to show as the validation message.
  */
-export type ValidationMessageBuilder<TValue> = (value: TValue) => string;
+export type ValidationMessageBuilder<TValue> = (value: TValue) => ValidationMessage;
 
 /**
  * The client validation config for a single field.
@@ -215,7 +215,7 @@ export interface IClientValidatorFieldConfig<TValue> {
    * A validation message to show if validation fails.
    * - Can be a flat string or a builder function which incorporates the user entered value.
    */
-  message: string | ValidationMessageBuilder<TValue>;
+  message: ValidationMessage | ValidationMessageBuilder<TValue>;
 }
 
 /**
@@ -280,7 +280,7 @@ export interface IBindingProps<TValue> {
   /**
    * The root form configuration, these settings should be respected by all bindable components.
    */
-  formConfig?: IFormConfig;
+  formConfig?: IFormConfig<any>;
   /**
    * The bind config specific to this property binding, these settings should be respected by all bindable components.
    */
@@ -416,7 +416,7 @@ export interface IBindConfig<TValue> {
 /**
  * Optional configuration for the form hook
  */
-export interface IFormConfig {
+export interface IFormConfig<TData> {
   /**
    * Any current validation errors, usually from an API request.
    */
@@ -433,6 +433,8 @@ export interface IFormConfig {
    * @default warning
    */
   validationErrorIcon?: IIcon<IconSet>;
+
+  validators?: ClientValidationConfig<TData>;
 }
 
 /**
@@ -483,6 +485,8 @@ export interface HookReturn<TData extends object> {
    * @param validationErrors The errors to add to the current state.
    */
   addValidationError: (...validationErrors: IValidationError[]) => void;
+
+  validate: () => void;
 }
 
 /**

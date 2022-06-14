@@ -34,6 +34,7 @@ import {
   validationKeyStringFromKeyChain,
   valueByKeyChain,
 } from './form.utils';
+import { validateKeyChainProperty } from './form.validators';
 
 /**
  * The base hook used by both of the `useForm` hooks.
@@ -49,7 +50,7 @@ function useFormBase<TData extends object>(
   formStateRef: React.MutableRefObject<TData | undefined>,
   dispatch: FormDispatcher<TData | undefined>,
   initialData?: Partial<TData>,
-  formConfig?: IFormConfig
+  formConfig?: IFormConfig<TData>
 ): HookReturn<TData> {
   const [clientValidationErrors, clientValidationDispatch] = React.useReducer(validationReducer, []);
 
@@ -266,6 +267,14 @@ function useFormBase<TData extends object>(
     [dispatch]
   );
 
+  const validate = React.useCallback(() => {
+    if (!formConfig?.validators) {
+      return;
+    }
+
+    validateKeyChainProperty(formConfig.validators, [], formStateLive, addValidationErrorFromKeyChain);
+  }, [formConfig?.validators, formStateLive]);
+
   return {
     formState: formStateLive,
     formProp: formProp as FormPropFactory<TData>['formProp'],
@@ -274,6 +283,7 @@ function useFormBase<TData extends object>(
     setFormData,
     clearClientValidationErrors,
     addValidationError,
+    validate,
   };
 }
 
@@ -285,7 +295,7 @@ function useFormBase<TData extends object>(
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-function useForm<TData extends object>(initialData: TData | InitialDataFunction<TData>, formConfig?: IFormConfig): HookReturn<TData> {
+function useForm<TData extends object>(initialData: TData | InitialDataFunction<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData> {
   const firstInitialData = React.useMemo<TData>(() => {
     return initialDataIsCallback(initialData) ? initialData() : initialData;
   }, []);
@@ -320,16 +330,16 @@ function useForm<TData extends object>(initialData: TData | InitialDataFunction<
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-function useChild<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig): HookReturn<TData> {
+function useChild<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData> {
   const formStateRef = React.useRef<TData | undefined>(parentBinder.value);
 
   useDidUpdateLayoutEffect(() => {
     formStateRef.current = parentBinder.value;
   }, [parentBinder.value]);
 
-  const combinedConfig = React.useMemo<IFormConfig | undefined>(() => {
+  const combinedConfig = React.useMemo<IFormConfig<TData> | undefined>(() => {
     // format validation errors from parent
-    const parentBinderConfig: IFormConfig | undefined = parentBinder.formConfig && {
+    const parentBinderConfig: IFormConfig<any> | undefined = parentBinder.formConfig && {
       ...parentBinder.formConfig,
       validationErrors: parentBinder.myValidationErrors?.map((ve) => ({
         ...ve,
@@ -337,7 +347,7 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
       })),
     };
 
-    const combination: IFormConfig = Objects.mergeDeep(parentBinderConfig ?? {}, formConfig ?? {});
+    const combination: IFormConfig<TData> = Objects.mergeDeep(parentBinderConfig ?? {}, formConfig ?? {});
     return Object.keys(combination).length ? combination : undefined;
   }, [Objects.contentDependency(formConfig), Objects.contentDependency(parentBinder.formConfig), parentBinder.myValidationErrors]);
 
@@ -376,17 +386,17 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-export function use<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig): HookReturn<TData>;
+export function use<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData>;
 /**
  * Turns a potentially complex nested object or array into a piece of live state and a set of helper tools designed to be used in a form.
  * @param initialData (optional) The initial value of the form data object.
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-export function use<TData extends object>(initialData?: TData | InitialDataFunction<TData>, formConfig?: IFormConfig): HookReturn<TData>;
+export function use<TData extends object>(initialData?: TData | InitialDataFunction<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData>;
 export function use<TData extends object>(
   dataOrBinder: TData | InitialDataFunction<TData> | IBindingProps<TData>,
-  formConfig?: IFormConfig
+  formConfig?: IFormConfig<TData>
 ): HookReturn<TData> {
   if (isBindingProps<TData>(dataOrBinder)) {
     return useChild(dataOrBinder, formConfig);
