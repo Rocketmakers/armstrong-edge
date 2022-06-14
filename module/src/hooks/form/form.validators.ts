@@ -27,7 +27,6 @@ export const validateKeyChainProperty = (
     const { message, validator } = dataValue;
     const value = valueByKeyChain(formState, keychain);
 
-    console.log(!!validator(value));
     if (!validator(value)) {
       if (isValidationMessageBuilder(message)) {
         onValidate(keychain, message(value));
