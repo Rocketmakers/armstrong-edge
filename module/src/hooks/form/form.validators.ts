@@ -8,29 +8,28 @@ function isValidator(val: any): val is IClientValidatorFieldConfig<any> {
 function isValidationMessageBuilder(val: any): val is ValidationMessageBuilder<any> {
   return typeof val === 'function';
 }
+
 export const validateKeyChainProperty = (
-  data: object,
+  validators: object,
   kc: KeyChain,
   formState: any,
-  onValidate: (keychain: KeyChain, messages: ValidationMessage | ValidationMessage[]) => void
+  onValidate: (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[]) => void
 ) => {
-  Object.keys(data).forEach((k) => {
-    const keychain = [...kc, k];
-    const dataValue = data?.[k];
+  Object.keys(validators).forEach((key) => {
+    const keyChain = [...kc, key];
+    const validatorConfig = validators?.[key];
 
-    if (!isValidator(dataValue)) {
+    if (!isValidator(validatorConfig)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      validateKeyChainProperty(dataValue, keychain, formState, onValidate);
+      validateKeyChainProperty(validatorConfig, keyChain, formState, onValidate);
       return;
     }
 
-    const { message, validator } = dataValue;
-    const value = valueByKeyChain(formState, keychain);
+    const { message, validator } = validatorConfig;
+    const value = valueByKeyChain(formState, keyChain);
 
     if (!validator(value)) {
-      onValidate(keychain, isValidationMessageBuilder(message) ? message(value) : message);
+      onValidate(keyChain, isValidationMessageBuilder(message) ? message(value) : message);
     }
   });
 };
-
-// validateMethod(formConfig.validators, []);

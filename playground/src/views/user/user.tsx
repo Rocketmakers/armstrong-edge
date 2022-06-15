@@ -73,12 +73,12 @@ export const UserEdit: React.FC = () => {
       validationErrorIcon: IconUtils.getIconDefinition("LinearIcons", "alarm"),
       validators: {
         email: {
-          message: "NOOOOOOO",
-          validator: () => true,
+          message: "Wrong email",
+          validator: () => false,
         },
         address: {
           city: {
-            message: "NOOOOOOO",
+            message: "City wrong lol",
             validator: () => false,
           },
         },
@@ -233,10 +233,18 @@ interface IAddressFormProps {
 }
 
 const AddressForm: React.FC<IAddressFormProps> = ({ bind }) => {
-  const { formProp } = Form.use(bind);
+  const { formProp, validate } = Form.use(bind, {
+    validators: {
+      postcode: {
+        message: "oops wrong postcode",
+        validator: () => false,
+      },
+    },
+  });
 
   return (
     <fieldset>
+      <button onClick={validate}>validate</button>
       <h2>Address</h2>
       <TextInput bind={formProp("line2").bind()} />
       <TextInput bind={formProp("line2").bind()} />
