@@ -51,6 +51,11 @@ export interface BindingToolsStandard<TValue> {
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
    */
   clearClientValidationErrors: (...identifiers: string[]) => void;
+
+  /**
+   * Runs all validators in the validators schema again the current form state for the selected field.
+   */
+  validate: () => void;
 }
 
 /**
@@ -233,7 +238,7 @@ export type ClientValidationObjectMap<TLimit extends number, TData extends objec
  * - Unpacks arrays of objects into nested fields.
  * - Supports `5` levels of form nesting (matching the `formProp` method.)o
  */
-type ClientValidationConfig<TData, TLimit extends number = 5> = TLimit extends never
+export type ClientValidationConfig<TData, TLimit extends number = 5> = TLimit extends never
   ? never
   : TData extends any[]
   ? TData[0] extends object
@@ -486,7 +491,15 @@ export interface HookReturn<TData extends object> {
    */
   addValidationError: (...validationErrors: IValidationError[]) => void;
 
+  /**
+   * Runs all validators in the validators schema again the current form state.
+   */
   validate: () => void;
+
+  /**
+   * Live boolean representing the validity of the current form based on the validation schema.
+   */
+  isValid: boolean;
 }
 
 /**

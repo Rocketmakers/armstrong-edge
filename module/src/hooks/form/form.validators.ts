@@ -1,4 +1,4 @@
-import { IClientValidatorFieldConfig, KeyChain, ValidationMessage, ValidationMessageBuilder } from './form.types';
+import { ClientValidationConfig, IClientValidatorFieldConfig, KeyChain, ValidationMessage, ValidationMessageBuilder } from './form.types';
 import { valueByKeyChain } from './form.utils';
 
 function isValidator(val: any): val is IClientValidatorFieldConfig<any> {
@@ -9,27 +9,65 @@ function isValidationMessageBuilder(val: any): val is ValidationMessageBuilder<a
   return typeof val === 'function';
 }
 
-export const validateKeyChainProperty = (
-  validators: object,
-  kc: KeyChain,
+/**
+ * Loops through the validator config
+ * @param validatorConfig The validators configuration as passed to the `useForm` hook.
+ * @param formState The current form state.
+ * @param onValidate The method to call when a validator is triggered.
+ * @param baseKeyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
+ */
+export const validateAll = (
+  validatorConfig: ClientValidationConfig<any>,
   formState: any,
-  onValidate: (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[]) => void
+  onValidate: (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[]) => void,
+  baseKeyChain: KeyChain
 ) => {
-  Object.keys(validators).forEach((key) => {
-    const keyChain = [...kc, key];
-    const validatorConfig = validators?.[key];
+  Object.keys(validatorConfig).forEach((key) => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    validateKeyChainProperty(valueByKeyChain(validatorConfig, [key]) as any, [key], formState, onValidate, [...baseKeyChain, key]);
+  });
+};
 
-    if (!isValidator(validatorConfig)) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      validateKeyChainProperty(validatorConfig, keyChain, formState, onValidate);
+/**
+ * Loops through the validator config
+ * @param validatorConfig The validators configuration as passed to the `useForm` hook.
+ * @param currentKeyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
+ * @param formState The current form state.
+ * @param onValidate The method to call when a validator is triggered.
+ * @param fullKeyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
+ */
+export const validateKeyChainProperty = (
+  validatorConfig: ClientValidationConfig<any>,
+  currentKeyChain: KeyChain,
+  formState: any,
+  onValidate: (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[]) => void,
+  fullKeyChain: KeyChain = []
+) => {
+  if (!validatorConfig) {
+    return;
+  }
+
+  if (!isValidator(validatorConfig)) {
+    const keyChain = [...currentKeyChain];
+    keyChain.pop();
+
+    const config = valueByKeyChain<any, any>(validatorConfig, keyChain);
+    const state = valueByKeyChain(formState, keyChain);
+
+    if (!keyChain.length) {
+      validateAll(config, state, onValidate, fullKeyChain);
       return;
     }
 
-    const { message, validator } = validatorConfig;
-    const value = valueByKeyChain(formState, keyChain);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    validateKeyChainProperty(config, keyChain, state, onValidate, []);
+    return;
+  }
 
-    if (!validator(value)) {
-      onValidate(keyChain, isValidationMessageBuilder(message) ? message(value) : message);
-    }
-  });
+  const { message, validator } = validatorConfig;
+  const value = valueByKeyChain(formState, fullKeyChain);
+
+  if (!validator(value)) {
+    onValidate(fullKeyChain, isValidationMessageBuilder(message) ? message(value) : message);
+  }
 };

@@ -9,7 +9,7 @@ import { IconSet, IIcon } from '../../components/icon';
 import { useMyValidationErrorMessages } from '../../components/validationErrors';
 import { Objects } from '../../utils/objects';
 import { Typescript } from '../../utils/typescript';
-import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
+import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
 import { ValidationMessage } from '.';
 import { dataReducer, validationReducer } from './form.state';
 import {
@@ -34,7 +34,20 @@ import {
   validationKeyStringFromKeyChain,
   valueByKeyChain,
 } from './form.utils';
-import { validateKeyChainProperty } from './form.validators';
+import { validateAll, validateKeyChainProperty } from './form.validators';
+
+export const useThrottleEffect = (fn: (...params: any[]) => any, ms: number, deps: React.DependencyList) => {
+  const throttleRef = React.useRef<NodeJS.Timeout>();
+
+  useDidUpdateEffect(() => {
+    if (throttleRef.current) {
+      clearTimeout(throttleRef.current);
+    }
+    throttleRef.current = setTimeout(() => {
+      fn();
+    }, ms);
+  }, deps);
+};
 
 /**
  * The base hook used by both of the `useForm` hooks.
@@ -237,10 +250,25 @@ function useFormBase<TData extends object>(
         clearClientValidationErrors: (...identifiers: string[]) => {
           clearValidationErrorsByKeyChain(keyChain, identifiers);
         },
+        validate: () => {
+          if (!formConfig?.validators) {
+            return;
+          }
+
+          clearValidationErrorsByKeyChain(keyChain);
+
+          validateKeyChainProperty(
+            valueByKeyChain<any, any>(formConfig.validators, keyChain),
+            keyChain,
+            valueByKeyChain(formStateLive, keyChain),
+            addValidationErrorFromKeyChain,
+            keyChain
+          );
+        },
       };
       return arrayMethods as BindingTools<TData>;
     },
-    [bind, set, add, pop, remove, insert, formStateLive, addValidationErrorFromKeyChain, clearValidationErrorsByKeyChain]
+    [bind, set, add, pop, remove, insert, formStateLive, addValidationErrorFromKeyChain, clearValidationErrorsByKeyChain, formConfig]
   );
 
   /**
@@ -267,13 +295,43 @@ function useFormBase<TData extends object>(
     [dispatch]
   );
 
+  /**
+   * Method to run all validators
+   */
   const validate = React.useCallback(() => {
     if (!formConfig?.validators) {
       return;
     }
 
-    validateKeyChainProperty(formConfig.validators, [], formStateLive, addValidationErrorFromKeyChain);
-  }, [formConfig?.validators, formStateLive]);
+    clearClientValidationErrors();
+
+    validateAll(formConfig.validators, formStateLive, addValidationErrorFromKeyChain, []);
+  }, [formConfig?.validators, formStateLive, clearClientValidationErrors]);
+
+  const [isValid, setIsValid] = React.useState(false);
+
+  /**
+   * Runs all validators against the live form state
+   */
+  useThrottleEffect(
+    () => {
+      if (formConfig?.validators) {
+        let valid = true;
+        validateAll(
+          formConfig.validators,
+          formStateLive,
+          () => {
+            valid = false;
+          },
+          []
+        );
+
+        setIsValid(valid);
+      }
+    },
+    500,
+    [formStateLive]
+  );
 
   return {
     formState: formStateLive,
@@ -284,6 +342,7 @@ function useFormBase<TData extends object>(
     clearClientValidationErrors,
     addValidationError,
     validate,
+    isValid,
   };
 }
 
@@ -341,6 +400,7 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
     // format validation errors from parent
     const parentBinderConfig: IFormConfig<any> | undefined = parentBinder.formConfig && {
       ...parentBinder.formConfig,
+      validators: undefined,
       validationErrors: parentBinder.myValidationErrors?.map((ve) => ({
         ...ve,
         key: childKeyChainStringFromParent(ve.key, parentBinder.keyChain),

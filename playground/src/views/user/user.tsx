@@ -59,6 +59,13 @@ export const UserEdit: React.FC = () => {
         line1: "",
         city: "",
         postcode: "",
+        test: {
+          test1: {
+            test2: {
+              test3: "",
+            },
+          },
+        },
       },
       points: 0,
       roles: [],
@@ -67,33 +74,39 @@ export const UserEdit: React.FC = () => {
     };
   }, []);
 
-  const { formProp, formState, getFormData, validate } =
+  const { formProp, formState, getFormData, validate, isValid } =
     Form.use<MemoryServer.IUser>(initialData, {
       validationErrors,
       validationErrorIcon: IconUtils.getIconDefinition("LinearIcons", "alarm"),
       validators: {
         email: {
           message: "Wrong email",
-          validator: () => false,
+          validator: (val) => !!val,
+        },
+        bio: {
+          message: "Bio not good",
+          validator: (value) => value?.length > 10,
         },
         address: {
           city: {
             message: "City wrong lol",
-            validator: () => false,
+            validator: (val) => !!val,
+          },
+          test: {
+            test1: {
+              test2: {
+                test3: {
+                  message: "wow",
+                  validator: (val) => val?.length > 2,
+                },
+              },
+            },
           },
         },
       },
     });
 
   const selectRef = React.useRef<any>();
-
-  React.useEffect(() => {
-    console.log("NEW STATE", formState);
-  }, [formState]);
-
-  React.useEffect(() => {
-    console.log("NEW ADDRESS STATE", formState);
-  }, [formState?.address]);
 
   const submitData = React.useCallback(async () => {
     const user = getFormData();
@@ -113,10 +126,11 @@ export const UserEdit: React.FC = () => {
 
   return (
     <>
-      <Button onClick={validate}>validate</Button>
+      <Button onClick={() => validate()}>validate</Button>
       <form>
         <fieldset>
           <h2>Basic Info</h2>
+          <div>{isValid ? "valid" : "not valid"}</div>
 
           <TextInput
             bind={formProp("firstName").bind()}
@@ -136,6 +150,10 @@ export const UserEdit: React.FC = () => {
           <EmailInput
             bind={formProp("email").bind()}
             leftIcon={IconUtils.getIconDefinition("LinearIcons", "envelope")}
+          />
+          <TextInput
+            bind={formProp("address", "city").bind()}
+            leftIcon={IconUtils.getIconDefinition("Icomoon", "city")}
           />
           <NumberInput bind={formProp("points").bind()} rightOverlay="years" />
           <SwitchInput
@@ -233,23 +251,21 @@ interface IAddressFormProps {
 }
 
 const AddressForm: React.FC<IAddressFormProps> = ({ bind }) => {
-  const { formProp, validate } = Form.use(bind, {
-    validators: {
-      postcode: {
-        message: "oops wrong postcode",
-        validator: () => false,
-      },
-    },
-  });
+  const { formProp } = Form.use(bind);
 
   return (
     <fieldset>
-      <button onClick={validate}>validate</button>
+      {/* <button
+        onClick={() => formProp("test", "test1", "test2", "test3").validate()}
+      >
+        validate
+      </button> */}
       <h2>Address</h2>
-      <TextInput bind={formProp("line2").bind()} />
+      <TextInput bind={formProp("line1").bind()} />
       <TextInput bind={formProp("line2").bind()} />
       <TextInput bind={formProp("city").bind()} />
       <TextInput bind={formProp("postcode").bind()} />
+      <TextInput bind={formProp("test", "test1", "test2", "test3").bind()} />
     </fieldset>
   );
 };
