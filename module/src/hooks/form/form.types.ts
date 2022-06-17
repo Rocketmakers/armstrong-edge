@@ -6,6 +6,7 @@
  ******************************************************* */
 
 import { IconSet, IIcon } from '../../components/icon';
+import { Merge, NeverUndefined } from '../../types';
 
 /**
  * Works out whether some data is an object, and array, or another type.
@@ -50,6 +51,11 @@ export interface BindingToolsStandard<TValue> {
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
    */
   clearClientValidationErrors: (...identifiers: string[]) => void;
+
+  /**
+   * Runs all validators in the validators schema again the current form state for the selected field.
+   */
+  validate: () => boolean;
 }
 
 /**
@@ -182,6 +188,65 @@ export declare abstract class FormPropFactory<TData extends object> {
 }
 
 /**
+ * Used to limit the KeyChain template type (part of the client side validation schema.)
+ * NOTE: This config currently limits the max nesting depth within a single form state to `5` levels, matching the `formProp` method.
+ * If deeper nesting is required, you should probably be using child binders to split the form.
+ */
+export type KeyChainTemplateLimitMap = [never, 0, 1, 2, 3, 4, 5];
+
+/**
+ * A single client validation method
+ * @param value The user inputted field value.
+ * @returns `true` if the inputted value is valid, else `false`.
+ */
+export type Validator<TValue> = (value: TValue) => boolean;
+
+/**
+ * Builds a client validation message incorporating on an inputted value.
+ * @param value The user inputted field value.
+ * @returns A string to show as the validation message.
+ */
+export type ValidationMessageBuilder<TValue> = (value: TValue) => ValidationMessage;
+
+/**
+ * The client validation config for a single field.
+ */
+export interface IClientValidatorFieldConfig<TValue> {
+  /**
+   * A validator method to run against a field value
+   */
+  validator: Validator<TValue>;
+  /**
+   * A validation message to show if validation fails.
+   * - Can be a flat string or a builder function which incorporates the user entered value.
+   */
+  message: ValidationMessage | ValidationMessageBuilder<TValue>;
+}
+
+/**
+ * Maps a form state object into it's corresponding client validator schema.
+ */
+export type ClientValidationObjectMap<TLimit extends number, TData extends object> = {
+  [K in keyof Merge<TData>]?: ClientValidationConfig<Merge<TData>[K], KeyChainTemplateLimitMap[TLimit]>;
+};
+
+/**
+ * Root client validation schema for a form state object.
+ * - Generates a nested validation schema type matching the form state structure.
+ * - Unpacks arrays of objects into nested fields.
+ * - Supports `5` levels of form nesting (matching the `formProp` method.)
+ */
+export type ClientValidationConfig<TData, TLimit extends number = 5> = TLimit extends never
+  ? never
+  : TData extends any[]
+  ? TData[0] extends object
+    ? ClientValidationObjectMap<TLimit, TData[0]>
+    : NeverUndefined<TData[0], IClientValidatorFieldConfig<TData[0]>>
+  : TData extends object
+  ? ClientValidationObjectMap<TLimit, TData>
+  : NeverUndefined<TData, IClientValidatorFieldConfig<TData>>;
+
+/**
  * Either a `string` key used to index an object or a `number` index used to index an array.
  */
 export type PropertyKey = string | number;
@@ -217,8 +282,9 @@ export interface IBindingProps<TValue> {
   myValidationErrors: IValidationError[];
   /**
    * The root form configuration, these settings should be respected by all bindable components.
+   * NOTE: any is OK here because the binding tools object does not need to know the shape of the entire form data.
    */
-  formConfig?: IFormConfig;
+  formConfig?: IFormConfig<any>;
   /**
    * The bind config specific to this property binding, these settings should be respected by all bindable components.
    */
@@ -354,7 +420,7 @@ export interface IBindConfig<TValue> {
 /**
  * Optional configuration for the form hook
  */
-export interface IFormConfig {
+export interface IFormConfig<TData> {
   /**
    * Any current validation errors, usually from an API request.
    */
@@ -371,6 +437,8 @@ export interface IFormConfig {
    * @default warning
    */
   validationErrorIcon?: IIcon<IconSet>;
+
+  validators?: ClientValidationConfig<TData>;
 }
 
 /**
@@ -421,6 +489,16 @@ export interface HookReturn<TData extends object> {
    * @param validationErrors The errors to add to the current state.
    */
   addValidationError: (...validationErrors: IValidationError[]) => void;
+
+  /**
+   * Runs all validators in the validators schema again the current form state.
+   */
+  validate: () => boolean;
+
+  /**
+   * Live boolean representing the validity of the current form based on the validation schema.
+   */
+  isValid: boolean;
 }
 
 /**
