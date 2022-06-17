@@ -6,7 +6,6 @@ import {
   EmailInput,
   TextArea,
   Arrays,
-  ListBox,
   SwitchInput,
   Button,
   NativeDateInput,
@@ -124,9 +123,16 @@ export const UserEdit: React.FC = () => {
     [formProp]
   );
 
+  const submit = () => {
+    if (validate()) {
+      console.log("NOICE");
+    }
+  };
+
   return (
     <>
-      <Button onClick={() => validate()}>validate</Button>
+      <Button onClick={() => submit()}>validate</Button>
+      <Button disabled={!isValid}>SUBMIT</Button>
       <form>
         <fieldset>
           <h2>Basic Info</h2>

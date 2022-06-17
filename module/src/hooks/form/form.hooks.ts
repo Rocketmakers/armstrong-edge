@@ -9,7 +9,8 @@ import { IconSet, IIcon } from '../../components/icon';
 import { useMyValidationErrorMessages } from '../../components/validationErrors';
 import { Objects } from '../../utils/objects';
 import { Typescript } from '../../utils/typescript';
-import { useDidUpdateEffect, useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
+import { useDebounceEffect } from '../useDebounce';
+import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
 import { ValidationMessage } from '.';
 import { dataReducer, validationReducer } from './form.state';
 import {
@@ -36,19 +37,6 @@ import {
 } from './form.utils';
 import { validateAll, validateKeyChainProperty } from './form.validators';
 
-export const useThrottleEffect = (fn: (...params: any[]) => any, ms: number, deps: React.DependencyList) => {
-  const throttleRef = React.useRef<NodeJS.Timeout>();
-
-  useDidUpdateEffect(() => {
-    if (throttleRef.current) {
-      clearTimeout(throttleRef.current);
-    }
-    throttleRef.current = setTimeout(() => {
-      fn();
-    }, ms);
-  }, deps);
-};
-
 /**
  * The base hook used by both of the `useForm` hooks.
  * @param formStateLive The live form state object from the reducer.
@@ -66,6 +54,7 @@ function useFormBase<TData extends object>(
   formConfig?: IFormConfig<TData>
 ): HookReturn<TData> {
   const [clientValidationErrors, clientValidationDispatch] = React.useReducer(validationReducer, []);
+  const [isValid, setIsValid] = React.useState(false);
 
   /**
    * For setting a new value for a target property
@@ -212,6 +201,85 @@ function useFormBase<TData extends object>(
   );
 
   /**
+   * Running validation against a specific formProp
+   */
+  const validateFormProp = React.useCallback<(keyChain: KeyChain) => boolean>(
+    (keyChain) => {
+      let valid = true;
+      if (!formConfig?.validators) {
+        // eslint-disable-next-line no-console
+        console.warn('Attempted client validation without schema. Did you forget to write/add your validators to the form config?');
+        return valid;
+      }
+
+      clearValidationErrorsByKeyChain(keyChain);
+
+      validateKeyChainProperty(
+        valueByKeyChain<any, any>(formConfig.validators, keyChain),
+        keyChain,
+        valueByKeyChain(formStateLive, keyChain),
+        (kc, messages) => {
+          valid = false;
+          addValidationErrorFromKeyChain(kc, messages);
+        },
+        keyChain
+      );
+
+      return valid;
+    },
+    [formStateLive, addValidationErrorFromKeyChain, formConfig?.validators]
+  );
+
+  /**
+   * Method to run all validators
+   */
+  const validate = React.useCallback<() => boolean>(() => {
+    let valid = true;
+    if (!formConfig?.validators) {
+      // eslint-disable-next-line no-console
+      console.warn('Attempted client validation without schema. Did you forget to write/add your validators to the form config?');
+      return valid;
+    }
+
+    clearClientValidationErrors();
+
+    validateAll(
+      formConfig.validators,
+      formStateLive as TData,
+      (kc, messages) => {
+        valid = false;
+        addValidationErrorFromKeyChain(kc, messages);
+      },
+      []
+    );
+
+    return valid;
+  }, [formConfig?.validators, formStateLive, clearClientValidationErrors]);
+
+  /**
+   * Runs all validators against the live form state
+   */
+  useDebounceEffect(
+    () => {
+      if (formConfig?.validators) {
+        let valid = true;
+        validateAll(
+          formConfig.validators,
+          formStateLive as TData,
+          () => {
+            valid = false;
+          },
+          []
+        );
+
+        setIsValid(valid);
+      }
+    },
+    500,
+    [formStateLive]
+  );
+
+  /**
    * The root method used to access a property within the form data object.
    * - Receives a strictly typed set of args for targeting nested properties within a complex data object.
    * - Can also allow targeting objects within an array by requesting an index number rather than a key.
@@ -250,21 +318,7 @@ function useFormBase<TData extends object>(
         clearClientValidationErrors: (...identifiers: string[]) => {
           clearValidationErrorsByKeyChain(keyChain, identifiers);
         },
-        validate: () => {
-          if (!formConfig?.validators) {
-            return;
-          }
-
-          clearValidationErrorsByKeyChain(keyChain);
-
-          validateKeyChainProperty(
-            valueByKeyChain<any, any>(formConfig.validators, keyChain),
-            keyChain,
-            valueByKeyChain(formStateLive, keyChain),
-            addValidationErrorFromKeyChain,
-            keyChain
-          );
-        },
+        validate: () => validateFormProp(keyChain),
       };
       return arrayMethods as BindingTools<TData>;
     },
@@ -293,44 +347,6 @@ function useFormBase<TData extends object>(
       return dispatch({ type: 'set-all', data: newFormData });
     },
     [dispatch]
-  );
-
-  /**
-   * Method to run all validators
-   */
-  const validate = React.useCallback(() => {
-    if (!formConfig?.validators) {
-      return;
-    }
-
-    clearClientValidationErrors();
-
-    validateAll(formConfig.validators, formStateLive, addValidationErrorFromKeyChain, []);
-  }, [formConfig?.validators, formStateLive, clearClientValidationErrors]);
-
-  const [isValid, setIsValid] = React.useState(false);
-
-  /**
-   * Runs all validators against the live form state
-   */
-  useThrottleEffect(
-    () => {
-      if (formConfig?.validators) {
-        let valid = true;
-        validateAll(
-          formConfig.validators,
-          formStateLive,
-          () => {
-            valid = false;
-          },
-          []
-        );
-
-        setIsValid(valid);
-      }
-    },
-    500,
-    [formStateLive]
   );
 
   return {
@@ -398,7 +414,7 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
 
   const combinedConfig = React.useMemo<IFormConfig<TData> | undefined>(() => {
     // format validation errors from parent
-    const parentBinderConfig: IFormConfig<any> | undefined = parentBinder.formConfig && {
+    const parentBinderConfig: IFormConfig<TData> | undefined = parentBinder.formConfig && {
       ...parentBinder.formConfig,
       validators: undefined,
       validationErrors: parentBinder.myValidationErrors?.map((ve) => ({

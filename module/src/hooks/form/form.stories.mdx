@@ -85,6 +85,7 @@ With a type supplied, the initial state can either be complete, partial or missi
 ### Initial data as a callback
 
 Initial state can also be passed as a React callback. The callback will be executed:
+
 1. Once initially with no parameters passed to it, it will be expected to return the initial state for the form binder.
 2. Again each time it's dependencies update, in this case it will receive the current form state as a param and be expected to return updated form state.
 
@@ -93,6 +94,7 @@ This is extremely useful when a form relies on remote data that could update at 
 **NOTE:** When using an initial data function, be aware that it will be executed to provide initial data whenever it's reference updates. It's essential therefore that any initial data function is a callback with a carefully selected set of dependencies, rather than an anonymous function or constant function.
 
 Here's an example:
+
 ```tsx
 // this is data from the server that can be updated at any time.
 const { data } = useGetProfileData<IUser>();
@@ -201,9 +203,10 @@ return (
 
 ## <a name="validation">Validation</a>
 
-Validation can be handled in two different ways. These two methods can also be used in tandum, allowing support for server and client side validation together.
+Validation can be handled in a few different ways. These methods can also be used together, allowing support for server and client side validation together.
 
 - **Hook config validation errors** refers to passing errors into the form via the hook config, this is ideal for errors that are returned from an existing piece of state or API library.
+- **Hook config validation schema** refers to passing a validation schema into the form via the hook config, this is ideal for on the fly client side validation.
 - **Dispatched validation errors** refers to dispatching errors via the functions provided by the form hook, this is ideal for handling client side validation
 
 Regardless of which of these methods you use, validation errors will automatically display underneath the relevant components by matching the `key` attribute of the error to the bound property.
@@ -256,6 +259,66 @@ return (
 ```
 
 <ArgsTable of={ConfigExample} />
+
+### Hook config validation schema
+
+The validation schema follows the same structure as the form state. The validator config allows you to pass a custom message and validation rule to each property. Below is an example of a validator.
+
+```tsx
+const isMandatoryValidator = (value: any) => !!value;
+
+{
+  message: 'Oops look like theres an error'.
+  validator: isMandatoryValidator
+}
+```
+
+The below example shows the same login form, but with a client side validation schema being passed into the form config. A `validate` method and an `isValid` bool is available from the hook to handle disabling buttons and dispatching validation errors.
+
+```tsx
+const { formProp, formState, validate, isValid } = Form.use(
+  {
+    email: '',
+    password: '',
+  },
+  {
+    validators: {
+      email: {
+        message: "Your email is invalid"
+        validator: (value) => value && value.indexOf('@') > -1
+      },
+      password: {
+        message: "Your password is to short"
+        validator: (value) => value?.length > 10
+      }
+    }
+  }
+);
+
+const submitData = React.useCallback(async () => {
+  const { email, password } = formState;
+
+  if(validate()) {
+    await login(email, password);
+  }
+}, [formState, validate]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <Button type="submit" disabled={!isValid} onClick={submitData}>
+      Login
+    </Button>
+  </form>
+);
+```
+
+To run validators again sub properties, you can use the validate method returned from formProp
+
+```tsx
+formProp('email').validate();
+```
 
 ### Dispatched validation errors
 

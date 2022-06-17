@@ -1,11 +1,11 @@
 import { ClientValidationConfig, IClientValidatorFieldConfig, KeyChain, ValidationMessage, ValidationMessageBuilder } from './form.types';
 import { valueByKeyChain } from './form.utils';
 
-function isValidator(val: any): val is IClientValidatorFieldConfig<any> {
+function isValidator<TValue>(val: ClientValidationConfig<any>): val is IClientValidatorFieldConfig<TValue> {
   return !!val?.validator;
 }
 
-function isValidationMessageBuilder(val: any): val is ValidationMessageBuilder<any> {
+function isValidationMessageBuilder<TData>(val: ValidationMessage | ValidationMessageBuilder<TData>): val is ValidationMessageBuilder<TData> {
   return typeof val === 'function';
 }
 
@@ -16,17 +16,17 @@ function isValidationMessageBuilder(val: any): val is ValidationMessageBuilder<a
  * @param onValidate The method to call when a validator is triggered.
  * @param baseKeyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
  */
-export const validateAll = (
-  validatorConfig: ClientValidationConfig<any>,
-  formState: any,
+export function validateAll<TData>(
+  validatorConfig: ClientValidationConfig<TData>,
+  formState: TData,
   onValidate: (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[]) => void,
   baseKeyChain: KeyChain
-) => {
+) {
   Object.keys(validatorConfig).forEach((key) => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    validateKeyChainProperty(valueByKeyChain(validatorConfig, [key]) as any, [key], formState, onValidate, [...baseKeyChain, key]);
+    validateKeyChainProperty(valueByKeyChain(validatorConfig, [key]), [key], formState, onValidate, [...baseKeyChain, key]);
   });
-};
+}
 
 /**
  * Loops through the validator config
@@ -36,13 +36,13 @@ export const validateAll = (
  * @param onValidate The method to call when a validator is triggered.
  * @param fullKeyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
  */
-export const validateKeyChainProperty = (
-  validatorConfig: ClientValidationConfig<any>,
+export function validateKeyChainProperty<TData>(
+  validatorConfig: ClientValidationConfig<TData> | undefined,
   currentKeyChain: KeyChain,
-  formState: any,
+  formState: TData,
   onValidate: (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[]) => void,
   fullKeyChain: KeyChain = []
-) => {
+) {
   if (!validatorConfig) {
     return;
   }
@@ -51,7 +51,7 @@ export const validateKeyChainProperty = (
     const keyChain = [...currentKeyChain];
     keyChain.pop();
 
-    const config = valueByKeyChain<any, any>(validatorConfig, keyChain);
+    const config = valueByKeyChain<ClientValidationConfig<TData>, any>(validatorConfig, keyChain);
     const state = valueByKeyChain(formState, keyChain);
 
     if (!keyChain.length) {
@@ -59,7 +59,6 @@ export const validateKeyChainProperty = (
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     validateKeyChainProperty(config, keyChain, state, onValidate, []);
     return;
   }
@@ -70,4 +69,4 @@ export const validateKeyChainProperty = (
   if (!validator(value)) {
     onValidate(fullKeyChain, isValidationMessageBuilder(message) ? message(value) : message);
   }
-};
+}

@@ -55,7 +55,7 @@ export interface BindingToolsStandard<TValue> {
   /**
    * Runs all validators in the validators schema again the current form state for the selected field.
    */
-  validate: () => void;
+  validate: () => boolean;
 }
 
 /**
@@ -230,13 +230,11 @@ export type ClientValidationObjectMap<TLimit extends number, TData extends objec
   [K in keyof Merge<TData>]?: ClientValidationConfig<Merge<TData>[K], KeyChainTemplateLimitMap[TLimit]>;
 };
 
-// TODO - hook the below type into form config.
-
 /**
  * Root client validation schema for a form state object.
  * - Generates a nested validation schema type matching the form state structure.
  * - Unpacks arrays of objects into nested fields.
- * - Supports `5` levels of form nesting (matching the `formProp` method.)o
+ * - Supports `5` levels of form nesting (matching the `formProp` method.)
  */
 export type ClientValidationConfig<TData, TLimit extends number = 5> = TLimit extends never
   ? never
@@ -284,6 +282,7 @@ export interface IBindingProps<TValue> {
   myValidationErrors: IValidationError[];
   /**
    * The root form configuration, these settings should be respected by all bindable components.
+   * NOTE: any is OK here because the binding tools object does not need to know the shape of the entire form data.
    */
   formConfig?: IFormConfig<any>;
   /**
@@ -494,7 +493,7 @@ export interface HookReturn<TData extends object> {
   /**
    * Runs all validators in the validators schema again the current form state.
    */
-  validate: () => void;
+  validate: () => boolean;
 
   /**
    * Live boolean representing the validity of the current form based on the validation schema.
