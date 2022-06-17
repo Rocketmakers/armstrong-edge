@@ -227,7 +227,7 @@ function useFormBase<TData extends object>(
 
       return valid;
     },
-    [formStateLive, addValidationErrorFromKeyChain, formConfig?.validators]
+    [formStateLive, addValidationErrorFromKeyChain, formConfig?.validators, clearValidationErrorsByKeyChain]
   );
 
   /**
