@@ -415,6 +415,10 @@ export interface IBindConfig<TValue> {
      */
     toData?: (value?: TValue) => TValue;
   };
+  /**
+   * Debounce the changes to `formState` for this input by x milliseconds.
+   */
+  debounce?: number;
 }
 
 /**

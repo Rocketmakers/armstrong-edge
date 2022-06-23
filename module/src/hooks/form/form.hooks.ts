@@ -168,15 +168,29 @@ function useFormBase<TData extends object>(
     [dispatch]
   );
 
+  const bindDebounceStore = React.useRef<Record<string, any>>({});
+
   /**
    * For binding a target array property to a component (often an input)
    */
   const bind = React.useCallback(
     (keyChain: KeyChain, bindConfig?: IBindConfig<any>) => {
       const combinedValidationErrors = [...clientValidationErrors, ...(formConfig?.validationErrors ?? [])];
+      const stringifiedKeyChain = keyChain.join('-');
       return {
         value: valueByKeyChain(formStateLive, keyChain),
-        setValue: (newValue: any) => set(keyChain, newValue),
+        setValue: (newValue: any) => {
+          if (bindConfig?.debounce) {
+            const store = bindDebounceStore.current;
+            if (store[stringifiedKeyChain]) {
+              clearTimeout(store[stringifiedKeyChain]);
+              store[stringifiedKeyChain] = undefined;
+            }
+            store[stringifiedKeyChain] = setTimeout(() => set(keyChain, newValue), bindConfig.debounce);
+          } else {
+            set(keyChain, newValue);
+          }
+        },
         bindConfig,
         formConfig,
         myValidationErrors: validationErrorsByKeyChain(combinedValidationErrors, keyChain),
