@@ -496,7 +496,7 @@ interface IUseBindingStateReturnUtils<TData> {
   validationMode?: FormValidationMode;
 
   /** The current validation mode for the form */
-  validationErrorIcon?: IIcon<IconSet>;
+  validationErrorIcon?: IIcon<IconSet> | '';
 
   /** Derived from the validation mode */
   shouldShowValidationErrorIcon?: boolean;

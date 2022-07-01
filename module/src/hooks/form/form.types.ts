@@ -436,7 +436,7 @@ export interface IFormConfig<TData> {
    * An optional icon to use for validation errors in place of the default.
    * @default warning
    */
-  validationErrorIcon?: IIcon<IconSet>;
+  validationErrorIcon?: IIcon<IconSet> | '';
 
   validators?: ClientValidationConfig<TData>;
 }
