@@ -72,6 +72,7 @@ export const CheckboxInput = React.forwardRef(
       direction,
       name,
       hideCheckbox,
+      id,
       ...nativeProps
     }: ICheckboxInputProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
@@ -111,10 +112,10 @@ export const CheckboxInput = React.forwardRef(
             type="checkbox"
             ref={ref}
             checked={isChecked ?? undefined}
+            id={id}
             {...inputProps}
           />
-
-          <label>
+          <label htmlFor={id}>
             {!hideCheckbox && (
               <div className="arm-checkbox-input-checkbox">
                 {checkedIcon && <Icon className="arm-checkbox-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />}

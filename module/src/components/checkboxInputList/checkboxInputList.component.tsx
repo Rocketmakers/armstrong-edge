@@ -122,6 +122,7 @@ export const CheckboxInputList = React.forwardRef(
                   disabled={option.disabled}
                   direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
                   hideCheckbox={hideCheckbox}
+                  id={option.id?.toString()}
                   {...option.htmlProps}
                 />
               ))}
