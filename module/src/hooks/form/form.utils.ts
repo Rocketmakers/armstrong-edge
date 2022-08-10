@@ -15,7 +15,7 @@ import { IBindingProps, IValidationError, KeyChain } from './form.types';
 export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots' | 'brackets'): string {
   switch (mode) {
     case 'dots':
-      return keyChain.filter((key) => !!key).join('.');
+      return keyChain.filter((key) => key?.toString() !== '').join('.');
     case 'brackets':
       return keyChain.reduce<string>((attrString, key) => {
         if (typeof key === 'string') {
