@@ -2,18 +2,20 @@ import * as React from 'react';
 
 import './showCode';
 
-import { ModalProvider } from '../src/components/modal/modal.context';
+import { ToastProvider, ModalProvider } from '../src';
 // import { addParameters } from '@storybook/react';
 
 export const decorators = [
   (Story) => {
     return (
       <div id="host">
-        <ModalProvider>
-          <div className="story-wrapper">
-            <Story />
-          </div>
-        </ModalProvider>
+        <ToastProvider>
+          <ModalProvider>
+            <div className="story-wrapper">
+              <Story />
+            </div>
+          </ModalProvider>
+        </ToastProvider>
       </div>
     );
   },

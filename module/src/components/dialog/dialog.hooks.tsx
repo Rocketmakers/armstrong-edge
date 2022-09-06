@@ -27,20 +27,22 @@ export interface IUseConfirmationDialogConfig {
 
 /** Render a confirmation dialog and resolve with a boolean representing the users selection (see useDialog) */
 export const useConfirmationDialog = (config: IUseConfirmationDialogConfig = {}, props?: UseDialogDialogProps) => {
-  return useDialog<boolean>(
-    ({ resolve }) => (
+  return useDialog<boolean, IUseConfirmationDialogConfig | undefined>(({ resolve, argument }) => {
+    const content = argument?.content ?? config.content;
+    const yes = argument?.buttons?.yes ?? config.buttons?.yes;
+    const no = argument?.buttons?.no ?? config.buttons?.no;
+    return (
       <>
-        {!config.content || typeof config.content === 'string' ? <p>{config.content || 'Are you sure?'}</p> : config.content}
+        {!content || typeof content === 'string' ? <p>{content || 'Are you sure?'}</p> : content}
         <div className="arm-confirmation-dialog-buttons">
           <Button type="button" className="arm-confirmation-dialog-no-button" onClick={() => resolve(false)}>
-            {config.buttons?.no || 'No'}
+            {no || 'No'}
           </Button>
           <Button type="button" className="arm-confirmation-dialog-yes-button" onClick={() => resolve(true)}>
-            {config.buttons?.yes || 'Yes'}
+            {yes || 'Yes'}
           </Button>
         </div>
       </>
-    ),
-    props
-  );
+    );
+  }, props);
 };
