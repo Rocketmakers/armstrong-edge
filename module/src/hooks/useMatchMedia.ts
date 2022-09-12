@@ -41,7 +41,7 @@ export function useMatchMedia(
       media.addEventListener('change', onMatchesChangeEvent, eventListenerOptions);
     } catch (err) {
       try {
-        // Fallback for < IOS 15 which doesnt support addListener
+        // Fallback for < IOS 15 which doesnt support addEventListener
         media.addListener(onMatchesChangeEvent);
       } catch (err1) {
         // eslint-disable-next-line no-console -- Ouput error incase both methods fail
