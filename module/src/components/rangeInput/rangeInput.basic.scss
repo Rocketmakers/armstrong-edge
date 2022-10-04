@@ -40,20 +40,6 @@ $arm-range-input-track-thickness: 6px !default;
   border: 0;
   cursor: pointer;
 
-  @include range-input-thumb {
-    opacity: 0;
-    background-color: transparent;
-    appearance: none;
-    -webkit-appearance: none;
-  }
-
-  @include range-input-track {
-    opacity: 0;
-    background-color: transparent;
-    appearance: none;
-    -webkit-appearance: none;
-  }
-
   &:active {
     ~ .arm-range-input-handle {
       transform: translate(-50%, -50%) scale(1.1);
