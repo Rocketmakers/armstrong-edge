@@ -13,7 +13,7 @@
     "jest-vscode-runner": "(cd module && npm run jest-vscode-runner)",
     "postinstall": "(cd module && npm i) && (cd playground && npm i) && npm run link-module",
     "build-module": "(cd module && npm run build)",
-    "link-module": "npm run build-module && (cd module && npm run link) && (cd playground && npm run link-module)",
+    "link-module": "npm run build-module && (cd module && npm run link) && (cd playground && npm run link)",
     "watch-build-module": "watch 'npm run build-module' ./module/src",
     "check-versions": "ncu && (cd module && ncu) && (cd playground && ncu)",
     "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i",
@@ -28,7 +28,7 @@
   "author": "developers@rocketmakers.com",
   "license": "MIT",
   "devDependencies": {
-    "commitizen": "^4.2.4",
+    "commitizen": "^4.2.5",
     "cz-customizable": "^6.3.0",
     "husky": "^4.3.8",
     "npm-check-updates": "^11.5.13",
