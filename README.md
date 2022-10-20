@@ -95,13 +95,11 @@ We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to m
 
 ### Testing
 
-Armstrong uses [Jest](https://jestjs.io/docs/using-matchers) for unit testing, [@testing-library/react-hooks](https://github.com/testing-library/react-hooks-testing-library) for hook testing, and [Cypress](https://docs.cypress.io/guides/getting-started/writing-your-first-test) via Storybook for component testing.
+Armstrong uses [Jest](https://jestjs.io/docs/using-matchers) for unit testing, [@testing-library/react](https://github.com/testing-library/react-testing-library) for hook testing, and [Storybook interactions](https://storybook.js.org/docs/react/writing-tests/interaction-testing) with [Jest DOM](https://github.com/testing-library/jest-dom) for component testing.
 
-Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.cypress` respectively.
+Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.storybook` respectively.
 
-Tests can be run using `npm test` for all tests, or `npm test-jest` and `npm test-cypress` respectively.
-
-Due to the nature of the codebase it is not currently possible to use custom commands in Cypress.
+Tests can be run using `npm test` for all tests, or `npm test-jest` and `npm test-storybook` respectively.
 
 ### Process
 

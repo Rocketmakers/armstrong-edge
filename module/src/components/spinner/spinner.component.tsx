@@ -18,7 +18,7 @@ export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
 export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ISpinnerProps>>(
   ({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => (
     <div ref={ref} className={ClassNames.concat('arm-spinner', className)} {...HTMLProps} data-fill-container={fillContainer}>
-      <div className="arm-spinner-inner">{children || (icon && <Icon iconSet={icon.iconSet} icon={icon.icon} cypressTag="spinner" />)}</div>
+      <div className="arm-spinner-inner">{children || (icon && <Icon iconSet={icon.iconSet} icon={icon.icon} />)}</div>
       {label && (
         <div className="arm-spinner-label">
           <span>{label}</span>

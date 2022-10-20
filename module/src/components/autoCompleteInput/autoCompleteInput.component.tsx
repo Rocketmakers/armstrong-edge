@@ -75,9 +75,6 @@ export interface IAutoCompleteInputProps<Id extends ArmstrongId>
 
   /** the className given to the content of the dropdown */
   dropdownClassName?: string;
-
-  /** identifier for driving this component with Cypress */
-  cypressTag?: string;
 }
 
 /** A text input which displays some options in a dropdown */
@@ -106,7 +103,6 @@ export const AutoCompleteInput = React.forwardRef(
       unsetOnClear,
       disabled,
       noItemsText,
-      cypressTag,
       closeOnBackgroundClick,
       closeOnScroll,
       closeOnWindowBlur,
@@ -246,7 +242,6 @@ export const AutoCompleteInput = React.forwardRef(
           data-pending={pending}
           data-disabled={disabled}
           data-is-option={allowFreeText || textInputValue === boundValue}
-          data-cy={cypressTag}
         >
           <DropdownItems
             contentClassName={ClassNames.concat('arm-auto-complete-options', dropdownClassName)}

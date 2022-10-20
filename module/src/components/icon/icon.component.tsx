@@ -24,15 +24,12 @@ export interface IIconProps<TIconSet extends IconSet>
     React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /** CSS className property */
   className?: string;
-
-  /** identifier for driving this component with Cypress */
-  cypressTag?: string;
 }
 
 /** Render an icon using one of the supported icon sets */
 export const Icon = React.forwardRef(
   <TIconSet extends IconSet>(
-    { className, iconSet, icon, onClick, cypressTag, ...nativeProps }: IIconProps<TIconSet>,
+    { className, iconSet, icon, onClick, ...nativeProps }: IIconProps<TIconSet>,
     forwardedRef: React.ForwardedRef<HTMLDivElement>
   ) => {
     return (
@@ -45,7 +42,6 @@ export const Icon = React.forwardRef(
         className={ClassNames.concat('arm-icon', className)}
         data-clickable={!!onClick}
         onClick={onClick}
-        data-cy={cypressTag}
       />
     );
   }

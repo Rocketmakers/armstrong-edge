@@ -15,25 +15,15 @@ export interface IStatusProps {
 
   /** the icon to use for the spinner */
   spinnerIcon?: IIcon<IconSet>;
-
-  /** identifier for driving this component with Cypress */
-  cypressTag?: string;
 }
 
 /** Render a status icon which can either be pending or errored */
-export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(({ pending, error, errorIcon, spinnerIcon, cypressTag }, ref) => {
+export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(({ pending, error, errorIcon, spinnerIcon }, ref) => {
   if (!error && !pending) {
     return null;
   }
   return (
-    <div
-      ref={ref}
-      className="arm-status"
-      data-active={!!pending || !!error}
-      data-error={!!error && !pending}
-      data-pending={pending}
-      data-cy={cypressTag}
-    >
+    <div ref={ref} className="arm-status" data-active={!!pending || !!error} data-error={!!error && !pending} data-pending={pending}>
       {error && !pending && <Icon className="arm-status-error" iconSet={errorIcon!.iconSet} icon={errorIcon!.icon} />}
       {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />}
     </div>

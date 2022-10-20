@@ -37,14 +37,6 @@ export const parameters = {
       ],
     },
   },
-  a11y: {
-    options: {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag2a'],
-      },
-    },
-  },
 };
 
 // haven't been able to get this working, but should be revisited - should add a toggle between stylesheets

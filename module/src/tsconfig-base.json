@@ -15,7 +15,15 @@
     "suppressImplicitAnyIndexErrors": true,
     "importHelpers": true,
     "moduleResolution": "node",
-    "lib": ["es2016", "dom"]
+    "lib": [
+      "es2016",
+      "dom"
+    ]
   },
-  "exclude": ["node_modules", "stories", "**/*.stories.*", "**/*.cy-test.tsx", "**/*.spec.ts"]
+  "exclude": [
+    "node_modules",
+    "stories",
+    "**/*.stories.*",
+    "**/*.spec.ts"
+  ]
 }

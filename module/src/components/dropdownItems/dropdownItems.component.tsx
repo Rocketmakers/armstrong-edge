@@ -54,10 +54,9 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
         onMouseEnter={onMouseEnter}
         id={`${idPrefix}_${id}`}
         data-disabled={disabled}
-        data-cy="dropdown-item"
       >
         <OptionContent leftIcon={leftIcon} rightIcon={rightIcon} name={name} content={content} id={id} isActive={isSelected} />
-        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" cypressTag="dropdown-item-icon" />}
+        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
       </li>
     );
   }
@@ -250,7 +249,7 @@ export const DropdownItems: React.FunctionComponent<React.PropsWithChildren<IDro
       dropdownContent={
         <ul aria-labelledby={`${id}`} id={`${id}_list`} aria-activedescendant={`${id}_item_${currentValue?.[0]}`} role="listbox">
           {items.length === 0 ? (
-            <li className="arm-dropdown-items-no-item-text" data-cy="dropdown-empty">
+            <li className="arm-dropdown-items-no-item-text">
               <p>{noItemsText}</p>
             </li>
           ) : (

@@ -37,7 +37,7 @@ export const Default = () => {
 
   return (
     <form>
-      <AutoCompleteInput bind={formProp('value').bind()} options={options} cypressTag="autocomplete" />
+      <AutoCompleteInput bind={formProp('value').bind()} options={options} />
       <p className="bound-value">bound value: {formState?.value}</p>
     </form>
   );
