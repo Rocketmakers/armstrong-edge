@@ -99,7 +99,7 @@ Armstrong uses [Jest](https://jestjs.io/docs/using-matchers) for unit testing, [
 
 Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.storybook` respectively.
 
-Tests can be run using `npm test` for all tests, or `npm test-jest` and `npm test-storybook` respectively.
+Tests can be run using `npm test` for all tests, or `npm run test-jest` and `npm run test-storybook` respectively. Storybook *must* be running before you can can run tests. **Note** the Storybook test runner is currently not working, this will be addressed in a future update.
 
 ### Process
 

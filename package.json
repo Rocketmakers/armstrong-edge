@@ -11,6 +11,7 @@
     "start": "npm-run-all start-playground watch-build-module",
     "test": "(cd module && npm run test)",
     "jest-vscode-runner": "(cd module && npm run jest-vscode-runner)",
+    "test-jest": "(cd module && npm run test-jest)",
     "postinstall": "(cd module && npm i) && (cd playground && npm i) && npm run link-module",
     "build-module": "(cd module && npm run build)",
     "link-module": "npm run build-module && (cd module && npm run link) && (cd playground && npm run link-module)",
@@ -19,6 +20,7 @@
     "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i",
     "storybook": "(cd module && npm run storybook)",
     "build-storybook": "(cd module && npm run build-storybook)",
+    "test-storybook": "(cd module && npm run test-storybook)",
     "lint": "(cd module && npm run lint && npm run lint-scss)"
   },
   "repository": {
