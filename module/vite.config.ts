@@ -13,7 +13,7 @@ export default defineConfig({
     emptyOutDir: true,
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      name: "@rocketmakers/armstrong-3",
+      name: "@rocketmakers/armstrong-dev",
       formats: ["es", "cjs"],
       fileName: (format) => `[name]${format === "cjs" ? "" : `.${format}`}.js`,
     },

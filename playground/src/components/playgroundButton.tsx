@@ -1,4 +1,4 @@
-import { Button } from "@rocketmakers/armstrong-3";
+import { Button } from "@rocketmakers/armstrong-dev";
 import * as React from "react";
 
 import styles from "./playgroundButton.module.scss";
