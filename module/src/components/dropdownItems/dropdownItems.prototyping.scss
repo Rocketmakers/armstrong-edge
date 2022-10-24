@@ -1,0 +1,52 @@
+.arm-dropdown-item {
+  padding: $spacing-xxsmall $spacing-xsmall;
+  transition: background-color $transition-quick, color $transition-quick;
+
+  p {
+    flex-grow: 1;
+    font-size: 0.85rem;
+  }
+
+  &:hover {
+    background-color: $gray-light;
+  }
+
+  &[data-keyboard-selected='true'] {
+    background-color: $gray-light;
+  }
+
+  &[data-selected='true'] {
+    background-color: $brand-primary;
+    color: $white;
+
+    &[data-keyboard-selected='true'] {
+      opacity: 0.7;
+    }
+  }
+}
+
+.arm-dropdown-item-checkmark {
+  font-size: 0.75rem;
+  color: $white;
+}
+
+.arm-dropdown-items-no-item-text,
+.arm-dropdown-items-group-title {
+  font-size: 0.75rem;
+  color: $gray-medium;
+  padding: $spacing-xxsmall $spacing-xsmall;
+}
+
+.arm-dropdown-items-group-title {
+  text-transform: uppercase;
+}
+
+@include screen-phone {
+  .arm-dropdown-item {
+    padding: $spacing-small $spacing-small;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}

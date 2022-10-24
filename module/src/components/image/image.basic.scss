@@ -1,0 +1,25 @@
+.arm-image {
+  position: relative;
+
+  .arm-status {
+    @include absolute-fill;
+    @include flex-centre-content;
+
+    padding: $spacing-small;
+    width: 100%;
+    height: 100%;
+    border: $line-light;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+.arm-image-inner {
+  &[data-loading='true'],
+  &[data-error='true'] {
+    min-height: $spacing-large;
+    min-width: $spacing-large;
+  }
+}

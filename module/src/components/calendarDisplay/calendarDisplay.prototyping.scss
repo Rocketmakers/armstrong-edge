@@ -1,0 +1,21 @@
+.arm-calendar-display-controls {
+  .arm-select {
+    box-shadow: none;
+
+    &:focus-within {
+      box-shadow: none;
+    }
+  }
+}
+
+.arm-calendar-date-grid-heading {
+  color: $gray-light;
+}
+
+.arm-calendar-date-grid-day {
+  box-shadow: none;
+}
+
+.arm-calendar-jump-list {
+  color: $brand-primary;
+}

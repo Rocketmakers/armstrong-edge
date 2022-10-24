@@ -1,0 +1,8 @@
+.arm-modal-wrapper {
+  animation: fade-in $transition-quick;
+
+  &[data-is-closing='true'] {
+    animation: none;
+    transition: opacity $transition-quick;
+  }
+}

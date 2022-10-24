@@ -1,0 +1,47 @@
+$arm-dialog-width: 500px !default;
+$arm-dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
+
+.arm-dialog {
+  width: 100%;
+  max-width: $arm-dialog-width;
+  max-height: $arm-dialog-height;
+  overflow: auto;
+  position: relative;
+}
+
+.arm-modal.arm-dialog {
+  padding: 0;
+}
+
+.arm-dialog-close-button {
+  position: absolute;
+  top: $spacing-small;
+  right: $spacing-small;
+}
+
+.arm-dialog-top {
+  @include space-between-children-horizontal($spacing-xsmall);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .arm-dialog-close-button {
+    position: initial;
+  }
+}
+
+.arm-dialog-title {
+  flex-grow: 1;
+}
+
+.arm-confirmation-dialog-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: $spacing-xsmall;
+
+  .arm-button {
+    margin-left: $spacing-xsmall;
+  }
+}

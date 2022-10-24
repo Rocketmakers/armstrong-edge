@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div>
-      <h1>It is me, the Armstrong playgroud</h1>
+      <h1>It is me, the Armstrong playground</h1>
       <PlaygroundButton>HELLO THERE</PlaygroundButton>
       <form onSubmit={(e) => e.preventDefault()}>
         <input

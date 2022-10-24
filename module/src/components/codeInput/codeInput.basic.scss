@@ -1,0 +1,20 @@
+.arm-code-input {
+  display: flex;
+  align-items: center;
+
+  > * {
+    &:not(:last-child) {
+      margin-right: $spacing-xsmall;
+    }
+  }
+
+  .arm-input-base {
+    width: auto;
+    position: relative;
+
+    .arm-input-base-input {
+      width: calc(var(--arm-code-input-length, 1) * 0.5rem);
+      text-align: center;
+    }
+  }
+}

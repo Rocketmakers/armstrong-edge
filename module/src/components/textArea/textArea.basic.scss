@@ -1,0 +1,22 @@
+.arm-text-area {
+  .arm-input-inner {
+    cursor: text;
+  }
+}
+
+.arm-text-area-textarea {
+  min-height: $arm-input-height-large;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  resize: none;
+  font-family: inherit;
+  outline: none;
+  border: 0;
+  color: inherit;
+
+  &:focus {
+    outline: none;
+    border: 0;
+  }
+}

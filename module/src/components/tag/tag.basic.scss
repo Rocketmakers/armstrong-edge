@@ -1,0 +1,7 @@
+.arm-tag {
+  @include space-between-children-horizontal($spacing-xsmall);
+
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}

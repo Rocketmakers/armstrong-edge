@@ -1,0 +1,19 @@
+.arm-dialog-wrapper {
+  padding: $spacing-medium;
+  cursor: pointer;
+  animation: fade-in $transition-quick;
+}
+
+.arm-dialog {
+  cursor: initial;
+  border-radius: $border-radius-small;
+}
+
+.arm-dialog-inner {
+  padding: $spacing-small;
+}
+
+.arm-dialog-top {
+  padding: $spacing-small;
+  border-bottom: $line-light;
+}

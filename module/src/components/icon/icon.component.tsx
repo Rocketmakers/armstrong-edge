@@ -1,12 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-} from "../../types/reactExtensions";
-import { ClassNames } from "../../utils/classNames";
-import { Icons } from "./icon.icons";
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types/reactExtensions';
+import { ClassNames } from '../../utils/classNames';
+import { Icons } from './icon.icons';
 
 /** The name of a set of icons */
 export type IconSet = keyof Icons;
@@ -25,10 +21,7 @@ export interface IIcon<TIconSet extends IconSet> {
 
 export interface IIconProps<TIconSet extends IconSet>
   extends IIcon<TIconSet>,
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    > {
+    React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /** CSS className property */
   className?: string;
 
@@ -39,14 +32,7 @@ export interface IIconProps<TIconSet extends IconSet>
 /** Render an icon using one of the supported icon sets */
 export const Icon = React.forwardRef(
   <TIconSet extends IconSet>(
-    {
-      className,
-      iconSet,
-      icon,
-      onClick,
-      cypressTag,
-      ...nativeProps
-    }: IIconProps<TIconSet>,
+    { className, iconSet, icon, onClick, cypressTag, ...nativeProps }: IIconProps<TIconSet>,
     forwardedRef: React.ForwardedRef<HTMLDivElement>
   ) => {
     return (
@@ -56,35 +42,24 @@ export const Icon = React.forwardRef(
         ref={forwardedRef}
         data-icon-set={iconSet}
         data-i={icon}
-        className={ClassNames.concat("arm-icon", className)}
+        className={ClassNames.concat('arm-icon', className)}
         data-clickable={!!onClick}
         onClick={onClick}
         data-cy={cypressTag}
       />
     );
   }
-) as (<TIconSet extends IconSet>(
-  props: ArmstrongVFCProps<IIconProps<TIconSet>, HTMLDivElement>
-) => ArmstrongFCReturn) &
+) as (<TIconSet extends IconSet>(props: ArmstrongVFCProps<IIconProps<TIconSet>, HTMLDivElement>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IIconProps<IconSet>>;
 
-type IIconsetIconProps<TIconSet extends IconSet> = Omit<
-  IIconProps<TIconSet>,
-  "iconSet"
->;
+type IIconsetIconProps<TIconSet extends IconSet> = Omit<IIconProps<TIconSet>, 'iconSet'>;
 
 /** Renders an Icomoon icon - requires the consuming application to have manually added the Icomoon font file */
-export const IcomoonIcon = React.forwardRef<
-  HTMLDivElement,
-  IIconsetIconProps<"Icomoon">
->(({ icon, ...props }, forwardedRef) => (
+export const IcomoonIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'Icomoon'>>(({ icon, ...props }, forwardedRef) => (
   <Icon {...props} ref={forwardedRef} iconSet="Icomoon" icon={icon} />
 ));
 
 /** Renders an LinearIcon icon - requires the consuming application to have manually added the LinearIcon font file */
-export const LinearIcon = React.forwardRef<
-  HTMLDivElement,
-  IIconsetIconProps<"LinearIcons">
->(({ icon, ...props }, forwardedRef) => (
+export const LinearIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'LinearIcons'>>(({ icon, ...props }, forwardedRef) => (
   <Icon {...props} ref={forwardedRef} iconSet="LinearIcons" icon={icon} />
 ));

@@ -1,0 +1,8 @@
+.arm-stepper-step-icon {
+  transition-property: background-color, border-color;
+  transition-duration: $transition-quick;
+
+  &::after {
+    transition: background-color $transition-quick;
+  }
+}

@@ -1,0 +1,12 @@
+.arm-input.arm-date-time-input {
+  max-width: $arm-input-width-large;
+
+  .arm-calendar-input {
+    flex-grow: 1;
+    margin-right: 0;
+
+    .arm-dropdown {
+      width: auto;
+    }
+  }
+}

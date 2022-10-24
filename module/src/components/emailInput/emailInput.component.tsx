@@ -1,0 +1,13 @@
+import * as React from 'react';
+
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
+import { ClassNames } from '../../utils/classNames';
+import { IInputProps, Input } from '../input/input.component';
+
+/** Wrap up a text input with type=email */
+export const EmailInput = React.forwardRef(
+  <TBind extends NullOrUndefined<string>>({ className, ...props }: Omit<IInputProps<TBind>, 'type'>, ref: React.ForwardedRef<HTMLInputElement>) => {
+    return <Input {...props} className={ClassNames.concat('arm-email-input', className)} ref={ref} type="email" />;
+  }
+) as (<TBind extends NullOrUndefined<string>>(props: ArmstrongVFCProps<Omit<IInputProps<TBind>, 'type'>, HTMLInputElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<Omit<IInputProps<any>, 'type'>>;

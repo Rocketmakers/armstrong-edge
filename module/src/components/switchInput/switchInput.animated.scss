@@ -1,0 +1,14 @@
+.arm-switch-input {
+  .arm-switch-input-inner {
+    transition: background-color $transition-quick;
+
+    &::after {
+      transition: transform $transition-quick;
+    }
+
+    .arm-switch-input-checked-icon,
+    .arm-switch-input-unchecked-icon {
+      transition: opacity $transition-quick, transform $transition-quick;
+    }
+  }
+}

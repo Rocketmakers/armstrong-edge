@@ -1,0 +1,134 @@
+$arm-calendar-display-width: 300px !default;
+$arm-calendar-display-date-circle: 1.6rem !default;
+$arm-calendar-display-date-highlight-size: 0.4rem !default;
+
+.arm-calendar-display {
+  width: 100%;
+  max-width: $arm-calendar-display-width;
+  padding: $spacing-xsmall;
+}
+
+.arm-calendar-date-grid-headings {
+  display: flex;
+}
+
+.arm-calendar-date-grid-days {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.arm-calendar-date-grid-day,
+.arm-calendar-date-grid-heading,
+.arm-calendar-date-grid-day-empty {
+  flex-basis: 14.2857%;
+  margin-bottom: $spacing-xxsmall;
+  text-align: center;
+}
+
+.arm-calendar-display-controls {
+  @include space-between-children-horizontal($spacing-xsmall);
+
+  display: flex;
+  align-self: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-xsmall;
+  padding: 0 $spacing-xxsmall;
+
+  .arm-icon-button {
+    .arm-icon {
+      padding: $spacing-xsmall;
+      font-size: 0.6rem;
+    }
+  }
+}
+
+.arm-calendar-jump-list {
+  padding: $spacing-xsmall;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-small;
+}
+
+.arm-calendar-date-grid-day {
+  @include flex-centre-content;
+
+  position: relative;
+  padding: $spacing-xsmall;
+
+  p {
+    position: relative;
+    z-index: 3;
+    margin: 0;
+  }
+
+  &::before {
+    @include init-pseudo;
+    @include absolute-centre-self;
+    @include circle($arm-calendar-display-date-circle);
+
+    z-index: 2;
+    box-sizing: border-box;
+  }
+
+  &[data-selected='true'] {
+    color: $white;
+
+    &::before {
+      background-color: $brand-primary;
+    }
+  }
+
+  &[disabled='true'] {
+    color: $gray-very-light;
+  }
+
+  &[data-today='true'] {
+    &::before {
+      border: $line-thick $brand-primary;
+    }
+  }
+
+  &[data-range-middle='true'],
+  &[data-range-start='true'],
+  &[data-range-end='true'] {
+    &::after {
+      @include init-pseudo;
+
+      z-index: 1;
+      background-color: $brand-primary;
+      opacity: 0.25;
+      position: absolute;
+      height: $arm-calendar-display-date-circle;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &[data-range-end='true'] {
+    &::after {
+      right: calc(50% - #{$arm-calendar-display-date-circle} / 2);
+      border-top-right-radius: calc(#{$arm-calendar-display-date-circle} / 2);
+      border-bottom-right-radius: calc(#{$arm-calendar-display-date-circle} / 2);
+    }
+  }
+
+  &[data-range-start='true'] {
+    &::after {
+      left: calc(50% - #{$arm-calendar-display-date-circle} / 2);
+      border-top-left-radius: calc(#{$arm-calendar-display-date-circle} / 2);
+      border-bottom-left-radius: calc(#{$arm-calendar-display-date-circle} / 2);
+    }
+  }
+
+  .arm-calendar-date-grid-day-highlight {
+    @include circle($arm-calendar-display-date-highlight-size);
+
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    background-color: $brand-primary;
+    transform: translateX(-50%);
+  }
+}

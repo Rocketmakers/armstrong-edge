@@ -3,14 +3,16 @@
  * FORM - Hooks file.
  * Contains the `useForm` hooks
  ******************************************************* */
-import * as React from "react";
+import * as React from 'react';
 
-import { IconSet, IIcon } from "../../components/icon";
-import { useMyValidationErrorMessages } from "../../components/validationErrors";
-import { Objects } from "../../utils/objects";
-import { Typescript } from "../../utils/typescript";
-import { useDebounceEffect } from "../utils/useDebounce";
-import { useDidUpdateLayoutEffect } from "../utils/useDidUpdateEffect";
+import { IconSet, IIcon } from '../../components/icon';
+import { useMyValidationErrorMessages } from '../../components/validationErrors';
+import { Objects } from '../../utils/objects';
+import { Typescript } from '../../utils/typescript';
+import { useDebounceEffect } from '../useDebounce';
+import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
+import { ValidationMessage } from '.';
+import { dataReducer, validationReducer } from './form.state';
 import {
   BindingTools,
   FormDispatcher,
@@ -23,8 +25,7 @@ import {
   InitialDataFunction,
   IValidationError,
   KeyChain,
-  ValidationMessage,
-} from "./form.types";
+} from './form.types';
 import {
   childKeyChainStringFromParent,
   initialDataIsCallback,
@@ -33,9 +34,8 @@ import {
   validationErrorsByKeyChain,
   validationKeyStringFromKeyChain,
   valueByKeyChain,
-} from "./form.utils";
-import { validateAll, validateKeyChainProperty } from "./form.validators";
-import { dataReducer, validationReducer } from "./form.state";
+} from './form.utils';
+import { validateAll, validateKeyChainProperty } from './form.validators';
 
 /**
  * The base hook used by both of the `useForm` hooks.
@@ -53,10 +53,7 @@ function useFormBase<TData extends object>(
   initialData?: Partial<TData>,
   formConfig?: IFormConfig<TData>
 ): HookReturn<TData> {
-  const [clientValidationErrors, clientValidationDispatch] = React.useReducer(
-    validationReducer,
-    []
-  );
+  const [clientValidationErrors, clientValidationDispatch] = React.useReducer(validationReducer, []);
   const [isValid, setIsValid] = React.useState(false);
 
   /**
@@ -65,13 +62,9 @@ function useFormBase<TData extends object>(
   const set = React.useCallback(
     (keyChain: KeyChain, newValue: any) => {
       if (keyChain.length === 1) {
-        dispatch({
-          type: "set-one",
-          propertyKey: keyChain[0],
-          value: newValue,
-        });
+        dispatch({ type: 'set-one', propertyKey: keyChain[0], value: newValue });
       } else {
-        dispatch({ type: "set-path", keyChain, value: newValue });
+        dispatch({ type: 'set-path', keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -82,7 +75,7 @@ function useFormBase<TData extends object>(
    */
   const addValidationError = React.useCallback(
     (...errors: IValidationError[]) => {
-      clientValidationDispatch({ type: "add-validation", errors });
+      clientValidationDispatch({ type: 'add-validation', errors });
     },
     [clientValidationDispatch]
   );
@@ -91,23 +84,17 @@ function useFormBase<TData extends object>(
    * For adding a validation error against a specific property from a keyChain.
    */
   const addValidationErrorFromKeyChain = React.useCallback(
-    (
-      keyChain: KeyChain,
-      messages: ValidationMessage | ValidationMessage[],
-      identifier?: string
-    ) => {
+    (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[], identifier?: string) => {
       const messageArray = Array.isArray(messages) ? messages : [messages];
-      const key = validationKeyStringFromKeyChain(keyChain, "dots");
-      addValidationError(
-        ...messageArray.map((message) => ({ key, message, identifier }))
-      );
+      const key = validationKeyStringFromKeyChain(keyChain, 'dots');
+      addValidationError(...messageArray.map((message) => ({ key, message, identifier })));
     },
     [clientValidationDispatch]
   );
 
   const clearClientValidationErrors = React.useCallback(
     (...identifiers: string[]) => {
-      clientValidationDispatch({ type: "clear-validation", identifiers });
+      clientValidationDispatch({ type: 'clear-validation', identifiers });
     },
     [clientValidationDispatch]
   );
@@ -117,18 +104,10 @@ function useFormBase<TData extends object>(
    */
   const clearValidationErrorsByKeyChain = React.useCallback(
     (keyChain: KeyChain, identifiers?: string[]) => {
-      const dotKey = validationKeyStringFromKeyChain(keyChain, "dots");
-      const bracketKey = validationKeyStringFromKeyChain(keyChain, "brackets");
-      clientValidationDispatch({
-        type: "clear-validation",
-        key: dotKey,
-        identifiers,
-      });
-      clientValidationDispatch({
-        type: "clear-validation",
-        key: bracketKey,
-        identifiers,
-      });
+      const dotKey = validationKeyStringFromKeyChain(keyChain, 'dots');
+      const bracketKey = validationKeyStringFromKeyChain(keyChain, 'brackets');
+      clientValidationDispatch({ type: 'clear-validation', key: dotKey, identifiers });
+      clientValidationDispatch({ type: 'clear-validation', key: bracketKey, identifiers });
     },
     [clientValidationDispatch]
   );
@@ -138,10 +117,10 @@ function useFormBase<TData extends object>(
    */
   const add = React.useCallback(
     (keyChain: KeyChain, currentValue: any, newItem: any) => {
-      if (isArrayValue(currentValue, "formProp.add")) {
+      if (isArrayValue(currentValue, 'formProp.add')) {
         const newValue = [...(currentValue ?? [])];
         newValue.push(newItem);
-        dispatch({ type: "set-path", keyChain, value: newValue });
+        dispatch({ type: 'set-path', keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -152,10 +131,10 @@ function useFormBase<TData extends object>(
    */
   const remove = React.useCallback(
     (keyChain: KeyChain, currentValue: any[], index: number) => {
-      if (isArrayValue(currentValue, "formProp.remove")) {
+      if (isArrayValue(currentValue, 'formProp.remove')) {
         const newValue = [...(currentValue ?? [])];
         newValue.splice(index, 1);
-        dispatch({ type: "set-path", keyChain, value: newValue });
+        dispatch({ type: 'set-path', keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -166,10 +145,10 @@ function useFormBase<TData extends object>(
    */
   const insert = React.useCallback(
     (keyChain: KeyChain, currentValue: any[], index: number, newItem: any) => {
-      if (isArrayValue(currentValue, "formProp.insert")) {
+      if (isArrayValue(currentValue, 'formProp.insert')) {
         const newValue = [...(currentValue ?? [])];
         newValue.splice(index, 0, newItem);
-        dispatch({ type: "set-path", keyChain, value: newValue });
+        dispatch({ type: 'set-path', keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -180,10 +159,10 @@ function useFormBase<TData extends object>(
    */
   const pop = React.useCallback(
     (keyChain: KeyChain, currentValue: any[]) => {
-      if (isArrayValue(currentValue, "formProp.pop")) {
+      if (isArrayValue(currentValue, 'formProp.pop')) {
         const newValue = [...(currentValue ?? [])];
         newValue.pop();
-        dispatch({ type: "set-path", keyChain, value: newValue });
+        dispatch({ type: 'set-path', keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -194,28 +173,19 @@ function useFormBase<TData extends object>(
    */
   const bind = React.useCallback(
     (keyChain: KeyChain, bindConfig?: IBindConfig<any>) => {
-      const combinedValidationErrors = [
-        ...clientValidationErrors,
-        ...(formConfig?.validationErrors ?? []),
-      ];
+      const combinedValidationErrors = [...clientValidationErrors, ...(formConfig?.validationErrors ?? [])];
       return {
         value: valueByKeyChain(formStateLive, keyChain),
         setValue: (newValue: any) => set(keyChain, newValue),
         bindConfig,
         formConfig,
-        myValidationErrors: validationErrorsByKeyChain(
-          combinedValidationErrors,
-          keyChain
-        ),
+        myValidationErrors: validationErrorsByKeyChain(combinedValidationErrors, keyChain),
         dispatch,
         keyChain,
         initialValue: valueByKeyChain(initialData, keyChain),
-        addValidationError: (
-          messages: ValidationMessage | ValidationMessage[],
-          identifier?: string
-        ) => addValidationErrorFromKeyChain(keyChain, messages, identifier),
-        clearClientValidationErrors: (...identifiers: string[]) =>
-          clearValidationErrorsByKeyChain(keyChain, identifiers),
+        addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) =>
+          addValidationErrorFromKeyChain(keyChain, messages, identifier),
+        clearClientValidationErrors: (...identifiers: string[]) => clearValidationErrorsByKeyChain(keyChain, identifiers),
       };
     },
     [
@@ -238,9 +208,7 @@ function useFormBase<TData extends object>(
       let valid = true;
       if (!formConfig?.validators) {
         // eslint-disable-next-line no-console
-        console.warn(
-          "Attempted client validation without schema. Did you forget to write/add your validators to the form config?"
-        );
+        console.warn('Attempted client validation without schema. Did you forget to write/add your validators to the form config?');
         return valid;
       }
 
@@ -259,12 +227,7 @@ function useFormBase<TData extends object>(
 
       return valid;
     },
-    [
-      formStateLive,
-      addValidationErrorFromKeyChain,
-      formConfig?.validators,
-      clearValidationErrorsByKeyChain,
-    ]
+    [formStateLive, addValidationErrorFromKeyChain, formConfig?.validators, clearValidationErrorsByKeyChain]
   );
 
   /**
@@ -274,9 +237,7 @@ function useFormBase<TData extends object>(
     let valid = true;
     if (!formConfig?.validators) {
       // eslint-disable-next-line no-console
-      console.warn(
-        "Attempted client validation without schema. Did you forget to write/add your validators to the form config?"
-      );
+      console.warn('Attempted client validation without schema. Did you forget to write/add your validators to the form config?');
       return valid;
     }
 
@@ -351,10 +312,7 @@ function useFormBase<TData extends object>(
           remove(keyChain, value as any[], index);
           return formProp(...keyChain) as BindingTools<any>;
         },
-        addValidationError: (
-          messages: ValidationMessage | ValidationMessage[],
-          identifier?: string
-        ) => {
+        addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => {
           addValidationErrorFromKeyChain(keyChain, messages, identifier);
         },
         clearClientValidationErrors: (...identifiers: string[]) => {
@@ -364,18 +322,7 @@ function useFormBase<TData extends object>(
       };
       return arrayMethods as BindingTools<TData>;
     },
-    [
-      bind,
-      set,
-      add,
-      pop,
-      remove,
-      insert,
-      formStateLive,
-      addValidationErrorFromKeyChain,
-      clearValidationErrorsByKeyChain,
-      formConfig,
-    ]
+    [bind, set, add, pop, remove, insert, formStateLive, addValidationErrorFromKeyChain, clearValidationErrorsByKeyChain, formConfig]
   );
 
   /**
@@ -389,7 +336,7 @@ function useFormBase<TData extends object>(
    * Resets form data to it's latest "initial" state.
    */
   const resetFormData = React.useCallback(() => {
-    dispatch({ type: "set-all", data: initialData });
+    dispatch({ type: 'set-all', data: initialData });
   }, [Objects.contentDependency(initialData), dispatch]);
 
   /**
@@ -397,14 +344,14 @@ function useFormBase<TData extends object>(
    */
   const setFormData = React.useCallback(
     (newFormData: TData) => {
-      return dispatch({ type: "set-all", data: newFormData });
+      return dispatch({ type: 'set-all', data: newFormData });
     },
     [dispatch]
   );
 
   return {
     formState: formStateLive,
-    formProp: formProp as FormPropFactory<TData>["formProp"],
+    formProp: formProp as FormPropFactory<TData>['formProp'],
     resetFormData,
     getFormData,
     setFormData,
@@ -423,10 +370,7 @@ function useFormBase<TData extends object>(
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-function useForm<TData extends object>(
-  initialData: TData | InitialDataFunction<TData>,
-  formConfig?: IFormConfig<TData>
-): HookReturn<TData> {
+function useForm<TData extends object>(initialData: TData | InitialDataFunction<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData> {
   const firstInitialData = React.useMemo<TData>(() => {
     return initialDataIsCallback(initialData) ? initialData() : initialData;
   }, []);
@@ -436,14 +380,8 @@ function useForm<TData extends object>(
   const formStateRef = React.useRef<TData>(firstInitialData);
 
   const liveInitialData = React.useMemo<TData>(() => {
-    return initialDataIsCallback(initialData)
-      ? initialData(formStateRef.current)
-      : initialData;
-  }, [
-    initialDataIsCallback(initialData)
-      ? initialData
-      : Objects.contentDependency(initialData),
-  ]);
+    return initialDataIsCallback(initialData) ? initialData(formStateRef.current) : initialData;
+  }, [initialDataIsCallback(initialData) ? initialData : Objects.contentDependency(initialData)]);
 
   const dispatch = React.useCallback(
     (action) => {
@@ -455,16 +393,10 @@ function useForm<TData extends object>(
   );
 
   useDidUpdateLayoutEffect(() => {
-    dispatch({ type: "set-all", data: liveInitialData });
+    dispatch({ type: 'set-all', data: liveInitialData });
   }, [Objects.contentDependency(liveInitialData)]);
 
-  return useFormBase<TData>(
-    formState,
-    formStateRef,
-    dispatch,
-    liveInitialData,
-    formConfig
-  );
+  return useFormBase<TData>(formState, formStateRef, dispatch, liveInitialData, formConfig);
 }
 
 /**
@@ -473,10 +405,7 @@ function useForm<TData extends object>(
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-function useChild<TData extends object>(
-  parentBinder: IBindingProps<TData>,
-  formConfig?: IFormConfig<TData>
-): HookReturn<TData> {
+function useChild<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData> {
   const formStateRef = React.useRef<TData | undefined>(parentBinder.value);
 
   useDidUpdateLayoutEffect(() => {
@@ -485,47 +414,32 @@ function useChild<TData extends object>(
 
   const combinedConfig = React.useMemo<IFormConfig<TData> | undefined>(() => {
     // format validation errors from parent
-    const parentBinderConfig: IFormConfig<TData> | undefined =
-      parentBinder.formConfig && {
-        ...parentBinder.formConfig,
-        validators: undefined,
-        validationErrors: parentBinder.myValidationErrors?.map((ve) => ({
-          ...ve,
-          key: childKeyChainStringFromParent(ve.key, parentBinder.keyChain),
-        })),
-      };
+    const parentBinderConfig: IFormConfig<TData> | undefined = parentBinder.formConfig && {
+      ...parentBinder.formConfig,
+      validators: undefined,
+      validationErrors: parentBinder.myValidationErrors?.map((ve) => ({
+        ...ve,
+        key: childKeyChainStringFromParent(ve.key, parentBinder.keyChain),
+      })),
+    };
 
-    const combination: IFormConfig<TData> = Objects.mergeDeep(
-      parentBinderConfig ?? {},
-      formConfig ?? {}
-    );
+    const combination: IFormConfig<TData> = Objects.mergeDeep(parentBinderConfig ?? {}, formConfig ?? {});
     return Object.keys(combination).length ? combination : undefined;
-  }, [
-    Objects.contentDependency(formConfig),
-    Objects.contentDependency(parentBinder.formConfig),
-    parentBinder.myValidationErrors,
-  ]);
+  }, [Objects.contentDependency(formConfig), Objects.contentDependency(parentBinder.formConfig), parentBinder.myValidationErrors]);
 
   const dispatch = React.useCallback<FormDispatcher<TData | undefined>>(
     (action) => {
       let fullState: any;
       switch (action.type) {
-        case "set-all":
-          fullState = parentBinder.dispatch({
-            type: "set-path",
-            keyChain: parentBinder.keyChain,
-            value: action.data,
-          });
+        case 'set-all':
+          fullState = parentBinder.dispatch({ type: 'set-path', keyChain: parentBinder.keyChain, value: action.data });
           break;
-        case "set-path":
-          fullState = parentBinder.dispatch({
-            ...action,
-            keyChain: [...parentBinder.keyChain, ...action.keyChain],
-          });
+        case 'set-path':
+          fullState = parentBinder.dispatch({ ...action, keyChain: [...parentBinder.keyChain, ...action.keyChain] });
           break;
-        case "set-one":
+        case 'set-one':
           fullState = parentBinder.dispatch({
-            type: "set-path",
+            type: 'set-path',
             keyChain: [...(parentBinder.keyChain as any), action.propertyKey],
             value: action.value,
           });
@@ -539,13 +453,7 @@ function useChild<TData extends object>(
     [parentBinder.keyChain, parentBinder.dispatch]
   );
 
-  return useFormBase<TData>(
-    parentBinder.value,
-    formStateRef,
-    dispatch,
-    parentBinder.initialValue,
-    combinedConfig
-  );
+  return useFormBase<TData>(parentBinder.value, formStateRef, dispatch, parentBinder.initialValue, combinedConfig);
 }
 
 /**
@@ -554,20 +462,14 @@ function useChild<TData extends object>(
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-export function use<TData extends object>(
-  parentBinder: IBindingProps<TData>,
-  formConfig?: IFormConfig<TData>
-): HookReturn<TData>;
+export function use<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData>;
 /**
  * Turns a potentially complex nested object or array into a piece of live state and a set of helper tools designed to be used in a form.
  * @param initialData (optional) The initial value of the form data object.
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-export function use<TData extends object>(
-  initialData?: TData | InitialDataFunction<TData>,
-  formConfig?: IFormConfig<TData>
-): HookReturn<TData>;
+export function use<TData extends object>(initialData?: TData | InitialDataFunction<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData>;
 export function use<TData extends object>(
   dataOrBinder: TData | InitialDataFunction<TData> | IBindingProps<TData>,
   formConfig?: IFormConfig<TData>
@@ -603,11 +505,7 @@ interface IUseBindingStateReturnUtils<TData> {
   shouldShowValidationErrorMessage?: boolean;
 }
 
-type UseBindingStateReturn<TData> = [
-  TData | undefined,
-  ((newValue: TData | undefined) => void) | undefined,
-  IUseBindingStateReturnUtils<TData>
-];
+type UseBindingStateReturn<TData> = [TData | undefined, ((newValue: TData | undefined) => void) | undefined, IUseBindingStateReturnUtils<TData>];
 
 /** Used as overrides for the bind functionality, for use with component props */
 interface IUseBindingStateOverrides<TData> {
@@ -635,15 +533,9 @@ interface IUseBindingStateOverrides<TData> {
  * Refer to internal Armstrong code for Input for a clear example
  */
 
-export function useBindingState<TData>(
-  bind?: IBindingProps<TData>,
-  overrides?: IUseBindingStateOverrides<TData>
-): UseBindingStateReturn<TData> {
+export function useBindingState<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingStateOverrides<TData>): UseBindingStateReturn<TData> {
   const value = React.useMemo(
-    () =>
-      overrides?.value ??
-      bind?.bindConfig?.format?.fromData?.(bind.value) ??
-      bind?.value,
+    () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind.value) ?? bind?.value,
     [overrides?.value, bind?.bindConfig?.format?.fromData, bind?.value]
   );
 
@@ -665,15 +557,10 @@ export function useBindingState<TData>(
     [bind?.bindConfig?.format?.toData]
   );
 
-  const validationErrorMessages = useMyValidationErrorMessages(
-    bind,
-    overrides?.validationErrorMessages
-  );
+  const validationErrorMessages = useMyValidationErrorMessages(bind, overrides?.validationErrorMessages);
 
-  const validationMode: FormValidationMode =
-    overrides?.validationMode ?? bind?.formConfig?.validationMode ?? "both";
-  const validationErrorIcon =
-    overrides?.validationErrorIcon ?? bind?.formConfig?.validationErrorIcon;
+  const validationMode: FormValidationMode = overrides?.validationMode ?? bind?.formConfig?.validationMode ?? 'both';
+  const validationErrorIcon = overrides?.validationErrorIcon ?? bind?.formConfig?.validationErrorIcon;
 
   return [
     value,
@@ -684,24 +571,17 @@ export function useBindingState<TData>(
       validationErrorMessages,
       validationMode,
       validationErrorIcon,
-      shouldShowValidationErrorIcon:
-        validationMode === "icon" || validationMode === "both",
-      shouldShowValidationErrorMessage:
-        validationMode === "message" || validationMode === "both",
+      shouldShowValidationErrorIcon: validationMode === 'icon' || validationMode === 'both',
+      shouldShowValidationErrorMessage: validationMode === 'message' || validationMode === 'both',
     },
   ];
 }
 
 /** DEPRECATED - useBindingTools has been renamed useBindingState */
-export function useBindingTools<TData>(
-  bind?: IBindingProps<TData>,
-  overrides?: IUseBindingStateOverrides<TData>
-): UseBindingStateReturn<TData> {
+export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingStateOverrides<TData>): UseBindingStateReturn<TData> {
   React.useEffect(() => {
     // eslint-disable-next-line no-console
-    console.warn(
-      "useBindingTools has been renamed useBindingState - please update this usage of it"
-    );
+    console.warn('useBindingTools has been renamed useBindingState - please update this usage of it');
   }, []);
 
   return useBindingState<TData>(bind, overrides);

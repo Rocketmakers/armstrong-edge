@@ -1,0 +1,9 @@
+.arm-character-limit {
+  .arm-icon {
+    animation: expand-in-width-small $transition-quick;
+
+    &::before {
+      animation: fade-in $transition-quick;
+    }
+  }
+}

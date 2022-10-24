@@ -1,0 +1,10 @@
+.arm-listbox-multi-wrapper {
+  width: 100%;
+  max-width: $arm-input-width;
+}
+
+.arm-listbox-multi-content {
+  .placeholder {
+    font-size: 0.75rem;
+  }
+}
