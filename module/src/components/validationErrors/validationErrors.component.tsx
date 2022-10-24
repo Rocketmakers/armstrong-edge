@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
+import { ClassNames } from "../../utils/classNames";
 
-import { ValidationMessage } from '../../hooks/form';
-import { ClassNames } from '../../utils/classNames';
-import { ErrorMessage } from '../errorMessage';
-import { IconSet, IIcon } from '../icon';
+import { IconSet, IIcon } from "../icon";
+import { ErrorMessage } from "../errorMessage";
+import { ValidationMessage } from "../../hooks/form/form.types";
 
 export interface IValidationErrorsProps {
   /** The errors to render */
@@ -21,31 +21,41 @@ export interface IValidationErrorsProps {
 }
 
 /** Render an array of validation errors as error messages */
-export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IValidationErrorsProps>>(
-  ({ validationErrors, className, icon, scrollIntoView }, ref) => {
-    const internalRef = React.useRef<HTMLInputElement>(null);
-    React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+export const ValidationErrors = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<IValidationErrorsProps>
+>(({ validationErrors, className, icon, scrollIntoView }, ref) => {
+  const internalRef = React.useRef<HTMLInputElement>(null);
+  React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    React.useEffect(() => {
-      if (validationErrors.length > 0 && scrollIntoView) {
-        internalRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      }
-    }, [validationErrors.length]);
+  React.useEffect(() => {
+    if (validationErrors.length > 0 && scrollIntoView) {
+      internalRef.current?.scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+    }
+  }, [validationErrors.length]);
 
-    /** If the error is a JSX element use the key on the element or the index */
-    const getKey = React.useCallback((error: ValidationMessage, index: number) => {
-      if (typeof error === 'string') {
+  /** If the error is a JSX element use the key on the element or the index */
+  const getKey = React.useCallback(
+    (error: ValidationMessage, index: number) => {
+      if (typeof error === "string") {
         return error + index;
       }
       return error?.key ?? index;
-    }, []);
+    },
+    []
+  );
 
-    return (
-      <div ref={internalRef} className={ClassNames.concat('arm-validation-errors', className)}>
-        {validationErrors.map((error, i) => (
-          <ErrorMessage message={error} key={getKey(error, i)} icon={icon} />
-        ))}
-      </div>
-    );
-  }
-);
+  return (
+    <div
+      ref={internalRef}
+      className={ClassNames.concat("arm-validation-errors", className)}
+    >
+      {validationErrors.map((error, i) => (
+        <ErrorMessage message={error} key={getKey(error, i)} icon={icon} />
+      ))}
+    </div>
+  );
+});

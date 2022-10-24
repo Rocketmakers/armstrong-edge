@@ -3,8 +3,12 @@
  * A set of helper functions to support the form logic.
  ******************************************************* */
 
-import { InitialDataFunction } from '.';
-import { IBindingProps, IValidationError, KeyChain } from './form.types';
+import {
+  IBindingProps,
+  InitialDataFunction,
+  IValidationError,
+  KeyChain,
+} from "./form.types";
 
 /**
  * Converts a keyChain into a validation error key string
@@ -12,22 +16,27 @@ import { IBindingProps, IValidationError, KeyChain } from './form.types';
  * @param mode (dots|brackets) Whether to use dot syntax for array indexes, or square brackets.
  * @returns The key string
  */
-export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots' | 'brackets'): string {
+export function validationKeyStringFromKeyChain(
+  keyChain: KeyChain,
+  mode: "dots" | "brackets"
+): string {
   switch (mode) {
-    case 'dots':
-      return keyChain.filter((key) => !!key).join('.');
-    case 'brackets':
+    case "dots":
+      return keyChain.filter((key) => !!key).join(".");
+    case "brackets":
       return keyChain.reduce<string>((attrString, key) => {
-        if (typeof key === 'string') {
-          return `${attrString}${attrString ? `.` : ''}${key}`;
+        if (typeof key === "string") {
+          return `${attrString}${attrString ? `.` : ""}${key}`;
         }
-        if (typeof key === 'number') {
+        if (typeof key === "number") {
           return `${attrString}[${key}]`;
         }
         return attrString;
-      }, '');
+      }, "");
     default:
-      throw new Error(`Unsupported mode: ${mode} sent to validation key factory`);
+      throw new Error(
+        `Unsupported mode: ${mode} sent to validation key factory`
+      );
   }
 }
 
@@ -37,7 +46,10 @@ export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots'
  * @param propertyKeyChainStrings The property keyChain strings to check
  * @returns {boolean} `true` if the validation error belongs to (or is a child of) one of the passed property keyChains, else `false`.
  */
-export function isMyValidationError(validationErrorKey: string, ...propertyKeyChainStrings: string[]): boolean {
+export function isMyValidationError(
+  validationErrorKey: string,
+  ...propertyKeyChainStrings: string[]
+): boolean {
   return propertyKeyChainStrings.some((propertyKeyChain) => {
     return (
       propertyKeyChain === validationErrorKey ||
@@ -53,10 +65,25 @@ export function isMyValidationError(validationErrorKey: string, ...propertyKeyCh
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
  * @returns {Array} A filtered set of validation errors that apply to the property in question and its sub-properties.
  */
-export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], keyChain: KeyChain = []): IValidationError[] {
-  const keyChainAttrStringDots = validationKeyStringFromKeyChain(keyChain, 'dots');
-  const keyChainAttrStringSquareArray = validationKeyStringFromKeyChain(keyChain, 'brackets');
-  return rootErrors.filter((error) => isMyValidationError(error.key, keyChainAttrStringDots, keyChainAttrStringSquareArray));
+export function validationErrorsByKeyChain(
+  rootErrors: IValidationError[] = [],
+  keyChain: KeyChain = []
+): IValidationError[] {
+  const keyChainAttrStringDots = validationKeyStringFromKeyChain(
+    keyChain,
+    "dots"
+  );
+  const keyChainAttrStringSquareArray = validationKeyStringFromKeyChain(
+    keyChain,
+    "brackets"
+  );
+  return rootErrors.filter((error) =>
+    isMyValidationError(
+      error.key,
+      keyChainAttrStringDots,
+      keyChainAttrStringSquareArray
+    )
+  );
 }
 
 /**
@@ -65,7 +92,10 @@ export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], 
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
  * @returns The value if one is set, else undefined.
  */
-export function valueByKeyChain<TData, TValue>(state: TData, keyChain: KeyChain): TValue | undefined {
+export function valueByKeyChain<TData, TValue>(
+  state: TData,
+  keyChain: KeyChain
+): TValue | undefined {
   return keyChain.reduce<any>((value, key) => value?.[key], state);
 }
 
@@ -74,8 +104,15 @@ export function valueByKeyChain<TData, TValue>(state: TData, keyChain: KeyChain)
  * @param item The item to check.
  * @returns {boolean} `true` if the item passed conforms to the binding props interface `IBindingProps` else `false`. Also casts if `true`.
  */
-export function isBindingProps<TValue>(item?: any): item is IBindingProps<TValue> {
-  return !!item?.setValue && !!item?.dispatch && !!item?.keyChain && !!item?.myValidationErrors;
+export function isBindingProps<TValue>(
+  item?: any
+): item is IBindingProps<TValue> {
+  return (
+    !!item?.setValue &&
+    !!item?.dispatch &&
+    !!item?.keyChain &&
+    !!item?.myValidationErrors
+  );
 }
 
 /**
@@ -84,7 +121,10 @@ export function isBindingProps<TValue>(item?: any): item is IBindingProps<TValue
  * @param attemptedAction The action being attempted on the form prop.
  * @returns Throws if not an array or returns true with a cast.
  */
-export function isArrayValue(value: any, attemptedAction: string): value is any[] {
+export function isArrayValue(
+  value: any,
+  attemptedAction: string
+): value is any[] {
   if (value && !Array.isArray(value)) {
     throw new Error(
       `"${attemptedAction}" cannot be used on a set form property that does not contain an array value, the current value of this property is: ${JSON.stringify(
@@ -103,7 +143,7 @@ export function isArrayValue(value: any, attemptedAction: string): value is any[
 export function initialDataIsCallback<TData extends object>(
   initialData?: TData | InitialDataFunction<TData>
 ): initialData is InitialDataFunction<TData> {
-  return typeof initialData === 'function';
+  return typeof initialData === "function";
 }
 
 /**
@@ -112,11 +152,19 @@ export function initialDataIsCallback<TData extends object>(
  * @param parentKeyChain The parent keyChain to be stripped from the front.
  * @returns A new keyChain string targeted at the child binding rather than the parent.
  */
-export function childKeyChainStringFromParent(childKeyChainString: string, parentKeyChain: KeyChain): string {
+export function childKeyChainStringFromParent(
+  childKeyChainString: string,
+  parentKeyChain: KeyChain
+): string {
   // make the parent key regex safe
-  const regexSafeParent = parentKeyChain.join('.').replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const regexSafeParent = parentKeyChain
+    .join(".")
+    .replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
   // remove the parent keyChain from the beginning of the child string.
-  const childWithoutParent = childKeyChainString.replace(new RegExp(`^${regexSafeParent}`), '');
+  const childWithoutParent = childKeyChainString.replace(
+    new RegExp(`^${regexSafeParent}`),
+    ""
+  );
   // strip accessor tokens (. | [n].) from the beginning of the child keyChain string and return.
-  return childWithoutParent.replace(/^.*?\./, '');
+  return childWithoutParent.replace(/^.*?\./, "");
 }

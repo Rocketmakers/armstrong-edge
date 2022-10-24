@@ -5,8 +5,8 @@
  * No real code in here (TypeScript's not real.)
  ******************************************************* */
 
-import { IconSet, IIcon } from '../../components/icon';
-import { Merge, NeverUndefined } from '../../types';
+import { IconSet, IIcon } from "../../components/icon";
+import { Merge, NeverUndefined } from "../../types/core";
 
 /**
  * Works out whether some data is an object, and array, or another type.
@@ -15,7 +15,10 @@ import { Merge, NeverUndefined } from '../../types';
  * If it's an array, this type becomes `number` to support indexing the array.
  * If it's any other type this type becomes `never`, to prevent `formProp` users digging into a non-nested type.
  */
-export type KeyOrIndex<TData, TDataKey extends keyof TData> = TData extends object
+export type KeyOrIndex<
+  TData,
+  TDataKey extends keyof TData
+> = TData extends object
   ? Extract<TDataKey, TData extends any[] ? number : unknown>
   : never;
 
@@ -45,7 +48,10 @@ export interface BindingToolsStandard<TValue> {
    * @param messages The validation error message(s) to add.
    * @param identifier The identifier so use when adding the validation error(s), allows this group to be independently cleared.
    */
-  addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => void;
+  addValidationError: (
+    messages: ValidationMessage | ValidationMessage[],
+    identifier?: string
+  ) => void;
   /**
    * Clears all client validation errors for the current form state.
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
@@ -68,7 +74,9 @@ export interface BindingToolsArray<TValue> {
    *
    * WARNING: Available to array properties only
    */
-  add: TValue extends any[] ? (newItem: TValue[0]) => BindingTools<TValue> : never;
+  add: TValue extends any[]
+    ? (newItem: TValue[0]) => BindingTools<TValue>
+    : never;
   /**
    * Removes the last item from an array field in the form state.
    *
@@ -82,21 +90,26 @@ export interface BindingToolsArray<TValue> {
    *
    * WARNING: Available to array properties only
    */
-  insert: TValue extends any[] ? (newItem: TValue[0], index: number) => BindingTools<TValue> : never;
+  insert: TValue extends any[]
+    ? (newItem: TValue[0], index: number) => BindingTools<TValue>
+    : never;
   /**
    * Removes an item from an array field at a specific index.
    * @param index The index at which to insert the new item.
    *
    * WARNING: Available to array properties only
    */
-  remove: TValue extends any[] ? (index: number) => BindingTools<TValue> : never;
+  remove: TValue extends any[]
+    ? (index: number) => BindingTools<TValue>
+    : never;
 }
 
 /**
  * The set of tools returned from `formProp`.
  * - This root type detects whether the value is an array and assigns the correct type accordingly.
  */
-export type BindingTools<TValue> = BindingToolsArray<TValue> & BindingToolsStandard<TValue>;
+export type BindingTools<TValue> = BindingToolsArray<TValue> &
+  BindingToolsStandard<TValue>;
 
 /**
  * This abstract class is used to handle the typings for the args passed to `formProp`.
@@ -123,8 +136,15 @@ export declare abstract class FormPropFactory<TData extends object> {
    * Used to access a property within the form data.
    * @param args The keys or indexes used to access a nested property to a depth of 2.
    */
-  public formProp<TDataKey extends keyof Required<TData>, TData2 extends Required<TData>[TDataKey], TDataKey2 extends keyof TData2>(
-    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>]
+  public formProp<
+    TDataKey extends keyof Required<TData>,
+    TData2 extends Required<TData>[TDataKey],
+    TDataKey2 extends keyof TData2
+  >(
+    ...args: [
+      key1: KeyOrIndex<Required<TData>, TDataKey>,
+      key2: KeyOrIndex<TData2, TDataKey2>
+    ]
   ): BindingTools<TData2[TDataKey2]>;
 
   /**
@@ -138,7 +158,11 @@ export declare abstract class FormPropFactory<TData extends object> {
     TData3 extends TData2[TDataKey2],
     TDataKey3 extends keyof TData3
   >(
-    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>, key3: KeyOrIndex<TData3, TDataKey3>]
+    ...args: [
+      key1: KeyOrIndex<Required<TData>, TDataKey>,
+      key2: KeyOrIndex<TData2, TDataKey2>,
+      key3: KeyOrIndex<TData3, TDataKey3>
+    ]
   ): BindingTools<TData3[TDataKey3]>;
 
   /**
@@ -206,7 +230,9 @@ export type Validator<TValue> = (value: TValue) => boolean;
  * @param value The user inputted field value.
  * @returns A string to show as the validation message.
  */
-export type ValidationMessageBuilder<TValue> = (value: TValue) => ValidationMessage;
+export type ValidationMessageBuilder<TValue> = (
+  value: TValue
+) => ValidationMessage;
 
 /**
  * The client validation config for a single field.
@@ -226,8 +252,14 @@ export interface IClientValidatorFieldConfig<TValue> {
 /**
  * Maps a form state object into it's corresponding client validator schema.
  */
-export type ClientValidationObjectMap<TLimit extends number, TData extends object> = {
-  [K in keyof Merge<TData>]?: ClientValidationConfig<Merge<TData>[K], KeyChainTemplateLimitMap[TLimit]>;
+export type ClientValidationObjectMap<
+  TLimit extends number,
+  TData extends object
+> = {
+  [K in keyof Merge<TData>]?: ClientValidationConfig<
+    Merge<TData>[K],
+    KeyChainTemplateLimitMap[TLimit]
+  >;
 };
 
 /**
@@ -236,7 +268,10 @@ export type ClientValidationObjectMap<TLimit extends number, TData extends objec
  * - Unpacks arrays of objects into nested fields.
  * - Supports `5` levels of form nesting (matching the `formProp` method.)
  */
-export type ClientValidationConfig<TData, TLimit extends number = 5> = TLimit extends never
+export type ClientValidationConfig<
+  TData,
+  TLimit extends number = 5
+> = TLimit extends never
   ? never
   : TData extends any[]
   ? TData[0] extends object
@@ -298,7 +333,10 @@ export interface IBindingProps<TValue> {
    * @param messages (ValidationMessage | ValidationMessage[]) The validation error message(s) to add. A validation message can be a string or a JSX element, if using JSX please add a key to the element to keep the animations consistent
    * @param identifier The identifier so use when adding the validation error(s), allows this group to be independently cleared.
    */
-  addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => void;
+  addValidationError: (
+    messages: ValidationMessage | ValidationMessage[],
+    identifier?: string
+  ) => void;
   /**
    * Clears all client validation errors for the current form state.
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
@@ -313,7 +351,7 @@ export interface IFormSetOneAction<TValue> {
   /**
    * The type used to detect a `set-one` action
    */
-  type: 'set-one';
+  type: "set-one";
   /**
    * The key or index used to retrieve the root property from the form data object.
    */
@@ -331,7 +369,7 @@ export interface IFormSetPathAction<TValue> {
   /**
    * The type used to detect a `set-path` action
    */
-  type: 'set-path';
+  type: "set-path";
   /**
    * The chain of keys and/or indexes used to retrieve the property from the form data object.
    */
@@ -349,7 +387,7 @@ export interface IFormSetAllAction<TData> {
   /**
    * The type used to detect a `set-all` action
    */
-  type: 'set-all';
+  type: "set-all";
   /**
    * An optional object to set as the entire new state, can be partial, if not passed form data will be reset to empty.
    */
@@ -367,7 +405,7 @@ export type FormDispatcher<TData> = (action: FormAction<TData, any>) => TData;
  * - `message` displays a supplied error message in the event of a validation error.
  * - `both` displays both the icon and the message.
  */
-export type FormValidationMode = 'icon' | 'message' | 'both';
+export type FormValidationMode = "icon" | "message" | "both";
 
 /**
  * The validation message
@@ -444,7 +482,10 @@ export interface IFormConfig<TData> {
 /**
  * The root type for a form action to be dispatched to the reducer.
  */
-export type FormAction<TData, TValue> = IFormSetOneAction<TValue> | IFormSetPathAction<TValue> | IFormSetAllAction<TData>;
+export type FormAction<TData, TValue> =
+  | IFormSetOneAction<TValue>
+  | IFormSetPathAction<TValue>
+  | IFormSetAllAction<TData>;
 
 /**
  * The items returned from the `useForm` hooks.
@@ -463,7 +504,7 @@ export interface HookReturn<TData extends object> {
    * - The args passed to `formProp` form a "key chain" which is then used to access properties within the data object.
    * @returns a set of tools for the property in question, notably `bind` and `set`.
    */
-  formProp: FormPropFactory<TData>['formProp'];
+  formProp: FormPropFactory<TData>["formProp"];
   /**
    * Resets user inputted form data back to the most recent "initial" value passed into the hook.
    */
@@ -508,7 +549,7 @@ export interface IDelayInputConfig {
   /**
    * Whether to use a debounce or a throttle delay.
    */
-  mode: 'debounce' | 'throttle';
+  mode: "debounce" | "throttle";
 
   /**
    * The number of milliseconds to delay for.
@@ -517,15 +558,17 @@ export interface IDelayInputConfig {
 }
 
 export interface IAddValidationAction {
-  type: 'add-validation';
+  type: "add-validation";
   errors: IValidationError[];
 }
 export interface IClearValidationAction {
-  type: 'clear-validation';
+  type: "clear-validation";
   key?: string;
   identifiers?: string[];
 }
 
 export type ValidationAction = IAddValidationAction | IClearValidationAction;
 
-export type InitialDataFunction<TData extends object> = (currentState?: TData) => TData;
+export type InitialDataFunction<TData extends object> = (
+  currentState?: TData
+) => TData;

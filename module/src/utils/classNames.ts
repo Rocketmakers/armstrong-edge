@@ -3,7 +3,13 @@ export namespace ClassNames {
     [id: string]: boolean | undefined | null;
   }
   interface ClassNameArray extends Array<ClassName> {}
-  type ClassName = string | ClassNameDictionary | ClassNameArray | undefined | null | false;
+  type ClassName =
+    | string
+    | ClassNameDictionary
+    | ClassNameArray
+    | undefined
+    | null
+    | false;
 
   /**
    * Concatenate classnames into a single string
@@ -16,13 +22,13 @@ export namespace ClassNames {
         continue;
       }
 
-      if (typeof argument === 'string') {
+      if (typeof argument === "string") {
         // if string add to output
         classes.push(argument);
       } else if (Array.isArray(argument)) {
         // if array, spread into output
         classes = [...classes, concat(argument)];
-      } else if (typeof argument === 'object') {
+      } else if (typeof argument === "object") {
         for (const key in argument) {
           // if object,
           if (argument[key]) {
@@ -32,6 +38,6 @@ export namespace ClassNames {
       }
     }
 
-    return classes.join(' ');
+    return classes.join(" ");
   }
 }

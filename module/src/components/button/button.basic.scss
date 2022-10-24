@@ -1,17 +1,5 @@
-.arm-button,
-.arm-button-minimal {
-  @include space-between-children-horizontal($spacing-xsmall);
+@use "../../theme/variables.scss";
 
-  border: 0;
-  outline: none;
-  background-color: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  user-select: none;
-  padding: 0;
-
-  &.arm-button-minimal {
-    color: inherit;
-  }
+.arm-button {
+  background-color: var(--color-brand-primary);
 }

@@ -1,7 +1,5 @@
-.arm-group-inner {
-  @include space-between-children-horizontal($spacing-xsmall);
+@import "../../theme/variables.scss";
 
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+.arm-group {
+  background-color: var(--color-brand-primary);
 }
