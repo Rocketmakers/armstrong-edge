@@ -33,9 +33,9 @@ jobs:
         if: steps.cache-npm-build.outputs.cache-hit != 'true'
         run: (cd module && npm ci)
 
-      - name: lint
-        run: (cd module && npm run lint)
-      
+      # - name: lint
+      #   run: (cd module && npm run lint)
+
       - name: build
         run: (cd module && npm run build)
 
