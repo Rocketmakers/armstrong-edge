@@ -1,21 +1,24 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-radio-input-radio {
-  @include square(1.4rem);
-  @include flex-centre-content;
+  @include mixins.square(1.4rem);
+  @include mixins.flex-centre-content;
 
   position: relative;
 
   &::after {
-    @include init-pseudo;
-    @include square(0.9rem);
+    @include mixins.init-pseudo;
+    @include mixins.square(0.9rem);
 
     pointer-events: none;
-    background-color: $brand-primary;
+    background-color: variables.$brand-primary;
     opacity: 0;
   }
 
   .arm-icon {
-    @include absolute-fill;
-    @include flex-centre-content;
+    @include mixins.absolute-fill;
+    @include mixins.flex-centre-content;
 
     pointer-events: none;
     opacity: 0;
@@ -25,7 +28,7 @@
     }
 
     &.arm-icon.arm-radio-input-checked-icon {
-      color: $brand-primary;
+      color: variables.$brand-primary;
     }
   }
 }
@@ -33,15 +36,19 @@
 .arm-radio-input {
   position: relative;
 
-  &[data-direction='horizontal'] {
+  &[data-direction="horizontal"] {
     label {
-      @include space-between-children-horizontal($spacing-xsmall);
+      @include mixins.space-between-children-horizontal(
+        variables.$spacing-xsmall
+      );
     }
   }
 
-  &[data-direction='vertical'] {
+  &[data-direction="vertical"] {
     label {
-      @include space-between-children-vertical($spacing-xsmall);
+      @include mixins.space-between-children-vertical(
+        variables.$spacing-xsmall
+      );
 
       flex-direction: column;
     }
@@ -53,7 +60,7 @@
     cursor: pointer;
   }
 
-  &[data-has-checked-icon='true'] {
+  &[data-has-checked-icon="true"] {
     .arm-radio-input-radio {
       &::after {
         background-color: transparent;
@@ -61,7 +68,7 @@
     }
   }
 
-  &[data-checked='true'] {
+  &[data-checked="true"] {
     .arm-radio-input-radio {
       &::after {
         opacity: 1;
@@ -79,7 +86,7 @@
 }
 
 .arm-radio-input-radio-input {
-  @include absolute-fill;
+  @include mixins.absolute-fill;
 
   appearance: none;
   -webkit-appearance: none;

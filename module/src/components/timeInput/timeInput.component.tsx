@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 import {
   ArmstrongFCExtensions,
@@ -10,23 +10,37 @@ import {
   IAutoCompleteInputProps,
   ISelectOption,
   NullOrUndefined,
-} from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { ClassNames } from '../../utils/classNames';
-import { Dates } from '../../utils/dates';
-import { IconSet } from '../icon';
-import { IIconWrapperProps } from '../iconWrapper';
-import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
-import { IStatusWrapperProps } from '../statusWrapper';
-import { TimeParts } from './timeInput.types';
-import { getHourOptions, getMinuteOptions, parseTimePartsToDate, parseTimeStringToParts } from './timeInput.utils';
+} from "../..";
+import { IBindingProps } from "../../hooks/form";
+import { ClassNames } from "../../utils/classNames";
+import { Dates } from "../../utils/dates";
+import { IconSet } from "../icon";
+import { IIconWrapperProps } from "../iconWrapper";
+import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
+import { IStatusWrapperProps } from "../statusWrapper";
+import { TimeParts } from "./timeInput.types";
+import {
+  getHourOptions,
+  getMinuteOptions,
+  parseTimePartsToDate,
+  parseTimeStringToParts,
+} from "./timeInput.utils";
 
-type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'> & DataAttributes;
+import "./timeInput.basic.scss";
+
+type AdditionalInputProps = Omit<
+  IAutoCompleteInputProps<number>,
+  "bind" | "options" | "min" | "max"
+> &
+  DataAttributes;
 
 export interface ITimeInputProps<TBind extends NullOrUndefined<string>>
   extends IStatusWrapperProps,
     IIconWrapperProps<IconSet, IconSet>,
-    Pick<IInputWrapperProps, 'above' | 'below' | 'leftOverlay' | 'rightOverlay'> {
+    Pick<
+      IInputWrapperProps,
+      "above" | "below" | "leftOverlay" | "rightOverlay"
+    > {
   /** The binding for the input. */
   bind?: IBindingProps<TBind>;
 
@@ -126,16 +140,23 @@ export const TimeInput = React.forwardRef(
     }: ITimeInputProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const [selectedTime, setSelectedTime, bindConfig] = Form.useBindingState(bind, {
-      validationErrorMessages,
-      validationMode,
-      validationErrorIcon: errorIcon,
-      onChange: onValueChange,
-      value,
-    });
+    const [selectedTime, setSelectedTime, bindConfig] = Form.useBindingState(
+      bind,
+      {
+        validationErrorMessages,
+        validationMode,
+        validationErrorIcon: errorIcon,
+        onChange: onValueChange,
+        value,
+      }
+    );
 
     const selectedTimeParsed = React.useMemo(() => {
-      return parseTimeStringToParts(selectedTime ?? undefined, formatString!, locale);
+      return parseTimeStringToParts(
+        selectedTime ?? undefined,
+        formatString!,
+        locale
+      );
     }, [selectedTime, locale, formatString]);
 
     const hourOptions = React.useMemo<ISelectOption<number>[]>(() => {
@@ -147,29 +168,47 @@ export const TimeInput = React.forwardRef(
     }, [hourFilter, hourInputDisplayFormat, locale]);
 
     const minuteOptions = React.useMemo<ISelectOption<number>[]>(() => {
-      let allMinutes = getMinuteOptions(minuteInputDisplayFormat!, locale, minuteStep);
+      let allMinutes = getMinuteOptions(
+        minuteInputDisplayFormat!,
+        locale,
+        minuteStep
+      );
       if (minuteFilter) {
         allMinutes = allMinutes.filter(minuteFilter);
       }
       return allMinutes;
     }, [minuteFilter, minuteInputDisplayFormat, locale, minuteStep]);
 
-    const { formProp, formState } = Form.use<Partial<TimeParts>>(selectedTimeParsed || {});
+    const { formProp, formState } = Form.use<Partial<TimeParts>>(
+      selectedTimeParsed || {}
+    );
 
     const onHourChange = React.useCallback(
       (newHour: number) => {
         if (formState?.minute && zeroMinutesOnHourSelected) {
-          formProp('minute').set(0);
+          formProp("minute").set(0);
         }
         return additionalHourInputProps?.onChange?.(newHour);
       },
-      [formState?.minute, formProp, zeroMinutesOnHourSelected, additionalHourInputProps?.onChange]
+      [
+        formState?.minute,
+        formProp,
+        zeroMinutesOnHourSelected,
+        additionalHourInputProps?.onChange,
+      ]
     );
 
     React.useEffect(() => {
-      if (Number.isInteger(formState?.hour) && Number.isInteger(formState?.minute)) {
+      if (
+        Number.isInteger(formState?.hour) &&
+        Number.isInteger(formState?.minute)
+      ) {
         try {
-          const newTime = parseTimePartsToDate(formState as TimeParts, formatString!, locale);
+          const newTime = parseTimePartsToDate(
+            formState as TimeParts,
+            formatString!,
+            locale
+          );
 
           if (newTime !== selectedTime) {
             setSelectedTime?.(newTime as TBind);
@@ -183,7 +222,7 @@ export const TimeInput = React.forwardRef(
     return (
       <InputWrapper
         ref={ref}
-        className={ClassNames.concat('arm-time-input', className)}
+        className={ClassNames.concat("arm-time-input", className)}
         error={error}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}
@@ -198,16 +237,20 @@ export const TimeInput = React.forwardRef(
         <AutoCompleteInput
           placeholder="hours"
           {...(additionalHourInputProps ?? {})}
-          bind={formProp('hour').bind()}
+          bind={formProp("hour").bind()}
           options={hourOptions}
           disabled={disabled}
           onChange={onHourChange}
         />
-        {typeof betweenInputs === 'string' ? <p className="arm-time-input-between-inputs">{betweenInputs}</p> : betweenInputs}
+        {typeof betweenInputs === "string" ? (
+          <p className="arm-time-input-between-inputs">{betweenInputs}</p>
+        ) : (
+          betweenInputs
+        )}
         <AutoCompleteInput
           placeholder="minutes"
           {...(additionalMinuteInputProps ?? {})}
-          bind={formProp('minute').bind()}
+          bind={formProp("minute").bind()}
           options={minuteOptions}
           disabled={disabled}
         />
@@ -216,12 +259,14 @@ export const TimeInput = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<T extends NullOrUndefined<string>>(props: ArmstrongFCProps<Omit<ITimeInputProps<T>, 'type'>, HTMLInputElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<Omit<ITimeInputProps<any>, 'type'>>;
+) as (<T extends NullOrUndefined<string>>(
+  props: ArmstrongFCProps<Omit<ITimeInputProps<T>, "type">, HTMLInputElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<Omit<ITimeInputProps<any>, "type">>;
 
 TimeInput.defaultProps = {
-  formatString: 'HH:mm',
-  hourInputDisplayFormat: 'H',
-  minuteInputDisplayFormat: 'm',
-  betweenInputs: ':',
+  formatString: "HH:mm",
+  hourInputDisplayFormat: "H",
+  minuteInputDisplayFormat: "m",
+  betweenInputs: ":",
 };

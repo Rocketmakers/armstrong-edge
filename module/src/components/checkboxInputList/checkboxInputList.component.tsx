@@ -1,30 +1,57 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Arrays, Form, IInputWrapperProps, ValidationErrors } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
-import { ArmstrongId } from '../../types/core';
-import { IArmstrongExtendedOption, IArmstrongExtendedOptionWithInput } from '../../types/options';
-import { ClassNames } from '../../utils/classNames';
-import { CheckboxInput, ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
+import { Arrays, Form, IInputWrapperProps, ValidationErrors } from "../..";
+import { IBindingProps } from "../../hooks/form";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+} from "../../types";
+import { ArmstrongId } from "../../types/core";
+import {
+  IArmstrongExtendedOption,
+  IArmstrongExtendedOptionWithInput,
+} from "../../types/options";
+import { ClassNames } from "../../utils/classNames";
+import {
+  CheckboxInput,
+  ICheckboxInputProps,
+} from "../checkboxInput/checkboxInput.component";
+
+import "./checkboxInputList.basic.scss";
 
 export interface ICheckboxInputListOption<Id extends ArmstrongId>
   extends Omit<
     IArmstrongExtendedOptionWithInput<
       Id,
-      Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
-      ICheckboxInputProps<any>['inputProps']
+      Omit<
+        React.DetailedHTMLProps<
+          React.InputHTMLAttributes<HTMLDivElement>,
+          HTMLDivElement
+        >,
+        "onChange" | "type" | "ref"
+      >,
+      ICheckboxInputProps<any>["inputProps"]
     >,
     // omitted for replaced JSDoc below
-    'content'
+    "content"
   > {
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
-  content: IArmstrongExtendedOption<Id>['content'];
+  content: IArmstrongExtendedOption<Id>["content"];
 }
 
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
-  extends Pick<ICheckboxInputProps<any>, 'checkedIcon' | 'uncheckedIcon' | 'hideCheckbox'>,
-    Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
+  extends Pick<
+      ICheckboxInputProps<any>,
+      "checkedIcon" | "uncheckedIcon" | "hideCheckbox"
+    >,
+    Pick<
+      IInputWrapperProps,
+      | "scrollValidationErrorsIntoView"
+      | "validationMode"
+      | "errorIcon"
+      | "validationErrorMessages"
+    > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
 
@@ -44,7 +71,7 @@ export interface ICheckboxInputListProps<Id extends ArmstrongId>
   error?: boolean;
 
   /** the direction for the options in the list to flow */
-  direction?: 'horizontal' | 'vertical';
+  direction?: "horizontal" | "vertical";
 }
 
 /** A list of checkboxes which binds to an array of IDs */
@@ -76,9 +103,15 @@ export const CheckboxInputList = React.forwardRef(
       onChange,
     });
 
-    const groupedOptions = React.useMemo(() => Arrays.arrayToArraysByKey(options, (option) => option.group || ''), [options]);
+    const groupedOptions = React.useMemo(
+      () => Arrays.arrayToArraysByKey(options, (option) => option.group || ""),
+      [options]
+    );
 
-    const includesOption = React.useCallback((option: ICheckboxInputListOption<Id>) => boundValue?.includes(option.id), [boundValue]);
+    const includesOption = React.useCallback(
+      (option: ICheckboxInputListOption<Id>) => boundValue?.includes(option.id),
+      [boundValue]
+    );
 
     const onCheckboxInputChange = React.useCallback(
       (option: ICheckboxInputListOption<Id>) => {
@@ -94,7 +127,7 @@ export const CheckboxInputList = React.forwardRef(
     return (
       <>
         <div
-          className={ClassNames.concat('arm-checkbox-input-list', className)}
+          className={ClassNames.concat("arm-checkbox-input-list", className)}
           data-error={error || !!validationErrorMessages?.length}
           ref={ref}
           data-direction={direction}
@@ -113,14 +146,18 @@ export const CheckboxInputList = React.forwardRef(
                   leftIcon={option.leftIcon}
                   rightIcon={option.rightIcon}
                   checked={includesOption(option)}
-                  onChange={() => !option.disabled && onCheckboxInputChange(option)}
+                  onChange={() =>
+                    !option.disabled && onCheckboxInputChange(option)
+                  }
                   name={option.name ?? option.id?.toString()}
                   checkedIcon={checkedIcon}
                   uncheckedIcon={uncheckedIcon}
                   content={option.content}
                   inputProps={option.htmlInputProps}
                   disabled={option.disabled}
-                  direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
+                  direction={
+                    direction === "horizontal" ? "vertical" : "horizontal"
+                  }
                   hideCheckbox={hideCheckbox}
                   {...option.htmlProps}
                 />
@@ -129,21 +166,24 @@ export const CheckboxInputList = React.forwardRef(
           ))}
         </div>
 
-        {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
-          <ValidationErrors
-            validationErrors={bindConfig.validationErrorMessages}
-            icon={bindConfig.validationErrorIcon}
-            scrollIntoView={scrollValidationErrorsIntoView}
-          />
-        )}
+        {bindConfig.shouldShowValidationErrorMessage &&
+          bindConfig.validationErrorMessages && (
+            <ValidationErrors
+              validationErrors={bindConfig.validationErrorMessages}
+              icon={bindConfig.validationErrorIcon}
+              scrollIntoView={scrollValidationErrorsIntoView}
+            />
+          )}
       </>
     );
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxInputListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<ICheckboxInputListProps<Id>, HTMLDivElement>
+) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICheckboxInputListProps<any>>;
 
 CheckboxInputList.defaultProps = {
-  direction: 'vertical',
+  direction: "vertical",
 };

@@ -1,3 +1,5 @@
+@use "../../theme/variables.scss";
+
 .arm-input-inner {
   cursor: text;
 }
@@ -9,8 +11,8 @@
   border: 0;
   outline: none;
   background-color: transparent;
-  padding: $spacing-xsmall 0;
-  height: $arm-input-height;
+  padding: variables.$spacing-xsmall 0;
+  height: variables.$arm-input-height;
   color: inherit;
 
   &:focus {

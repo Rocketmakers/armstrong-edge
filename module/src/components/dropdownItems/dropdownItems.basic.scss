@@ -1,3 +1,6 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-dropdown-items {
   &:focus {
     border: 0;
@@ -9,7 +12,7 @@
   padding: 0;
 
   .arm-dropdown-content-inner {
-    padding: $spacing-xxsmall 0;
+    padding: variables.$spacing-xxsmall 0;
   }
 }
 
@@ -21,13 +24,13 @@
 }
 
 .arm-dropdown-item {
-  @include space-between-children-horizontal($spacing-xsmall);
+  @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
 
   cursor: pointer;
   display: flex;
   align-items: center;
 
-  &[data-disabled='true'] {
+  &[data-disabled="true"] {
     pointer-events: none;
 
     > * {

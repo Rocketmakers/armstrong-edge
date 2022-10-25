@@ -1,47 +1,76 @@
-import { isSameDay } from 'date-fns';
-import * as React from 'react';
+import { isSameDay } from "date-fns";
+import * as React from "react";
 
-import { Calendar, DataAttributes, Form } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { Typescript } from '../../utils';
-import { ClassNames } from '../../utils/classNames';
-import { Dates } from '../../utils/dates';
-import { JavaScript } from '../../utils/javascript';
-import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
-import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
-import { Dropdown, IDropdownProps } from '../dropdown';
-import { IconSet, IconUtils } from '../icon';
-import { IconButton } from '../iconButton';
-import { IIconWrapperProps } from '../iconWrapper';
-import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
-import { Modal } from '../modal';
-import { IStatusWrapperProps } from '../statusWrapper';
-import { calendarDayToDateLike, getDaySelectOptions, validateDateSelection } from './calendarInput.utils';
+import { Calendar, DataAttributes, Form } from "../..";
+import { IBindingProps } from "../../hooks/form";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+  NullOrUndefined,
+} from "../../types";
+import { Typescript } from "../../utils";
+import { ClassNames } from "../../utils/classNames";
+import { Dates } from "../../utils/dates";
+import { JavaScript } from "../../utils/javascript";
+import {
+  AutoCompleteInput,
+  IAutoCompleteInputProps,
+} from "../autoCompleteInput";
+import {
+  CalendarDisplay,
+  ICalendarDisplayProps,
+} from "../calendarDisplay/calendarDisplay.component";
+import { Dropdown, IDropdownProps } from "../dropdown";
+import { IconSet, IconUtils } from "../icon";
+import { IconButton } from "../iconButton";
+import { IIconWrapperProps } from "../iconWrapper";
+import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
+import { Modal } from "../modal";
+import { IStatusWrapperProps } from "../statusWrapper";
+import {
+  calendarDayToDateLike,
+  getDaySelectOptions,
+  validateDateSelection,
+} from "./calendarInput.utils";
 
-type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'> & DataAttributes;
+import "./calendarInput.basic.scss";
 
-export type CalendarInputPart = 'year' | 'month' | 'day';
+type AdditionalInputProps = Omit<
+  IAutoCompleteInputProps<number>,
+  "bind" | "options" | "min" | "max"
+> &
+  DataAttributes;
 
-export type CalendarInputCalendarPosition = 'dropdown' | 'modal' | 'above' | 'below';
-export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLike>>
-  extends Omit<Calendar.IConfig, 'selectedDate'>,
+export type CalendarInputPart = "year" | "month" | "day";
+
+export type CalendarInputCalendarPosition =
+  | "dropdown"
+  | "modal"
+  | "above"
+  | "below";
+export interface ICalendarInputProps<
+  TValue extends NullOrUndefined<Dates.DateLike>
+> extends Omit<Calendar.IConfig, "selectedDate">,
     Pick<
       ICalendarDisplayProps,
-      | 'weekdayStartIndex'
-      | 'calendarDayDisplayFormat'
-      | 'calendarMonthSelectDisplayFormat'
-      | 'calendarYearSelectDisplayFormat'
-      | 'calendarDayOfTheWeekHeadingDisplayFormat'
-      | 'highlightToday'
-      | 'backButton'
-      | 'forwardsButton'
-      | 'controls'
-      | 'jumpList'
+      | "weekdayStartIndex"
+      | "calendarDayDisplayFormat"
+      | "calendarMonthSelectDisplayFormat"
+      | "calendarYearSelectDisplayFormat"
+      | "calendarDayOfTheWeekHeadingDisplayFormat"
+      | "highlightToday"
+      | "backButton"
+      | "forwardsButton"
+      | "controls"
+      | "jumpList"
     >,
     IStatusWrapperProps,
     IIconWrapperProps<IconSet, IconSet>,
-    Pick<IInputWrapperProps, 'leftOverlay' | 'rightOverlay' | 'scrollValidationErrorsIntoView'> {
+    Pick<
+      IInputWrapperProps,
+      "leftOverlay" | "rightOverlay" | "scrollValidationErrorsIntoView"
+    > {
   /** CSS className property */
   className?: string;
 
@@ -98,16 +127,16 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
    * - `both` will allow users to select a date from the calendar OR enter one using the inputs.
    * @default both
    */
-  displayMode?: 'calendar' | 'inputs' | 'both';
+  displayMode?: "calendar" | "inputs" | "both";
 
   /** The position to show the calendar - can show below the input in a dropdown, in a modal, or above or below the input */
   calendarPosition?: CalendarInputCalendarPosition;
 
   /** with calendarPosition: 'dropdown', how should the dropdown align horizontally to the child element - if stretch is true, used if wider than the child element */
-  dropdownAlignment?: IDropdownProps['alignment'];
+  dropdownAlignment?: IDropdownProps["alignment"];
 
   /** with calendarPosition: 'dropdown', how should the dropdown be positioned vertically */
-  dropdownPosition?: IDropdownProps['position'];
+  dropdownPosition?: IDropdownProps["position"];
 
   /** Should the calendar stay open? - useful in conjunction with calendarPosition, not compatible with calendarPosition="modal" */
   keepCalendarOpen?: boolean;
@@ -127,7 +156,10 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
   betweenInputs?: React.ReactNode;
 
   /** Override the button used to open the calendar (useful if working without Icomoon) */
-  openCalendarButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void, isOpen?: boolean) => JSX.Element | string;
+  openCalendarButton?: (
+    onClick: (event: React.MouseEvent<HTMLElement>) => void,
+    isOpen?: boolean
+  ) => JSX.Element | string;
 }
 
 /** Type representing the internal form data within the calendar input */
@@ -204,15 +236,26 @@ export const CalendarInput = React.forwardRef(
     }: ICalendarInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const [selectedDate, setSelectedDate, bindConfig] = Form.useBindingState(bind, {
-      validationErrorMessages,
-      validationMode,
-      validationErrorIcon: errorIcon,
-      onChange: onValueChange,
-      value,
-    });
+    const [selectedDate, setSelectedDate, bindConfig] = Form.useBindingState(
+      bind,
+      {
+        validationErrorMessages,
+        validationMode,
+        validationErrorIcon: errorIcon,
+        onChange: onValueChange,
+        value,
+      }
+    );
 
-    const { monthYearFormProp, stepMonth, days, months, years, selectedDateParsed, jumpTo } = Calendar.use({
+    const {
+      monthYearFormProp,
+      stepMonth,
+      days,
+      months,
+      years,
+      selectedDateParsed,
+      jumpTo,
+    } = Calendar.use({
       formatString,
       min,
       highlights,
@@ -237,14 +280,28 @@ export const CalendarInput = React.forwardRef(
     const onDayClicked = React.useCallback(
       (day: Calendar.IDay) => {
         setSelectedDate?.(
-          calendarDayToDateLike(day, !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string', formatString, locale) as TValue
+          calendarDayToDateLike(
+            day,
+            !JavaScript.isNullOrUndefined(selectedDate)
+              ? typeof selectedDate
+              : "string",
+            formatString,
+            locale
+          ) as TValue
         );
 
         if (closeCalendarOnDayClick) {
           setCalendarOpen(false);
         }
       },
-      [selectedDate, setSelectedDate, formatString, locale, closeCalendarOnDayClick, setCalendarOpen]
+      [
+        selectedDate,
+        setSelectedDate,
+        formatString,
+        locale,
+        closeCalendarOnDayClick,
+        setCalendarOpen,
+      ]
     );
 
     // when day is clicked inside calendar display, set it to the bound value
@@ -256,36 +313,65 @@ export const CalendarInput = React.forwardRef(
           setCalendarOpen(false);
         }
       },
-      [selectedDate, setSelectedDate, formatString, locale, closeCalendarOnDayClick, setCalendarOpen]
+      [
+        selectedDate,
+        setSelectedDate,
+        formatString,
+        locale,
+        closeCalendarOnDayClick,
+        setCalendarOpen,
+      ]
     );
 
     const missingParts = React.useMemo(() => {
-      const allParts: CalendarInputPart[] = ['day', 'month', 'year'];
+      const allParts: CalendarInputPart[] = ["day", "month", "year"];
       return allParts.filter((part) => !inputOrder!.includes(part));
     }, [inputOrder]);
 
     // when the value of the internal form changes, update the selected date
     React.useEffect(() => {
       // if parts of the date are omitted in inputOrder, use 1 or the given default
-      const day = formState?.day ?? (missingParts.includes('day') && (defaultIfOmitted?.day ?? 1));
-      const month = formState?.month ?? (missingParts.includes('month') && (defaultIfOmitted?.month ?? 0));
-      const year = formState?.year ?? (missingParts.includes('year') && (defaultIfOmitted?.year ?? new Date().getFullYear()));
+      const day =
+        formState?.day ??
+        (missingParts.includes("day") && (defaultIfOmitted?.day ?? 1));
+      const month =
+        formState?.month ??
+        (missingParts.includes("month") && (defaultIfOmitted?.month ?? 0));
+      const year =
+        formState?.year ??
+        (missingParts.includes("year") &&
+          (defaultIfOmitted?.year ?? new Date().getFullYear()));
 
       // only bind if all parts that are included in
-      if (typeof day === 'number' && typeof month === 'number' && typeof year === 'number') {
-        const invalidDateValidationId = 'ARM-inv-date';
+      if (
+        typeof day === "number" &&
+        typeof month === "number" &&
+        typeof year === "number"
+      ) {
+        const invalidDateValidationId = "ARM-inv-date";
         if (!validateDateSelection(day, month, year)) {
-          bind?.addValidationError('Invalid date selection', invalidDateValidationId);
+          bind?.addValidationError(
+            "Invalid date selection",
+            invalidDateValidationId
+          );
           return;
         }
 
         bind?.clearClientValidationErrors(invalidDateValidationId);
 
         const date = new Date(year, month, day);
-        if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
+        if (
+          !selectedDate ||
+          !isSameDay(
+            date,
+            Dates.dateLikeToDate(selectedDate, formatString, locale)!
+          )
+        ) {
           const newDate = Dates.dateObjectToDateLike(
             date,
-            !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string',
+            !JavaScript.isNullOrUndefined(selectedDate)
+              ? typeof selectedDate
+              : "string",
             formatString,
             locale
           );
@@ -299,24 +385,28 @@ export const CalendarInput = React.forwardRef(
     }, [days, locale, dayInputDisplayFormat]);
 
     const monthOptions = React.useMemo(() => {
-      return Dates.getMonthSelectOptions(months, monthInputDisplayFormat!, locale);
+      return Dates.getMonthSelectOptions(
+        months,
+        monthInputDisplayFormat!,
+        locale
+      );
     }, [months, locale, monthInputDisplayFormat]);
 
     const yearOptions = React.useMemo(() => {
       return Dates.getYearSelectOptions(years, yearInputDisplayFormat!, locale);
     }, [years, locale, yearInputDisplayFormat]);
 
-    const showCalendarButton = displayMode !== 'inputs';
-    const disableInputs = displayMode === 'calendar';
+    const showCalendarButton = displayMode !== "inputs";
+    const disableInputs = displayMode === "calendar";
 
     const calendarDisplayProps = {
       weekdayStartIndex: weekdayStartIndex!,
-      currentYearBinding: monthYearFormProp('viewingYear').bind(),
-      currentMonthBinding: monthYearFormProp('viewingMonth').bind(),
+      currentYearBinding: monthYearFormProp("viewingYear").bind(),
+      currentMonthBinding: monthYearFormProp("viewingMonth").bind(),
       onDayClicked,
       onClickJumpList,
-      onBackClicked: () => stepMonth('back'),
-      onForwardClicked: () => stepMonth('forward'),
+      onBackClicked: () => stepMonth("back"),
+      onForwardClicked: () => stepMonth("forward"),
       days,
       months,
       years,
@@ -333,14 +423,17 @@ export const CalendarInput = React.forwardRef(
     };
 
     const onClickWrapperEvent = React.useCallback(() => {
-      if (displayMode === 'calendar' && !calendarOpen) {
+      if (displayMode === "calendar" && !calendarOpen) {
         setCalendarOpen(true);
       }
     }, [calendarOpen, displayMode]);
 
     const formattedSelectedDate = React.useMemo(() => {
-      if (displayMode === 'calendar' && selectedDate) {
-        return Dates.dateToString(Dates.dateLikeToDate(selectedDate)!, displayFormatString);
+      if (displayMode === "calendar" && selectedDate) {
+        return Dates.dateToString(
+          Dates.dateLikeToDate(selectedDate)!,
+          displayFormatString
+        );
       }
     }, [displayMode, selectedDate, displayFormatString]);
 
@@ -356,13 +449,16 @@ export const CalendarInput = React.forwardRef(
       <>
         <div
           ref={ref}
-          className={ClassNames.concat('arm-calendar-input', className)}
+          className={ClassNames.concat("arm-calendar-input", className)}
           data-calendar-open={keepCalendarOpen || calendarOpen}
           onClick={onClickWrapperEvent}
           data-display-mode={displayMode}
         >
           <Dropdown
-            isOpen={calendarPosition === 'dropdown' && (calendarOpen || !!keepCalendarOpen)}
+            isOpen={
+              calendarPosition === "dropdown" &&
+              (calendarOpen || !!keepCalendarOpen)
+            }
             onOpenChange={setCalendarOpen}
             dropdownContent={<CalendarDisplay {...calendarDisplayProps} />}
             contentClassName="arm-calendar-input-dropdown-content"
@@ -381,8 +477,18 @@ export const CalendarInput = React.forwardRef(
               pending={pending}
               validationMode={bindConfig.validationMode}
               className="arm-calendar-input-inner"
-              above={calendarPosition === 'above' && (calendarOpen || keepCalendarOpen) ? <CalendarDisplay {...calendarDisplayProps} /> : undefined}
-              below={calendarPosition === 'below' && (calendarOpen || keepCalendarOpen) ? <CalendarDisplay {...calendarDisplayProps} /> : undefined}
+              above={
+                calendarPosition === "above" &&
+                (calendarOpen || keepCalendarOpen) ? (
+                  <CalendarDisplay {...calendarDisplayProps} />
+                ) : undefined
+              }
+              below={
+                calendarPosition === "below" &&
+                (calendarOpen || keepCalendarOpen) ? (
+                  <CalendarDisplay {...calendarDisplayProps} />
+                ) : undefined
+              }
               leftIcon={leftIcon}
               rightIcon={rightIcon}
               leftOverlay={leftOverlay}
@@ -391,62 +497,89 @@ export const CalendarInput = React.forwardRef(
             >
               {showCalendarButton &&
                 !keepCalendarOpen &&
-                (openCalendarButton?.(onClickCalendarButton, calendarOpen || !!keepCalendarOpen) || (
-                  <IconButton type="button" minimalStyle icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={onClickCalendarButton} />
+                (openCalendarButton?.(
+                  onClickCalendarButton,
+                  calendarOpen || !!keepCalendarOpen
+                ) || (
+                  <IconButton
+                    type="button"
+                    minimalStyle
+                    icon={IconUtils.getIconDefinition("Icomoon", "calendar")}
+                    onClick={onClickCalendarButton}
+                  />
                 ))}
 
               {disableInputs ? (
                 <div className="arm-calendar-input-preview">
-                  {selectedDate ? <p>{formattedSelectedDate}</p> : <p className="arm-calendar-input-placeholder">{placeholder}</p>}
+                  {selectedDate ? (
+                    <p>{formattedSelectedDate}</p>
+                  ) : (
+                    <p className="arm-calendar-input-placeholder">
+                      {placeholder}
+                    </p>
+                  )}
                 </div>
               ) : (
                 <>
                   {inputOrder!.map((part, index) => {
                     const between =
                       index < inputOrder!.length - 1 &&
-                      (typeof betweenInputs === 'string' ? <p className="arm-calendar-input-between-inputs">{betweenInputs}</p> : betweenInputs);
+                      (typeof betweenInputs === "string" ? (
+                        <p className="arm-calendar-input-between-inputs">
+                          {betweenInputs}
+                        </p>
+                      ) : (
+                        betweenInputs
+                      ));
 
                     switch (part) {
-                      case 'day': {
+                      case "day": {
                         return (
                           <React.Fragment key={part + index}>
                             <AutoCompleteInput
                               className="arm-calendar-select arm-calendar-select-day"
                               {...(additionalDayInputProps || {})}
-                              placeholder={additionalDayInputProps?.placeholder || 'day'}
+                              placeholder={
+                                additionalDayInputProps?.placeholder || "day"
+                              }
                               disabled={disableInputs}
                               options={dayOptions}
-                              bind={formProp('day').bind()}
+                              bind={formProp("day").bind()}
                             />
                             {between}
                           </React.Fragment>
                         );
                       }
-                      case 'month': {
+                      case "month": {
                         return (
                           <React.Fragment key={part + index}>
                             <AutoCompleteInput
                               className="arm-calendar-select arm-calendar-select-month"
                               {...(additionalMonthInputProps || {})}
-                              placeholder={additionalMonthInputProps?.placeholder || 'month'}
+                              placeholder={
+                                additionalMonthInputProps?.placeholder ||
+                                "month"
+                              }
                               disabled={disableInputs}
                               options={monthOptions}
-                              bind={formProp('month').bind()}
+                              bind={formProp("month").bind()}
                             />
                             {between}
                           </React.Fragment>
                         );
                       }
-                      case 'year': {
+                      case "year": {
                         return (
                           <React.Fragment key={part + index}>
                             <AutoCompleteInput
                               className="arm-calendar-select arm-calendar-select-year"
                               {...(additionalYearInputProps || {})}
-                              placeholder={additionalYearInputProps?.placeholder || 'year'}
+                              placeholder={
+                                additionalYearInputProps?.placeholder || "year"
+                              }
                               disabled={disableInputs}
                               options={yearOptions}
-                              bind={formProp('year').bind()}
+                              bind={formProp("year").bind()}
                             />
                             {between}
                           </React.Fragment>
@@ -464,7 +597,11 @@ export const CalendarInput = React.forwardRef(
           </Dropdown>
         </div>
 
-        <Modal isOpen={calendarPosition === 'modal' && calendarOpen} onOpenChange={setCalendarOpen} darkenBackground>
+        <Modal
+          isOpen={calendarPosition === "modal" && calendarOpen}
+          onOpenChange={setCalendarOpen}
+          darkenBackground
+        >
           <CalendarDisplay {...calendarDisplayProps} />
         </Modal>
       </>
@@ -477,13 +614,13 @@ export const CalendarInput = React.forwardRef(
 
 CalendarInput.defaultProps = {
   weekdayStartIndex: 0,
-  dayInputDisplayFormat: 'd',
-  monthInputDisplayFormat: 'M',
-  yearInputDisplayFormat: 'yyyy',
+  dayInputDisplayFormat: "d",
+  monthInputDisplayFormat: "M",
+  yearInputDisplayFormat: "yyyy",
   closeCalendarOnDayClick: true,
-  inputOrder: ['day', 'month', 'year'],
-  calendarPosition: 'dropdown',
-  displayFormatString: 'dd/MM/yyyy',
-  betweenInputs: '/',
+  inputOrder: ["day", "month", "year"],
+  calendarPosition: "dropdown",
+  displayFormatString: "dd/MM/yyyy",
+  betweenInputs: "/",
   highlightToday: true,
 };

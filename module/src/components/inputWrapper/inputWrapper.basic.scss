@@ -1,14 +1,17 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-input-inner {
-  @include space-between-children-horizontal($spacing-xsmall);
+  @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
 
   width: 100%;
-  padding: 0 $spacing-xsmall;
+  padding: 0 variables.$spacing-xsmall;
   display: flex;
   align-items: center;
 }
 
 .arm-input-wrapper {
-  &[data-disabled='true'] {
+  &[data-disabled="true"] {
     pointer-events: none;
     user-select: none;
   }

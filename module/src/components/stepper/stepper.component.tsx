@@ -1,12 +1,14 @@
 /* eslint-disable no-nested-ternary */
 
-import * as React from 'react';
+import * as React from "react";
 
-import { IconSet, IIcon } from '../..';
-import { Icon } from '../icon';
-import { IStatusProps, Status } from '../status';
+import { IconSet, IIcon } from "../..";
+import { Icon } from "../icon";
+import { IStatusProps, Status } from "../status";
 
-export interface IStepperStep extends Pick<IStatusProps, 'pending' | 'error'> {
+import "./stepper.basic.scss";
+
+export interface IStepperStep extends Pick<IStatusProps, "pending" | "error"> {
   /** the icon for this step */
   icon?: IIcon<IconSet>;
 
@@ -23,7 +25,9 @@ export interface IStepperStep extends Pick<IStatusProps, 'pending' | 'error'> {
   isComplete?: boolean;
 }
 
-export interface IStepperStepProps extends IStepperStep, Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
+export interface IStepperStepProps
+  extends IStepperStep,
+    Pick<IStatusProps, "spinnerIcon" | "errorIcon"> {
   /** is this step the current step */
   isCurrent?: boolean;
 
@@ -43,7 +47,10 @@ export interface IStepperStepProps extends IStepperStep, Pick<IStatusProps, 'spi
   nextIsSmall?: boolean;
 }
 
-export const StepperStep = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IStepperStepProps>>(
+export const StepperStep = React.forwardRef<
+  HTMLButtonElement,
+  React.PropsWithChildren<IStepperStepProps>
+>(
   (
     {
       isCurrent,
@@ -77,7 +84,7 @@ export const StepperStep = React.forwardRef<HTMLButtonElement, React.PropsWithCh
     return (
       <button
         className="arm-stepper-step"
-        aria-current={isCurrent && 'step'}
+        aria-current={isCurrent && "step"}
         onClick={onClickEvent}
         data-current={isCurrent}
         data-previous={isPrevious}
@@ -92,13 +99,20 @@ export const StepperStep = React.forwardRef<HTMLButtonElement, React.PropsWithCh
       >
         <div className="arm-stepper-step-icon">
           {error || pending ? (
-            <Status error={error} errorIcon={errorIcon} pending={pending} spinnerIcon={spinnerIcon} />
+            <Status
+              error={error}
+              errorIcon={errorIcon}
+              pending={pending}
+              spinnerIcon={spinnerIcon}
+            />
           ) : completeIcon && isComplete ? (
             <Icon iconSet={completeIcon.iconSet} icon={completeIcon.icon} />
           ) : icon ? (
             <Icon iconSet={icon.iconSet} icon={icon.icon} />
           ) : (
-            Number.isInteger(index) && <p className="arm-stepper-step-icon-index">{index! + 1}</p>
+            Number.isInteger(index) && (
+              <p className="arm-stepper-step-icon-index">{index! + 1}</p>
+            )
           )}
         </div>
         {name && (
@@ -112,7 +126,9 @@ export const StepperStep = React.forwardRef<HTMLButtonElement, React.PropsWithCh
   }
 );
 
-export interface IStepperProps extends Pick<IStepperStepProps, 'completeIcon'>, Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
+export interface IStepperProps
+  extends Pick<IStepperStepProps, "completeIcon">,
+    Pick<IStatusProps, "spinnerIcon" | "errorIcon"> {
   /** the steps to render */
   steps?: IStepperStep[];
 
@@ -126,30 +142,54 @@ export interface IStepperProps extends Pick<IStepperStepProps, 'completeIcon'>, 
   onStepIndexChange?: (newStep: number) => void;
 
   /** the direction that the steps should flow */
-  direction?: 'horizontal' | 'vertical';
+  direction?: "horizontal" | "vertical";
 }
 
 /** R */
-export const Stepper = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IStepperProps>>(
-  ({ steps, stepIndex, onStepIndexChange, children, completeIcon, showIndex, direction, spinnerIcon, errorIcon }, ref) => {
+export const Stepper = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<IStepperProps>
+>(
+  (
+    {
+      steps,
+      stepIndex,
+      onStepIndexChange,
+      children,
+      completeIcon,
+      showIndex,
+      direction,
+      spinnerIcon,
+      errorIcon,
+    },
+    ref
+  ) => {
     return (
       <div
         className="arm-stepper"
         ref={ref}
         data-direction={direction}
-        style={{ '--arm-stepper-length': `${steps?.length || 0}` } as React.CSSProperties}
+        style={
+          {
+            "--arm-stepper-length": `${steps?.length || 0}`,
+          } as React.CSSProperties
+        }
       >
         {steps?.map((step, index) => (
           <StepperStep
             {...step}
             key={index}
-            onClick={onStepIndexChange ? () => onStepIndexChange(index) : undefined}
+            onClick={
+              onStepIndexChange ? () => onStepIndexChange(index) : undefined
+            }
             isCurrent={stepIndex === index}
             isPrevious={index < stepIndex}
             index={showIndex ? index : undefined}
             completeIcon={completeIcon}
             small={!showIndex && !step.icon}
-            nextIsSmall={!showIndex && !!steps[index + 1] && !steps[index + 1].icon}
+            nextIsSmall={
+              !showIndex && !!steps[index + 1] && !steps[index + 1].icon
+            }
             spinnerIcon={spinnerIcon}
             errorIcon={errorIcon}
           />
@@ -161,5 +201,5 @@ export const Stepper = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
 );
 
 Stepper.defaultProps = {
-  direction: 'horizontal',
+  direction: "horizontal",
 };

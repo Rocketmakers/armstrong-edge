@@ -1,3 +1,5 @@
+@use "../../theme/variables.scss";
+
 $arm-side-menu-width: 240px !default;
 
 .arm-side-menu {
@@ -5,13 +7,16 @@ $arm-side-menu-width: 240px !default;
   bottom: 0;
   position: fixed;
   width: 100%;
-  max-width: min(#{$arm-side-menu-width}, calc(100vw - #{$spacing-large}));
+  max-width: min(
+    #{$arm-side-menu-width},
+    calc(100vw - #{variables.$spacing-large})
+  );
 
-  &[data-side='left'] {
+  &[data-side="left"] {
     left: 0;
   }
 
-  &[data-side='right'] {
+  &[data-side="right"] {
     right: 0;
   }
 }

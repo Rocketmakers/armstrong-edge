@@ -1,17 +1,24 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-input.arm-checkbox-input {
   position: relative;
   display: flex;
   align-items: center;
 
-  &[data-direction='horizontal'] {
+  &[data-direction="horizontal"] {
     label {
-      @include space-between-children-horizontal($spacing-xsmall);
+      @include mixins.space-between-children-horizontal(
+        variables.$spacing-xsmall
+      );
     }
   }
 
-  &[data-direction='vertical'] {
+  &[data-direction="vertical"] {
     label {
-      @include space-between-children-vertical($spacing-xsmall);
+      @include mixins.space-between-children-vertical(
+        variables.$spacing-xsmall
+      );
 
       flex-direction: column;
     }
@@ -24,12 +31,12 @@
     user-select: none;
   }
 
-  &[data-disabled='true'] {
+  &[data-disabled="true"] {
     opacity: 0.5;
     pointer-events: none;
   }
 
-  &[data-checked='true'] {
+  &[data-checked="true"] {
     .arm-checkbox-input-checked-icon {
       opacity: 1;
     }
@@ -41,7 +48,7 @@
 }
 
 .arm-checkbox-input-checkbox {
-  @include square(1.3rem);
+  @include mixins.square(1.3rem);
 
   flex-shrink: 0;
   pointer-events: none;
@@ -49,10 +56,10 @@
   position: relative;
 
   .arm-icon {
-    @include absolute-fill;
-    @include flex-centre-content;
+    @include mixins.absolute-fill;
+    @include mixins.flex-centre-content;
 
-    transition: opacity $transition-quick;
+    transition: opacity variables.$transition-quick;
     font-size: 0.75rem;
   }
 }
@@ -62,11 +69,11 @@
 }
 
 .arm-checkbox-input-unchecked-icon {
-  color: $black;
+  color: variables.$black;
 }
 
 .arm-checkbox-input-checkbox-input {
-  @include absolute-fill;
+  @include mixins.absolute-fill;
 
   cursor: pointer;
   appearance: none;
@@ -74,6 +81,6 @@
   border: 0;
   outline: none;
   background-color: transparent;
-  padding: $spacing-xsmall;
+  padding: variables.$spacing-xsmall;
   margin: 0;
 }

@@ -1,13 +1,19 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Colors } from '../..';
-import { ClassNames } from '../../utils';
+import { Colors } from "../..";
+import { ClassNames } from "../../utils";
 
-export type ProgressBarLabelVariant = 'centre' | 'centre-progress';
+import "./progressBar.basic.scss";
 
-export type ProgressBarDirection = 'left' | 'right' | 'down' | 'up';
+export type ProgressBarLabelVariant = "centre" | "centre-progress";
 
-export interface IProgressBarProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
+export type ProgressBarDirection = "left" | "right" | "down" | "up";
+
+export interface IProgressBarProps
+  extends React.DetailedHTMLProps<
+    React.HTMLProps<HTMLDivElement>,
+    HTMLDivElement
+  > {
   /** the progress of the bar from 0 to 100 */
   progress: number;
 
@@ -29,18 +35,38 @@ export interface IProgressBarProps extends React.DetailedHTMLProps<React.HTMLPro
 
 /** Show a progress bar using a progress property */
 export const ProgressBar = React.forwardRef<HTMLDivElement, IProgressBarProps>(
-  ({ progress, direction, labelText, labelVariant, colorBreakpoints, className, ...nativeProps }, forwardedRef) => {
+  (
+    {
+      progress,
+      direction,
+      labelText,
+      labelVariant,
+      colorBreakpoints,
+      className,
+      ...nativeProps
+    },
+    forwardedRef
+  ) => {
     const color = React.useMemo(
-      () => !!colorBreakpoints?.length && Colors.RGBToHex(Colors.multiLerpRGB(colorBreakpoints.map(Colors.colorToRGB), progress)),
+      () =>
+        !!colorBreakpoints?.length &&
+        Colors.RGBToHex(
+          Colors.multiLerpRGB(colorBreakpoints.map(Colors.colorToRGB), progress)
+        ),
       [colorBreakpoints, progress]
     );
 
     return (
       <div
-        className={ClassNames.concat('arm-progress-bar', className)}
+        className={ClassNames.concat("arm-progress-bar", className)}
         data-direction={direction}
         data-has-label={!!labelText}
-        style={{ '--arm-progress-bar-color': color, '--arm-progress-bar-progress': `${progress}%` } as React.CSSProperties}
+        style={
+          {
+            "--arm-progress-bar-color": color,
+            "--arm-progress-bar-progress": `${progress}%`,
+          } as React.CSSProperties
+        }
         role="progressbar"
         aria-valuenow={progress}
         aria-valuemin={0}
@@ -61,6 +87,6 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, IProgressBarProps>(
 );
 
 ProgressBar.defaultProps = {
-  direction: 'right',
-  labelVariant: 'centre',
+  direction: "right",
+  labelVariant: "centre",
 };

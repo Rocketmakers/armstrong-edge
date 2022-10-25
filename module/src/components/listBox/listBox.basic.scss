@@ -1,3 +1,5 @@
+@use "../../theme/variables.scss";
+
 $arm-listbox-min-width: 160px;
 
 .arm-input.arm-listbox {
@@ -11,21 +13,21 @@ $arm-listbox-min-width: 160px;
 
 .arm-icon.arm-listbox-overlay-icon {
   position: absolute;
-  right: $spacing-xsmall;
+  right: variables.$spacing-xsmall;
   top: 50%;
   transform: translateY(-50%);
   font-size: 0.6rem;
 }
 
 .arm-listbox-content {
-  height: $arm-input-height;
+  height: variables.$arm-input-height;
   display: flex;
   align-items: center;
   cursor: pointer;
   min-width: $arm-listbox-min-width;
 
   .placeholder {
-    color: $gray-light;
+    color: variables.$gray-light;
   }
 
   p {

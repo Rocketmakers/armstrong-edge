@@ -1,22 +1,32 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 $arm-switch-input-width: 50px !default;
 $arm-switch-input-height: 30px !default;
-$arm-switch-input-handle-padding: $spacing-xxsmall !default;
-$arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input-handle-padding} * 2);
+$arm-switch-input-handle-padding: variables.$spacing-xxsmall !default;
+$arm-switch-input-handle: calc(
+  #{$arm-switch-input-height} - #{$arm-switch-input-handle-padding} * 2
+);
 
 .arm-switch-input {
-  &[data-icon-style='on-handle'] {
+  &[data-icon-style="on-handle"] {
     .arm-switch-input-inner {
       .arm-switch-input-checked-icon {
-        left: $spacing-xxsmall;
+        left: variables.$spacing-xxsmall;
       }
     }
   }
 
-  &[data-checked='true'] {
+  &[data-checked="true"] {
     .arm-switch-input-inner::after,
-    &[data-icon-style='on-handle'] .arm-switch-input-checked-icon,
-    &[data-icon-style='on-handle'] .arm-switch-input-unchecked-icon {
-      transform: translateX(calc(#{$arm-switch-input-width} - #{$arm-switch-input-handle} - #{$arm-switch-input-handle-padding} * 2));
+    &[data-icon-style="on-handle"] .arm-switch-input-checked-icon,
+    &[data-icon-style="on-handle"] .arm-switch-input-unchecked-icon {
+      transform: translateX(
+        calc(
+          #{$arm-switch-input-width} - #{$arm-switch-input-handle} - #{$arm-switch-input-handle-padding} *
+            2
+        )
+      );
     }
 
     .arm-switch-input-checked-icon {
@@ -34,22 +44,22 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input
   cursor: pointer;
   height: $arm-switch-input-height;
   width: $arm-switch-input-width;
-  box-shadow: $shadow-inner-xsmall;
+  box-shadow: variables.$shadow-inner-xsmall;
 
   &::after {
-    @include init-pseudo;
-    @include square($arm-switch-input-handle);
+    @include mixins.init-pseudo;
+    @include mixins.square($arm-switch-input-handle);
 
     top: $arm-switch-input-handle-padding;
     left: $arm-switch-input-handle-padding;
     position: absolute;
     pointer-events: none;
-    box-shadow: $shadow-small;
+    box-shadow: variables.$shadow-small;
   }
 }
 
 .arm-switch-input-checkbox {
-  @include fill;
+  @include mixins.fill;
 
   appearance: none;
   -webkit-appearance: none;
@@ -63,8 +73,8 @@ $arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input
 
 .arm-switch-input-unchecked-icon,
 .arm-switch-input-checked-icon {
-  @include square($arm-switch-input-handle);
-  @include flex-centre-content;
+  @include mixins.square($arm-switch-input-handle);
+  @include mixins.flex-centre-content;
 
   position: absolute;
   top: $arm-switch-input-handle-padding;

@@ -1,14 +1,17 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-image {
   position: relative;
 
   .arm-status {
-    @include absolute-fill;
-    @include flex-centre-content;
+    @include mixins.absolute-fill;
+    @include mixins.flex-centre-content;
 
-    padding: $spacing-small;
+    padding: variables.$spacing-small;
     width: 100%;
     height: 100%;
-    border: $line-light;
+    border: variables.$line-light;
   }
 
   img {
@@ -17,9 +20,9 @@
 }
 
 .arm-image-inner {
-  &[data-loading='true'],
-  &[data-error='true'] {
-    min-height: $spacing-large;
-    min-width: $spacing-large;
+  &[data-loading="true"],
+  &[data-error="true"] {
+    min-height: variables.$spacing-large;
+    min-width: variables.$spacing-large;
   }
 }

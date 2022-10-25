@@ -1,35 +1,41 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Form, IListBoxOption, IListBoxProps } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
-import { ArmstrongId } from '../../types/core';
-import { ClassNames } from '../../utils/classNames';
-import { DropdownItems } from '../dropdownItems';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import { IconButton } from '../iconButton';
-import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
-import { Tag } from '../tag';
+import { Form, IListBoxOption, IListBoxProps } from "../..";
+import { IBindingProps } from "../../hooks/form";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCProps,
+  ArmstrongFCReturn,
+} from "../../types";
+import { ArmstrongId } from "../../types/core";
+import { ClassNames } from "../../utils/classNames";
+import { DropdownItems } from "../dropdownItems";
+import { Icon, IconSet, IconUtils, IIcon } from "../icon";
+import { IconButton } from "../iconButton";
+import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
+import { Tag } from "../tag";
+
+import "./listBoxMulti.basic.scss";
 
 export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<
       IListBoxProps<Id, TSelectData>,
-      | 'options'
-      | 'onSelectOption'
-      | 'selectOverlayIcon'
-      | 'placeholder'
-      | 'wrapperClassName'
-      | 'deleteButton'
-      | 'noItemsText'
-      | 'dropdownClassName'
-      | 'closeOnScroll'
-      | 'closeOnWindowBlur'
-      | 'closeOnWindowClick'
-      | 'closeOnBackgroundClick'
-      | 'closeOnSelection'
-      | 'alignment'
-      | 'position'
+      | "options"
+      | "onSelectOption"
+      | "selectOverlayIcon"
+      | "placeholder"
+      | "wrapperClassName"
+      | "deleteButton"
+      | "noItemsText"
+      | "dropdownClassName"
+      | "closeOnScroll"
+      | "closeOnWindowBlur"
+      | "closeOnWindowClick"
+      | "closeOnBackgroundClick"
+      | "closeOnSelection"
+      | "alignment"
+      | "position"
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -44,7 +50,9 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   onValueChange?: (neWValue: Id[]) => void;
 
   /** if set, will render the result of this function instead of Tags, i.e. a string like "X selected" or a custom component */
-  renderPreview?: (selectedOptions: IListBoxOption<Id, TSelectData>[]) => React.ReactChild;
+  renderPreview?: (
+    selectedOptions: IListBoxOption<Id, TSelectData>[]
+  ) => React.ReactChild;
 }
 
 /** A DOM recreation of a select element, which binds to an array of Id values */
@@ -126,7 +134,11 @@ export const ListBoxMulti = React.forwardRef(
     const currentOptions = React.useMemo(
       () =>
         boundValue?.map<IListBoxOption<Id, TSelectData>>(
-          (item) => options.find((option) => option.id === item) || { id: item, name: item?.toString() }
+          (item) =>
+            options.find((option) => option.id === item) || {
+              id: item,
+              name: item?.toString(),
+            }
         ),
       [boundValue, options]
     );
@@ -142,15 +154,23 @@ export const ListBoxMulti = React.forwardRef(
           rightIcon: option.rightIcon,
           group: option.group,
         }))}
-        onItemSelected={(item) => onItemSelected(options.find((option) => option.id === item)!)}
+        onItemSelected={(item) =>
+          onItemSelected(options.find((option) => option.id === item)!)
+        }
         allowKeyboardNavigation
         focusableWrapper
         currentValue={boundValue}
         childRootElementSelector=".arm-input-inner"
         closeOnSelection={closeOnSelection}
-        className={ClassNames.concat('arm-listbox-multi-wrapper', wrapperClassName)}
+        className={ClassNames.concat(
+          "arm-listbox-multi-wrapper",
+          wrapperClassName
+        )}
         noItemsText={noItemsText}
-        contentClassName={ClassNames.concat('arm-listbox-options', dropdownClassName)}
+        contentClassName={ClassNames.concat(
+          "arm-listbox-options",
+          dropdownClassName
+        )}
         closeOnScroll={closeOnScroll}
         closeOnWindowBlur={closeOnWindowBlur}
         closeOnWindowClick={closeOnWindowClick}
@@ -161,7 +181,7 @@ export const ListBoxMulti = React.forwardRef(
       >
         <InputWrapper
           ref={internalRef}
-          className={ClassNames.concat('arm-listbox-multi', className)}
+          className={ClassNames.concat("arm-listbox-multi", className)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}
@@ -199,7 +219,11 @@ export const ListBoxMulti = React.forwardRef(
 
           {selectOverlayIcon &&
             (IconUtils.isIconDefinition(selectOverlayIcon) ? (
-              <Icon className="arm-listbox-multi-overlay-icon" icon={selectOverlayIcon.icon} iconSet={selectOverlayIcon.iconSet} />
+              <Icon
+                className="arm-listbox-multi-overlay-icon"
+                icon={selectOverlayIcon.icon}
+                iconSet={selectOverlayIcon.iconSet}
+              />
             ) : (
               selectOverlayIcon
             ))}
@@ -215,7 +239,7 @@ export const ListBoxMulti = React.forwardRef(
               }}
               onMouseDown={(event) => event.stopPropagation()}
               onMouseUp={(event) => event.stopPropagation()}
-              icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+              icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
               minimalStyle
             />
           )}
@@ -226,12 +250,15 @@ export const ListBoxMulti = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: ArmstrongFCProps<IListBoxMultiProps<Id, TSelectData>, HTMLSelectElement>
+  props: ArmstrongFCProps<
+    IListBoxMultiProps<Id, TSelectData>,
+    HTMLSelectElement
+  >
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IListBoxMultiProps<any, any>>;
 
 ListBoxMulti.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
+  selectOverlayIcon: IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
   deleteButton: true,
   closeOnSelection: false,
 };

@@ -1,15 +1,20 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Calendar, Select } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { Arrays } from '../../utils/arrays';
-import { ClassNames } from '../../utils/classNames';
-import { Dates } from '../../utils/dates';
-import { Maths } from '../../utils/maths';
-import { Button, IButtonProps } from '../button';
-import { IconUtils } from '../icon';
-import { IconButton } from '../iconButton';
-import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarDisplay.utils';
+import { Calendar, Select } from "../..";
+import { IBindingProps } from "../../hooks/form";
+import { Arrays } from "../../utils/arrays";
+import { ClassNames } from "../../utils/classNames";
+import { Dates } from "../../utils/dates";
+import { Maths } from "../../utils/maths";
+import { Button, IButtonProps } from "../button";
+import { IconUtils } from "../icon";
+import { IconButton } from "../iconButton";
+import {
+  getDayOfWeekHeadings,
+  getDaysWithDisplayFormat,
+} from "./calendarDisplay.utils";
+
+import "./calendarDisplay.basic.scss";
 
 export interface ICalendarDisplayProps {
   /**
@@ -98,16 +103,24 @@ export interface ICalendarDisplayProps {
   className?: string;
 
   /** Override the back button JSX used to move the calendar back a month */
-  backButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
+  backButton?: (
+    onClick: (event: React.MouseEvent<HTMLElement>) => void
+  ) => JSX.Element | string;
 
   /** Override the forwards button JSX used to move the calendar forwards a month */
-  forwardsButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
+  forwardsButton?: (
+    onClick: (event: React.MouseEvent<HTMLElement>) => void
+  ) => JSX.Element | string;
 
   /** Should show pagination and picker controls (next,prev,select month, select year) */
   controls?: boolean;
 
   /** An array of dates to appear as buttons below the calendar to allow quick navigation */
-  jumpList?: { name: string; date: Dates.DateLike; buttonProps?: IButtonProps }[];
+  jumpList?: {
+    name: string;
+    date: Dates.DateLike;
+    buttonProps?: IButtonProps;
+  }[];
 
   /** */
   onClickJumpList?: (date: Dates.DateLike) => void;
@@ -119,7 +132,10 @@ export interface ICalendarDisplayProps {
  * - For a date input, use `CalendarInput`.
  * - For an interactive calendar view, use `CalendarDisplay`.
  */
-export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplayProps>(
+export const CalendarDisplay = React.forwardRef<
+  HTMLDivElement,
+  ICalendarDisplayProps
+>(
   (
     {
       onForwardClicked,
@@ -148,15 +164,26 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
     ref
   ) => {
     const dayOfWeekHeadings = React.useMemo(() => {
-      return Arrays.reIndex(getDayOfWeekHeadings(calendarDayOfTheWeekHeadingDisplayFormat!, locale), weekdayStartIndex!);
+      return Arrays.reIndex(
+        getDayOfWeekHeadings(calendarDayOfTheWeekHeadingDisplayFormat!, locale),
+        weekdayStartIndex!
+      );
     }, [weekdayStartIndex, locale, calendarDayOfTheWeekHeadingDisplayFormat]);
 
     const monthOptions = React.useMemo(() => {
-      return Dates.getMonthSelectOptions(months, calendarMonthSelectDisplayFormat!, locale);
+      return Dates.getMonthSelectOptions(
+        months,
+        calendarMonthSelectDisplayFormat!,
+        locale
+      );
     }, [months, locale, calendarMonthSelectDisplayFormat]);
 
     const yearOptions = React.useMemo(() => {
-      return Dates.getYearSelectOptions(years, calendarYearSelectDisplayFormat!, locale);
+      return Dates.getYearSelectOptions(
+        years,
+        calendarYearSelectDisplayFormat!,
+        locale
+      );
     }, [years, locale, calendarYearSelectDisplayFormat]);
 
     const displayDays = React.useMemo(() => {
@@ -170,28 +197,39 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
     }, [days, weekdayStartIndex]);
 
     return (
-      <div ref={ref} className={ClassNames.concat('arm-calendar-display', className)}>
+      <div
+        ref={ref}
+        className={ClassNames.concat("arm-calendar-display", className)}
+      >
         {controls && (
           <div className="arm-calendar-display-controls">
             {onBackClicked &&
               (backButton?.(onBackClicked) || (
                 <IconButton
                   type="button"
-                  icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
+                  icon={IconUtils.getIconDefinition("Icomoon", "arrow-left3")}
                   minimalStyle
                   className="arm-calendar-display-button arm-calendar-display-button-prev"
                   onClick={onBackClicked}
                 />
               ))}
 
-            <Select className="arm-calendar-display-select arm-calendar-display-select-month" bind={currentMonthBinding} options={monthOptions} />
-            <Select className="arm-calendar-display-select arm-calendar-display-select-year" bind={currentYearBinding} options={yearOptions} />
+            <Select
+              className="arm-calendar-display-select arm-calendar-display-select-month"
+              bind={currentMonthBinding}
+              options={monthOptions}
+            />
+            <Select
+              className="arm-calendar-display-select arm-calendar-display-select-year"
+              bind={currentYearBinding}
+              options={yearOptions}
+            />
 
             {onForwardClicked &&
               (forwardsButton?.(onForwardClicked) || (
                 <IconButton
                   type="button"
-                  icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
+                  icon={IconUtils.getIconDefinition("Icomoon", "arrow-right3")}
                   minimalStyle
                   className="arm-calendar-display-button arm-calendar-display-button-next"
                   onClick={onForwardClicked}
@@ -211,19 +249,25 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
 
           <div className="arm-calendar-date-grid-days">
             {Arrays.repeat(blankDaysAtStartCount, (index) => (
-              <div key={index} className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty" />
+              <div
+                key={index}
+                className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty"
+              />
             ))}
 
             {displayDays.map((displayDay) => (
               <Button
                 type="button"
-                className={ClassNames.concat('arm-calendar-date-grid-day', displayDay.day.highlightedClassName)}
+                className={ClassNames.concat(
+                  "arm-calendar-date-grid-day",
+                  displayDay.day.highlightedClassName
+                )}
                 onClick={() => onDayClicked?.(displayDay.day)}
                 key={displayDay.day.numberInMonth}
                 data-selected={displayDay.day.isSelected}
                 disabled={displayDay.day.isDisabled}
                 data-today={highlightToday && displayDay.day.isToday}
-                aria-current={displayDay.day.isToday && 'date'}
+                aria-current={displayDay.day.isToday && "date"}
                 data-range-start={displayDay.day.isRangeStart}
                 data-range-middle={displayDay.day.isRangeMiddle}
                 data-range-end={displayDay.day.isRangeEnd}
@@ -231,7 +275,9 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
                 minimalStyle
               >
                 <p>{displayDay.displayFormat}</p>
-                {displayDay.day.isHighlighted && <div className="arm-calendar-date-grid-day-highlight" />}
+                {displayDay.day.isHighlighted && (
+                  <div className="arm-calendar-date-grid-day-highlight" />
+                )}
               </Button>
             ))}
           </div>
@@ -263,11 +309,11 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
 
 CalendarDisplay.defaultProps = {
   weekdayStartIndex: 0,
-  calendarDayOfTheWeekHeadingDisplayFormat: 'eeeee',
-  calendarMonthSelectDisplayFormat: 'MMMM',
-  calendarYearSelectDisplayFormat: 'yyyy',
-  calendarDayDisplayFormat: 'd',
+  calendarDayOfTheWeekHeadingDisplayFormat: "eeeee",
+  calendarMonthSelectDisplayFormat: "MMMM",
+  calendarYearSelectDisplayFormat: "yyyy",
+  calendarDayDisplayFormat: "d",
   highlightToday: true,
   controls: true,
-  jumpList: [{ date: new Date(), name: 'Today' }],
+  jumpList: [{ date: new Date(), name: "Today" }],
 };

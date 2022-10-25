@@ -1,3 +1,7 @@
+@use "../../theme/variables.scss";
+
+$arm-listbox-min-width: 160px;
+
 .arm-listbox-multi {
   cursor: pointer;
 
@@ -13,18 +17,18 @@
 }
 
 .arm-listbox-multi-content {
-  height: $arm-input-height;
+  height: variables.$arm-input-height;
   display: flex;
   align-items: center;
-  margin-right: $spacing-large;
+  margin-right: variables.$spacing-large;
   min-width: $arm-listbox-min-width;
 
   .arm-tag {
-    margin-right: $spacing-xsmall;
+    margin-right: variables.$spacing-xsmall;
   }
 
   .placeholder {
-    color: $gray-light;
+    color: variables.$gray-light;
   }
 }
 

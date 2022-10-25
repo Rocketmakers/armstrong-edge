@@ -1,38 +1,47 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Form, IAutoCompleteInputOption } from '../..';
-import { useOverridableState } from '../../hooks/useOverridableState';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
-import { ArmstrongId } from '../../types/core';
-import { ClassNames } from '../../utils/classNames';
-import { IAutoCompleteInputProps } from '../autoCompleteInput/autoCompleteInput.component';
-import { DropdownItems, IDropdownItem } from '../dropdownItems';
-import { IInputProps } from '../input';
-import { IPortalProps } from '../portal';
-import { ITag, ITagInputProps, TagInput } from '../tagInput';
+import { Form, IAutoCompleteInputOption } from "../..";
+import { useOverridableState } from "../../hooks/useOverridableState";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+} from "../../types";
+import { ArmstrongId } from "../../types/core";
+import { ClassNames } from "../../utils/classNames";
+import { IAutoCompleteInputProps } from "../autoCompleteInput/autoCompleteInput.component";
+import { DropdownItems, IDropdownItem } from "../dropdownItems";
+import { IInputProps } from "../input";
+import { IPortalProps } from "../portal";
+import { ITag, ITagInputProps, TagInput } from "../tagInput";
+
+import "./autoCompleteInputMulti.basic.scss";
 
 export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
-  extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
-    Pick<ITagInputProps<any>, 'tagPosition'>,
-    Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
+  extends Omit<
+      IInputProps<Id[]>,
+      "type" | "onChange" | "value" | "disableOnPending" | "onValueChange"
+    >,
+    Pick<ITagInputProps<any>, "tagPosition">,
+    Pick<IPortalProps, "portalToSelector" | "portalTo">,
     Pick<
       IAutoCompleteInputProps<Id>,
-      | 'options'
-      | 'onTextInputChange'
-      | 'textInputValue'
-      | 'optionsRootElementSelector'
-      | 'allowFreeText'
-      | 'filterOptions'
-      | 'allowKeyboardNavigationSelection'
-      | 'noItemsText'
-      | 'dropdownClassName'
-      | 'closeOnBackgroundClick'
-      | 'closeOnScroll'
-      | 'closeOnWindowBlur'
-      | 'closeOnWindowClick'
-      | 'closeOnSelection'
-      | 'alignment'
-      | 'position'
+      | "options"
+      | "onTextInputChange"
+      | "textInputValue"
+      | "optionsRootElementSelector"
+      | "allowFreeText"
+      | "filterOptions"
+      | "allowKeyboardNavigationSelection"
+      | "noItemsText"
+      | "dropdownClassName"
+      | "closeOnBackgroundClick"
+      | "closeOnScroll"
+      | "closeOnWindowBlur"
+      | "closeOnWindowClick"
+      | "closeOnSelection"
+      | "alignment"
+      | "position"
     > {
   /** called when an option is selected  */
   onChange?: (value: Id[]) => void;
@@ -82,33 +91,45 @@ export const AutoCompleteInputMulti = React.forwardRef(
     }: IAutoCompleteInputMultiProps<Id>,
     ref
   ) => {
-    const [boundValue, setBoundValue, { getFormattedValueFromData, validationErrorMessages: myValidationErrorMessages }] = Form.useBindingState(
-      bind,
+    const [
+      boundValue,
+      setBoundValue,
       {
-        value,
-        onChange,
-        validationErrorMessages,
-      }
-    );
+        getFormattedValueFromData,
+        validationErrorMessages: myValidationErrorMessages,
+      },
+    ] = Form.useBindingState(bind, {
+      value,
+      onChange,
+      validationErrorMessages,
+    });
 
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
     // use the name, but optionally fall back to the id after running it through the bind formatter if it's not provided
     const getOptionName = React.useCallback(
-      (option: IAutoCompleteInputOption<Id>) => option.name ?? option.id?.toString(),
+      (option: IAutoCompleteInputOption<Id>) =>
+        option.name ?? option.id?.toString(),
       [getFormattedValueFromData]
     );
 
     // internal state for the text input, overridden by props
-    const [textInputInternalValue, setTextInputInternalValue] = useOverridableState('', textInputValue, onTextInputChange);
+    const [textInputInternalValue, setTextInputInternalValue] =
+      useOverridableState("", textInputValue, onTextInputChange);
 
     // The provided options, optionally filtered by the text input value
     const filteredOptions = React.useMemo(() => {
       if (filterOptions && options) {
         if (filterOptions === true) {
-          return options.filter((option) => getOptionName(option)?.toLowerCase().startsWith(textInputInternalValue.toLowerCase()));
+          return options.filter((option) =>
+            getOptionName(option)
+              ?.toLowerCase()
+              .startsWith(textInputInternalValue.toLowerCase())
+          );
         }
-        return options.filter((option) => filterOptions(option, textInputInternalValue));
+        return options.filter((option) =>
+          filterOptions(option, textInputInternalValue)
+        );
       }
       return options || [];
     }, [filterOptions, JSON.stringify(options), textInputInternalValue]);
@@ -159,7 +180,10 @@ export const AutoCompleteInputMulti = React.forwardRef(
     );
 
     // the currently bound value of the input parsed as an array of tags
-    const selectedOptionTags = React.useMemo(() => (boundValue || []).map<ITag>((item) => parseOptionTag(item)), [parseOptionTag, boundValue]);
+    const selectedOptionTags = React.useMemo(
+      () => (boundValue || []).map<ITag>((item) => parseOptionTag(item)),
+      [parseOptionTag, boundValue]
+    );
 
     const onAddTag = React.useCallback(
       (addedValue: string) => {
@@ -175,20 +199,35 @@ export const AutoCompleteInputMulti = React.forwardRef(
     // in the options array
     const dropdownItems = React.useMemo<IDropdownItem[]>(() => {
       const showCurrentlyTypingOption =
-        allowFreeText && textInputInternalValue && !options?.find((option) => getOptionName(option) === textInputInternalValue);
+        allowFreeText &&
+        textInputInternalValue &&
+        !options?.find(
+          (option) => getOptionName(option) === textInputInternalValue
+        );
 
       return [
         // spread in a value that is the currently typed option to allow that to be bound if free text is allowed
-        ...(showCurrentlyTypingOption ? [{ content: textInputInternalValue!, id: textInputInternalValue! }] : []),
+        ...(showCurrentlyTypingOption
+          ? [{ content: textInputInternalValue!, id: textInputInternalValue! }]
+          : []),
         // spread in the current value, if it is not currently in the list of options (i.e. options are remote and current option isn't currently given)
         ...(boundValue || [])
           .map((item) => parseOptionTag(item))
           .filter((item) => {
-            const notAnOption = !options?.find((option) => option.id === item.id);
-            const filterByTextInputValue = !textInputInternalValue || (item.name || item.id)?.toString().startsWith(textInputInternalValue);
+            const notAnOption = !options?.find(
+              (option) => option.id === item.id
+            );
+            const filterByTextInputValue =
+              !textInputInternalValue ||
+              (item.name || item.id)
+                ?.toString()
+                .startsWith(textInputInternalValue);
             return notAnOption && filterByTextInputValue;
           })
-          .map<IDropdownItem>((item) => ({ content: item.name || item.id?.toString(), id: item.id })),
+          .map<IDropdownItem>((item) => ({
+            content: item.name || item.id?.toString(),
+            id: item.id,
+          })),
         // spread in given options
         ...filteredOptions.map((option) => ({
           content: option.content || getOptionName(option),
@@ -199,19 +238,33 @@ export const AutoCompleteInputMulti = React.forwardRef(
           htmlProps: option.dropDownItemHtmlProps,
         })),
       ];
-    }, [allowFreeText, textInputInternalValue, options, getSelectedOptionTag, parseOptionTag, getOptionName]);
+    }, [
+      allowFreeText,
+      textInputInternalValue,
+      options,
+      getSelectedOptionTag,
+      parseOptionTag,
+      getOptionName,
+    ]);
 
     return (
       <>
         <div
-          className={ClassNames.concat('arm-input', 'arm-autocomplete-input-multi', className)}
+          className={ClassNames.concat(
+            "arm-input",
+            "arm-autocomplete-input-multi",
+            className
+          )}
           data-error={error}
           data-pending={pending}
           data-disabled={disabled}
           data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
-            contentClassName={ClassNames.concat('arm-auto-complete-options', dropdownClassName)}
+            contentClassName={ClassNames.concat(
+              "arm-auto-complete-options",
+              dropdownClassName
+            )}
             items={dropdownItems}
             isOpen={optionsOpen && !disabled && !!options?.length}
             onOpenChange={setOptionsOpen}
@@ -253,7 +306,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
               disableOnPending={false}
               onAddTag={onAddTag}
               onRemoveTag={(id) => onRemoveTag(id as Id)}
-              placeholder={!boundValue?.length ? placeholder : ''}
+              placeholder={!boundValue?.length ? placeholder : ""}
             />
           </DropdownItems>
         </div>
@@ -262,13 +315,15 @@ export const AutoCompleteInputMulti = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IAutoCompleteInputMultiProps<Id>, HTMLSelectElement>) => ArmstrongFCReturn) &
+) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<IAutoCompleteInputMultiProps<Id>, HTMLSelectElement>
+) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IAutoCompleteInputMultiProps<any>>;
 
 AutoCompleteInputMulti.defaultProps = {
-  validationMode: 'both',
+  validationMode: "both",
   allowKeyboardNavigationSelection: true,
   filterOptions: true,
-  placeholder: 'Begin typing to filter options...',
+  placeholder: "Begin typing to filter options...",
   closeOnSelection: false,
 };

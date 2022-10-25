@@ -1,8 +1,10 @@
+@use "./variables.scss";
+
 // psuedo elements
 
 @mixin init-pseudo {
   display: block;
-  content: '';
+  content: "";
 }
 
 @mixin range-input-thumb {
@@ -124,32 +126,32 @@
 
 // responsiveness
 
-@mixin screen-width-max($screen-width: $screen-size-phone) {
+@mixin screen-width-max($screen-width: variables.$screen-size-phone) {
   @media screen and (max-width: $screen-width) {
     @content;
   }
 }
 
-@mixin screen-width-min($screen-width: $screen-size-phone) {
+@mixin screen-width-min($screen-width: variables.$screen-size-phone) {
   @media screen and (min-width: $screen-width) {
     @content;
   }
 }
 
 @mixin screen-tablet {
-  @include screen-width-max($screen-size-tablet) {
+  @include screen-width-max(variables.$screen-size-tablet) {
     @content;
   }
 }
 
 @mixin screen-phone {
-  @include screen-width-max($screen-size-phone) {
+  @include screen-width-max(variables.$screen-size-phone) {
     @content;
   }
 }
 
 @mixin screen-not-phone {
-  @include screen-width-min($screen-size-phone) {
+  @include screen-width-min(variables.$screen-size-phone) {
     @content;
   }
 }

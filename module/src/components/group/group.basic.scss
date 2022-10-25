@@ -1,5 +1,8 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-group-inner {
-  @include space-between-children-horizontal($spacing-xsmall);
+  @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
 
   display: flex;
   align-items: center;

@@ -1,10 +1,13 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-tab-select {
-  @include space-between-children-horizontal($spacing-xsmall);
+  @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
 
   display: flex;
   align-items: center;
 
-  &[data-disabled='true'] {
+  &[data-disabled="true"] {
     opacity: 0.5;
     pointer-events: none;
   }

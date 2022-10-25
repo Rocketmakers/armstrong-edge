@@ -1,4 +1,7 @@
+@use "../../theme/variables.scss";
+
 $arm-calendar-select-width: 57px;
+$arm-calendar-display-width: 300px !default;
 
 .arm-calendar-select {
   margin-right: 0;
@@ -23,7 +26,7 @@ $arm-calendar-select-width: 57px;
 }
 
 .arm-calendar-input-between-inputs {
-  color: $gray-light;
+  color: variables.$gray-light;
   margin-right: 0;
 }
 
@@ -47,7 +50,7 @@ $arm-calendar-select-width: 57px;
     }
   }
 
-  &[data-display-mode='calendar'] {
+  &[data-display-mode="calendar"] {
     cursor: pointer;
 
     .arm-input-inner {
@@ -57,7 +60,7 @@ $arm-calendar-select-width: 57px;
 }
 
 .arm-calendar-input-preview {
-  height: $arm-input-height;
+  height: variables.$arm-input-height;
   display: flex;
   align-items: center;
 }

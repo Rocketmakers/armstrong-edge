@@ -1,12 +1,15 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 $arm-stepper-icon-height: 2.2rem !default;
 $arm-stepper-icon-height-small: 1rem !default;
 
 .arm-stepper-step-icon {
-  @include flex-centre-content;
-  @include circle($arm-stepper-icon-height);
+  @include mixins.flex-centre-content;
+  @include mixins.circle($arm-stepper-icon-height);
 
-  margin-bottom: $spacing-small;
-  border: 2px solid $gray-light;
+  margin-bottom: variables.$spacing-small;
+  border: 2px solid variables.$gray-light;
   font-size: 1.2rem;
   flex-shrink: 0;
 }
@@ -24,59 +27,62 @@ $arm-stepper-icon-height-small: 1rem !default;
   background-color: inherit;
   color: inherit;
 
-  &[data-current='true'] {
+  &[data-current="true"] {
     .arm-stepper-step-icon {
-      border-color: $brand-primary;
-      color: $brand-primary;
+      border-color: variables.$brand-primary;
+      color: variables.$brand-primary;
     }
   }
 
-  &[data-previous='true'] {
+  &[data-previous="true"] {
     .arm-stepper-step-icon {
-      border-color: $brand-primary;
-      background-color: $brand-primary;
-      color: $white;
+      border-color: variables.$brand-primary;
+      background-color: variables.$brand-primary;
+      color: variables.$white;
     }
   }
 
-  &[data-error='true'] {
+  &[data-error="true"] {
     .arm-stepper-step-icon {
-      border-color: $color-negative;
-      background-color: $color-negative;
-      color: $white;
+      border-color: variables.$color-negative;
+      background-color: variables.$color-negative;
+      color: variables.$white;
 
       .arm-status {
         .arm-icon {
-          color: $white;
+          color: variables.$white;
         }
       }
     }
   }
 
-  &[data-small='true'] {
+  &[data-small="true"] {
     .arm-stepper-step-icon {
-      @include square($arm-stepper-icon-height-small);
+      @include mixins.square($arm-stepper-icon-height-small);
 
-      margin-top: calc((#{$arm-stepper-icon-height} / 2) - (#{$arm-stepper-icon-height-small} / 2));
+      margin-top: calc(
+        (#{$arm-stepper-icon-height} / 2) -
+          (#{$arm-stepper-icon-height-small} / 2)
+      );
       font-size: 0.7rem;
     }
 
-    &[data-pending='true'] {
+    &[data-pending="true"] {
       .arm-stepper-step-icon {
         border: 0;
         background-color: transparent;
-        color: $brand-primary;
+        color: variables.$brand-primary;
       }
     }
 
-    &[data-error='true'] {
+    &[data-error="true"] {
       .arm-stepper-step-icon {
         border: 0;
         background-color: transparent;
 
         .arm-status {
           .arm-icon {
-            color: $color-negative;
+            color: variables.$color-negative;
           }
         }
       }
@@ -85,7 +91,7 @@ $arm-stepper-icon-height-small: 1rem !default;
 
   &[disabled] {
     pointer-events: none;
-    color: $gray-light;
+    color: variables.$gray-light;
   }
 
   > * {
@@ -103,34 +109,34 @@ $arm-stepper-icon-height-small: 1rem !default;
     &:not(:last-child) {
       .arm-stepper-step-icon {
         &::after {
-          @include init-pseudo;
+          @include mixins.init-pseudo;
 
           position: absolute;
-          background-color: $gray-light;
+          background-color: variables.$gray-light;
         }
       }
     }
 
-    &[data-disabled='true'] {
+    &[data-disabled="true"] {
       .arm-stepper-step-icon {
-        color: $gray-light;
+        color: variables.$gray-light;
       }
     }
 
-    &[data-previous='true'] {
+    &[data-previous="true"] {
       &:not(:last-child) {
         .arm-stepper-step-icon {
           &::after {
-            background-color: $brand-primary;
+            background-color: variables.$brand-primary;
           }
         }
       }
     }
   }
 
-  &[data-direction='horizontal'] {
+  &[data-direction="horizontal"] {
     .arm-stepper-step {
-      padding: 0 $spacing-xsmall;
+      padding: 0 variables.$spacing-xsmall;
 
       .arm-stepper-step-icon {
         &::after {
@@ -141,23 +147,35 @@ $arm-stepper-icon-height-small: 1rem !default;
         }
       }
 
-      &[data-next-small='true'] {
+      &[data-next-small="true"] {
         .arm-stepper-step-icon {
           &::after {
-            width: calc(100% - ((#{$arm-stepper-icon-height-small} / 2) + (#{$arm-stepper-icon-height} / 2)));
+            width: calc(
+              100% -
+                (
+                  (#{$arm-stepper-icon-height-small} / 2) +
+                    (#{$arm-stepper-icon-height} / 2)
+                )
+            );
           }
         }
       }
 
-      &[data-small='true'] {
+      &[data-small="true"] {
         .arm-stepper-step-icon {
           &::after {
             left: calc(50% + (#{$arm-stepper-icon-height-small} / 2));
-            width: calc(100% - ((#{$arm-stepper-icon-height-small} / 2) + (#{$arm-stepper-icon-height} / 2)));
+            width: calc(
+              100% -
+                (
+                  (#{$arm-stepper-icon-height-small} / 2) +
+                    (#{$arm-stepper-icon-height} / 2)
+                )
+            );
           }
         }
 
-        &[data-next-small='true'] {
+        &[data-next-small="true"] {
           .arm-stepper-step-icon {
             &::after {
               width: calc(100% - #{$arm-stepper-icon-height-small});
@@ -168,18 +186,18 @@ $arm-stepper-icon-height-small: 1rem !default;
     }
   }
 
-  &[data-direction='vertical'] {
+  &[data-direction="vertical"] {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(var(--arm-stepper-length), 1fr);
 
     .arm-stepper-step {
-      padding: $spacing-xsmall 0;
+      padding: variables.$spacing-xsmall 0;
       flex-direction: row;
 
       .arm-stepper-step-icon {
         margin: 0;
-        margin-right: $spacing-small;
+        margin-right: variables.$spacing-small;
 
         &::after {
           left: calc(#{$arm-stepper-icon-height} / 2 - 1px);
@@ -189,25 +207,40 @@ $arm-stepper-icon-height-small: 1rem !default;
         }
       }
 
-      &[data-next-small='true'] {
+      &[data-next-small="true"] {
         .arm-stepper-step-icon {
           &::after {
-            height: calc(100% - (((#{$arm-stepper-icon-height-small} / 2)) + (#{$arm-stepper-icon-height} / 2)));
+            height: calc(
+              100% -
+                (
+                  ((#{$arm-stepper-icon-height-small} / 2)) +
+                    (#{$arm-stepper-icon-height} / 2)
+                )
+            );
           }
         }
       }
 
-      &[data-small='true'] {
+      &[data-small="true"] {
         .arm-stepper-step-icon {
-          margin-left: calc((#{$arm-stepper-icon-height} / 2) - (#{$arm-stepper-icon-height-small} / 2));
+          margin-left: calc(
+            (#{$arm-stepper-icon-height} / 2) -
+              (#{$arm-stepper-icon-height-small} / 2)
+          );
 
           &::after {
             top: calc(50% + (#{$arm-stepper-icon-height-small} / 2));
-            height: calc(100% - ((#{$arm-stepper-icon-height-small} / 2) + (#{$arm-stepper-icon-height} / 2)));
+            height: calc(
+              100% -
+                (
+                  (#{$arm-stepper-icon-height-small} / 2) +
+                    (#{$arm-stepper-icon-height} / 2)
+                )
+            );
           }
         }
 
-        &[data-next-small='true'] {
+        &[data-next-small="true"] {
           .arm-stepper-step-icon {
             &::after {
               height: calc(100% - #{$arm-stepper-icon-height-small});

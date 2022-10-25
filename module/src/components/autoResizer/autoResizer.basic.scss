@@ -1,18 +1,20 @@
+@use "../../theme/variables.scss";
+
 .arm-auto-resizer {
   overflow: hidden;
-  transition-duration: $transition-quick;
+  transition-duration: variables.$transition-quick;
 
-  &[data-animate-horizontal='true'] {
+  &[data-animate-horizontal="true"] {
     width: var(--arm-auto-resizer-width);
     transition-property: width;
   }
 
-  &[data-animate-vertical='true'] {
+  &[data-animate-vertical="true"] {
     height: var(--arm-auto-resizer-height);
     transition-property: height;
   }
 
-  &[data-animate-vertical='true'][data-animate-horizontal='true'] {
+  &[data-animate-vertical="true"][data-animate-horizontal="true"] {
     transition-property: height, width;
   }
 }

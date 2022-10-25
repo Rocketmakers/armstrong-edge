@@ -1,7 +1,10 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 $arm-toast-notification-width: 200px !default;
 
 .arm-toast-notification-container {
-  @include fixed-fill;
+  @include mixins.fixed-fill;
 
   display: flex;
   justify-content: space-between;
@@ -34,7 +37,7 @@ $arm-toast-notification-width: 200px !default;
 
 .arm-toast-notification-inner {
   width: 100%;
-  background-color: $white;
+  background-color: variables.$white;
 }
 
 .arm-toast-notification-top {
@@ -44,5 +47,5 @@ $arm-toast-notification-width: 200px !default;
 }
 
 .arm-toast-notification-close-button {
-  margin-left: $spacing-xsmall;
+  margin-left: variables.$spacing-xsmall;
 }

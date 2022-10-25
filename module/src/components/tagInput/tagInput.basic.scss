@@ -1,3 +1,6 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-tag-input-input {
   flex-grow: 1;
   appearance: none;
@@ -5,8 +8,8 @@
   border: 0;
   outline: none;
   background-color: transparent;
-  padding: $spacing-xsmall 0;
-  height: $arm-input-height;
+  padding: variables.$spacing-xsmall 0;
+  height: variables.$arm-input-height;
 }
 
 .arm-input-inner {
@@ -14,8 +17,8 @@
 }
 
 .arm-tag-input-inner {
-  @include flex-centre-content;
-  @include space-between-children-horizontal($spacing-xxsmall);
+  @include mixins.flex-centre-content;
+  @include mixins.space-between-children-horizontal(variables.$spacing-xxsmall);
 
   overflow-x: auto;
   flex-grow: 1;
@@ -23,7 +26,7 @@
 
 .arm-input-wrapper-above .arm-auto-resizer-content,
 .arm-input-wrapper-below .arm-auto-resizer-content {
-  @include space-between-children-horizontal($spacing-xxsmall);
+  @include mixins.space-between-children-horizontal(variables.$spacing-xxsmall);
 
   overflow-y: auto;
   display: flex;
@@ -31,7 +34,7 @@
   flex-wrap: wrap;
 
   .arm-tag {
-    margin-top: $spacing-xxsmall * 0.5;
-    margin-bottom: $spacing-xxsmall * 0.5;
+    margin-top: variables.$spacing-xxsmall * 0.5;
+    margin-bottom: variables.$spacing-xxsmall * 0.5;
   }
 }

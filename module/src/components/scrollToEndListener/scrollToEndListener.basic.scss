@@ -1,8 +1,11 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-scroll-to-end-listener-status {
-  @include flex-centre-content;
+  @include mixins.flex-centre-content;
 
   width: 100%;
-  padding: $spacing-medium;
+  padding: variables.$spacing-medium;
 }
 
 .arm-scroll-to-end-listener-listener {

@@ -1,5 +1,8 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 $arm-dialog-width: 500px !default;
-$arm-dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
+$arm-dialog-height: calc(100vh - #{variables.$spacing-medium * 2}) !default;
 
 .arm-dialog {
   width: 100%;
@@ -15,12 +18,12 @@ $arm-dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
 
 .arm-dialog-close-button {
   position: absolute;
-  top: $spacing-small;
-  right: $spacing-small;
+  top: variables.$spacing-small;
+  right: variables.$spacing-small;
 }
 
 .arm-dialog-top {
-  @include space-between-children-horizontal($spacing-xsmall);
+  @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
 
   display: flex;
   align-items: center;
@@ -39,9 +42,9 @@ $arm-dialog-height: calc(100vh - #{$spacing-medium * 2}) !default;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-top: $spacing-xsmall;
+  margin-top: variables.$spacing-xsmall;
 
   .arm-button {
-    margin-left: $spacing-xsmall;
+    margin-left: variables.$spacing-xsmall;
   }
 }

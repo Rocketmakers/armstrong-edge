@@ -1,13 +1,24 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { ValidationMessage } from '../../hooks/form';
-import { ClassNames } from '../../utils/classNames';
-import { IconSet, IconUtils, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
-import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
-import { ValidationErrors } from '../validationErrors';
+import { ValidationMessage } from "../../hooks/form";
+import { ClassNames } from "../../utils/classNames";
+import { IconSet, IconUtils, IIcon } from "../icon";
+import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
+import {
+  IStatusWrapperProps,
+  StatusWrapper,
+} from "../statusWrapper/statusWrapper.component";
+import { ValidationErrors } from "../validationErrors";
 
-type ButtonHTMLProps = Omit<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'ref'>;
+import "./button.basic.scss";
+
+type ButtonHTMLProps = Omit<
+  React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >,
+  "ref"
+>;
 
 export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
   IStatusWrapperProps & {
@@ -39,7 +50,9 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
 export type IButtonProps = IButtonCoreProps & ButtonHTMLProps;
 
 /** Renders the inside of a button, for use in altering the tag used for the wrapper */
-export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps>> = ({
+export const ButtonInner: React.FC<
+  React.PropsWithChildren<IButtonCoreProps>
+> = ({
   validationErrorMessages,
   errorIcon,
   pending,
@@ -52,11 +65,20 @@ export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps>> = 
 }) => {
   const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
 
-  const showLeftIcon = statusPosition !== 'left' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
-  const showRightIcon = statusPosition !== 'right' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+  const showLeftIcon =
+    statusPosition !== "left" ||
+    !hideIconOnStatus ||
+    (!pending && !shouldShowErrorIcon);
+  const showRightIcon =
+    statusPosition !== "right" ||
+    !hideIconOnStatus ||
+    (!pending && !shouldShowErrorIcon);
 
   return (
-    <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
+    <IconWrapper
+      leftIcon={showLeftIcon ? leftIcon : undefined}
+      rightIcon={showRightIcon ? rightIcon : undefined}
+    >
       <StatusWrapper
         pending={pending}
         errorIcon={errorIcon}
@@ -64,14 +86,21 @@ export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps>> = 
         error={error}
         validationErrorMessages={validationErrorMessages}
       >
-        {typeof children === 'string' || typeof children === 'number' ? <span>{children}</span> : children}
+        {typeof children === "string" || typeof children === "number" ? (
+          <span>{children}</span>
+        ) : (
+          children
+        )}
       </StatusWrapper>
     </IconWrapper>
   );
 };
 
 /** Renders an HTML button element with some useful additions */
-export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IButtonProps>>((props, ref) => {
+export const Button = React.forwardRef<
+  HTMLButtonElement,
+  React.PropsWithChildren<IButtonProps>
+>((props, ref) => {
   const {
     className,
     disabled,
@@ -94,7 +123,10 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
   return (
     <>
       <button
-        className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
+        className={ClassNames.concat(
+          minimalStyle ? "arm-button-minimal" : "arm-button",
+          className
+        )}
         data-pending={pending}
         data-disabled={disabled || pending}
         data-error={shouldShowErrorIcon}
@@ -107,13 +139,18 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
         <ButtonInner {...props} />
       </button>
 
-      {!!validationErrorMessages?.length && <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} />}
+      {!!validationErrorMessages?.length && (
+        <ValidationErrors
+          validationErrors={validationErrorMessages}
+          icon={errorIcon}
+        />
+      )}
     </>
   );
 });
 
 Button.defaultProps = {
-  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
-  statusPosition: 'right',
+  errorIcon: IconUtils.getIconDefinition("Icomoon", "warning"),
+  statusPosition: "right",
   hideIconOnStatus: true,
 };

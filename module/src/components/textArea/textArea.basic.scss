@@ -1,3 +1,5 @@
+@use "../../theme/variables.scss";
+
 .arm-text-area {
   .arm-input-inner {
     cursor: text;
@@ -5,7 +7,7 @@
 }
 
 .arm-text-area-textarea {
-  min-height: $arm-input-height-large;
+  min-height: variables.$arm-input-height-large;
   appearance: none;
   -webkit-appearance: none;
   background-color: transparent;

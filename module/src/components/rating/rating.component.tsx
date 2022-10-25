@@ -22,6 +22,8 @@ import { Button } from "../button";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IInputWrapperProps } from "../inputWrapper";
 
+import "./rating.basic.scss";
+
 export interface IRatingPartProps
   extends Pick<
     IRatingProps<any>,

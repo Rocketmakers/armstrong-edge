@@ -1,11 +1,15 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { useInViewport } from '../../hooks/useIsInViewport';
-import { IStatusProps, Status } from '../status';
+import { useInViewport } from "../../hooks/useIsInViewport";
+import { IStatusProps, Status } from "../status";
+
+import "./scrollToEndListener.basic.scss";
 
 export interface IScrollToEndListenerProps
   extends React.PropsWithoutRef<IStatusProps>,
-    React.PropsWithoutRef<React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement>> {
+    React.PropsWithoutRef<
+      React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement>
+    > {
   /** the callback to fire when the element rendered by this component at the end of a scrolling list comes into the viewport */
   onScrollToEnd: () => void;
 
@@ -20,28 +24,29 @@ export interface IScrollToEndListenerProps
  *
  * As this doesn't render a wrapping div, it's up to the styling of whatever you're rendering this component inside to ensure the .arm-scroll-to-end-listener-listener div is rendered at the bottom of the container
  */
-export const ScrollToEndListener = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IScrollToEndListenerProps>>(
-  ({ children, onScrollToEnd, rootMargin, ...statusProps }, forwardedRef) => {
-    const listenerRef = React.useRef<HTMLDivElement>(null);
+export const ScrollToEndListener = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<IScrollToEndListenerProps>
+>(({ children, onScrollToEnd, rootMargin, ...statusProps }, forwardedRef) => {
+  const listenerRef = React.useRef<HTMLDivElement>(null);
 
-    useInViewport(listenerRef, { rootMargin, onEnter: onScrollToEnd });
+  useInViewport(listenerRef, { rootMargin, onEnter: onScrollToEnd });
 
-    return (
-      <div className="arm-scroll-to-end-listener" ref={forwardedRef}>
-        {children}
+  return (
+    <div className="arm-scroll-to-end-listener" ref={forwardedRef}>
+      {children}
 
-        {(statusProps.error || statusProps.pending) && (
-          <div className="arm-scroll-to-end-listener-status">
-            <Status {...statusProps} />
-          </div>
-        )}
+      {(statusProps.error || statusProps.pending) && (
+        <div className="arm-scroll-to-end-listener-status">
+          <Status {...statusProps} />
+        </div>
+      )}
 
-        <div className="arm-scroll-to-end-listener-listener" ref={listenerRef} />
-      </div>
-    );
-  }
-);
+      <div className="arm-scroll-to-end-listener-listener" ref={listenerRef} />
+    </div>
+  );
+});
 
 ScrollToEndListener.defaultProps = {
-  rootMargin: '200px',
+  rootMargin: "200px",
 };

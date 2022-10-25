@@ -1,25 +1,28 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
 .arm-rating {
   display: flex;
   align-items: center;
   width: max-content;
-  gap: $spacing-xsmall;
+  gap: variables.$spacing-xsmall;
 }
 
 .arm-rating-part {
-  @include flex-centre-content;
+  @include mixins.flex-centre-content;
 
   width: 1rem;
   height: 1rem;
   position: relative;
 
-  &[data-part='true'],
-  &[data-filled='true'] {
+  &[data-part="true"],
+  &[data-filled="true"] {
     .arm-rating-part-filled {
       opacity: 1;
     }
   }
 
-  &[data-filled='true'] {
+  &[data-filled="true"] {
     .arm-rating-part-empty {
       opacity: 0;
     }
@@ -27,7 +30,7 @@
 }
 
 .arm-rating-part-filled {
-  @include absolute-fill;
+  @include mixins.absolute-fill;
 
   width: var(--rating-amount, 1);
   overflow: hidden;
@@ -40,7 +43,7 @@
 
 .arm-rating-part-buttons,
 .arm-rating-part-radios {
-  @include absolute-fill;
+  @include mixins.absolute-fill;
 
   display: flex;
 
@@ -55,11 +58,11 @@
   align-items: center;
   width: max-content;
   padding: 0;
-  gap: $spacing-xxsmall;
+  gap: variables.$spacing-xxsmall;
 }
 
 .arm-rating-range {
-  @include absolute-fill;
+  @include mixins.absolute-fill;
 
   cursor: pointer;
   opacity: 0;
@@ -71,7 +74,7 @@
 }
 
 .arm-rating-part-radio {
-  @include absolute-fill;
+  @include mixins.absolute-fill;
 
   appearance: none;
   -webkit-appearance: none;
