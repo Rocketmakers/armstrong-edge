@@ -19,7 +19,6 @@ export * from "./emailInput";
 export * from "./errorMessage";
 export * from "./expandable";
 export * from "./fixedProgressBar";
-export * from "./group";
 export * from "./header";
 export * from "./icon";
 export * from "./iconButton";
