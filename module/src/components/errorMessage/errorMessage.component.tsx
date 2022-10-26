@@ -1,8 +1,10 @@
 import * as React from "react";
-import { ClassNames } from "../../utils/classNames";
 
-import { IIcon, IconSet, Icon, IconUtils } from "../icon";
-import { ValidationMessage } from "../../hooks/form/form.types";
+import { ValidationMessage } from "../../hooks/form";
+import { ClassNames } from "../../utils/classNames";
+import { Icon, IconSet, IconUtils, IIcon } from "../icon";
+
+import "./errorMessage.basic.scss";
 
 export interface IErrorMessageProps {
   /** The error to render */

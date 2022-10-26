@@ -1,0 +1,25 @@
+.arm-progress-bar {
+  border-radius: calc(#{$arm-progress-bar-thickness} / 2);
+
+  &[data-direction='up'],
+  &[data-direction='down'] {
+    min-height: 200px;
+  }
+
+  &[data-direction='left'],
+  &[data-direction='right'] {
+    min-width: 200px;
+  }
+
+  &[data-has-label='true'] {
+    border-radius: calc(#{$arm-progress-bar-with-label-thickness} / 2);
+
+    .arm-progress-bar-progress {
+      border-radius: calc(#{$arm-progress-bar-with-label-thickness} / 2);
+    }
+  }
+}
+
+.arm-progress-bar-progress {
+  border-radius: calc(#{$arm-progress-bar-thickness} / 2);
+}

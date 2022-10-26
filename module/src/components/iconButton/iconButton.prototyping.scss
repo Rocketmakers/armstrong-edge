@@ -1,0 +1,17 @@
+.arm-icon-button {
+  justify-content: center;
+
+  > * {
+    margin: initial;
+  }
+
+  .arm-icon,
+  .arm-status .arm-spinner .arm-icon,
+  .arm-status .arm-status-error {
+    font-size: 1rem;
+  }
+}
+
+.arm-button.arm-icon-button {
+  @include circle(2rem);
+}

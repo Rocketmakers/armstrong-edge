@@ -1,5 +1,10 @@
-@import "../../theme/variables.scss";
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
 
-.arm-group {
-  background-color: var(--color-brand-primary);
+.arm-group-inner {
+  @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }

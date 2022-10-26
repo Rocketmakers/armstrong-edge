@@ -1,0 +1,40 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
+.arm-tag-input-input {
+  flex-grow: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  padding: variables.$spacing-xsmall 0;
+  height: variables.$arm-input-height;
+}
+
+.arm-input-inner {
+  cursor: text;
+}
+
+.arm-tag-input-inner {
+  @include mixins.flex-centre-content;
+  @include mixins.space-between-children-horizontal(variables.$spacing-xxsmall);
+
+  overflow-x: auto;
+  flex-grow: 1;
+}
+
+.arm-input-wrapper-above .arm-auto-resizer-content,
+.arm-input-wrapper-below .arm-auto-resizer-content {
+  @include mixins.space-between-children-horizontal(variables.$spacing-xxsmall);
+
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .arm-tag {
+    margin-top: variables.$spacing-xxsmall * 0.5;
+    margin-bottom: variables.$spacing-xxsmall * 0.5;
+  }
+}

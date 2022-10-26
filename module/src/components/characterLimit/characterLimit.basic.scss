@@ -1,0 +1,10 @@
+@use "../../theme/variables.scss";
+
+.arm-character-limit {
+  display: flex;
+  align-items: center;
+
+  .arm-icon {
+    margin-left: variables.$spacing-xsmall;
+  }
+}

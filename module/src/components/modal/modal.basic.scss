@@ -1,0 +1,47 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
+.arm-modal {
+  background-color: variables.$white;
+  user-select: contain;
+  padding: variables.$spacing-xsmall;
+}
+
+.arm-modal-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 4;
+
+  &[data-centred="true"] {
+    @include mixins.flex-centre-content;
+  }
+
+  &[data-close-on-background-click="false"] {
+    pointer-events: none;
+
+    .arm-modal {
+      pointer-events: visible;
+    }
+  }
+
+  &[data-darken-background="true"] {
+    background-color: rgba(variables.$black, 0.2);
+    cursor: pointer;
+
+    .arm-modal {
+      cursor: default;
+    }
+  }
+
+  &[data-is-closing="true"] {
+    opacity: 0;
+    pointer-events: none;
+
+    .arm-modal {
+      pointer-events: none;
+    }
+  }
+}

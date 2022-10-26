@@ -1,2 +1,2 @@
-export * from "./icon.component";
-export * from "./icon.utils";
+export * from './icon.component';
+export * from './icons.utils';

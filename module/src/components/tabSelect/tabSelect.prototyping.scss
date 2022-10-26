@@ -1,0 +1,30 @@
+.arm-tab-select {
+  .arm-tab-control-tab {
+    border-radius: 0;
+    border: $line-light;
+
+    &[data-is-current='true'] {
+      background-color: $brand-primary;
+      color: $white;
+      border-color: $brand-primary;
+
+      + .arm-tab-control-tab {
+        border-left: transparent;
+      }
+    }
+
+    &:first-child {
+      border-top-left-radius: $border-radius-small;
+      border-bottom-left-radius: $border-radius-small;
+    }
+
+    &:last-child {
+      border-top-right-radius: $border-radius-small;
+      border-bottom-right-radius: $border-radius-small;
+    }
+
+    &:not(:last-child) {
+      border-right: transparent;
+    }
+  }
+}

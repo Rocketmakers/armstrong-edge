@@ -1,0 +1,34 @@
+// must be nested to ensure toasts don't animate like this when rendered on their own
+.arm-toast-notification-container {
+  .arm-toast-notification {
+    animation: expand-in-height-medium $transition-medium;
+    max-height: 300px;
+    position: relative;
+    display: flex;
+
+    &[data-dismissing='true'] {
+      animation: none;
+      transition: max-height $transition-quick, padding $transition-quick;
+      max-height: 0;
+      padding: 0;
+      pointer-events: none;
+
+      .arm-toast-notification-inner {
+        animation: none;
+        transform: scale(0.7);
+        opacity: 0;
+      }
+    }
+  }
+
+  .arm-toast-notification-inner {
+    animation: slide-in-left-large $transition-quick;
+    transition: transform $transition-quick, opacity $transition-quick;
+  }
+
+  .arm-toast-notification-container-left {
+    .arm-toast-notification-inner {
+      animation: slide-in-right-large $transition-quick;
+    }
+  }
+}

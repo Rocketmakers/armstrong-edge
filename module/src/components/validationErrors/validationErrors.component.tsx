@@ -1,9 +1,9 @@
 import * as React from "react";
-import { ClassNames } from "../../utils/classNames";
 
-import { IconSet, IIcon } from "../icon";
+import { ValidationMessage } from "../../hooks/form";
+import { ClassNames } from "../../utils/classNames";
 import { ErrorMessage } from "../errorMessage";
-import { ValidationMessage } from "../../hooks/form/form.types";
+import { IconSet, IIcon } from "../icon";
 
 export interface IValidationErrorsProps {
   /** The errors to render */

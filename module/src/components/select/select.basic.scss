@@ -1,0 +1,38 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
+.arm-input.arm-select {
+  .arm-select-inner {
+    flex-grow: 1;
+    position: relative;
+  }
+}
+
+.arm-select-select {
+  @include mixins.fill;
+
+  height: variables.$arm-input-height;
+  cursor: pointer;
+  padding: variables.$spacing-xsmall 0;
+  -webkit-appearance: none;
+  background-color: transparent;
+  resize: none;
+  font-family: inherit;
+  outline: none;
+  border: 0;
+  color: inherit;
+
+  &:focus {
+    outline: none;
+    border: 0;
+  }
+}
+
+.arm-icon.arm-select-overlay-icon {
+  position: absolute;
+  right: variables.$spacing-xsmall;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  pointer-events: none;
+}

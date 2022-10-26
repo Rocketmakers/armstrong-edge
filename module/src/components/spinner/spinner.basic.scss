@@ -1,0 +1,33 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
+.arm-spinner {
+  @include mixins.flex-centre-content;
+
+  flex-direction: column;
+
+  &[data-fill-container="true"] {
+    @include mixins.fill;
+
+    flex-grow: 1;
+    align-self: stretch;
+    justify-self: stretch;
+  }
+
+  &[data-fill-container="false"] {
+    width: max-content;
+    height: max-content;
+  }
+}
+
+.arm-spinner-inner {
+  animation: spin-clockwise variables.$transition-slow linear infinite;
+  width: max-content;
+  height: max-content;
+}
+
+.arm-spinner-label {
+  margin-top: variables.$spacing-xsmall;
+  font-size: 0.7rem;
+  display: block;
+}

@@ -1,0 +1,11 @@
+.arm-radio-options-list {
+  .arm-radio-input {
+    border: $line-light;
+    border-radius: $border-radius-small;
+    padding: $spacing-xsmall;
+
+    &[data-checked='true'] {
+      border-color: $brand-primary;
+    }
+  }
+}

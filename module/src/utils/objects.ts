@@ -68,7 +68,7 @@ export namespace Objects {
 
   /** Perform an operation on the keys of an object and return an array of the results */
   export const mapKeys = <
-    T,
+    T extends {},
     TKey extends keyof T,
     TValue extends T[TKey],
     TReturn
@@ -76,16 +76,20 @@ export namespace Objects {
     object: T,
     callback: (key: TKey, value: TValue, index: number) => TReturn
   ): TReturn[] =>
-    Object.keys(object as object).map((key, index) =>
+    Object.keys(object).map((key, index) =>
       callback(key as TKey, object[key], index)
     );
 
   /** Perform an operation on the keys of an object */
-  export const forEachKeys = <T, TKey extends keyof T, TValue extends T[TKey]>(
+  export const forEachKeys = <
+    T extends {},
+    TKey extends keyof T,
+    TValue extends T[TKey]
+  >(
     object: T,
     callback: (key: TKey, value: TValue, index: number) => void
   ) =>
-    Object.keys(object as object).forEach((key, index) =>
+    Object.keys(object).forEach((key, index) =>
       callback(key as TKey, object[key], index)
     );
 

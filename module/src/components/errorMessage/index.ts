@@ -1,1 +1,1 @@
-export * from "./errorMessage.component";
+export * from './errorMessage.component';

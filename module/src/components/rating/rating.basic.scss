@@ -1,0 +1,83 @@
+@use "../../theme/variables.scss";
+@use "../../theme/mixins.scss";
+
+.arm-rating {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: variables.$spacing-xsmall;
+}
+
+.arm-rating-part {
+  @include mixins.flex-centre-content;
+
+  width: 1rem;
+  height: 1rem;
+  position: relative;
+
+  &[data-part="true"],
+  &[data-filled="true"] {
+    .arm-rating-part-filled {
+      opacity: 1;
+    }
+  }
+
+  &[data-filled="true"] {
+    .arm-rating-part-empty {
+      opacity: 0;
+    }
+  }
+}
+
+.arm-rating-part-filled {
+  @include mixins.absolute-fill;
+
+  width: var(--rating-amount, 1);
+  overflow: hidden;
+  opacity: 0;
+}
+
+.arm-rating-part-icon-wrapper {
+  position: relative;
+}
+
+.arm-rating-part-buttons,
+.arm-rating-part-radios {
+  @include mixins.absolute-fill;
+
+  display: flex;
+
+  .arm-button-minimal {
+    flex-grow: 1;
+  }
+}
+
+.arm-rating-parts {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: max-content;
+  padding: 0;
+  gap: variables.$spacing-xxsmall;
+}
+
+.arm-rating-range {
+  @include mixins.absolute-fill;
+
+  cursor: pointer;
+  opacity: 0;
+}
+
+.arm-rating-part-radio-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.arm-rating-part-radio {
+  @include mixins.absolute-fill;
+
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  cursor: pointer;
+}

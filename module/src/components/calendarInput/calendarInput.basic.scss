@@ -1,0 +1,66 @@
+@use "../../theme/variables.scss";
+
+$arm-calendar-select-width: 57px;
+$arm-calendar-display-width: 300px !default;
+
+.arm-calendar-select {
+  margin-right: 0;
+  flex: 1;
+  min-width: $arm-calendar-select-width;
+
+  .arm-dropdown {
+    width: 100%;
+  }
+
+  .arm-input-wrapper {
+    margin-right: 0;
+
+    .arm-input-inner {
+      margin-right: 0;
+
+      input {
+        width: 20px;
+      }
+    }
+  }
+}
+
+.arm-calendar-input-between-inputs {
+  color: variables.$gray-light;
+  margin-right: 0;
+}
+
+.arm-dropdown-content.arm-calendar-input-dropdown-content {
+  width: $arm-calendar-display-width;
+
+  .arm-calendar-display {
+    max-width: none;
+  }
+}
+
+.arm-calendar-input {
+  .arm-dropdown {
+    width: 100%;
+
+    .arm-input-wrapper-above,
+    .arm-input-wrapper-below {
+      .arm-calendar-display {
+        max-width: none;
+      }
+    }
+  }
+
+  &[data-display-mode="calendar"] {
+    cursor: pointer;
+
+    .arm-input-inner {
+      cursor: pointer;
+    }
+  }
+}
+
+.arm-calendar-input-preview {
+  height: variables.$arm-input-height;
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,43 @@
+.arm-toast-notification-toasts {
+  padding: $spacing-small;
+
+  > .arm-toast-notification {
+    padding: calc(#{$spacing-xsmall} / 2) 0;
+  }
+}
+
+.arm-toast-notification {
+  &[data-type='success'] {
+    .arm-toast-notification-inner {
+      background-color: $color-positive;
+      color: $white;
+    }
+  }
+
+  &[data-type='error'] {
+    .arm-toast-notification-inner {
+      background-color: $color-negative;
+      color: $white;
+    }
+  }
+
+  &[data-type='info'] {
+    .arm-toast-notification-inner {
+      background-color: $color-info;
+      color: $white;
+    }
+  }
+
+  &[data-type='warning'] {
+    .arm-toast-notification-inner {
+      background-color: $color-warning;
+      color: $white;
+    }
+  }
+}
+
+.arm-toast-notification-inner {
+  box-shadow: $shadow-small;
+  padding: $spacing-xsmall;
+  border-radius: $border-radius-small;
+}

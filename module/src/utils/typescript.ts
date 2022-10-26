@@ -6,8 +6,6 @@ export namespace Typescript {
    * @param shouldBeNever The variable to check
    */
   export function assertNever(shouldBeNever?: never) {
-    throw new Error(
-      `Fallen into assert never with: ${shouldBeNever ?? "undefined"}`
-    );
+    throw new Error(`Fallen into assert never with: ${shouldBeNever ?? 'undefined'}`);
   }
 }

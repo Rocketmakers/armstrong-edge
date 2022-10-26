@@ -8,6 +8,8 @@ import {
 import { ClassNames } from "../../utils/classNames";
 import { Icons } from "./icon.icons";
 
+import "./icon.basic.scss";
+
 /** The name of a set of icons */
 export type IconSet = keyof Icons;
 

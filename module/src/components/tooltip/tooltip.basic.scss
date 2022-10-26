@@ -1,0 +1,13 @@
+$arm-tooltip-max-width: 250px !default;
+
+.arm-tooltip-wrapper {
+  cursor: default;
+}
+
+.arm-tooltip {
+  left: var(--arm-tooltip-left);
+  top: var(--arm-tooltip-top);
+  max-width: $arm-tooltip-max-width;
+  position: fixed;
+  background-color: transparent;
+}
