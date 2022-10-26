@@ -10,7 +10,6 @@ export * from "./checkboxInput";
 export * from "./checkboxInputList";
 export * from "./codeInput";
 export * from "./config";
-export * from "./confirmPasswordInput";
 export * from "./dateTimeInput";
 export * from "./dialog";
 export * from "./dropdown";
