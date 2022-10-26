@@ -187,7 +187,7 @@ export const CheckboxInput = React.forwardRef(
             <Status
               error={
                 bindConfig.shouldShowValidationErrorIcon &&
-                (!!bindConfig?.validationErrorMessages?.length || error)
+                (!!bindConfig.validationErrorMessages?.length || error)
               }
               pending={pending}
               errorIcon={bindConfig.validationErrorIcon}
