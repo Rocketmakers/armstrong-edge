@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import { resolve } from "path";
+import { resolve, join } from "path";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
@@ -11,7 +11,6 @@ export default defineConfig({
   },
   build: {
     emptyOutDir: true,
-    outDir: "dist/src",
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "@rocketmakers/armstrong-dev",
@@ -24,6 +23,7 @@ export default defineConfig({
       treeshake: true,
       output: {
         preserveModules: true,
+        preserveModulesRoot: join(__dirname, "/src"),
         inlineDynamicImports: false,
         dir: "dist",
       },

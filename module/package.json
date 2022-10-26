@@ -11,20 +11,21 @@
   },
   "peerDependencies": {
     "react": "18.x",
-    "react-dom": "18.x"
+    "react-dom": "18.x",
+    "date-fns": "2.x"
   },
   "files": [
     "dist"
   ],
-  "main": "./dist/src/index.js",
-  "module": "./dist/src/index.es.js",
-  "types": "./dist/src/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
   "sideEffects": [
     "*.scss"
   ],
   "exports": {
     ".": {
-      "import": "./dist/src/index.es.js"
+      "import": "./dist/index.es.js"
     }
   },
   "keywords": [],
