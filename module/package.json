@@ -16,15 +16,15 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.es.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.es.js",
+  "types": "./dist/src/index.d.ts",
   "sideEffects": [
     "*.scss"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.es.js"
+      "import": "./dist/src/index.es.js"
     }
   },
   "keywords": [],
