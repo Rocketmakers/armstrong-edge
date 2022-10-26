@@ -42,7 +42,6 @@ export * from "./sideMenu";
 export * from "./spinner";
 export * from "./status";
 export * from "./statusWrapper";
-export * from "./stepper";
 export * from "./switchInput";
 export * from "./tabControl";
 export * from "./tabSelect";
