@@ -18,7 +18,6 @@ export * from "./dropdownItems";
 export * from "./emailInput";
 export * from "./errorMessage";
 export * from "./expandable";
-export * from "./header";
 export * from "./icon";
 export * from "./iconButton";
 export * from "./iconWrapper";
