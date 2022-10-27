@@ -64,3 +64,4 @@ export * from "./timeInput";
 export * from "./toast";
 export * from "./tooltip";
 export * from "./validationErrors";
+export * from "./singleSelect";
