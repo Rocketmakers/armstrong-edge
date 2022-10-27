@@ -16,7 +16,6 @@ export * from "./dropdown";
 export * from "./dropdownButton";
 export * from "./dropdownItems";
 export * from "./emailInput";
-export * from "./errorMessage";
 export * from "./expandable";
 export * from "./icon";
 export * from "./iconButton";
