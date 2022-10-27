@@ -19,7 +19,7 @@ export default defineConfig({
     },
     cssCodeSplit: false,
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "react-select"],
       treeshake: true,
       output: {
         preserveModules: true,
