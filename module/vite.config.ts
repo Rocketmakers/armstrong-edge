@@ -1,9 +1,23 @@
 import { defineConfig } from "vite";
 import { resolve, join } from "path";
 import dts from "vite-plugin-dts";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
-  plugins: [dts()],
+  plugins: [
+    dts(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: [
+            "src/components/icon/icomoon.scss",
+            "src/components/icon/linearicons.scss",
+          ],
+          dest: "",
+        },
+      ],
+    }),
+  ],
   css: {
     modules: {
       localsConvention: "dashesOnly",

@@ -10,9 +10,9 @@
     "watch-tsc": "tsc -w --noEmit --preserveWatchOutput"
   },
   "peerDependencies": {
+    "date-fns": "2.x",
     "react": "18.x",
-    "react-dom": "18.x",
-    "date-fns": "2.x"
+    "react-dom": "18.x"
   },
   "files": [
     "dist"
@@ -43,6 +43,7 @@
     "scss-concat": "0.3.9",
     "typescript": "4.8.3",
     "vite": "3.1.8",
-    "vite-plugin-dts": "1.4.1"
+    "vite-plugin-dts": "1.4.1",
+    "vite-plugin-static-copy": "^0.11.0"
   }
 }
