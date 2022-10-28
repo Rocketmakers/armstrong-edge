@@ -11,27 +11,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        id: cache-npm-build
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: module/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('module/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Set Node.js 16.17.0
+      - name: Set Node.js to current version and cache
+        id: set-node-and-cache
         uses: actions/setup-node@master
         with:
-          node-version: 16.17.0
+          node-version-file: '.tool-versions'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: npm install
-        if: steps.cache-npm-build.outputs.cache-hit != 'true'
-        run: (cd module && npm i && npm ci)
+        if: steps.set-node-and-cache.outputs.cache-hit != 'true'
+        run: (cd module && npm ci)
 
       # - name: lint
       #   run: (cd module && npm run lint)
