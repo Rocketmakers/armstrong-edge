@@ -1,4 +1,8 @@
-import { Form, ReactSingleSelectRef } from "@rocketmakers/armstrong-dev";
+import {
+  Form,
+  IconUtils,
+  ReactSingleSelectRef,
+} from "@rocketmakers/armstrong-dev";
 import { PlaygroundButton } from "./components/playgroundButton";
 
 import "../theme/theme.scss";
@@ -41,7 +45,8 @@ function App() {
           placeholder="Please select..."
           errorMessages={["Something ain't right..."]}
           ref={singleSelectRef}
-          validationMode="icon"
+          validationMode="both"
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "anchor")}
         ></PlaygroundSingleSelect>
         <textarea readOnly value={JSON.stringify(formState)} />
       </form>

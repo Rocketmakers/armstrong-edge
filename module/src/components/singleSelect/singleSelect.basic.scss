@@ -1,2 +1,5 @@
 @use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+
+.arm-single-select-input {
+  margin: variables.$spacing-xsmall 0;
+}

@@ -9,9 +9,5 @@ export const PlaygroundSingleSelect = React.forwardRef<
   ReactSingleSelectRef,
   ISingleSelectProps
 >(({ ...props }, ref) => {
-  return (
-    <>
-      <SingleSelect ref={ref} {...props}></SingleSelect>
-    </>
-  );
+  return <SingleSelect ref={ref} {...props}></SingleSelect>;
 });
