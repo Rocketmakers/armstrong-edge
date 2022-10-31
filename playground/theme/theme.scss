@@ -2,16 +2,17 @@
 
 // ARMSTRONG IMPORTs
 
+// import chosen icon font
+@import "~@rocketmakers/armstrong-dev/dist/icomoon.scss";
+@import "~@rocketmakers/armstrong-dev/dist/linearicons.scss";
+
+@import "./fonts.scss";
+
 // import variables
 @import "~@rocketmakers/armstrong-dev/src/theme/imports.scss";
 @import "~@rocketmakers/armstrong-dev/src/theme/animations.scss";
 
-// import chosen icon font
-@import "./shared/_fonts";
-
 // import base component styles
-@import "~@rocketmakers/armstrong-dev/src/theme/basic.scss";
-
 @import "~@rocketmakers/armstrong-dev/src/theme/basic.scss";
 
 *,
