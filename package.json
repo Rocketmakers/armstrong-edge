@@ -10,7 +10,7 @@
   "author": "developers@rocketmakers.com",
   "license": "MIT",
   "scripts": {
-    "setup": "asdf install && npm i && (cd module && rm -rf package-lock.json node_modules && npm i --legacy-peer-deps) && (cd marketing && rm -rf package-lock.json node_modules && npm i --legacy-peer-deps)"
+    "setup": "asdf install && npm i && (cd module && npm i --legacy-peer-deps) && (cd marketing && npm i --legacy-peer-deps)"
   },
   "devDependencies": {
     "commitizen": "^4.2.4",
