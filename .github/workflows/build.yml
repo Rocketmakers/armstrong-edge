@@ -25,11 +25,11 @@ jobs:
 
       - name: npm install marketing
         # if: steps.set-node-and-cache-marketing.outputs.cache-hit != 'true'
-        run: (cd marketing && npm ci)
+        run: (cd marketing && npm ci --legacy-peer-deps)
 
       - name: npm install module
         # if: steps.set-node-and-cache-module.outputs.cache-hit != 'true'
-        run: (cd module && npm ci)
+        run: (cd module && npm ci --legacy-peer-deps)
 
       # - name: lint
       #   run: (cd module && npm run lint)
