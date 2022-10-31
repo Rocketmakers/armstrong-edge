@@ -9,15 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@master
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Set Node.js to current version and cache
         id: set-node-and-cache
         uses: actions/setup-node@master
         with:
-          node-version-file: '.tool-versions'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          node-version-file: ".tool-versions"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
 
       - name: npm install
         if: steps.set-node-and-cache.outputs.cache-hit != 'true'
