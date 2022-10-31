@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Set Node.js to current version and cache
         id: set-node-and-cache
