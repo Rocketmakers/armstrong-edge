@@ -15,13 +15,13 @@ jobs:
         id: set-node-and-cache
         uses: actions/setup-node@master
         with:
-          node-version-file: '.tool-versions'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          node-version-file: ".tool-versions"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
 
       - name: npm install
         if: steps.set-node-and-cache.outputs.cache-hit != 'true'
-        run: (cd module && npm ci)
+        run: (cd marketing && npm ci) && (cd module && npm ci)
 
       # - name: lint
       #   run: (cd module && npm run lint)
