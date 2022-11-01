@@ -1,4 +1,10 @@
-import { Button, Form } from "@rocketmakers/armstrong-dev";
+import {
+  Form,
+  IconUtils,
+  ReactSingleSelectRef,
+} from "@rocketmakers/armstrong-dev";
+import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
+import { useRef } from "react";
 import { PlaygroundButton } from "./components/playgroundButton";
 
 import "../theme/theme.scss";
@@ -7,7 +13,16 @@ function App() {
   const { formProp, formState } = Form.use({
     username: "",
     password: "",
+    flava: "",
   });
+
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
+
+  const singleSelectRef = useRef<ReactSingleSelectRef>(null);
 
   return (
     <div>
@@ -22,6 +37,14 @@ function App() {
           value={formState?.password}
           onChange={(e) => formProp("password").set(e.target.value)}
           type="password"
+        />
+        <PlaygroundSingleSelect
+          options={options}
+          bind={formProp("flava").bind()}
+          validationMode="both"
+          errorMessages={["Something ain't right..."]}
+          ref={singleSelectRef}
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
         />
         <textarea readOnly value={JSON.stringify(formState)} />
       </form>

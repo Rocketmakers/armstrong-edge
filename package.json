@@ -9,6 +9,9 @@
   },
   "author": "developers@rocketmakers.com",
   "license": "MIT",
+  "scripts": {
+    "setup": "asdf install && npm i && (cd module && npm i --legacy-peer-deps) && (cd marketing && npm i --legacy-peer-deps)"
+  },
   "devDependencies": {
     "commitizen": "^4.2.4",
     "cz-customizable": "^6.3.0",

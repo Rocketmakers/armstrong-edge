@@ -1,6 +1,36 @@
 @import "../../module/dist/style.css" layer(armstrong);
 
+// ARMSTRONG IMPORTs
+
+// import chosen icon font
 @import "~@rocketmakers/armstrong-dev/dist/icomoon.scss";
 @import "~@rocketmakers/armstrong-dev/dist/linearicons.scss";
 
 @import "./fonts.scss";
+
+// import variables
+@import "~@rocketmakers/armstrong-dev/src/theme/imports.scss";
+@import "~@rocketmakers/armstrong-dev/src/theme/animations.scss";
+
+// import base component styles
+@import "~@rocketmakers/armstrong-dev/src/theme/basic.scss";
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#host,
+.app {
+  font-family: Roboto, Helvetica, arial, sans-serif;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  @include space-between-children-vertical($spacing-xsmall);
+}
