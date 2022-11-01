@@ -20,7 +20,7 @@ export interface IValidationErrorsProps {
   /** will scroll the validation errors into view when the length of validationErrors changes */
   scrollIntoView?: boolean;
 
-  /** */
+  /** overrides the error messaging and icon display used in the error validation display */
   validationMode?: "icon" | "message" | "both";
 }
 
@@ -57,12 +57,10 @@ export const ValidationErrors = React.forwardRef<
     );
 
     const shouldShowErrorIcon =
-      !!validationErrors?.length &&
-      (validationMode === "both" || validationMode === "icon");
+      validationMode === "both" || validationMode === "icon";
 
     const shouldShowErrorMessage =
-      !!validationErrors?.length &&
-      (validationMode === "both" || validationMode === "message");
+      validationMode === "both" || validationMode === "message";
 
     return (
       <div

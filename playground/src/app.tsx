@@ -3,11 +3,11 @@ import {
   IconUtils,
   ReactSingleSelectRef,
 } from "@rocketmakers/armstrong-dev";
+import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
+import { useRef } from "react";
 import { PlaygroundButton } from "./components/playgroundButton";
 
 import "../theme/theme.scss";
-import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
-import { useRef } from "react";
 
 function App() {
   const { formProp, formState } = Form.use({
@@ -44,7 +44,7 @@ function App() {
           validationMode="both"
           errorMessages={["Something ain't right..."]}
           ref={singleSelectRef}
-          errorIcon={IconUtils.getIconDefinition("Icomoon", "anchor")}
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
         />
         <textarea readOnly value={JSON.stringify(formState)} />
       </form>

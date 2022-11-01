@@ -1,7 +1,8 @@
 import React from "react";
-import Select, { GroupBase, OnChangeValue, Options } from "react-select";
+import Select, { GroupBase, OnChangeValue } from "react-select";
 import SelectRef from "react-select/dist/declarations/src/Select";
 import { Form } from "../../hooks";
+import { ClassNames } from "../../utils";
 import { IIcon, IconSet } from "../icon";
 import { ValidationErrors } from "../validationErrors";
 
@@ -17,6 +18,9 @@ export type ISelectOptionType<TSelectData = any> = {
 };
 
 export interface ISingleSelectProps<TSelectData = string> {
+  /** CSS className property */
+  className?: string;
+
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: Form.IBindingProps<string>;
 
@@ -63,6 +67,7 @@ export const SingleSelect = React.forwardRef<
 >(
   (
     {
+      className,
       bind,
       options,
       placeholder,
@@ -87,11 +92,7 @@ export const SingleSelect = React.forwardRef<
       onChange: onSelectOption,
     });
 
-    const {
-      validationErrorMessages,
-      shouldShowValidationErrorIcon,
-      validationErrorIcon,
-    } = config;
+    const { validationErrorMessages, validationErrorIcon } = config;
 
     const handleChange = React.useCallback(
       (newValue: OnChangeValue<unknown, false>) => {
@@ -110,7 +111,9 @@ export const SingleSelect = React.forwardRef<
     const showValidation = !!validationErrorMessages?.length;
 
     return (
-      <div className="arm-single-select-wrapper">
+      <div
+        className={ClassNames.concat("arm-single-select-wrapper", className)}
+      >
         <Select
           ref={ref}
           id={id}
@@ -132,10 +135,7 @@ export const SingleSelect = React.forwardRef<
             className="arm-single-select-validation-error-display"
             validationMode={validationMode}
             validationErrors={validationErrorMessages || []}
-            icon={
-              (shouldShowValidationErrorIcon && validationErrorIcon) ||
-              undefined
-            }
+            icon={validationErrorIcon || undefined}
           />
         )}
       </div>
