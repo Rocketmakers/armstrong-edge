@@ -57,6 +57,18 @@ export interface ISingleSelectProps<TSelectData = string> {
   getOptionValue?: (
     option: ISelectOptionType<string>
   ) => ISelectOptionType["value"] | "";
+
+  /** is the select value clearable */
+  isClearable?: boolean;
+
+  /** is the select disabled */
+  isDisabled?: boolean;
+
+  /** is the select in a state of loading (async) */
+  isLoading?: boolean;
+
+  /** enable user to search the option by typing in the input */
+  isSearchable?: boolean;
 }
 
 import "./singleSelect.basic.scss";
@@ -79,6 +91,10 @@ export const SingleSelect = React.forwardRef<
       onSelectOption,
       getOptionLabel,
       getOptionValue,
+      isClearable,
+      isDisabled,
+      isLoading,
+      isSearchable,
     },
     ref
   ) => {
@@ -118,6 +134,7 @@ export const SingleSelect = React.forwardRef<
           ref={ref}
           id={id}
           className="arm-single-select-input"
+          classNamePrefix="arm-single-select"
           onChange={onSelectOption || handleChange}
           options={options}
           placeholder={placeholder || "Please select..."}
@@ -127,6 +144,10 @@ export const SingleSelect = React.forwardRef<
           getOptionValue={getOptionValue}
           aria-invalid={showValidation}
           aria-label={ariaLabel || "single-select-input"}
+          isClearable={isClearable}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          isSearchable={isSearchable}
         />
 
         {showValidation && (

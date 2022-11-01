@@ -45,6 +45,8 @@ function App() {
           errorMessages={["Something ain't right..."]}
           ref={singleSelectRef}
           errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          isClearable={true}
+          isSearchable={true}
         />
         <textarea readOnly value={JSON.stringify(formState)} />
       </form>
