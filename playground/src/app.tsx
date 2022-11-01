@@ -41,13 +41,11 @@ function App() {
         <PlaygroundSingleSelect
           options={options}
           bind={formProp("flava").bind()}
-          label="Tell me what's your flava"
-          placeholder="Please select..."
+          validationMode="both"
           errorMessages={["Something ain't right..."]}
           ref={singleSelectRef}
-          validationMode="both"
           errorIcon={IconUtils.getIconDefinition("Icomoon", "anchor")}
-        ></PlaygroundSingleSelect>
+        />
         <textarea readOnly value={JSON.stringify(formState)} />
       </form>
     </div>

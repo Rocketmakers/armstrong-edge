@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { GroupBase, OnChangeValue } from "react-select";
+import Select, { GroupBase, OnChangeValue, Options } from "react-select";
 import SelectRef from "react-select/dist/declarations/src/Select";
 import { Form } from "../../hooks";
 import { IIcon, IconSet } from "../icon";
@@ -18,13 +18,10 @@ export type ISelectOptionType<TSelectData = any> = {
 
 export interface ISingleSelectProps<TSelectData = string> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind: Form.IBindingProps<string>;
+  bind?: Form.IBindingProps<string>;
 
   /** the options to be displayed in the input */
-  options: ISelectOptionType<TSelectData>[];
-
-  /** adds a label above the input */
-  label?: string;
+  options?: ISelectOptionType<TSelectData>[];
 
   /** overrides the aria-label of the input. This is set as default to 'single-select-input' */
   ariaLabel?: string;
@@ -41,8 +38,21 @@ export interface ISingleSelectProps<TSelectData = string> {
   /** overrides the icon option used beside the validation display */
   errorIcon?: IIcon<IconSet>;
 
+  /** overrides the value of the form binder if both are provided  */
+  currentValue?: string;
+
   /** overrides the handleChange method used when the input option is changed */
   onSelectOption?: (newValue: OnChangeValue<unknown, false>) => void;
+
+  /** retrieves the label string from the selected option */
+  getOptionLabel?: (
+    option: ISelectOptionType<string>
+  ) => ISelectOptionType["label"] | "";
+
+  /** retrieves the value string from the selected option */
+  getOptionValue?: (
+    option: ISelectOptionType<string>
+  ) => ISelectOptionType["value"] | "";
 }
 
 import "./singleSelect.basic.scss";
@@ -55,13 +65,15 @@ export const SingleSelect = React.forwardRef<
     {
       bind,
       options,
-      label,
       placeholder,
       validationMode,
       errorMessages,
       errorIcon,
       ariaLabel,
+      currentValue,
       onSelectOption,
+      getOptionLabel,
+      getOptionValue,
     },
     ref
   ) => {
@@ -71,12 +83,12 @@ export const SingleSelect = React.forwardRef<
       validationErrorMessages: errorMessages,
       validationErrorIcon: errorIcon,
       validationMode,
+      value: currentValue,
       onChange: onSelectOption,
     });
 
     const {
       validationErrorMessages,
-      shouldShowValidationErrorMessage,
       shouldShowValidationErrorIcon,
       validationErrorIcon,
     } = config;
@@ -95,23 +107,10 @@ export const SingleSelect = React.forwardRef<
       ) as ISelectOptionType<string>;
     }, [options, value]);
 
-    const getOptionLabel = (option?: ISelectOptionType<string>): string => {
-      return option?.label ?? "";
-    };
-
-    const getOptionValue = (option?: ISelectOptionType<string>): string => {
-      return option?.value ?? "";
-    };
-
     const showValidation = !!validationErrorMessages?.length;
 
     return (
       <div className="arm-single-select-wrapper">
-        {label && (
-          <label className="arm-single-select-header-label" htmlFor={id}>
-            {label}
-          </label>
-        )}
         <Select
           ref={ref}
           id={id}
@@ -131,10 +130,8 @@ export const SingleSelect = React.forwardRef<
           <ValidationErrors
             aria-label="single-select-validation-display"
             className="arm-single-select-validation-error-display"
-            validationErrors={
-              (shouldShowValidationErrorMessage && validationErrorMessages) ||
-              []
-            }
+            validationMode={validationMode}
+            validationErrors={validationErrorMessages || []}
             icon={
               (shouldShowValidationErrorIcon && validationErrorIcon) ||
               undefined
