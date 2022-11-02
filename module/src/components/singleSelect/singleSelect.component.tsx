@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { GroupBase, MultiValue, OnChangeValue } from "react-select";
+import Select, { GroupBase, OnChangeValue } from "react-select";
 import SelectRef from "react-select/dist/declarations/src/Select";
 import { Form } from "../../hooks";
 import { ClassNames } from "../../utils";
