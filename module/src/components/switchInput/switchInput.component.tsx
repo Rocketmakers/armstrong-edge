@@ -70,6 +70,19 @@ export const SwitchInput = React.forwardRef(
 
     const { props: dragProps, changePosition } = useDrag(onDragEnd);
 
+    const onKeyDown = React.useCallback(
+      (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          setBoundValue?.(!boundValue as TBind);
+        } else if (e.key === 'ArrowLeft' && boundValue) {
+          setBoundValue?.(false as TBind);
+        } else if (e.key === 'ArrowRight' && !boundValue) {
+          setBoundValue?.(true as TBind);
+        }
+      },
+      [setBoundValue, boundValue]
+    );
+
     React.useEffect(() => {
       if (changePosition && changeOnDrag) {
         if (changePosition.left > 0) {
@@ -97,6 +110,7 @@ export const SwitchInput = React.forwardRef(
               type="checkbox"
               // eslint-disable-next-line @typescript-eslint/no-empty-function
               onChange={() => {}}
+              onKeyDown={onKeyDown}
               checked={boundValue || (bind && false)}
               disabled={disabled}
               {...dragProps}
