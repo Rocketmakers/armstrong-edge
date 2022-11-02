@@ -12,10 +12,11 @@ export type ReactSelectMultiRef = SelectRef<
   GroupBase<IReactSelectOptionType<string>>
 >;
 
+// "isClearable" and "isSearchable" props are included as standard when "isMulti" is set to true
 export interface IReactMultiSelectProps<TSelectData = string[]>
   extends Omit<
     IReactSelectBaseProps<TSelectData>,
-    "defaultValue" | "isClearable" | "isSearchable"
+    "isClearable" | "isSearchable"
   > {}
 
 export const MultiSelect = React.forwardRef<
@@ -80,8 +81,8 @@ export const MultiSelect = React.forwardRef<
 
         {showValidation && (
           <ValidationErrors
-            aria-label="single-select-validation-display"
-            className="arm-single-select-validation-error-display"
+            aria-label="multi-select-validation-display"
+            className="arm-multi-select-validation-error-display"
             validationMode={validationMode}
             validationErrors={validationErrorMessages || []}
             icon={validationErrorIcon || undefined}
