@@ -1,31 +1,31 @@
 import React from "react";
-import Select, { GroupBase, OnChangeValue } from "react-select";
+import Select, { GroupBase, MultiValue, OnChangeValue } from "react-select";
 import SelectRef from "react-select/dist/declarations/src/Select";
 import { Form } from "../../hooks";
 import { ClassNames } from "../../utils";
 import { IIcon, IconSet } from "../icon";
 import { ValidationErrors } from "../validationErrors";
 
-export type ReactSingleSelectRef = SelectRef<
-  ISelectOptionType<string>,
+export type ReactSelectRef = SelectRef<
+  IReactSelectOptionType<string>,
   false,
-  GroupBase<ISelectOptionType<string>>
+  GroupBase<IReactSelectOptionType<string>>
 >;
 
-export type ISelectOptionType<TSelectData = any> = {
+export type IReactSelectOptionType<TSelectData = any> = {
   value: TSelectData;
   label: string;
 };
 
-export interface ISingleSelectProps<TSelectData = string> {
+export interface IReactSelectBaseProps<TSelectData = string> {
   /** CSS className property */
   className?: string;
 
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: Form.IBindingProps<string>;
+  bind?: Form.IBindingProps<TSelectData>;
 
   /** the options to be displayed in the input */
-  options?: ISelectOptionType<TSelectData>[];
+  options?: IReactSelectOptionType<string>[];
 
   /** overrides the aria-label of the input. This is set as default to 'single-select-input' */
   ariaLabel?: string;
@@ -43,27 +43,39 @@ export interface ISingleSelectProps<TSelectData = string> {
   errorIcon?: IIcon<IconSet>;
 
   /** overrides the value of the form binder if both are provided  */
-  currentValue?: string;
+  currentValue?: TSelectData;
 
   /** overrides the handleChange method used when the input option is changed */
   onSelectOption?: (newValue: OnChangeValue<unknown, false>) => void;
 
   /** retrieves the label string from the selected option */
   getOptionLabel?: (
-    option: ISelectOptionType<string>
-  ) => ISelectOptionType["label"] | "";
+    option: IReactSelectOptionType<string>
+  ) => IReactSelectOptionType["label"] | "";
 
   /** retrieves the value string from the selected option */
   getOptionValue?: (
-    option: ISelectOptionType<string>
-  ) => ISelectOptionType["value"] | "";
+    option: IReactSelectOptionType<string>
+  ) => IReactSelectOptionType["value"] | "";
+
+  /** is the select value clearable */
+  isClearable?: boolean;
+
+  /** is the select disabled */
+  isDisabled?: boolean;
+
+  /** is the select in a state of loading (async) */
+  isLoading?: boolean;
+
+  /** enable user to search the option by typing in the input */
+  isSearchable?: boolean;
 }
 
 import "./singleSelect.basic.scss";
 
 export const SingleSelect = React.forwardRef<
-  ReactSingleSelectRef,
-  ISingleSelectProps
+  ReactSelectRef,
+  IReactSelectBaseProps
 >(
   (
     {
@@ -79,6 +91,10 @@ export const SingleSelect = React.forwardRef<
       onSelectOption,
       getOptionLabel,
       getOptionValue,
+      isClearable,
+      isDisabled,
+      isLoading,
+      isSearchable,
     },
     ref
   ) => {
@@ -96,7 +112,7 @@ export const SingleSelect = React.forwardRef<
 
     const handleChange = React.useCallback(
       (newValue: OnChangeValue<unknown, false>) => {
-        const castValue = newValue as ISelectOptionType<string>;
+        const castValue = newValue as IReactSelectOptionType<string>;
         setValue?.(castValue?.value ?? undefined);
       },
       [setValue]
@@ -105,8 +121,8 @@ export const SingleSelect = React.forwardRef<
     const selectedValue = React.useMemo(() => {
       return options?.find(
         (option) => option.value === (value ?? "")
-      ) as ISelectOptionType<string>;
-    }, [options, value]);
+      ) as IReactSelectOptionType<string>;
+    }, [options]);
 
     const showValidation = !!validationErrorMessages?.length;
 
@@ -118,15 +134,19 @@ export const SingleSelect = React.forwardRef<
           ref={ref}
           id={id}
           className="arm-single-select-input"
+          classNamePrefix="arm-single-select"
           onChange={onSelectOption || handleChange}
           options={options}
           placeholder={placeholder || "Please select..."}
           value={selectedValue}
-          isMulti={false}
           getOptionLabel={getOptionLabel}
           getOptionValue={getOptionValue}
           aria-invalid={showValidation}
           aria-label={ariaLabel || "single-select-input"}
+          isClearable={isClearable}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          isSearchable={isSearchable}
         />
 
         {showValidation && (

@@ -1,13 +1,13 @@
 import React from "react";
 import {
-  ISingleSelectProps,
-  ReactSingleSelectRef,
+  IReactSelectBaseProps,
+  ReactSelectRef,
   SingleSelect,
 } from "@rocketmakers/armstrong-dev";
 
 export const PlaygroundSingleSelect = React.forwardRef<
-  ReactSingleSelectRef,
-  ISingleSelectProps
+  ReactSelectRef,
+  IReactSelectBaseProps
 >(({ ...props }, ref) => {
   return <SingleSelect ref={ref} {...props} />;
 });

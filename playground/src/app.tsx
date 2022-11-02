@@ -1,28 +1,32 @@
 import {
   Form,
   IconUtils,
-  ReactSingleSelectRef,
+  ReactSelectMultiRef,
+  ReactSelectRef,
 } from "@rocketmakers/armstrong-dev";
 import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
 import { useRef } from "react";
 import { PlaygroundButton } from "./components/playgroundButton";
 
 import "../theme/theme.scss";
+import { PlaygroundMultiSelect } from "./components/playgroundMultiSelect";
 
 function App() {
-  const { formProp, formState } = Form.use({
-    username: "",
-    password: "",
-    flava: "",
-  });
-
   const options = [
     { value: "chocolate", label: "Chocolate" },
     { value: "strawberry", label: "Strawberry" },
     { value: "vanilla", label: "Vanilla" },
   ];
 
-  const singleSelectRef = useRef<ReactSingleSelectRef>(null);
+  const { formProp, formState } = Form.use({
+    username: "",
+    password: "",
+    flava: options[1].value,
+    multiFlava: [...options.map((v) => v.value)],
+  });
+
+  const singleSelectRef = useRef<ReactSelectRef>(null);
+  const multiSelectRef = useRef<ReactSelectMultiRef>(null);
 
   return (
     <div>
@@ -45,6 +49,17 @@ function App() {
           errorMessages={["Something ain't right..."]}
           ref={singleSelectRef}
           errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          isClearable={true}
+          isSearchable={true}
+        />
+
+        <PlaygroundMultiSelect
+          options={options}
+          bind={formProp("multiFlava").bind()}
+          ref={multiSelectRef}
+          validationMode="both"
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          errorMessages={["Something ain't right..."]}
         />
         <textarea readOnly value={JSON.stringify(formState)} />
       </form>
