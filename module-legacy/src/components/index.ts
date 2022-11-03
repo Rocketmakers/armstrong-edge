@@ -44,7 +44,6 @@ export * from './radioInput';
 export * from './radioInputList';
 export * from './rangeInput';
 export * from './rating';
-export * from './scrollToEndListener';
 export * from './select';
 export * from './sideMenu';
 export * from './spinner';
