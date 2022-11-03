@@ -1,40 +1,58 @@
 import React from "react";
 import { IReactSelectBaseProps, IReactSelectOptionType } from "../singleSelect";
 
-import Select, { GroupBase, OnChangeValue } from "react-select";
+import Select, { GroupBase, MultiValue, OnChangeValue } from "react-select";
 import { Form } from "../../hooks";
 import SelectRef from "react-select/dist/declarations/src/Select";
 import { ValidationErrors } from "../validationErrors";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCProps,
+  ArmstrongFCReturn,
+  ArmstrongId,
+  NullOrUndefined,
+} from "../../types";
 
-export type ReactSelectMultiRef = SelectRef<
-  IReactSelectOptionType<string>,
-  true,
-  GroupBase<IReactSelectOptionType<string>>
+export type ReactSelectMultiRef = React.Ref<
+  SelectRef<
+    IReactSelectOptionType<any>,
+    true,
+    GroupBase<IReactSelectOptionType<any>>
+  >
 >;
 
 // "isClearable" and "isSearchable" props are included as standard when "isMulti" is set to true
-export interface IReactMultiSelectProps<TSelectData = string[]>
-  extends Omit<
-    IReactSelectBaseProps<TSelectData>,
-    "isClearable" | "isSearchable"
-  > {}
+export interface IReactMultiSelectProps<
+  Id extends ArmstrongId,
+  TBind extends NullOrUndefined<IReactSelectOptionType<Id>[]>
+> extends Omit<
+    IReactSelectBaseProps<any>,
+    "isClearable" | "isSearchable" | "onSelectOption" | "bind"
+  > {
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
+  bind?: Form.IBindingProps<MultiValue<TBind>>;
 
-export const MultiSelect = React.forwardRef<
-  ReactSelectMultiRef,
-  IReactMultiSelectProps
->(
-  (
+  /** overrides the handleChange method used when the input option is changed */
+  onSelectOption?: (newValue: OnChangeValue<TBind, true>) => void;
+}
+
+export const MultiSelect = React.forwardRef(
+  <
+    Id extends ArmstrongId,
+    TBind extends NullOrUndefined<IReactSelectOptionType<Id>[]>
+  >(
     {
       bind,
-      options,
-      placeholder,
       errorMessages,
-      ariaLabel,
       errorIcon,
       validationMode,
       currentValue,
-    },
-    ref
+      options,
+      placeholder,
+      ariaLabel,
+      onSelectOption,
+    }: IReactMultiSelectProps<Id, TBind>,
+    ref: ReactSelectMultiRef
   ) => {
     const id = React.useId();
 
@@ -43,13 +61,14 @@ export const MultiSelect = React.forwardRef<
       validationErrorIcon: errorIcon,
       validationMode,
       value: currentValue,
+      onChange: onSelectOption,
     });
 
     const { validationErrorMessages, validationErrorIcon } = config;
 
     const handleChange = React.useCallback(
       (newValue: OnChangeValue<unknown, true>) => {
-        const castValue = newValue as IReactSelectOptionType<string>[];
+        const castValue = newValue as IReactSelectOptionType<TBind>[];
         setValue?.([...castValue.map((value) => value.value)]);
       },
       [setValue]
@@ -57,7 +76,7 @@ export const MultiSelect = React.forwardRef<
 
     const selectedValue = React.useMemo(() => {
       return options?.filter((option) =>
-        value?.some((value) => value === option.value)
+        value?.some((value: any) => value === option.value)
       );
     }, [options, value]);
 
@@ -91,4 +110,13 @@ export const MultiSelect = React.forwardRef<
       </div>
     );
   }
-);
+) as (<
+  Id extends ArmstrongId,
+  TBind extends NullOrUndefined<IReactSelectOptionType<Id>[]>
+>(
+  props: ArmstrongFCProps<
+    IReactMultiSelectProps<Id, TBind>,
+    ReactSelectMultiRef
+  >
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IReactMultiSelectProps<any, any>>;

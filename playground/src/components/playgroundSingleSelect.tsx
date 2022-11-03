@@ -7,7 +7,7 @@ import {
 
 export const PlaygroundSingleSelect = React.forwardRef<
   ReactSelectRef,
-  IReactSelectBaseProps
+  IReactSelectBaseProps<any>
 >(({ ...props }, ref) => {
   return <SingleSelect ref={ref} {...props} />;
 });

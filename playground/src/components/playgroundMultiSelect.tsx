@@ -7,7 +7,7 @@ import {
 
 export const PlaygroundMultiSelect = React.forwardRef<
   ReactSelectMultiRef,
-  IReactMultiSelectProps
+  IReactMultiSelectProps<any, any>
 >(({ ...props }, ref) => {
   return <MultiSelect ref={ref} {...props} />;
 });

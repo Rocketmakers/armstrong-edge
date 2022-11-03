@@ -5,11 +5,14 @@ import { Form } from "../../hooks";
 import { ClassNames } from "../../utils";
 import { IIcon, IconSet } from "../icon";
 import { ValidationErrors } from "../validationErrors";
+import { ArmstrongId } from "../../types/core";
 
-export type ReactSelectRef = SelectRef<
-  IReactSelectOptionType<string>,
-  false,
-  GroupBase<IReactSelectOptionType<string>>
+export type ReactSelectRef = React.Ref<
+  SelectRef<
+    IReactSelectOptionType<any>,
+    false,
+    GroupBase<IReactSelectOptionType<any>>
+  >
 >;
 
 export type IReactSelectOptionType<TSelectData = any> = {
@@ -17,15 +20,15 @@ export type IReactSelectOptionType<TSelectData = any> = {
   label: string;
 };
 
-export interface IReactSelectBaseProps<TSelectData = string> {
+export interface IReactSelectBaseProps<Id extends ArmstrongId> {
   /** CSS className property */
   className?: string;
 
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: Form.IBindingProps<TSelectData>;
+  bind?: Form.IBindingProps<Id>;
 
   /** the options to be displayed in the input */
-  options?: IReactSelectOptionType<string>[];
+  options?: IReactSelectOptionType<Id>[];
 
   /** overrides the aria-label of the input. This is set as default to 'single-select-input' */
   ariaLabel?: string;
@@ -43,20 +46,20 @@ export interface IReactSelectBaseProps<TSelectData = string> {
   errorIcon?: IIcon<IconSet>;
 
   /** overrides the value of the form binder if both are provided  */
-  currentValue?: TSelectData;
+  currentValue?: Id;
 
   /** overrides the handleChange method used when the input option is changed */
   onSelectOption?: (newValue: OnChangeValue<unknown, false>) => void;
 
   /** retrieves the label string from the selected option */
   getOptionLabel?: (
-    option: IReactSelectOptionType<string>
-  ) => IReactSelectOptionType["label"] | "";
+    option: IReactSelectOptionType<Id>
+  ) => IReactSelectOptionType<string>["label"] | "";
 
   /** retrieves the value string from the selected option */
   getOptionValue?: (
-    option: IReactSelectOptionType<string>
-  ) => IReactSelectOptionType["value"] | "";
+    option: IReactSelectOptionType<Id>
+  ) => IReactSelectOptionType<string>["value"] | "";
 
   /** is the select value clearable */
   isClearable?: boolean;
@@ -72,12 +75,14 @@ export interface IReactSelectBaseProps<TSelectData = string> {
 }
 
 import "./singleSelect.basic.scss";
+import {
+  ArmstrongVFCProps,
+  ArmstrongFCReturn,
+  ArmstrongFCExtensions,
+} from "../../types";
 
-export const SingleSelect = React.forwardRef<
-  ReactSelectRef,
-  IReactSelectBaseProps
->(
-  (
+export const SingleSelect = React.forwardRef(
+  <Id extends ArmstrongId>(
     {
       className,
       bind,
@@ -95,8 +100,8 @@ export const SingleSelect = React.forwardRef<
       isDisabled,
       isLoading,
       isSearchable,
-    },
-    ref
+    }: IReactSelectBaseProps<Id>,
+    ref: ReactSelectRef
   ) => {
     const id = React.useId();
 
@@ -112,7 +117,7 @@ export const SingleSelect = React.forwardRef<
 
     const handleChange = React.useCallback(
       (newValue: OnChangeValue<unknown, false>) => {
-        const castValue = newValue as IReactSelectOptionType<string>;
+        const castValue = newValue as IReactSelectOptionType<Id>;
         setValue?.(castValue?.value ?? undefined);
       },
       [setValue]
@@ -121,7 +126,7 @@ export const SingleSelect = React.forwardRef<
     const selectedValue = React.useMemo(() => {
       return options?.find(
         (option) => option.value === (value ?? "")
-      ) as IReactSelectOptionType<string>;
+      ) as IReactSelectOptionType<Id>;
     }, [options]);
 
     const showValidation = !!validationErrorMessages?.length;
@@ -161,4 +166,7 @@ export const SingleSelect = React.forwardRef<
       </div>
     );
   }
-);
+) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IReactSelectBaseProps<any>>;

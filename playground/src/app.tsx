@@ -7,21 +7,22 @@ import {
 import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
 import { useRef } from "react";
 import { PlaygroundButton } from "./components/playgroundButton";
+import { PlaygroundMultiSelect } from "./components/playgroundMultiSelect";
 
 import "../theme/theme.scss";
-import { PlaygroundMultiSelect } from "./components/playgroundMultiSelect";
 
 function App() {
   const options = [
     { value: "chocolate", label: "Chocolate" },
     { value: "strawberry", label: "Strawberry" },
     { value: "vanilla", label: "Vanilla" },
+    { value: 2, label: "Choc-chip" },
   ];
 
   const { formProp, formState } = Form.use({
     username: "",
     password: "",
-    flava: options[1].value,
+    flava: 2,
     multiFlava: [...options.map((v) => v.value)],
   });
 
