@@ -1,26 +1,22 @@
-import React from "react";
-import Select, { GroupBase, OnChangeValue } from "react-select";
-import SelectRef from "react-select/dist/declarations/src/Select";
-import { Form } from "../../hooks";
-import { ClassNames } from "../../utils";
-import { IIcon, IconSet } from "../icon";
-import { ValidationErrors } from "../validationErrors";
-import { ArmstrongId } from "../../types/core";
+import React from "react"
+import Select, { GetOptionLabel, GetOptionValue, GroupBase, OnChangeValue } from "react-select"
+import SelectRef from "react-select/dist/declarations/src/Select"
+import { Form } from "../../hooks"
+import { ClassNames } from "../../utils"
+import { IIcon, IconSet } from "../icon"
+import { ValidationErrors } from "../validationErrors"
+import { ArmstrongId, ArmstrongVFCProps, ArmstrongFCReturn, ArmstrongFCExtensions, IArmstrongReactSelectOption, NullOrUndefined } from "../../types"
+
+import "./singleSelect.basic.scss";
 
 export type ReactSelectRef = React.Ref<
   SelectRef<
-    IReactSelectOptionType<any>,
+    IArmstrongReactSelectOption<any>,
     false,
-    GroupBase<IReactSelectOptionType<any>>
+    GroupBase<IArmstrongReactSelectOption<any>>
   >
 >;
-
-export type IReactSelectOptionType<TSelectData = any> = {
-  value: TSelectData;
-  label: string;
-};
-
-export interface IReactSelectBaseProps<Id extends ArmstrongId> {
+export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> {
   /** CSS className property */
   className?: string;
 
@@ -28,7 +24,7 @@ export interface IReactSelectBaseProps<Id extends ArmstrongId> {
   bind?: Form.IBindingProps<Id>;
 
   /** the options to be displayed in the input */
-  options?: IReactSelectOptionType<Id>[];
+  options?: IArmstrongReactSelectOption<Id>[];
 
   /** overrides the aria-label of the input. This is set as default to 'single-select-input' */
   ariaLabel?: string;
@@ -49,17 +45,13 @@ export interface IReactSelectBaseProps<Id extends ArmstrongId> {
   currentValue?: Id;
 
   /** overrides the handleChange method used when the input option is changed */
-  onSelectOption?: (newValue: OnChangeValue<unknown, false>) => void;
+  onSelectOption?: (newValue: Id) => void;
 
   /** retrieves the label string from the selected option */
-  getOptionLabel?: (
-    option: IReactSelectOptionType<Id>
-  ) => IReactSelectOptionType<string>["label"] | "";
+  getOptionName?: (option: IArmstrongReactSelectOption<Id>) => string;
 
   /** retrieves the value string from the selected option */
-  getOptionValue?: (
-    option: IReactSelectOptionType<Id>
-  ) => IReactSelectOptionType<string>["value"] | "";
+  getOptionValue?: (option: IArmstrongReactSelectOption<Id>) => Id;
 
   /** is the select value clearable */
   isClearable?: boolean;
@@ -74,13 +66,6 @@ export interface IReactSelectBaseProps<Id extends ArmstrongId> {
   isSearchable?: boolean;
 }
 
-import "./singleSelect.basic.scss";
-import {
-  ArmstrongVFCProps,
-  ArmstrongFCReturn,
-  ArmstrongFCExtensions,
-} from "../../types";
-
 export const SingleSelect = React.forwardRef(
   <Id extends ArmstrongId>(
     {
@@ -94,7 +79,7 @@ export const SingleSelect = React.forwardRef(
       ariaLabel,
       currentValue,
       onSelectOption,
-      getOptionLabel,
+      getOptionName,
       getOptionValue,
       isClearable,
       isDisabled,
@@ -116,40 +101,45 @@ export const SingleSelect = React.forwardRef(
     const { validationErrorMessages, validationErrorIcon } = config;
 
     const handleChange = React.useCallback(
-      (newValue: OnChangeValue<unknown, false>) => {
-        const castValue = newValue as IReactSelectOptionType<Id>;
-        setValue?.(castValue?.value ?? undefined);
+      (newValue: OnChangeValue<IArmstrongReactSelectOption<Id>, false>) => {
+        setValue?.(newValue?.id);
+        onSelectOption?.(newValue?.id as Id);
       },
-      [setValue]
+      [setValue, onSelectOption]
     );
 
     const selectedValue = React.useMemo(() => {
-      return options?.find(
-        (option) => option.value === (value ?? "")
-      ) as IReactSelectOptionType<Id>;
+      return options?.find((option) => option.id === value);
     }, [options]);
+
+    const valueGetter = React.useCallback<GetOptionValue<IArmstrongReactSelectOption<Id>>>(option => {
+      return getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? "";
+    }, [getOptionValue]);
+
+    const labelGetter = React.useCallback<GetOptionLabel<IArmstrongReactSelectOption<Id>>>(option => {
+      return getOptionName?.(option) ?? option.name?.toString() ?? "";
+    }, [getOptionName]);
 
     const showValidation = !!validationErrorMessages?.length;
 
     return (
-      <div
-        className={ClassNames.concat("arm-single-select-wrapper", className)}
-      >
+      <div className={ClassNames.concat("arm-single-select-wrapper", className)}>
         <Select
           ref={ref}
           id={id}
           className="arm-single-select-input"
           classNamePrefix="arm-single-select"
-          onChange={onSelectOption || handleChange}
+          onChange={handleChange}
           options={options}
           placeholder={placeholder || "Please select..."}
           value={selectedValue}
-          getOptionLabel={getOptionLabel}
-          getOptionValue={getOptionValue}
+          getOptionLabel={labelGetter}
+          getOptionValue={valueGetter}
           aria-invalid={showValidation}
           aria-label={ariaLabel || "single-select-input"}
           isClearable={isClearable}
           isDisabled={isDisabled}
+          isOptionDisabled={(o) => !!o.disabled}
           isLoading={isLoading}
           isSearchable={isSearchable}
         />
@@ -166,7 +156,4 @@ export const SingleSelect = React.forwardRef(
       </div>
     );
   }
-) as (<Id extends ArmstrongId>(
-  props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IReactSelectBaseProps<any>>;
+) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>) => ArmstrongFCReturn) & ArmstrongFCExtensions<IReactSelectBaseProps<any>>;

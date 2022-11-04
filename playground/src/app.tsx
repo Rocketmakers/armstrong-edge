@@ -1,29 +1,24 @@
-import {
-  Form,
-  IconUtils,
-  ReactSelectMultiRef,
-  ReactSelectRef,
-} from "@rocketmakers/armstrong-dev";
-import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
-import { useRef } from "react";
-import { PlaygroundButton } from "./components/playgroundButton";
-import { PlaygroundMultiSelect } from "./components/playgroundMultiSelect";
+import { Form, IconUtils, ReactSelectMultiRef, ReactSelectRef } from "@rocketmakers/armstrong-dev"
+import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect"
+import { useRef } from "react"
+import { PlaygroundButton } from "./components/playgroundButton"
+import { PlaygroundMultiSelect } from "./components/playgroundMultiSelect"
 
-import "../theme/theme.scss";
+import "../theme/theme.scss"
 
 function App() {
   const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: 2, label: "Choc-chip" },
+    { id: "chocolate", name: "Chocolate" },
+    { id: "strawberry", name: "Strawberry" },
+    { id: "vanilla", name: "Vanilla" },
+    { id: 2, name: "Choc-chip" },
   ];
 
   const { formProp, formState } = Form.use({
     username: "",
     password: "",
     flava: 2,
-    multiFlava: [...options.map((v) => v.value)],
+    multiFlava: [...options.map((v) => v.id)],
   });
 
   const singleSelectRef = useRef<ReactSelectRef>(null);

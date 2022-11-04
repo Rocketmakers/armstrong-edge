@@ -19,6 +19,8 @@ export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
   disabled?: boolean;
 }
 
+export type IArmstrongReactSelectOption<Id extends ArmstrongId> = Omit<IArmstrongOption<Id>, "htmlProps">
+
 /** an option in an array of options, intended for use in a component like a Select or RadioList, with additional JSX related options */
 export interface IArmstrongExtendedOption<Id extends ArmstrongId, HtmlProps = unknown>
   extends IArmstrongOption<Id, HtmlProps>,
