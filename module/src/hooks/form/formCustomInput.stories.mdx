@@ -1,6 +1,12 @@
-import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
-import { use } from './form.hooks';
-import { ConfigExample, HookReturnExample, FormPropExample, FormPropArrayExample, BindPropsExample } from './form.examples';
+import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { use } from "./form.hooks";
+import {
+  ConfigExample,
+  HookReturnExample,
+  FormPropExample,
+  FormPropArrayExample,
+  BindPropsExample,
+} from "./form.examples";
 
 <Meta title="Form/Form Custom Inputs" />
 
@@ -18,7 +24,8 @@ interface ICustomTextInputProps {
 }
 
 const CustomTextInput: React.FC<ICustomTextInputProps> = (props) => {
-  const [boundValue, boundOnChange, { myValidationErrorMessages }] = Form.useBindingState(props.bind);
+  const [boundValue, boundOnChange, { myValidationErrorMessages }] =
+    Form.useBindingState(props.bind);
 
   return (
     <>
