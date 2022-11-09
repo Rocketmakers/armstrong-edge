@@ -42,9 +42,6 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
 
     /** don't style beyond removing the default css styling */
     minimalStyle?: boolean;
-
-    /** identifier for driving this component with Cypress */
-    cypressTag?: string;
   };
 
 export type IButtonProps = IButtonCoreProps & ButtonHTMLProps;
@@ -113,7 +110,6 @@ export const Button = React.forwardRef<
     children,
     statusPosition,
     hideIconOnStatus,
-    cypressTag,
     ...nativeProps
   } = props;
 
@@ -132,7 +128,6 @@ export const Button = React.forwardRef<
         disabled={disabled || pending}
         tabIndex={disabled ? -1 : nativeProps.tabIndex}
         ref={ref}
-        data-cy={cypressTag}
         {...nativeProps}
       >
         <ButtonInner {...props} />
