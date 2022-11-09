@@ -1,6 +1,7 @@
 import React from 'react';
 import { withThemes } from 'storybook-addon-themes/react';
 import { ModalProvider } from '../src/components/modal/modal.context';
+import { themes } from '@storybook/theming';
 
 export const decorators = [withThemes, (Story) => {
     return (
@@ -57,5 +58,8 @@ export const parameters = {
       { name: 'basic', color: '#3b5998' },
     ],
     Decorator: ThemeDecorator,
+  },
+  docs: {
+    theme: themes.light,
   },
 }
