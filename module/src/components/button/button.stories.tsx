@@ -1,8 +1,9 @@
+import { action } from '@storybook/addon-actions';
 import { expect } from '@storybook/jest';
+import { Meta, StoryFn } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 
-import { StoryUtils } from '../../stories/storyUtils';
 import { IIcon } from '../icon';
 import { Icons } from '../icon/icon.icons';
 import { Button } from './button.component';
@@ -11,17 +12,22 @@ import { Button } from './button.component';
 
 export default {
   title: 'Button/Button',
-  Button,
-  argTypes: { onClick: { action: 'clicked' } },
-};
+  component: Button,
+  args: {
+    children: 'Click me please',
+  },
+} as Meta<typeof Button>;
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(Button);
+const Template: StoryFn<typeof Button> = (args) => <Button {...args} />;
 
 /** stories */
 
-export const Default = StoryUtils.cloneTemplate(Template, { children: 'Click me please' });
+export const Default: StoryFn<typeof Button> = Template.bind({});
+Default.args = {
+  onClick: action('onClick'),
+}
 Default.play = async ({ args, canvasElement }) => {
   const canvas = within(canvasElement);
   expect(canvas.getByRole('button')).toHaveTextContent(args.children as string);
@@ -29,10 +35,11 @@ Default.play = async ({ args, canvasElement }) => {
   await waitFor(() => expect(args.onClick).toHaveBeenCalled());
 };
 
-export const WithIcons = StoryUtils.cloneTemplate(Template, {
+export const WithIcons = Template.bind({});
+WithIcons.args = {
+  onClick: action('onClick'),
   leftIcon: { icon: 'weather-rain2', iconSet: 'Icomoon' },
-  children: 'Click me please',
-});
+};
 WithIcons.play = async ({ args, canvasElement }) => {
   const canvas = within(canvasElement);
   const button = canvas.getByRole('button');
@@ -44,11 +51,12 @@ WithIcons.play = async ({ args, canvasElement }) => {
   await waitFor(() => expect(args.onClick).toHaveBeenCalled());
 };
 
-export const Disabled = StoryUtils.cloneTemplate(Template, {
+export const Disabled = Template.bind({});
+Disabled.args = {
+  onClick: action('onClick'),
   leftIcon: { icon: 'cogs', iconSet: 'Icomoon' },
   disabled: true,
-  children: 'Click me please',
-});
+};
 Disabled.play = async ({ args, canvasElement }) => {
   const canvas = within(canvasElement);
   const button = canvas.getByRole('button');
@@ -57,11 +65,12 @@ Disabled.play = async ({ args, canvasElement }) => {
   expect(button).toHaveAttribute('data-disabled', 'true');
 };
 
-export const Pending = StoryUtils.cloneTemplate(Template, {
+export const Pending = Template.bind({});
+Pending.args = {
+  onClick: action('onClick'),
   leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
-  children: 'Click me please',
   pending: true,
-});
+};
 Pending.play = async ({ args, canvasElement }) => {
   const canvas = within(canvasElement);
   const button = canvas.getByRole('button');
@@ -75,12 +84,13 @@ Pending.play = async ({ args, canvasElement }) => {
   expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
 };
 
-export const PendingOnLeft = StoryUtils.cloneTemplate(Template, {
+export const PendingOnLeft = Template.bind({});
+PendingOnLeft.args = {
+  onClick: action('onClick'),
   leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
-  children: 'Click me please',
   pending: true,
-  statusPosition: 'left',
-});
+  statusPosition: 'left'
+};
 PendingOnLeft.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const button = canvas.getByRole('button');
@@ -115,11 +125,12 @@ PendingAnimation.play = async ({ canvasElement }) => {
   expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
 };
 
-export const Error = StoryUtils.cloneTemplate(Template, {
+export const Error = Template.bind({});
+Error.args = {
+  onClick: action('onClick'),
   leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
-  children: 'Click me please',
   error: true,
-});
+}
 Error.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const button = canvas.getByRole('button');
@@ -131,11 +142,12 @@ Error.play = async ({ canvasElement }) => {
   expect(error?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'warning');
 };
 
-export const Minimal = StoryUtils.cloneTemplate(Template, {
+export const Minimal = Template.bind({});
+Minimal.args = {
+  onClick: action('onClick'),
   leftIcon: { icon: 'weather-rain2', iconSet: 'Icomoon' },
-  children: 'Click me please',
   minimalStyle: true,
-});
+};
 Minimal.play = async ({ args, canvasElement }) => {
   const canvas = within(canvasElement);
   const button = canvas.getByRole('button');
