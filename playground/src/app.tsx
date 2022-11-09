@@ -1,24 +1,47 @@
-import { Form, IconUtils, ReactSelectMultiRef, ReactSelectRef } from "@rocketmakers/armstrong-dev"
-import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect"
-import { useRef } from "react"
-import { PlaygroundButton } from "./components/playgroundButton"
-import { PlaygroundMultiSelect } from "./components/playgroundMultiSelect"
+import {
+  Form,
+  GroupedOption,
+  IconUtils,
+  ReactSelectMultiRef,
+  ReactSelectRef,
+} from "@rocketmakers/armstrong-dev";
+import { useRef } from "react";
+import { PlaygroundMultiSelect } from "./components/playgroundMultiSelect";
 
-import "../theme/theme.scss"
+import "../theme/theme.scss";
+import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
 
 function App() {
-  const options = [
+  const flavourOptions = [
     { id: "chocolate", name: "Chocolate" },
     { id: "strawberry", name: "Strawberry" },
     { id: "vanilla", name: "Vanilla" },
     { id: 2, name: "Choc-chip" },
   ];
 
+  const colourOptions = [
+    { id: "red", name: "Red" },
+    { id: "yellow", name: "Yellow" },
+    { id: "blue", name: "Blue" },
+  ];
+
+  const groupedOptions: GroupedOption<any>[] = [
+    {
+      label: "Colours",
+      options: colourOptions,
+    },
+    {
+      label: "Flavours",
+      options: flavourOptions,
+    },
+  ];
+
   const { formProp, formState } = Form.use({
-    username: "",
-    password: "",
-    flava: 2,
-    multiFlava: [...options.map((v) => v.id)],
+    flava: flavourOptions[1].id,
+    multiFlava: ["vanilla", "chocolate", 2],
+    multiGroupFlava: groupedOptions
+      .map((o) => o.options.map((o: { id: any }) => o.id))
+      .flat(1),
   });
 
   const singleSelectRef = useRef<ReactSelectRef>(null);
@@ -27,19 +50,9 @@ function App() {
   return (
     <div>
       <h1>It is me, the Armstrong playground</h1>
-      <PlaygroundButton>HELLO THERE</PlaygroundButton>
       <form onSubmit={(e) => e.preventDefault()}>
-        <input
-          value={formState?.username}
-          onChange={(e) => formProp("username").set(e.target.value)}
-        />
-        <input
-          value={formState?.password}
-          onChange={(e) => formProp("password").set(e.target.value)}
-          type="password"
-        />
         <PlaygroundSingleSelect
-          options={options}
+          options={groupedOptions}
           bind={formProp("flava").bind()}
           validationMode="both"
           errorMessages={["Something ain't right..."]}
@@ -47,17 +60,36 @@ function App() {
           errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
           isClearable={true}
           isSearchable={true}
+          dropdownIcon={IconUtils.getIconDefinition("Icomoon", "airplane3")}
         />
 
         <PlaygroundMultiSelect
-          options={options}
+          options={flavourOptions}
           bind={formProp("multiFlava").bind()}
           ref={multiSelectRef}
           validationMode="both"
           errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
           errorMessages={["Something ain't right..."]}
+          dropdownIcon={IconUtils.getIconDefinition("Icomoon", "icecream")}
+          closeMenuOnSelect={false}
         />
-        <textarea readOnly value={JSON.stringify(formState)} />
+
+        <PlaygroundMultiSelect
+          options={groupedOptions}
+          bind={formProp("multiGroupFlava").bind()}
+          ref={multiSelectRef}
+          validationMode="both"
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          errorMessages={["Something ain't right..."]}
+          dropdownIcon={IconUtils.getIconDefinition("Icomoon", "icecream")}
+          closeMenuOnSelect={false}
+        />
+
+        <textarea
+          readOnly
+          value={JSON.stringify(formState)}
+          style={{ height: 100 }}
+        />
       </form>
     </div>
   );

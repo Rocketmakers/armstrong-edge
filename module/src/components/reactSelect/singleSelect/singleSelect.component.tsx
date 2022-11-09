@@ -1,13 +1,29 @@
-import React from "react"
-import Select, { GetOptionLabel, GetOptionValue, GroupBase, OnChangeValue } from "react-select"
-import SelectRef from "react-select/dist/declarations/src/Select"
-import { Form } from "../../hooks"
-import { ClassNames } from "../../utils"
-import { IIcon, IconSet } from "../icon"
-import { ValidationErrors } from "../validationErrors"
-import { ArmstrongId, ArmstrongVFCProps, ArmstrongFCReturn, ArmstrongFCExtensions, IArmstrongReactSelectOption, NullOrUndefined } from "../../types"
+import React from "react";
+import Select, {
+  GetOptionLabel,
+  GetOptionValue,
+  GroupBase,
+  OnChangeValue,
+} from "react-select";
+import SelectRef from "react-select/dist/declarations/src/Select";
 
-import "./singleSelect.basic.scss";
+import {
+  CustomDropdownIndicator,
+  IDropdownIndicatorProps,
+} from "../utils/selectDropdownIndicator";
+import { Form } from "../../../hooks";
+import {
+  IArmstrongReactSelectOption,
+  NullOrUndefined,
+  ArmstrongId,
+  ArmstrongVFCProps,
+  ArmstrongFCReturn,
+  ArmstrongFCExtensions,
+} from "../../../types";
+import { ClassNames } from "../../../utils";
+import { IIcon, IconSet, IconUtils } from "../../icon";
+import { ValidationErrors } from "../../validationErrors";
+import { isGroupedOptions } from "./singleSelect.utils";
 
 export type ReactSelectRef = React.Ref<
   SelectRef<
@@ -16,7 +32,15 @@ export type ReactSelectRef = React.Ref<
     GroupBase<IArmstrongReactSelectOption<any>>
   >
 >;
-export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> {
+
+export interface GroupedOption<Id extends NullOrUndefined<ArmstrongId>> {
+  label: string;
+  options: IArmstrongReactSelectOption<Id>[];
+}
+
+export interface IReactSelectBaseProps<
+  Id extends NullOrUndefined<ArmstrongId>
+> {
   /** CSS className property */
   className?: string;
 
@@ -24,7 +48,7 @@ export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> 
   bind?: Form.IBindingProps<Id>;
 
   /** the options to be displayed in the input */
-  options?: IArmstrongReactSelectOption<Id>[];
+  options?: IArmstrongReactSelectOption<Id>[] | GroupedOption<Id>[];
 
   /** overrides the aria-label of the input. This is set as default to 'single-select-input' */
   ariaLabel?: string;
@@ -53,6 +77,11 @@ export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> 
   /** retrieves the value string from the selected option */
   getOptionValue?: (option: IArmstrongReactSelectOption<Id>) => Id;
 
+  /** exposes the input option to be overridden as a React node  */
+  formatOptionLabel?: (
+    option: IArmstrongReactSelectOption<Id>
+  ) => React.ReactNode;
+
   /** is the select value clearable */
   isClearable?: boolean;
 
@@ -64,6 +93,15 @@ export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> 
 
   /** enable user to search the option by typing in the input */
   isSearchable?: boolean;
+
+  /** how should the dropdown be positioned vertically */
+  position?: "auto" | "bottom" | "top";
+
+  /** overrides the dropdown icon in the input */
+  dropdownIcon?: IIcon<IconSet>;
+
+  /** close the select menu when the user selects an option. Set to true as default */
+  closeMenuOnSelect?: boolean;
 }
 
 export const SingleSelect = React.forwardRef(
@@ -85,6 +123,10 @@ export const SingleSelect = React.forwardRef(
       isDisabled,
       isLoading,
       isSearchable,
+      dropdownIcon,
+      position,
+      formatOptionLabel,
+      closeMenuOnSelect,
     }: IReactSelectBaseProps<Id>,
     ref: ReactSelectRef
   ) => {
@@ -109,24 +151,46 @@ export const SingleSelect = React.forwardRef(
     );
 
     const selectedValue = React.useMemo(() => {
-      return options?.find((option) => option.id === value);
-    }, [options]);
+      if (isGroupedOptions(options)) {
+        return options
+          .map((o) => o.options)
+          .flat(1)
+          .find((o) => o.id === value);
+      } else {
+        return options?.find((option) => option.id === value);
+      }
+    }, [options, isGroupedOptions]);
 
-    const valueGetter = React.useCallback<GetOptionValue<IArmstrongReactSelectOption<Id>>>(option => {
-      return getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? "";
-    }, [getOptionValue]);
+    const valueGetter = React.useCallback<
+      GetOptionValue<IArmstrongReactSelectOption<Id>>
+    >(
+      (option) => {
+        return (
+          getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? ""
+        );
+      },
+      [getOptionValue]
+    );
 
-    const labelGetter = React.useCallback<GetOptionLabel<IArmstrongReactSelectOption<Id>>>(option => {
-      return getOptionName?.(option) ?? option.name?.toString() ?? "";
-    }, [getOptionName]);
+    const labelGetter = React.useCallback<
+      GetOptionLabel<IArmstrongReactSelectOption<Id>>
+    >(
+      (option) => {
+        return getOptionName?.(option) ?? option.name?.toString() ?? "";
+      },
+      [getOptionName]
+    );
 
     const showValidation = !!validationErrorMessages?.length;
 
     return (
-      <div className={ClassNames.concat("arm-single-select-wrapper", className)}>
+      <div
+        className={ClassNames.concat("arm-single-select-wrapper", className)}
+      >
         <Select
           ref={ref}
           id={id}
+          formatOptionLabel={formatOptionLabel}
           className="arm-single-select-input"
           classNamePrefix="arm-single-select"
           onChange={handleChange}
@@ -142,6 +206,17 @@ export const SingleSelect = React.forwardRef(
           isOptionDisabled={(o) => !!o.disabled}
           isLoading={isLoading}
           isSearchable={isSearchable}
+          menuPlacement={position}
+          components={{
+            DropdownIndicator: (props) =>
+              CustomDropdownIndicator({
+                icon:
+                  dropdownIcon ||
+                  IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+                ...props,
+              } as IDropdownIndicatorProps<Id, false>),
+          }}
+          closeMenuOnSelect={closeMenuOnSelect}
         />
 
         {showValidation && (
@@ -156,4 +231,7 @@ export const SingleSelect = React.forwardRef(
       </div>
     );
   }
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>) => ArmstrongFCReturn) & ArmstrongFCExtensions<IReactSelectBaseProps<any>>;
+) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IReactSelectBaseProps<any>>;

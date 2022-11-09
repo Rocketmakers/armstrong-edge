@@ -60,6 +60,8 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
 
   /** the current value of the select */
   value?: NonNullable<Id>;
+
+  
 }
 
 /** A select input which takes an array of options */
