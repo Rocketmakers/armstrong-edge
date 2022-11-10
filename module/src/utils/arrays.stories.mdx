@@ -1,0 +1,226 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
+
+<Meta title="Utilities/Arrays" />
+
+## Arrays
+
+Utilities for working with Arrays
+
+### flatten
+
+Convert an array of arrays into a single array
+
+```ts
+function flatten<T>(...arrays: (T[] | undefined)[]);
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+const array1 = ['a', 'b'];
+const array2 = ['c', 'd'];
+
+const result = Arrays.flatten(array1, array2);
+
+// result
+['a', 'b', 'c', 'd'];
+```
+
+### arrayToDictionary
+
+Turn an array into a dictionary of items in that array by a given key
+
+```ts
+function arrayToDictionary<T, Keys extends string = string>(array: T[], getKey: keyof T | ((item: T) => Keys));
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+const things = [
+  { id: 'a', name: 'thing' },
+  { id: 'b', name: 'otherThing' },
+];
+
+const result = Arrays.arrayToDictionary(things, 'id');
+
+// result
+{
+    a: { id: 'a', name: 'thing' },
+    b: { id: 'b', name: 'otherThing' }
+}
+```
+
+### arrayToArrayDictionary
+
+Sort an array into a dictionary of arrays keyed by a value to sort on
+
+```ts
+function arrayToArrayDictionary<T, Keys extends string = string>(array: T[], getKey: (item: T) => Keys): ArrayDictionary<T, Keys>;
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+const things = [
+  { type: 'plant', name: 'rose' },
+  { type: 'plant', name: 'tree' },
+  { type: 'animal', name: 'cat' },
+];
+
+const result = Arrays.arrayToArrayDictionary(things, (item) => item.type);
+
+// result
+{
+  plant: [
+    { type: 'plant', name: 'rose' },
+    { type: 'plant', name: 'tree' },
+  ];
+  animal: [{ type: 'animal', name: 'cat' }];
+}
+```
+
+### arrayToArraysByKey
+
+Sort an array into an array of objects with a key and an array of items on it
+
+```ts
+function arrayToArraysByKey<T, Keys extends string = string>(array: T[], getKey: (item: T) => Keys);
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+const things = [
+  { type: 'plant', name: 'rose' },
+  { type: 'plant', name: 'tree' },
+  { type: 'animal', name: 'cat' },
+];
+
+const result = Arrays.arrayToArraysByKey(things, (item) => item.type);
+
+// result
+[
+  {
+    key: 'plant',
+    items: [
+      { type: 'plant', name: 'rose' },
+      { type: 'plant', name: 'tree' },
+    ],
+  },
+  {
+    key: 'animal',
+    items: [{ type: 'animal', name: 'cat' }],
+  },
+];
+```
+
+### findLastIndex
+
+A variant of findIndex that returns the index of the last item in the array where the callback returns true
+
+```ts
+function findLastIndex<T>(array: T[], callback: (item: T) => boolean);
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+const array = ['a', 'a', 'b'];
+
+const result = Arrays.findLastIndex((item) => item === 'a');
+
+// result
+1;
+```
+
+### reIndex
+
+Re-indexes an array from a specific index point.
+
+```ts
+function reIndex<T>(array: T[], startFrom: number): T[];
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+const array = ['a', 'b', 'c'];
+
+const result = Arrays.reIndex(array, 1);
+
+// result
+['b', 'c', 'a'];
+```
+
+### repeat
+
+A version of `map` which loops a specified number of times and returns the index as the map arg.
+
+```ts
+function repeat<TMapped>(count: number, mapper: (index: number) => TMapped): TMapped[];
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+Arrays.repeat(5, (index) => console.log(index));
+
+// console
+0;
+1;
+2;
+3;
+4;
+
+const result = Arrays.repeat(5, (index) => index * 2);
+
+// result
+[0, 2, 4, 6, 8];
+```
+
+## NestedArrays
+
+Utils for working with arrays of arrays - useful when an array has been split into groups but you want to interact with it as if it's still a single array, I.E using a single overall index
+
+### getArrayIndex
+
+Get the overall index of an item inside an array of arrays
+
+I.E. `[[0,1,2], [3,4], [5,6,7]]`
+
+```ts
+function getArrayIndex<T>(innerIndex: number, outerIndex: number, arrays: { items: T[] }[]);
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+const nestedArrays = [{ items: ['a', 'b', 'c'] }, { items: ['d', 'e', 'f'] }, { items: ['g', 'h', 'i'] }];
+
+const result = Arrays.NestedArrays.getArrayIndex(1, 1, nestedArrays);
+
+// result
+4;
+```
+
+### getAtIndex
+
+Get the item inside an array of arrays at an overall index
+
+I.E. `[[0,1,2], [3,4], [5,6,7]]`
+
+```ts
+function getAtOverallIndex<T>(index: number, arrays: { items: T[] }[]);
+```
+
+```ts
+import { Arrays } from '@rocketmakers/armstrong';
+
+const nestedArrays = [{ items: ['a', 'b', 'c'] }, { items: ['d', 'e', 'f'] }, { items: ['g', 'h', 'i'] }];
+
+const result = Arrays.NestedArrays.getAtOverallIndex(5, nestedArrays);
+
+// result
+f;
+```
