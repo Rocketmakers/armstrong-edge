@@ -57,7 +57,7 @@ function App() {
     <div>
       <h1>It is me, the Armstrong playground</h1>
       <form onSubmit={(e) => e.preventDefault()}>
-        // SingleSelect
+        <h2>SingleSelect</h2>
         <PlaygroundSingleSelect
           options={groupedOptions}
           bind={formProp("singleOnly").bind()}
@@ -69,8 +69,7 @@ function App() {
           isSearchable={true}
           dropdownIcon={IconUtils.getIconDefinition("Icomoon", "airplane3")}
         />
-        <br />
-        // SingleSelectCreatable
+        <h2>SingleSelectCreatable</h2>
         <PlaygroundSingleSelectCreatable
           options={groupedOptions}
           bind={formProp("singleCreatable").bind()}
@@ -82,8 +81,7 @@ function App() {
           isSearchable={true}
           dropdownIcon={IconUtils.getIconDefinition("Icomoon", "apple")}
         />
-        <br />
-        // MultiSelectOnly - non-grouped
+        <h2>MultiSelectOnly - non-grouped</h2>
         <PlaygroundMultiSelect
           options={flavourOptions}
           bind={formProp("multiOnly").bind()}
@@ -94,8 +92,7 @@ function App() {
           dropdownIcon={IconUtils.getIconDefinition("Icomoon", "icecream")}
           closeMenuOnSelect={false}
         />
-        <br />
-        // MultiSelectOnly - grouped
+        <h2>MultiSelectOnly - grouped</h2>
         <PlaygroundMultiSelect
           options={groupedOptions}
           bind={formProp("multiGroup").bind()}
@@ -106,8 +103,7 @@ function App() {
           dropdownIcon={IconUtils.getIconDefinition("Icomoon", "icecream")}
           closeMenuOnSelect={false}
         />
-        <br />
-        // MultiSelectCreatable
+        <h2>MultiSelectCreatable</h2>
         <PlaygroundMultiSelectCreatable
           options={groupedOptions}
           bind={formProp("multiCreatable").bind()}
