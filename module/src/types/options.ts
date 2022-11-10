@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { IconSet } from '../components/icon/icon.component';
-import { IIconWrapperProps } from '../components/iconWrapper/iconWrapper.component';
-import { ArmstrongId, DataAttributes } from './core';
+import { IconSet } from "../components/icon/icon.component";
+import { IIconWrapperProps } from "../components/iconWrapper/iconWrapper.component";
+import { ArmstrongId, DataAttributes } from "./core";
 
 /** an option in an array of options, intended for use in a component like a Select or RadioList */
 export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
@@ -19,11 +19,22 @@ export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
   disabled?: boolean;
 }
 
-export type IArmstrongReactSelectOption<Id extends ArmstrongId> = Omit<IArmstrongOption<Id>, "htmlProps">
+export type IArmstrongReactSelectOption<Id extends ArmstrongId> = Omit<
+  IArmstrongOption<Id>,
+  "htmlProps"
+>;
+export interface IArmstrongReactSelectCreatingOption<Id extends ArmstrongId>
+  extends IArmstrongReactSelectOption<Id> {
+  label: Id;
+  value: Id;
+  __isNew__: boolean;
+}
 
 /** an option in an array of options, intended for use in a component like a Select or RadioList, with additional JSX related options */
-export interface IArmstrongExtendedOption<Id extends ArmstrongId, HtmlProps = unknown>
-  extends IArmstrongOption<Id, HtmlProps>,
+export interface IArmstrongExtendedOption<
+  Id extends ArmstrongId,
+  HtmlProps = unknown
+> extends IArmstrongOption<Id, HtmlProps>,
     IIconWrapperProps<IconSet, IconSet> {
   /** a group to show this item under */
   group?: string;
@@ -32,7 +43,11 @@ export interface IArmstrongExtendedOption<Id extends ArmstrongId, HtmlProps = un
   content?: React.ReactChild | ((active: boolean) => React.ReactChild);
 }
 
-export interface IArmstrongExtendedOptionWithInput<Id extends ArmstrongId, HtmlProps, InputProps> extends IArmstrongExtendedOption<Id, HtmlProps> {
+export interface IArmstrongExtendedOptionWithInput<
+  Id extends ArmstrongId,
+  HtmlProps,
+  InputProps
+> extends IArmstrongExtendedOption<Id, HtmlProps> {
   /** props to spread onto the input element */
   htmlInputProps?: InputProps & DataAttributes;
 }

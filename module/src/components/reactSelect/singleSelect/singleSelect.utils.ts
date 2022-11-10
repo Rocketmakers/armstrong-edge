@@ -1,5 +1,6 @@
 import {
   ArmstrongId,
+  IArmstrongReactSelectCreatingOption,
   IArmstrongReactSelectOption,
   NullOrUndefined,
 } from "../../../types";
@@ -12,4 +13,12 @@ export function isGroupedOptions<Id extends NullOrUndefined<ArmstrongId>>(
     (o: GroupedOption<Id> | IArmstrongReactSelectOption<Id>) =>
       (o as GroupedOption<Id>).label
   );
+}
+
+export function isCreatingOption<Id extends NullOrUndefined<ArmstrongId>>(
+  option?:
+    | IArmstrongReactSelectOption<Id>
+    | IArmstrongReactSelectCreatingOption<Id>
+): option is IArmstrongReactSelectCreatingOption<Id> {
+  return !!option?.hasOwnProperty("__isNew__");
 }

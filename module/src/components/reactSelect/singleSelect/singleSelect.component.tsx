@@ -6,7 +6,6 @@ import Select, {
   OnChangeValue,
 } from "react-select";
 import SelectRef from "react-select/dist/declarations/src/Select";
-
 import {
   CustomDropdownIndicator,
   IDropdownIndicatorProps,
@@ -19,11 +18,13 @@ import {
   ArmstrongVFCProps,
   ArmstrongFCReturn,
   ArmstrongFCExtensions,
+  IArmstrongReactSelectCreatingOption,
 } from "../../../types";
 import { ClassNames } from "../../../utils";
 import { IIcon, IconSet, IconUtils } from "../../icon";
 import { ValidationErrors } from "../../validationErrors";
-import { isGroupedOptions } from "./singleSelect.utils";
+import { isCreatingOption, isGroupedOptions } from "./singleSelect.utils";
+import CreatableSelect from "react-select/creatable";
 
 export type ReactSelectRef = React.Ref<
   SelectRef<
@@ -72,14 +73,24 @@ export interface IReactSelectBaseProps<
   onSelectOption?: (newValue: Id) => void;
 
   /** retrieves the label string from the selected option */
-  getOptionName?: (option: IArmstrongReactSelectOption<Id>) => string;
+  getOptionName?: (
+    option:
+      | IArmstrongReactSelectOption<Id>
+      | IArmstrongReactSelectCreatingOption<Id>
+  ) => string;
 
   /** retrieves the value string from the selected option */
-  getOptionValue?: (option: IArmstrongReactSelectOption<Id>) => Id;
+  getOptionValue?: (
+    option:
+      | IArmstrongReactSelectOption<Id>
+      | IArmstrongReactSelectCreatingOption<Id>
+  ) => Id;
 
   /** exposes the input option to be overridden as a React node  */
   formatOptionLabel?: (
-    option: IArmstrongReactSelectOption<Id>
+    option:
+      | IArmstrongReactSelectOption<Id>
+      | IArmstrongReactSelectCreatingOption<Id>
   ) => React.ReactNode;
 
   /** is the select value clearable */
@@ -102,9 +113,12 @@ export interface IReactSelectBaseProps<
 
   /** close the select menu when the user selects an option. Set to true as default */
   closeMenuOnSelect?: boolean;
+
+  /** enable the user to create select options by typing into the input */
+  allowCreate?: boolean;
 }
 
-export const SingleSelect = React.forwardRef(
+const SingleSelectOnly = React.forwardRef(
   <Id extends ArmstrongId>(
     {
       className,
@@ -159,7 +173,7 @@ export const SingleSelect = React.forwardRef(
       } else {
         return options?.find((option) => option.id === value);
       }
-    }, [options, isGroupedOptions]);
+    }, [options, value, isGroupedOptions]);
 
     const valueGetter = React.useCallback<
       GetOptionValue<IArmstrongReactSelectOption<Id>>
@@ -235,3 +249,185 @@ export const SingleSelect = React.forwardRef(
   props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IReactSelectBaseProps<any>>;
+
+const SingleSelectCreatable = React.forwardRef(
+  <Id extends ArmstrongId>(
+    {
+      className,
+      bind,
+      options,
+      placeholder,
+      validationMode,
+      errorMessages,
+      errorIcon,
+      ariaLabel,
+      currentValue,
+      onSelectOption,
+      getOptionName,
+      getOptionValue,
+      isClearable,
+      isDisabled,
+      isLoading,
+      isSearchable,
+      dropdownIcon,
+      position,
+      formatOptionLabel,
+      closeMenuOnSelect,
+    }: IReactSelectBaseProps<Id>,
+    ref: ReactSelectRef
+  ) => {
+    const id = React.useId();
+
+    const [value, setValue, config] = Form.useBindingState(bind, {
+      validationErrorMessages: errorMessages,
+      validationErrorIcon: errorIcon,
+      validationMode,
+      value: currentValue,
+      onChange: onSelectOption,
+    });
+
+    const { validationErrorMessages, validationErrorIcon } = config;
+
+    const handleChange = React.useCallback(
+      (newValue: OnChangeValue<IArmstrongReactSelectOption<Id>, false>) => {
+        setValue?.(newValue?.id);
+        onSelectOption?.(newValue?.id as Id);
+      },
+      [setValue, onSelectOption]
+    );
+
+    const selectedValue = React.useMemo(() => {
+      let foundOption: IArmstrongReactSelectOption<Id> | undefined;
+      if (isGroupedOptions(options)) {
+        foundOption = options
+          .map((o) => o.options)
+          .flat(1)
+          .find((o) => o.id === value);
+      } else {
+        foundOption = options?.find((option) => option.id === value);
+      }
+
+      if (foundOption) {
+        return foundOption;
+      }
+
+      if (value) {
+        return {
+          id: value,
+          name: value,
+        } as IArmstrongReactSelectOption<Id>;
+      }
+      return undefined;
+    }, [options, value, isGroupedOptions]);
+
+    const valueGetter = React.useCallback<
+      GetOptionValue<
+        | IArmstrongReactSelectOption<Id>
+        | IArmstrongReactSelectCreatingOption<Id>
+      >
+    >(
+      (option) => {
+        if (isCreatingOption(option)) {
+          return getOptionName?.(option) ?? option.label?.toString() ?? "";
+        } else {
+          return (
+            getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? ""
+          );
+        }
+      },
+      [getOptionValue]
+    );
+
+    const labelGetter = React.useCallback<
+      GetOptionLabel<
+        | IArmstrongReactSelectOption<Id>
+        | IArmstrongReactSelectCreatingOption<Id>
+      >
+    >(
+      (option) => {
+        if (isCreatingOption(option)) {
+          return getOptionName?.(option) ?? option.label?.toString() ?? "";
+        } else {
+          return getOptionName?.(option) ?? option.name?.toString() ?? "";
+        }
+      },
+      [getOptionName]
+    );
+
+    const handleCreate = React.useCallback(
+      (newValue: string) => {
+        setValue?.(newValue as Id);
+      },
+      [setValue, value]
+    );
+
+    const showValidation = !!validationErrorMessages?.length;
+
+    return (
+      <div
+        className={ClassNames.concat(
+          "arm-single-select-creatable-wrapper",
+          className
+        )}
+      >
+        <CreatableSelect
+          ref={ref}
+          id={id}
+          onCreateOption={handleCreate}
+          value={selectedValue}
+          getOptionLabel={labelGetter}
+          getOptionValue={valueGetter}
+          options={options}
+          onChange={handleChange}
+          isClearable={isClearable}
+          formatOptionLabel={formatOptionLabel}
+          className="arm-single-select-creatable-input"
+          classNamePrefix="arm-single-select-creatable"
+          placeholder={placeholder || "Please select..."}
+          aria-invalid={showValidation}
+          aria-label={ariaLabel || "single-select-creatable-input"}
+          isDisabled={isDisabled}
+          isOptionDisabled={(o) => !!o.disabled}
+          isLoading={isLoading}
+          isSearchable={isSearchable}
+          menuPlacement={position}
+          components={{
+            DropdownIndicator: (props) =>
+              CustomDropdownIndicator({
+                icon:
+                  dropdownIcon ||
+                  IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+                ...props,
+              } as IDropdownIndicatorProps<Id, false>),
+          }}
+          closeMenuOnSelect={closeMenuOnSelect}
+        />
+
+        {showValidation && (
+          <ValidationErrors
+            aria-label="single-select-creatable-validation-display"
+            className="arm-single-select-creatable-validation-error-display"
+            validationMode={validationMode}
+            validationErrors={validationErrorMessages || []}
+            icon={validationErrorIcon || undefined}
+          />
+        )}
+      </div>
+    );
+  }
+) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IReactSelectBaseProps<any>>;
+
+export const SingleSelect = React.forwardRef<
+  ReactSelectRef,
+  IReactSelectBaseProps<any>
+>(({ ...props }, ref) => {
+  switch (props.allowCreate) {
+    case true:
+      return <SingleSelectCreatable ref={ref} {...props} />;
+    default:
+      return <SingleSelectOnly ref={ref} {...props} />;
+  }
+});
