@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="12" failures="0" errors="0" time="5.323">
+  <testsuite name="Array utils" errors="0" failures="0" skipped="0" timestamp="2022-11-10T16:16:09" time="2.489" tests="9">
+    <testcase classname="Array utils flatten - Convert an array of arrays into a single array" name="Array utils flatten - Convert an array of arrays into a single array" time="0.003">
+    </testcase>
+    <testcase classname="Array utils arrayToDictionary - Turn an array into a dictionary of items in that array by a given key" name="Array utils arrayToDictionary - Turn an array into a dictionary of items in that array by a given key" time="0.001">
+    </testcase>
+    <testcase classname="Array utils arrayToArrayDictionary - Sort an array into a dictionary of arrays keyed by a value to sort on" name="Array utils arrayToArrayDictionary - Sort an array into a dictionary of arrays keyed by a value to sort on" time="0.001">
+    </testcase>
+    <testcase classname="Array utils arrayToArraysByKey - converts an array of objects to a set of nested arrays" name="Array utils arrayToArraysByKey - converts an array of objects to a set of nested arrays" time="0.001">
+    </testcase>
+    <testcase classname="Array utils findLastIndex - Returns the index of the last item in the array where the callback returns true" name="Array utils findLastIndex - Returns the index of the last item in the array where the callback returns true" time="0.001">
+    </testcase>
+    <testcase classname="Array utils reIndex - Re-indexes an array from a specific index point" name="Array utils reIndex - Re-indexes an array from a specific index point" time="0.001">
+    </testcase>
+    <testcase classname="Array utils repeat - maps the result of an index function the specified number of times" name="Array utils repeat - maps the result of an index function the specified number of times" time="0">
+    </testcase>
+    <testcase classname="Nested array utils getArrayIndex - find an overall index for an item in a nested set of array objects" name="Nested array utils getArrayIndex - find an overall index for an item in a nested set of array objects" time="0">
+    </testcase>
+    <testcase classname="Nested array utils getAtIndex - get the item at a specified overall index in a nested set of arrays" name="Nested array utils getAtIndex - get the item at a specified overall index in a nested set of arrays" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="useHasTimeElapsed" errors="0" failures="0" skipped="0" timestamp="2022-11-10T16:16:09" time="4.632" tests="3">
+    <testcase classname="useHasTimeElapsed should indicate that the required time has passed" name="useHasTimeElapsed should indicate that the required time has passed" time="0.018">
+    </testcase>
+    <testcase classname="useHasTimeElapsed should allow the user to reset the timer" name="useHasTimeElapsed should allow the user to reset the timer" time="0.057">
+    </testcase>
+    <testcase classname="useHasTimeElapsedSinceMount should indicate that the required time has passed since mount" name="useHasTimeElapsedSinceMount should indicate that the required time has passed since mount" time="0.005">
+    </testcase>
+  </testsuite>
+</testsuites>
