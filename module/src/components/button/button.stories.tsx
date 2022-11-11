@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { expect } from '@storybook/jest';
-import { Meta, StoryFn } from '@storybook/react';
+import { ComponentStoryObj, Meta, StoryFn, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 
@@ -20,84 +20,96 @@ export default {
 
 /** component template */
 
-const Template: StoryFn<typeof Button> = (args) => <Button {...args} />;
+const Template: StoryObj<typeof Button> = {
+  render: (args) => <Button {...args} />
+};
 
 /** stories */
 
-export const Default: StoryFn<typeof Button> = Template.bind({});
-Default.args = {
-  onClick: action('onClick'),
-}
-Default.play = async ({ args, canvasElement }) => {
+export const Default: StoryObj<typeof Button> = {
+  ...Template,
+  args: {
+    onClick: action('onClick'),
+  },
+  play: async ({ args, canvasElement }) => {
   const canvas = within(canvasElement);
   expect(canvas.getByRole('button')).toHaveTextContent(args.children as string);
   await userEvent.click(canvas.getByRole('button'));
   await waitFor(() => expect(args.onClick).toHaveBeenCalled());
+}
 };
 
-export const WithIcons = Template.bind({});
-WithIcons.args = {
-  onClick: action('onClick'),
-  leftIcon: { icon: 'weather-rain2', iconSet: 'Icomoon' },
-};
-WithIcons.play = async ({ args, canvasElement }) => {
-  const canvas = within(canvasElement);
-  const button = canvas.getByRole('button');
-  const icon = button.querySelector('.left-icon');
-  const displayedIcon = args.leftIcon as IIcon<keyof Icons>;
-  expect(button).toHaveTextContent(args.children as string);
-  expect(icon).toHaveAttribute('data-i', displayedIcon.icon);
-  await userEvent.click(button);
-  await waitFor(() => expect(args.onClick).toHaveBeenCalled());
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  onClick: action('onClick'),
-  leftIcon: { icon: 'cogs', iconSet: 'Icomoon' },
-  disabled: true,
-};
-Disabled.play = async ({ args, canvasElement }) => {
-  const canvas = within(canvasElement);
-  const button = canvas.getByRole('button');
-  expect(button).toHaveTextContent(args.children as string);
-  expect(button).toBeDisabled();
-  expect(button).toHaveAttribute('data-disabled', 'true');
+export const WithIcons: StoryObj<typeof Button> = {
+  ...Template,
+  args: {
+    onClick: action('onClick'),
+    leftIcon: { icon: 'weather-rain2', iconSet: 'Icomoon' },
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    const icon = button.querySelector('.left-icon');
+    const displayedIcon = args.leftIcon as IIcon<keyof Icons>;
+    expect(button).toHaveTextContent(args.children as string);
+    expect(icon).toHaveAttribute('data-i', displayedIcon.icon);
+    await userEvent.click(button);
+    await waitFor(() => expect(args.onClick).toHaveBeenCalled());
+  }
 };
 
-export const Pending = Template.bind({});
-Pending.args = {
-  onClick: action('onClick'),
-  leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
-  pending: true,
-};
-Pending.play = async ({ args, canvasElement }) => {
-  const canvas = within(canvasElement);
-  const button = canvas.getByRole('button');
-  const spinner = button.querySelector('.arm-status');
-  expect(button.lastChild).toContainElement(spinner as HTMLElement);
-  expect(button).toHaveTextContent(args.children as string);
-  expect(button).toBeDisabled();
-  expect(button).toHaveAttribute('data-disabled', 'true');
-  expect(spinner).toBeVisible();
-  expect(spinner).toHaveAttribute('data-pending', 'true');
-  expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
-};
+export const Disabled: StoryObj<typeof Button> = {
+  ...Template,
+  args: {
+    onClick: action('onClick'),
+    leftIcon: { icon: 'cogs', iconSet: 'Icomoon' },
+    disabled: true,
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    expect(button).toHaveTextContent(args.children as string);
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('data-disabled', 'true');
+  }
+}
 
-export const PendingOnLeft = Template.bind({});
-PendingOnLeft.args = {
-  onClick: action('onClick'),
-  leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
-  pending: true,
-  statusPosition: 'left'
-};
-PendingOnLeft.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  const button = canvas.getByRole('button');
-  const spinner = button.querySelector('.arm-status');
-  expect(button.firstChild).toContainElement(spinner as HTMLElement);
-  expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
-};
+export const Pending: StoryObj<typeof Button> = {
+  ...Template,
+  args: {
+    onClick: action('onClick'),
+    leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
+    pending: true,
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    const spinner = button.querySelector('.arm-status');
+    expect(button.lastChild).toContainElement(spinner as HTMLElement);
+    expect(button).toHaveTextContent(args.children as string);
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('data-disabled', 'true');
+    expect(spinner).toBeVisible();
+    expect(spinner).toHaveAttribute('data-pending', 'true');
+    expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
+  }
+}
+
+export const PendingOnLeft: StoryObj<typeof Button> = {
+  ...Template,
+  args: {
+    onClick: action('onClick'),
+    leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
+    pending: true,
+    statusPosition: 'left'
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    const spinner = button.querySelector('.arm-status');
+    expect(button.firstChild).toContainElement(spinner as HTMLElement);
+    expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
+  }
+}
 
 export const PendingAnimation = () => {
   const [pending, setPending] = React.useState(false);
@@ -125,34 +137,38 @@ PendingAnimation.play = async ({ canvasElement }) => {
   expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
 };
 
-export const Error = Template.bind({});
-Error.args = {
-  onClick: action('onClick'),
-  leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
-  error: true,
+export const Error : StoryObj<typeof Button> = {
+  ...Template,
+  args: {
+    onClick: action('onClick'),
+    leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
+    error: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    const error = button.querySelector('.arm-status');
+    expect(button.lastChild).toContainElement(error as HTMLElement);
+    expect(button).toHaveAttribute('data-error', 'true');
+    expect(error).toBeVisible();
+    expect(error).toHaveAttribute('data-error', 'true');
+    expect(error?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'warning');
+  }
 }
-Error.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  const button = canvas.getByRole('button');
-  const error = button.querySelector('.arm-status');
-  expect(button.lastChild).toContainElement(error as HTMLElement);
-  expect(button).toHaveAttribute('data-error', 'true');
-  expect(error).toBeVisible();
-  expect(error).toHaveAttribute('data-error', 'true');
-  expect(error?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'warning');
-};
 
-export const Minimal = Template.bind({});
-Minimal.args = {
-  onClick: action('onClick'),
-  leftIcon: { icon: 'weather-rain2', iconSet: 'Icomoon' },
-  minimalStyle: true,
-};
-Minimal.play = async ({ args, canvasElement }) => {
-  const canvas = within(canvasElement);
-  const button = canvas.getByRole('button');
-  expect(button).toHaveTextContent(args.children as string);
-  expect(button).toHaveClass('arm-button-minimal');
-  await userEvent.click(button);
-  await waitFor(() => expect(args.onClick).toHaveBeenCalled());
-};
+export const Minimal: StoryObj<typeof Button> = {
+  ...Template,
+  args: {
+    onClick: action('onClick'),
+    leftIcon: { icon: 'weather-rain2', iconSet: 'Icomoon' },
+    minimalStyle: true,
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    expect(button).toHaveTextContent(args.children as string);
+    expect(button).toHaveClass('arm-button-minimal');
+    await userEvent.click(button);
+    await waitFor(() => expect(args.onClick).toHaveBeenCalled());
+  }
+}
