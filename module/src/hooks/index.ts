@@ -8,7 +8,7 @@ export * from "./useBoundingClientRect";
 export * from "./useDebounce";
 export * from "./useDelayedDependentSwitch";
 export * from "./useDidUpdateEffect";
-export * from "./useDrag";
+export * from "../components/switchInput/useDrag";
 export * from "./useElementStatus";
 export * from "./useEventListener";
 export * from "./useGeneratedId";
