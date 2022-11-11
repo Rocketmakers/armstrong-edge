@@ -14,7 +14,6 @@ export * from "./dateTimeInput";
 export * from "./dialog";
 export * from "./dropdown";
 export * from "./dropdownItems";
-export * from "./emailInput";
 export * from "./expandable";
 export * from "./icon";
 export * from "./iconButton";
