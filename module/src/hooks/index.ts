@@ -13,7 +13,6 @@ export * from "../components/image/useElementStatus";
 export * from "./useEventListener";
 export * from "./useGeneratedId";
 export * from "./useHasTimeElapsed";
-export * from "./useInfinitePaging";
 export * from "./useIntersectionObserver";
 export * from "./useInterval";
 export * from "./useIsFocused";
