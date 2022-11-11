@@ -9,7 +9,7 @@ export * from "./useDebounce";
 export * from "./useDelayedDependentSwitch";
 export * from "./useDidUpdateEffect";
 export * from "../components/switchInput/useDrag";
-export * from "./useElementStatus";
+export * from "../components/image/useElementStatus";
 export * from "./useEventListener";
 export * from "./useGeneratedId";
 export * from "./useHasTimeElapsed";
