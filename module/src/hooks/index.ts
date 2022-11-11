@@ -22,7 +22,6 @@ export * from "./useMatchMedia";
 export * from "./useMutationObserver";
 export * from "./useOnScrollToEnd";
 export * from "./useOverridableState";
-export * from "./usePerformanceObserver";
 export * from "./useResizeObserver";
 export * from "./useTemporaryState";
 export * from "./useThrottle";
