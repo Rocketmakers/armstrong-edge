@@ -40,7 +40,7 @@ export * from "./status";
 export * from "./statusWrapper";
 export * from "./switchInput";
 export * from "./tabControl";
-export * from "./tabSelect";
+export * from "./tabControl/tabSelect";
 export * from "./tag";
 export * from "./tagInput";
 export * from "./telInput";
