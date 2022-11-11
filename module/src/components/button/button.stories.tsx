@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { expect } from '@storybook/jest';
-import { ComponentStoryObj, Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 
