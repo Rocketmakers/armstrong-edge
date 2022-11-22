@@ -66,6 +66,15 @@ export function validateKeyChainProperty<TData>(
   const { message, validator } = validatorConfig;
   const value = valueByKeyChain(formState, fullKeyChain);
 
+  if (Array.isArray(value)) {
+    value.forEach((itemValue, index) => {
+      if (!validator(itemValue)) {
+        onValidate([...fullKeyChain, index], isValidationMessageBuilder(message) ? message(itemValue) : message);
+      }
+    });
+    return;
+  }
+
   if (!validator(value)) {
     onValidate(fullKeyChain, isValidationMessageBuilder(message) ? message(value) : message);
   }
