@@ -10,7 +10,9 @@
   "author": "developers@rocketmakers.com",
   "license": "MIT",
   "scripts": {
-    "setup": "asdf install && npm i && (cd module && npm i --legacy-peer-deps) && (cd marketing && npm i --legacy-peer-deps)"
+    "setup": "asdf install && npm i && (cd module && npm i --legacy-peer-deps) && (cd marketing && npm i --legacy-peer-deps)",
+    "storybook": "(cd module && npm run storybook)",
+    "test-storybook": "(cd module && npm run test-storybook)"
   },
   "devDependencies": {
     "commitizen": "^4.2.4",
