@@ -126,7 +126,7 @@ export const SwitchInput = React.forwardRef(
           />
         </div>
 
-        {bindConfig.validationErrorMessages && bindConfig.shouldShowValidationErrorMessage && (
+        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
           <ValidationErrors
             validationErrors={bindConfig.validationErrorMessages}
             icon={bindConfig.validationErrorIcon}
