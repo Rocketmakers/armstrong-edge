@@ -1,17 +1,17 @@
 import * as React from "react";
 
-import { IBindingProps, useBindingState } from "../../hooks/form";
+import { IBindingProps, useBindingState } from "../../../hooks/form";
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
   ArmstrongFCReturn,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { ClassNames } from "../../utils/classNames";
-import { IInputWrapperProps } from "../inputWrapper";
-import { IStatusWrapperProps, StatusWrapper } from "../statusWrapper";
-import { ITabControlProps, TabControl } from "../tabControl";
-import { ValidationErrors } from "../validationErrors";
+} from "../../../types";
+import { ArmstrongId } from "../../../types/core";
+import { ClassNames } from "../../../utils/classNames";
+import { IInputWrapperProps } from "../../inputWrapper";
+import { IStatusWrapperProps, StatusWrapper } from "../../statusWrapper";
+import { ITabControlProps, TabControl } from "..";
+import { ValidationErrors } from "../../validationErrors";
 
 import "./tabSelect.basic.scss";
 

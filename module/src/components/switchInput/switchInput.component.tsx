@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Form, ICheckboxInputProps, IInputWrapperProps } from "../..";
 import { IBindingProps } from "../../hooks/form";
-import { IDragReleaseCallbackArgs, useDrag } from "../../hooks/useDrag";
+import { IDragReleaseCallbackArgs, useDrag } from "./useDrag";
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
