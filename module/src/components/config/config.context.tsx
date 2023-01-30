@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Globals } from "../../utils";
-import { DefaultLink, ILinkProps } from "../link/link.component";
+import { DefaultLink, ILinkProps } from "../defaultLink/defaultLink.component";
 
 export interface IArmstrongLocation {
   /**

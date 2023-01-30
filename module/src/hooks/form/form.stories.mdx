@@ -1,6 +1,12 @@
-import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
-import { use } from './form.hooks';
-import { ConfigExample, HookReturnExample, FormPropExample, FormPropArrayExample, BindPropsExample } from './form.examples';
+import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { use } from "./form.hooks";
+import {
+  ConfigExample,
+  HookReturnExample,
+  FormPropExample,
+  FormPropArrayExample,
+  BindPropsExample,
+} from "./form.examples";
 
 <Meta title="Form/Form Hook" />
 
@@ -22,8 +28,8 @@ Below is an example of a really simple login form:
 
 ```tsx
 const { formProp, formState } = Form.use({
-  email: '',
-  password: '',
+  email: "",
+  password: "",
 });
 
 const submitData = React.useCallback(async () => {
@@ -33,8 +39,8 @@ const submitData = React.useCallback(async () => {
 
 return (
   <form>
-    <EmailInput bind={formProp('email').bind()} />
-    <PasswordInput bind={formProp('password').bind()} />
+    <EmailInput bind={formProp("email").bind()} />
+    <PasswordInput bind={formProp("password").bind()} />
     <Button type="submit" onClick={submitData}>
       Login
     </Button>
@@ -70,8 +76,8 @@ const submitData = React.useCallback(async () => {
 
 return (
   <form>
-    <EmailInput bind={formProp('email').bind()} />
-    <PasswordInput bind={formProp('password').bind()} />
+    <EmailInput bind={formProp("email").bind()} />
+    <PasswordInput bind={formProp("password").bind()} />
     <Button type="submit" onClick={submitData}>
       Login
     </Button>
@@ -165,10 +171,10 @@ Targeting fields within a nested structure is acheived via passing an argument f
 This is how some of these properties are targeted using the `formProp` method:
 
 ```typescript
-formProp('firstName');
-formProp('address', 'city');
-formProp('address', 'location', 'lat');
-formProp('roles', 0, 'name'); // binding to properties within an array is done via the index
+formProp("firstName");
+formProp("address", "city");
+formProp("address", "location", "lat");
+formProp("roles", 0, "name"); // binding to properties within an array is done via the index
 ```
 
 ### Standard property tools
@@ -192,11 +198,15 @@ return (
   <form>
     {formState?.roles?.map((item, index) => (
       <div key={index}>
-        <TextInput bind={formProp('roles', index, 'name').bind()} />
-        <Button onClick={() => formProp('roles').remove(index)}>Delete Role</Button>
+        <TextInput bind={formProp("roles", index, "name").bind()} />
+        <Button onClick={() => formProp("roles").remove(index)}>
+          Delete Role
+        </Button>
       </div>
     ))}
-    <Button onClick={() => formProp('roles').add({ name: '' })}>Add Role</Button>
+    <Button onClick={() => formProp("roles").add({ name: "" })}>
+      Add Role
+    </Button>
   </form>
 );
 ```
@@ -233,12 +243,12 @@ const [
 
 const { formProp, formState } = Form.use(
   {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   },
   {
     validationErrors,
-    validationMode: 'both',
+    validationMode: "both",
   }
 );
 
@@ -249,8 +259,8 @@ const submitData = React.useCallback(async () => {
 
 return (
   <form>
-    <EmailInput bind={formProp('email').bind()} />
-    <PasswordInput bind={formProp('password').bind()} />
+    <EmailInput bind={formProp("email").bind()} />
+    <PasswordInput bind={formProp("password").bind()} />
     <Button type="submit" onClick={submitData}>
       Login
     </Button>
@@ -317,7 +327,7 @@ return (
 To run validators again sub properties, you can use the validate method returned from formProp
 
 ```tsx
-formProp('email').validate();
+formProp("email").validate();
 ```
 
 ### Dispatched validation errors
@@ -326,15 +336,17 @@ The below example shows our login form again, but with a password confirmation i
 
 ```tsx
 const { formProp, formState } = Form.use({
-  email: '',
-  password: '',
-  passwordConfirmation: '',
+  email: "",
+  password: "",
+  passwordConfirmation: "",
 });
 
 const submitData = React.useCallback(async () => {
   const { email, password, passwordConfirmation } = formState;
   if (password !== passwordConfirmation) {
-    formProp('passwordConfirmation').addValidationError("Passwords don't match");
+    formProp("passwordConfirmation").addValidationError(
+      "Passwords don't match"
+    );
     return;
   }
   await login(email, password);
@@ -342,9 +354,9 @@ const submitData = React.useCallback(async () => {
 
 return (
   <form>
-    <EmailInput bind={formProp('email').bind()} />
-    <PasswordInput bind={formProp('password').bind()} />
-    <PasswordInput bind={formProp('passwordConfirmation').bind()} />
+    <EmailInput bind={formProp("email").bind()} />
+    <PasswordInput bind={formProp("password").bind()} />
+    <PasswordInput bind={formProp("passwordConfirmation").bind()} />
     <Button type="submit" onClick={submitData}>
       Login
     </Button>
@@ -377,12 +389,12 @@ const UserForm: React.FunctionComponent = () => {
 
   return (
     <form>
-      <TextInput bind={formProp('firstName').bind()} />
-      <TextInput bind={formProp('lastName').bind()} />
-      <TextInput bind={formProp('address', 'line1').bind()} />
-      <TextInput bind={formProp('address', 'line2').bind()} />
-      <TextInput bind={formProp('address', 'city').bind()} />
-      <TextInput bind={formProp('address', 'postcode').bind()} />
+      <TextInput bind={formProp("firstName").bind()} />
+      <TextInput bind={formProp("lastName").bind()} />
+      <TextInput bind={formProp("address", "line1").bind()} />
+      <TextInput bind={formProp("address", "line2").bind()} />
+      <TextInput bind={formProp("address", "city").bind()} />
+      <TextInput bind={formProp("address", "postcode").bind()} />
     </form>
   );
 };
@@ -412,9 +424,9 @@ const UserForm: React.FC = () => {
 
   return (
     <form>
-      <TextInput bind={formProp('firstName').bind()} />
-      <TextInput bind={formProp('lastName').bind()} />
-      <UserAddressForm bind={formProp('address').bind()} />
+      <TextInput bind={formProp("firstName").bind()} />
+      <TextInput bind={formProp("lastName").bind()} />
+      <UserAddressForm bind={formProp("address").bind()} />
     </form>
   );
 };
@@ -429,10 +441,10 @@ const UserAddressForm: React.FC<IUserAddressFormProps> = (props) => {
 
   return (
     <>
-      <TextInput bind={formProp('line1').bind()} />
-      <TextInput bind={formProp('line2').bind()} />
-      <TextInput bind={formProp('city').bind()} />
-      <TextInput bind={formProp('postcode').bind()} />
+      <TextInput bind={formProp("line1").bind()} />
+      <TextInput bind={formProp("line2").bind()} />
+      <TextInput bind={formProp("city").bind()} />
+      <TextInput bind={formProp("postcode").bind()} />
     </>
   );
 };

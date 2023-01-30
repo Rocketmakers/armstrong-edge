@@ -1,4 +1,6 @@
-# Armstrong
+[![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest) [![storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://github.com/storybookjs)
+
+![armstrong logo](https://raw.githubusercontent.com/Rocketmakers/armstrong/master/marketing/src/assets/armstrong-logo.svg)
 
 Armstrong is a React component library made by [Rocketmakers](rocketmakers.com/) written in Typescript and SCSS.
 
@@ -56,7 +58,7 @@ npm run setup
 There are two options for working on Armstrong.
 
 - We have a playground, which is just a really simple react app with no linting, which has the Armstrong module linked in using `npm link`
-- We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx`
+- We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx` or `*.stroies.mdx`
 
 _For the playground_, run
 
@@ -94,13 +96,13 @@ We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to m
 
 ### Testing
 
-Armstrong uses [Jest](https://jestjs.io/docs/using-matchers) for unit testing, [@testing-library/react-hooks](https://github.com/testing-library/react-hooks-testing-library) for hook testing, and [Cypress](https://docs.cypress.io/guides/getting-started/writing-your-first-test) via Storybook for component testing.
+Armstrong uses [Jest](https://jestjs.io/docs/using-matchers) for unit testing, [@testing-library/react-hooks](https://github.com/testing-library/react-hooks-testing-library) for hook testing, and [Storybook](https://github.com/storybookjs) for component testing.
 
-Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.cypress` respectively.
+Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.storybook` respectively.
 
-Tests can be run using `npm test` for all tests, or `npm test-jest` and `npm test-cypress` respectively.
+Tests can be run using `npm test` for all tests, or `npm test-jest` and `npm test-storybook` respectively.
 
-Due to the nature of the codebase it is not currently possible to use custom commands in Cypress.
+We recommend using the vscode plugins `jest`, `jest-runner`, and `storybook helper` to manage test runs.
 
 ### Process
 
