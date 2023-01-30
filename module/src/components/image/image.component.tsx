@@ -1,7 +1,7 @@
 import * as React from "react";
 import { HTMLAttributes } from "react";
 
-import { useElementStatus } from "../../hooks/useElementStatus";
+import { useElementStatus } from "./useElementStatus";
 import { useHasTimeElapsedSinceMount } from "../../hooks/useHasTimeElapsed";
 import {
   IUseInViewportOptions,
