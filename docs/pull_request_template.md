@@ -7,7 +7,7 @@
 
 ARM-XX
 
-[board](https://rocketmakers.atlassian.net/jira/software/projects/HM/boards/172)
+[board](https://rocketmakers.atlassian.net/jira/software/projects/ARM/boards/154)
 
 ## Checklist
 
