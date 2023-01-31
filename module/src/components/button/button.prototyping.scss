@@ -1,4 +1,4 @@
-@import "../../theme/variables.scss";
+@import '../../theme/variables.scss';
 
 .arm-button {
   background-color: $brand-primary;
@@ -8,7 +8,7 @@
   padding: $spacing-xsmall;
   font-size: 1rem;
 
-  &[data-error="true"] {
+  &[data-error='true'] {
     background-color: $color-negative;
   }
 
@@ -18,9 +18,10 @@
     }
   }
 }
+
 .arm-button,
 .arm-button-minimal {
-  &[data-disabled="true"] {
+  &[data-disabled='true'] {
     opacity: 0.5;
     pointer-events: none;
   }

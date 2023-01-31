@@ -33,13 +33,15 @@ export function validationReducer(state: IValidationError[] = [], action: Valida
     case 'add-validation':
       return [...state, ...(action.errors ?? [])];
     case 'clear-validation':
-      const validationToClear = state.filter((e) => {
+      const validationToClear = state.filter(e => {
         if (!action.key && !action.identifiers?.length) {
           return true;
         }
-        return action.key === e.key && (!action.identifiers?.length || action.identifiers.some((id) => id === e.identifier));
+        return (
+          action.key === e.key && (!action.identifiers?.length || action.identifiers.some(id => id === e.identifier))
+        );
       });
-      return state.filter((e) => !validationToClear.some((c) => c === e));
+      return state.filter(e => !validationToClear.some(c => c === e));
     default:
       return state;
   }

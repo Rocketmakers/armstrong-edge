@@ -12,7 +12,10 @@
     "test-ci": "jest --ci",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test-storybook": "test-storybook"
+    "test-storybook": "test-storybook",
+    "format": "prettier --write .",
+    "lint": "eslint . --fix",
+    "stylelint": "stylelint 'src/**/*.{css,scss}' --fix"
   },
   "peerDependencies": {
     "date-fns": "2.x",
@@ -37,6 +40,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@rocketmakers/eslint": "1.0.1",
+    "@rocketmakers/prettier-config": "1.0.1",
+    "@rocketmakers/stylelint-config": "1.0.1",
     "@testing-library/react": "13.4.0",
     "@types/jest": "29.4.0",
     "@storybook/addon-a11y": "^7.0.0-alpha.47",

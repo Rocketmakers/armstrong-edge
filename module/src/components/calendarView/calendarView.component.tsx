@@ -5,7 +5,9 @@ import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 
-export interface ICalendarViewProps extends Calendar.IConfig, Pick<ICalendarDisplayProps, 'forwardsButton' | 'backButton' | 'controls'> {
+export interface ICalendarViewProps
+  extends Calendar.IConfig,
+    Pick<ICalendarDisplayProps, 'forwardsButton' | 'backButton' | 'controls'> {
   /**
    * An optional "day of the week" index to be the first day of the week.
    * - By default, weeks will start on Sunday (index 0)

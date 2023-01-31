@@ -3,7 +3,9 @@ import { withThemes } from 'storybook-addon-themes/react';
 import { ModalProvider } from '../src/components/modal/modal.context';
 import { themes } from '@storybook/theming';
 
-export const decorators = [withThemes, (Story) => {
+export const decorators = [
+  withThemes,
+  Story => {
     return (
       <div id="host">
         <ModalProvider>
@@ -13,21 +15,22 @@ export const decorators = [withThemes, (Story) => {
         </ModalProvider>
       </div>
     );
-  },];
+  },
+];
 
-const ThemeDecorator = (props) => {
+const ThemeDecorator = props => {
   const { children, themeName } = props;
   return (
     <>
-      {themeName === 'basic' && <link rel="stylesheet" href="../src/stories/basic-theme.scss"/>}
-      {themeName === 'prototyping' && <link rel="stylesheet" href="../src/stories/prototyping-theme.scss"/>}
+      {themeName === 'basic' && <link rel="stylesheet" href="../src/stories/basic-theme.scss" />}
+      {themeName === 'prototyping' && <link rel="stylesheet" href="../src/stories/prototyping-theme.scss" />}
       {children}
     </>
   );
 };
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -62,4 +65,4 @@ export const parameters = {
   docs: {
     theme: themes.light,
   },
-}
+};

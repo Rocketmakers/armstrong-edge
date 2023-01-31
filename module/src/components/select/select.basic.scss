@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-input.arm-select {
   .arm-select-inner {
@@ -14,7 +14,7 @@
   height: variables.$arm-input-height;
   cursor: pointer;
   padding: variables.$spacing-xsmall 0;
-  -webkit-appearance: none;
+  appearance: none;
   background-color: transparent;
   resize: none;
   font-family: inherit;

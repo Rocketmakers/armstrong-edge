@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Migration Guides/Form Hook" />
 
@@ -29,17 +29,15 @@ Here's a very simple login form implemented using both library versions, these i
 ```tsx
 const initialData = React.useMemo(() => {
   return {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
 }, []);
 
 const { DataForm, dataBinder, bind, notifyChange } = useForm(initialData);
 
 const formIsReady = React.useMemo(() => {
-  return (
-    !!dataBinder.getKeyValue("email") && !!dataBinder.getKeyValue("password")
-  );
+  return !!dataBinder.getKeyValue('email') && !!dataBinder.getKeyValue('password');
 }, [JSON.stringify(dataBinder.toJson())]);
 
 const loginClick = React.useCallback(async () => {
@@ -48,15 +46,15 @@ const loginClick = React.useCallback(async () => {
 }, [dataBinder]);
 
 const resetClick = React.useCallback(() => {
-  dataBinder.setKeyValue("email", "");
-  dataBinder.setKeyValue("password", "");
+  dataBinder.setKeyValue('email', '');
+  dataBinder.setKeyValue('password', '');
   notifyChange();
 }, [dataBinder, notifyChange]);
 
 return (
   <DataForm validationMode="both">
-    <TextInput {...bind.textEmail("email")} />
-    <TextInput {...bind.password("password")} />
+    <TextInput {...bind.textEmail('email')} />
+    <TextInput {...bind.password('password')} />
     <Button disabled={!formIsReady} onClick={loginClick}>
       Login
     </Button>
@@ -70,10 +68,10 @@ return (
 ```tsx
 const { formProp, formState, resetFormData } = Form.use(
   {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   },
-  { validationMode: "both" }
+  { validationMode: 'both' }
 );
 
 const formIsReady = !!formState.email && !!formState.password;
@@ -85,8 +83,8 @@ const loginClick = React.useCallback(async () => {
 
 return (
   <form>
-    <EmailInput bind={formProp("email").bind()} />
-    <PasswordInput bind={formProp("password").bind()} />
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
     <Button disabled={!formIsReady} onClick={loginClick}>
       Login
     </Button>

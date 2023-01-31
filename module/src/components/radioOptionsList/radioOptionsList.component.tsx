@@ -1,18 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongId,
-  ArmstrongVFCProps,
-} from "../../types";
-import { concat } from "../../utils";
-import { IRadioInputListProps, RadioInputList } from "../radioInputList";
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongId, ArmstrongVFCProps } from '../../types';
+import { concat } from '../../utils';
+import { IRadioInputListProps, RadioInputList } from '../radioInputList';
 
-import "./radioOptionsList.basic.scss";
+import './radioOptionsList.basic.scss';
 
-export interface IRadioOptionsListProps<Id extends ArmstrongId>
-  extends Omit<IRadioInputListProps<Id>, "hideRadio"> {}
+export type IRadioOptionsListProps<Id extends ArmstrongId> = Omit<IRadioInputListProps<Id>, 'hideRadio'>;
 
 export const RadioOptionsList = React.forwardRef(
   <Id extends ArmstrongId>(
@@ -20,12 +14,7 @@ export const RadioOptionsList = React.forwardRef(
     forwardedRef: React.ForwardedRef<HTMLDivElement>
   ): ReturnType<React.FC> => {
     return (
-      <RadioInputList
-        ref={forwardedRef}
-        {...props}
-        className={concat("arm-radio-options-list", className)}
-        hideRadio
-      />
+      <RadioInputList ref={forwardedRef} {...props} className={concat('arm-radio-options-list', className)} hideRadio />
     );
   }
   // type assertion to ensure generic works with RefForwarded component

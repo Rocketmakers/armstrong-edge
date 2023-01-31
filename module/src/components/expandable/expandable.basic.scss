@@ -1,6 +1,7 @@
 .arm-expandable {
   &[data-direction='vertical'] {
     width: initial;
+
     &[data-is-open='false'] {
       height: 0;
     }
@@ -8,6 +9,7 @@
 
   &[data-direction='horizontal'] {
     height: initial;
+
     &[data-is-open='false'] {
       width: 0;
     }

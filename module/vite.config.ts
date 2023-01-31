@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
-import { resolve, join } from "path";
-import dts from "vite-plugin-dts";
-import { viteStaticCopy } from "vite-plugin-static-copy";
+import { join, resolve } from 'path';
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   plugins: [
@@ -9,37 +9,34 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: [
-            "src/components/icon/icomoon.scss",
-            "src/components/icon/linearicons.scss",
-          ],
-          dest: "",
+          src: ['src/components/icon/icomoon.scss', 'src/components/icon/linearicons.scss'],
+          dest: '',
         },
       ],
     }),
   ],
   css: {
     modules: {
-      localsConvention: "dashesOnly",
+      localsConvention: 'dashesOnly',
     },
   },
   build: {
     emptyOutDir: true,
     lib: {
-      entry: resolve(__dirname, "src/index.ts"),
-      name: "@rocketmakers/armstrong-dev",
-      formats: ["es", "cjs"],
-      fileName: (format) => `[name]${format === "cjs" ? "" : `.${format}`}.js`,
+      entry: resolve(__dirname, 'src/index.ts'),
+      name: '@rocketmakers/armstrong-dev',
+      formats: ['es', 'cjs'],
+      fileName: format => `[name]${format === 'cjs' ? '' : `.${format}`}.js`,
     },
     cssCodeSplit: false,
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ['react', 'react-dom'],
       treeshake: true,
       output: {
         preserveModules: true,
-        preserveModulesRoot: join(__dirname, "/src"),
+        preserveModulesRoot: join(__dirname, '/src'),
         inlineDynamicImports: false,
-        dir: "dist",
+        dir: 'dist',
       },
     },
   },

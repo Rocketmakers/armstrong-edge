@@ -1,23 +1,17 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { useDelayedDependentSwitch, useEventListener } from "../../hooks";
-import { concat } from "../../utils/classNames";
-import { Document, Window } from "../../utils/globals";
-import { IPortalProps, Portal } from "../portal";
-import { useModalLayerElement } from "./modal.context";
-import { ModalUtils } from "./modal.utils";
+import { useDelayedDependentSwitch, useEventListener } from '../../hooks';
+import { concat } from '../../utils/classNames';
+import { Document, Window } from '../../utils/globals';
+import { IPortalProps, Portal } from '../portal';
+import { useModalLayerElement } from './modal.context';
+import { ModalUtils } from './modal.utils';
 
-import "./modal.basic.scss";
+import './modal.basic.scss';
 
 export interface IModalProps
-  extends Pick<IPortalProps, "portalToSelector" | "portalTo">,
-    Omit<
-      React.DetailedHTMLProps<
-        React.BaseHTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      "ref"
-    > {
+  extends Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
+    Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'> {
   /** should the dropdown be rendered */
   isOpen: boolean;
 
@@ -70,10 +64,7 @@ export interface IModalProps
  * see: https://www.w3.org/WAI/GL/wiki/Using_ARIA_role%3Ddialog_to_implement_a_modal_dialog_box
  */
 
-export const Modal = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<IModalProps>
->(
+export const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IModalProps>>(
   (
     {
       portalToSelector,
@@ -108,8 +99,7 @@ export const Modal = React.forwardRef<
     );
 
     /** ensure that clicks initiated inside the modal don't count as clicks on the wrapper if they end outside it (i.e. if a user drags the mouse from inside the modal to the background, it'll still count as a click on that background) */
-    const [mouseDownIsInsideModal, setMouseDownIsInsideModal] =
-      React.useState(false);
+    const [mouseDownIsInsideModal, setMouseDownIsInsideModal] = React.useState(false);
     const onMouseDownModal = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         onMouseDown?.(event);
@@ -126,7 +116,7 @@ export const Modal = React.forwardRef<
       setMouseDownIsInsideModal(false);
     }, [isOpen, close, closeOnWindowClick, mouseDownIsInsideModal]);
 
-    useEventListener("click", onWindowClick, Document);
+    useEventListener('click', onWindowClick, Document);
 
     /** Close when the user blurs the window */
     const onWindowBlur = React.useCallback(() => {
@@ -135,7 +125,7 @@ export const Modal = React.forwardRef<
       }
     }, [isOpen, close, closeOnWindowBlur]);
 
-    useEventListener("blur", onWindowBlur, Window);
+    useEventListener('blur', onWindowBlur, Window);
 
     /** When the user clicks on the wrapper element, close if closeOnBackgroundClick is true */
     const onClickWrapperEvent = React.useCallback(
@@ -150,10 +140,7 @@ export const Modal = React.forwardRef<
     );
 
     /** Have a piece of isClosing state that depends on isOpen */
-    const [delayedIsOpen, isClosing] = useDelayedDependentSwitch(
-      isOpen,
-      closeTime!
-    );
+    const [delayedIsOpen, isClosing] = useDelayedDependentSwitch(isOpen, closeTime!);
 
     /** render nothing if the modal is closed and isn't currently closing */
     if (!delayedIsOpen && !isClosing) {
@@ -161,12 +148,9 @@ export const Modal = React.forwardRef<
     }
 
     return (
-      <Portal
-        portalTo={portalTo || (!portalToSelector && wrapperRef) || undefined}
-        portalToSelector={portalToSelector}
-      >
+      <Portal portalTo={portalTo || (!portalToSelector && wrapperRef) || undefined} portalToSelector={portalToSelector}>
         <div
-          className={concat("arm-modal-wrapper", wrapperClassName)}
+          className={concat('arm-modal-wrapper', wrapperClassName)}
           onClick={onClickWrapperEvent}
           data-close-on-background-click={!!closeOnBackgroundClick}
           data-darken-background={darkenBackground}
@@ -179,7 +163,7 @@ export const Modal = React.forwardRef<
             role="dialog"
             aria-modal="true"
             {...nativeProps}
-            className={concat("arm-modal", className)}
+            className={concat('arm-modal', className)}
             ref={internalRef}
             onMouseDown={onMouseDownModal}
           >

@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 /** ******************************************************
  * FORM - Hooks file.
  * Contains the `useForm` hooks
@@ -87,7 +86,7 @@ function useFormBase<TData extends object>(
     (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[], identifier?: string) => {
       const messageArray = Array.isArray(messages) ? messages : [messages];
       const key = validationKeyStringFromKeyChain(keyChain, 'dots');
-      addValidationError(...messageArray.map((message) => ({ key, message, identifier })));
+      addValidationError(...messageArray.map(message => ({ key, message, identifier })));
     },
     [clientValidationDispatch]
   );
@@ -185,7 +184,8 @@ function useFormBase<TData extends object>(
         initialValue: valueByKeyChain(initialData, keyChain),
         addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) =>
           addValidationErrorFromKeyChain(keyChain, messages, identifier),
-        clearClientValidationErrors: (...identifiers: string[]) => clearValidationErrorsByKeyChain(keyChain, identifiers),
+        clearClientValidationErrors: (...identifiers: string[]) =>
+          clearValidationErrorsByKeyChain(keyChain, identifiers),
       };
     },
     [
@@ -204,11 +204,13 @@ function useFormBase<TData extends object>(
    * Running validation against a specific formProp
    */
   const validateFormProp = React.useCallback<(keyChain: KeyChain) => boolean>(
-    (keyChain) => {
+    keyChain => {
       let valid = true;
       if (!formConfig?.validators) {
         // eslint-disable-next-line no-console
-        console.warn('Attempted client validation without schema. Did you forget to write/add your validators to the form config?');
+        console.warn(
+          'Attempted client validation without schema. Did you forget to write/add your validators to the form config?'
+        );
         return valid;
       }
 
@@ -237,7 +239,9 @@ function useFormBase<TData extends object>(
     let valid = true;
     if (!formConfig?.validators) {
       // eslint-disable-next-line no-console
-      console.warn('Attempted client validation without schema. Did you forget to write/add your validators to the form config?');
+      console.warn(
+        'Attempted client validation without schema. Did you forget to write/add your validators to the form config?'
+      );
       return valid;
     }
 
@@ -322,7 +326,18 @@ function useFormBase<TData extends object>(
       };
       return arrayMethods as BindingTools<TData>;
     },
-    [bind, set, add, pop, remove, insert, formStateLive, addValidationErrorFromKeyChain, clearValidationErrorsByKeyChain, formConfig]
+    [
+      bind,
+      set,
+      add,
+      pop,
+      remove,
+      insert,
+      formStateLive,
+      addValidationErrorFromKeyChain,
+      clearValidationErrorsByKeyChain,
+      formConfig,
+    ]
   );
 
   /**
@@ -370,7 +385,10 @@ function useFormBase<TData extends object>(
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-function useForm<TData extends object>(initialData: TData | InitialDataFunction<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData> {
+function useForm<TData extends object>(
+  initialData: TData | InitialDataFunction<TData>,
+  formConfig?: IFormConfig<TData>
+): HookReturn<TData> {
   const firstInitialData = React.useMemo<TData>(() => {
     return initialDataIsCallback(initialData) ? initialData() : initialData;
   }, []);
@@ -384,7 +402,7 @@ function useForm<TData extends object>(initialData: TData | InitialDataFunction<
   }, [initialDataIsCallback(initialData) ? initialData : contentDependency(initialData)]);
 
   const dispatch = React.useCallback(
-    (action) => {
+    action => {
       formStateRef.current = dataReducer(formStateRef.current, action);
       setFormState(formStateRef.current);
       return formStateRef.current;
@@ -405,7 +423,10 @@ function useForm<TData extends object>(initialData: TData | InitialDataFunction<
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-function useChild<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData> {
+function useChild<TData extends object>(
+  parentBinder: IBindingProps<TData>,
+  formConfig?: IFormConfig<TData>
+): HookReturn<TData> {
   const formStateRef = React.useRef<TData | undefined>(parentBinder.value);
 
   useDidUpdateLayoutEffect(() => {
@@ -417,7 +438,7 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
     const parentBinderConfig: IFormConfig<TData> | undefined = parentBinder.formConfig && {
       ...parentBinder.formConfig,
       validators: undefined,
-      validationErrors: parentBinder.myValidationErrors?.map((ve) => ({
+      validationErrors: parentBinder.myValidationErrors?.map(ve => ({
         ...ve,
         key: childKeyChainStringFromParent(ve.key, parentBinder.keyChain),
       })),
@@ -428,7 +449,7 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
   }, [contentDependency(formConfig), contentDependency(parentBinder.formConfig), parentBinder.myValidationErrors]);
 
   const dispatch = React.useCallback<FormDispatcher<TData | undefined>>(
-    (action) => {
+    action => {
       let fullState: any;
       switch (action.type) {
         case 'set-all':
@@ -462,14 +483,20 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-export function use<TData extends object>(parentBinder: IBindingProps<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData>;
+export function use<TData extends object>(
+  parentBinder: IBindingProps<TData>,
+  formConfig?: IFormConfig<TData>
+): HookReturn<TData>;
 /**
  * Turns a potentially complex nested object or array into a piece of live state and a set of helper tools designed to be used in a form.
  * @param initialData (optional) The initial value of the form data object.
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
-export function use<TData extends object>(initialData?: TData | InitialDataFunction<TData>, formConfig?: IFormConfig<TData>): HookReturn<TData>;
+export function use<TData extends object>(
+  initialData?: TData | InitialDataFunction<TData>,
+  formConfig?: IFormConfig<TData>
+): HookReturn<TData>;
 export function use<TData extends object>(
   dataOrBinder: TData | InitialDataFunction<TData> | IBindingProps<TData>,
   formConfig?: IFormConfig<TData>
@@ -505,7 +532,11 @@ interface IUseBindingStateReturnUtils<TData> {
   shouldShowValidationErrorMessage?: boolean;
 }
 
-type UseBindingStateReturn<TData> = [TData | undefined, ((newValue: TData | undefined) => void) | undefined, IUseBindingStateReturnUtils<TData>];
+type UseBindingStateReturn<TData> = [
+  TData | undefined,
+  ((newValue: TData | undefined) => void) | undefined,
+  IUseBindingStateReturnUtils<TData>
+];
 
 /** Used as overrides for the bind functionality, for use with component props */
 interface IUseBindingStateOverrides<TData> {
@@ -533,7 +564,10 @@ interface IUseBindingStateOverrides<TData> {
  * Refer to internal Armstrong code for Input for a clear example
  */
 
-export function useBindingState<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingStateOverrides<TData>): UseBindingStateReturn<TData> {
+export function useBindingState<TData>(
+  bind?: IBindingProps<TData>,
+  overrides?: IUseBindingStateOverrides<TData>
+): UseBindingStateReturn<TData> {
   const value = React.useMemo(
     () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind.value) ?? bind?.value,
     [overrides?.value, bind?.bindConfig?.format?.fromData, bind?.value]
@@ -578,7 +612,10 @@ export function useBindingState<TData>(bind?: IBindingProps<TData>, overrides?: 
 }
 
 /** DEPRECATED - useBindingTools has been renamed useBindingState */
-export function useBindingTools<TData>(bind?: IBindingProps<TData>, overrides?: IUseBindingStateOverrides<TData>): UseBindingStateReturn<TData> {
+export function useBindingTools<TData>(
+  bind?: IBindingProps<TData>,
+  overrides?: IUseBindingStateOverrides<TData>
+): UseBindingStateReturn<TData> {
   React.useEffect(() => {
     // eslint-disable-next-line no-console
     console.warn('useBindingTools has been renamed useBindingState - please update this usage of it');

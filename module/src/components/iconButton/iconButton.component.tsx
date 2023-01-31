@@ -5,7 +5,8 @@ import { Button, IButtonProps } from '../button';
 import { Icon, IconSet, IIcon } from '../icon/icon.component';
 import { Status } from '../status';
 
-export interface IIconButtonProps extends Omit<IButtonProps, 'leftIcon' | 'rightIcon' | 'hideIconOnStatus' | 'statusPosition'> {
+export interface IIconButtonProps
+  extends Omit<IButtonProps, 'leftIcon' | 'rightIcon' | 'hideIconOnStatus' | 'statusPosition'> {
   /** the icon to render on the button */
   icon: IIcon<IconSet>;
 }

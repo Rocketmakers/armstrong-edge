@@ -15,7 +15,7 @@ import { IBindingProps, IValidationError, KeyChain } from './form.types';
 export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots' | 'brackets'): string {
   switch (mode) {
     case 'dots':
-      return keyChain.filter((key) => !!key).join('.');
+      return keyChain.filter(key => !!key).join('.');
     case 'brackets':
       return keyChain.reduce<string>((attrString, key) => {
         if (typeof key === 'string') {
@@ -38,7 +38,7 @@ export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots'
  * @returns {boolean} `true` if the validation error belongs to (or is a child of) one of the passed property keyChains, else `false`.
  */
 export function isMyValidationError(validationErrorKey: string, ...propertyKeyChainStrings: string[]): boolean {
-  return propertyKeyChainStrings.some((propertyKeyChain) => {
+  return propertyKeyChainStrings.some(propertyKeyChain => {
     return (
       propertyKeyChain === validationErrorKey ||
       validationErrorKey.indexOf(`${propertyKeyChain}.`) === 0 ||
@@ -53,10 +53,15 @@ export function isMyValidationError(validationErrorKey: string, ...propertyKeyCh
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
  * @returns {Array} A filtered set of validation errors that apply to the property in question and its sub-properties.
  */
-export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], keyChain: KeyChain = []): IValidationError[] {
+export function validationErrorsByKeyChain(
+  rootErrors: IValidationError[] = [],
+  keyChain: KeyChain = []
+): IValidationError[] {
   const keyChainAttrStringDots = validationKeyStringFromKeyChain(keyChain, 'dots');
   const keyChainAttrStringSquareArray = validationKeyStringFromKeyChain(keyChain, 'brackets');
-  return rootErrors.filter((error) => isMyValidationError(error.key, keyChainAttrStringDots, keyChainAttrStringSquareArray));
+  return rootErrors.filter(error =>
+    isMyValidationError(error.key, keyChainAttrStringDots, keyChainAttrStringSquareArray)
+  );
 }
 
 /**

@@ -1,4 +1,4 @@
-@use "../../theme/variables.scss";
+@use '../../theme/variables.scss';
 
 .arm-tab-control {
   display: flex;
@@ -9,7 +9,7 @@
   color: variables.$black;
   padding: variables.$spacing-xxsmall variables.$spacing-xsmall;
 
-  &[data-is-current="true"] {
+  &[data-is-current='true'] {
     color: variables.$brand-primary;
   }
 }

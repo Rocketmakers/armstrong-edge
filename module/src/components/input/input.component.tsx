@@ -1,21 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form } from "../..";
-import { IBindingProps, IDelayInputConfig } from "../../hooks/form/form.types";
-import { useDebounce } from "../../hooks/useDebounce";
-import { useThrottle } from "../../hooks/useThrottle";
-import { concat } from "../../utils/classNames";
-import {
-  IInputWrapperProps,
-  InputWrapper,
-} from "../inputWrapper/inputWrapper.component";
+import { Form } from '../..';
+import { IBindingProps, IDelayInputConfig } from '../../hooks/form/form.types';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useThrottle } from '../../hooks/useThrottle';
+import { concat } from '../../utils/classNames';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
-import "./input.basic.scss";
+import './input.basic.scss';
 
-type NativeInputProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->;
+type NativeInputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
 interface IDelayedInputBaseProps<TValue> extends NativeInputProps {
   /** The time in ms to delay the debounce or throttle effect. */
@@ -25,65 +19,39 @@ interface IDelayedInputBaseProps<TValue> extends NativeInputProps {
   onValueChange: (value: TValue) => any;
 }
 
-const DebounceInputBase = React.forwardRef<
-  HTMLInputElement,
-  IDelayedInputBaseProps<any>
->(({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-  const [actualValue, setActualValue] = useDebounce(
-    milliseconds,
-    value,
-    onValueChange
-  );
+const DebounceInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseProps<any>>(
+  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
+    const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
 
-  const onChangeEvent = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setActualValue(e.currentTarget.value);
-      onChange?.(e);
-    },
-    [setActualValue, onChange]
-  );
+    const onChangeEvent = React.useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setActualValue(e.currentTarget.value);
+        onChange?.(e);
+      },
+      [setActualValue, onChange]
+    );
 
-  return (
-    <input
-      ref={ref}
-      value={actualValue}
-      onChange={onChangeEvent}
-      {...nativeProps}
-    />
-  );
-});
+    return <input ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+  }
+);
 
-const ThrottledInputBase = React.forwardRef<
-  HTMLInputElement,
-  IDelayedInputBaseProps<any>
->(({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-  const [actualValue, setActualValue] = useThrottle(
-    milliseconds,
-    value,
-    onValueChange
-  );
+const ThrottledInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseProps<any>>(
+  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
+    const [actualValue, setActualValue] = useThrottle(milliseconds, value, onValueChange);
 
-  const onChangeEvent = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setActualValue(e.currentTarget.value);
-      onChange?.(e);
-    },
-    [setActualValue, onChange]
-  );
+    const onChangeEvent = React.useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setActualValue(e.currentTarget.value);
+        onChange?.(e);
+      },
+      [setActualValue, onChange]
+    );
 
-  return (
-    <input
-      ref={ref}
-      value={actualValue}
-      onChange={onChangeEvent}
-      {...nativeProps}
-    />
-  );
-});
+    return <input ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+  }
+);
 
-export interface IInputProps<TValue>
-  extends NativeInputProps,
-    Omit<IInputWrapperProps, "onClick" | "onValueChange"> {
+export interface IInputProps<TValue> extends NativeInputProps, Omit<IInputWrapperProps, 'onClick' | 'onValueChange'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TValue>;
 
@@ -136,8 +104,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
     const onBindValueChange = React.useCallback(
       (currentValue: string) => {
         if (bind) {
-          const formattedValue =
-            bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
+          const formattedValue = bind.bindConfig?.format?.toData?.(currentValue) || currentValue;
           bind.setValue(formattedValue);
         }
       },
@@ -164,15 +131,15 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
     );
 
     const inputProps: NativeInputProps = {
-      className: "arm-input-base-input",
+      className: 'arm-input-base-input',
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
-      value: boundValue ?? (bind && ""),
+      value: boundValue ?? (bind && ''),
       disabled,
     };
 
     return (
       <InputWrapper
-        className={concat(className, "arm-input-base")}
+        className={concat(className, 'arm-input-base')}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
@@ -190,7 +157,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         hideIconOnStatus={hideIconOnStatus}
         onClick={() => internalRef.current?.focus()}
       >
-        {delay?.mode === "debounce" && !!delay.milliseconds && (
+        {delay?.mode === 'debounce' && !!delay.milliseconds && (
           <DebounceInputBase
             {...nativeProps}
             milliseconds={delay.milliseconds}
@@ -200,7 +167,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
             ref={internalRef}
           />
         )}
-        {delay?.mode === "throttle" && !!delay.milliseconds && (
+        {delay?.mode === 'throttle' && !!delay.milliseconds && (
           <ThrottledInputBase
             {...nativeProps}
             milliseconds={delay.milliseconds}
@@ -210,14 +177,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
             ref={internalRef}
           />
         )}
-        {!delay?.milliseconds && (
-          <input
-            {...nativeProps}
-            {...inputProps}
-            onChange={onChangeEvent}
-            ref={internalRef}
-          />
-        )}
+        {!delay?.milliseconds && <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={internalRef} />}
       </InputWrapper>
     );
   }

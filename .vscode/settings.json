@@ -3,6 +3,7 @@
     "listbox"
   ],
   "jest.jestCommandLine": "./module/node_modules/.bin/jest --config=./module/jest.config.ts",
-  "jestrunner.configPath": "",
-  "jestrunner.jestCommand": ""
+  "eslint.workingDirectories": [
+    "module"
+  ]
 }

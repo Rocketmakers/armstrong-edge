@@ -35,7 +35,7 @@ export function useTimeout<T = void>(callback?: () => T, time?: number): IUseTim
     (overrideCallback?: () => T, overrideTime?: number) => {
       clear();
 
-      return new Promise<T>((resolve) => {
+      return new Promise<T>(resolve => {
         setWaiting(true);
         resolvePromise.current = resolve;
 

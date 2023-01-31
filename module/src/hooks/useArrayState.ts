@@ -18,9 +18,9 @@ const arrayStateReducer =
   (state: T[], action: ArrayStateReducerAction<T>) => {
     switch (action.type) {
       case 'push':
-        return [...state.filter((item) => !equalityComparer(item, action.payload)), action.payload];
+        return [...state.filter(item => !equalityComparer(item, action.payload)), action.payload];
       case 'pull':
-        return state.filter((item) => !equalityComparer(item, action.payload));
+        return state.filter(item => !equalityComparer(item, action.payload));
       case 'clear':
         return initialValue;
       default:
@@ -46,9 +46,15 @@ export const useArrayState = <T>(
   /** Check if a provided element is the same as one that already exists, to ensure no duplicates are added, and to ensure the correc thing is deleted */
   equalityComparer: EqualityComparer<T> = (a, b) => a === b
 ): ArrayStateReturn<T> => {
-  const [currentValue, dispatchAction] = React.useReducer(arrayStateReducer(equalityComparer, initialValue), initialValue);
+  const [currentValue, dispatchAction] = React.useReducer(
+    arrayStateReducer(equalityComparer, initialValue),
+    initialValue
+  );
 
-  const contains = React.useCallback((value: T) => !!currentValue.find((item) => equalityComparer(value, item)), [currentValue, equalityComparer]);
+  const contains = React.useCallback(
+    (value: T) => !!currentValue.find(item => equalityComparer(value, item)),
+    [currentValue, equalityComparer]
+  );
 
   const push = React.useCallback(
     (value: T) => {
@@ -68,7 +74,10 @@ export const useArrayState = <T>(
     dispatchAction({ type: 'clear' });
   }, [currentValue, equalityComparer]);
 
-  const toggle = React.useCallback((value: T) => (contains(value) ? pull(value) : push(value)), [currentValue, equalityComparer]);
+  const toggle = React.useCallback(
+    (value: T) => (contains(value) ? pull(value) : push(value)),
+    [currentValue, equalityComparer]
+  );
 
   return [currentValue, { push, pull, toggle, contains, clear }];
 };

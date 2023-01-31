@@ -30,7 +30,8 @@ export interface IArmstrongExtendedOption<Id extends ArmstrongId, HtmlProps = un
   content?: React.ReactChild | ((active: boolean) => React.ReactChild);
 }
 
-export interface IArmstrongExtendedOptionWithInput<Id extends ArmstrongId, HtmlProps, InputProps> extends IArmstrongExtendedOption<Id, HtmlProps> {
+export interface IArmstrongExtendedOptionWithInput<Id extends ArmstrongId, HtmlProps, InputProps>
+  extends IArmstrongExtendedOption<Id, HtmlProps> {
   /** props to spread onto the input element */
   htmlInputProps?: InputProps & DataAttributes;
 }

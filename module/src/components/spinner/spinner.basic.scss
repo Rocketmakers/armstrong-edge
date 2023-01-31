@@ -1,12 +1,12 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-spinner {
   @include mixins.flex-centre-content;
 
   flex-direction: column;
 
-  &[data-fill-container="true"] {
+  &[data-fill-container='true'] {
     @include mixins.fill;
 
     flex-grow: 1;
@@ -14,7 +14,7 @@
     justify-self: stretch;
   }
 
-  &[data-fill-container="false"] {
+  &[data-fill-container='false'] {
     width: max-content;
     height: max-content;
   }

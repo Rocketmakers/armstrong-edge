@@ -5,7 +5,9 @@ import { IArmstrongExtendedOption } from '../../types/options';
 import { IconWrapper } from '../iconWrapper';
 
 export interface IOptionContentProps
-  extends Partial<Pick<IArmstrongExtendedOption<ArmstrongId, never>, 'name' | 'content' | 'leftIcon' | 'rightIcon' | 'id'>> {
+  extends Partial<
+    Pick<IArmstrongExtendedOption<ArmstrongId, never>, 'name' | 'content' | 'leftIcon' | 'rightIcon' | 'id'>
+  > {
   /** is this option currently active */
   isActive?: boolean;
 }

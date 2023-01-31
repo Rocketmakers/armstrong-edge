@@ -1,7 +1,10 @@
 {
     "extends": "./tsconfig.json",
     "include": [
-        "src"
+        "src",
+        "**/*.js",
+        "jest.config.ts",
+        "vite.config.ts"
     ],
     "exclude": []
 }

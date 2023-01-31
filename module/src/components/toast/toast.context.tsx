@@ -16,8 +16,13 @@ interface IToastContext {
   config: IGlobalToastConfig;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const ToastContext = React.createContext<IToastContext>({ dismiss: undefined, dismissAll: undefined, dispatch: undefined, toasts: [], config: {} });
+const ToastContext = React.createContext<IToastContext>({
+  dismiss: undefined,
+  dismissAll: undefined,
+  dispatch: undefined,
+  toasts: [],
+  config: {},
+});
 const useToastContext = () => React.useContext(ToastContext);
 
 interface IAddToastAction {
@@ -38,7 +43,7 @@ const toastReducer: React.Reducer<IToastNotificationProps[], ToastAction> = (sta
     case 'add':
       return [...state, ...action.toasts];
     case 'dismiss':
-      return [...state.filter((toast) => toast !== action.toast)];
+      return [...state.filter(toast => toast !== action.toast)];
     case 'dismiss-all':
       return [];
     default:
@@ -112,7 +117,7 @@ export function useDispatchToast() {
   const dispatchToasts = React.useCallback(
     (...toasts: (IToastNotification | string)[]) => {
       dispatch!(
-        ...toasts.map((toast) => {
+        ...toasts.map(toast => {
           const newToast: IToastNotificationProps =
             typeof toast === 'string'
               ? {

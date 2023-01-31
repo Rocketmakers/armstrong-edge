@@ -1,4 +1,4 @@
-@use "../../theme/variables.scss";
+@use '../../theme/variables.scss';
 
 .arm-input-inner {
   cursor: text;
@@ -7,7 +7,7 @@
 .arm-input-base-input {
   flex-grow: 1;
   appearance: none;
-  -webkit-appearance: none;
+  appearance: none;
   border: 0;
   outline: none;
   background-color: transparent;

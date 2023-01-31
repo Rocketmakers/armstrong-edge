@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { contentDependency } from '../utils/objects';
 import { isBrowser, supportsResizeObserver } from '../utils/globals';
+import { contentDependency } from '../utils/objects';
 import { useWillUnMountEffect } from './useWillUnmountEffect';
 
 /**

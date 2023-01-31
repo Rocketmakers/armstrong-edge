@@ -1,16 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { IBindingProps, useBindingState } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
+import { IBindingProps, useBindingState } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 
-import "./characterLimit.basic.scss";
+import './characterLimit.basic.scss';
 
 export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
@@ -35,14 +30,7 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
 /** Render a character limit from a bound value, showing as an error if the user  */
 export const CharacterLimit = React.forwardRef(
   <TBind extends NullOrUndefined<string>>(
-    {
-      bind,
-      limit,
-      shouldEnforce,
-      value,
-      className,
-      exceedsIcon,
-    }: ICharacterLimitProps<TBind>,
+    { bind, limit, shouldEnforce, value, className, exceedsIcon }: ICharacterLimitProps<TBind>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const [boundValue, setBoundValue] = useBindingState(bind, { value });
@@ -56,17 +44,11 @@ export const CharacterLimit = React.forwardRef(
     }, [boundValue]);
 
     return (
-      <div
-        ref={ref}
-        className={concat("arm-character-limit", className)}
-        data-exceeded={exceeded}
-      >
+      <div ref={ref} className={concat('arm-character-limit', className)} data-exceeded={exceeded}>
         <p>
           {boundValue?.length}/{limit}
         </p>
-        {exceedsIcon && exceeded && (
-          <Icon iconSet={exceedsIcon.iconSet} icon={exceedsIcon.icon} />
-        )}
+        {exceedsIcon && exceeded && <Icon iconSet={exceedsIcon.iconSet} icon={exceedsIcon.icon} />}
       </div>
     );
   }
@@ -78,5 +60,5 @@ export const CharacterLimit = React.forwardRef(
   ArmstrongFCExtensions<ICharacterLimitProps<any>>;
 
 CharacterLimit.defaultProps = {
-  exceedsIcon: IconUtils.getIconDefinition("Icomoon", "warning"),
+  exceedsIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
 };

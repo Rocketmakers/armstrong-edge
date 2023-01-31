@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { Spinner } from "../spinner";
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { Spinner } from '../spinner';
 
 export interface IStatusProps {
   /** show a spinner */
@@ -35,25 +35,13 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
         data-pending={pending}
         data-cy={cypressTag}
       >
-        {error && !pending && (
-          <Icon
-            className="arm-status-error"
-            iconSet={errorIcon!.iconSet}
-            icon={errorIcon!.icon}
-          />
-        )}
-        {pending && (
-          <Spinner
-            className="arm-status-spinner"
-            fillContainer={false}
-            icon={spinnerIcon}
-          />
-        )}
+        {error && !pending && <Icon className="arm-status-error" iconSet={errorIcon!.iconSet} icon={errorIcon!.icon} />}
+        {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />}
       </div>
     );
   }
 );
 
 Status.defaultProps = {
-  errorIcon: IconUtils.getIconDefinition("Icomoon", "warning"),
+  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
 };

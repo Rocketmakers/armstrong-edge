@@ -1,24 +1,20 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-input.arm-checkbox-input {
   position: relative;
   display: flex;
   align-items: center;
 
-  &[data-direction="horizontal"] {
+  &[data-direction='horizontal'] {
     label {
-      @include mixins.space-between-children-horizontal(
-        variables.$spacing-xsmall
-      );
+      @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
     }
   }
 
-  &[data-direction="vertical"] {
+  &[data-direction='vertical'] {
     label {
-      @include mixins.space-between-children-vertical(
-        variables.$spacing-xsmall
-      );
+      @include mixins.space-between-children-vertical(variables.$spacing-xsmall);
 
       flex-direction: column;
     }
@@ -31,12 +27,12 @@
     user-select: none;
   }
 
-  &[data-disabled="true"] {
+  &[data-disabled='true'] {
     opacity: 0.5;
     pointer-events: none;
   }
 
-  &[data-checked="true"] {
+  &[data-checked='true'] {
     .arm-checkbox-input-checked-icon {
       opacity: 1;
     }
@@ -77,7 +73,7 @@
 
   cursor: pointer;
   appearance: none;
-  -webkit-appearance: none;
+  appearance: none;
   border: 0;
   outline: none;
   background-color: transparent;

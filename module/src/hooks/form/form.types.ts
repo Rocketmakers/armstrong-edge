@@ -1,4 +1,3 @@
-/* eslint-disable no-dupe-class-members */
 /** ******************************************************
  * FORM - Types file.
  * All of the types specifically associated with the form.
@@ -123,7 +122,11 @@ export declare abstract class FormPropFactory<TData extends object> {
    * Used to access a property within the form data.
    * @param args The keys or indexes used to access a nested property to a depth of 2.
    */
-  public formProp<TDataKey extends keyof Required<TData>, TData2 extends Required<TData>[TDataKey], TDataKey2 extends keyof TData2>(
+  public formProp<
+    TDataKey extends keyof Required<TData>,
+    TData2 extends Required<TData>[TDataKey],
+    TDataKey2 extends keyof TData2
+  >(
     ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>]
   ): BindingTools<TData2[TDataKey2]>;
 
@@ -138,7 +141,11 @@ export declare abstract class FormPropFactory<TData extends object> {
     TData3 extends TData2[TDataKey2],
     TDataKey3 extends keyof TData3
   >(
-    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>, key3: KeyOrIndex<TData3, TDataKey3>]
+    ...args: [
+      key1: KeyOrIndex<Required<TData>, TDataKey>,
+      key2: KeyOrIndex<TData2, TDataKey2>,
+      key3: KeyOrIndex<TData3, TDataKey3>
+    ]
   ): BindingTools<TData3[TDataKey3]>;
 
   /**
@@ -444,7 +451,10 @@ export interface IFormConfig<TData> {
 /**
  * The root type for a form action to be dispatched to the reducer.
  */
-export type FormAction<TData, TValue> = IFormSetOneAction<TValue> | IFormSetPathAction<TValue> | IFormSetAllAction<TData>;
+export type FormAction<TData, TValue> =
+  | IFormSetOneAction<TValue>
+  | IFormSetPathAction<TValue>
+  | IFormSetAllAction<TData>;
 
 /**
  * The items returned from the `useForm` hooks.

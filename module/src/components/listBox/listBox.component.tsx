@@ -1,48 +1,38 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import { ArmstrongId, IArmstrongExtendedOption } from "../../types";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-} from "../../types/reactExtensions";
-import { concat } from "../../utils/classNames";
-import { DropdownItems, IDropdownItemsProps } from "../dropdownItems";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IconButton } from "../iconButton";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
-import { ISelectOption } from "../select";
+import { Form } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongId, IArmstrongExtendedOption } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types/reactExtensions';
+import { concat } from '../../utils/classNames';
+import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IconButton } from '../iconButton';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { ISelectOption } from '../select';
 
-import "./listBox.basic.scss";
+import './listBox.basic.scss';
 
 export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongExtendedOption<
       Id,
-      Omit<
-        React.DetailedHTMLProps<
-          React.InputHTMLAttributes<HTMLLIElement>,
-          HTMLLIElement
-        >,
-        "onChange" | "ref"
-      >
+      Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLLIElement>, HTMLLIElement>, 'onChange' | 'ref'>
     >,
-    Pick<ISelectOption<Id, TSelectData>, "data"> {}
+    Pick<ISelectOption<Id, TSelectData>, 'data'> {}
 
 /** A DOM recreation of a select element */
 export interface IListBoxProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<
       IDropdownItemsProps,
-      | "noItemsText"
-      | "closeOnScroll"
-      | "closeOnWindowBlur"
-      | "closeOnWindowClick"
-      | "closeOnBackgroundClick"
-      | "closeOnSelection"
-      | "alignment"
-      | "position"
+      | 'noItemsText'
+      | 'closeOnScroll'
+      | 'closeOnWindowBlur'
+      | 'closeOnWindowClick'
+      | 'closeOnBackgroundClick'
+      | 'closeOnSelection'
+      | 'alignment'
+      | 'position'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
@@ -130,8 +120,7 @@ export const ListBox = React.forwardRef(
     );
 
     const currentOptionText = React.useMemo(
-      () =>
-        options.find((option) => option.id === boundValue)?.name ?? boundValue,
+      () => options.find(option => option.id === boundValue)?.name ?? boundValue,
       [boundValue, options]
     );
 
@@ -148,30 +137,22 @@ export const ListBox = React.forwardRef(
       <DropdownItems
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
-        items={options.map((option) => ({
-          content:
-            option.name ??
-            bindConfig.getFormattedValueFromData(option.id)?.toString() ??
-            option.id?.toString(),
+        items={options.map(option => ({
+          content: option.name ?? bindConfig.getFormattedValueFromData(option.id)?.toString() ?? option.id?.toString(),
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
           group: option.group,
           htmlProps: option.htmlProps,
         }))}
-        onItemSelected={(item) =>
-          onChangeEvent(options.find((option) => option.id === item)!)
-        }
+        onItemSelected={item => onChangeEvent(options.find(option => option.id === item)!)}
         allowKeyboardNavigation
         focusableWrapper
         currentValue={[boundValue!]}
         childRootElementSelector=".arm-input-inner"
-        className={concat("arm-listbox-wrapper", wrapperClassName)}
+        className={concat('arm-listbox-wrapper', wrapperClassName)}
         noItemsText={noItemsText}
-        contentClassName={concat(
-          "arm-listbox-options",
-          dropdownClassName
-        )}
+        contentClassName={concat('arm-listbox-options', dropdownClassName)}
         closeOnBackgroundClick={closeOnBackgroundClick}
         closeOnScroll={closeOnScroll}
         closeOnWindowBlur={closeOnWindowBlur}
@@ -183,7 +164,7 @@ export const ListBox = React.forwardRef(
       >
         <InputWrapper
           ref={internalRef}
-          className={concat("arm-listbox", className)}
+          className={concat('arm-listbox', className)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}
@@ -222,11 +203,7 @@ export const ListBox = React.forwardRef(
               type="button"
               className="arm-listbox-delete"
               onClick={onClickDelete}
-              icon={
-                typeof deleteButton === "boolean"
-                  ? IconUtils.getIconDefinition("Icomoon", "cross2")
-                  : deleteButton
-              }
+              icon={typeof deleteButton === 'boolean' ? IconUtils.getIconDefinition('Icomoon', 'cross2') : deleteButton}
               minimalStyle
             />
           )}
@@ -242,6 +219,6 @@ export const ListBox = React.forwardRef(
   ArmstrongFCExtensions<IListBoxProps<any, any>>;
 
 ListBox.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+  selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
   deleteButton: true,
 };

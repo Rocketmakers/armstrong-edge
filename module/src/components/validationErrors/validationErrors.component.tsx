@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { ValidationMessage } from "../../hooks/form";
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IIcon } from "../icon";
+import { ValidationMessage } from '../../hooks/form';
+import { concat } from '../../utils/classNames';
+import { Icon, IconSet, IIcon } from '../icon';
 
-import "./validationErrors.basic.scss";
+import './validationErrors.basic.scss';
 
 export interface IValidationErrorsProps {
   /** The errors to render */
@@ -21,57 +21,41 @@ export interface IValidationErrorsProps {
   scrollIntoView?: boolean;
 
   /** overrides the error messaging and icon display used in the error validation display */
-  validationMode?: "icon" | "message" | "both";
+  validationMode?: 'icon' | 'message' | 'both';
 }
 
 /** Render an array of validation errors as error messages */
-export const ValidationErrors = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<IValidationErrorsProps>
->(
-  (
-    { validationErrors, className, icon, scrollIntoView, validationMode },
-    ref
-  ) => {
+export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IValidationErrorsProps>>(
+  ({ validationErrors, className, icon, scrollIntoView, validationMode }, ref) => {
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
     React.useEffect(() => {
       if (validationErrors.length > 0 && scrollIntoView) {
         internalRef.current?.scrollIntoView({
-          block: "center",
-          behavior: "smooth",
+          block: 'center',
+          behavior: 'smooth',
         });
       }
     }, [validationErrors.length]);
 
     /** If the error is a JSX element use the key on the element or the index */
-    const getKey = React.useCallback(
-      (error: ValidationMessage, index: number) => {
-        if (typeof error === "string") {
-          return error + index;
-        }
-        return error?.key ?? index;
-      },
-      []
-    );
+    const getKey = React.useCallback((error: ValidationMessage, index: number) => {
+      if (typeof error === 'string') {
+        return error + index;
+      }
+      return error?.key ?? index;
+    }, []);
 
-    const shouldShowErrorIcon =
-      validationMode === "both" || validationMode === "icon";
+    const shouldShowErrorIcon = validationMode === 'both' || validationMode === 'icon';
 
-    const shouldShowErrorMessage =
-      validationMode === "both" || validationMode === "message";
+    const shouldShowErrorMessage = validationMode === 'both' || validationMode === 'message';
 
     return (
-      <div
-        ref={internalRef}
-        className={concat("arm-validation-errors", className)}
-      >
+      <div ref={internalRef} className={concat('arm-validation-errors', className)}>
         {validationErrors.map((error, i) => (
           <div className="arm-error-message" key={getKey(error, i)}>
-            {icon && shouldShowErrorIcon && (
-              <Icon iconSet={icon.iconSet} icon={icon.icon} />
-            )}
+            {icon && shouldShowErrorIcon && <Icon iconSet={icon.iconSet} icon={icon.icon} />}
             {shouldShowErrorMessage && <span>{error}</span>}
           </div>
         ))}

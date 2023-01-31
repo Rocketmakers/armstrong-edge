@@ -33,13 +33,18 @@ export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps
   validationMode,
   children,
 }) => {
-  const shouldShowErrorIcon = (!!validationErrorMessages?.length && (validationMode === 'both' || validationMode === 'icon')) || error;
+  const shouldShowErrorIcon =
+    (!!validationErrorMessages?.length && (validationMode === 'both' || validationMode === 'icon')) || error;
 
   return (
     <>
-      {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} cypressTag="status-left" />}
+      {statusPosition === 'left' && (
+        <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} cypressTag="status-left" />
+      )}
       {children}
-      {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} cypressTag="status-right" />}
+      {statusPosition === 'right' && (
+        <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} cypressTag="status-right" />
+      )}
     </>
   );
 };

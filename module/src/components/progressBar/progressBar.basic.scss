@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 $arm-progress-bar-thickness: 0.5rem !default;
 $arm-progress-bar-with-label-thickness: 1rem !default;
@@ -21,46 +21,50 @@ $arm-progress-bar-with-label-thickness: 1rem !default;
   background-color: variables.$gray-light;
   position: relative;
 
-  &[data-direction="up"],
-  &[data-direction="down"] {
+  &[data-direction='up'],
+  &[data-direction='down'] {
     width: $arm-progress-bar-thickness;
     height: 100%;
   }
-  &[data-direction="down"] {
+
+  &[data-direction='down'] {
     .arm-progress-bar-progress::after {
       transform: translateY(calc(var(--arm-progress-bar-progress) - 100%));
     }
   }
-  &[data-direction="up"] {
+
+  &[data-direction='up'] {
     .arm-progress-bar-progress::after {
       transform: translateY(calc(100% - var(--arm-progress-bar-progress)));
     }
   }
 
-  &[data-direction="left"],
-  &[data-direction="right"] {
+  &[data-direction='left'],
+  &[data-direction='right'] {
     height: $arm-progress-bar-thickness;
     width: 100%;
   }
-  &[data-direction="right"] {
+
+  &[data-direction='right'] {
     .arm-progress-bar-progress::after {
       transform: translateX(calc(var(--arm-progress-bar-progress) - 100%));
     }
   }
-  &[data-direction="left"] {
+
+  &[data-direction='left'] {
     .arm-progress-bar-progress::after {
       transform: translateX(calc(100% - var(--arm-progress-bar-progress)));
     }
   }
 
-  &[data-has-label="true"] {
-    &[data-direction="up"],
-    &[data-direction="down"] {
+  &[data-has-label='true'] {
+    &[data-direction='up'],
+    &[data-direction='down'] {
       width: $arm-progress-bar-with-label-thickness;
     }
 
-    &[data-direction="left"],
-    &[data-direction="right"] {
+    &[data-direction='left'],
+    &[data-direction='right'] {
       height: $arm-progress-bar-with-label-thickness;
     }
   }
@@ -69,7 +73,7 @@ $arm-progress-bar-with-label-thickness: 1rem !default;
 .arm-progress-bar-label {
   color: variables.$white;
 
-  &[data-variant="centre"] {
+  &[data-variant='centre'] {
     @include mixins.absolute-fill;
     @include mixins.flex-centre-content;
 
@@ -77,7 +81,7 @@ $arm-progress-bar-with-label-thickness: 1rem !default;
     font-size: min(#{$arm-progress-bar-with-label-thickness * 0.7}, 1rem);
   }
 
-  &[data-variant="centre-progress"] {
+  &[data-variant='centre-progress'] {
     @include mixins.flex-centre-content;
 
     text-align: center;

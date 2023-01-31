@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Window } from "../../utils/globals";
-import { DefaultLink, ILinkProps } from "../defaultLink/defaultLink.component";
+import { Window } from '../../utils/globals';
+import { DefaultLink, ILinkProps } from '../defaultLink/defaultLink.component';
 
 export interface IArmstrongLocation {
   /**
@@ -54,7 +54,7 @@ export interface IArmstrongConfigContext {
     location?: IArmstrongLocation | undefined;
 
     /** used to allow Armstrong to programmatically push or replace to the history using live state i.e. push or replace from useHistory from react router */
-    navigate?: (to: string, action: "push" | "replace") => void;
+    navigate?: (to: string, action: 'push' | 'replace') => void;
   };
 }
 
@@ -63,9 +63,7 @@ const ArmstrongConfigContext = React.createContext<IArmstrongConfigContext>({
     LinkComponent: DefaultLink,
     location: undefined,
     navigate: (to, action) =>
-      action === "replace"
-        ? Window?.history?.replaceState({}, "", to)
-        : Window?.history?.pushState({}, "", to),
+      action === 'replace' ? Window?.history?.replaceState({}, '', to) : Window?.history?.pushState({}, '', to),
   },
 });
 
@@ -74,22 +72,20 @@ const ArmstrongConfigContext = React.createContext<IArmstrongConfigContext>({
  *
  * Currently only used for routing integration - see Link in storybook for more information
  */
-export const ArmstrongConfigProvider: React.FC<
-  React.PropsWithChildren<IArmstrongConfigContext>
-> = ({ routing, children }) => {
+export const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<IArmstrongConfigContext>> = ({
+  routing,
+  children,
+}) => {
   // ensure LinkComponent is memoised so that state changes that the config depends on (i.e. in location) don't cause all Links to remount - otherwise, each
   // new render would pass this a new Link meaning all references to it would be re-instantiated and remount
   const LinkComponent = React.useMemo(() => routing.LinkComponent, []);
 
   return (
-    <ArmstrongConfigContext.Provider
-      value={{ routing: { ...routing, LinkComponent } }}
-    >
+    <ArmstrongConfigContext.Provider value={{ routing: { ...routing, LinkComponent } }}>
       {children}
     </ArmstrongConfigContext.Provider>
   );
 };
 
 /** Access Armstrong's configuration - for internal Armstrong use */
-export const useArmstrongConfig = () =>
-  React.useContext(ArmstrongConfigContext);
+export const useArmstrongConfig = () => React.useContext(ArmstrongConfigContext);

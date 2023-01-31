@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Hooks/Utility Hooks" />
 
@@ -28,8 +28,7 @@ Get the size of the element with the given ref - uses a resize observer, listens
 ```tsx
 const contentRef = React.useRef<HTMLDivElement>(null);
 
-const [{ height, width, bottom, left, right, top, x, y }] =
-  useBoundingClientRect(contentRef);
+const [{ height, width, bottom, left, right, top, x, y }] = useBoundingClientRect(contentRef);
 
 return <div ref={contentRef} />;
 ```
@@ -39,10 +38,8 @@ The second element in the return array can be used to force `useBoundingClientRe
 ```tsx
 const contentRef = React.useRef<HTMLDivElement>(null);
 
-const [
-  { height, width, bottom, left, right, top, x, y },
-  forceGetBoundingClientRect,
-] = useBoundingClientRect(contentRef);
+const [{ height, width, bottom, left, right, top, x, y }, forceGetBoundingClientRect] =
+  useBoundingClientRect(contentRef);
 
 const [showThing] = React.useState(false);
 
@@ -64,8 +61,11 @@ To rectify this limitation, the hook listens to resize and scroll events, and if
 Like a state hook, but also exports a "throttled" value (set after x amount of inactivity through the setter method)
 
 ```tsx
-const [actualValue, setActualValue, debouncedValue, setDebouncedValue] =
-  useDebounce(milliseconds, value, onValueChange);
+const [actualValue, setActualValue, debouncedValue, setDebouncedValue] = useDebounce(
+  milliseconds,
+  value,
+  onValueChange
+);
 ```
 
 ### useDelayedDependentSwitch
@@ -98,7 +98,7 @@ Fire a series of console logs alongside lifecycle events
 The argument it takes will be prefixed on console logs
 
 ```tsx
-useDebug("my_component");
+useDebug('my_component');
 ```
 
 ### useDidMountEffect
@@ -174,7 +174,7 @@ Hook to add an event listener, and remove it when the component unmounts
 // the callback passed into the hook must be memoised in a useCallback
 const onClick = React.useCallback(() => {}, []);
 
-useEventListener("click", onClick, document);
+useEventListener('click', onClick, document);
 ```
 
 ### useGeneratedId
@@ -294,7 +294,7 @@ Returns whether the document matches the given media query string
 
 ```tsx
 // will return true while the window size is less than 1600px
-const isMatching = useMatchMedia("max-width: 1600px");
+const isMatching = useMatchMedia('max-width: 1600px');
 ```
 
 [see here for information on the match media api](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia)
@@ -339,7 +339,7 @@ or to put it on the document
 ```tsx
 const { scrolledToEnd, onScroll } = useOnScrolToEnd(onScrollToEnd);
 
-useEventListener("scroll", onScroll, document);
+useEventListener('scroll', onScroll, document);
 ```
 
 though, again, the ScrollToEndListener is more reliable as it doesn't rely on scroll listeners, so most of the time you'll want to use that
@@ -354,11 +354,7 @@ Returns either an internal useState or the given value and onChange
 
 ```tsx
 const MyComponent = ({ value, onChange }) => {
-  const [internaValue, setInternalValue] = useOverridableState(
-    "",
-    value,
-    onChange
-  );
+  const [internaValue, setInternalValue] = useOverridableState('', value, onChange);
 
   // ... do some stuff with internal state
 };
@@ -393,11 +389,7 @@ return <div ref={ref} />;
 useState but the state returns to initialValue after a given amount of time from whenever setState is called
 
 ```tsx
-const [state, setState, cancel] = useTemporaryState(
-  initialValue,
-  time,
-  onReset
-);
+const [state, setState, cancel] = useTemporaryState(initialValue, time, onReset);
 ```
 
 ### useThrottle
@@ -405,8 +397,7 @@ const [state, setState, cancel] = useTemporaryState(
 Like a state hook, but also exports a "throttled" value which changes at regular intervals
 
 ```tsx
-const [actualValue, setActualValue, throttleValue, setThrottledValue] =
-  useThrottle(milliseconds, value, onValueChange);
+const [actualValue, setActualValue, throttleValue, setThrottledValue] = useThrottle(milliseconds, value, onValueChange);
 ```
 
 ### useTimeout
@@ -420,7 +411,7 @@ const { set, clear, waiting } = useTimeout(callback, time);
 i.e.
 
 ```tsx
-const { set } = useTimeout(() => console.log("DONE"), 500);
+const { set } = useTimeout(() => console.log('DONE'), 500);
 
 set();
 ```
@@ -430,7 +421,7 @@ Values can also be overriden at the function call
 ```tsx
 const { set } = useTimeout();
 
-set(() => console.log("DONE"), 500);
+set(() => console.log('DONE'), 500);
 ```
 
 FYI - don't actually call set in your render method, you'll cause an infinite loop and everything will explode.
@@ -438,10 +429,7 @@ FYI - don't actually call set in your render method, you'll cause an infinite lo
 You can also use `useTimeout` like a boolean `useTemporaryState`. In this example, on the button click, hasClickedTheThing will be true for 1000ms
 
 ```tsx
-const { waiting: hasClickedTheThing, set: onClickTheThing } = useTimeout(
-  undefined,
-  1000
-);
+const { waiting: hasClickedTheThing, set: onClickTheThing } = useTimeout(undefined, 1000);
 
 return <Button onClick={onClickTheThing} />;
 ```
@@ -461,7 +449,7 @@ which can resolve to something
 
 ```tsx
 const { set } = useTimeout(() => {
-  return "hello";
+  return 'hello';
 }, 1000);
 
 const run = useCallback(async () => {

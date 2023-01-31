@@ -27,15 +27,22 @@ export const PasswordInput = React.forwardRef(
         rightOverlay={
           showPasswordButton &&
           showPasswordButtonIcon && (
-            <IconButton type="button" icon={showPasswordButtonIcon(showPassword)} onClick={() => setShowPassword(!showPassword)} minimalStyle />
+            <IconButton
+              type="button"
+              icon={showPasswordButtonIcon(showPassword)}
+              onClick={() => setShowPassword(!showPassword)}
+              minimalStyle
+            />
           )
         }
       />
     );
   }
-) as (<TBind extends NullOrUndefined<string>>(props: ArmstrongVFCProps<IPasswordInputProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) &
+) as (<TBind extends NullOrUndefined<string>>(
+  props: ArmstrongVFCProps<IPasswordInputProps<TBind>, HTMLInputElement>
+) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IPasswordInputProps<any>>;
 
 PasswordInput.defaultProps = {
-  showPasswordButtonIcon: (checked) => ({ iconSet: 'Icomoon', icon: checked ? 'eye-blocked' : 'eye' }),
+  showPasswordButtonIcon: checked => ({ iconSet: 'Icomoon', icon: checked ? 'eye-blocked' : 'eye' }),
 };

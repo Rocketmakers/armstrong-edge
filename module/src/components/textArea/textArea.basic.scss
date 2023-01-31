@@ -1,4 +1,4 @@
-@use "../../theme/variables.scss";
+@use '../../theme/variables.scss';
 
 .arm-text-area {
   .arm-input-inner {
@@ -9,7 +9,7 @@
 .arm-text-area-textarea {
   min-height: variables.$arm-input-height-large;
   appearance: none;
-  -webkit-appearance: none;
+  appearance: none;
   background-color: transparent;
   resize: none;
   font-family: inherit;

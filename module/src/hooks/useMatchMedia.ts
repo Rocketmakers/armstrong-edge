@@ -43,7 +43,9 @@ export function useMatchMedia(
       media.removeEventListener(
         'change',
         onMatchesChangeEvent,
-        typeof eventListenerOptions === 'boolean' ? eventListenerOptions : eventListenerOptions && { capture: eventListenerOptions.capture }
+        typeof eventListenerOptions === 'boolean'
+          ? eventListenerOptions
+          : eventListenerOptions && { capture: eventListenerOptions.capture }
       );
   }, [query, onMatchesChangeEvent]);
 

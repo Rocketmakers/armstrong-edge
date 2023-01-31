@@ -1,44 +1,27 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { arrayToArraysByKey, Form, IInputWrapperProps } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { IArmstrongExtendedOptionWithInput } from "../../types/options";
-import { concat } from "../../utils/classNames";
-import {
-  IRadioInputProps,
-  RadioInput,
-} from "../radioInput/radioInput.component";
-import { ValidationErrors } from "../validationErrors";
+import { arrayToArraysByKey, Form, IInputWrapperProps } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOptionWithInput } from '../../types/options';
+import { concat } from '../../utils/classNames';
+import { IRadioInputProps, RadioInput } from '../radioInput/radioInput.component';
+import { ValidationErrors } from '../validationErrors';
 
-import "./radioInputList.basic.scss";
+import './radioInputList.basic.scss';
 
-export interface IRadioInputListOption<Id extends ArmstrongId>
-  extends IArmstrongExtendedOptionWithInput<
-    Id,
-    Omit<
-      React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      "onChange" | "type" | "ref"
-    >,
-    IRadioInputProps["inputProps"]
-  > {}
+export type IRadioInputListOption<Id extends ArmstrongId> = IArmstrongExtendedOptionWithInput<
+  Id,
+  Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
+  IRadioInputProps['inputProps']
+>;
 
 export interface IRadioInputListProps<Id extends ArmstrongId>
-  extends Pick<IRadioInputProps, "checkedIcon" | "uncheckedIcon" | "hideRadio">,
+  extends Pick<IRadioInputProps, 'checkedIcon' | 'uncheckedIcon' | 'hideRadio'>,
     Pick<
       IInputWrapperProps,
-      | "scrollValidationErrorsIntoView"
-      | "validationMode"
-      | "errorIcon"
-      | "validationErrorMessages"
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
@@ -59,7 +42,7 @@ export interface IRadioInputListProps<Id extends ArmstrongId>
   error?: boolean;
 
   /** the direction for the options in the list to flow */
-  direction?: "horizontal" | "vertical";
+  direction?: 'horizontal' | 'vertical';
 }
 
 /** Render a list of radio inputs which binds to a single string */
@@ -90,20 +73,17 @@ export const RadioInputList = React.forwardRef(
       onChange,
     });
 
-    const groupedOptions = React.useMemo(
-      () => arrayToArraysByKey(options, (option) => option.group || ""),
-      [options]
-    );
+    const groupedOptions = React.useMemo(() => arrayToArraysByKey(options, option => option.group || ''), [options]);
 
     return (
       <>
         <div
-          className={concat("arm-radio-input-list", className)}
+          className={concat('arm-radio-input-list', className)}
           ref={ref}
           data-error={error || !!validationErrorMessages?.length}
           data-direction={direction}
         >
-          {groupedOptions.map((group) => (
+          {groupedOptions.map(group => (
             <React.Fragment key={group.key}>
               {group.key && (
                 <div className="arm-radio-input-list-group-title">
@@ -111,7 +91,7 @@ export const RadioInputList = React.forwardRef(
                 </div>
               )}
 
-              {group.items.map((option) => (
+              {group.items.map(option => (
                 <RadioInput
                   key={option.id}
                   leftIcon={option.leftIcon}
@@ -133,13 +113,12 @@ export const RadioInputList = React.forwardRef(
             </React.Fragment>
           ))}
 
-          {bindConfig.shouldShowValidationErrorMessage &&
-            bindConfig.validationErrorMessages && (
-              <ValidationErrors
-                validationErrors={bindConfig.validationErrorMessages}
-                icon={bindConfig.validationErrorIcon}
-              />
-            )}
+          {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
+            <ValidationErrors
+              validationErrors={bindConfig.validationErrorMessages}
+              icon={bindConfig.validationErrorIcon}
+            />
+          )}
         </div>
       </>
     );
@@ -152,5 +131,5 @@ export const RadioInputList = React.forwardRef(
   ArmstrongFCExtensions<IRadioInputListProps<any>>;
 
 RadioInputList.defaultProps = {
-  direction: "vertical",
+  direction: 'vertical',
 };

@@ -1,15 +1,13 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 $arm-switch-input-width: 50px !default;
 $arm-switch-input-height: 30px !default;
 $arm-switch-input-handle-padding: variables.$spacing-xxsmall !default;
-$arm-switch-input-handle: calc(
-  #{$arm-switch-input-height} - #{$arm-switch-input-handle-padding} * 2
-);
+$arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input-handle-padding} * 2);
 
 .arm-switch-input {
-  &[data-icon-style="on-handle"] {
+  &[data-icon-style='on-handle'] {
     .arm-switch-input-inner {
       .arm-switch-input-checked-icon {
         left: variables.$spacing-xxsmall;
@@ -17,15 +15,12 @@ $arm-switch-input-handle: calc(
     }
   }
 
-  &[data-checked="true"] {
+  &[data-checked='true'] {
     .arm-switch-input-inner::after,
-    &[data-icon-style="on-handle"] .arm-switch-input-checked-icon,
-    &[data-icon-style="on-handle"] .arm-switch-input-unchecked-icon {
+    &[data-icon-style='on-handle'] .arm-switch-input-checked-icon,
+    &[data-icon-style='on-handle'] .arm-switch-input-unchecked-icon {
       transform: translateX(
-        calc(
-          #{$arm-switch-input-width} - #{$arm-switch-input-handle} - #{$arm-switch-input-handle-padding} *
-            2
-        )
+        calc(#{$arm-switch-input-width} - #{$arm-switch-input-handle} - #{$arm-switch-input-handle-padding} * 2)
       );
     }
 
@@ -62,7 +57,7 @@ $arm-switch-input-handle: calc(
   @include mixins.fill;
 
   appearance: none;
-  -webkit-appearance: none;
+  appearance: none;
   border: 0;
   outline: none;
   background-color: transparent;

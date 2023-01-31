@@ -1,16 +1,15 @@
-import React from "react";
-import Select, { GroupBase, OnChangeValue } from "react-select";
-import SelectRef from "react-select/dist/declarations/src/Select";
-import { Form } from "../../hooks";
-import { concat } from "../../utils";
-import { IIcon, IconSet } from "../icon";
-import { ValidationErrors } from "../validationErrors";
+import React from 'react';
+import Select, { GroupBase, OnChangeValue } from 'react-select';
+import SelectRef from 'react-select/dist/declarations/src/Select';
 
-export type ReactSingleSelectRef = SelectRef<
-  ISelectOptionType<string>,
-  false,
-  GroupBase<ISelectOptionType<string>>
->;
+import { Form } from '../../hooks';
+import { concat } from '../../utils';
+import { IconSet, IIcon } from '../icon';
+import { ValidationErrors } from '../validationErrors';
+
+import './singleSelect.basic.scss';
+
+export type ReactSingleSelectRef = SelectRef<ISelectOptionType<string>, false, GroupBase<ISelectOptionType<string>>>;
 
 export type ISelectOptionType<TSelectData = any> = {
   value: TSelectData;
@@ -34,7 +33,7 @@ export interface ISingleSelectProps<TSelectData = string> {
   placeholder?: string;
 
   /** overrides the error messaging and icon display used in the error validation display */
-  validationMode?: "icon" | "message" | "both";
+  validationMode?: 'icon' | 'message' | 'both';
 
   /** overrides the error message(s) used in the validation display */
   errorMessages?: Form.ValidationMessage[];
@@ -49,22 +48,13 @@ export interface ISingleSelectProps<TSelectData = string> {
   onSelectOption?: (newValue: OnChangeValue<unknown, false>) => void;
 
   /** retrieves the label string from the selected option */
-  getOptionLabel?: (
-    option: ISelectOptionType<string>
-  ) => ISelectOptionType["label"] | "";
+  getOptionLabel?: (option: ISelectOptionType<string>) => ISelectOptionType['label'] | '';
 
   /** retrieves the value string from the selected option */
-  getOptionValue?: (
-    option: ISelectOptionType<string>
-  ) => ISelectOptionType["value"] | "";
+  getOptionValue?: (option: ISelectOptionType<string>) => ISelectOptionType['value'] | '';
 }
 
-import "./singleSelect.basic.scss";
-
-export const SingleSelect = React.forwardRef<
-  ReactSingleSelectRef,
-  ISingleSelectProps
->(
+export const SingleSelect = React.forwardRef<ReactSingleSelectRef, ISingleSelectProps>(
   (
     {
       className,
@@ -103,30 +93,26 @@ export const SingleSelect = React.forwardRef<
     );
 
     const selectedValue = React.useMemo(() => {
-      return options?.find(
-        (option) => option.value === (value ?? "")
-      ) as ISelectOptionType<string>;
+      return options?.find(option => option.value === (value ?? '')) as ISelectOptionType<string>;
     }, [options, value]);
 
     const showValidation = !!validationErrorMessages?.length;
 
     return (
-      <div
-        className={concat("arm-single-select-wrapper", className)}
-      >
+      <div className={concat('arm-single-select-wrapper', className)}>
         <Select
           ref={ref}
           id={id}
           className="arm-single-select-input"
           onChange={onSelectOption || handleChange}
           options={options}
-          placeholder={placeholder || "Please select..."}
+          placeholder={placeholder || 'Please select...'}
           value={selectedValue}
           isMulti={false}
           getOptionLabel={getOptionLabel}
           getOptionValue={getOptionValue}
           aria-invalid={showValidation}
-          aria-label={ariaLabel || "single-select-input"}
+          aria-label={ariaLabel || 'single-select-input'}
         />
 
         {showValidation && (

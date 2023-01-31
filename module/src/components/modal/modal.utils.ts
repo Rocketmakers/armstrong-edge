@@ -1,7 +1,11 @@
 import { IModalProps } from './modal.component';
 
 export namespace ModalUtils {
-  export const closeModal = async ({ disableClose, onClose, onOpenChange }: Pick<IModalProps, 'disableClose' | 'onClose' | 'onOpenChange'>) => {
+  export const closeModal = async ({
+    disableClose,
+    onClose,
+    onOpenChange,
+  }: Pick<IModalProps, 'disableClose' | 'onClose' | 'onOpenChange'>) => {
     if (!disableClose) {
       const shouldClose = await onClose?.();
 

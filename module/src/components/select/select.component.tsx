@@ -1,30 +1,23 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { IArmstrongOption } from "../../types/options";
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IconButton } from "../iconButton";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
+import { Form } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongOption } from '../../types/options';
+import { concat } from '../../utils/classNames';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IconButton } from '../iconButton';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
-import "./select.basic.scss";
+import './select.basic.scss';
 
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongOption<
     Id,
     Omit<
-      React.DetailedHTMLProps<
-        React.BaseHTMLAttributes<HTMLOptionElement>,
-        HTMLOptionElement
-      >,
-      "ref" | "onClick" | "value" | "disabled"
+      React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>,
+      'ref' | 'onClick' | 'value' | 'disabled'
     >
   > {
   /** data which will be passed into the onSelectOption callback */
@@ -32,11 +25,8 @@ export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
 }
 
 export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
-  extends React.DetailedHTMLProps<
-      React.InputHTMLAttributes<HTMLSelectElement>,
-      HTMLSelectElement
-    >,
-    Omit<IInputWrapperProps, "onClick"> {
+  extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>,
+    Omit<IInputWrapperProps, 'onClick'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
@@ -113,9 +103,7 @@ export const Select = React.forwardRef(
         }
 
         const { value: newValue } = event.currentTarget;
-        const selectedOption = options.find(
-          (option) => option.id?.toString() === newValue
-        );
+        const selectedOption = options.find(option => option.id?.toString() === newValue);
         if (selectedOption) {
           setBoundValue?.(selectedOption.id);
           onSelectOption?.(selectedOption);
@@ -123,21 +111,12 @@ export const Select = React.forwardRef(
           clearSelect();
         }
       },
-      [
-        onSelectOption,
-        options,
-        onChange,
-        bind,
-        placeholderOption,
-        placeholderOptionEnabled,
-        clearSelect,
-        setBoundValue,
-      ]
+      [onSelectOption, options, onChange, bind, placeholderOption, placeholderOptionEnabled, clearSelect, setBoundValue]
     );
 
     return (
       <InputWrapper
-        className={concat("arm-select", className)}
+        className={concat('arm-select', className)}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
@@ -160,24 +139,15 @@ export const Select = React.forwardRef(
             onChange={onChangeEvent}
             value={boundValue ?? undefined}
             disabled={disabled}
-            defaultValue={
-              placeholderOption && !nativeProps.defaultValue && !boundValue
-                ? ""
-                : nativeProps.defaultValue
-            }
+            defaultValue={placeholderOption && !nativeProps.defaultValue && !boundValue ? '' : nativeProps.defaultValue}
           >
             {placeholderOption && (
               <option value="" disabled={!placeholderOptionEnabled}>
                 {placeholderOption}
               </option>
             )}
-            {options.map((option) => (
-              <option
-                key={option.id}
-                value={option.id ?? undefined}
-                disabled={option.disabled}
-                {...option.htmlProps}
-              >
+            {options.map(option => (
+              <option key={option.id} value={option.id ?? undefined} disabled={option.disabled} {...option.htmlProps}>
                 {option.name || option.id}
               </option>
             ))}
@@ -198,16 +168,12 @@ export const Select = React.forwardRef(
           <IconButton
             type="button"
             className="arm-select-delete"
-            onClick={(event) => {
+            onClick={event => {
               clearSelect();
               event.stopPropagation();
             }}
-            onMouseDown={(e) => e.stopPropagation()}
-            icon={
-              typeof deleteButton === "boolean"
-                ? IconUtils.getIconDefinition("Icomoon", "cross2")
-                : deleteButton
-            }
+            onMouseDown={e => e.stopPropagation()}
+            icon={typeof deleteButton === 'boolean' ? IconUtils.getIconDefinition('Icomoon', 'cross2') : deleteButton}
             minimalStyle
           />
         )}
@@ -222,5 +188,5 @@ export const Select = React.forwardRef(
   ArmstrongFCExtensions<ISelectProps<any, any>>;
 
 Select.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+  selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
 };

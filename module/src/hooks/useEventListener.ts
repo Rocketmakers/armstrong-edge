@@ -23,7 +23,6 @@ export function useEventListener(
 
       return () => {
         if (typeof options === 'object') {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { once, passive, ...removeOptions } = options;
           element.removeEventListener(type, eventHandler, removeOptions);
         } else {

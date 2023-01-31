@@ -21,7 +21,10 @@ export function useOnScrollToEnd(onScrollToEnd?: () => void, distanceFromEdge = 
   const reset = React.useCallback(() => setScrolledToEnd(false), []);
 
   const onScroll = React.useCallback((event: React.UIEvent) => {
-    if (event.currentTarget.scrollTop - event.currentTarget.clientHeight > event.currentTarget.scrollHeight - distanceFromEdge) {
+    if (
+      event.currentTarget.scrollTop - event.currentTarget.clientHeight >
+      event.currentTarget.scrollHeight - distanceFromEdge
+    ) {
       if (!scrolledToEnd) {
         onEndIntersecting();
       }
