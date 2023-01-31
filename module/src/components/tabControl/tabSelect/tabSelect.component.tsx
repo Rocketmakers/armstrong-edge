@@ -7,7 +7,7 @@ import {
   ArmstrongFCReturn,
 } from "../../../types";
 import { ArmstrongId } from "../../../types/core";
-import { ClassNames } from "../../../utils/classNames";
+import { concat } from "../../../utils/classNames";
 import { IInputWrapperProps } from "../../inputWrapper";
 import { IStatusWrapperProps, StatusWrapper } from "../../statusWrapper";
 import { ITabControlProps, TabControl } from "..";
@@ -68,7 +68,7 @@ export const TabSelect = React.forwardRef(
     return (
       <>
         <div
-          className={ClassNames.concat("arm-tab-select", className)}
+          className={concat("arm-tab-select", className)}
           data-pending={pending}
           data-error={
             error ||

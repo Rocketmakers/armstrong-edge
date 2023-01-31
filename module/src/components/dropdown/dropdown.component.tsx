@@ -3,9 +3,9 @@ import * as React from "react";
 import { useEventListener, useResizeObserver } from "../../hooks";
 import { useBoundingClientRect } from "../../hooks/useBoundingClientRect";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { ClassNames } from "../../utils/classNames";
-import { Globals } from "../../utils/globals";
-import { Maths } from "../../utils/maths";
+import { concat } from "../../utils/classNames";
+import { Document } from "../../utils/globals";
+import { clamp } from "../../utils/maths";
 import { AutoResizer } from "../autoResizer";
 import { IModalProps, Modal } from "../modal";
 import { IPortalProps } from "../portal";
@@ -178,7 +178,7 @@ export const Dropdown = React.forwardRef<
     // get top position of modal from root rect and modal's size if position is below
     const top = React.useMemo(() => {
       if (rootRect && modalSize && position === "below") {
-        return Maths.clamp(
+        return clamp(
           rootRect.top + rootRect.height,
           edgeDetectionMargin!,
           (windowSize.innerHeight || 0) -
@@ -197,7 +197,7 @@ export const Dropdown = React.forwardRef<
     // get bottom position of modal from root rect and modal's size if position is above
     const bottom = React.useMemo(() => {
       if (rootRect && modalSize && position === "above") {
-        return Maths.clamp(
+        return clamp(
           windowSize.innerHeight - rootRect.top,
           edgeDetectionMargin!,
           (windowSize.innerHeight || 0) -
@@ -232,7 +232,7 @@ export const Dropdown = React.forwardRef<
             break;
         }
 
-        return Maths.clamp(
+        return clamp(
           leftToClamp,
           edgeDetectionMargin!,
           (windowSize.innerWidth || 0) - modalSize.width - edgeDetectionMargin!
@@ -277,11 +277,11 @@ export const Dropdown = React.forwardRef<
       [onOpenChange, closeOnScroll, isOpen]
     );
 
-    useEventListener("scroll", onScrollDocument, Globals.Document, {
+    useEventListener("scroll", onScrollDocument, Document, {
       capture: true,
       passive: true,
     });
-    useEventListener("resize", onScrollDocument, Globals.Document, {
+    useEventListener("resize", onScrollDocument, Document, {
       capture: true,
       passive: true,
     });
@@ -369,7 +369,7 @@ export const Dropdown = React.forwardRef<
       <>
         <div
           {...htmlProps}
-          className={ClassNames.concat("arm-dropdown", className)}
+          className={concat("arm-dropdown", className)}
           onMouseDown={onMouseDownEvent}
           ref={rootRef}
           data-is-open={isOpen}
@@ -383,7 +383,7 @@ export const Dropdown = React.forwardRef<
           {...modalHtmlProps}
           portalTo={portalTo}
           portalToSelector={portalToSelector}
-          className={ClassNames.concat(
+          className={concat(
             "arm-dropdown-content",
             contentClassName,
             modalHtmlProps?.className

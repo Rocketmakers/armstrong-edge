@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { AutoResizer } from "../autoResizer/autoResizer.component";
 
 import "./expandable.basic.scss";
@@ -28,7 +28,7 @@ export const Expandable = React.forwardRef<
       ref={forwardedRef}
       tabIndex={isOpen ? undefined : -1}
       aria-hidden={!isOpen}
-      className={ClassNames.concat("arm-expandable", className)}
+      className={concat("arm-expandable", className)}
       data-direction={direction}
       data-is-open={!!isOpen}
     />

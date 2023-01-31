@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { ClassNames } from '../../utils/classNames';
+import { concat } from '../../utils/classNames';
 import { IconButton, IconSet, IIcon } from '..';
 import { IInputProps, Input } from '../input/input.component';
 
@@ -21,7 +21,7 @@ export const PasswordInput = React.forwardRef(
     return (
       <Input
         {...props}
-        className={ClassNames.concat('arm-password-input', className)}
+        className={concat('arm-password-input', className)}
         ref={ref}
         type={showPassword ? 'text' : 'password'}
         rightOverlay={

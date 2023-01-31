@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { Arrays } from "../..";
+import { arrayToArrayDictionary } from "../..";
 import { useGeneratedId, useTemporaryState, useTimeout } from "../../hooks";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Dates } from "../../utils/dates";
-import { Objects } from "../../utils/objects";
+import { contentDependency } from "../../utils/objects";
 import { IconUtils } from "../icon";
 import { IconButton } from "../iconButton";
 import { useToasts } from "./toast.context";
@@ -66,7 +66,7 @@ export const ToastNotification = React.forwardRef<
   return (
     <div
       {...htmlProps}
-      className={ClassNames.concat(
+      className={concat(
         "arm-toast-notification",
         htmlProps?.className
       )}
@@ -133,7 +133,7 @@ export const ToastNotificationContainer = React.forwardRef<
 
   const splitToasts = React.useMemo(
     () =>
-      Arrays.arrayToArrayDictionary(combinedToasts, (toast) => toast.position!),
+      arrayToArrayDictionary(combinedToasts, (toast) => toast.position!),
     [combinedToasts]
   );
 
@@ -149,7 +149,7 @@ export const ToastNotificationContainer = React.forwardRef<
             splitToasts["top-left"].map((toast) => (
               <ToastNotification
                 {...toast}
-                key={Objects.contentDependency(toast)}
+                key={contentDependency(toast)}
               />
             ))}
         </div>
@@ -158,7 +158,7 @@ export const ToastNotificationContainer = React.forwardRef<
             splitToasts["bottom-left"].map((toast) => (
               <ToastNotification
                 {...toast}
-                key={Objects.contentDependency(toast)}
+                key={contentDependency(toast)}
               />
             ))}
         </div>
@@ -169,7 +169,7 @@ export const ToastNotificationContainer = React.forwardRef<
             splitToasts["top-right"].map((toast) => (
               <ToastNotification
                 {...toast}
-                key={Objects.contentDependency(toast)}
+                key={contentDependency(toast)}
               />
             ))}
         </div>
@@ -178,7 +178,7 @@ export const ToastNotificationContainer = React.forwardRef<
             splitToasts["bottom-right"].map((toast) => (
               <ToastNotification
                 {...toast}
-                key={Objects.contentDependency(toast)}
+                key={contentDependency(toast)}
               />
             ))}
         </div>

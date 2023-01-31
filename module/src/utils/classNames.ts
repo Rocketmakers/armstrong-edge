@@ -1,5 +1,4 @@
-export namespace ClassNames {
-  interface ClassNameDictionary {
+interface ClassNameDictionary {
     [id: string]: boolean | undefined | null;
   }
   interface ClassNameArray extends Array<ClassName> {}
@@ -21,7 +20,7 @@ export namespace ClassNames {
         classes.push(argument);
       } else if (Array.isArray(argument)) {
         // if array, spread into output
-        classes = [...classes, concat(argument)];
+        classes = [...classes, ...argument.map(v => v as string)];
       } else if (typeof argument === 'object') {
         for (const key in argument) {
           // if object,
@@ -34,4 +33,3 @@ export namespace ClassNames {
 
     return classes.join(' ');
   }
-}

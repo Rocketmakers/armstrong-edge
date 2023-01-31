@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useArrayState } from '../../hooks';
-import { ClassNames } from '../../utils/classNames';
+import { concat } from '../../utils/classNames';
 
 /**
  * The modal's context is currently used for two things:
@@ -69,7 +69,7 @@ export const ModalProvider = React.forwardRef<HTMLDivElement | null, React.Props
     return (
       <ModalContext.Provider value={{ modalLayerReference, modals, addModal, removeModal }}>
         {children}
-        <div {...modalProps} className={ClassNames.concat('arm-modal-layer', className)} ref={setRef}>
+        <div {...modalProps} className={concat('arm-modal-layer', className)} ref={setRef}>
           {modals.map((ModalComponent, index) => (
             <ModalComponent key={index} />
           ))}

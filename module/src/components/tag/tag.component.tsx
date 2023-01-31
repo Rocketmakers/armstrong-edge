@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { IconSet, IconUtils } from "../icon";
 import { IconButton } from "../iconButton";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
@@ -38,7 +38,7 @@ export const Tag = React.forwardRef<
   ) => (
     <div
       ref={ref}
-      className={ClassNames.concat("arm-tag", className)}
+      className={concat("arm-tag", className)}
       {...nativeProps}
     >
       <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>

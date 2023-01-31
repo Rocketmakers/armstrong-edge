@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { ValidationMessage } from "../../hooks/form";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { IconSet, IconUtils, IIcon } from "../icon";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
 import {
@@ -118,7 +118,7 @@ export const Button = React.forwardRef<
   return (
     <>
       <button
-        className={ClassNames.concat(
+        className={concat(
           minimalStyle ? "arm-button-minimal" : "arm-button",
           className
         )}

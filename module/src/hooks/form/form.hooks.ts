@@ -7,8 +7,8 @@ import * as React from 'react';
 
 import { IconSet, IIcon } from '../../components/icon';
 import { useMyValidationErrorMessages } from '../../components/validationErrors';
-import { Objects } from '../../utils/objects';
-import { Typescript } from '../../utils/typescript';
+import { contentDependency, mergeDeep } from '../../utils/objects';
+import { assertNever } from '../../utils/typescript';
 import { useDebounceEffect } from '../useDebounce';
 import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
 import { ValidationMessage } from '.';
@@ -190,7 +190,7 @@ function useFormBase<TData extends object>(
     },
     [
       set,
-      Objects.contentDependency(formConfig),
+      contentDependency(formConfig),
       dispatch,
       formStateLive,
       initialData,
@@ -337,7 +337,7 @@ function useFormBase<TData extends object>(
    */
   const resetFormData = React.useCallback(() => {
     dispatch({ type: 'set-all', data: initialData });
-  }, [Objects.contentDependency(initialData), dispatch]);
+  }, [contentDependency(initialData), dispatch]);
 
   /**
    * Sets all form data to a new object value.
@@ -381,7 +381,7 @@ function useForm<TData extends object>(initialData: TData | InitialDataFunction<
 
   const liveInitialData = React.useMemo<TData>(() => {
     return initialDataIsCallback(initialData) ? initialData(formStateRef.current) : initialData;
-  }, [initialDataIsCallback(initialData) ? initialData : Objects.contentDependency(initialData)]);
+  }, [initialDataIsCallback(initialData) ? initialData : contentDependency(initialData)]);
 
   const dispatch = React.useCallback(
     (action) => {
@@ -394,7 +394,7 @@ function useForm<TData extends object>(initialData: TData | InitialDataFunction<
 
   useDidUpdateLayoutEffect(() => {
     dispatch({ type: 'set-all', data: liveInitialData });
-  }, [Objects.contentDependency(liveInitialData)]);
+  }, [contentDependency(liveInitialData)]);
 
   return useFormBase<TData>(formState, formStateRef, dispatch, liveInitialData, formConfig);
 }
@@ -423,9 +423,9 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
       })),
     };
 
-    const combination: IFormConfig<TData> = Objects.mergeDeep(parentBinderConfig ?? {}, formConfig ?? {});
+    const combination: IFormConfig<TData> = mergeDeep(parentBinderConfig ?? {}, formConfig ?? {});
     return Object.keys(combination).length ? combination : undefined;
-  }, [Objects.contentDependency(formConfig), Objects.contentDependency(parentBinder.formConfig), parentBinder.myValidationErrors]);
+  }, [contentDependency(formConfig), contentDependency(parentBinder.formConfig), parentBinder.myValidationErrors]);
 
   const dispatch = React.useCallback<FormDispatcher<TData | undefined>>(
     (action) => {
@@ -445,7 +445,7 @@ function useChild<TData extends object>(parentBinder: IBindingProps<TData>, form
           });
           break;
         default:
-          Typescript.assertNever(action);
+          assertNever(action);
       }
       formStateRef.current = valueByKeyChain(fullState, parentBinder.keyChain);
       return formStateRef.current;

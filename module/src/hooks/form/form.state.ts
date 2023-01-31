@@ -2,7 +2,7 @@
  * FORM - State file.
  * Contains everything related to form state such as the reducer and action factories.
  ******************************************************* */
-import { Objects } from '../../utils/objects';
+import { mergeDeepFromKeyChain } from '../../utils/objects';
 import { FormAction, IValidationError, ValidationAction } from './form.types';
 
 /**
@@ -20,7 +20,7 @@ export function dataReducer<TData extends object>(state: TData, action: FormActi
           : { ...(state || {}), [action.propertyKey]: action.value }
       ) as TData;
     case 'set-path':
-      return Objects.mergeDeepFromKeyChain(state, action.keyChain, action.value);
+      return mergeDeepFromKeyChain(state, action.keyChain, action.value);
     case 'set-all':
       return (Array.isArray(action.data) ? [...action.data] : { ...action.data }) as TData;
     default:

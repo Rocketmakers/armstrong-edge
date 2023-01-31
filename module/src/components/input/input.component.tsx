@@ -4,7 +4,7 @@ import { Form } from "../..";
 import { IBindingProps, IDelayInputConfig } from "../../hooks/form/form.types";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useThrottle } from "../../hooks/useThrottle";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import {
   IInputWrapperProps,
   InputWrapper,
@@ -172,7 +172,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
 
     return (
       <InputWrapper
-        className={ClassNames.concat(className, "arm-input-base")}
+        className={concat(className, "arm-input-base")}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}

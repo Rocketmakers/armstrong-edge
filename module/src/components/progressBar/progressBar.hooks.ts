@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useTimeout } from '../../hooks';
-import { Maths } from '../../utils';
+import { clamp } from '../../utils';
 
 export interface IUseProgressConfig {
   /** should the progress increase by a small amount every interval */
@@ -57,7 +57,7 @@ export const useProgress = ({ trickle, trickleAmount, trickleInterval, maximum, 
 
   const set = React.useCallback((newProgress: number) => {
     setStarted(true);
-    setProgress(Maths.clamp(newProgress, 0, maximum || 95));
+    setProgress(clamp(newProgress, 0, maximum || 95));
   }, []);
 
   const increment = React.useCallback(

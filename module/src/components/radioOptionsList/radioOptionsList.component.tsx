@@ -6,7 +6,7 @@ import {
   ArmstrongId,
   ArmstrongVFCProps,
 } from "../../types";
-import { ClassNames } from "../../utils";
+import { concat } from "../../utils";
 import { IRadioInputListProps, RadioInputList } from "../radioInputList";
 
 import "./radioOptionsList.basic.scss";
@@ -23,7 +23,7 @@ export const RadioOptionsList = React.forwardRef(
       <RadioInputList
         ref={forwardedRef}
         {...props}
-        className={ClassNames.concat("arm-radio-options-list", className)}
+        className={concat("arm-radio-options-list", className)}
         hideRadio
       />
     );

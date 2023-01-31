@@ -11,8 +11,8 @@ import {
 } from "../../types";
 import { ArmstrongId } from "../../types/core";
 import { IArmstrongExtendedOption } from "../../types/options";
-import { ClassNames } from "../../utils/classNames";
-import { Objects } from "../../utils/objects";
+import { concat } from "../../utils/classNames";
+import { contentDependency } from "../../utils/objects";
 import { DropdownItems, IDropdownItemsProps } from "../dropdownItems";
 import { IInputProps } from "../input";
 import { IPortalProps } from "../portal";
@@ -223,7 +223,7 @@ export const AutoCompleteInput = React.forwardRef(
       return options || [];
     }, [
       filterOptions,
-      Objects.contentDependency(options),
+      contentDependency(options),
       textInputInternalValue,
       justOpened,
       showAllOptionsOnFocus,
@@ -240,7 +240,7 @@ export const AutoCompleteInput = React.forwardRef(
           }
         }
       },
-      [bind, allowFreeText, Objects.contentDependency(options)]
+      [bind, allowFreeText, contentDependency(options)]
     );
 
     /** Fired when the user changes the value in the text input */
@@ -277,14 +277,14 @@ export const AutoCompleteInput = React.forwardRef(
       }
     }, [
       allowFreeText,
-      Objects.contentDependency(options),
+      contentDependency(options),
       boundValue,
       getOptionName,
     ]);
 
     useDidUpdateEffect(() => {
       resetInputValue();
-    }, [boundValue, Objects.contentDependency(options)]);
+    }, [boundValue, contentDependency(options)]);
 
     // when the user closes the dropdown, reset the input value
     useDidUpdateEffect(() => {
@@ -304,14 +304,14 @@ export const AutoCompleteInput = React.forwardRef(
       [
         allowFreeText,
         textInputInternalValue,
-        Objects.contentDependency(options),
+        contentDependency(options),
       ]
     );
 
     return (
       <>
         <div
-          className={ClassNames.concat(
+          className={concat(
             "arm-input",
             "arm-autocomplete-input",
             className
@@ -323,7 +323,7 @@ export const AutoCompleteInput = React.forwardRef(
           data-cy={cypressTag}
         >
           <DropdownItems
-            contentClassName={ClassNames.concat(
+            contentClassName={concat(
               "arm-auto-complete-options",
               dropdownClassName
             )}

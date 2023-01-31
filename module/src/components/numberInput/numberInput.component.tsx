@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Form } from '../../hooks';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { ClassNames } from '../../utils/classNames';
+import { concat } from '../../utils/classNames';
 import { IInputProps } from '../input/input.component';
 import { InputWrapper } from '../inputWrapper';
 
@@ -54,7 +54,7 @@ export const NumberInput = React.forwardRef(
 
     return (
       <InputWrapper
-        className={ClassNames.concat(className, 'arm-input-base')}
+        className={concat(className, 'arm-input-base')}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}

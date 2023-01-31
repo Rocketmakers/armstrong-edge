@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { useGeneratedId } from "../../hooks";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IconButton } from "../iconButton";
 import { IModalProps, Modal } from "../modal";
@@ -60,8 +60,8 @@ export const Dialog = React.forwardRef<
     return (
       <Modal
         {...modalProps}
-        className={ClassNames.concat("arm-dialog", className)}
-        wrapperClassName={ClassNames.concat(
+        className={concat("arm-dialog", className)}
+        wrapperClassName={concat(
           "arm-dialog-wrapper",
           wrapperClassName
         )}
