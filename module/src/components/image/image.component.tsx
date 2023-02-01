@@ -1,7 +1,6 @@
 import * as React from "react";
 import { HTMLAttributes } from "react";
 
-
 import { useHasTimeElapsedSinceMount } from "../../hooks/useHasTimeElapsed";
 import {
   IUseInViewportOptions,

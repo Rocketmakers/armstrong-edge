@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 import { Objects } from '../utils/objects';
 import { Globals } from '../utils/globals';
@@ -7,11 +7,6 @@ import { useEventListener } from './useEventListener';
 import { useResizeObserver } from './useResizeObserver';
 
 export type useBoundingClientRectReturn = [DOMRect, () => void];
-
-function domRectToObject(domRect: DOMRect) {
-  const { top, right, bottom, left, width, height, x, y } = domRect;
-  return { top, right, bottom, left, width, height, x, y };
-}
 
 /**
  * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
@@ -39,6 +34,11 @@ export function useBoundingClientRect(
     }
   );
 
+  function domRectToObject(domRect: DOMRect) {
+    const { top, right, bottom, left, width, height, x, y } = domRect;
+    return { top, right, bottom, left, width, height, x, y };
+  }
+
   const setRectSize = React.useCallback(() => {
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
@@ -65,8 +65,8 @@ export function useBoundingClientRect(
     }
   }, [listenToScroll, setRectSize]);
 
-  useEventListener('resize', setRectSize, Globals.Document);
-  useEventListener('scroll', onScroll, Globals.Document, { capture: true });
+  useEventListener("resize", setRectSize, Globals.Document);
+  useEventListener("scroll", onScroll, Globals.Document, { capture: true });
 
   React.useEffect(() => setRectSize(), []);
 

@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { Form, ICheckboxInputProps, IInputWrapperProps } from "../..";
 import { IBindingProps } from "../../hooks/form";
-
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,

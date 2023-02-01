@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Hooks/Utility Hooks" />
 
@@ -83,6 +83,19 @@ const InnerComponent = ({ isOpen }) => {
   // see code for Modal for an example
 };
 ```
+
+This was a very hard thing to describe so if you think you need this and my description wasn't good enough, drop me (pat) a message
+
+### useDebug
+
+Fire a series of console logs alongside lifecycle events
+
+The argument it takes will be prefixed on console logs
+
+```tsx
+useDebug('my_component');
+```
+
 ### useDidMountEffect
 
 A useEffect which will only run in the first effect

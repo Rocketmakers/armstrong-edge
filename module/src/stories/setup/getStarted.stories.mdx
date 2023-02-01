@@ -1,0 +1,29 @@
+import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+
+<Meta title="Setup/Get Started" />
+
+# Get Started
+
+Armstrong is installed using `npm`.
+
+```bash
+npm install @rocketmakers/armstrong
+# or
+yarn add @rocketmakers/armstrong
+```
+
+Then to use a component in your project
+
+```tsx
+import { Button } from "@rocketmakers/armstrong";
+
+const MyComponent: React.FC = () => {
+  return (
+    <div>
+      <Button>I'm a button</Button>
+    </div>
+  );
+};
+```
+
+You will also need to import some styling to get started (or, if you're feeling adventurous, you can start from scratch and write your own) see Setup/SCSS for more details.
