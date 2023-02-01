@@ -8,7 +8,6 @@ import {
   StatusWrapper,
   ValidationErrors,
 } from "../..";
-import { useGeneratedId } from "../../hooks";
 import { IBindingProps } from "../../hooks/form";
 import {
   ArmstrongFCExtensions,
@@ -252,7 +251,7 @@ export const Rating = React.forwardRef(
       validationErrorIcon: errorIcon,
     });
 
-    const generatedName = useGeneratedId("radio", name);
+    const generatedName = React.useId();
 
     return (
       <>

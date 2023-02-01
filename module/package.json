@@ -32,11 +32,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@types/react": "18.0.18",
     "@types/react-dom": "18.0.6",
     "bundle-scss": "1.5.1",
     "chokidar": "3.5.3",
     "concurrently": "^7.4.0",
+    "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sass": "^1.54.9",

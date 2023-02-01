@@ -10,7 +10,7 @@ import { ArmstrongId } from "../../types/core";
 import { ClassNames } from "../../utils/classNames";
 import { IInputWrapperProps } from "../inputWrapper";
 import { IStatusWrapperProps, StatusWrapper } from "../statusWrapper";
-import { ITabControlProps, TabControl } from "../tabControl";
+import { ITabControlProps, TabControl } from "./tabControl";
 import { ValidationErrors } from "../validationErrors";
 
 import "./tabSelect.basic.scss";

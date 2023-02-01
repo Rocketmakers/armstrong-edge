@@ -1,13 +1,17 @@
 import * as React from 'react';
 
-import { Objects } from '../utils';
-import { DOM } from '../utils/dom';
+import { Objects } from '../utils/objects';
 import { Globals } from '../utils/globals';
 import { useDidUpdateEffect } from './useDidUpdateEffect';
 import { useEventListener } from './useEventListener';
 import { useResizeObserver } from './useResizeObserver';
 
 export type useBoundingClientRectReturn = [DOMRect, () => void];
+
+function domRectToObject(domRect: DOMRect) {
+  const { top, right, bottom, left, width, height, x, y } = domRect;
+  return { top, right, bottom, left, width, height, x, y };
+}
 
 /**
  * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
@@ -39,7 +43,7 @@ export function useBoundingClientRect(
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
 
-      if (Objects.contentDependency(DOM.domRectToObject(boundingClientRect)) !== Objects.contentDependency(DOM.domRectToObject(rect))) {
+      if (Objects.contentDependency(domRectToObject(boundingClientRect)) !== Objects.contentDependency(domRectToObject(rect))) {
         onChange?.(boundingClientRect);
         setRect(boundingClientRect);
       }

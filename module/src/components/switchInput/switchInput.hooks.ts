@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import { useEventListener } from './useEventListener';
+import { useEventListener } from '../../hooks/useEventListener';
 
 interface IPosition {
   left: number;
