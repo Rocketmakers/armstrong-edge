@@ -1,7 +1,10 @@
+// eslint-disable-next-line import/no-duplicates -- Not actually a duplicate due to date-fns splitting.
 import { format, formatISO, parse, parseISO } from 'date-fns';
+// eslint-disable-next-line import/no-duplicates -- Not actually a duplicate due to date-fns splitting.
 import { enGB } from 'date-fns/locale';
 
-import { Calendar, ISelectOption } from '..';
+import { ISelectOption } from '../components/select';
+import { Calendar } from '../hooks';
 import { NullOrUndefined } from '../types';
 
 /** Set of utilities and types relating to the native JS date object */

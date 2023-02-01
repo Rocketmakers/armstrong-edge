@@ -7,7 +7,7 @@ export function useDidUpdateEffect(callback: React.EffectCallback, deps?: React.
   return React.useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
-      return;
+      return undefined;
     }
     return callback();
   }, deps);
@@ -20,7 +20,7 @@ export function useDidUpdateLayoutEffect(callback: React.EffectCallback, deps?: 
   return React.useLayoutEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
-      return;
+      return undefined;
     }
     return callback();
   }, deps);

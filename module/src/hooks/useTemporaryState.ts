@@ -25,7 +25,7 @@ export function useTemporaryState<T>(
   const set = React.useCallback(
     (newValue: T) => {
       setValue(newValue);
-      void setTimeout();
+      setTimeout();
     },
     [setTimeout]
   );

@@ -1,11 +1,12 @@
 import { isSameMinute, isValid } from 'date-fns';
+import { isNil } from 'lodash';
 import * as React from 'react';
 
 import { Form } from '../..';
 import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { concat, Dates } from '../../utils';
-import { JavaScript } from '../../utils/javascript';
+import { concat } from '../../utils/classNames';
+import { Dates } from '../../utils/dates';
 import { CalendarInput, ICalendarInputProps } from '../calendarInput';
 import { InputWrapper } from '../inputWrapper';
 import { IStatusWrapperProps } from '../statusWrapper';
@@ -116,7 +117,7 @@ export const DateTimeInput = React.forwardRef(
             bind?.addValidationError('Invalid date selection');
             return;
           }
-          const unset = JavaScript.isNullOrUndefined(selectedDateTime);
+          const unset = isNil(selectedDateTime);
           if (unset || !isSameMinute(finalDateSelected, Dates.dateLikeToDate(selectedDateTime)!)) {
             setSelectedDateTime?.(
               Dates.dateObjectToDateLike(
@@ -155,3 +156,5 @@ export const DateTimeInput = React.forwardRef(
   props: ArmstrongVFCProps<IDateTimeInputProps<TValue>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IDateTimeInputProps<any>>;
+
+DateTimeInput.displayName = 'DateTimeInput';

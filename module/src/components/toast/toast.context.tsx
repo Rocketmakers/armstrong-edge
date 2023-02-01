@@ -1,9 +1,8 @@
 import * as React from 'react';
 
 import { IPortalProps, Portal } from '../portal';
-import { IToastNotification, IToastNotificationProps } from '.';
-import { ToastNotificationContainer } from './toast.component';
-import { IGlobalToastConfig } from './toast.types';
+import { IToastNotificationProps, ToastNotificationContainer } from './toast.component';
+import { IGlobalToastConfig, IToastNotification } from './toast.types';
 
 export type DispatchToast = (...toast: IToastNotificationProps[]) => void;
 export type DismissToast = (toast: IToastNotificationProps) => void;

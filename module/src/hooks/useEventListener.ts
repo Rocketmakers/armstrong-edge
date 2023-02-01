@@ -30,5 +30,6 @@ export function useEventListener(
         }
       };
     }
+    return undefined;
   }, [eventHandler, element, type, enabled]);
 }

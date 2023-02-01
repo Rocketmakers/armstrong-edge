@@ -3,8 +3,7 @@
  * A set of helper functions to support the form logic.
  ******************************************************* */
 
-import { InitialDataFunction } from '.';
-import { IBindingProps, IValidationError, KeyChain } from './form.types';
+import { IBindingProps, InitialDataFunction, IValidationError, KeyChain } from './form.types';
 
 /**
  * Converts a keyChain into a validation error key string

@@ -47,7 +47,8 @@ export function useResizeObserver(
         }
       };
     }
-  }, [observe, unobserve]);
+    return undefined;
+  }, [observe, unobserve, ref]);
 
   useWillUnMountEffect(disconnect);
 

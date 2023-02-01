@@ -6,7 +6,7 @@ import { useDidUpdateEffect } from './useDidUpdateEffect';
 import { useEventListener } from './useEventListener';
 import { useResizeObserver } from './useResizeObserver';
 
-export type useBoundingClientRectReturn = [DOMRect, () => void];
+export type UseBoundingClientRectReturn = [DOMRect, () => void];
 
 /**
  * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
@@ -18,7 +18,7 @@ export function useBoundingClientRect(
   ref: React.MutableRefObject<Element | undefined | null>,
   onChange?: (newBoundingClientRect: DOMRect) => void,
   listenToScroll = true
-): useBoundingClientRectReturn {
+): UseBoundingClientRectReturn {
   const [rect, setRect] = React.useState<DOMRect>(
     ref.current?.getBoundingClientRect() || {
       bottom: 0,

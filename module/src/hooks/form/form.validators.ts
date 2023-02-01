@@ -31,7 +31,7 @@ export function validateAll<TData>(
   baseKeyChain: KeyChain
 ) {
   Object.keys(validatorConfig).forEach(key => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define -- Function calls validateAll, cannot define both before each other.
     validateKeyChainProperty(valueByKeyChain(validatorConfig, [key]), [key], formState, onValidate, [
       ...baseKeyChain,
       key,

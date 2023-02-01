@@ -1,22 +1,21 @@
 import * as React from 'react';
 
+import { Form } from '../../hooks';
+import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
   ArmstrongFCReturn,
-  AutoCompleteInput,
   DataAttributes,
-  Form,
-  IAutoCompleteInputProps,
-  ISelectOption,
   NullOrUndefined,
-} from '../..';
-import { IBindingProps } from '../../hooks/form';
+} from '../../types';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
+import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { IconSet } from '../icon';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { ISelectOption } from '../select';
 import { IStatusWrapperProps } from '../statusWrapper';
 import { TimeParts } from './timeInput.types';
 import { getHourOptions, getMinuteOptions, parseTimePartsToDate, parseTimeStringToParts } from './timeInput.utils';
@@ -233,3 +232,5 @@ TimeInput.defaultProps = {
   minuteInputDisplayFormat: 'm',
   betweenInputs: ':',
 };
+
+TimeInput.displayName = 'TimeInput';

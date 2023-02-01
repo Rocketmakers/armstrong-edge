@@ -5,12 +5,11 @@
 import * as React from 'react';
 
 import { IconSet, IIcon } from '../../components/icon';
-import { useMyValidationErrorMessages } from '../../components/validationErrors';
+import { useMyValidationErrorMessages } from '../../components/validationErrors/validationErrors.hooks';
 import { contentDependency, mergeDeep } from '../../utils/objects';
 import { assertNever } from '../../utils/typescript';
 import { useDebounceEffect } from '../useDebounce';
 import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
-import { ValidationMessage } from '.';
 import { dataReducer, validationReducer } from './form.state';
 import {
   BindingTools,
@@ -24,6 +23,7 @@ import {
   InitialDataFunction,
   IValidationError,
   KeyChain,
+  ValidationMessage,
 } from './form.types';
 import {
   childKeyChainStringFromParent,
@@ -207,7 +207,7 @@ function useFormBase<TData extends object>(
     keyChain => {
       let valid = true;
       if (!formConfig?.validators) {
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- Console message should never appear in real use.
         console.warn(
           'Attempted client validation without schema. Did you forget to write/add your validators to the form config?'
         );
@@ -238,7 +238,7 @@ function useFormBase<TData extends object>(
   const validate = React.useCallback<() => boolean>(() => {
     let valid = true;
     if (!formConfig?.validators) {
-      // eslint-disable-next-line no-console
+      // eslint-disable-next-line no-console -- Con sole message should never appear in real use.
       console.warn(
         'Attempted client validation without schema. Did you forget to write/add your validators to the form config?'
       );
@@ -617,7 +617,7 @@ export function useBindingTools<TData>(
   overrides?: IUseBindingStateOverrides<TData>
 ): UseBindingStateReturn<TData> {
   React.useEffect(() => {
-    // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console -- Deprecation warning
     console.warn('useBindingTools has been renamed useBindingState - please update this usage of it');
   }, []);
 

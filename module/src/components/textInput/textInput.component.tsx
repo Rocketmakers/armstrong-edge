@@ -17,3 +17,5 @@ export const TextInput = React.forwardRef(
   props: ArmstrongFCProps<Omit<IInputProps<T>, 'type'>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<Omit<IInputProps<any>, 'type'>>;
+
+TextInput.displayName = 'TextInput';

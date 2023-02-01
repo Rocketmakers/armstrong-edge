@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useWillUnMountEffect } from '.';
+import { useWillUnMountEffect } from './useWillUnmountEffect';
 
 export interface IUseTimeoutReturn<T = void> {
   /** Set the timeout, optionally give a callback which will override the one set at hook level */

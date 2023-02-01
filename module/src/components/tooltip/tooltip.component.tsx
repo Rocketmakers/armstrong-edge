@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { IPortalProps } from '../..';
-import { useGeneratedId } from '../../hooks';
 import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
+import { useGeneratedId } from '../../hooks/useGeneratedId';
 import { useIsFocused } from '../../hooks/useIsFocused';
 import { useIsHovering } from '../../hooks/useIsHovering';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { concat } from '../../utils/classNames';
 import { Modal } from '../modal';
+import { IPortalProps } from '../portal/portal.component';
 
 import './tooltip.basic.scss';
 
@@ -153,7 +153,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, React.PropsWithChildren<ITo
             };
           }
           default: {
-            break;
+            return undefined;
           }
         }
       },
@@ -185,6 +185,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, React.PropsWithChildren<ITo
           }
         }
       }
+      return undefined;
     }, [getPosition, tooltipPosition]);
 
     const style = React.useMemo(
@@ -238,3 +239,5 @@ Tooltip.defaultProps = {
   edgeDetectionMargin: 5,
   openOnHover: true,
 };
+
+Tooltip.displayName = 'Tooltip';

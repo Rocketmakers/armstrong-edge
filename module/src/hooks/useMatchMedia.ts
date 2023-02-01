@@ -30,7 +30,7 @@ export function useMatchMedia(
     const media = Window?.matchMedia(query);
 
     if (!media) {
-      return;
+      return undefined;
     }
 
     if (media.matches !== isMatching) {

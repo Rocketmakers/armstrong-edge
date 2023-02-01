@@ -96,4 +96,5 @@ export function getAtOverallIndex<T>(index: number, arrays: { items: T[] }[]) {
 
     totalIndex = newIndex;
   }
+  return undefined;
 }

@@ -1,12 +1,18 @@
 import { isSameDay } from 'date-fns';
+import { isNil } from 'lodash';
 import * as React from 'react';
 
-import { Calendar, DataAttributes, Form } from '../..';
+import { Calendar, Form } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+  DataAttributes,
+  NullOrUndefined,
+} from '../../types';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
-import { JavaScript } from '../../utils/javascript';
 import { assertNever } from '../../utils/typescript';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
@@ -244,7 +250,7 @@ export const CalendarInput = React.forwardRef(
         setSelectedDate?.(
           calendarDayToDateLike(
             day,
-            !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string',
+            !isNil(selectedDate) ? typeof selectedDate : 'string',
             formatString,
             locale
           ) as TValue
@@ -296,7 +302,7 @@ export const CalendarInput = React.forwardRef(
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
           const newDate = Dates.dateObjectToDateLike(
             date,
-            !JavaScript.isNullOrUndefined(selectedDate) ? typeof selectedDate : 'string',
+            !isNil(selectedDate) ? typeof selectedDate : 'string',
             formatString,
             locale
           );
@@ -519,3 +525,5 @@ CalendarInput.defaultProps = {
   betweenInputs: '/',
   highlightToday: true,
 };
+
+CalendarInput.displayName = 'CalendarInput';

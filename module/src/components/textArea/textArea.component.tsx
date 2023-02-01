@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Form } from '../..';
+import { Form } from '../../hooks';
 import { FormValidationMode, IBindingProps, IDelayInputConfig, ValidationMessage } from '../../hooks/form/form.types';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useThrottle } from '../../hooks/useThrottle';
@@ -44,6 +44,8 @@ const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextA
   }
 );
 
+DebounceTextAreaBase.displayName = 'DebounceTextAreaBase';
+
 const ThrottledTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextAreaBaseProps>(
   ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
     const [actualValue, setActualValue] = useThrottle(milliseconds, value?.toString(), onValueChange);
@@ -67,6 +69,8 @@ const ThrottledTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedText
     );
   }
 );
+
+ThrottledTextAreaBase.displayName = 'ThrottledTextAreaBase';
 
 export interface ITextAreaProps<TBind extends NullOrUndefined<string>>
   extends Omit<NativeTextAreaProps, 'value'>,
@@ -203,3 +207,5 @@ export const TextArea = React.forwardRef(
   ArmstrongFCExtensions<ITextAreaProps<any>>;
 
 TextArea.defaultProps = {};
+
+TextArea.displayName = 'TextArea';

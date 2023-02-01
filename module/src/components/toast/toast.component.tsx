@@ -1,7 +1,9 @@
 import * as React from 'react';
 
-import { arrayToArrayDictionary } from '../..';
-import { useGeneratedId, useTemporaryState, useTimeout } from '../../hooks';
+import { useGeneratedId } from '../../hooks/useGeneratedId';
+import { useTemporaryState } from '../../hooks/useTemporaryState';
+import { useTimeout } from '../../hooks/useTimeout';
+import { arrayToArrayDictionary } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { contentDependency } from '../../utils/objects';
@@ -27,7 +29,7 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
     const { set: setAutoDismissTimeout, clear: clearAutoDismissTimeout } = useTimeout(beginDismiss, autoDismissTime);
 
     React.useEffect(() => {
-      void setAutoDismissTimeout();
+      setAutoDismissTimeout();
     }, []);
 
     const id = useGeneratedId('arm-tst_', htmlProps?.id);
@@ -88,6 +90,8 @@ ToastNotification.defaultProps = {
   allowManualDismiss: true,
 };
 
+ToastNotification.displayName = 'ToastNotification';
+
 export interface IToastNotificationContainerProps {
   /** the toasts to render inside this component */
   toasts?: IToastNotificationProps[];
@@ -134,3 +138,5 @@ export const ToastNotificationContainer = React.forwardRef<HTMLDivElement, IToas
     );
   }
 );
+
+ToastNotificationContainer.displayName = 'ToastNotificationContainer';

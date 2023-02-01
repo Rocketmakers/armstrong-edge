@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useEventListener } from '.';
+import { useEventListener } from './useEventListener';
 
 export type UseIsHoveringReturn = [boolean, Pick<React.HTMLAttributes<HTMLElement>, 'onMouseEnter' | 'onMouseLeave'>];
 

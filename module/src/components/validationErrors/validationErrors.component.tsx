@@ -63,3 +63,5 @@ export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWith
     );
   }
 );
+
+ValidationErrors.displayName = 'ValidationErrors';
