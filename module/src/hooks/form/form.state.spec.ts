@@ -5,7 +5,7 @@ import * as FormUtils from './form.utils';
 describe('Form state', () => {
     describe('data reducer', () => {
         beforeEach(() => {
-            jest.resetAllMocks();
+            jest.clearAllMocks();
         });
 
         it('carries out a deep merge when the action is set-path', () => {
