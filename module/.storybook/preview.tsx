@@ -1,9 +1,8 @@
 import React from 'react';
-import { withThemes } from 'storybook-addon-themes/react';
 import { ModalProvider } from '../src/components/modal/modal.context';
 import { themes } from '@storybook/theming';
 
-export const decorators = [withThemes, (Story) => {
+export const decorators = [(Story) => {
     return (
       <div id="host">
         <ModalProvider>
@@ -14,17 +13,6 @@ export const decorators = [withThemes, (Story) => {
       </div>
     );
   },];
-
-const ThemeDecorator = (props) => {
-  const { children, themeName } = props;
-  return (
-    <>
-      {themeName === 'basic' && <link rel="stylesheet" href="../src/stories/basic-theme.scss"/>}
-      {themeName === 'prototyping' && <link rel="stylesheet" href="../src/stories/prototyping-theme.scss"/>}
-      {children}
-    </>
-  );
-};
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -51,15 +39,10 @@ export const parameters = {
       ],
     },
   },
-  themes: {
-    default: 'prototyping',
-    list: [
-      { name: 'prototyping', color: '#00aced' },
-      { name: 'basic', color: '#3b5998' },
-    ],
-    Decorator: ThemeDecorator,
-  },
   docs: {
     theme: themes.light,
   },
+  backgrounds: {
+    default: 'light',
+  }
 }
