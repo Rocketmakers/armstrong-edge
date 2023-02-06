@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 
 import "./spinner.basic.scss";
@@ -23,7 +23,7 @@ export const Spinner = React.forwardRef<
 >(({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => (
   <div
     ref={ref}
-    className={ClassNames.concat("arm-spinner", className)}
+    className={concat("arm-spinner", className)}
     {...HTMLProps}
     data-fill-container={fillContainer}
   >

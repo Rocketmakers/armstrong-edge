@@ -8,8 +8,8 @@ import {
   ArmstrongVFCProps,
   NullOrUndefined,
 } from "../../types";
-import { Arrays } from "../../utils/arrays";
-import { ClassNames } from "../../utils/classNames";
+import { findLastIndex } from "../../utils/arrays";
+import { concat } from "../../utils/classNames";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
 import { IInputProps } from "../input";
 import { StatusWrapper } from "../statusWrapper/statusWrapper.component";
@@ -93,7 +93,7 @@ export const CodeInputPart = React.forwardRef(
     return (
       <TextInput
         ref={ref}
-        className={ClassNames.concat("arm-code-input-part-input", className)}
+        className={concat("arm-code-input-part-input", className)}
         onChange={onChange}
         value={value}
         onKeyDown={onKeyDown}
@@ -222,7 +222,7 @@ export const CodeInput = React.forwardRef(
     );
     const goPrevious = React.useCallback(
       (partIndex: number) => {
-        const previousIndex = Arrays.findLastIndex(
+        const previousIndex = findLastIndex(
           parts.slice(0, partIndex),
           (part) => typeof part !== "string"
         );
@@ -301,7 +301,7 @@ export const CodeInput = React.forwardRef(
     return (
       <>
         <div
-          className={ClassNames.concat("arm-code-input", className)}
+          className={concat("arm-code-input", className)}
           ref={ref}
         >
           <StatusWrapper

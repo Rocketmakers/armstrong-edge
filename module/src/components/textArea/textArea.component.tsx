@@ -15,7 +15,7 @@ import {
   ArmstrongVFCProps,
   NullOrUndefined,
 } from "../../types";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import {
   IInputWrapperProps,
   InputWrapper,
@@ -180,7 +180,7 @@ export const TextArea = React.forwardRef(
 
     return (
       <InputWrapper
-        className={ClassNames.concat("arm-text-area", className)}
+        className={concat("arm-text-area", className)}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}

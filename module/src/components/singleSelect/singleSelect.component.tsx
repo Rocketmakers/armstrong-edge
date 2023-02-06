@@ -2,7 +2,7 @@ import React from "react";
 import Select, { GroupBase, OnChangeValue } from "react-select";
 import SelectRef from "react-select/dist/declarations/src/Select";
 import { Form } from "../../hooks";
-import { ClassNames } from "../../utils";
+import { concat } from "../../utils";
 import { IIcon, IconSet } from "../icon";
 import { ValidationErrors } from "../validationErrors";
 
@@ -112,7 +112,7 @@ export const SingleSelect = React.forwardRef<
 
     return (
       <div
-        className={ClassNames.concat("arm-single-select-wrapper", className)}
+        className={concat("arm-single-select-wrapper", className)}
       >
         <Select
           ref={ref}

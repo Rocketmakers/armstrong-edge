@@ -8,7 +8,7 @@ import {
   ArmstrongFCReturn,
 } from "../../types";
 import { ArmstrongId } from "../../types/core";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { DropdownItems } from "../dropdownItems";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IconButton } from "../iconButton";
@@ -162,12 +162,12 @@ export const ListBoxMulti = React.forwardRef(
         currentValue={boundValue}
         childRootElementSelector=".arm-input-inner"
         closeOnSelection={closeOnSelection}
-        className={ClassNames.concat(
+        className={concat(
           "arm-listbox-multi-wrapper",
           wrapperClassName
         )}
         noItemsText={noItemsText}
-        contentClassName={ClassNames.concat(
+        contentClassName={concat(
           "arm-listbox-options",
           dropdownClassName
         )}
@@ -181,7 +181,7 @@ export const ListBoxMulti = React.forwardRef(
       >
         <InputWrapper
           ref={internalRef}
-          className={ClassNames.concat("arm-listbox-multi", className)}
+          className={concat("arm-listbox-multi", className)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}

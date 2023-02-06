@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Objects } from '../utils';
-import { Globals } from '../utils/globals';
+import { contentDependency } from '../utils/objects';
+import { isBrowser, supportsResizeObserver } from '../utils/globals';
 import { useWillUnMountEffect } from './useWillUnmountEffect';
 
 /**
@@ -24,7 +24,7 @@ export function useResizeObserver(
       observer.current = new ResizeObserver(callback);
       observer.current.observe(element, options);
     },
-    [callback, Objects.contentDependency(options)]
+    [callback, contentDependency(options)]
   );
 
   const unobserve = React.useCallback((element: Element) => {
@@ -38,7 +38,7 @@ export function useResizeObserver(
   }, []);
 
   React.useLayoutEffect(() => {
-    if (!!ref?.current && Globals.isBrowser && Globals.supportsResizeObserver) {
+    if (!!ref?.current && isBrowser && supportsResizeObserver) {
       observe(ref.current);
 
       return () => {

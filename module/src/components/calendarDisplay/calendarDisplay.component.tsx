@@ -2,10 +2,10 @@ import * as React from "react";
 
 import { Calendar, Select } from "../..";
 import { IBindingProps } from "../../hooks/form";
-import { Arrays } from "../../utils/arrays";
-import { ClassNames } from "../../utils/classNames";
+import { reIndex, repeat } from "../../utils/arrays";
+import { concat } from "../../utils/classNames";
 import { Dates } from "../../utils/dates";
-import { Maths } from "../../utils/maths";
+import { positiveModulo } from "../../utils/maths";
 import { Button, IButtonProps } from "../button";
 import { IconUtils } from "../icon";
 import { IconButton } from "../iconButton";
@@ -164,7 +164,7 @@ export const CalendarDisplay = React.forwardRef<
     ref
   ) => {
     const dayOfWeekHeadings = React.useMemo(() => {
-      return Arrays.reIndex(
+      return reIndex(
         getDayOfWeekHeadings(calendarDayOfTheWeekHeadingDisplayFormat!, locale),
         weekdayStartIndex!
       );
@@ -193,13 +193,13 @@ export const CalendarDisplay = React.forwardRef<
     // Calculate the number of "empty" days to display at the beginning of the month based on the day of the week displayed first, and the first day of the month selected.
     const blankDaysAtStartCount = React.useMemo(() => {
       const monthStartsOnWeekday = days[0]?.indexInWeek ?? 0;
-      return Maths.positiveModulo(monthStartsOnWeekday - weekdayStartIndex!, 7);
+      return positiveModulo(monthStartsOnWeekday - weekdayStartIndex!, 7);
     }, [days, weekdayStartIndex]);
 
     return (
       <div
         ref={ref}
-        className={ClassNames.concat("arm-calendar-display", className)}
+        className={concat("arm-calendar-display", className)}
       >
         {controls && (
           <div className="arm-calendar-display-controls">
@@ -248,7 +248,7 @@ export const CalendarDisplay = React.forwardRef<
           </div>
 
           <div className="arm-calendar-date-grid-days">
-            {Arrays.repeat(blankDaysAtStartCount, (index) => (
+            {repeat(blankDaysAtStartCount, (index) => (
               <div
                 key={index}
                 className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty"
@@ -258,7 +258,7 @@ export const CalendarDisplay = React.forwardRef<
             {displayDays.map((displayDay) => (
               <Button
                 type="button"
-                className={ClassNames.concat(
+                className={concat(
                   "arm-calendar-date-grid-day",
                   displayDay.day.highlightedClassName
                 )}

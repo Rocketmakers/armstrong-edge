@@ -7,7 +7,7 @@ import {
   IUseInViewportOptions,
   useInViewport,
 } from "../../hooks/useIsInViewport";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { IStatusProps, Status } from "../status";
 
 import "./image.basic.scss";
@@ -142,7 +142,7 @@ export const Image = React.forwardRef<HTMLDivElement, IImageProps>(
     return (
       <div
         {...wrapperAttributes}
-        className={ClassNames.concat("arm-image", wrapperAttributes?.className)}
+        className={concat("arm-image", wrapperAttributes?.className)}
         data-entered-viewport={enteredViewport}
         ref={internalRef}
       >

@@ -16,8 +16,9 @@ import {
   ArmstrongVFCProps,
   NullOrUndefined,
 } from "../../types";
-import { Arrays, Maths } from "../../utils";
-import { ClassNames } from "../../utils/classNames";
+import { repeat } from "../../utils/arrays";
+import { clamp } from "../../utils/maths";
+import { concat } from "../../utils/classNames";
 import { Button } from "../button";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IInputWrapperProps } from "../inputWrapper";
@@ -90,7 +91,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
         style={
           value
             ? ({
-                "--rating-amount": `${Maths.clamp(
+                "--rating-amount": `${clamp(
                   (value - index) * 100,
                   0,
                   100
@@ -117,7 +118,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
 
         {!readOnly && mode === "buttons" && (
           <div className="arm-rating-part-buttons">
-            {Arrays.repeat(steps, (buttonIndex) => {
+            {repeat(steps, (buttonIndex) => {
               const inputValue = index + steps * (buttonIndex + 1);
 
               return (
@@ -135,7 +136,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
 
         {!readOnly && mode === "radio" && (
           <div className="arm-rating-part-radios">
-            {Arrays.repeat(steps, (buttonIndex) => {
+            {repeat(steps, (buttonIndex) => {
               const inputValue = index + steps * (buttonIndex + 1);
 
               return (
@@ -258,7 +259,7 @@ export const Rating = React.forwardRef(
       <>
         <div
           ref={ref}
-          className={ClassNames.concat("arm-rating", className)}
+          className={concat("arm-rating", className)}
           {...htmlProps}
           data-read-only={!setBoundValue}
         >
@@ -272,7 +273,7 @@ export const Rating = React.forwardRef(
           >
             <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
               <div className="arm-rating-parts">
-                {Arrays.repeat(maximum!, (index) => (
+                {repeat(maximum!, (index) => (
                   <RatingPart
                     key={index}
                     index={index}

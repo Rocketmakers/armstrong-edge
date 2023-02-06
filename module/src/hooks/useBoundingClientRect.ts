@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Objects } from "../utils";
-import { Globals } from "../utils/globals";
+import { contentDependency } from "../utils/objects";
+import { Document } from "../utils/globals";
 import { useDidUpdateEffect } from "./useDidUpdateEffect";
 import { useEventListener } from "./useEventListener";
 import { useResizeObserver } from "./useResizeObserver";
@@ -44,8 +44,8 @@ export function useBoundingClientRect(
       const boundingClientRect = ref.current.getBoundingClientRect();
 
       if (
-        Objects.contentDependency(domRectToObject(boundingClientRect)) !==
-        Objects.contentDependency(domRectToObject(rect))
+        contentDependency(domRectToObject(boundingClientRect)) !==
+        contentDependency(domRectToObject(rect))
       ) {
         onChange?.(boundingClientRect);
         setRect(boundingClientRect);
@@ -68,8 +68,8 @@ export function useBoundingClientRect(
     }
   }, [listenToScroll, setRectSize]);
 
-  useEventListener("resize", setRectSize, Globals.Document);
-  useEventListener("scroll", onScroll, Globals.Document, { capture: true });
+  useEventListener("resize", setRectSize, Document);
+  useEventListener("scroll", onScroll, Document, { capture: true });
 
   React.useEffect(() => setRectSize(), []);
 

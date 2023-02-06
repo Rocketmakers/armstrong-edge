@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Globals } from '../utils/globals';
+import { Window } from '../utils/globals';
 
 /** Returns whether the document matches the given media query string */
 export function useMatchMedia(
@@ -16,7 +16,7 @@ export function useMatchMedia(
     eventListenerOptions?: boolean | AddEventListenerOptions;
   } = {}
 ): boolean {
-  const [isMatching, setIsMatching] = React.useState(Globals.Window?.matchMedia(query).matches || false);
+  const [isMatching, setIsMatching] = React.useState(Window?.matchMedia(query).matches || false);
 
   const onMatchesChangeEvent = React.useCallback(
     (event: MediaQueryListEvent) => {
@@ -27,7 +27,7 @@ export function useMatchMedia(
   );
 
   React.useEffect(() => {
-    const media = Globals.Window?.matchMedia(query);
+    const media = Window?.matchMedia(query);
 
     if (!media) {
       return;

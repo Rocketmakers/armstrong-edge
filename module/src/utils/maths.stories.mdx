@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
+import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
 
 <Meta title="Utilities/Maths" />
 
@@ -15,15 +15,15 @@ function clamp(input: number, minimum: number, maximum: number): number;
 ```
 
 ```ts
-import { Maths } from '@rocketmakers/armstrong';
+import { clamp } from "@rocketmakers/armstrong";
 
-Maths.clamp(200, 0, 50);
+clamp(200, 0, 50);
 // 50
 
-Maths.clamp(-20, 0, 50);
+clamp(-20, 0, 50);
 // 0
 
-Maths.clamp(30, 0, 50);
+clamp(30, 0, 50);
 // 30
 ```
 
@@ -38,15 +38,15 @@ function positiveModulo(numerator: number, denominator: number): number;
 ```
 
 ```ts
-import { Maths } from '@rocketmakers/armstrong';
+import { positiveModulo } from "@rocketmakers/armstrong";
 
-Maths.positiveModulo(-2, 10);
+positiveModulo(-2, 10);
 // 8
 
-Maths.positiveModulo(16, 10);
+positiveModulo(16, 10);
 // 6
 
-Maths.positiveModulo(-13, 10);
+positiveModulo(-13, 10);
 // 7
 ```
 
@@ -59,10 +59,10 @@ function getPercent(value: number, total: number);
 ```
 
 ```ts
-import { Maths } from '@rocketmakers/armstrong';
+import { getPercent } from "@rocketmakers/armstrong";
 
-Maths.getPercent(40, 200);
-// 10
+getPercent(40, 200);
+// 20
 ```
 
 ### lerp
@@ -70,36 +70,40 @@ Maths.getPercent(40, 200);
 lerp between two numbers based on a progress
 
 ```ts
-function lerp(start: number, end: number, /** out of 100 */ progress: number): number;
+function lerp(
+  start: number,
+  end: number,
+  /** out of 100 */ progress: number
+): number;
 ```
 
 ```ts
-import { Maths } from '@rocketmakers/armstrong';
+import { lerp } from "@rocketmakers/armstrong";
 
-Maths.lerp(0, 500, 50);
+lerp(0, 500, 50);
 // 250
 
-Maths.lerp(0, 2, 25);
+lerp(0, 2, 25);
 // 0.5
 ```
 
 ### multilerp
 
-lerp between multiple numbers, with equally spaced breakpoints
+lerp between multiple numbers, assuming a smooth transition with equally spaced breakpoints
 
 ```ts
 function multiLerp(breakpoints: number[], progress: number): number;
 ```
 
 ```ts
-import { Maths } from '@rocketmakers/armstrong';
+import { multiLerp } from "@rocketmakers/armstrong";
 
-Maths.multiLerp([0, 20, 10], 25);
+multiLerp([0, 20, 10], 25);
 // 10
 
-Maths.multiLerp([0, 20, 10], 50);
+multiLerp([0, 20, 10], 50);
 // 20
 
-Maths.multiLerp([0, 20, 10], 75);
+multiLerp([0, 20, 10], 75);
 // 15
 ```

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { ArmstrongId, IArmstrongExtendedOption, useGeneratedId } from "../..";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IIcon } from "../icon";
 import { OptionContent } from "../optionContent";
 
@@ -71,7 +71,7 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
 
     return (
       <div
-        className={ClassNames.concat("arm-radio-input", className)}
+        className={concat("arm-radio-input", className)}
         {...nativeProps}
         data-checked={checked}
         data-has-checked-icon={!!checkedIcon}
@@ -79,7 +79,7 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
       >
         <input
           {...inputProps}
-          className={ClassNames.concat(
+          className={concat(
             "arm-radio-input-radio-input",
             inputProps?.className
           )}

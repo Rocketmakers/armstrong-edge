@@ -4,7 +4,7 @@ import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
   ArmstrongFCReturn,
-  ClassNames,
+  concat,
   Form,
 } from "../..";
 import {
@@ -251,7 +251,7 @@ export const TagInput = React.forwardRef(
 
     return (
       <InputWrapper
-        className={ClassNames.concat("arm-tag-input", className)}
+        className={concat("arm-tag-input", className)}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}
         validationMode={bindConfig.validationMode}

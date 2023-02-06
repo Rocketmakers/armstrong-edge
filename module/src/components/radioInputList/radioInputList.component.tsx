@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Arrays, Form, IInputWrapperProps } from "../..";
+import { arrayToArraysByKey, Form, IInputWrapperProps } from "../..";
 import { IBindingProps } from "../../hooks/form";
 import {
   ArmstrongFCExtensions,
@@ -9,7 +9,7 @@ import {
 } from "../../types";
 import { ArmstrongId } from "../../types/core";
 import { IArmstrongExtendedOptionWithInput } from "../../types/options";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import {
   IRadioInputProps,
   RadioInput,
@@ -91,14 +91,14 @@ export const RadioInputList = React.forwardRef(
     });
 
     const groupedOptions = React.useMemo(
-      () => Arrays.arrayToArraysByKey(options, (option) => option.group || ""),
+      () => arrayToArraysByKey(options, (option) => option.group || ""),
       [options]
     );
 
     return (
       <>
         <div
-          className={ClassNames.concat("arm-radio-input-list", className)}
+          className={concat("arm-radio-input-list", className)}
           ref={ref}
           data-error={error || !!validationErrorMessages?.length}
           data-direction={direction}

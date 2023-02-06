@@ -8,7 +8,7 @@ import {
   ArmstrongVFCProps,
 } from "../../types";
 import { ArmstrongId } from "../../types/core";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { IAutoCompleteInputProps } from "../autoCompleteInput/autoCompleteInput.component";
 import { DropdownItems, IDropdownItem } from "../dropdownItems";
 import { IInputProps } from "../input";
@@ -250,7 +250,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
     return (
       <>
         <div
-          className={ClassNames.concat(
+          className={concat(
             "arm-input",
             "arm-autocomplete-input-multi",
             className
@@ -261,7 +261,7 @@ export const AutoCompleteInputMulti = React.forwardRef(
           data-is-option={allowFreeText || textInputValue === boundValue}
         >
           <DropdownItems
-            contentClassName={ClassNames.concat(
+            contentClassName={concat(
               "arm-auto-complete-options",
               dropdownClassName
             )}
