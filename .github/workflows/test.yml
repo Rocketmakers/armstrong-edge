@@ -1,0 +1,35 @@
+name: Test
+on: [pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Set Node.js to current version and cache in module
+        id: set-node-and-cache-module
+        uses: actions/setup-node@master
+        with:
+          node-version-file: ".tool-versions"
+          cache: "npm"
+          cache-dependency-path: "module/package-lock.json"
+
+      - name: Install Dependencies
+        run: (cd module && npm ci --legacy-peer-deps)
+
+      - name: Run Jest Tests
+        run: (cd module && npm run test-ci)
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: Build Armstrong & Storybook
+        run: (cd module && npm run build && npm run build-storybook)
+
+      - name: Serve Storybook and run tests
+        run: |
+          (cd module && npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "npx http-server storybook-static --port 6006 --silent" \
+            "npx wait-on tcp:6006 && npm run test-storybook")

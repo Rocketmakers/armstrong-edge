@@ -9,6 +9,7 @@
     "watch-ts": "vite build --watch",
     "watch-tsc": "tsc -w --noEmit --preserveWatchOutput",
     "test": "jest",
+    "test-ci": "jest --ci",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook"
