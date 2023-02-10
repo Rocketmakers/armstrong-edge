@@ -78,7 +78,7 @@ export function valueByKeyChain<TData, TValue>(state: TData, keyChain: KeyChain)
  * @returns {boolean} `true` if the item passed conforms to the binding props interface `IBindingProps` else `false`. Also casts if `true`.
  */
 export function isBindingProps<TValue>(item?: any): item is IBindingProps<TValue> {
-  return !!item && 'setValue' in item && 'dispatch' in item && 'keyChain' in item && 'myValidationErrors' in item;
+  return !!item?.setValue && !!item?.dispatch && !!item?.keyChain && !!item?.myValidationErrors;
 }
 
 /**
