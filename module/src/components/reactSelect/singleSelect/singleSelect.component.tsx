@@ -20,7 +20,7 @@ import {
   ArmstrongFCExtensions,
   IArmstrongReactSelectCreatingOption,
 } from "../../../types";
-import { ClassNames } from "../../../utils";
+import { concat } from "../../../utils";
 import { IIcon, IconSet, IconUtils } from "../../icon";
 import { ValidationErrors } from "../../validationErrors";
 import { isCreatingOption, isGroupedOptions } from "./singleSelect.utils";
@@ -199,7 +199,7 @@ const SingleSelectOnly = React.forwardRef(
 
     return (
       <div
-        className={ClassNames.concat("arm-single-select-wrapper", className)}
+        className={concat("arm-single-select-wrapper", className)}
       >
         <Select
           ref={ref}
@@ -365,7 +365,7 @@ const SingleSelectCreatable = React.forwardRef(
 
     return (
       <div
-        className={ClassNames.concat(
+        className={concat(
           "arm-single-select-creatable-wrapper",
           className
         )}

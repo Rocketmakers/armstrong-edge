@@ -15,7 +15,7 @@ import {
   ArmstrongFCExtensions,
   IArmstrongReactSelectCreatingOption,
 } from "../../../types";
-import { ClassNames } from "../../../utils";
+import { concat } from "../../../utils";
 
 import { ValidationErrors } from "../../validationErrors";
 import { IReactSelectBaseProps } from "../singleSelect";
@@ -134,7 +134,7 @@ const MultiSelectOnly = React.forwardRef(
 
     return (
       <div
-        className={ClassNames.concat(
+        className={concat(
           "arm-multi-select-input-wrapper",
           className
         )}
@@ -299,7 +299,7 @@ const MultiSelectCreatable = React.forwardRef(
 
     return (
       <div
-        className={ClassNames.concat(
+        className={concat(
           "arm-multi-select-creatable-input-wrapper",
           className
         )}
