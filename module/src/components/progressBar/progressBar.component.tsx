@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Colors } from "../..";
-import { ClassNames } from "../../utils";
+import { Color, colorToRGB, multiLerpRGB, RGBToHex } from "../../utils/color";
+import { concat } from "../../utils/classNames";
 
 import "./progressBar.basic.scss";
 
@@ -27,7 +27,7 @@ export interface IProgressBarProps
   labelVariant?: ProgressBarLabelVariant;
 
   /** breakpoints for the color to make the progress bar based on the progress in an array, given either as hex strings */
-  colorBreakpoints?: Colors.Color[];
+  colorBreakpoints?: Color[];
 
   /** color when the progress has hit 100 */
   completeColor?: string;
@@ -50,15 +50,15 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, IProgressBarProps>(
     const color = React.useMemo(
       () =>
         !!colorBreakpoints?.length &&
-        Colors.RGBToHex(
-          Colors.multiLerpRGB(colorBreakpoints.map(Colors.colorToRGB), progress)
+        RGBToHex(
+          multiLerpRGB(colorBreakpoints.map(colorToRGB), progress)
         ),
       [colorBreakpoints, progress]
     );
 
     return (
       <div
-        className={ClassNames.concat("arm-progress-bar", className)}
+        className={concat("arm-progress-bar", className)}
         data-direction={direction}
         data-has-label={!!labelText}
         style={

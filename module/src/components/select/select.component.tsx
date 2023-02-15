@@ -9,7 +9,7 @@ import {
 } from "../../types";
 import { ArmstrongId } from "../../types/core";
 import { IArmstrongOption } from "../../types/options";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IconButton } from "../iconButton";
 import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
@@ -137,7 +137,7 @@ export const Select = React.forwardRef(
 
     return (
       <InputWrapper
-        className={ClassNames.concat("arm-select", className)}
+        className={concat("arm-select", className)}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}

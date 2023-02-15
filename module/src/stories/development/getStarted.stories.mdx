@@ -1,0 +1,54 @@
+import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+
+<Meta title="Armstrong Development/Get Started" />
+
+## Get Started
+
+First clone the repo from TODO
+
+Then, cd into the root of the repo and run
+
+```sh
+npm install
+```
+
+There are two options for working on Armstrong.
+
+- We have a playground, which is just a really simple react app with no linting, which has the Armstrong module linked in using `npm link`
+- We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx`
+
+_For the playground_, run
+
+```sh
+npm start
+
+# then in separate window from /module run
+npm run start-sass
+```
+
+then go to `localhost:3001`
+
+_For Storybook_, run
+
+```sh
+npm run storybook
+
+# then in separate window from /module run
+npm run start-sass
+```
+
+then go to `localhost:6006`
+
+`npm run start-sass` will spin up a watcher which will watch all SASS files and rebuild them
+
+For more information on using SASS, see SASS Concatenation in [SCSS](STORYBOOK LINK TODO)
+
+### Process
+
+Please work in feature branches named `feature/*` or if your branch is on a single ticket `feature/ARM-000/*`
+
+When your work is ready, submit a merge request and (if you're internal) post a link to your merge request in the `#armstrong` slack channel for someone to review.
+
+There will be a CI which will run to check if your work passes linting and if Storybook can still build.
+
+One day we will talk about testing....

@@ -8,8 +8,8 @@ import {
   ArmstrongVFCProps,
   NullOrUndefined,
 } from "../../types";
-import { ClassNames } from "../../utils/classNames";
-import { Maths } from "../../utils/maths";
+import { concat } from "../../utils/classNames";
+import { getPercent } from "../../utils/maths";
 import { Icon, IconSet, IIcon } from "../icon";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
 import {
@@ -91,7 +91,7 @@ export const RangeInput = React.forwardRef(
     });
 
     const currentPercent = React.useMemo(
-      () => Maths.getPercent((boundValue ?? 0) - minimum, maximum - minimum),
+      () => getPercent((boundValue ?? 0) - minimum, maximum - minimum),
       [boundValue, minimum, maximum]
     );
 
@@ -107,7 +107,7 @@ export const RangeInput = React.forwardRef(
     return (
       <>
         <div
-          className={ClassNames.concat("arm-range-input", className)}
+          className={concat("arm-range-input", className)}
           style={
             {
               "--arm-range-input-percent": `${currentPercent}%`,

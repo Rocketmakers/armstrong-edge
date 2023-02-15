@@ -1,0 +1,56 @@
+.animation-demo {
+  @include square(50px);
+
+  animation: infinite 1s;
+  background-color: #000;
+
+  &.slide-in {
+    animation-name: slide-in-left-large;
+  }
+
+  &.slide-in-up {
+    animation-name: slide-in-up-large;
+  }
+
+  &.scale {
+    animation-name: scale-up-large;
+  }
+
+  &.scale-down {
+    animation-name: scale-down-large;
+  }
+
+  &.rotate {
+    animation-name: rotate-in-clockwise-large;
+  }
+
+  &.rotate-counter {
+    animation-name: rotate-in-anticlockwise-large;
+  }
+
+  &.spin {
+    animation-name: spin-clockwise;
+    animation-timing-function: linear;
+  }
+
+  &.spin-counter {
+    animation-name: spin-anticlockwise;
+    animation-timing-function: linear;
+  }
+
+  &.fade {
+    animation-name: fade-in;
+  }
+
+  &.fade-out {
+    animation-name: fade-out;
+  }
+
+  &.expand {
+    animation-name: expand-in-height-small;
+  }
+
+  &.expand-width {
+    animation-name: expand-in-width-small;
+  }
+}

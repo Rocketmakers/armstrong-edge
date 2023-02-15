@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Globals } from "../../utils";
-import { DefaultLink, ILinkProps } from "../link/link.component";
+import { Window } from "../../utils/globals";
+import { DefaultLink, ILinkProps } from "../defaultLink/defaultLink.component";
 
 export interface IArmstrongLocation {
   /**
@@ -64,8 +64,8 @@ const ArmstrongConfigContext = React.createContext<IArmstrongConfigContext>({
     location: undefined,
     navigate: (to, action) =>
       action === "replace"
-        ? Globals.Window?.history?.replaceState({}, "", to)
-        : Globals.Window?.history?.pushState({}, "", to),
+        ? Window?.history?.replaceState({}, "", to)
+        : Window?.history?.pushState({}, "", to),
   },
 });
 

@@ -7,7 +7,7 @@ import {
 } from "../../types";
 import { ArmstrongId } from "../../types/core";
 import { IArmstrongExtendedOption } from "../../types/options";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Button } from "../button";
 import { OptionContent } from "../optionContent";
 
@@ -47,7 +47,7 @@ export const TabControlTab = React.forwardRef(
     return (
       <Button
         {...nativeProps}
-        className={ClassNames.concat("arm-tab-control-tab", className)}
+        className={concat("arm-tab-control-tab", className)}
         data-is-current={isCurrent}
         ref={ref}
         minimalStyle
@@ -83,7 +83,7 @@ export const TabControlWrapper = React.forwardRef<
   return (
     <div
       {...nativeProps}
-      className={ClassNames.concat("arm-tab-control", className)}
+      className={concat("arm-tab-control", className)}
       ref={ref}
     >
       {children}

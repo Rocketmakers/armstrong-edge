@@ -1,0 +1,37 @@
+import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+
+<Meta title="Utilities/ClassNames" />
+
+## ClassNames
+
+### Concat
+
+Based on [classNames](https://www.npmjs.com/package/classnames) but included in Armstrong to reduce dependencies.
+
+```ts
+import { concat } from "@rocketmakers/armstrong";
+
+const className = concat(
+  "thing",
+  "other-thing",
+  { ["another-thing"]: true, ["an-unused-thing"]: false },
+  ["hello", "there"]
+);
+
+// className
+("thing other-thing another-thing hello there");
+```
+
+This is a common example with a component with a className prop:
+
+```tsx
+import { concat } from "@rocketmakers/armstrong";
+
+interface IMyCoolProps {
+  className?: string;
+}
+
+const MyCoolComponent: React.FC<IMyCoolProps> = ({ className }) => {
+  return <div className={concat("my-cool-component", className)} />;
+};
+```

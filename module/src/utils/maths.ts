@@ -1,5 +1,4 @@
-export namespace Maths {
-  /** Get a number, clamped to a maximum and minimum */
+/** Get a number, clamped to a maximum and minimum */
   export function clamp(input: number, minimum: number, maximum: number): number {
     return Math.min(Math.max(input, minimum), maximum);
   }
@@ -46,4 +45,3 @@ export namespace Maths {
 
     return lerp(previousBreakpoint, nextBreakpoint, pointProgress);
   }
-}

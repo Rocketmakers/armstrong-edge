@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Globals } from '../utils/globals';
+import { isBrowser, supportsMutationObserver } from '../utils/globals';
 
 /**
  * Use an mutation observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
@@ -29,7 +29,7 @@ export function useMutationObserver(
   }, []);
 
   React.useLayoutEffect(() => {
-    if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsMutationObserver) {
+    if (!!ref && !!ref.current && isBrowser && supportsMutationObserver) {
       observe(ref.current);
 
       return () => {

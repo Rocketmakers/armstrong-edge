@@ -6,7 +6,7 @@ import { useBoundingClientRect } from "../../hooks/useBoundingClientRect";
 import { useIsFocused } from "../../hooks/useIsFocused";
 import { useIsHovering } from "../../hooks/useIsHovering";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Modal } from "../modal";
 
 import "./tooltip.basic.scss";
@@ -237,7 +237,7 @@ export const Tooltip = React.forwardRef<
     return (
       <div
         {...(wrapperAttributes || {})}
-        className={ClassNames.concat(
+        className={concat(
           "arm-tooltip-wrapper",
           wrapperAttributes?.className
         )}
@@ -249,7 +249,7 @@ export const Tooltip = React.forwardRef<
         {children}
 
         <Modal
-          className={ClassNames.concat("arm-tooltip", className)}
+          className={concat("arm-tooltip", className)}
           portalTo={portalTo}
           portalToSelector={portalToSelector}
           isOpen={isOpen}

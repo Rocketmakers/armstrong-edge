@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Calendar } from '../..';
-import { ClassNames } from '../../utils/classNames';
+import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 
@@ -92,7 +92,7 @@ export const CalendarView = React.forwardRef<HTMLDivElement, ICalendarViewProps>
 
     return (
       <CalendarDisplay
-        className={ClassNames.concat('arm-calendar-view', className)}
+        className={concat('arm-calendar-view', className)}
         ref={ref}
         days={days}
         months={months}
