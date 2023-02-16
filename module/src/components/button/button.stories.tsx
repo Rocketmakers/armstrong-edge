@@ -21,7 +21,7 @@ export default {
 /** component template */
 
 const Template: StoryObj<typeof Button> = {
-  render: (args) => <Button {...args} />
+  render: (args) => <Button {...args} testId='button' />
 };
 
 /** stories */
@@ -32,11 +32,12 @@ export const Default: StoryObj<typeof Button> = {
     onClick: action('onClick'),
   },
   play: async ({ args, canvasElement }) => {
-  const canvas = within(canvasElement);
-  expect(canvas.getByRole('button')).toHaveTextContent(args.children as string);
-  await userEvent.click(canvas.getByRole('button'));
-  await waitFor(() => expect(args.onClick).toHaveBeenCalled());
-}
+    const canvas = within(canvasElement);
+    const button = canvas.getByTestId('button');
+    expect(button).toHaveTextContent(args.children as string);
+    await userEvent.click(button);
+    await waitFor(() => expect(args.onClick).toHaveBeenCalled());
+  }
 };
 
 export const WithIcons: StoryObj<typeof Button> = {
@@ -47,7 +48,7 @@ export const WithIcons: StoryObj<typeof Button> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByTestId('button');
     const icon = button.querySelector('.left-icon');
     const displayedIcon = args.leftIcon as IIcon<keyof Icons>;
     expect(button).toHaveTextContent(args.children as string);
@@ -66,7 +67,7 @@ export const Disabled: StoryObj<typeof Button> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByTestId('button');
     expect(button).toHaveTextContent(args.children as string);
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute('data-disabled', 'true');
@@ -82,7 +83,7 @@ export const Pending: StoryObj<typeof Button> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByTestId('button');
     const spinner = button.querySelector('.arm-status');
     expect(button.lastChild).toContainElement(spinner as HTMLElement);
     expect(button).toHaveTextContent(args.children as string);
@@ -104,7 +105,7 @@ export const PendingOnLeft: StoryObj<typeof Button> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByTestId('button');
     const spinner = button.querySelector('.arm-status');
     expect(button.firstChild).toContainElement(spinner as HTMLElement);
     expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
@@ -115,19 +116,19 @@ export const PendingAnimation = () => {
   const [pending, setPending] = React.useState(false);
 
   return (
-    <Button pending={pending} onClick={() => setPending(!pending)}>
+    <Button pending={pending} onClick={() => setPending(!pending)} testId="button">
       Click me to pend...
     </Button>
   );
 };
 PendingAnimation.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  const button = canvas.getByRole('button');
+  const button = canvas.getByTestId('button');
   let spinner = button.querySelector('.arm-status');
   expect(button).toBeEnabled();
   expect(button).toHaveAttribute('data-disabled', 'false');
   expect(spinner).toBeNull();
-  await userEvent.click(canvas.getByRole('button'));
+  await userEvent.click(button);
   spinner = button.querySelector('.arm-status');
   expect(button.lastChild).toContainElement(spinner as HTMLElement);
   expect(button).toBeDisabled();
@@ -146,7 +147,7 @@ export const Error : StoryObj<typeof Button> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByTestId('button');
     const error = button.querySelector('.arm-status');
     expect(button.lastChild).toContainElement(error as HTMLElement);
     expect(button).toHaveAttribute('data-error', 'true');
@@ -165,7 +166,7 @@ export const Minimal: StoryObj<typeof Button> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByTestId('button');
     expect(button).toHaveTextContent(args.children as string);
     expect(button).toHaveClass('arm-button-minimal');
     await userEvent.click(button);

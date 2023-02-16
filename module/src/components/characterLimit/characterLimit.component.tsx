@@ -10,8 +10,6 @@ import {
 import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 
-import "./characterLimit.basic.scss";
-
 export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind: IBindingProps<TBind>;
@@ -30,6 +28,9 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
 
   /** icon to render if error */
   exceedsIcon?: IIcon<IconSet>;
+
+  /** apply a test ID to the component for Storybook, Playwright etc */
+  testId?: string;
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
@@ -42,6 +43,7 @@ export const CharacterLimit = React.forwardRef(
       value,
       className,
       exceedsIcon,
+      testId,
     }: ICharacterLimitProps<TBind>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -60,6 +62,7 @@ export const CharacterLimit = React.forwardRef(
         ref={ref}
         className={concat("arm-character-limit", className)}
         data-exceeded={exceeded}
+        data-testId={testId}
       >
         <p>
           {boundValue?.length}/{limit}
