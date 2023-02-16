@@ -12,7 +12,7 @@ import {
   NullOrUndefined,
 } from "../..";
 import { IBindingProps } from "../../hooks/form";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Dates } from "../../utils/dates";
 import { IconSet } from "../icon";
 import { IIconWrapperProps } from "../iconWrapper";
@@ -222,7 +222,7 @@ export const TimeInput = React.forwardRef(
     return (
       <InputWrapper
         ref={ref}
-        className={ClassNames.concat("arm-time-input", className)}
+        className={concat("arm-time-input", className)}
         error={error}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}

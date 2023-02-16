@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { ValidationMessage } from "../../hooks/form";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IIcon } from "../icon";
 
 import "./validationErrors.basic.scss";
@@ -65,7 +65,7 @@ export const ValidationErrors = React.forwardRef<
     return (
       <div
         ref={internalRef}
-        className={ClassNames.concat("arm-validation-errors", className)}
+        className={concat("arm-validation-errors", className)}
       >
         {validationErrors.map((error, i) => (
           <div className="arm-error-message" key={getKey(error, i)}>

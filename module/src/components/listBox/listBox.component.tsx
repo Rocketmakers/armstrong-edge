@@ -8,7 +8,7 @@ import {
   ArmstrongFCProps,
   ArmstrongFCReturn,
 } from "../../types/reactExtensions";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { DropdownItems, IDropdownItemsProps } from "../dropdownItems";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IconButton } from "../iconButton";
@@ -166,9 +166,9 @@ export const ListBox = React.forwardRef(
         focusableWrapper
         currentValue={[boundValue!]}
         childRootElementSelector=".arm-input-inner"
-        className={ClassNames.concat("arm-listbox-wrapper", wrapperClassName)}
+        className={concat("arm-listbox-wrapper", wrapperClassName)}
         noItemsText={noItemsText}
-        contentClassName={ClassNames.concat(
+        contentClassName={concat(
           "arm-listbox-options",
           dropdownClassName
         )}
@@ -183,7 +183,7 @@ export const ListBox = React.forwardRef(
       >
         <InputWrapper
           ref={internalRef}
-          className={ClassNames.concat("arm-listbox", className)}
+          className={concat("arm-listbox", className)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}

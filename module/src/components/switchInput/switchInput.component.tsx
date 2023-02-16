@@ -8,7 +8,7 @@ import {
   ArmstrongFCReturn,
   NullOrUndefined,
 } from "../../types";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icon } from "../icon";
 import { Status } from "../status";
 import { ValidationErrors } from "../validationErrors";
@@ -106,7 +106,7 @@ export const SwitchInput = React.forwardRef(
     return (
       <>
         <div
-          className={ClassNames.concat("arm-switch-input", className)}
+          className={concat("arm-switch-input", className)}
           data-error={error}
           data-pending={pending}
           data-checked={boundValue}

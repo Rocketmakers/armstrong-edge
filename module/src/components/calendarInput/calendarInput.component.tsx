@@ -10,8 +10,8 @@ import {
   ArmstrongVFCProps,
   NullOrUndefined,
 } from "../../types";
-import { Typescript } from "../../utils";
-import { ClassNames } from "../../utils/classNames";
+import { assertNever } from "../../utils/typescript";
+import { concat } from "../../utils/classNames";
 import { Dates } from "../../utils/dates";
 import {
   AutoCompleteInput,
@@ -449,7 +449,7 @@ export const CalendarInput = React.forwardRef(
       <>
         <div
           ref={ref}
-          className={ClassNames.concat("arm-calendar-input", className)}
+          className={concat("arm-calendar-input", className)}
           data-calendar-open={keepCalendarOpen || calendarOpen}
           onClick={onClickWrapperEvent}
           data-display-mode={displayMode}
@@ -586,7 +586,7 @@ export const CalendarInput = React.forwardRef(
                         );
                       }
                       default: {
-                        Typescript.assertNever(part);
+                        assertNever(part);
                       }
                     }
                     return null;

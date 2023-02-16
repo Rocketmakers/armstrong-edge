@@ -10,7 +10,7 @@ import {
   ArmstrongVFCProps,
   NullOrUndefined,
 } from "../../types";
-import { ClassNames, Dates } from "../../utils";
+import { concat, Dates } from "../../utils";
 import { CalendarInput, ICalendarInputProps } from "../calendarInput";
 import { InputWrapper } from "../inputWrapper";
 import { IStatusWrapperProps } from "../statusWrapper";
@@ -167,7 +167,7 @@ export const DateTimeInput = React.forwardRef(
     return (
       <InputWrapper
         ref={ref}
-        className={ClassNames.concat("arm-date-time-input", className)}
+        className={concat("arm-date-time-input", className)}
         error={error}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}

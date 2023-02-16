@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { useBoundingClientRect } from "../../hooks";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 
 import "./autoResizer.basic.scss";
 
@@ -55,7 +55,7 @@ export const AutoResizer = React.forwardRef<
     return (
       <div
         {...nativeProps}
-        className={ClassNames.concat("arm-auto-resizer", className)}
+        className={concat("arm-auto-resizer", className)}
         style={
           {
             ...(resizeHorizontal

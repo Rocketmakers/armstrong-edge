@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
+import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
 
 <Meta title="Utilities/Globals" />
 
@@ -11,7 +11,7 @@ Globals wrapped up in type checks to ensure Armstrong won't break any server sid
 The global window object, protected if in an environment that doesn't support window
 
 ```ts
-import { Globals } from '@rocketmakers/armstrong';
+import { Globals } from "@rocketmakers/armstrong";
 
 Globals.Window;
 ```
@@ -21,7 +21,7 @@ Globals.Window;
 The global document object, protected if in an environment that doesn't support document
 
 ```ts
-import { Globals } from '@rocketmakers/armstrong';
+import { Globals } from "@rocketmakers/armstrong";
 
 Globals.Document;
 ```
@@ -31,7 +31,7 @@ Globals.Document;
 Does the current environment support resize observer
 
 ```ts
-import { Globals } from '@rocketmakers/armstrong';
+import { Globals } from "@rocketmakers/armstrong";
 
 Globals.supportsResizeObserver;
 ```
@@ -41,7 +41,7 @@ Globals.supportsResizeObserver;
 Does the current environment support intersection observer
 
 ```ts
-import { Globals } from '@rocketmakers/armstrong';
+import { Globals } from "@rocketmakers/armstrong";
 
 Globals.supportsIntersectionObserver;
 ```
@@ -51,7 +51,7 @@ Globals.supportsIntersectionObserver;
 Does the current environment support Performance observer
 
 ```ts
-import { Globals } from '@rocketmakers/armstrong';
+import { Globals } from "@rocketmakers/armstrong";
 
 Globals.supportsPerformanceObserver;
 ```
@@ -61,7 +61,7 @@ Globals.supportsPerformanceObserver;
 Does the current environment support mutation observer
 
 ```ts
-import { Globals } from '@rocketmakers/armstrong';
+import { Globals } from "@rocketmakers/armstrong";
 
 Globals.supportsMutationObserver;
 ```
@@ -71,7 +71,7 @@ Globals.supportsMutationObserver;
 Based on the existence of the global window object, does it seem like this is currently in a browser environment rather than SSR
 
 ```ts
-import { Globals } from '@rocketmakers/armstrong';
+import { Globals } from "@rocketmakers/armstrong";
 
 Globals.isBrowser;
 ```

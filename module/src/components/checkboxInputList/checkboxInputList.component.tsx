@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Arrays, Form, IInputWrapperProps, ValidationErrors } from "../..";
+import { Form, IInputWrapperProps, ValidationErrors } from "../..";
 import { IBindingProps } from "../../hooks/form";
 import {
   ArmstrongFCExtensions,
@@ -12,11 +12,12 @@ import {
   IArmstrongExtendedOption,
   IArmstrongExtendedOptionWithInput,
 } from "../../types/options";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import {
   CheckboxInput,
   ICheckboxInputProps,
 } from "../checkboxInput/checkboxInput.component";
+import { arrayToArraysByKey } from "../../utils/arrays";
 
 import "./checkboxInputList.basic.scss";
 
@@ -104,7 +105,7 @@ export const CheckboxInputList = React.forwardRef(
     });
 
     const groupedOptions = React.useMemo(
-      () => Arrays.arrayToArraysByKey(options, (option) => option.group || ""),
+      () => arrayToArraysByKey(options, (option) => option.group || ""),
       [options]
     );
 
@@ -127,7 +128,7 @@ export const CheckboxInputList = React.forwardRef(
     return (
       <>
         <div
-          className={ClassNames.concat("arm-checkbox-input-list", className)}
+          className={concat("arm-checkbox-input-list", className)}
           data-error={error || !!validationErrorMessages?.length}
           ref={ref}
           data-direction={direction}

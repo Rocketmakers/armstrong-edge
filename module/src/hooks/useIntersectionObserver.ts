@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Globals } from '../utils/globals';
+import { isBrowser, supportsIntersectionObserver } from '../utils/globals';
 
 /**
  * Use an intersection observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
@@ -33,7 +33,7 @@ export function useIntersectionObserver(
   }, []);
 
   React.useLayoutEffect(() => {
-    if (!!ref && !!ref.current && Globals.isBrowser && Globals.supportsIntersectionObserver) {
+    if (!!ref && !!ref.current && isBrowser && supportsIntersectionObserver) {
       observe(ref.current);
 
       return () => {

@@ -7,7 +7,7 @@ import {
   ArmstrongFCReturn,
   NullOrUndefined,
 } from "../../types";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 
 import "./characterLimit.basic.scss";
@@ -58,7 +58,7 @@ export const CharacterLimit = React.forwardRef(
     return (
       <div
         ref={ref}
-        className={ClassNames.concat("arm-character-limit", className)}
+        className={concat("arm-character-limit", className)}
         data-exceeded={exceeded}
       >
         <p>

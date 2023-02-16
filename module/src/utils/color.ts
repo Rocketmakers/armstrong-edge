@@ -1,7 +1,6 @@
-import { Maths } from './maths';
+import { lerp, multiLerp } from './maths';
 
-export namespace Colors {
-  /** A 3 channel interface of numbers describing an RGB color, with an optional alpha channel */
+/** A 3 channel interface of numbers describing an RGB color, with an optional alpha channel */
   export interface IRGBColor {
     red: number;
     green: number;
@@ -20,10 +19,10 @@ export namespace Colors {
     if (parts?.length === 5) {
       if (parts[4]) {
         return {
-          red: parseInt(parts[2], 16),
-          green: parseInt(parts[3], 16),
-          blue: parseInt(parts[4], 16),
-          alpha: parseInt(parts[1], 16) / 255,
+          red: parseInt(parts[1], 16),
+          green: parseInt(parts[2], 16),
+          blue: parseInt(parts[3], 16),
+          alpha: parseInt(parts[4], 16) / 255,
         };
       }
       return {
@@ -48,7 +47,7 @@ export namespace Colors {
   }
 
   const RGBComponentToHex = (component: number) => {
-    const hex = Math.round(component).toString(16);
+    const hex = Math.round(component).toString(16).toUpperCase();
     return hex.length === 1 ? `0${hex}` : hex;
   };
 
@@ -63,9 +62,9 @@ export namespace Colors {
   /** Get a colour lerped using a progress between a start and end colour */
   export function lerpRGB(startColor: IRGBColor, endColor: IRGBColor, /** out of 100 */ progress: number): IRGBColor {
     return {
-      red: Math.round(Maths.lerp(startColor.red, endColor.red, progress)),
-      green: Math.round(Maths.lerp(startColor.green, endColor.green, progress)),
-      blue: Math.round(Maths.lerp(startColor.blue, endColor.blue, progress)),
+      red: Math.round(lerp(startColor.red, endColor.red, progress)),
+      green: Math.round(lerp(startColor.green, endColor.green, progress)),
+      blue: Math.round(lerp(startColor.blue, endColor.blue, progress)),
     };
   }
 
@@ -73,19 +72,19 @@ export namespace Colors {
   export function multiLerpRGB(colors: IRGBColor[], /** out of 100 */ progress: number): IRGBColor {
     return {
       red: Math.round(
-        Maths.multiLerp(
+        multiLerp(
           colors.map((color) => color.red),
           progress
         )
       ),
       green: Math.round(
-        Maths.multiLerp(
+        multiLerp(
           colors.map((color) => color.green),
           progress
         )
       ),
       blue: Math.round(
-        Maths.multiLerp(
+        multiLerp(
           colors.map((color) => color.blue),
           progress
         )
@@ -123,4 +122,3 @@ export namespace Colors {
 
     return `rgb(${rgb.red}, ${rgb.green}, ${rgb.blue})`;
   }
-}

@@ -1,7 +1,8 @@
 import * as React from "react";
 
 import { useDelayedDependentSwitch, useEventListener } from "../../hooks";
-import { ClassNames, Globals } from "../../utils";
+import { concat } from "../../utils/classNames";
+import { Document, Window } from "../../utils/globals";
 import { IPortalProps, Portal } from "../portal";
 import { useModalLayerElement } from "./modal.context";
 import { ModalUtils } from "./modal.utils";
@@ -125,7 +126,7 @@ export const Modal = React.forwardRef<
       setMouseDownIsInsideModal(false);
     }, [isOpen, close, closeOnWindowClick, mouseDownIsInsideModal]);
 
-    useEventListener("click", onWindowClick, Globals.Document);
+    useEventListener("click", onWindowClick, Document);
 
     /** Close when the user blurs the window */
     const onWindowBlur = React.useCallback(() => {
@@ -134,7 +135,7 @@ export const Modal = React.forwardRef<
       }
     }, [isOpen, close, closeOnWindowBlur]);
 
-    useEventListener("blur", onWindowBlur, Globals.Window);
+    useEventListener("blur", onWindowBlur, Window);
 
     /** When the user clicks on the wrapper element, close if closeOnBackgroundClick is true */
     const onClickWrapperEvent = React.useCallback(
@@ -165,7 +166,7 @@ export const Modal = React.forwardRef<
         portalToSelector={portalToSelector}
       >
         <div
-          className={ClassNames.concat("arm-modal-wrapper", wrapperClassName)}
+          className={concat("arm-modal-wrapper", wrapperClassName)}
           onClick={onClickWrapperEvent}
           data-close-on-background-click={!!closeOnBackgroundClick}
           data-darken-background={darkenBackground}
@@ -178,7 +179,7 @@ export const Modal = React.forwardRef<
             role="dialog"
             aria-modal="true"
             {...nativeProps}
-            className={ClassNames.concat("arm-modal", className)}
+            className={concat("arm-modal", className)}
             ref={internalRef}
             onMouseDown={onMouseDownModal}
           >

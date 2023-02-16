@@ -14,7 +14,7 @@ import {
   ArmstrongFCReturn,
   NullOrUndefined,
 } from "../../types";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IInputWrapperProps } from "../inputWrapper";
 import { OptionContent } from "../optionContent";
@@ -136,7 +136,7 @@ export const CheckboxInput = React.forwardRef(
     return (
       <>
         <div
-          className={ClassNames.concat(
+          className={concat(
             "arm-input",
             "arm-checkbox-input",
             className

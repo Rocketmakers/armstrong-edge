@@ -7,8 +7,8 @@ import {
 } from "../../hooks";
 import { ArmstrongId } from "../../types/core";
 import { IArmstrongExtendedOption } from "../../types/options";
-import { Arrays } from "../../utils/arrays";
-import { ClassNames } from "../../utils/classNames";
+import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from "../../utils/arrays";
+import { concat } from "../../utils/classNames";
 import { Dropdown, IDropdownProps } from "../dropdown";
 import { Icon } from "../icon";
 import { OptionContent } from "../optionContent/optionContent.component";
@@ -70,7 +70,7 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
       <li
         {...htmlProps}
         ref={ref}
-        className={ClassNames.concat("arm-dropdown-item", htmlProps?.className)}
+        className={concat("arm-dropdown-item", htmlProps?.className)}
         onMouseUp={onMouseUp}
         onMouseDown={(event) => event.stopPropagation()}
         onClick={onClick}
@@ -156,7 +156,7 @@ export const DropdownItems: React.FunctionComponent<
     React.useState(0);
 
   const groupedItems = React.useMemo(
-    () => Arrays.arrayToArraysByKey(items, (item) => item.group || ""),
+    () => arrayToArraysByKey(items, (item) => item.group || ""),
     [items]
   );
 
@@ -224,7 +224,7 @@ export const DropdownItems: React.FunctionComponent<
             break;
           }
           case "Enter": {
-            const selectedItem = Arrays.NestedArrays.getAtOverallIndex(
+            const selectedItem = getAtOverallIndex(
               keyboardSelectedItemIndex,
               groupedItems
             );
@@ -320,8 +320,8 @@ export const DropdownItems: React.FunctionComponent<
   return (
     <Dropdown
       {...dropdownProps}
-      className={ClassNames.concat("arm-dropdown-items", className)}
-      contentClassName={ClassNames.concat(
+      className={concat("arm-dropdown-items", className)}
+      contentClassName={concat(
         "arm-dropdown-items-content",
         contentClassName,
         dropdownProps.modalHtmlProps?.className
@@ -359,7 +359,7 @@ export const DropdownItems: React.FunctionComponent<
 
                 {group.items.map((item, index) => {
                   // get overall index in array
-                  const arrayIndex = Arrays.NestedArrays.getOverallIndex(
+                  const arrayIndex = getOverallIndex(
                     index,
                     groupIndex,
                     groupedItems

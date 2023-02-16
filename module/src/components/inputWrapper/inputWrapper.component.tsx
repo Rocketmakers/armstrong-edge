@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { FormValidationMode, ValidationMessage } from "../../hooks/form";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { AutoResizer } from "../autoResizer";
 import { IconSet, IconUtils, IIcon } from "../icon";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
@@ -106,7 +106,7 @@ export const InputWrapper = React.forwardRef<
       <>
         <div
           ref={ref}
-          className={ClassNames.concat(
+          className={concat(
             "arm-input",
             "arm-input-wrapper",
             className

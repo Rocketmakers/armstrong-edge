@@ -5,7 +5,7 @@ import {
   ArmstrongFCReturn,
   ArmstrongVFCProps,
 } from "../../types/reactExtensions";
-import { ClassNames } from "../../utils/classNames";
+import { concat } from "../../utils/classNames";
 import { Icons } from "./icon.icons";
 
 import "./icon.basic.scss";
@@ -58,7 +58,7 @@ export const Icon = React.forwardRef(
         ref={forwardedRef}
         data-icon-set={iconSet}
         data-i={icon}
-        className={ClassNames.concat("arm-icon", className)}
+        className={concat("arm-icon", className)}
         data-clickable={!!onClick}
         onClick={onClick}
         data-cy={cypressTag}
