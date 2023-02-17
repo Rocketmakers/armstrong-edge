@@ -49,7 +49,7 @@ export const WithIcons: StoryObj<typeof Button> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByTestId('button');
-    const icon = button.querySelector('.left-icon');
+    const icon = within(button).getByTestId('icon-left');
     const displayedIcon = args.leftIcon as IIcon<keyof Icons>;
     expect(button).toHaveTextContent(args.children as string);
     expect(icon).toHaveAttribute('data-i', displayedIcon.icon);
@@ -84,14 +84,14 @@ export const Pending: StoryObj<typeof Button> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByTestId('button');
-    const spinner = button.querySelector('.arm-status');
+    const spinner = within(button).getByTestId('pending-spinner');
     expect(button.lastChild).toContainElement(spinner as HTMLElement);
     expect(button).toHaveTextContent(args.children as string);
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute('data-disabled', 'true');
     expect(spinner).toBeVisible();
     expect(spinner).toHaveAttribute('data-pending', 'true');
-    expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
+    expect(within(spinner).getByTestId('spinner-icon')).toHaveAttribute('data-i', 'spinner2');
   }
 }
 
@@ -106,9 +106,9 @@ export const PendingOnLeft: StoryObj<typeof Button> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByTestId('button');
-    const spinner = button.querySelector('.arm-status');
+    const spinner = within(button).getByTestId('pending-spinner');
     expect(button.firstChild).toContainElement(spinner as HTMLElement);
-    expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
+    expect(within(spinner).getByTestId('spinner-icon')).toHaveAttribute('data-i', 'spinner2');
   }
 }
 
@@ -124,18 +124,18 @@ export const PendingAnimation = () => {
 PendingAnimation.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const button = canvas.getByTestId('button');
-  let spinner = button.querySelector('.arm-status');
+  let spinner = within(button).getByTestId('pending-spinner');
   expect(button).toBeEnabled();
   expect(button).toHaveAttribute('data-disabled', 'false');
   expect(spinner).toBeNull();
   await userEvent.click(button);
-  spinner = button.querySelector('.arm-status');
+  spinner = within(button).getByTestId('pending-spinner');
   expect(button.lastChild).toContainElement(spinner as HTMLElement);
   expect(button).toBeDisabled();
   expect(button).toHaveAttribute('data-disabled', 'true');
   expect(spinner).toBeVisible();
   expect(spinner).toHaveAttribute('data-pending', 'true');
-  expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
+  expect(within(spinner).getByTestId('spinner-icon')).toHaveAttribute('data-i', 'spinner2');
 };
 
 export const Error : StoryObj<typeof Button> = {
@@ -148,12 +148,11 @@ export const Error : StoryObj<typeof Button> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByTestId('button');
-    const error = button.querySelector('.arm-status');
-    expect(button.lastChild).toContainElement(error as HTMLElement);
+    const error = within(button).getByTestId('status-right');
     expect(button).toHaveAttribute('data-error', 'true');
     expect(error).toBeVisible();
     expect(error).toHaveAttribute('data-error', 'true');
-    expect(error?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'warning');
+    expect(within(error).getByTestId('error-icon')).toHaveAttribute('data-i', 'warning');
   }
 }
 

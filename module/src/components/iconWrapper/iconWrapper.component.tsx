@@ -21,14 +21,14 @@ export const IconWrapper = <TLeftIcon extends IconSet, TRightIcon extends IconSe
     <>
       {leftIcon &&
         (IconUtils.isIconDefinition(leftIcon) ? (
-          <Icon iconSet={leftIcon.iconSet} icon={leftIcon.icon} className="left-icon" cypressTag="icon-left" />
+          <Icon iconSet={leftIcon.iconSet} icon={leftIcon.icon} className="left-icon" testId="icon-left" />
         ) : (
           leftIcon
         ))}
       {children}
       {rightIcon &&
         (IconUtils.isIconDefinition(rightIcon) ? (
-          <Icon iconSet={rightIcon.iconSet} icon={rightIcon.icon} className="right-icon" cypressTag="icon-right" />
+          <Icon iconSet={rightIcon.iconSet} icon={rightIcon.icon} className="right-icon" testId="icon-right" />
         ) : (
           rightIcon
         ))}

@@ -149,7 +149,7 @@ export const CheckboxInput = React.forwardRef(
           data-error={error || !!validationErrorMessages?.length}
           data-checked={isChecked}
           data-direction={direction}
-          data-testId={testId}
+          data-testid={testId}
           {...nativeProps}
         >
           <input
@@ -169,6 +169,7 @@ export const CheckboxInput = React.forwardRef(
                     className="arm-checkbox-input-checked-icon"
                     iconSet={checkedIcon.iconSet}
                     icon={checkedIcon.icon}
+                    testId="checked-icon"
                   />
                 )}
                 {uncheckedIcon && (
@@ -176,6 +177,7 @@ export const CheckboxInput = React.forwardRef(
                     className="arm-checkbox-input-unchecked-icon"
                     iconSet={uncheckedIcon.iconSet}
                     icon={uncheckedIcon.icon}
+                    testId="unchecked-icon"
                   />
                 )}
               </div>
@@ -196,6 +198,7 @@ export const CheckboxInput = React.forwardRef(
               }
               pending={pending}
               errorIcon={bindConfig.validationErrorIcon}
+              testId="status"
             />
           </label>
         </div>

@@ -129,7 +129,7 @@ export const Button = React.forwardRef<
         data-error={shouldShowErrorIcon}
         disabled={disabled || pending}
         tabIndex={disabled ? -1 : nativeProps.tabIndex}
-        data-testId={testId}
+        data-testid={testId}
         ref={ref}
         {...nativeProps}
       >

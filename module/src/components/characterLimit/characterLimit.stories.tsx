@@ -130,7 +130,7 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
     const input = canvas.getByTestId('input');
     const limit = canvas.getByTestId('limit');
     userEvent.type(input, 'a'.repeat(args.limit + 1));
-    const icon = within(limit).getByRole('generic', { hidden: true });
+    const icon = within(limit).getByTestId('exceeds-icon');
     expect(icon).toHaveAttribute('data-icon-set', args.exceedsIcon?.iconSet);
     expect(icon).toHaveAttribute('data-i', args.exceedsIcon?.icon);
   }

@@ -193,7 +193,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         disableOnPending={disableOnPending}
         hideIconOnStatus={hideIconOnStatus}
         onClick={() => internalRef.current?.focus()}
-        data-testId={testId}
+        data-testid={testId}
       >
         {delay?.mode === "debounce" && !!delay.milliseconds && (
           <DebounceInputBase
