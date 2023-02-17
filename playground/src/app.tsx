@@ -1,52 +1,125 @@
 import {
   Form,
+  GroupedOption,
   IconUtils,
-  ReactSingleSelectRef,
+  ReactSelectMultiRef,
+  ReactSelectRef,
 } from "@rocketmakers/armstrong-dev";
-import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
 import { useRef } from "react";
-import { PlaygroundButton } from "./components/playgroundButton";
+import { PlaygroundMultiSelect } from "./components/playgroundMultiSelect";
+import { PlaygroundSingleSelect } from "./components/playgroundSingleSelect";
+import { PlaygroundSingleSelectCreatable } from "./components/playgroundSingleCreatableSelect";
+import { PlaygroundMultiSelectCreatable } from "./components/playgroundMultiCreatableSelect";
 
 import "../theme/theme.scss";
 
 function App() {
-  const { formProp, formState } = Form.use({
-    username: "",
-    password: "",
-    flava: "",
-  });
-
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
+  const flavourOptions = [
+    { id: "chocolate", name: "Chocolate" },
+    { id: "strawberry", name: "Strawberry" },
+    { id: "vanilla", name: "Vanilla" },
+    { id: 2, name: "Choc-chip" },
   ];
 
-  const singleSelectRef = useRef<ReactSingleSelectRef>(null);
+  const colourOptions = [
+    { id: "red", name: "Red" },
+    { id: "yellow", name: "Yellow" },
+    { id: "blue", name: "Blue" },
+  ];
+
+  const groupedOptions: GroupedOption<any>[] = [
+    {
+      label: "Colours",
+      options: colourOptions,
+    },
+    {
+      label: "Flavours",
+      options: flavourOptions,
+    },
+  ];
+
+  const { formProp, formState } = Form.use({
+    singleOnly: flavourOptions[1].id,
+    singleCreatable: groupedOptions
+      .map((o) => o.options.map((o: { id: any }) => o.id))
+      .flat(1)[0],
+    multiOnly: ["vanilla", "chocolate", 2],
+    multiGroup: groupedOptions
+      .map((o) => o.options.map((o: { id: any }) => o.id))
+      .flat(1),
+    multiCreatable: ["vanilla", "chocolate", 2],
+  });
+
+  const singleSelectRef = useRef<ReactSelectRef>(null);
+  const multiSelectRef = useRef<ReactSelectMultiRef>(null);
 
   return (
     <div>
       <h1>It is me, the Armstrong playground</h1>
-      <PlaygroundButton>HELLO THERE</PlaygroundButton>
       <form onSubmit={(e) => e.preventDefault()}>
-        <input
-          value={formState?.username}
-          onChange={(e) => formProp("username").set(e.target.value)}
-        />
-        <input
-          value={formState?.password}
-          onChange={(e) => formProp("password").set(e.target.value)}
-          type="password"
-        />
+        <h2>SingleSelect</h2>
         <PlaygroundSingleSelect
-          options={options}
-          bind={formProp("flava").bind()}
+          options={groupedOptions}
+          bind={formProp("singleOnly").bind()}
           validationMode="both"
           errorMessages={["Something ain't right..."]}
           ref={singleSelectRef}
           errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          isClearable={true}
+          isSearchable={true}
+          dropdownIcon={IconUtils.getIconDefinition("Icomoon", "airplane3")}
         />
-        <textarea readOnly value={JSON.stringify(formState)} />
+        <h2>SingleSelectCreatable</h2>
+        <PlaygroundSingleSelectCreatable
+          options={groupedOptions}
+          bind={formProp("singleCreatable").bind()}
+          ref={singleSelectRef}
+          validationMode="both"
+          errorMessages={["Something ain't right..."]}
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          isClearable={true}
+          isSearchable={true}
+          dropdownIcon={IconUtils.getIconDefinition("Icomoon", "apple")}
+        />
+        <h2>MultiSelectOnly - non-grouped</h2>
+        <PlaygroundMultiSelect
+          options={flavourOptions}
+          bind={formProp("multiOnly").bind()}
+          ref={multiSelectRef}
+          validationMode="both"
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          errorMessages={["Something ain't right..."]}
+          dropdownIcon={IconUtils.getIconDefinition("Icomoon", "icecream")}
+          closeMenuOnSelect={false}
+        />
+        <h2>MultiSelectOnly - grouped</h2>
+        <PlaygroundMultiSelect
+          options={groupedOptions}
+          bind={formProp("multiGroup").bind()}
+          ref={multiSelectRef}
+          validationMode="both"
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          errorMessages={["Something ain't right..."]}
+          dropdownIcon={IconUtils.getIconDefinition("Icomoon", "icecream")}
+          closeMenuOnSelect={false}
+        />
+        <h2>MultiSelectCreatable</h2>
+        <PlaygroundMultiSelectCreatable
+          options={groupedOptions}
+          bind={formProp("multiCreatable").bind()}
+          ref={multiSelectRef}
+          validationMode="both"
+          errorIcon={IconUtils.getIconDefinition("Icomoon", "warning")}
+          errorMessages={["Something ain't right..."]}
+          dropdownIcon={IconUtils.getIconDefinition("Icomoon", "icecream")}
+          closeMenuOnSelect={false}
+        />
+        <br />
+        <textarea
+          readOnly
+          value={JSON.stringify(formState, null, "\t")}
+          style={{ height: 400 }}
+        />
       </form>
     </div>
   );

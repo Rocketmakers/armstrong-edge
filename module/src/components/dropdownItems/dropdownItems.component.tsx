@@ -5,7 +5,6 @@ import {
   useEventListener,
   useHasTimeElapsed,
 } from "../../hooks";
-import { useGeneratedId } from "../../hooks/useGeneratedId";
 import { ArmstrongId } from "../../types/core";
 import { IArmstrongExtendedOption } from "../../types/options";
 import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from "../../utils/arrays";
@@ -316,7 +315,7 @@ export const DropdownItems: React.FunctionComponent<
     ]
   );
 
-  const id = useGeneratedId("arm_dd", htmlId);
+  const id = React.useId();
 
   return (
     <Dropdown

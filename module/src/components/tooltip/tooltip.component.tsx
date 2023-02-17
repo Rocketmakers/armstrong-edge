@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { IPortalProps } from "../..";
-import { useGeneratedId } from "../../hooks";
 import { useBoundingClientRect } from "../../hooks/useBoundingClientRect";
 import { useIsFocused } from "../../hooks/useIsFocused";
 import { useIsHovered } from "../../hooks/useIsHovered";
@@ -232,7 +231,7 @@ export const Tooltip = React.forwardRef<
       [position]
     );
 
-    const generatedId = useGeneratedId(id);
+    const generatedId = React.useId();
 
     return (
       <div

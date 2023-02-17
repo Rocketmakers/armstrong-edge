@@ -1,5 +1,6 @@
 import { isSameDay } from "date-fns";
 import * as React from "react";
+import {isNil} from "lodash";
 
 import { Calendar, DataAttributes, Form } from "../..";
 import { IBindingProps } from "../../hooks/form";
@@ -12,7 +13,6 @@ import {
 import { assertNever } from "../../utils/typescript";
 import { concat } from "../../utils/classNames";
 import { Dates } from "../../utils/dates";
-import { JavaScript } from "../../utils/javascript";
 import {
   AutoCompleteInput,
   IAutoCompleteInputProps,
@@ -282,7 +282,7 @@ export const CalendarInput = React.forwardRef(
         setSelectedDate?.(
           calendarDayToDateLike(
             day,
-            !JavaScript.isNullOrUndefined(selectedDate)
+            !isNil(selectedDate)
               ? typeof selectedDate
               : "string",
             formatString,
@@ -369,7 +369,7 @@ export const CalendarInput = React.forwardRef(
         ) {
           const newDate = Dates.dateObjectToDateLike(
             date,
-            !JavaScript.isNullOrUndefined(selectedDate)
+            !isNil(selectedDate)
               ? typeof selectedDate
               : "string",
             formatString,
