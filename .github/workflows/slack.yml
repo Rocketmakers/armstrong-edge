@@ -1,0 +1,14 @@
+name: Slack Notifications
+on: 
+  pull_request:
+    types: [opened]
+jobs:
+  notify-slack:
+    runs-on: ubuntu-latest
+    if: ${{ github.base_ref == 'develop' }}
+    steps: 
+      - uses: abinoda/slack-action@master
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      
