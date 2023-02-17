@@ -1,8 +1,8 @@
-import { format, formatISO, parse, parseISO } from 'date-fns';
-import { enGB } from 'date-fns/locale';
+import { format, formatISO, parse, parseISO } from "date-fns";
+import { enGB } from "date-fns/locale";
 
-import { Calendar, ISelectOption } from '..';
-import { NullOrUndefined } from '../types';
+import { ISelectOption } from "..";
+import { NullOrUndefined } from "../types";
 
 /** Set of utilities and types relating to the native JS date object */
 export namespace Dates {
@@ -28,11 +28,17 @@ export namespace Dates {
    * @param locale The locale to use if `date` is a string, if not passed, will use the system default locale of `en-GB`.
    * @returns The parsed `Date` object, or `undefined` if no `date` was passed.
    */
-  export function dateLikeToDate(date: NullOrUndefined<DateLike>, formatString?: string, locale: Locale = defaultLocale): Date | undefined {
-    if (typeof date === 'string') {
-      return formatString ? parse(date, formatString, new Date(), { locale }) : parseISO(date);
+  export function dateLikeToDate(
+    date: NullOrUndefined<DateLike>,
+    formatString?: string,
+    locale: Locale = defaultLocale
+  ): Date | undefined {
+    if (typeof date === "string") {
+      return formatString
+        ? parse(date, formatString, new Date(), { locale })
+        : parseISO(date);
     }
-    if (typeof date === 'number') {
+    if (typeof date === "number") {
       return new Date(date);
     }
     return date ?? undefined;
@@ -46,29 +52,14 @@ export namespace Dates {
    * @param locale The locale to use if `date` is a string, if not passed, will use the system default locale of `en-GB`.
    * @returns A formatted string representation of the supplied `date`.
    */
-  export function dateToString(date: Date, formatString?: string, locale: Locale = defaultLocale): string {
-    return formatString ? format(date, formatString, { locale }) : formatISO(date);
-  }
-
-  export function getMonthSelectOptions(
-    months: Calendar.IMonth[],
-    formatString: string,
-    locale: Locale = Dates.defaultLocale
-  ): ISelectOption<number, Calendar.IMonth>[] {
-    return months.map((month) => ({
-      id: month.indexInYear,
-      name: format(month.date, formatString, { locale }),
-      data: month,
-      disabled: month.isDisabled,
-    }));
-  }
-
-  export function getYearSelectOptions(
-    years: Calendar.IYear[],
-    formatString: string,
-    locale: Locale = Dates.defaultLocale
-  ): ISelectOption<number, Calendar.IYear>[] {
-    return years.map((year) => ({ id: year.number, name: format(year.date, formatString, { locale }), data: year }));
+  export function dateToString(
+    date: Date,
+    formatString?: string,
+    locale: Locale = defaultLocale
+  ): string {
+    return formatString
+      ? format(date, formatString, { locale })
+      : formatISO(date);
   }
 
   /**
@@ -86,11 +77,13 @@ export namespace Dates {
     locale: Dates.DateLocale = Dates.defaultLocale
   ): Dates.DateLike {
     switch (type) {
-      case 'string':
-        return formatString ? format(date, formatString, { locale }) : formatISO(date);
-      case 'number':
+      case "string":
+        return formatString
+          ? format(date, formatString, { locale })
+          : formatISO(date);
+      case "number":
         return date.getTime();
-      case 'object':
+      case "object":
         return date;
       default:
         throw new Error(`Invalid type ${type} sent to DateLike creator`);

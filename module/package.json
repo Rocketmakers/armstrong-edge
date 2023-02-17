@@ -54,6 +54,7 @@
     "@types/jest": "29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/react": "18.0.18",
+    "@types/react-datepicker": "4.8.0",
     "@types/react-dom": "18.0.6",
     "bundle-scss": "1.5.1",
     "chokidar": "3.5.3",
@@ -78,6 +79,7 @@
     "wait-on": "7.0.1"
   },
   "dependencies": {
+    "react-datepicker": "^4.10.0",
     "react-select": "5.5.7",
     "vite-plugin-dts": "1.4.1",
     "vite-plugin-static-copy": "0.11.0"
