@@ -41,7 +41,7 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
     /** don't style beyond removing the default css styling */
     minimalStyle?: boolean;
 
-    /** apply a test ID to the button for Storybook, Playwright etc */
+    /** apply a test ID to the component for Storybook, Playwright etc */
     testId?: string;
   };
 

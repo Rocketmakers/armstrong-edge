@@ -24,10 +24,16 @@ const inputStyle = {
   border: '1px solid black'
 }
 
+interface IFormData {
+  thing: string | null;
+}
+
+
 export const Default: StoryObj<typeof CharacterLimit> = {
   render: (args) => {
-    const { bind, value, ...props } = args;
-    const { formProp } = Form.use({ thing: '' });
+    const { bind, ...props } = args;
+    const formData: IFormData = { thing: '' };
+    const { formProp } = Form.use(formData);
 
     return (
       <>
@@ -53,8 +59,9 @@ export const Default: StoryObj<typeof CharacterLimit> = {
 
 export const Enforce: StoryObj<typeof CharacterLimit> = {
   render: (args) => {
-    const { bind, value, ...props } = args;
-    const { formProp } = Form.use({ thing: '' });
+    const { bind, ...props } = args;
+    const formData: IFormData = { thing: '' };
+    const { formProp } = Form.use(formData);
 
     return (
       <>
@@ -84,8 +91,9 @@ export const Enforce: StoryObj<typeof CharacterLimit> = {
 
 export const InsideInput: StoryObj<typeof CharacterLimit> = {
   render: (args) => {
-    const { bind, value, ...props } = args;
-    const { formProp } = Form.use({ thing: '' });
+    const { bind, ...props } = args;
+    const formData: IFormData = { thing: '' };
+    const { formProp } = Form.use(formData);
 
     return (
       <>
@@ -103,8 +111,9 @@ export const InsideInput: StoryObj<typeof CharacterLimit> = {
 
 export const CustomIcon: StoryObj<typeof CharacterLimit> = {
   render: (args) => {
-    const { bind, value, ...props } = args;
-    const { formProp } = Form.use({ thing: '' });
+    const { bind, ...props } = args;
+    const formData: IFormData = { thing: '' };
+    const { formProp } = Form.use(formData);
 
     return (
       <>
