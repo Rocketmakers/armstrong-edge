@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { contentDependency } from "../utils/objects";
 import { Document } from "../utils/globals";
+import { contentDependency } from "../utils/objects";
 import { useDidUpdateEffect } from "./useDidUpdateEffect";
 import { useEventListener } from "./useEventListener";
 import { useResizeObserver } from "./useResizeObserver";

@@ -1,0 +1,22 @@
+.arm-tab-control-tab {
+  font-weight: bold;
+  border-top: $line transparent;
+  border-bottom: $line-medium;
+  color: $gray-medium;
+  padding: $spacing-xsmall $spacing-small;
+
+  &[data-is-current='true'] {
+    border-color: $brand-primary;
+    color: $black;
+    border: $line-medium;
+    border-bottom: transparent;
+    border-top-left-radius: $border-radius-small;
+    border-top-right-radius: $border-radius-small;
+  }
+}
+
+@include screen-phone {
+  .arm-tab-control-tab {
+    padding: $spacing-xsmall;
+  }
+}
