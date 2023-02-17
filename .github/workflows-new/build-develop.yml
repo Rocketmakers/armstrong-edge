@@ -1,0 +1,19 @@
+name: Build module
+on: 
+  push:
+    branches: 
+      - develop 
+      - feature/**
+      - chore/** # this feature part is entirely subjective based on how I think branches should be labelled
+jobs:
+  build-dev:
+    needs: setup-and-cache-node-module
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+      
+      - name: build
+        run: npm run build # need to create a command that builds for dev here, I think
+        working-directory: ./module

@@ -1,0 +1,23 @@
+name: Setup and cache Node for Module
+on: [push]
+jobs: 
+  setup-and-cache-node-module:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Set Node.js to current version and cache in module
+        id: set-node-and-cache-module
+        uses: actions/setup-node@master
+        with:
+          node-version-file: ".tool-versions"
+          cache: "npm"
+          cache-dependency-path: "module/package-lock.json"
+      
+      - if: steps.cache.outputs.cache-hit != true
+        name: Install node dependencies in module
+        id: install-node-dependencies-module
+        run: npm ci
+        working-directory: ./module
