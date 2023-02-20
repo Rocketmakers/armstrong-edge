@@ -1,29 +1,6 @@
 {
-  "compileOnSave": false,
+  "extends" : "../tsconfig.json",
   "compilerOptions": {
-    "target": "es2017",
-    "isolatedModules": false,
     "module": "commonjs",
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "sourceMap": true,
-    "noLib": false,
-    "preserveConstEnums": false,
-    "importHelpers": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "removeComments": true,
-    "esModuleInterop": false,
-    "skipLibCheck": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "lib": ["es2016", "esnext", "dom"],
-    "types": ["node"],
-    "composite": true,
-    "declaration": true
-  },
-  "include": ["./**/*", ".eslintrc.js"]
+  }
 }
