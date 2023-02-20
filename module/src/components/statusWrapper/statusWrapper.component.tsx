@@ -37,9 +37,9 @@ export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps
 
   return (
     <>
-      {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} testId="status-left" />}
+      {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} />}
       {children}
-      {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} testId="status-right" />}
+      {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} />}
     </>
   );
 };

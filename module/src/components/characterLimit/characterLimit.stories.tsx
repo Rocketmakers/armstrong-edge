@@ -37,16 +37,16 @@ export const Default: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} testId="input" style={inputStyle} />
-        <CharacterLimit bind={formProp('thing').bind()} {...props} testId="limit" />
+        <TextInput bind={formProp('thing').bind()} style={inputStyle} />
+        <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByTestId('input');
-    const limit = canvas.getByTestId('limit');
-    expect(limit).toHaveTextContent(`0/${args.limit}`);
+    const input = canvas.getByRole('textbox', { hidden: true });
+    const limit = canvas.getByText(`0/${args.limit}`).parentElement;
+    expect(limit);
     userEvent.type(input, 'a');
     expect(limit).toHaveTextContent(`1/${args.limit}`);
     userEvent.type(input, 'a'.repeat(args.limit - 1));
@@ -65,8 +65,8 @@ export const Enforce: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} testId="input" style={inputStyle} />
-        <CharacterLimit bind={formProp('thing').bind()} {...props} testId="limit" />
+        <TextInput bind={formProp('thing').bind()} style={inputStyle} />
+        <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );
   },
@@ -75,15 +75,15 @@ export const Enforce: StoryObj<typeof CharacterLimit> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByTestId('input');
-    const limit = canvas.getByTestId('limit');
-    expect(limit).toHaveTextContent(`0/${args.limit}`);
+    const input = canvas.getByRole('textbox', { hidden: true });
+    const limit = canvas.getByText(`0/${args.limit}`).parentElement;
+    expect(limit);
     userEvent.type(input, 'a');
     expect(limit).toHaveTextContent(`1/${args.limit}`);
     userEvent.type(input, 'a'.repeat(args.limit - 1));
     expect(limit).toHaveTextContent(`${args.limit}/${args.limit}`);
     userEvent.type(input, 'a');
-    expect(within(input).getByRole('textbox')).toHaveValue('a'.repeat(args.limit));
+    expect(input).toHaveValue('a'.repeat(args.limit));
     expect(limit).toHaveTextContent(`${args.limit}/${args.limit}`);
     expect(limit).toHaveAttribute('data-exceeded', 'false');
   }
@@ -97,15 +97,16 @@ export const InsideInput: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} testId="input" rightOverlay={<CharacterLimit bind={formProp('thing').bind()} {...props} testId="limit" />} style={inputStyle} />
+        <TextInput bind={formProp('thing').bind()} rightOverlay={<CharacterLimit bind={formProp('thing').bind()} {...props} />} style={inputStyle} />
       </>
     );
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByTestId('input');
-    const limit = canvas.getByTestId('limit');
-    expect(input).toContainElement(limit);
+    const input = canvas.getByRole('textbox', { hidden: true });
+    const limit = canvas.getByText(`0/${args.limit}`).parentElement;
+    expect(limit);
+    expect(input.parentElement).toContainElement(limit);
   }
 }
 
@@ -117,8 +118,8 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} testId="input" style={inputStyle} />
-        <CharacterLimit bind={formProp('thing').bind()} {...props} testId="limit" />
+        <TextInput bind={formProp('thing').bind()} style={inputStyle} />
+        <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );
   },
@@ -127,10 +128,11 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByTestId('input');
-    const limit = canvas.getByTestId('limit');
+    const input = canvas.getByRole('textbox', { hidden: true });
+    const limit = canvas.getByText(`0/${args.limit}`).parentElement as HTMLParagraphElement;
+    expect(limit);
     userEvent.type(input, 'a'.repeat(args.limit + 1));
-    const icon = within(limit).getByTestId('exceeds-icon');
+    const icon = within(limit).getByTitle('Character limit exceeded icon');
     expect(icon).toHaveAttribute('data-icon-set', args.exceedsIcon?.iconSet);
     expect(icon).toHaveAttribute('data-i', args.exceedsIcon?.icon);
   }

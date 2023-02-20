@@ -33,9 +33,6 @@ export interface IIconProps<TIconSet extends IconSet>
     > {
   /** CSS className property */
   className?: string;
-
-  /** identifier for driving this component with Storybook, Playwright etc */
-  testId?: string;
 }
 
 /** Render an icon using one of the supported icon sets */
@@ -46,7 +43,6 @@ export const Icon = React.forwardRef(
       iconSet,
       icon,
       onClick,
-      testId,
       ...nativeProps
     }: IIconProps<TIconSet>,
     forwardedRef: React.ForwardedRef<HTMLDivElement>
@@ -61,7 +57,6 @@ export const Icon = React.forwardRef(
         className={concat("arm-icon", className)}
         data-clickable={!!onClick}
         onClick={onClick}
-        data-testid={testId}
       />
     );
   }

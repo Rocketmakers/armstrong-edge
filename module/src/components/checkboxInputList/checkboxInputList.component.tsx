@@ -73,6 +73,9 @@ export interface ICheckboxInputListProps<Id extends ArmstrongId>
 
   /** the direction for the options in the list to flow */
   direction?: "horizontal" | "vertical";
+
+  /** apply a test ID to the component for Storybook, Playwright etc */
+  testId?: string;
 }
 
 /** A list of checkboxes which binds to an array of IDs */
@@ -93,6 +96,7 @@ export const CheckboxInputList = React.forwardRef(
       validationErrorMessages,
       direction,
       hideCheckbox,
+      testId,
     }: ICheckboxInputListProps<Id>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -132,6 +136,7 @@ export const CheckboxInputList = React.forwardRef(
           data-error={error || !!validationErrorMessages?.length}
           ref={ref}
           data-direction={direction}
+          data-testid={testId}
         >
           {groupedOptions.map((group) => (
             <React.Fragment key={group.key}>

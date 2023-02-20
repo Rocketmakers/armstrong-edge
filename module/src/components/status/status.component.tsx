@@ -15,14 +15,11 @@ export interface IStatusProps {
 
   /** the icon to use for the spinner */
   spinnerIcon?: IIcon<IconSet>;
-
-  /** identifier for driving this component with Storybook, Playwright etc */
-  testId?: string;
 }
 
 /** Render a status icon which can either be pending or errored */
 export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
-  ({ pending, error, errorIcon, spinnerIcon, testId }, ref) => {
+  ({ pending, error, errorIcon, spinnerIcon }, ref) => {
     if (!error && !pending) {
       return null;
     }
@@ -33,14 +30,14 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
         data-active={!!pending || !!error}
         data-error={!!error && !pending}
         data-pending={pending}
-        data-testid={testId}
+        role='status'
       >
         {error && !pending && (
           <Icon
             className="arm-status-error"
             iconSet={errorIcon!.iconSet}
             icon={errorIcon!.icon}
-            testId="error-icon"
+            title="Error icon"
           />
         )}
         {pending && (
@@ -48,7 +45,6 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
             className="arm-status-spinner"
             fillContainer={false}
             icon={spinnerIcon}
-            testId="pending-spinner"
           />
         )}
       </div>

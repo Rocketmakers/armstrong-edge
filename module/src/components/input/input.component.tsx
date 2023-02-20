@@ -92,9 +92,6 @@ export interface IInputProps<TValue>
 
   /** The delay config, used to set throttle and debounce values. */
   delay?: IDelayInputConfig;
-
-  /** apply a test ID to the input for Storybook, Playwright etc */
-  testId?: string;
 }
 
 /** A component which wraps up a native input element with some binding logic and some repeated elements (icons and stuff) for components which only contain a single input element. */
@@ -122,7 +119,6 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       onValueChange,
       scrollValidationErrorsIntoView,
       delay,
-      testId,
       ...nativeProps
     },
     ref
@@ -193,7 +189,6 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         disableOnPending={disableOnPending}
         hideIconOnStatus={hideIconOnStatus}
         onClick={() => internalRef.current?.focus()}
-        data-testid={testId}
       >
         {delay?.mode === "debounce" && !!delay.milliseconds && (
           <DebounceInputBase

@@ -68,7 +68,7 @@ export const CharacterLimit = React.forwardRef(
           {boundValue?.length}/{limit}
         </p>
         {exceedsIcon && exceeded && (
-          <Icon iconSet={exceedsIcon.iconSet} icon={exceedsIcon.icon} testId="exceeds-icon" />
+          <Icon iconSet={exceedsIcon.iconSet} icon={exceedsIcon.icon} title="Character limit exceeded icon" />
         )}
       </div>
     );
