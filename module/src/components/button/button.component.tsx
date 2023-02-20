@@ -10,8 +10,6 @@ import {
 } from "../statusWrapper/statusWrapper.component";
 import { ValidationErrors } from "../validationErrors";
 
-import "./button.prototyping.scss";
-
 type ButtonHTMLProps = Omit<
   React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,

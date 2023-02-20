@@ -4,7 +4,6 @@ import { ValidationMessage } from "../../hooks/form";
 import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IIcon } from "../icon";
 
-import "./validationErrors.basic.scss";
 
 export interface IValidationErrorsProps {
   /** The errors to render */

@@ -24,7 +24,7 @@ export default defineConfig({
     },
   },
   build: {
-    emptyOutDir: true,
+    emptyOutDir: false,
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "@rocketmakers/armstrong-dev",
