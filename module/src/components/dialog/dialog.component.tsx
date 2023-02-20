@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { useGeneratedId } from "../../hooks";
 import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IconButton } from "../iconButton";
@@ -48,7 +47,7 @@ export const Dialog = React.forwardRef<
     },
     ref
   ) => {
-    const id = useGeneratedId(htmlId);
+    const id = React.useId();
 
     const titleId = title && `${id}_label`;
 

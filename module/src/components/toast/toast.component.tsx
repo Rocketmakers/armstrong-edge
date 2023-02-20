@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { arrayToArrayDictionary } from "../..";
-import { useGeneratedId, useTemporaryState, useTimeout } from "../../hooks";
+import { useTemporaryState, useTimeout } from "../../hooks";
 import { concat } from "../../utils/classNames";
 import { Dates } from "../../utils/dates";
 import { contentDependency } from "../../utils/objects";
@@ -42,7 +42,7 @@ export const ToastNotification = React.forwardRef<
     void setAutoDismissTimeout();
   }, []);
 
-  const id = useGeneratedId("arm-tst_", htmlProps?.id);
+  const id = React.useId();
 
   const contentNode = React.useMemo<React.ReactNode>(
     () =>
