@@ -50,7 +50,7 @@ export const WithIcons: StoryObj<typeof Button> = {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
     const displayedIcon = args.leftIcon as IIcon<keyof Icons>;
-    const icon = within(button).getByTitle(`${displayedIcon.icon} icon on left of button`);
+    const icon = within(button).getByTitle(`${displayedIcon.icon} icon on left`);
     expect(button).toHaveTextContent(args.children as string);
     expect(icon).toHaveAttribute('data-i', displayedIcon.icon);
     await userEvent.click(button);

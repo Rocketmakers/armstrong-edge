@@ -303,6 +303,7 @@ export const CodeInput = React.forwardRef(
         <div
           className={concat("arm-code-input", className)}
           ref={ref}
+          title="Code input"
         >
           <StatusWrapper
             error={error}
