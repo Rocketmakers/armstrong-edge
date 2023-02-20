@@ -4,7 +4,7 @@
   "description": "Rocketmakers React component library",
   "scripts": {
     "start": "concurrently -n armstrong- npm:watch-*",
-    "build": "tsc && vite build --mode production",
+    "build": "tsc && vite build --mode production && npm run build-scss",
     "build-scss": "ts-node ./_build/scss/concat.ts",
     "watch-ts": "vite build --watch",
     "watch-tsc": "tsc -w --noEmit --preserveWatchOutput",
