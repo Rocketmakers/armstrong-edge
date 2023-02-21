@@ -3,7 +3,6 @@ import * as React from "react";
 import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 
-import "./spinner.basic.scss";
 
 export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
   /** icon definition for icon to spin in middle of div, can be overriden using children */

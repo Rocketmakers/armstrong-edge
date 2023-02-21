@@ -8,7 +8,6 @@ import {
 import { concat } from "../../utils/classNames";
 import { Icons } from "./icon.icons";
 
-import "./icon.basic.scss";
 
 /** The name of a set of icons */
 export type IconSet = keyof Icons;
@@ -27,10 +26,10 @@ export interface IIcon<TIconSet extends IconSet> {
 
 export interface IIconProps<TIconSet extends IconSet>
   extends IIcon<TIconSet>,
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    > {
+  React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  > {
   /** CSS className property */
   className?: string;
 }

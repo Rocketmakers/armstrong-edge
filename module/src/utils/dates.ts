@@ -1,4 +1,4 @@
-import { format, formatISO, parse, parseISO } from 'date-fns';
+import { format, formatISO, parse, parseISO, Locale } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 
 import { Calendar, ISelectOption } from '..';
