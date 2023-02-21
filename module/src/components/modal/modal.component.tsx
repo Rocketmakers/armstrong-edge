@@ -7,8 +7,6 @@ import { IPortalProps, Portal } from "../portal";
 import { useModalLayerElement } from "./modal.context";
 import { ModalUtils } from "./modal.utils";
 
-import "./modal.basic.scss";
-
 export interface IModalProps
   extends Pick<IPortalProps, "portalToSelector" | "portalTo">,
     Omit<

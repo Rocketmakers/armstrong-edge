@@ -16,8 +16,6 @@ import { StatusWrapper } from "../statusWrapper/statusWrapper.component";
 import { TextInput } from "../textInput";
 import { CodeInputUtils } from ".";
 
-import "./codeInput.basic.scss";
-
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
     IInputProps<TBind>,

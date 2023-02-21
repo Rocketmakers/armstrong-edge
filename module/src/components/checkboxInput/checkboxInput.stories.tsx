@@ -18,7 +18,8 @@ export default {
 
 const Template: StoryObj<typeof CheckboxInput> = {
   render: (args) => {
-        return <CheckboxInput {...args} />
+      const [checked, setChecked] = React.useState<boolean | null | undefined>(false);
+      return <CheckboxInput {...args} checked={checked} onValueChange={setChecked} />
     }
 };
 
@@ -28,14 +29,14 @@ export const Default: StoryObj<typeof CheckboxInput> = {
   ...Template,
   args: {
     content: 'Check me for cool fun time',
-    onValueChange: action('onValueChange'),
+    onChange: action('onChange'),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole('checkbox', { hidden: true });
     expect(checkbox.nextSibling).toHaveTextContent(args.content as string);
     userEvent.click(checkbox);
-    await waitFor(() => expect(args.onValueChange).toHaveBeenCalled());
+    await waitFor(() => expect(args.onChange).toHaveBeenCalled());
   }
 };
 

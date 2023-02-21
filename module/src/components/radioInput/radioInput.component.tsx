@@ -5,8 +5,6 @@ import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IIcon } from "../icon";
 import { OptionContent } from "../optionContent";
 
-import "./radioInput.basic.scss";
-
 export interface IRadioInputProps
   extends Omit<
       React.DetailedHTMLProps<

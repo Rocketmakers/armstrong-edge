@@ -9,8 +9,6 @@ import {
 import { concat } from "../../utils";
 import { IRadioInputListProps, RadioInputList } from "../radioInputList";
 
-import "./radioOptionsList.basic.scss";
-
 export interface IRadioOptionsListProps<Id extends ArmstrongId>
   extends Omit<IRadioInputListProps<Id>, "hideRadio"> {}
 

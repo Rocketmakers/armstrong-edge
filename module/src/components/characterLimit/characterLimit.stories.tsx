@@ -20,10 +20,6 @@ export default {
 
 /** stories */
 
-const inputStyle = {
-  border: '1px solid black'
-}
-
 interface IFormData {
   thing: string | null;
 }
@@ -37,7 +33,7 @@ export const Default: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} style={inputStyle} />
+        <TextInput bind={formProp('thing').bind()} />
         <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );
@@ -65,7 +61,7 @@ export const Enforce: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} style={inputStyle} />
+        <TextInput bind={formProp('thing').bind()} />
         <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );
@@ -97,7 +93,7 @@ export const InsideInput: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} rightOverlay={<CharacterLimit bind={formProp('thing').bind()} {...props} />} style={inputStyle} />
+        <TextInput bind={formProp('thing').bind()} rightOverlay={<CharacterLimit bind={formProp('thing').bind()} {...props} />} />
       </>
     );
   },
@@ -118,7 +114,7 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} style={inputStyle} />
+        <TextInput bind={formProp('thing').bind()} />
         <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );

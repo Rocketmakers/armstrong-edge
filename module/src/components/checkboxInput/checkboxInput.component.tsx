@@ -21,8 +21,6 @@ import { OptionContent } from "../optionContent";
 import { Status } from "../status";
 import { ValidationErrors } from "../validationErrors";
 
-import "./checkboxInput.prototyping.scss";
-
 export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<
       React.DetailedHTMLProps<

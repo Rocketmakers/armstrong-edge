@@ -19,8 +19,6 @@ import {
 } from "../checkboxInput/checkboxInput.component";
 import { arrayToArraysByKey } from "../../utils/arrays";
 
-import "./checkboxInputList.basic.scss";
-
 export interface ICheckboxInputListOption<Id extends ArmstrongId>
   extends Omit<
     IArmstrongExtendedOptionWithInput<

@@ -15,8 +15,6 @@ import { IconButton } from "../iconButton";
 import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
 import { ISelectOption } from "../select";
 
-import "./listBox.basic.scss";
-
 export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongExtendedOption<
       Id,
