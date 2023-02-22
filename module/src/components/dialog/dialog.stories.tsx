@@ -5,7 +5,6 @@ import React from "react";
 import { Dialog } from "./dialog.component";
 import { IconUtils } from "../icon/icons.utils";
 import { Button } from "../button";
-import { useConfirmationDialog } from "./dialog.hooks";
 
 /** metadata */
 
