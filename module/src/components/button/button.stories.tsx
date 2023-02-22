@@ -32,11 +32,17 @@ export const Default: StoryObj<typeof Button> = {
     onClick: action('onClick'),
   },
   play: async ({ args, canvasElement }) => {
-  const canvas = within(canvasElement);
-  expect(canvas.getByRole('button')).toHaveTextContent(args.children as string);
-  await userEvent.click(canvas.getByRole('button'));
-  await waitFor(() => expect(args.onClick).toHaveBeenCalled());
-}
+    const canvas = within(canvasElement);
+    expect(canvas.getByRole('button')).toHaveTextContent(args.children as string);
+    await userEvent.click(canvas.getByRole('button'));
+    await waitFor(() => expect(args.onClick).toHaveBeenCalled());
+  },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/f6yAoBwAQop8YahTF2ASSG/Block-up-design-system?node-id=197%3A3561&t=ccw4zqPQDfhSLCVL-1'
+    }
+  }
 };
 
 export const WithIcons: StoryObj<typeof Button> = {
