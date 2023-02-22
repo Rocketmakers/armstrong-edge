@@ -10,8 +10,6 @@ import {
   InputWrapper,
 } from "../inputWrapper/inputWrapper.component";
 
-import "./input.basic.scss";
-
 type NativeInputProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement

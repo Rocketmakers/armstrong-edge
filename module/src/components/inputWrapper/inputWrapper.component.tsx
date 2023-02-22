@@ -11,8 +11,6 @@ import {
 } from "../statusWrapper/statusWrapper.component";
 import { ValidationErrors } from "../validationErrors";
 
-import "./inputWrapper.basic.scss";
-
 export interface IInputWrapperProps
   extends IIconWrapperProps<IconSet, IconSet>,
     IStatusWrapperProps {

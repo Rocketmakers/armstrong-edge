@@ -28,7 +28,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
   value: TValue
 ): TObject {
   const output = (
-    Array.isArray(target) || Number.isInteger(keyChain?.[0])
+    Array.isArray(target) || (keyChain.length && Number.isInteger(keyChain[0]))
       ? [...((target || []) as any[])]
       : { ...(target || {}) }
   ) as TObject;

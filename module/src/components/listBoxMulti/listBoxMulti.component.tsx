@@ -15,8 +15,6 @@ import { IconButton } from "../iconButton";
 import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
 import { Tag } from "../tag";
 
-import "./listBoxMulti.basic.scss";
-
 export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<

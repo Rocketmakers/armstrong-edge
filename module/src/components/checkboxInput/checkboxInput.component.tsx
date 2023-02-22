@@ -21,8 +21,6 @@ import { OptionContent } from "../optionContent";
 import { Status } from "../status";
 import { ValidationErrors } from "../validationErrors";
 
-import "./checkboxInput.basic.scss";
-
 export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<
       React.DetailedHTMLProps<
@@ -79,6 +77,9 @@ export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
 
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
   content?: IArmstrongExtendedOption<ArmstrongId>["content"];
+
+  /** apply a test ID to the component for Storybook, Playwright etc */
+  testId?: string;
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -106,6 +107,7 @@ export const CheckboxInput = React.forwardRef(
       direction,
       name,
       hideCheckbox,
+      testId,
       ...nativeProps
     }: ICheckboxInputProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
@@ -145,6 +147,7 @@ export const CheckboxInput = React.forwardRef(
           data-error={error || !!validationErrorMessages?.length}
           data-checked={isChecked}
           data-direction={direction}
+          data-testid={testId}
           {...nativeProps}
         >
           <input
@@ -164,6 +167,7 @@ export const CheckboxInput = React.forwardRef(
                     className="arm-checkbox-input-checked-icon"
                     iconSet={checkedIcon.iconSet}
                     icon={checkedIcon.icon}
+                    title="Checked icon"
                   />
                 )}
                 {uncheckedIcon && (
@@ -171,6 +175,7 @@ export const CheckboxInput = React.forwardRef(
                     className="arm-checkbox-input-unchecked-icon"
                     iconSet={uncheckedIcon.iconSet}
                     icon={uncheckedIcon.icon}
+                    title="Unchecked icon"
                   />
                 )}
               </div>

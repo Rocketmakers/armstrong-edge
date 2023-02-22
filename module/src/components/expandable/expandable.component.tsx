@@ -3,8 +3,6 @@ import * as React from "react";
 import { concat } from "../../utils/classNames";
 import { AutoResizer } from "../autoResizer/autoResizer.component";
 
-import "./expandable.basic.scss";
-
 export interface IExpandableProps
   extends React.DetailedHTMLProps<
     React.HTMLProps<HTMLDivElement>,

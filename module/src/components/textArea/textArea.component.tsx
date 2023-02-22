@@ -21,8 +21,6 @@ import {
   InputWrapper,
 } from "../inputWrapper/inputWrapper.component";
 
-import "./textArea.basic.scss";
-
 type NativeTextAreaProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLTextAreaElement>,
   HTMLTextAreaElement

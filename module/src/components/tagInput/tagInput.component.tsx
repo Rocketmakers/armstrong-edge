@@ -20,8 +20,6 @@ import { IconButton } from "../iconButton";
 import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
 import { Tag } from "../tag/tag.component";
 
-import "./tagInput.basic.scss";
-
 export interface ITag
   extends Pick<
     IArmstrongExtendedOption<

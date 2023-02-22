@@ -6,8 +6,6 @@ import { IconButton } from "../iconButton";
 import { IModalProps, Modal } from "../modal";
 import { ModalUtils } from "../modal/modal.utils";
 
-import "./dialog.basic.scss";
-
 export interface IDialogProps extends Omit<IModalProps, "darkenBackground"> {
   /** the value to render as the title, will have necessary aria tag added */
   title?: string;
@@ -71,6 +69,7 @@ export const Dialog = React.forwardRef<
         ref={ref}
         onClose={onClose}
         disableClose={disableClose}
+        role='dialog'
       >
         {!!title || !!titleIcon ? (
           <div className="arm-dialog-top">
