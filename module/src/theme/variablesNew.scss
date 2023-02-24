@@ -1,0 +1,83 @@
+// colors
+$color-black: #000 !default;
+$color-white: #fff !default;
+$color-brand-primary: #cd3939 !default;
+$color-brand-secondary: #3d4144 !default;
+
+$color-grey-1: #333333 !default;
+$color-grey-4: #949494 !default;
+$color-grey-5: #E0E0E0 !default;
+
+$color-positive: #00a388 !default;
+$color-warning: #f78e52 !default;
+$color-negative: #da2e18 !default;
+$color-info: #3498d8 !default;
+
+// spacing
+$spacing-xxxsmall: 0.125rem !default;
+$spacing-xxsmall: 0.25rem !default;
+$spacing-xsmall: 0.5rem !default;
+$spacing-small: 1rem !default;
+$spacing-medium: 2rem !default;
+$spacing-large: 3rem !default;
+$spacing-xlarge: 4rem !default;
+
+//// components
+
+// button
+$button-border-radius: 6px;
+$button-primary-bg-color: $color-grey-1;
+$button-primary-fg-color: $color-white;
+$button-secondary-bg-color: $color-grey-5;
+$button-secondary-fg-color: $color-grey-1;
+$button-outline-stroke-color: $button-primary-bg-color;
+$button-outline-stroke-thickness: 2px;
+
+// form
+$form-element-border-radius: 5px !default;
+$form-element-border-thickness: 2px !default;
+$form-element-square-size: 25px !default;
+
+// spinner
+$spinner-speed: 500ms;
+
+:root {
+  --arm-color-black: #{$color-black};
+  --arm-color-white: #{$color-white};
+  --arm-color-grey-1: #{$color-grey-1};
+
+  --arm-color-grey-5: #{$color-grey-5};
+  --arm-color-brand-primary: #{$color-brand-primary};
+  --arm-color-brand-secondary: #{$color-brand-secondary};
+
+  --arm-spacing-xxxsmall: #{$spacing-xxxsmall};
+  --arm-spacing-xxsmall: #{$spacing-xxsmall};
+  --arm-spacing-xsmall: #{$spacing-xsmall};
+  --arm-spacing-small: #{$spacing-small};
+  --arm-spacing-medium: #{$spacing-medium};
+  --arm-spacing-large: #{$spacing-large};
+  --arm-spacing-xlarge: #{$spacing-xlarge};
+
+  // Button
+  --arm-button-border-radius: #{$button-border-radius};
+
+  --arm-button-primary-bg-color: #{$button-primary-bg-color};
+  --arm-button-primary-fg-color: #{$button-primary-fg-color};
+
+  --arm-button-secondary-bg-color: #{$button-secondary-bg-color};
+  --arm-button-secondary-fg-color: #{$button-secondary-fg-color};
+  
+  --arm-button-outline-stroke-color: #{$button-outline-stroke-color};
+  --arm-button-outline-stroke-thickness: #{$button-outline-stroke-thickness};
+
+  // Spinner
+  --arm-spinner-speed: #{$spinner-speed};
+
+  // Form - Shared
+  --arm-form-border-radius: #{$form-element-border-radius};
+  --arm-form-border-thickness: #{$form-element-border-thickness};
+  --arm-form-border-color: #{$color-grey-4};
+  --arm-form-square-size: #{$form-element-square-size};
+  --arm-form-checked-bg-color: #{$color-grey-1};
+  --arm-form-checked-fg-color: #{$color-white};
+}

@@ -72,9 +72,6 @@ export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
   /** the direction for the content to flow */
   direction?: "vertical" | "horizontal";
 
-  /** should hide the checkbox itself, showing only the label, allowing you to handle visualising the state of the input yourself */
-  hideCheckbox?: boolean;
-
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
   content?: IArmstrongExtendedOption<ArmstrongId>["content"];
 
@@ -106,7 +103,6 @@ export const CheckboxInput = React.forwardRef(
       inputProps,
       direction,
       name,
-      hideCheckbox,
       testId,
       ...nativeProps
     }: ICheckboxInputProps<TBind>,
@@ -148,19 +144,11 @@ export const CheckboxInput = React.forwardRef(
           data-checked={isChecked}
           data-direction={direction}
           data-testid={testId}
+          data-content={!!content}
           {...nativeProps}
         >
-          <input
-            className="arm-checkbox-input-checkbox-input"
-            onChange={onChangeEvent}
-            type="checkbox"
-            ref={ref}
-            checked={isChecked ?? undefined}
-            {...inputProps}
-          />
 
           <label>
-            {!hideCheckbox && (
               <div className="arm-checkbox-input-checkbox">
                 {checkedIcon && (
                   <Icon
@@ -179,8 +167,6 @@ export const CheckboxInput = React.forwardRef(
                   />
                 )}
               </div>
-            )}
-
             <OptionContent
               content={content}
               name={name}
@@ -198,6 +184,15 @@ export const CheckboxInput = React.forwardRef(
               errorIcon={bindConfig.validationErrorIcon}
             />
           </label>
+
+          <input
+            className="arm-checkbox-input-checkbox-input"
+            onChange={onChangeEvent}
+            type="checkbox"
+            ref={ref}
+            checked={isChecked ?? undefined}
+            {...inputProps}
+          />
         </div>
 
         {!!bindConfig.validationErrorMessages?.length &&

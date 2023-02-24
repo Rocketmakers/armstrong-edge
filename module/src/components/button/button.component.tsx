@@ -1,14 +1,12 @@
 import * as React from "react";
 
-import { ValidationMessage } from "../../hooks/form";
 import { concat } from "../../utils/classNames";
-import { IconSet, IconUtils, IIcon } from "../icon";
+import { IconSet } from "../icon";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
 import {
   IStatusWrapperProps,
   StatusWrapper,
 } from "../statusWrapper/statusWrapper.component";
-import { ValidationErrors } from "../validationErrors";
 
 type ButtonHTMLProps = Omit<
   React.DetailedHTMLProps<
@@ -18,16 +16,13 @@ type ButtonHTMLProps = Omit<
   "ref"
 >;
 
+type ButtonDisplayStyle = "primary" | "secondary" | "outline";
+type ButtonDisplaySize = "small" | "medium" | "large" | "extra-large";
+
 export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
   IStatusWrapperProps & {
     /** CSS className property */
     className?: string;
-
-    /** array of validation errors to render */
-    validationErrorMessages?: ValidationMessage[];
-
-    /** the icon to use for validation errors */
-    errorIcon?: IIcon<IconSet>;
 
     /** show a spinner and disable */
     pending?: boolean;
@@ -38,11 +33,11 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
     /** disable use */
     disabled?: boolean;
 
-    /** don't style beyond removing the default css styling */
-    minimalStyle?: boolean;
+    /** which style variant to use */
+    displayStyle?: ButtonDisplayStyle;
 
-    /** apply a test ID to the component for Storybook, Playwright etc */
-    testId?: string;
+    /** which size variant to use */
+    displaySize?: ButtonDisplaySize;
   };
 
 export type IButtonProps = IButtonCoreProps & ButtonHTMLProps;
@@ -101,10 +96,8 @@ export const Button = React.forwardRef<
   const {
     className,
     disabled,
-    minimalStyle,
-    validationErrorMessages,
-    error,
-    errorIcon,
+    displayStyle,
+    displaySize,
     pending,
     leftIcon,
     rightIcon,
@@ -115,18 +108,16 @@ export const Button = React.forwardRef<
     ...nativeProps
   } = props;
 
-  const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
-
   return (
-    <>
       <button
         className={concat(
-          minimalStyle ? "arm-button-minimal" : "arm-button",
+          "arm-button",
           className
         )}
         data-pending={pending}
         data-disabled={disabled || pending}
-        data-error={shouldShowErrorIcon}
+        data-size={displaySize}
+        data-style={displayStyle}
         disabled={disabled || pending}
         tabIndex={disabled ? -1 : nativeProps.tabIndex}
         data-testid={testId}
@@ -135,19 +126,10 @@ export const Button = React.forwardRef<
       >
         <ButtonInner {...props} />
       </button>
-
-      {!!validationErrorMessages?.length && (
-        <ValidationErrors
-          validationErrors={validationErrorMessages}
-          icon={errorIcon}
-        />
-      )}
-    </>
   );
 });
 
 Button.defaultProps = {
-  errorIcon: IconUtils.getIconDefinition("Icomoon", "warning"),
   statusPosition: "right",
   hideIconOnStatus: true,
 };
