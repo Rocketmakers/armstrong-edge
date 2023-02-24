@@ -134,11 +134,7 @@ export const CheckboxInput = React.forwardRef(
     return (
       <>
         <div
-          className={concat(
-            "arm-input",
-            "arm-checkbox-input",
-            className
-          )}
+          className={concat("arm-input", "arm-checkbox-input", className)}
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
           data-checked={isChecked}
@@ -147,26 +143,25 @@ export const CheckboxInput = React.forwardRef(
           data-content={!!content}
           {...nativeProps}
         >
-
           <label>
-              <div className="arm-checkbox-input-checkbox">
-                {checkedIcon && (
-                  <Icon
-                    className="arm-checkbox-input-checked-icon"
-                    iconSet={checkedIcon.iconSet}
-                    icon={checkedIcon.icon}
-                    title="Checked icon"
-                  />
-                )}
-                {uncheckedIcon && (
-                  <Icon
-                    className="arm-checkbox-input-unchecked-icon"
-                    iconSet={uncheckedIcon.iconSet}
-                    icon={uncheckedIcon.icon}
-                    title="Unchecked icon"
-                  />
-                )}
-              </div>
+            <div className="arm-checkbox-input-checkbox">
+              {checkedIcon && isChecked && (
+                <Icon
+                  className="arm-checkbox-input-checked-icon"
+                  iconSet={checkedIcon.iconSet}
+                  icon={checkedIcon.icon}
+                  title="Checked icon"
+                />
+              )}
+              {uncheckedIcon && !isChecked && (
+                <Icon
+                  className="arm-checkbox-input-unchecked-icon"
+                  iconSet={uncheckedIcon.iconSet}
+                  icon={uncheckedIcon.icon}
+                  title="Unchecked icon"
+                />
+              )}
+            </div>
             <OptionContent
               content={content}
               name={name}

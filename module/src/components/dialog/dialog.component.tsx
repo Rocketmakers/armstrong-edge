@@ -58,10 +58,7 @@ export const Dialog = React.forwardRef<
       <Modal
         {...modalProps}
         className={concat("arm-dialog", className)}
-        wrapperClassName={concat(
-          "arm-dialog-wrapper",
-          wrapperClassName
-        )}
+        wrapperClassName={concat("arm-dialog-wrapper", wrapperClassName)}
         darkenBackground
         id={id}
         aria-labelledby={title && titleId}
@@ -69,7 +66,7 @@ export const Dialog = React.forwardRef<
         ref={ref}
         onClose={onClose}
         disableClose={disableClose}
-        role='dialog'
+        role="dialog"
       >
         {!!title || !!titleIcon ? (
           <div className="arm-dialog-top">
@@ -87,7 +84,6 @@ export const Dialog = React.forwardRef<
               type="button"
               className="arm-dialog-close-button"
               icon={closeButtonIcon!}
-              minimalStyle
               onClick={close}
             />
           </div>
@@ -96,7 +92,6 @@ export const Dialog = React.forwardRef<
             type="button"
             className="arm-dialog-close-button"
             icon={closeButtonIcon!}
-            minimalStyle
             onClick={close}
           />
         )}

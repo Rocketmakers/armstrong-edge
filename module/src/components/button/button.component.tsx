@@ -33,6 +33,9 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
     /** disable use */
     disabled?: boolean;
 
+    /** apply a test ID to the component for Storybook, Playwright etc */
+    testId?: string;
+
     /** which style variant to use */
     displayStyle?: ButtonDisplayStyle;
 
@@ -43,50 +46,51 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
 export type IButtonProps = IButtonCoreProps & ButtonHTMLProps;
 
 /** Renders the inside of a button, for use in altering the tag used for the wrapper */
-export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps>> =
-  ({
-    validationErrorMessages,
-    errorIcon,
-    pending,
-    error,
-    leftIcon,
-    rightIcon,
-    children,
-    statusPosition,
-    hideIconOnStatus,
-  }) => {
-    const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
+export const ButtonInner: React.FC<
+  React.PropsWithChildren<IButtonCoreProps>
+> = ({
+  validationErrorMessages,
+  errorIcon,
+  pending,
+  error,
+  leftIcon,
+  rightIcon,
+  children,
+  statusPosition,
+  hideIconOnStatus,
+}) => {
+  const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
 
-    const showLeftIcon =
-      statusPosition !== "left" ||
-      !hideIconOnStatus ||
-      (!pending && !shouldShowErrorIcon);
-    const showRightIcon =
-      statusPosition !== "right" ||
-      !hideIconOnStatus ||
-      (!pending && !shouldShowErrorIcon);
+  const showLeftIcon =
+    statusPosition !== "left" ||
+    !hideIconOnStatus ||
+    (!pending && !shouldShowErrorIcon);
+  const showRightIcon =
+    statusPosition !== "right" ||
+    !hideIconOnStatus ||
+    (!pending && !shouldShowErrorIcon);
 
-    return (
-      <IconWrapper
-        leftIcon={showLeftIcon ? leftIcon : undefined}
-        rightIcon={showRightIcon ? rightIcon : undefined}
+  return (
+    <IconWrapper
+      leftIcon={showLeftIcon ? leftIcon : undefined}
+      rightIcon={showRightIcon ? rightIcon : undefined}
+    >
+      <StatusWrapper
+        pending={pending}
+        errorIcon={errorIcon}
+        statusPosition={statusPosition}
+        error={error}
+        validationErrorMessages={validationErrorMessages}
       >
-        <StatusWrapper
-          pending={pending}
-          errorIcon={errorIcon}
-          statusPosition={statusPosition}
-          error={error}
-          validationErrorMessages={validationErrorMessages}
-        >
-          {typeof children === "string" || typeof children === "number" ? (
-            <span>{children}</span>
-          ) : (
-            children
-          )}
-        </StatusWrapper>
-      </IconWrapper>
-    );
-  };
+        {typeof children === "string" || typeof children === "number" ? (
+          <span>{children}</span>
+        ) : (
+          children
+        )}
+      </StatusWrapper>
+    </IconWrapper>
+  );
+};
 
 /** Renders an HTML button element with some useful additions */
 export const Button = React.forwardRef<
@@ -109,23 +113,20 @@ export const Button = React.forwardRef<
   } = props;
 
   return (
-      <button
-        className={concat(
-          "arm-button",
-          className
-        )}
-        data-pending={pending}
-        data-disabled={disabled || pending}
-        data-size={displaySize}
-        data-style={displayStyle}
-        disabled={disabled || pending}
-        tabIndex={disabled ? -1 : nativeProps.tabIndex}
-        data-testid={testId}
-        ref={ref}
-        {...nativeProps}
-      >
-        <ButtonInner {...props} />
-      </button>
+    <button
+      className={concat("arm-button", className)}
+      data-pending={pending}
+      data-disabled={disabled || pending}
+      data-size={displaySize}
+      data-style={displayStyle}
+      disabled={disabled || pending}
+      tabIndex={disabled ? -1 : nativeProps.tabIndex}
+      data-testid={testId}
+      ref={ref}
+      {...nativeProps}
+    >
+      <ButtonInner {...props} />
+    </button>
   );
 });
 
