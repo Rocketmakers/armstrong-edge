@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { concat } from '../../utils/classNames';
-import { IconButton, IconSet, IIcon } from '..';
-import { IInputProps, Input } from '../input/input.component';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../../types';
+import { concat } from '../../../utils/classNames';
+import { IconButton, IconSet, IIcon } from '../..';
+import { IInputProps, Input } from '../input.component';
 
 interface IPasswordInputProps<TBind extends NullOrUndefined<string>> extends Omit<IInputProps<TBind>, 'type'> {
   showPasswordButton?: boolean;

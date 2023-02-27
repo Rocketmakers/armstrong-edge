@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Form, IconSet, IInputWrapperProps, ValidationErrors } from "../..";
+
 import { IBindingProps } from "../../hooks/form";
 import {
   ArmstrongFCExtensions,
@@ -11,10 +11,14 @@ import {
 import { findLastIndex } from "../../utils/arrays";
 import { concat } from "../../utils/classNames";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
-import { IInputProps } from "../input";
+import { IInputProps } from "../input/input.component";
 import { StatusWrapper } from "../statusWrapper/statusWrapper.component";
-import { TextInput } from "../textInput";
+import { TextInput } from "../input/textInput";
 import { CodeInputUtils } from ".";
+import { Form } from "../../hooks";
+import { IconSet } from "../icon";
+import { IInputWrapperProps } from "../inputWrapper";
+import { ValidationErrors } from "../validationErrors";
 
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<

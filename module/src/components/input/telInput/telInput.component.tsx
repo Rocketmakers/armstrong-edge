@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { concat } from '../../utils/classNames';
-import { IInputProps, Input } from '../input/input.component';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../../types';
+import { concat } from '../../../utils/classNames';
+import { IInputProps, Input } from '../input.component';
 
 /** Wrap up a text input with type=tel */
 export const TelInput = React.forwardRef(

@@ -1,3 +1,4 @@
+import { isNil } from "lodash";
 import * as React from "react";
 
 import { Form } from "../..";
@@ -117,6 +118,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       onValueChange,
       scrollValidationErrorsIntoView,
       delay,
+      type,
       ...nativeProps
     },
     ref
@@ -124,8 +126,17 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
     const internalRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
+    const valueHandler = React.useCallback((): string | number | undefined => {
+      switch (type) {
+        case 'number':
+          return (!isNil(value)) ? (Number(value.toString())) : undefined;
+        default:
+          value?.toString()
+      }
+    }, [value, type])
+
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
-      value: value?.toString(),
+      value: valueHandler(),
       validationErrorMessages,
       validationMode,
       validationErrorIcon,
@@ -145,11 +156,19 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange?.(event);
-        const currentValue = event.currentTarget.value;
-        setBoundValue?.(currentValue);
-        onValueChange?.(currentValue);
+        let valueToSet;
+        switch (type) {
+          case 'number':
+            const currentValue = event.currentTarget.valueAsNumber;
+            valueToSet = (Number.isNaN(currentValue) ? undefined : currentValue ?? undefined) as number;
+          default:
+            valueToSet = event.currentTarget.value;
+        }
+        
+        setBoundValue?.(valueToSet);
+        onValueChange?.(valueToSet);
       },
-      [setBoundValue, onBindValueChange, onChange]
+      [setBoundValue, onBindValueChange, onChange, type]
     );
 
     /** onChange used for throttled inputs */
@@ -196,6 +215,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
             onChange={onChange}
             onValueChange={onValueChangeEvent}
             ref={internalRef}
+            type={type}
           />
         )}
         {delay?.mode === "throttle" && !!delay.milliseconds && (
@@ -206,6 +226,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
             onChange={onChange}
             onValueChange={onValueChangeEvent}
             ref={internalRef}
+            type={type}
           />
         )}
         {!delay?.milliseconds && (
@@ -214,6 +235,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
             {...inputProps}
             onChange={onChangeEvent}
             ref={internalRef}
+            type={type}
           />
         )}
       </InputWrapper>

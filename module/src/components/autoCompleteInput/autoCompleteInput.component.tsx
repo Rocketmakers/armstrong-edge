@@ -16,7 +16,7 @@ import { contentDependency } from "../../utils/objects";
 import { DropdownItems, IDropdownItemsProps } from "../dropdownItems";
 import { IInputProps } from "../input";
 import { IPortalProps } from "../portal";
-import { TextInput } from "../textInput";
+import { TextInput } from "../input/textInput";
 
 // internally, the AutoCompleteInput binds two values - the actual content of the text input, and the selected value
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound

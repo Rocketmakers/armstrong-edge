@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
-import { concat } from '../../utils/classNames';
-import { IInputProps, Input } from '../input/input.component';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../../types';
+import { concat } from '../../../utils/classNames';
+import { IInputProps, Input } from '../input.component';
 
 export const TextInput = React.forwardRef(
   <T extends NullOrUndefined<string>>({ className, ...props }: Omit<IInputProps<T>, 'type'>, ref: React.ForwardedRef<HTMLInputElement>) => {
