@@ -33,8 +33,9 @@ export const Default: StoryObj<typeof Button> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    expect(canvas.getByRole('button')).toHaveTextContent(args.children as string);
-    await userEvent.click(canvas.getByRole('button'));
+    const button = canvas.getByRole('button');
+    expect(button).toHaveTextContent(args.children as string);
+    await userEvent.click(button);
     await waitFor(() => expect(args.onClick).toHaveBeenCalled());
   },
   parameters: {
@@ -54,8 +55,8 @@ export const WithIcons: StoryObj<typeof Button> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
-    const icon = button.querySelector('.left-icon');
     const displayedIcon = args.leftIcon as IIcon<keyof Icons>;
+    const icon = within(button).getByTitle(`${displayedIcon.icon} icon on left`);
     expect(button).toHaveTextContent(args.children as string);
     expect(icon).toHaveAttribute('data-i', displayedIcon.icon);
     await userEvent.click(button);
@@ -89,14 +90,14 @@ export const Pending: StoryObj<typeof Button> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
-    const spinner = button.querySelector('.arm-status');
+    const spinner = within(button).getByRole('status');
     expect(button.lastChild).toContainElement(spinner as HTMLElement);
     expect(button).toHaveTextContent(args.children as string);
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute('data-disabled', 'true');
     expect(spinner).toBeVisible();
     expect(spinner).toHaveAttribute('data-pending', 'true');
-    expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
+    expect(within(spinner).getByTitle('Active spinner icon')).toHaveAttribute('data-i', 'spinner2');
   }
 }
 
@@ -111,9 +112,9 @@ export const PendingOnLeft: StoryObj<typeof Button> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
-    const spinner = button.querySelector('.arm-status');
+    const spinner = within(button).getByRole('status');
     expect(button.firstChild).toContainElement(spinner as HTMLElement);
-    expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
+    expect(within(spinner).getByTitle('Active spinner icon')).toHaveAttribute('data-i', 'spinner2');
   }
 }
 
@@ -129,18 +130,18 @@ export const PendingAnimation = () => {
 PendingAnimation.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const button = canvas.getByRole('button');
-  let spinner = button.querySelector('.arm-status');
+  const noSpinner = within(button).queryByRole('status');
   expect(button).toBeEnabled();
   expect(button).toHaveAttribute('data-disabled', 'false');
-  expect(spinner).toBeNull();
-  await userEvent.click(canvas.getByRole('button'));
-  spinner = button.querySelector('.arm-status');
+  expect(noSpinner).toBeNull();
+  await userEvent.click(button);
+  const spinner = within(button).getByRole('status');
   expect(button.lastChild).toContainElement(spinner as HTMLElement);
   expect(button).toBeDisabled();
   expect(button).toHaveAttribute('data-disabled', 'true');
   expect(spinner).toBeVisible();
   expect(spinner).toHaveAttribute('data-pending', 'true');
-  expect(spinner?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'spinner2');
+  expect(within(spinner).getByTitle('Active spinner icon')).toHaveAttribute('data-i', 'spinner2');
 };
 
 export const Error : StoryObj<typeof Button> = {
@@ -153,12 +154,11 @@ export const Error : StoryObj<typeof Button> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
-    const error = button.querySelector('.arm-status');
-    expect(button.lastChild).toContainElement(error as HTMLElement);
+    const error = within(button).getByRole('status');
     expect(button).toHaveAttribute('data-error', 'true');
     expect(error).toBeVisible();
     expect(error).toHaveAttribute('data-error', 'true');
-    expect(error?.querySelector('.arm-icon')).toHaveAttribute('data-i', 'warning');
+    expect(within(error).getByTitle('Error icon')).toHaveAttribute('data-i', 'warning');
   }
 }
 

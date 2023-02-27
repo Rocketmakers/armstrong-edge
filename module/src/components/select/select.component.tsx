@@ -14,8 +14,6 @@ import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IconButton } from "../iconButton";
 import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
 
-import "./select.basic.scss";
-
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongOption<
     Id,

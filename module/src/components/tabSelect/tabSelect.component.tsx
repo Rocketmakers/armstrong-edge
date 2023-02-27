@@ -13,8 +13,6 @@ import { IStatusWrapperProps, StatusWrapper } from "../statusWrapper";
 import { ITabControlProps, TabControl } from "./tabControl";
 import { ValidationErrors } from "../validationErrors";
 
-import "./tabSelect.basic.scss";
-
 export interface ITabSelectProps<Id extends ArmstrongId>
   extends Omit<ITabControlProps<Id>, "currentTab" | "onTabChange">,
     IStatusWrapperProps,

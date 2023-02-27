@@ -32,9 +32,6 @@ export interface IIconProps<TIconSet extends IconSet>
   > {
   /** CSS className property */
   className?: string;
-
-  /** identifier for driving this component with Cypress */
-  cypressTag?: string;
 }
 
 /** Render an icon using one of the supported icon sets */
@@ -45,7 +42,6 @@ export const Icon = React.forwardRef(
       iconSet,
       icon,
       onClick,
-      cypressTag,
       ...nativeProps
     }: IIconProps<TIconSet>,
     forwardedRef: React.ForwardedRef<HTMLDivElement>
@@ -60,7 +56,6 @@ export const Icon = React.forwardRef(
         className={concat("arm-icon", className)}
         data-clickable={!!onClick}
         onClick={onClick}
-        data-cy={cypressTag}
       />
     );
   }

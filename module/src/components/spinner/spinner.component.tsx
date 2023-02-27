@@ -25,11 +25,12 @@ export const Spinner = React.forwardRef<
     className={concat("arm-spinner", className)}
     {...HTMLProps}
     data-fill-container={fillContainer}
+    title="spinner"
   >
     <div className="arm-spinner-inner">
       {children ||
         (icon && (
-          <Icon iconSet={icon.iconSet} icon={icon.icon} cypressTag="spinner" />
+          <Icon iconSet={icon.iconSet} icon={icon.icon} title="Active spinner icon" />
         ))}
     </div>
     {label && (

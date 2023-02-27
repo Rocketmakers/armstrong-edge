@@ -10,8 +10,6 @@ import { IconButton } from "../iconButton";
 import { useToasts } from "./toast.context";
 import { IToastNotification } from "./toast.types";
 
-import "./toast.basic.scss";
-
 export interface IToastNotificationProps
   extends Omit<IToastNotification, "timestamp">,
     Required<Pick<IToastNotification, "timestamp">> {}

@@ -9,7 +9,6 @@ import {
 import { concat } from "../../utils/classNames";
 import { IStatusProps, Status } from "../status";
 
-import "./image.basic.scss";
 import { useElementStatus } from "./image.hooks";
 
 export interface IImageSource {

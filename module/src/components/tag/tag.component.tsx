@@ -5,8 +5,6 @@ import { IconSet, IconUtils } from "../icon";
 import { IconButton } from "../iconButton";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
 
-import "./tag.basic.scss";
-
 export interface ITagProps
   extends IIconWrapperProps<IconSet, IconSet>,
     React.DetailedHTMLProps<

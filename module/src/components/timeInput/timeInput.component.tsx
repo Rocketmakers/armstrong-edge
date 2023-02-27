@@ -26,8 +26,6 @@ import {
   parseTimeStringToParts,
 } from "./timeInput.utils";
 
-import "./timeInput.basic.scss";
-
 type AdditionalInputProps = Omit<
   IAutoCompleteInputProps<number>,
   "bind" | "options" | "min" | "max"

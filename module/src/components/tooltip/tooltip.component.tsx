@@ -8,8 +8,6 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import { concat } from "../../utils/classNames";
 import { Modal } from "../modal";
 
-import "./tooltip.basic.scss";
-
 export type TooltipPosition = "above" | "below" | "left" | "right";
 
 export interface ITooltipProps

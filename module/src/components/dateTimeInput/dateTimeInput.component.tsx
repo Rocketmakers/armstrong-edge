@@ -16,8 +16,6 @@ import { InputWrapper } from "../inputWrapper";
 import { IStatusWrapperProps } from "../statusWrapper";
 import { ITimeInputProps, TimeInput } from "../timeInput";
 
-import "./dateTimeInput.basic.scss";
-
 type AdditionalCalendarInputProps<
   TValue extends NullOrUndefined<Dates.DateLike>
 > = Omit<ICalendarInputProps<TValue>, "bind" | "formatString" | "locale">;

@@ -13,8 +13,6 @@ import { Dropdown, IDropdownProps } from "../dropdown";
 import { Icon } from "../icon";
 import { OptionContent } from "../optionContent/optionContent.component";
 
-import "./dropdownItems.basic.scss";
-
 export interface IDropdownItem
   extends IArmstrongExtendedOption<
     ArmstrongId,
@@ -94,7 +92,6 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
             iconSet="Icomoon"
             icon="checkmark3"
             className="arm-dropdown-item-checkmark"
-            cypressTag="dropdown-item-icon"
           />
         )}
       </li>
