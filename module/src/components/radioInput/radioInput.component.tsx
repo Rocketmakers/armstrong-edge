@@ -1,11 +1,9 @@
 import * as React from 'react';
 
-import { ArmstrongId, IArmstrongExtendedOption, useGeneratedId } from '../..';
-import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IIcon } from '../icon';
-import { OptionContent } from '../optionContent';
-
-import './radioInput.basic.scss';
+import { ArmstrongId, IArmstrongExtendedOption } from "../..";
+import { concat } from "../../utils/classNames";
+import { Icon, IconSet, IIcon } from "../icon";
+import { OptionContent } from "../optionContent";
 
 export interface IRadioInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
@@ -55,7 +53,7 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
     },
     ref
   ) => {
-    const generatedId = useGeneratedId('radio_input', inputProps?.id);
+    const generatedId = React.useId();
 
     return (
       <div

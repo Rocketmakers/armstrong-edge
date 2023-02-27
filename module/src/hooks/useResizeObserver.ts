@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { isBrowser, supportsResizeObserver } from '../utils/globals';
 import { contentDependency } from '../utils/objects';
-import { useWillUnMountEffect } from './useWillUnmountEffect';
 
 /**
  * Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
@@ -50,7 +49,7 @@ export function useResizeObserver(
     return undefined;
   }, [observe, unobserve, ref]);
 
-  useWillUnMountEffect(disconnect);
+  React.useEffect(() => disconnect, []);
 
   return {
     observer,

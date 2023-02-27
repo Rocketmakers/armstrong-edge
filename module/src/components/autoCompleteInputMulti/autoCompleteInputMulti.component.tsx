@@ -11,8 +11,6 @@ import { IInputProps } from '../input';
 import { IPortalProps } from '../portal';
 import { ITag, ITagInputProps, TagInput } from '../tagInput';
 
-import './autoCompleteInputMulti.basic.scss';
-
 export interface IAutoCompleteInputMultiProps<Id extends ArmstrongId>
   extends Omit<IInputProps<Id[]>, 'type' | 'onChange' | 'value' | 'disableOnPending' | 'onValueChange'>,
     Pick<ITagInputProps<any>, 'tagPosition'>,

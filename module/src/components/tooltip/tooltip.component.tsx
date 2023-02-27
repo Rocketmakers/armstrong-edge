@@ -1,17 +1,14 @@
 import * as React from 'react';
 
-import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
-import { useGeneratedId } from '../../hooks/useGeneratedId';
-import { useIsFocused } from '../../hooks/useIsFocused';
-import { useIsHovering } from '../../hooks/useIsHovering';
-import { useWindowSize } from '../../hooks/useWindowSize';
-import { concat } from '../../utils/classNames';
-import { Modal } from '../modal';
-import { IPortalProps } from '../portal/portal.component';
+import { IPortalProps } from "../..";
+import { useBoundingClientRect } from "../../hooks/useBoundingClientRect";
+import { useIsFocused } from "../../hooks/useIsFocused";
+import { useIsHovered } from "../../hooks/useIsHovered";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { concat } from "../../utils/classNames";
+import { Modal } from "../modal";
 
-import './tooltip.basic.scss';
-
-export type TooltipPosition = 'above' | 'below' | 'left' | 'right';
+export type TooltipPosition = "above" | "below" | "left" | "right";
 
 export interface ITooltipProps
   extends Omit<
@@ -72,10 +69,14 @@ export const Tooltip = React.forwardRef<ITooltipRef, React.PropsWithChildren<ITo
     const rootRef = React.useRef<HTMLDivElement>(null);
     const innerRef = React.useRef<HTMLDivElement>();
 
-    const [isHovering, hoveringProps] = useIsHovering();
+    const [isHovered, hoveredProps] = useIsHovered();
     const [isFocused, focusedProps] = useIsFocused();
 
-    const isOpen = isOpenProp || (openOnHover && isHovering) || (openOnFocus && isFocused) || false;
+    const isOpen =
+      isOpenProp ||
+      (openOnHover && isHovered) ||
+      (openOnFocus && isFocused) ||
+      false;
 
     const [rootRect, getRootRect] = useBoundingClientRect(rootRef, undefined, isOpen);
     const [innerRect, getInnerRect] = useBoundingClientRect(innerRef, undefined, isOpen);
@@ -197,14 +198,14 @@ export const Tooltip = React.forwardRef<ITooltipRef, React.PropsWithChildren<ITo
       [position]
     );
 
-    const generatedId = useGeneratedId(id);
+    const generatedId = React.useId();
 
     return (
       <div
         {...(wrapperAttributes || {})}
         className={concat('arm-tooltip-wrapper', wrapperAttributes?.className)}
         ref={rootRef}
-        {...hoveringProps}
+        {...hoveredProps}
         {...focusedProps}
         aria-describedby={generatedId}
       >

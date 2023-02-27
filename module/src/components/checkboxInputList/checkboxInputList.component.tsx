@@ -1,15 +1,23 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Form, IInputWrapperProps, ValidationErrors } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
-import { ArmstrongId } from '../../types/core';
-import { IArmstrongExtendedOption, IArmstrongExtendedOptionWithInput } from '../../types/options';
-import { arrayToArraysByKey } from '../../utils/arrays';
-import { concat } from '../../utils/classNames';
-import { CheckboxInput, ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
-
-import './checkboxInputList.basic.scss';
+import { Form, IInputWrapperProps, ValidationErrors } from "../..";
+import { IBindingProps } from "../../hooks/form";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+} from "../../types";
+import { ArmstrongId } from "../../types/core";
+import {
+  IArmstrongExtendedOption,
+  IArmstrongExtendedOptionWithInput,
+} from "../../types/options";
+import { concat } from "../../utils/classNames";
+import {
+  CheckboxInput,
+  ICheckboxInputProps,
+} from "../checkboxInput/checkboxInput.component";
+import { arrayToArraysByKey } from "../../utils/arrays";
 
 export interface ICheckboxInputListOption<Id extends ArmstrongId>
   extends Omit<
@@ -53,7 +61,10 @@ export interface ICheckboxInputListProps<Id extends ArmstrongId>
   error?: boolean;
 
   /** the direction for the options in the list to flow */
-  direction?: 'horizontal' | 'vertical';
+  direction?: "horizontal" | "vertical";
+
+  /** apply a test ID to the component for Storybook, Playwright etc */
+  testId?: string;
 }
 
 /** A list of checkboxes which binds to an array of IDs */
@@ -74,6 +85,7 @@ export const CheckboxInputList = React.forwardRef(
       validationErrorMessages,
       direction,
       hideCheckbox,
+      testId,
     }: ICheckboxInputListProps<Id>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -110,6 +122,7 @@ export const CheckboxInputList = React.forwardRef(
           data-error={error || !!validationErrorMessages?.length}
           ref={ref}
           data-direction={direction}
+          data-testid={testId}
         >
           {groupedOptions.map(group => (
             <React.Fragment key={group.key}>

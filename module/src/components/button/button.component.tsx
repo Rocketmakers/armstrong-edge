@@ -7,8 +7,6 @@ import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
 
-import './button.prototyping.scss';
-
 type ButtonHTMLProps = Omit<
   React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
   'ref'
@@ -36,6 +34,9 @@ export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
 
     /** don't style beyond removing the default css styling */
     minimalStyle?: boolean;
+
+    /** apply a test ID to the component for Storybook, Playwright etc */
+    testId?: string;
   };
 
 export type IButtonProps = IButtonCoreProps & ButtonHTMLProps;
@@ -87,6 +88,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
     children,
     statusPosition,
     hideIconOnStatus,
+    testId,
     ...nativeProps
   } = props;
 
@@ -101,6 +103,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
         data-error={shouldShowErrorIcon}
         disabled={disabled || pending}
         tabIndex={disabled ? -1 : nativeProps.tabIndex}
+        data-testid={testId}
         ref={ref}
         {...nativeProps}
       >

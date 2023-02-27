@@ -1,0 +1,15 @@
+@use "../../../theme/variables.scss";
+
+.arm-tab-control {
+  display: flex;
+  align-items: center;
+}
+
+.arm-tab-control-tab {
+  color: variables.$black;
+  padding: variables.$spacing-xxsmall variables.$spacing-xsmall;
+
+  &[data-is-current='true'] {
+    color: variables.$brand-primary;
+  }
+}

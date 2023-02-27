@@ -1,5 +1,9 @@
 name: Test
 on: [pull_request]
+env:
+  # 7 GiB by default on GitHub, setting to 6 GiB
+  # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+  NODE_OPTIONS: --max-old-space-size=6144
 jobs:
   test:
     runs-on: ubuntu-latest

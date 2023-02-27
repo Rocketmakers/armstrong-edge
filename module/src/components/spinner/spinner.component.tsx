@@ -3,7 +3,6 @@ import * as React from 'react';
 import { concat } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 
-import './spinner.basic.scss';
 
 export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
   /** icon definition for icon to spin in middle of div, can be overriden using children */
@@ -17,16 +16,27 @@ export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 /** Renders a spinner centred in the div that's being wrapped */
-export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ISpinnerProps>>(
-  ({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => (
-    <div ref={ref} className={concat('arm-spinner', className)} {...HTMLProps} data-fill-container={fillContainer}>
-      <div className="arm-spinner-inner">
-        {children || (icon && <Icon iconSet={icon.iconSet} icon={icon.icon} cypressTag="spinner" />)}
+export const Spinner = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<ISpinnerProps>
+>(({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => (
+  <div
+    ref={ref}
+    className={concat("arm-spinner", className)}
+    {...HTMLProps}
+    data-fill-container={fillContainer}
+    title="spinner"
+  >
+    <div className="arm-spinner-inner">
+      {children ||
+        (icon && (
+          <Icon iconSet={icon.iconSet} icon={icon.icon} title="Active spinner icon" />
+        ))}
+    </div>
+    {label && (
+      <div className="arm-spinner-label">
+        <span>{label}</span>
       </div>
-      {label && (
-        <div className="arm-spinner-label">
-          <span>{label}</span>
-        </div>
       )}
     </div>
   )

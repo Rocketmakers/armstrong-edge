@@ -49,13 +49,13 @@ export function isMyValidationError(validationErrorKey: string, ...propertyKeyCh
 /**
  * Filters a set of validation errors based on the `keyChain` of the property.
  * @param rootErrors The root set of validation errors for the entire form.
- * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
+ * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object. If no keychain to a property is passed, then no errors will be returned.
  * @returns {Array} A filtered set of validation errors that apply to the property in question and its sub-properties.
  */
-export function validationErrorsByKeyChain(
-  rootErrors: IValidationError[] = [],
-  keyChain: KeyChain = []
-): IValidationError[] {
+export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], keyChain: KeyChain = []): IValidationError[] {
+  if (!keyChain.length) {
+    return [];
+  }
   const keyChainAttrStringDots = validationKeyStringFromKeyChain(keyChain, 'dots');
   const keyChainAttrStringSquareArray = validationKeyStringFromKeyChain(keyChain, 'brackets');
   return rootErrors.filter(error =>
@@ -123,4 +123,42 @@ export function childKeyChainStringFromParent(childKeyChainString: string, paren
   const childWithoutParent = childKeyChainString.replace(new RegExp(`^${regexSafeParent}`), '');
   // strip accessor tokens (. | [n].) from the beginning of the child keyChain string and return.
   return childWithoutParent.replace(/^.*?\./, '');
+}
+
+export function mergeDeepFromKeyChain<TObject extends object, TValue>(
+  target: TObject,
+  keyChain: Array<string | number>,
+  value: TValue
+): TObject {
+  const output = (
+    Array.isArray(target) || Number.isInteger(keyChain[0])
+      ? [...((target || []) as any[])]
+      : { ...(target || {}) }
+  ) as TObject;
+  let bookmarkRef: any = output;
+  for (let i = 0; i < keyChain.length; i += 1) {
+    const key = keyChain[i];
+    if (i === keyChain.length - 1) {
+      if (Array.isArray(value)) {
+        bookmarkRef[key] = [...value];
+      } else if (typeof value === "object") {
+        bookmarkRef[key] = { ...value };
+      } else {
+        bookmarkRef[key] = value;
+      }
+    } else if (Array.isArray(bookmarkRef[key])) {
+      bookmarkRef[key] = [...bookmarkRef[key]];
+      bookmarkRef = bookmarkRef[key];
+    } else if (typeof bookmarkRef[key] === "object") {
+      bookmarkRef[key] = { ...bookmarkRef[key] };
+      bookmarkRef = bookmarkRef[key];
+    } else if (Number.isInteger(key)) {
+      bookmarkRef[key] = [...bookmarkRef[key]];
+      bookmarkRef = bookmarkRef[key];
+    } else {
+      bookmarkRef[key] = { ...bookmarkRef[key] };
+      bookmarkRef = bookmarkRef[key];
+    }
+  }
+  return output;
 }

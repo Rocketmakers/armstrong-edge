@@ -1,24 +1,29 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { useDidUpdateEffect, useEventListener, useHasTimeElapsed } from '../../hooks';
-import { useGeneratedId } from '../../hooks/useGeneratedId';
-import { ArmstrongId } from '../../types/core';
-import { IArmstrongExtendedOption } from '../../types/options';
-import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from '../../utils/arrays';
-import { concat } from '../../utils/classNames';
-import { Dropdown, IDropdownProps } from '../dropdown';
-import { Icon } from '../icon';
-import { OptionContent } from '../optionContent/optionContent.component';
+import {
+  useDidUpdateEffect,
+  useEventListener,
+  useHasTimeElapsed,
+} from "../../hooks";
+import { ArmstrongId } from "../../types/core";
+import { IArmstrongExtendedOption } from "../../types/options";
+import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from "../../utils/arrays";
+import { concat } from "../../utils/classNames";
+import { Dropdown, IDropdownProps } from "../dropdown";
+import { Icon } from "../icon";
+import { OptionContent } from "../optionContent/optionContent.component";
 
-import './dropdownItems.basic.scss';
-
-export type IDropdownItem = IArmstrongExtendedOption<
-  ArmstrongId,
-  Omit<
-    React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>,
-    'onMouseUp' | 'ref' | 'onClick' | 'onMouseEnter'
-  >
->;
+export interface IDropdownItem
+  extends IArmstrongExtendedOption<
+    ArmstrongId,
+    Omit<
+      React.DetailedHTMLProps<
+        React.BaseHTMLAttributes<HTMLLIElement>,
+        HTMLLIElement
+      >,
+      "onMouseUp" | "ref" | "onClick" | "onMouseEnter"
+    >
+  > {}
 
 export interface IDropdownItemProps extends IDropdownItem {
   /** fired when clicking on the dropdown item */
@@ -87,7 +92,6 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
             iconSet="Icomoon"
             icon="checkmark3"
             className="arm-dropdown-item-checkmark"
-            cypressTag="dropdown-item-icon"
           />
         )}
       </li>
@@ -273,7 +277,7 @@ export const DropdownItems: React.FunctionComponent<React.PropsWithChildren<IDro
     [closeOnSelection, onOpenChange, onItemSelected, hasTimePassedSinceMouseDown]
   );
 
-  const id = useGeneratedId('arm_dd', htmlId);
+  const id = React.useId();
 
   return (
     <Dropdown

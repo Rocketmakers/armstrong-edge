@@ -9,8 +9,6 @@ import { Icon, IconSet, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 
-import './rangeInput.basic.scss';
-
 export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
   extends Omit<
       React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,

@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { Document } from '../utils/globals';
-import { contentDependency } from '../utils/objects';
-import { useDidUpdateEffect } from './useDidUpdateEffect';
-import { useEventListener } from './useEventListener';
-import { useResizeObserver } from './useResizeObserver';
+import { Document } from "../utils/globals";
+import { contentDependency } from "../utils/objects";
+import { useDidUpdateEffect } from "./useDidUpdateEffect";
+import { useEventListener } from "./useEventListener";
+import { useResizeObserver } from "./useResizeObserver";
 
 export type UseBoundingClientRectReturn = [DOMRect, () => void];
 

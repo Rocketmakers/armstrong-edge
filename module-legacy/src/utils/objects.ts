@@ -24,7 +24,7 @@ export namespace Objects {
   }
 
   export function mergeDeepFromKeyChain<TObject extends object, TValue>(target: TObject, keyChain: Array<string | number>, value: TValue): TObject {
-    const output = (Array.isArray(target) || Number.isInteger(keyChain?.[0]) ? [...((target || []) as any[])] : { ...(target || {}) }) as TObject;
+    const output = (Array.isArray(target) || Number.isInteger(keyChain[0]) ? [...((target || []) as any[])] : { ...(target || {}) }) as TObject;
     let bookmarkRef: any = output;
     for (let i = 0; i < keyChain.length; i += 1) {
       const key = keyChain[i];

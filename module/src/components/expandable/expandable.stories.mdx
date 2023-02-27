@@ -1,0 +1,14 @@
+import { ArgsTable, Canvas, Meta, Story } from "@storybook/addon-docs";
+import { Expandable } from "./expandable.component";
+
+<Meta title="Layout/Expandable" component={Expandable} />
+
+# Expandable
+
+A div that automatically resizes if its children change size, including a hook-in that allows you to 'read' the size change.
+
+<Canvas withSource="open">
+  <Story id="layout-expandable--default" />
+</Canvas>
+
+<ArgsTable of={Expandable} />

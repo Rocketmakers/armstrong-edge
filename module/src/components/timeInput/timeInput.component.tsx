@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import { Form } from '../../hooks';
-import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
   ArmstrongFCReturn,
   DataAttributes,
   NullOrUndefined,
-} from '../../types';
+} from "../../types";
+import { IBindingProps } from "../../hooks/form";
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
@@ -19,8 +19,6 @@ import { ISelectOption } from '../select';
 import { IStatusWrapperProps } from '../statusWrapper';
 import { TimeParts } from './timeInput.types';
 import { getHourOptions, getMinuteOptions, parseTimePartsToDate, parseTimeStringToParts } from './timeInput.utils';
-
-import './timeInput.basic.scss';
 
 type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'> & DataAttributes;
 

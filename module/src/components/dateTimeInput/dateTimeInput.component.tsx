@@ -1,23 +1,24 @@
-import { isSameMinute, isValid } from 'date-fns';
-import { isNil } from 'lodash';
-import * as React from 'react';
+import { isSameMinute, isValid } from "date-fns";
+import * as React from "react";
+import { isNil } from "lodash";
 
-import { Form } from '../..';
-import { IBindingProps, useBindingState } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { concat } from '../../utils/classNames';
-import { Dates } from '../../utils/dates';
-import { CalendarInput, ICalendarInputProps } from '../calendarInput';
-import { InputWrapper } from '../inputWrapper';
-import { IStatusWrapperProps } from '../statusWrapper';
-import { ITimeInputProps, TimeInput } from '../timeInput';
+import { Form } from "../..";
+import { IBindingProps, useBindingState } from "../../hooks/form";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+  NullOrUndefined,
+} from "../../types";
+import { concat, Dates } from "../../utils";
+import { CalendarInput, ICalendarInputProps } from "../calendarInput";
+import { InputWrapper } from "../inputWrapper";
+import { IStatusWrapperProps } from "../statusWrapper";
+import { ITimeInputProps, TimeInput } from "../timeInput";
 
-import './dateTimeInput.basic.scss';
-
-type AdditionalCalendarInputProps<TValue extends NullOrUndefined<Dates.DateLike>> = Omit<
-  ICalendarInputProps<TValue>,
-  'bind' | 'formatString' | 'locale'
->;
+type AdditionalCalendarInputProps<
+  TValue extends NullOrUndefined<Dates.DateLike>
+> = Omit<ICalendarInputProps<TValue>, "bind" | "formatString" | "locale">;
 type AdditionalTimeInputProps = Omit<ITimeInputProps<any>, 'bind' | 'formatString' | 'locale'>;
 
 export interface IDateTimeInputProps<TValue extends NullOrUndefined<Dates.DateLike>> extends IStatusWrapperProps {
@@ -118,7 +119,13 @@ export const DateTimeInput = React.forwardRef(
             return;
           }
           const unset = isNil(selectedDateTime);
-          if (unset || !isSameMinute(finalDateSelected, Dates.dateLikeToDate(selectedDateTime)!)) {
+          if (
+            unset ||
+            !isSameMinute(
+              finalDateSelected,
+              Dates.dateLikeToDate(selectedDateTime)!
+            )
+          ) {
             setSelectedDateTime?.(
               Dates.dateObjectToDateLike(
                 finalDateSelected,

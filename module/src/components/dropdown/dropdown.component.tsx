@@ -10,8 +10,6 @@ import { AutoResizer } from '../autoResizer';
 import { IModalProps, Modal } from '../modal';
 import { IPortalProps } from '../portal';
 
-import './dropdown.basic.scss';
-
 export interface IDropdownProps
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>,
     Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,

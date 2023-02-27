@@ -1,17 +1,20 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Form, IconSet, IInputWrapperProps, ValidationErrors } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { findLastIndex } from '../../utils/arrays';
-import { concat } from '../../utils/classNames';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
-import { IInputProps } from '../input';
-import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
-import { TextInput } from '../textInput';
-import { CodeInputUtils } from '.';
-
-import './codeInput.basic.scss';
+import { Form, IconSet, IInputWrapperProps, ValidationErrors } from "../..";
+import { IBindingProps } from "../../hooks/form";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+  NullOrUndefined,
+} from "../../types";
+import { findLastIndex } from "../../utils/arrays";
+import { concat } from "../../utils/classNames";
+import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
+import { IInputProps } from "../input";
+import { StatusWrapper } from "../statusWrapper/statusWrapper.component";
+import { TextInput } from "../textInput";
+import { CodeInputUtils } from ".";
 
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
@@ -261,7 +264,11 @@ export const CodeInput = React.forwardRef(
 
     return (
       <>
-        <div className={concat('arm-code-input', className)} ref={ref}>
+        <div
+          className={concat("arm-code-input", className)}
+          ref={ref}
+          title="Code input"
+        >
           <StatusWrapper
             error={error}
             validationErrorMessages={bindConfig.validationErrorMessages}

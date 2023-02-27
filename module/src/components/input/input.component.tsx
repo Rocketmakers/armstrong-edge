@@ -7,9 +7,10 @@ import { useThrottle } from '../../hooks/useThrottle';
 import { concat } from '../../utils/classNames';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
-import './input.basic.scss';
-
-type NativeInputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+type NativeInputProps = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>;
 
 interface IDelayedInputBaseProps<TValue> extends NativeInputProps {
   /** The time in ms to delay the debounce or throttle effect. */

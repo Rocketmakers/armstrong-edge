@@ -1,16 +1,18 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Form } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
-import { ArmstrongId } from '../../types/core';
-import { IArmstrongOption } from '../../types/options';
-import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import { IconButton } from '../iconButton';
-import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
-
-import './select.basic.scss';
+import { Form } from "../..";
+import { IBindingProps } from "../../hooks/form";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+} from "../../types";
+import { ArmstrongId } from "../../types/core";
+import { IArmstrongOption } from "../../types/options";
+import { concat } from "../../utils/classNames";
+import { Icon, IconSet, IconUtils, IIcon } from "../icon";
+import { IconButton } from "../iconButton";
+import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
 
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongOption<

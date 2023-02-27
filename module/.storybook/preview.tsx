@@ -2,6 +2,8 @@ import React from 'react';
 import { ModalProvider } from '../src/components/modal/modal.context';
 import { themes } from '@storybook/theming';
 
+import '../src/stories/theme.scss';
+
 export const decorators = [(Story) => {
     return (
       <div id="host">

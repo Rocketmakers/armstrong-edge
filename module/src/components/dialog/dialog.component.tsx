@@ -1,15 +1,12 @@
 import * as React from 'react';
 
-import { useGeneratedId } from '../../hooks';
-import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import { IconButton } from '../iconButton';
-import { IModalProps, Modal } from '../modal';
-import { ModalUtils } from '../modal/modal.utils';
+import { concat } from "../../utils/classNames";
+import { Icon, IconSet, IconUtils, IIcon } from "../icon";
+import { IconButton } from "../iconButton";
+import { IModalProps, Modal } from "../modal";
+import { ModalUtils } from "../modal/modal.utils";
 
-import './dialog.basic.scss';
-
-export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
+export interface IDialogProps extends Omit<IModalProps, "darkenBackground"> {
   /** the value to render as the title, will have necessary aria tag added */
   title?: string;
 
@@ -45,7 +42,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<I
     },
     ref
   ) => {
-    const id = useGeneratedId(htmlId);
+    const id = React.useId();
 
     const titleId = title && `${id}_label`;
 
@@ -66,6 +63,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<I
         ref={ref}
         onClose={onClose}
         disableClose={disableClose}
+        role='dialog'
       >
         {!!title || !!titleIcon ? (
           <div className="arm-dialog-top">

@@ -1,17 +1,26 @@
 import * as React from 'react';
 
-import { Form, IconWrapper, IIconWrapperProps, IStatusWrapperProps, StatusWrapper, ValidationErrors } from '../..';
-import { useGeneratedId } from '../../hooks';
-import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { repeat } from '../../utils/arrays';
-import { concat } from '../../utils/classNames';
-import { clamp } from '../../utils/maths';
-import { Button } from '../button';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import { IInputWrapperProps } from '../inputWrapper';
-
-import './rating.basic.scss';
+import {
+  Form,
+  IconWrapper,
+  IIconWrapperProps,
+  IStatusWrapperProps,
+  StatusWrapper,
+  ValidationErrors,
+} from "../..";
+import { IBindingProps } from "../../hooks/form";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+  NullOrUndefined,
+} from "../../types";
+import { repeat } from "../../utils/arrays";
+import { clamp } from "../../utils/maths";
+import { concat } from "../../utils/classNames";
+import { Button } from "../button";
+import { Icon, IconSet, IconUtils, IIcon } from "../icon";
+import { IInputWrapperProps } from "../inputWrapper";
 
 export interface IRatingPartProps
   extends Pick<IRatingProps<any>, 'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'name'> {
@@ -194,7 +203,7 @@ export const Rating = React.forwardRef(
       validationErrorIcon: errorIcon,
     });
 
-    const generatedName = useGeneratedId('radio', name);
+    const generatedName = React.useId();
 
     return (
       <>

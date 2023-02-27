@@ -1,0 +1,14 @@
+import { ArgsTable, Canvas, Meta, Story } from "@storybook/addon-docs";
+import { Dialog } from "./dialog.component";
+
+<Meta title="Layout/Dialog" component={Dialog} />
+
+# Dialog
+
+A basic customisable dialog - use with the useDialog hook for extra functionality, like resolving data directly from the dialog output on close. For more information see [useModal and useDialog](/docs/hooks-usemodal-and-usedialog--docs).
+
+<Canvas withSource="open">
+  <Story id="layout-dialog--default" />
+</Canvas>
+
+<ArgsTable of={Dialog} />

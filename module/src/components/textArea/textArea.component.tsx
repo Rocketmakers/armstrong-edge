@@ -1,16 +1,30 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Form } from '../../hooks';
-import { FormValidationMode, IBindingProps, IDelayInputConfig, ValidationMessage } from '../../hooks/form/form.types';
-import { useDebounce } from '../../hooks/useDebounce';
-import { useThrottle } from '../../hooks/useThrottle';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { concat } from '../../utils/classNames';
-import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
+import { Form } from "../..";
+import {
+  FormValidationMode,
+  IBindingProps,
+  IDelayInputConfig,
+  ValidationMessage,
+} from "../../hooks/form/form.types";
+import { useDebounce } from "../../hooks/useDebounce";
+import { useThrottle } from "../../hooks/useThrottle";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+  NullOrUndefined,
+} from "../../types";
+import { concat } from "../../utils/classNames";
+import {
+  IInputWrapperProps,
+  InputWrapper,
+} from "../inputWrapper/inputWrapper.component";
 
-import './textArea.basic.scss';
-
-type NativeTextAreaProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>;
+type NativeTextAreaProps = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLTextAreaElement>,
+  HTMLTextAreaElement
+>;
 
 interface IDelayedTextAreaBaseProps extends NativeTextAreaProps {
   /** Time interval in milliseconds to delay input */
