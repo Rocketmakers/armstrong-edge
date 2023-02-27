@@ -8,7 +8,6 @@ import {
 import { concat } from "../../utils/classNames";
 import { Icons } from "./icon.icons";
 
-import "./icon.basic.scss";
 
 /** The name of a set of icons */
 export type IconSet = keyof Icons;
@@ -27,15 +26,12 @@ export interface IIcon<TIconSet extends IconSet> {
 
 export interface IIconProps<TIconSet extends IconSet>
   extends IIcon<TIconSet>,
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    > {
+  React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  > {
   /** CSS className property */
   className?: string;
-
-  /** identifier for driving this component with Cypress */
-  cypressTag?: string;
 }
 
 /** Render an icon using one of the supported icon sets */
@@ -46,7 +42,6 @@ export const Icon = React.forwardRef(
       iconSet,
       icon,
       onClick,
-      cypressTag,
       ...nativeProps
     }: IIconProps<TIconSet>,
     forwardedRef: React.ForwardedRef<HTMLDivElement>
@@ -61,7 +56,6 @@ export const Icon = React.forwardRef(
         className={concat("arm-icon", className)}
         data-clickable={!!onClick}
         onClick={onClick}
-        data-cy={cypressTag}
       />
     );
   }

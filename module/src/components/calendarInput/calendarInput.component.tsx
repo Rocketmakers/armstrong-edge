@@ -34,8 +34,6 @@ import {
   validateDateSelection,
 } from "./calendarInput.utils";
 
-import "./calendarInput.basic.scss";
-
 type AdditionalInputProps = Omit<
   IAutoCompleteInputProps<number>,
   "bind" | "options" | "min" | "max"

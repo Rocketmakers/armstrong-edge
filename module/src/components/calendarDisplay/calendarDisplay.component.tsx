@@ -14,8 +14,6 @@ import {
   getDaysWithDisplayFormat,
 } from "./calendarDisplay.utils";
 
-import "./calendarDisplay.basic.scss";
-
 export interface ICalendarDisplayProps {
   /**
    * An optional "day of the week" index to be the first day of the week.

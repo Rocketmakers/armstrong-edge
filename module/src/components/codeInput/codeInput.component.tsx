@@ -16,8 +16,6 @@ import { StatusWrapper } from "../statusWrapper/statusWrapper.component";
 import { TextInput } from "../textInput";
 import { CodeInputUtils } from ".";
 
-import "./codeInput.basic.scss";
-
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
     IInputProps<TBind>,
@@ -303,6 +301,7 @@ export const CodeInput = React.forwardRef(
         <div
           className={concat("arm-code-input", className)}
           ref={ref}
+          title="Code input"
         >
           <StatusWrapper
             error={error}

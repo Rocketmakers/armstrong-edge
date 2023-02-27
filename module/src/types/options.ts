@@ -40,7 +40,7 @@ export interface IArmstrongExtendedOption<
   group?: string;
 
   /** JSX to render inside the option - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
-  content?: React.ReactChild | ((active: boolean) => React.ReactChild);
+  content?: React.ReactNode | ((active: boolean) => React.ReactNode);
 }
 
 export interface IArmstrongExtendedOptionWithInput<

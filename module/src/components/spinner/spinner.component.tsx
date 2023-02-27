@@ -3,7 +3,6 @@ import * as React from "react";
 import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 
-import "./spinner.basic.scss";
 
 export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
   /** icon definition for icon to spin in middle of div, can be overriden using children */
@@ -26,11 +25,12 @@ export const Spinner = React.forwardRef<
     className={concat("arm-spinner", className)}
     {...HTMLProps}
     data-fill-container={fillContainer}
+    title="spinner"
   >
     <div className="arm-spinner-inner">
       {children ||
         (icon && (
-          <Icon iconSet={icon.iconSet} icon={icon.icon} cypressTag="spinner" />
+          <Icon iconSet={icon.iconSet} icon={icon.icon} title="Active spinner icon" />
         ))}
     </div>
     {label && (
