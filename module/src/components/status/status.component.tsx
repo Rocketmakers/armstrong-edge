@@ -30,23 +30,12 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
         data-active={!!pending || !!error}
         data-error={!!error && !pending}
         data-pending={pending}
-        role='status'
+        role="status"
       >
         {error && !pending && (
-          <Icon
-            className="arm-status-error"
-            iconSet={errorIcon!.iconSet}
-            icon={errorIcon!.icon}
-            title="Error icon"
-          />
+          <Icon className="arm-status-error" iconSet={errorIcon!.iconSet} icon={errorIcon!.icon} title="Error icon" />
         )}
-        {pending && (
-          <Spinner
-            className="arm-status-spinner"
-            fillContainer={false}
-            icon={spinnerIcon}
-          />
-        )}
+        {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />}
       </div>
     );
   }

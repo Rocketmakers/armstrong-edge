@@ -3,11 +3,7 @@ import * as React from 'react';
 import { concat } from '../../utils/classNames';
 import { AutoResizer } from '../autoResizer/autoResizer.component';
 
-export interface IExpandableProps
-  extends React.DetailedHTMLProps<
-    React.HTMLProps<HTMLDivElement>,
-    HTMLDivElement
-  > {
+export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
   /** is the expandable region open, if false will take up no space */
   isOpen?: boolean;
 

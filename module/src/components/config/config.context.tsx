@@ -9,16 +9,8 @@ const ArmstrongConfigContext = React.createContext<IArmstrongConfigContext>({});
  *
  * Currently not used - add properties etc. as appropriate
  */
-export const ArmstrongConfigProvider: React.FC<
-  React.PropsWithChildren<IArmstrongConfigContext>
-> = ({children }) => {
-  return (
-    <ArmstrongConfigContext.Provider
-      value={{}}
-    >
-      {children}
-    </ArmstrongConfigContext.Provider>
-  );
+export const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<IArmstrongConfigContext>> = ({ children }) => {
+  return <ArmstrongConfigContext.Provider value={{}}>{children}</ArmstrongConfigContext.Provider>;
 };
 
 /** Access Armstrong's configuration - for internal Armstrong use */

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 /**
  * Fires a given callback when an element reaches a distance from the end defined by distanceFromEdge.
@@ -8,10 +8,7 @@ import * as React from "react";
  * @param onScrollToEnd the callback to fire when the user has scrolled to the end of the element
  * @param distanceFromEdge the distance from the edge in px to fire the callback on
  */
-export function useOnScrollToEnd(
-  onScrollToEnd?: () => void,
-  distanceFromEdge = 100
-) {
+export function useOnScrollToEnd(onScrollToEnd?: () => void, distanceFromEdge = 100) {
   const [scrolledToEnd, setScrolledToEnd] = React.useState(false);
 
   const onEndIntersecting = React.useCallback(() => {

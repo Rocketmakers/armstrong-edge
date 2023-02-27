@@ -1,23 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form, IInputWrapperProps, ValidationErrors } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import {
-  IArmstrongExtendedOption,
-  IArmstrongExtendedOptionWithInput,
-} from "../../types/options";
-import { concat } from "../../utils/classNames";
-import {
-  CheckboxInput,
-  ICheckboxInputProps,
-} from "../checkboxInput/checkboxInput.component";
-import { arrayToArraysByKey } from "../../utils/arrays";
+import { Form, IInputWrapperProps, ValidationErrors } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption, IArmstrongExtendedOptionWithInput } from '../../types/options';
+import { arrayToArraysByKey } from '../../utils/arrays';
+import { concat } from '../../utils/classNames';
+import { CheckboxInput, ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
 
 export interface ICheckboxInputListOption<Id extends ArmstrongId>
   extends Omit<
@@ -61,7 +51,7 @@ export interface ICheckboxInputListProps<Id extends ArmstrongId>
   error?: boolean;
 
   /** the direction for the options in the list to flow */
-  direction?: "horizontal" | "vertical";
+  direction?: 'horizontal' | 'vertical';
 
   /** apply a test ID to the component for Storybook, Playwright etc */
   testId?: string;

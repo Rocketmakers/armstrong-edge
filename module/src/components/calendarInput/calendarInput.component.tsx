@@ -1,6 +1,6 @@
-import { isSameDay } from "date-fns";
-import * as React from "react";
-import {isNil} from "lodash";
+import { isSameDay } from 'date-fns';
+import { isNil } from 'lodash';
+import * as React from 'react';
 
 import { Calendar, Form } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
@@ -10,47 +10,28 @@ import {
   ArmstrongVFCProps,
   DataAttributes,
   NullOrUndefined,
-} from "../../types";
-import { assertNever } from "../../utils/typescript";
-import { concat } from "../../utils/classNames";
-import { Dates } from "../../utils/dates";
-import {
-  AutoCompleteInput,
-  IAutoCompleteInputProps,
-} from "../autoCompleteInput";
-import {
-  CalendarDisplay,
-  ICalendarDisplayProps,
-} from "../calendarDisplay/calendarDisplay.component";
-import { Dropdown, IDropdownProps } from "../dropdown";
-import { IconSet, IconUtils } from "../icon";
-import { IconButton } from "../iconButton";
-import { IIconWrapperProps } from "../iconWrapper";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
-import { Modal } from "../modal";
-import { IStatusWrapperProps } from "../statusWrapper";
-import {
-  calendarDayToDateLike,
-  getDaySelectOptions,
-  validateDateSelection,
-} from "./calendarInput.utils";
+} from '../../types';
+import { concat } from '../../utils/classNames';
+import { Dates } from '../../utils/dates';
+import { assertNever } from '../../utils/typescript';
+import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
+import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
+import { Dropdown, IDropdownProps } from '../dropdown';
+import { IconSet, IconUtils } from '../icon';
+import { IconButton } from '../iconButton';
+import { IIconWrapperProps } from '../iconWrapper';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { Modal } from '../modal';
+import { IStatusWrapperProps } from '../statusWrapper';
+import { calendarDayToDateLike, getDaySelectOptions, validateDateSelection } from './calendarInput.utils';
 
-type AdditionalInputProps = Omit<
-  IAutoCompleteInputProps<number>,
-  "bind" | "options" | "min" | "max"
-> &
-  DataAttributes;
+type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'> & DataAttributes;
 
-export type CalendarInputPart = "year" | "month" | "day";
+export type CalendarInputPart = 'year' | 'month' | 'day';
 
-export type CalendarInputCalendarPosition =
-  | "dropdown"
-  | "modal"
-  | "above"
-  | "below";
-export interface ICalendarInputProps<
-  TValue extends NullOrUndefined<Dates.DateLike>
-> extends Omit<Calendar.IConfig, "selectedDate">,
+export type CalendarInputCalendarPosition = 'dropdown' | 'modal' | 'above' | 'below';
+export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLike>>
+  extends Omit<Calendar.IConfig, 'selectedDate'>,
     Pick<
       ICalendarDisplayProps,
       | 'weekdayStartIndex'
@@ -267,9 +248,7 @@ export const CalendarInput = React.forwardRef(
         setSelectedDate?.(
           calendarDayToDateLike(
             day,
-            !isNil(selectedDate)
-              ? typeof selectedDate
-              : "string",
+            !isNil(selectedDate) ? typeof selectedDate : 'string',
             formatString,
             locale
           ) as TValue
@@ -321,9 +300,7 @@ export const CalendarInput = React.forwardRef(
         if (!selectedDate || !isSameDay(date, Dates.dateLikeToDate(selectedDate, formatString, locale)!)) {
           const newDate = Dates.dateObjectToDateLike(
             date,
-            !isNil(selectedDate)
-              ? typeof selectedDate
-              : "string",
+            !isNil(selectedDate) ? typeof selectedDate : 'string',
             formatString,
             locale
           );

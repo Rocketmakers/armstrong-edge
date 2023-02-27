@@ -4,7 +4,6 @@ import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../
 import { concat } from '../../utils/classNames';
 import { Icons } from './icon.icons';
 
-
 /** The name of a set of icons */
 export type IconSet = keyof Icons;
 
@@ -22,10 +21,7 @@ export interface IIcon<TIconSet extends IconSet> {
 
 export interface IIconProps<TIconSet extends IconSet>
   extends IIcon<TIconSet>,
-  React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  > {
+    React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /** CSS className property */
   className?: string;
 }
@@ -33,13 +29,7 @@ export interface IIconProps<TIconSet extends IconSet>
 /** Render an icon using one of the supported icon sets */
 export const Icon = React.forwardRef(
   <TIconSet extends IconSet>(
-    {
-      className,
-      iconSet,
-      icon,
-      onClick,
-      ...nativeProps
-    }: IIconProps<TIconSet>,
+    { className, iconSet, icon, onClick, ...nativeProps }: IIconProps<TIconSet>,
     forwardedRef: React.ForwardedRef<HTMLDivElement>
   ) => {
     return (

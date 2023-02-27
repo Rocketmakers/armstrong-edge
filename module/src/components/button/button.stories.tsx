@@ -41,9 +41,9 @@ export const Default: StoryObj<typeof Button> = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/f6yAoBwAQop8YahTF2ASSG/Block-up-design-system?node-id=197%3A3561&t=ccw4zqPQDfhSLCVL-1'
-    }
-  }
+      url: 'https://www.figma.com/file/f6yAoBwAQop8YahTF2ASSG/Block-up-design-system?node-id=197%3A3561&t=ccw4zqPQDfhSLCVL-1',
+    },
+  },
 };
 
 export const WithIcons: StoryObj<typeof Button> = {
@@ -98,8 +98,8 @@ export const Pending: StoryObj<typeof Button> = {
     expect(spinner).toBeVisible();
     expect(spinner).toHaveAttribute('data-pending', 'true');
     expect(within(spinner).getByTitle('Active spinner icon')).toHaveAttribute('data-i', 'spinner2');
-  }
-}
+  },
+};
 
 export const PendingOnLeft: StoryObj<typeof Button> = {
   ...Template,
@@ -115,8 +115,8 @@ export const PendingOnLeft: StoryObj<typeof Button> = {
     const spinner = within(button).getByRole('status');
     expect(button.firstChild).toContainElement(spinner as HTMLElement);
     expect(within(spinner).getByTitle('Active spinner icon')).toHaveAttribute('data-i', 'spinner2');
-  }
-}
+  },
+};
 
 export const PendingAnimation = () => {
   const [pending, setPending] = React.useState(false);
@@ -159,8 +159,8 @@ export const Error: StoryObj<typeof Button> = {
     expect(error).toBeVisible();
     expect(error).toHaveAttribute('data-error', 'true');
     expect(within(error).getByTitle('Error icon')).toHaveAttribute('data-i', 'warning');
-  }
-}
+  },
+};
 
 export const Minimal: StoryObj<typeof Button> = {
   ...Template,

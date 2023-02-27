@@ -7,7 +7,7 @@ describe('useHasTimeElapsed', () => {
     jest.useRealTimers();
   });
 
-  it("indicates that the required time has passed", async () => {
+  it('indicates that the required time has passed', async () => {
     // Assign
     const dummyFunc = jest.fn(() => null);
     const time = 25;
@@ -39,7 +39,7 @@ describe('useHasTimeElapsed', () => {
     expect(dummyFunc).toHaveBeenCalledTimes(1);
   });
 
-  it("allows the user to reset the timer", async () => {
+  it('allows the user to reset the timer', async () => {
     // Assign
     const time = 25;
 
@@ -73,7 +73,7 @@ describe('useHasTimeElapsedSinceMount', () => {
     jest.useRealTimers();
   });
 
-  it("indicates that the required time has passed since mount", async () => {
+  it('indicates that the required time has passed since mount', async () => {
     // Assign
     const time = 25;
     jest.useFakeTimers();

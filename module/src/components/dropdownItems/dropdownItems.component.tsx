@@ -1,29 +1,21 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  useDidUpdateEffect,
-  useEventListener,
-  useHasTimeElapsed,
-} from "../../hooks";
-import { ArmstrongId } from "../../types/core";
-import { IArmstrongExtendedOption } from "../../types/options";
-import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from "../../utils/arrays";
-import { concat } from "../../utils/classNames";
-import { Dropdown, IDropdownProps } from "../dropdown";
-import { Icon } from "../icon";
-import { OptionContent } from "../optionContent/optionContent.component";
+import { useDidUpdateEffect, useEventListener, useHasTimeElapsed } from '../../hooks';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
+import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from '../../utils/arrays';
+import { concat } from '../../utils/classNames';
+import { Dropdown, IDropdownProps } from '../dropdown';
+import { Icon } from '../icon';
+import { OptionContent } from '../optionContent/optionContent.component';
 
-export interface IDropdownItem
-  extends IArmstrongExtendedOption<
-    ArmstrongId,
-    Omit<
-      React.DetailedHTMLProps<
-        React.BaseHTMLAttributes<HTMLLIElement>,
-        HTMLLIElement
-      >,
-      "onMouseUp" | "ref" | "onClick" | "onMouseEnter"
-    >
-  > {}
+export type IDropdownItem = IArmstrongExtendedOption<
+  ArmstrongId,
+  Omit<
+    React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>,
+    'onMouseUp' | 'ref' | 'onClick' | 'onMouseEnter'
+  >
+>;
 
 export interface IDropdownItemProps extends IDropdownItem {
   /** fired when clicking on the dropdown item */
@@ -87,13 +79,7 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
           id={id}
           isActive={isSelected}
         />
-        {isSelected && (
-          <Icon
-            iconSet="Icomoon"
-            icon="checkmark3"
-            className="arm-dropdown-item-checkmark"
-          />
-        )}
+        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
       </li>
     );
   }

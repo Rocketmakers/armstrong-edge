@@ -1,15 +1,11 @@
 import * as React from 'react';
 
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-} from "../../../types";
-import { ArmstrongId } from "../../../types/core";
-import { IArmstrongExtendedOption } from "../../../types/options";
-import { concat } from "../../../utils/classNames";
-import { Button } from "../../button";
-import { OptionContent } from "../../optionContent";
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../../types';
+import { ArmstrongId } from '../../../types/core';
+import { IArmstrongExtendedOption } from '../../../types/options';
+import { concat } from '../../../utils/classNames';
+import { Button } from '../../button';
+import { OptionContent } from '../../optionContent';
 
 export type ITab<Id extends ArmstrongId> = Pick<
   IArmstrongExtendedOption<Id, never>,

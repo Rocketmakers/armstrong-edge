@@ -1,17 +1,13 @@
 import * as React from 'react';
 
-import { IBindingProps, useBindingState } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { concat } from "../../utils/classNames";
-import { IInputWrapperProps } from "../inputWrapper";
-import { IStatusWrapperProps, StatusWrapper } from "../statusWrapper";
-import { ITabControlProps, TabControl } from "./tabControl";
-import { ValidationErrors } from "../validationErrors";
+import { IBindingProps, useBindingState } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { concat } from '../../utils/classNames';
+import { IInputWrapperProps } from '../inputWrapper';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
+import { ValidationErrors } from '../validationErrors';
+import { ITabControlProps, TabControl } from './tabControl';
 
 export interface ITabSelectProps<Id extends ArmstrongId>
   extends Omit<ITabControlProps<Id>, 'currentTab' | 'onTabChange'>,

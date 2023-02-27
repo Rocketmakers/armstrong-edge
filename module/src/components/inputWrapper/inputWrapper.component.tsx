@@ -1,19 +1,14 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { FormValidationMode, ValidationMessage } from "../../hooks/form";
-import { concat } from "../../utils/classNames";
-import { AutoResizer } from "../autoResizer";
-import { IconSet, IconUtils, IIcon } from "../icon";
-import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
-import {
-  IStatusWrapperProps,
-  StatusWrapper,
-} from "../statusWrapper/statusWrapper.component";
-import { ValidationErrors } from "../validationErrors";
+import { FormValidationMode, ValidationMessage } from '../../hooks/form';
+import { concat } from '../../utils/classNames';
+import { AutoResizer } from '../autoResizer';
+import { IconSet, IconUtils, IIcon } from '../icon';
+import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
+import { ValidationErrors } from '../validationErrors';
 
-export interface IInputWrapperProps
-  extends IIconWrapperProps<IconSet, IconSet>,
-    IStatusWrapperProps {
+export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet>, IStatusWrapperProps {
   /** CSS className property */
   className?: string;
 

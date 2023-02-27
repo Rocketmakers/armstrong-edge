@@ -31,15 +31,7 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
 /** Render a character limit from a bound value, showing as an error if the user  */
 export const CharacterLimit = React.forwardRef(
   <TBind extends NullOrUndefined<string>>(
-    {
-      bind,
-      limit,
-      shouldEnforce,
-      value,
-      className,
-      exceedsIcon,
-      testId,
-    }: ICharacterLimitProps<TBind>,
+    { bind, limit, shouldEnforce, value, className, exceedsIcon, testId }: ICharacterLimitProps<TBind>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const [boundValue, setBoundValue] = useBindingState(bind, { value });
@@ -53,12 +45,7 @@ export const CharacterLimit = React.forwardRef(
     }, [boundValue]);
 
     return (
-      <div
-        ref={ref}
-        className={concat("arm-character-limit", className)}
-        data-exceeded={exceeded}
-        data-testid={testId}
-      >
+      <div ref={ref} className={concat('arm-character-limit', className)} data-exceeded={exceeded} data-testid={testId}>
         <p>
           {boundValue?.length}/{limit}
         </p>

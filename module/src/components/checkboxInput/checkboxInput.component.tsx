@@ -1,25 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  ArmstrongId,
-  DataAttributes,
-  Form,
-  IArmstrongExtendedOption,
-} from "../..";
-import { useOverridableState } from "../../hooks";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IInputWrapperProps } from "../inputWrapper";
-import { OptionContent } from "../optionContent";
-import { Status } from "../status";
-import { ValidationErrors } from "../validationErrors";
+import { ArmstrongId, DataAttributes, Form, IArmstrongExtendedOption } from '../..';
+import { useOverridableState } from '../../hooks';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IInputWrapperProps } from '../inputWrapper';
+import { OptionContent } from '../optionContent';
+import { Status } from '../status';
+import { ValidationErrors } from '../validationErrors';
 
 export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type' | 'checked'>,
@@ -64,7 +54,7 @@ export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
   hideCheckbox?: boolean;
 
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
-  content?: IArmstrongExtendedOption<ArmstrongId>["content"];
+  content?: IArmstrongExtendedOption<ArmstrongId>['content'];
 
   /** apply a test ID to the component for Storybook, Playwright etc */
   testId?: string;

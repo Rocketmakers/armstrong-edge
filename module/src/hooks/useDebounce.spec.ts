@@ -1,12 +1,13 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
-import { useDebounce, useDebounceEffect } from "./useDebounce";
+import { act, renderHook, waitFor } from '@testing-library/react';
 
-describe("useDebounce", () => {
-    beforeEach(() => {
-        jest.useRealTimers();
-    });
+import { useDebounce, useDebounceEffect } from './useDebounce';
 
-  it("debounces a value being passed in after a given time", async () => {
+describe('useDebounce', () => {
+  beforeEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('debounces a value being passed in after a given time', async () => {
     jest.useFakeTimers();
     const ms = 600;
     const value = 'test';
@@ -49,13 +50,13 @@ describe("useDebounce", () => {
 
     expect(onChange).toHaveBeenCalledWith(newValue);
   });
-  
-  it("resets a value back to its original value if a reset is called", async () => {
+
+  it('resets a value back to its original value if a reset is called', async () => {
     const ms = 600;
     const value = 'test';
     const newValue = 'value';
     const onChange = jest.fn(() => null);
-    const { result } = renderHook((prop) => useDebounce(ms, value, onChange));
+    const { result } = renderHook(prop => useDebounce(ms, value, onChange));
 
     expect(result.current[0]).toBe(value);
     expect(result.current[2]).toBe(value);
@@ -79,7 +80,7 @@ describe("useDebounce", () => {
     });
   });
 
-  it("clears the timer on unmount", async () => {
+  it('clears the timer on unmount', async () => {
     jest.useFakeTimers();
     const clearSpy = jest.spyOn(global, 'clearTimeout');
     const ms = 600;
@@ -103,13 +104,12 @@ describe("useDebounce", () => {
 
     unmount();
 
-    expect(clearSpy).toBeCalled();
+    expect(clearSpy).toHaveBeenCalled();
   });
 });
 
-describe("useDebounceEffect", () => {
-
-  it("debounces an effect being triggered by a dependency change to a given time", async () => {
+describe('useDebounceEffect', () => {
+  it('debounces an effect being triggered by a dependency change to a given time', async () => {
     jest.useFakeTimers();
     const ms = 600;
     let value = 'test';
@@ -123,7 +123,7 @@ describe("useDebounceEffect", () => {
     });
 
     rerender();
-    expect(onChange).not.toBeCalled();
+    expect(onChange).not.toHaveBeenCalled();
 
     act(() => {
       jest.advanceTimersByTime(1);
@@ -131,7 +131,7 @@ describe("useDebounceEffect", () => {
 
     rerender();
     await waitFor(() => {
-      expect(onChange).toBeCalled();
+      expect(onChange).toHaveBeenCalled();
     });
   });
 });

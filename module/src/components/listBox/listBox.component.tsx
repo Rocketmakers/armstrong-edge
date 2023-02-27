@@ -1,19 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import { ArmstrongId, IArmstrongExtendedOption } from "../../types";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-} from "../../types/reactExtensions";
-import { concat } from "../../utils/classNames";
-import { DropdownItems, IDropdownItemsProps } from "../dropdownItems";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IconButton } from "../iconButton";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
-import { ISelectOption } from "../select";
+import { Form } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongId, IArmstrongExtendedOption } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types/reactExtensions';
+import { concat } from '../../utils/classNames';
+import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IconButton } from '../iconButton';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { ISelectOption } from '../select';
 
 export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongExtendedOption<

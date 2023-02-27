@@ -1,22 +1,18 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form } from "../..";
-import { useIsFocused } from "../../hooks";
-import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
-import { useOverridableState } from "../../hooks/useOverridableState";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { IArmstrongExtendedOption } from "../../types/options";
-import { concat } from "../../utils/classNames";
-import { contentDependency } from "../../utils/objects";
-import { DropdownItems, IDropdownItemsProps } from "../dropdownItems";
-import { IInputProps } from "../input";
-import { IPortalProps } from "../portal";
-import { TextInput } from "../textInput";
+import { Form } from '../..';
+import { useIsFocused } from '../../hooks';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
+import { useOverridableState } from '../../hooks/useOverridableState';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
+import { concat } from '../../utils/classNames';
+import { contentDependency } from '../../utils/objects';
+import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
+import { IInputProps } from '../input';
+import { IPortalProps } from '../portal';
+import { TextInput } from '../textInput';
 
 // internally, the AutoCompleteInput binds two values - the actual content of the text input, and the selected value
 // if allowFreeText is set to true, these two values will be the same, otherwise the value is only bound

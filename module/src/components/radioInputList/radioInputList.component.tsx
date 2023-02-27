@@ -1,33 +1,19 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { arrayToArraysByKey, Form, IInputWrapperProps } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { IArmstrongExtendedOptionWithInput } from "../../types/options";
-import { concat } from "../../utils/classNames";
-import {
-  IRadioInputProps,
-  RadioInput,
-} from "../radioInput/radioInput.component";
-import { ValidationErrors } from "../validationErrors";
+import { arrayToArraysByKey, Form, IInputWrapperProps } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOptionWithInput } from '../../types/options';
+import { concat } from '../../utils/classNames';
+import { IRadioInputProps, RadioInput } from '../radioInput/radioInput.component';
+import { ValidationErrors } from '../validationErrors';
 
-export interface IRadioInputListOption<Id extends ArmstrongId>
-  extends IArmstrongExtendedOptionWithInput<
-    Id,
-    Omit<
-      React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      "onChange" | "type" | "ref"
-    >,
-    IRadioInputProps["inputProps"]
-  > {}
+export type IRadioInputListOption<Id extends ArmstrongId> = IArmstrongExtendedOptionWithInput<
+  Id,
+  Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
+  IRadioInputProps['inputProps']
+>;
 
 export interface IRadioInputListProps<Id extends ArmstrongId>
   extends Pick<IRadioInputProps, 'checkedIcon' | 'uncheckedIcon' | 'hideRadio'>,

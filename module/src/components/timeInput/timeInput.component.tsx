@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import { Form } from '../../hooks';
+import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
   ArmstrongFCReturn,
   DataAttributes,
   NullOrUndefined,
-} from "../../types";
-import { IBindingProps } from "../../hooks/form";
+} from '../../types';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';

@@ -4,8 +4,7 @@ import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongId, ArmstrongVFCProp
 import { concat } from '../../utils';
 import { IRadioInputListProps, RadioInputList } from '../radioInputList';
 
-export interface IRadioOptionsListProps<Id extends ArmstrongId>
-  extends Omit<IRadioInputListProps<Id>, "hideRadio"> {}
+export type IRadioOptionsListProps<Id extends ArmstrongId> = Omit<IRadioInputListProps<Id>, 'hideRadio'>;
 
 export const RadioOptionsList = React.forwardRef(
   <Id extends ArmstrongId>(

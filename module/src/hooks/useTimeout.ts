@@ -48,7 +48,7 @@ export function useTimeout<T = void>(callback?: () => T, time?: number): IUseTim
     [time, callback]
   );
 
-  React.useEffect(() => clear , []);
+  React.useEffect(() => clear, []);
 
   return { set, clear, waiting };
 }

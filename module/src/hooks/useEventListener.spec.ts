@@ -1,23 +1,24 @@
-import { useEventListener } from "./useEventListener";
-import { renderHook } from "@testing-library/react";
+import { renderHook } from '@testing-library/react';
+
+import { useEventListener } from './useEventListener';
 
 describe('useEventListener', () => {
-    it('adds an event listener to an element on mount and removes it on unmount', () => {
-        const mockElement = document.createElement('div');
-        const handler = jest.fn();
+  it('adds an event listener to an element on mount and removes it on unmount', () => {
+    const mockElement = document.createElement('div');
+    const handler = jest.fn();
 
-        const { unmount } = renderHook(() => useEventListener('click', handler, mockElement));
+    const { unmount } = renderHook(() => useEventListener('click', handler, mockElement));
 
-        mockElement.click();
+    mockElement.click();
 
-        expect(handler).toBeCalled();
+    expect(handler).toHaveBeenCalled();
 
-        handler.mockClear();
+    handler.mockClear();
 
-        unmount();
+    unmount();
 
-        mockElement.click();
+    mockElement.click();
 
-        expect(handler).not.toBeCalled();
-    });
+    expect(handler).not.toHaveBeenCalled();
+  });
 });

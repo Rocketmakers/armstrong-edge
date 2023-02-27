@@ -4,7 +4,6 @@ import { ValidationMessage } from '../../hooks/form';
 import { concat } from '../../utils/classNames';
 import { Icon, IconSet, IIcon } from '../icon';
 
-
 export interface IValidationErrorsProps {
   /** The errors to render */
   /** Can be a string or {key, element} key is necessary for animating in new messages   */

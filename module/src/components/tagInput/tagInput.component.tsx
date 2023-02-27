@@ -1,33 +1,19 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  concat,
-  Form,
-} from "../..";
-import {
-  FormValidationMode,
-  IBindingProps,
-  ValidationMessage,
-} from "../../hooks/form";
-import { useOverridableState } from "../../hooks/useOverridableState";
-import { ArmstrongId, NullOrUndefined } from "../../types/core";
-import { IArmstrongExtendedOption } from "../../types/options";
-import { IconUtils } from "../icon";
-import { IconButton } from "../iconButton";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
-import { Tag } from "../tag/tag.component";
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, concat, Form } from '../..';
+import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
+import { useOverridableState } from '../../hooks/useOverridableState';
+import { ArmstrongId, NullOrUndefined } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
+import { IconUtils } from '../icon';
+import { IconButton } from '../iconButton';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { Tag } from '../tag/tag.component';
 
-export interface ITag
-  extends Pick<
-    IArmstrongExtendedOption<
-      ArmstrongId,
-      React.BaseHTMLAttributes<HTMLDivElement>
-    >,
-    "id" | "name" | "htmlProps" | "leftIcon" | "rightIcon"
-  > {}
+export type ITag = Pick<
+  IArmstrongExtendedOption<ArmstrongId, React.BaseHTMLAttributes<HTMLDivElement>>,
+  'id' | 'name' | 'htmlProps' | 'leftIcon' | 'rightIcon'
+>;
 
 export interface ITagInputProps<TBind extends NullOrUndefined<string[]>>
   extends Omit<IInputWrapperProps, 'above' | 'below' | 'onClick'>,

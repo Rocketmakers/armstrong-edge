@@ -52,7 +52,10 @@ export function isMyValidationError(validationErrorKey: string, ...propertyKeyCh
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object. If no keychain to a property is passed, then no errors will be returned.
  * @returns {Array} A filtered set of validation errors that apply to the property in question and its sub-properties.
  */
-export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], keyChain: KeyChain = []): IValidationError[] {
+export function validationErrorsByKeyChain(
+  rootErrors: IValidationError[] = [],
+  keyChain: KeyChain = []
+): IValidationError[] {
   if (!keyChain.length) {
     return [];
   }
@@ -131,9 +134,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
   value: TValue
 ): TObject {
   const output = (
-    Array.isArray(target) || Number.isInteger(keyChain[0])
-      ? [...((target || []) as any[])]
-      : { ...(target || {}) }
+    Array.isArray(target) || Number.isInteger(keyChain[0]) ? [...((target || []) as any[])] : { ...(target || {}) }
   ) as TObject;
   let bookmarkRef: any = output;
   for (let i = 0; i < keyChain.length; i += 1) {
@@ -141,7 +142,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
     if (i === keyChain.length - 1) {
       if (Array.isArray(value)) {
         bookmarkRef[key] = [...value];
-      } else if (typeof value === "object") {
+      } else if (typeof value === 'object') {
         bookmarkRef[key] = { ...value };
       } else {
         bookmarkRef[key] = value;
@@ -149,7 +150,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
     } else if (Array.isArray(bookmarkRef[key])) {
       bookmarkRef[key] = [...bookmarkRef[key]];
       bookmarkRef = bookmarkRef[key];
-    } else if (typeof bookmarkRef[key] === "object") {
+    } else if (typeof bookmarkRef[key] === 'object') {
       bookmarkRef[key] = { ...bookmarkRef[key] };
       bookmarkRef = bookmarkRef[key];
     } else if (Number.isInteger(key)) {

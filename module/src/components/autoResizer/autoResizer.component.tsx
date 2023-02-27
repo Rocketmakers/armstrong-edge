@@ -3,11 +3,7 @@ import * as React from 'react';
 import { useBoundingClientRect } from '../../hooks';
 import { concat } from '../../utils/classNames';
 
-export interface IAutoResizerProps
-  extends React.DetailedHTMLProps<
-    React.HTMLProps<HTMLDivElement>,
-    HTMLDivElement
-  > {
+export interface IAutoResizerProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
   /** Fired when the size changes with the new width and height */
   onSizeChange?: (newSize: { width: number; height: number }) => void;
 

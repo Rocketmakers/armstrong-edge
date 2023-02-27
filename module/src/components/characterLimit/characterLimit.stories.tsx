@@ -14,8 +14,8 @@ export default {
   title: 'Form/Character Limit',
   component: CharacterLimit,
   args: {
-    limit: 10
-  }
+    limit: 10,
+  },
 } as Meta<typeof CharacterLimit>;
 
 /** stories */
@@ -24,9 +24,8 @@ interface IFormData {
   thing: string | null;
 }
 
-
 export const Default: StoryObj<typeof CharacterLimit> = {
-  render: (args) => {
+  render: args => {
     const { bind, ...props } = args;
     const formData: IFormData = { thing: '' };
     const { formProp } = Form.use(formData);
@@ -50,11 +49,11 @@ export const Default: StoryObj<typeof CharacterLimit> = {
     userEvent.type(input, 'a');
     expect(limit).toHaveTextContent(`${args.limit + 1}/${args.limit}`);
     expect(limit).toHaveAttribute('data-exceeded', 'true');
-  }
-}
+  },
+};
 
 export const Enforce: StoryObj<typeof CharacterLimit> = {
-  render: (args) => {
+  render: args => {
     const { bind, ...props } = args;
     const formData: IFormData = { thing: '' };
     const { formProp } = Form.use(formData);
@@ -67,7 +66,7 @@ export const Enforce: StoryObj<typeof CharacterLimit> = {
     );
   },
   args: {
-    shouldEnforce: true
+    shouldEnforce: true,
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -82,18 +81,21 @@ export const Enforce: StoryObj<typeof CharacterLimit> = {
     expect(input).toHaveValue('a'.repeat(args.limit));
     expect(limit).toHaveTextContent(`${args.limit}/${args.limit}`);
     expect(limit).toHaveAttribute('data-exceeded', 'false');
-  }
-}
+  },
+};
 
 export const InsideInput: StoryObj<typeof CharacterLimit> = {
-  render: (args) => {
+  render: args => {
     const { bind, ...props } = args;
     const formData: IFormData = { thing: '' };
     const { formProp } = Form.use(formData);
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} rightOverlay={<CharacterLimit bind={formProp('thing').bind()} {...props} />} />
+        <TextInput
+          bind={formProp('thing').bind()}
+          rightOverlay={<CharacterLimit bind={formProp('thing').bind()} {...props} />}
+        />
       </>
     );
   },
@@ -103,11 +105,11 @@ export const InsideInput: StoryObj<typeof CharacterLimit> = {
     const limit = canvas.getByText(`0/${args.limit}`).parentElement;
     expect(limit);
     expect(input.parentElement).toContainElement(limit);
-  }
-}
+  },
+};
 
 export const CustomIcon: StoryObj<typeof CharacterLimit> = {
-  render: (args) => {
+  render: args => {
     const { bind, ...props } = args;
     const formData: IFormData = { thing: '' };
     const { formProp } = Form.use(formData);
@@ -120,7 +122,7 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
     );
   },
   args: {
-    exceedsIcon: IconUtils.getIconDefinition('Icomoon', 'tree')
+    exceedsIcon: IconUtils.getIconDefinition('Icomoon', 'tree'),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -131,5 +133,5 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
     const icon = within(limit).getByTitle('Character limit exceeded icon');
     expect(icon).toHaveAttribute('data-icon-set', args.exceedsIcon?.iconSet);
     expect(icon).toHaveAttribute('data-i', args.exceedsIcon?.icon);
-  }
-}
+  },
+};

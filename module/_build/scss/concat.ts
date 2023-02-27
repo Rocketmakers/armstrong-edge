@@ -1,7 +1,8 @@
-import { FileSystem } from "@rocketmakers/shell-commands/lib/fs";
-import { glob, IOptions } from "glob";
-import * as path from "path";
-import { distDirectory, sassGlob } from "./paths";
+import { FileSystem } from '@rocketmakers/shell-commands/lib/fs';
+import { glob, IOptions } from 'glob';
+import * as path from 'path';
+
+import { distDirectory, sassGlob } from './paths';
 
 const globAsync = async (searchString: string, options: IOptions) => {
   return new Promise<string[]>((resolve, reject) => {
@@ -28,7 +29,7 @@ export const concat = async () => {
   }
 
   // get paths that match the searchString glob
-  const paths = await globAsync(sassGlob, { ignore: "**/*/stories/**/*" });
+  const paths = await globAsync(sassGlob, { ignore: '**/*/stories/**/*' });
 
   /** dictionary of output files keyed by their name */
   const filesDictionary: Record<string, string> = {};
@@ -42,31 +43,25 @@ export const concat = async () => {
     let fileContents = fileBuffer.toString();
 
     // strip out all @use statements
-    fileContents = fileContents.replace(/^@use.*$/gm, "");
+    fileContents = fileContents.replace(/^@use.*$/gm, '');
 
     // get filename from path
-    const splitPath = filePath.split("/");
+    const splitPath = filePath.split('/');
     const fileName = splitPath[splitPath.length - 1];
 
     // get output filename from filename
-    const splitFileName = fileName.split(".");
+    const splitFileName = fileName.split('.');
     const outputFileName = splitFileName[splitFileName.length - 2];
 
     // concat to the existing key on the dictionary
-    filesDictionary[outputFileName] = `${
-      filesDictionary[outputFileName] || ""
-    }// ${fileName}\n\n${fileContents}\n`;
+    filesDictionary[outputFileName] = `${filesDictionary[outputFileName] || ''}// ${fileName}\n\n${fileContents}\n`;
   }
 
   // write to files
   for (const fileName of Object.keys(filesDictionary)) {
-    const extra =
-      fileName.indexOf("basic") !== -1
-        ? `\n@use "variables";\n@use "mixins";`
-        : "";
+    const extra = fileName.indexOf('basic') !== -1 ? `\n@use "variables";\n@use "mixins";` : '';
 
-    const extra2 =
-      fileName.indexOf("mixins") !== -1 ? `\n@use "variables";` : "";
+    const extra2 = fileName.indexOf('mixins') !== -1 ? `\n@use "variables";` : '';
 
     console.log(fileName, extra);
     const fileContents = `@use "sass:math";${extra}${extra2}\n\n${filesDictionary[fileName]}`;

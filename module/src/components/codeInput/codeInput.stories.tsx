@@ -1,10 +1,11 @@
-import { expect } from "@storybook/jest";
-import { Meta, StoryObj } from "@storybook/react";
-import { within, userEvent } from "@storybook/testing-library";
-import React from "react";
-import { Form } from "../../hooks";
-import { IconUtils } from "../icon/icons.utils";
-import { CodeInput } from "./codeInput.component";
+import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { userEvent, within } from '@storybook/testing-library';
+import React from 'react';
+
+import { Form } from '../../hooks';
+import { IconUtils } from '../icon/icons.utils';
+import { CodeInput } from './codeInput.component';
 
 /** metadata */
 
@@ -16,20 +17,26 @@ export default {
 /** template */
 
 const Template: StoryObj<typeof CodeInput> = {
-    render: (args) => { 
-        interface IFormData {
-            code: string | null | undefined;
-        };
-        const { formProp, formState } = Form.use<IFormData>({ code: '' });
-        return <><CodeInput {...args} bind={formProp('code').bind()} /><br /><p>Value: {formState?.code}</p></>
+  render: args => {
+    interface IFormData {
+      code: string | null | undefined;
     }
+    const { formProp, formState } = Form.use<IFormData>({ code: '' });
+    return (
+      <>
+        <CodeInput {...args} bind={formProp('code').bind()} />
+        <br />
+        <p>Value: {formState?.code}</p>
+      </>
+    );
+  },
 };
 /** stories */
 
 export const Default: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
-    parts: [1, 1, 1]
+    parts: [1, 1, 1],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -53,13 +60,13 @@ export const Default: StoryObj<typeof CodeInput> = {
     expect(inputs[1]).toHaveValue('5');
     expect(inputs[2]).toHaveValue('6');
     expect(value).toHaveTextContent('Value: 456');
-  }
+  },
 };
 
 export const DifferentLengths: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
-    parts: [4, 3, 8]
+    parts: [4, 3, 8],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -72,13 +79,13 @@ export const DifferentLengths: StoryObj<typeof CodeInput> = {
     expect(inputs[1]).toHaveValue('efg');
     expect(inputs[2]).toHaveValue('hijklmno');
     expect(value).toHaveTextContent('Value: abcdefghijklmno');
-  }
+  },
 };
 
 export const WithTextBetween: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
-    parts: [4, '-', 4, '-', 4]
+    parts: [4, '-', 4, '-', 4],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -93,7 +100,7 @@ export const WithTextBetween: StoryObj<typeof CodeInput> = {
     expect(value).toHaveTextContent('Value: abcdefghijkl');
     expect(inputs[0].parentElement?.parentElement?.nextSibling).toHaveTextContent('-');
     expect(inputs[1].parentElement?.parentElement?.nextSibling).toHaveTextContent('-');
-  }
+  },
 };
 
 const icon = IconUtils.getIconDefinition('Icomoon', 'chess-king');
@@ -102,7 +109,7 @@ export const WithIcons: StoryObj<typeof CodeInput> = {
   args: {
     parts: [1, { length: 1, rightIcon: IconUtils.getIconDefinition('Icomoon', 'chrome') }, 1],
     leftIcon: icon,
-    rightIcon: icon
+    rightIcon: icon,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -119,5 +126,5 @@ export const WithIcons: StoryObj<typeof CodeInput> = {
     expect(inputs[1].nextSibling).toHaveAttribute('data-i', 'chrome');
     expect(within(wrapper).getByTitle(`${icon.icon} icon on left`)).toHaveAttribute('data-i', icon.icon);
     expect(within(wrapper).getByTitle(`${icon.icon} icon on right`)).toHaveAttribute('data-i', icon.icon);
-  }
+  },
 };

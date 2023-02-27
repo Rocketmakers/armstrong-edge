@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { ArmstrongId, IArmstrongExtendedOption } from "../..";
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IIcon } from "../icon";
-import { OptionContent } from "../optionContent";
+import { ArmstrongId, IArmstrongExtendedOption } from '../..';
+import { concat } from '../../utils/classNames';
+import { Icon, IconSet, IIcon } from '../icon';
+import { OptionContent } from '../optionContent';
 
 export interface IRadioInputProps
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,

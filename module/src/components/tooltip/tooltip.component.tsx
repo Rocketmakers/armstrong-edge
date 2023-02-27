@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-import { IPortalProps } from "../..";
-import { useBoundingClientRect } from "../../hooks/useBoundingClientRect";
-import { useIsFocused } from "../../hooks/useIsFocused";
-import { useIsHovered } from "../../hooks/useIsHovered";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { concat } from "../../utils/classNames";
-import { Modal } from "../modal";
+import { IPortalProps } from '../..';
+import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
+import { useIsFocused } from '../../hooks/useIsFocused';
+import { useIsHovered } from '../../hooks/useIsHovered';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { concat } from '../../utils/classNames';
+import { Modal } from '../modal';
 
-export type TooltipPosition = "above" | "below" | "left" | "right";
+export type TooltipPosition = 'above' | 'below' | 'left' | 'right';
 
 export interface ITooltipProps
   extends Omit<
@@ -72,11 +72,7 @@ export const Tooltip = React.forwardRef<ITooltipRef, React.PropsWithChildren<ITo
     const [isHovered, hoveredProps] = useIsHovered();
     const [isFocused, focusedProps] = useIsFocused();
 
-    const isOpen =
-      isOpenProp ||
-      (openOnHover && isHovered) ||
-      (openOnFocus && isFocused) ||
-      false;
+    const isOpen = isOpenProp || (openOnHover && isHovered) || (openOnFocus && isFocused) || false;
 
     const [rootRect, getRootRect] = useBoundingClientRect(rootRef, undefined, isOpen);
     const [innerRect, getInnerRect] = useBoundingClientRect(innerRef, undefined, isOpen);

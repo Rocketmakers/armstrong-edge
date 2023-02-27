@@ -1,79 +1,50 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { arrayToArrayDictionary } from "../..";
-import { useTemporaryState, useTimeout } from "../../hooks";
-import { concat } from "../../utils/classNames";
-import { Dates } from "../../utils/dates";
-import { contentDependency } from "../../utils/objects";
-import { IconUtils } from "../icon";
-import { IconButton } from "../iconButton";
-import { useToasts } from "./toast.context";
-import { IToastNotification } from "./toast.types";
+import { arrayToArrayDictionary } from '../..';
+import { useTemporaryState, useTimeout } from '../../hooks';
+import { concat } from '../../utils/classNames';
+import { Dates } from '../../utils/dates';
+import { contentDependency } from '../../utils/objects';
+import { IconUtils } from '../icon';
+import { IconButton } from '../iconButton';
+import { useToasts } from './toast.context';
+import { IToastNotification } from './toast.types';
 
 export interface IToastNotificationProps
   extends Omit<IToastNotification, 'timestamp'>,
     Required<Pick<IToastNotification, 'timestamp'>> {}
 
 /** Render a single toast notification with a title and some given information */
-export const ToastNotification = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<IToastNotificationProps>
->(({ onDismiss, ...toast }, ref) => {
-  const {
-    autoDismissTime,
-    children,
-    content,
-    htmlProps,
-    timestamp,
-    title,
-    type,
-    allowManualDismiss,
-  } = toast;
+export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IToastNotificationProps>>(
+  ({ onDismiss, ...toast }, ref) => {
+    const { autoDismissTime, children, content, htmlProps, timestamp, title, type, allowManualDismiss } = toast;
 
-  const [dismissing, setDismissing] = useTemporaryState(false, 500, onDismiss);
-  const beginDismiss = React.useCallback(() => setDismissing(true), []);
+    const [dismissing, setDismissing] = useTemporaryState(false, 500, onDismiss);
+    const beginDismiss = React.useCallback(() => setDismissing(true), []);
 
-  const { set: setAutoDismissTimeout, clear: clearAutoDismissTimeout } =
-    useTimeout(beginDismiss, autoDismissTime);
+    const { set: setAutoDismissTimeout, clear: clearAutoDismissTimeout } = useTimeout(beginDismiss, autoDismissTime);
 
-  React.useEffect(() => {
-    void setAutoDismissTimeout();
-  }, []);
+    React.useEffect(() => {
+      void setAutoDismissTimeout();
+    }, []);
 
-  const id = React.useId();
+    const id = React.useId();
 
-  const contentNode = React.useMemo<React.ReactNode>(
-    () =>
-      typeof content === "function"
-        ? content({ dismiss: beginDismiss, toast })
-        : content,
-    [content, beginDismiss, toast]
-  );
+    const contentNode = React.useMemo<React.ReactNode>(
+      () => (typeof content === 'function' ? content({ dismiss: beginDismiss, toast }) : content),
+      [content, beginDismiss, toast]
+    );
 
-  const {
-    config: { timestampFormatString },
-  } = useToasts();
+    const {
+      config: { timestampFormatString },
+    } = useToasts();
 
-  const timestampString = React.useMemo(
-    () =>
-      timestampFormatString &&
-      Dates.dateToString(timestamp!, timestampFormatString),
-    [timestamp]
-  );
+    const timestampString = React.useMemo(
+      () => timestampFormatString && Dates.dateToString(timestamp!, timestampFormatString),
+      [timestamp]
+    );
 
-  return (
-    <div
-      {...htmlProps}
-      className={concat(
-        "arm-toast-notification",
-        htmlProps?.className
-      )}
-      data-type={type}
-      data-dismissing={dismissing}
-      onMouseEnter={clearAutoDismissTimeout}
-      onMouseLeave={() => setAutoDismissTimeout()}
-      ref={ref}
-    >
+    return (
       <div
         {...htmlProps}
         className={concat('arm-toast-notification', htmlProps?.className)}
@@ -83,31 +54,40 @@ export const ToastNotification = React.forwardRef<
         onMouseLeave={() => setAutoDismissTimeout()}
         ref={ref}
       >
-        <div className="arm-toast-notification-inner" role="status" aria-labelledby={`${id}_title`}>
-          <div className="arm-toast-notification-top">
-            <p className="arm-toast-notification-title" id={`${id}_title`}>
-              {title}
-            </p>
+        <div
+          {...htmlProps}
+          className={concat('arm-toast-notification', htmlProps?.className)}
+          data-type={type}
+          data-dismissing={dismissing}
+          onMouseEnter={clearAutoDismissTimeout}
+          onMouseLeave={() => setAutoDismissTimeout()}
+          ref={ref}
+        >
+          <div className="arm-toast-notification-inner" role="status" aria-labelledby={`${id}_title`}>
+            <div className="arm-toast-notification-top">
+              <p className="arm-toast-notification-title" id={`${id}_title`}>
+                {title}
+              </p>
 
-            {allowManualDismiss && (
-              <IconButton
-                type="button"
-                className="arm-toast-notification-close-button"
-                minimalStyle
-                icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
-                onClick={beginDismiss}
-              />
-            )}
+              {allowManualDismiss && (
+                <IconButton
+                  type="button"
+                  className="arm-toast-notification-close-button"
+                  minimalStyle
+                  icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+                  onClick={beginDismiss}
+                />
+              )}
+            </div>
+
+            {timestampString && <p>{timestampString}</p>}
+
+            {typeof contentNode === 'string' || typeof contentNode === 'number' ? <p>{contentNode}</p> : contentNode}
+
+            {children}
           </div>
-
-          {timestampString && <p>{timestampString}</p>}
-
-          {typeof contentNode === 'string' || typeof contentNode === 'number' ? <p>{contentNode}</p> : contentNode}
-
-          {children}
         </div>
       </div>
-    </div>
     );
   }
 );

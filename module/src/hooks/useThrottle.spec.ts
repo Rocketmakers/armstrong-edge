@@ -1,12 +1,13 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
-import { useThrottle } from "./useThrottle";
+import { act, renderHook, waitFor } from '@testing-library/react';
 
-describe("useThrottle", () => {
-    beforeEach(() => {
-        jest.useRealTimers();
-    });
+import { useThrottle } from './useThrottle';
 
-  it("throttles a value being passed in after a given time", async () => {
+describe('useThrottle', () => {
+  beforeEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('throttles a value being passed in after a given time', async () => {
     jest.useFakeTimers();
     const ms = 600;
     const value = 'test';
@@ -45,7 +46,7 @@ describe("useThrottle", () => {
     expect(onChange).toHaveBeenCalledWith(newValue);
   });
 
-  it("resets a value back to its original value if a reset is called", async () => {
+  it('resets a value back to its original value if a reset is called', async () => {
     const ms = 600;
     const value = 'test';
     const newValue = 'value';
@@ -74,7 +75,7 @@ describe("useThrottle", () => {
     });
   });
 
-  it("clears the timer on unmount", async () => {
+  it('clears the timer on unmount', async () => {
     jest.useFakeTimers();
     const clearSpy = jest.spyOn(global, 'clearTimeout');
     const ms = 600;
@@ -99,6 +100,6 @@ describe("useThrottle", () => {
 
     unmount();
 
-    expect(clearSpy).toBeCalled();
+    expect(clearSpy).toHaveBeenCalled();
   });
 });
