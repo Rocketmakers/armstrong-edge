@@ -37,6 +37,12 @@ export const Default: StoryObj<typeof Button> = {
     expect(button).toHaveTextContent(args.children as string);
     await userEvent.click(button);
     await waitFor(() => expect(args.onClick).toHaveBeenCalled());
+  },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/f6yAoBwAQop8YahTF2ASSG/Block-up-design-system?node-id=197%3A3561&t=ccw4zqPQDfhSLCVL-1'
+    }
   }
 };
 
