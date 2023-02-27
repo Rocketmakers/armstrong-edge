@@ -6,7 +6,6 @@ import {
   Form,
   IArmstrongExtendedOption,
 } from "../..";
-import { useOverridableState } from "../../hooks";
 import { IBindingProps } from "../../hooks/form";
 import {
   ArmstrongFCExtensions,
@@ -119,6 +118,17 @@ export const CheckboxInput = React.forwardRef(
       validationMode,
       onChange: onValueChange,
     });
+
+    // Allows checkbox to use internal state that can be overriden by props
+    function useOverridableState<T>(initialState?: T, overrideValue?: T, overrideSetValue?: (newValue: T) => void): [T, (newValue: T) => void] {
+      const [value, setValue] = React.useState(initialState);
+    
+      const overridenValue = overrideSetValue ? overrideValue : value;
+      const setOverridenValue = overrideSetValue ?? setValue;
+    
+      return [overridenValue!, setOverridenValue];
+    }
+    
 
     // use an overridable internal state so it can be used without a binding
     const [isChecked, setIsChecked] = useOverridableState(

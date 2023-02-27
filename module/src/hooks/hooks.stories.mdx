@@ -344,26 +344,6 @@ useEventListener("scroll", onScroll, document);
 
 though, again, the ScrollToEndListener is more reliable as it doesn't rely on scroll listeners, so most of the time you'll want to use that
 
-### useOverridableState
-
-A hook wrapping up a piece of state that is optionally overriden.
-
-Used to allow components to use some internal state that can be overriden by some props, I.E. an internal binder that can be made external
-
-Returns either an internal useState or the given value and onChange
-
-```tsx
-const MyComponent = ({ value, onChange }) => {
-  const [internaValue, setInternalValue] = useOverridableState(
-    "",
-    value,
-    onChange
-  );
-
-  // ... do some stuff with internal state
-};
-```
-
 ### usePerformanceObserver
 
 Use an performance observer to fire the passed callback - also cleans up on unmount.
