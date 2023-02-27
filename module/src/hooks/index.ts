@@ -13,7 +13,7 @@ export * from './useHasTimeElapsed';
 export * from './useIntersectionObserver';
 export * from './useInterval';
 export * from './useIsFocused';
-export * from './useIsHovering';
+export * from './useIsHovered';
 export * from './useIsInViewport';
 export * from './useMatchMedia';
 export * from './useMutationObserver';

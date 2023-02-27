@@ -2,7 +2,7 @@
  * FORM - State file.
  * Contains everything related to form state such as the reducer and action factories.
  ******************************************************* */
-import { mergeDeepFromKeyChain } from '../../utils/objects';
+import { mergeDeepFromKeyChain } from './form.utils';
 import { FormAction, IValidationError, ValidationAction } from './form.types';
 
 /**
