@@ -94,7 +94,7 @@ describe('Form utils', () => {
   });
 
   describe('valueByKeyChain', () => {
-    it('returns the value of array state if a value has been set at the relevant key chain', () => {
+    it('returns the value of array state if a value has been set at the relevant array index', () => {
       const state = ['value', 'value2'];
       const result = valueByKeyChain(state, [1]);
       expect(result).toBe('value2');

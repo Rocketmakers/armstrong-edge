@@ -14,7 +14,7 @@ import {
   NullOrUndefined,
 } from '../../../types';
 import { concat } from '../../../utils';
-import { IconUtils } from '../../icon';
+import { getIconDefinition } from '../../icon';
 import { ValidationErrors } from '../../validationErrors';
 import { IReactSelectBaseProps } from '../singleSelect';
 import { isCreatingOption, isGroupedOptions } from '../singleSelect/singleSelect.utils';
@@ -128,7 +128,7 @@ const MultiSelectOnly = React.forwardRef(
           components={{
             DropdownIndicator: props =>
               CustomDropdownIndicator({
-                icon: dropdownIcon || IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
+                icon: dropdownIcon || getIconDefinition('Icomoon', 'arrow-down3'),
                 ...props,
               } as IDropdownIndicatorProps<Id, true>),
           }}
@@ -272,7 +272,7 @@ const MultiSelectCreatable = React.forwardRef(
           components={{
             DropdownIndicator: props =>
               CustomDropdownIndicator({
-                icon: dropdownIcon || IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
+                icon: dropdownIcon || getIconDefinition('Icomoon', 'arrow-down3'),
                 ...props,
               } as IDropdownIndicatorProps<Id, true>),
           }}

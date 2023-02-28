@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
-import { IconSet, IconUtils } from '../icon';
+import { getIconDefinition, IconSet } from '../icon';
 import { IconButton } from '../iconButton';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 
@@ -32,7 +32,7 @@ export const Tag = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITag
             onRemove();
             event.stopPropagation();
           }}
-          icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+          icon={getIconDefinition('Icomoon', 'cross2')}
         />
       )}
     </div>

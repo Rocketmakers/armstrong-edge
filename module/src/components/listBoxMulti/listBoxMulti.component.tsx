@@ -6,7 +6,7 @@ import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../.
 import { ArmstrongId } from '../../types/core';
 import { concat } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon, isIconDefinition } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag';
@@ -202,7 +202,7 @@ export const ListBoxMulti = React.forwardRef(
           </div>
 
           {selectOverlayIcon &&
-            (IconUtils.isIconDefinition(selectOverlayIcon) ? (
+            (isIconDefinition(selectOverlayIcon) ? (
               <Icon
                 className="arm-listbox-multi-overlay-icon"
                 icon={selectOverlayIcon.icon}
@@ -223,7 +223,7 @@ export const ListBoxMulti = React.forwardRef(
               }}
               onMouseDown={event => event.stopPropagation()}
               onMouseUp={event => event.stopPropagation()}
-              icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+              icon={getIconDefinition('Icomoon', 'cross2')}
               minimalStyle
             />
           )}
@@ -239,7 +239,9 @@ export const ListBoxMulti = React.forwardRef(
   ArmstrongFCExtensions<IListBoxMultiProps<any, any>>;
 
 ListBoxMulti.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
+  selectOverlayIcon: getIconDefinition('Icomoon', 'arrow-down3'),
   deleteButton: true,
   closeOnSelection: false,
 };
+
+ListBoxMulti.displayName = 'ListBoxMulti';

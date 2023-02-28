@@ -18,8 +18,8 @@ export default {
 export const Default: StoryObj<typeof AutoResizer> = {
   render: () => {
     const [bigger, setBigger] = React.useState(false);
-    const [width, setWidth] = React.useState(0);
-    const [height, setHeight] = React.useState(0);
+    const [currentWidth, setWidth] = React.useState(0);
+    const [currentHeight, setHeight] = React.useState(0);
 
     const changeHandler = ({ width, height }) => {
       setWidth(width);
@@ -41,8 +41,8 @@ export const Default: StoryObj<typeof AutoResizer> = {
           </div>
         </AutoResizer>
         <br />
-        <p>Height: {height}</p>
-        <p>Width: {width}</p>
+        <p>Height: {currentHeight}</p>
+        <p>Width: {currentWidth}</p>
       </>
     );
   },

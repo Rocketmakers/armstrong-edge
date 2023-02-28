@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
 import { IconButton } from '../iconButton';
 import { IModalProps, Modal } from '../modal';
-import { ModalUtils } from '../modal/modal.utils';
+import { closeModal } from '../modal/modal.utils';
 
 export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
   /** the value to render as the title, will have necessary aria tag added */
@@ -47,7 +47,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<I
     const titleId = title && `${id}_label`;
 
     const close = React.useCallback(
-      () => ModalUtils.closeModal({ disableClose, onClose, onOpenChange }),
+      () => closeModal({ disableClose, onClose, onOpenChange }),
       [onOpenChange, disableClose, onClose]
     );
 
@@ -99,5 +99,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<I
 );
 
 Dialog.defaultProps = {
-  closeButtonIcon: IconUtils.getIconDefinition('Icomoon', 'cross2'),
+  closeButtonIcon: getIconDefinition('Icomoon', 'cross2'),
 };
+
+Dialog.displayName = 'Dialog';

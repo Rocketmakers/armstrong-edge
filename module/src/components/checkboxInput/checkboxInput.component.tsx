@@ -5,7 +5,7 @@ import { useOverridableState } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
 import { IInputWrapperProps } from '../inputWrapper';
 import { OptionContent } from '../optionContent';
 import { Status } from '../status';
@@ -187,7 +187,7 @@ export const CheckboxInput = React.forwardRef(
   ArmstrongFCExtensions<ICheckboxInputProps<any>>;
 
 CheckboxInput.defaultProps = {
-  checkedIcon: IconUtils.getIconDefinition('Icomoon', 'checkmark3'),
+  checkedIcon: getIconDefinition('Icomoon', 'checkmark3'),
   validationMode: 'both',
   direction: 'horizontal',
 };

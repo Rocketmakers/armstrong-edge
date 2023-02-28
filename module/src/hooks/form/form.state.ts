@@ -28,12 +28,14 @@ export function dataReducer<TData extends object>(state: TData, action: FormActi
   }
 }
 
-export function validationReducer(state: IValidationError[] = [], action: ValidationAction): IValidationError[] {
+export function validationReducer(state: IValidationError[], action: ValidationAction): IValidationError[] {
+  const safeState = state ?? [];
+  let validationToClear: IValidationError[];
   switch (action.type) {
     case 'add-validation':
-      return [...state, ...(action.errors ?? [])];
+      return [...safeState, ...(action.errors ?? [])];
     case 'clear-validation':
-      const validationToClear = state.filter(e => {
+      validationToClear = safeState.filter(e => {
         if (!action.key && !action.identifiers?.length) {
           return true;
         }
@@ -41,8 +43,8 @@ export function validationReducer(state: IValidationError[] = [], action: Valida
           action.key === e.key && (!action.identifiers?.length || action.identifiers.some(id => id === e.identifier))
         );
       });
-      return state.filter(e => !validationToClear.some(c => c === e));
+      return safeState.filter(e => !validationToClear.some(c => c === e));
     default:
-      return state;
+      return safeState;
   }
 }

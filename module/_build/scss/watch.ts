@@ -8,11 +8,11 @@ import { sassGlob } from './paths';
 export const watch = async () => {
   const watcher = chokidar.watch(sassGlob, { persistent: true });
 
-  // eslint-disable-next-line no-console
+  // eslint-disable-next-line no-console  -- logging for build-only code
   watcher.on('ready', () => console.log('Listening for SASS changes'));
 
   watcher.on('change', async changedFilePath => {
-    // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console  -- logging for build-only code
     console.log(`File ${changedFilePath} has changed`);
     await concat();
   });

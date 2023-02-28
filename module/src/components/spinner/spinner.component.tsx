@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
 
 export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
   /** icon definition for icon to spin in middle of div, can be overriden using children */
@@ -37,6 +37,6 @@ export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
 );
 
 Spinner.defaultProps = {
-  icon: IconUtils.getIconDefinition('Icomoon', 'spinner2'),
+  icon: getIconDefinition('Icomoon', 'spinner2'),
   fillContainer: true,
 };

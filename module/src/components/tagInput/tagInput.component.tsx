@@ -5,7 +5,7 @@ import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hook
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId, NullOrUndefined } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
-import { IconUtils } from '../icon';
+import { getIconDefinition } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag/tag.component';
@@ -250,12 +250,7 @@ export const TagInput = React.forwardRef(
         </div>
 
         {deleteAllButton && !!boundValue?.length && (
-          <IconButton
-            type="button"
-            minimalStyle
-            onClick={clearTags}
-            icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
-          />
+          <IconButton type="button" minimalStyle onClick={clearTags} icon={getIconDefinition('Icomoon', 'cross2')} />
         )}
       </InputWrapper>
     );

@@ -34,13 +34,15 @@ export const concat = async () => {
   /** dictionary of output files keyed by their name */
   const filesDictionary: Record<string, string> = {};
 
-  // eslint-disable-next-line no-console
+  // eslint-disable-next-line no-console -- logging for build-only code
   console.log(`Found ${paths.length} scss files`);
 
-  for (const filePath of paths) {
+  const files = paths.map(filePath => FileSystem.readFileAsync(filePath));
+  const buffers = await Promise.all(files);
+
+  paths.forEach((filePath, i) => {
     // read file at path
-    const fileBuffer = await FileSystem.readFileAsync(filePath);
-    let fileContents = fileBuffer.toString();
+    let fileContents = buffers[i].toString();
 
     // strip out all @use statements
     fileContents = fileContents.replace(/^@use.*$/gm, '');
@@ -55,10 +57,10 @@ export const concat = async () => {
 
     // concat to the existing key on the dictionary
     filesDictionary[outputFileName] = `${filesDictionary[outputFileName] || ''}// ${fileName}\n\n${fileContents}\n`;
-  }
+  });
 
   // write to files
-  for (const fileName of Object.keys(filesDictionary)) {
+  const filesToWrite = Object.keys(filesDictionary).map(fileName => {
     const extra = fileName.indexOf('basic') !== -1 ? `\n@use "variables";\n@use "mixins";` : '';
 
     const extra2 = fileName.indexOf('mixins') !== -1 ? `\n@use "variables";` : '';
@@ -68,11 +70,13 @@ export const concat = async () => {
 
     const output = path.resolve(distDirectory, `${fileName}.scss`);
 
-    // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console  -- logging for build-only code
     console.log(`Writing ${output}`);
 
-    await FileSystem.writeFileAsync(output, fileContents);
-  }
+    return FileSystem.writeFileAsync(output, fileContents);
+  });
+
+  await Promise.all(filesToWrite);
 };
 
 concat();

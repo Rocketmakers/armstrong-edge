@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
 import { Spinner } from '../spinner';
 
 export interface IStatusProps {
@@ -42,5 +42,5 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
 );
 
 Status.defaultProps = {
-  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
+  errorIcon: getIconDefinition('Icomoon', 'warning'),
 };

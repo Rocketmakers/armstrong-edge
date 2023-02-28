@@ -7,7 +7,7 @@ import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { positiveModulo } from '../../utils/maths';
 import { Button, IButtonProps } from '../button';
-import { IconUtils } from '../icon';
+import { getIconDefinition } from '../icon';
 import { IconButton } from '../iconButton';
 import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarDisplay.utils';
 
@@ -181,7 +181,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
               (backButton?.(onBackClicked) || (
                 <IconButton
                   type="button"
-                  icon={IconUtils.getIconDefinition('Icomoon', 'arrow-left3')}
+                  icon={getIconDefinition('Icomoon', 'arrow-left3')}
                   minimalStyle
                   className="arm-calendar-display-button arm-calendar-display-button-prev"
                   onClick={onBackClicked}
@@ -203,7 +203,7 @@ export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplay
               (forwardsButton?.(onForwardClicked) || (
                 <IconButton
                   type="button"
-                  icon={IconUtils.getIconDefinition('Icomoon', 'arrow-right3')}
+                  icon={getIconDefinition('Icomoon', 'arrow-right3')}
                   minimalStyle
                   className="arm-calendar-display-button arm-calendar-display-button-next"
                   onClick={onForwardClicked}
@@ -283,3 +283,5 @@ CalendarDisplay.defaultProps = {
   controls: true,
   jumpList: [{ date: new Date(), name: 'Today' }],
 };
+
+CalendarDisplay.displayName = 'CalendarDisplay';

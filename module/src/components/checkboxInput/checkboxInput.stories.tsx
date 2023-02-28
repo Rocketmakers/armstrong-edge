@@ -5,7 +5,7 @@ import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 
 import { Form } from '../../hooks';
-import { IconUtils } from '../icon/icons.utils';
+import { getIconDefinition } from '../icon/icons.utils';
 import { CheckboxInput } from './checkboxInput.component';
 
 /** metadata */
@@ -62,8 +62,8 @@ export const CustomIcons: StoryObj<typeof CheckboxInput> = {
   ...Template,
   args: {
     content: 'Use light theme?',
-    checkedIcon: IconUtils.getIconDefinition('Icomoon', 'sun'),
-    uncheckedIcon: IconUtils.getIconDefinition('Icomoon', 'moon'),
+    checkedIcon: getIconDefinition('Icomoon', 'sun'),
+    uncheckedIcon: getIconDefinition('Icomoon', 'moon'),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);

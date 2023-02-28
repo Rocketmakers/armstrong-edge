@@ -4,7 +4,7 @@ import { userEvent, within } from '@storybook/testing-library';
 import React from 'react';
 
 import { Form } from '../../hooks';
-import { IconUtils } from '../icon/icons.utils';
+import { getIconDefinition } from '../icon/icons.utils';
 import { CheckboxInputList } from './checkboxInputList.component';
 
 /** metadata */
@@ -71,9 +71,9 @@ export const Grouped: StoryObj<typeof CheckboxInputList> = {
         <CheckboxInputList
           bind={formProp('value').bind()}
           options={[
-            { id: 1, content: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
+            { id: 1, content: 'red', group: 'primary', rightIcon: getIconDefinition('Icomoon', 'cheese') },
             { id: 2, content: 'blue', group: 'primary' },
-            { id: 3, content: 'pink', group: 'secondary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
+            { id: 3, content: 'pink', group: 'secondary', rightIcon: getIconDefinition('Icomoon', 'heart') },
             { id: 4, content: 'brown', group: 'secondary' },
           ]}
         />
@@ -105,12 +105,12 @@ export const CustomIcons: StoryObj<typeof CheckboxInputList> = {
       <>
         <CheckboxInputList
           bind={formProp('value').bind()}
-          checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
-          uncheckedIcon={IconUtils.getIconDefinition('Icomoon', 'cross3')}
+          checkedIcon={getIconDefinition('Icomoon', 'checkmark3')}
+          uncheckedIcon={getIconDefinition('Icomoon', 'cross3')}
           options={[
-            { id: 1, content: 'red', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
+            { id: 1, content: 'red', rightIcon: getIconDefinition('Icomoon', 'cheese') },
             { id: 2, content: 'blue' },
-            { id: 3, content: 'pink', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
+            { id: 3, content: 'pink', rightIcon: getIconDefinition('Icomoon', 'heart') },
             { id: 4, content: 'brown' },
           ]}
         />
@@ -143,14 +143,11 @@ export const CustomContentWithoutCheckbox: StoryObj<typeof CheckboxInputList> = 
 
     const { formProp } = Form.use(data);
 
-    const content = React.useCallback(
-      (checked: boolean) => (
-        <>
-          <img width={50} src={checked ? checkedUrl : uncheckedUrl} />
-          <p>I'm {!checked && 'not'} checked</p>
-        </>
-      ),
-      []
+    const content = (checked: boolean) => (
+      <>
+        <img width={50} src={checked ? checkedUrl : uncheckedUrl} alt="Checkmark or not" />
+        <p>I&apos;m {!checked && 'not'} checked</p>
+      </>
     );
 
     return (

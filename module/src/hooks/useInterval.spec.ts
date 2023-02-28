@@ -72,6 +72,9 @@ describe('useInterval', () => {
 
     await waitFor(() => {
       expect(callback).not.toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
       expect(overrideCallback).not.toHaveBeenCalled();
     });
 
@@ -81,6 +84,9 @@ describe('useInterval', () => {
 
     await waitFor(() => {
       expect(callback).not.toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
       expect(overrideCallback).toHaveBeenCalled();
     });
   });

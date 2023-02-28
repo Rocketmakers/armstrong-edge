@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface -- we don't know what's going in config yet.
 export interface IArmstrongConfigContext {}
 
 const ArmstrongConfigContext = React.createContext<IArmstrongConfigContext>({});

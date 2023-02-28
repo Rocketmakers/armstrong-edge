@@ -48,6 +48,8 @@ export const Icon = React.forwardRef(
 ) as (<TIconSet extends IconSet>(props: ArmstrongVFCProps<IIconProps<TIconSet>, HTMLDivElement>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IIconProps<IconSet>>;
 
+Icon.displayName = 'Icon';
+
 type IIconsetIconProps<TIconSet extends IconSet> = Omit<IIconProps<TIconSet>, 'iconSet'>;
 
 /** Renders an Icomoon icon - requires the consuming application to have manually added the Icomoon font file */
@@ -55,7 +57,11 @@ export const IcomoonIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'I
   ({ icon, ...props }, forwardedRef) => <Icon {...props} ref={forwardedRef} iconSet="Icomoon" icon={icon} />
 );
 
+IcomoonIcon.displayName = 'IcomoonIcon';
+
 /** Renders an LinearIcon icon - requires the consuming application to have manually added the LinearIcon font file */
 export const LinearIcon = React.forwardRef<HTMLDivElement, IIconsetIconProps<'LinearIcons'>>(
   ({ icon, ...props }, forwardedRef) => <Icon {...props} ref={forwardedRef} iconSet="LinearIcons" icon={icon} />
 );
+
+LinearIcon.displayName = 'LinearIcon';

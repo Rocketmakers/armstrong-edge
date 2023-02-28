@@ -9,7 +9,7 @@ import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
 import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { TextInput } from '../textInput';
-import { CodeInputUtils } from '.';
+import { getLengthFromPart } from './codeInput.utils';
 
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
@@ -48,13 +48,12 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
 }
 
 /** an individual input from the CodeInput */
-
-export const CodeInputPart = React.forwardRef(
+const CodeInputPart = React.forwardRef(
   <TBind extends NullOrUndefined<string>>(
     { part, onChange, onKeyDown, value }: ICodeInputPartProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const length = React.useMemo(() => CodeInputUtils.getLengthFromPart(part), [part]);
+    const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
     if (typeof part === 'string') {
       return <p className="arm-code-input-part-text">{part}</p>;
@@ -102,6 +101,8 @@ export const CodeInputPart = React.forwardRef(
   props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICodeInputPartProps<any>>;
+
+CodeInputPart.displayName = 'CodeInputPart';
 
 /** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
 export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
@@ -168,7 +169,7 @@ export const CodeInput = React.forwardRef(
     });
 
     const totalLength = React.useMemo(
-      () => parts.reduce<number>((total, part) => total + CodeInputUtils.getLengthFromPart(part), 0),
+      () => parts.reduce<number>((total, part) => total + getLengthFromPart(part), 0),
       [parts]
     );
 
@@ -176,8 +177,8 @@ export const CodeInput = React.forwardRef(
       (partIndex: number) => {
         const sliceStart = parts
           .slice(0, partIndex)
-          .reduce<number>((output, part) => output + CodeInputUtils.getLengthFromPart(part), 0);
-        const sliceEnd = sliceStart + CodeInputUtils.getLengthFromPart(parts[partIndex]);
+          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
+        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
 
         return boundValue?.slice(sliceStart, sliceEnd) || '';
       },
@@ -206,13 +207,13 @@ export const CodeInput = React.forwardRef(
 
     const onPartChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
-        const currentPartLength = CodeInputUtils.getLengthFromPart(parts[partIndex]);
+        const currentPartLength = getLengthFromPart(parts[partIndex]);
 
         const newPartValue = event.currentTarget.value || '';
 
         const sliceStart = parts
           .slice(0, partIndex)
-          .reduce<number>((output, part) => output + CodeInputUtils.getLengthFromPart(part), 0);
+          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
         const sliceEnd = sliceStart + currentPartLength;
 
         if (newPartValue.length >= currentPartLength) {
@@ -225,7 +226,7 @@ export const CodeInput = React.forwardRef(
 
         setBoundValue?.(newValue as TBind);
       },
-      [boundValue, parts, goNext, totalLength]
+      [boundValue, parts, goNext, totalLength, setBoundValue]
     );
 
     const onKeyDown = React.useCallback(
@@ -254,7 +255,7 @@ export const CodeInput = React.forwardRef(
           }
         }
       },
-      [goPrevious, parts]
+      [goPrevious, parts, goNext]
     );
 
     return (
@@ -301,3 +302,5 @@ export const CodeInput = React.forwardRef(
   props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICodeInputProps<any>>;
+
+CodeInput.displayName = 'CodeInput';

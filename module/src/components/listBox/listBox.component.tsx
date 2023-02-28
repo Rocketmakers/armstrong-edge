@@ -6,7 +6,7 @@ import { ArmstrongId, IArmstrongExtendedOption } from '../../types';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types/reactExtensions';
 import { concat } from '../../utils/classNames';
 import { DropdownItems, IDropdownItemsProps } from '../dropdownItems';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon, isIconDefinition } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { ISelectOption } from '../select';
@@ -185,7 +185,7 @@ export const ListBox = React.forwardRef(
               )}
             </div>
             {selectOverlayIcon &&
-              (IconUtils.isIconDefinition(selectOverlayIcon) ? (
+              (isIconDefinition(selectOverlayIcon) ? (
                 <Icon
                   className="arm-listbox-overlay-icon"
                   icon={selectOverlayIcon.icon}
@@ -201,7 +201,7 @@ export const ListBox = React.forwardRef(
               type="button"
               className="arm-listbox-delete"
               onClick={onClickDelete}
-              icon={typeof deleteButton === 'boolean' ? IconUtils.getIconDefinition('Icomoon', 'cross2') : deleteButton}
+              icon={typeof deleteButton === 'boolean' ? getIconDefinition('Icomoon', 'cross2') : deleteButton}
               minimalStyle
             />
           )}
@@ -217,6 +217,8 @@ export const ListBox = React.forwardRef(
   ArmstrongFCExtensions<IListBoxProps<any, any>>;
 
 ListBox.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
+  selectOverlayIcon: getIconDefinition('Icomoon', 'arrow-down3'),
   deleteButton: true,
 };
+
+ListBox.displayName = 'ListBox';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Icon, IconSet, IIcon } from '../icon/icon.component';
-import { IconUtils } from '../icon/icons.utils';
+import { isIconDefinition } from '../icon/icons.utils';
 
 export interface IIconWrapperProps<TLeftIcon extends IconSet, TRightIcon extends IconSet> {
   /** icon definition for left icon, optionally uses custom JSX */
@@ -20,7 +20,7 @@ export const IconWrapper = <TLeftIcon extends IconSet, TRightIcon extends IconSe
   return (
     <>
       {leftIcon &&
-        (IconUtils.isIconDefinition(leftIcon) ? (
+        (isIconDefinition(leftIcon) ? (
           <Icon
             iconSet={leftIcon.iconSet}
             icon={leftIcon.icon}
@@ -32,7 +32,7 @@ export const IconWrapper = <TLeftIcon extends IconSet, TRightIcon extends IconSe
         ))}
       {children}
       {rightIcon &&
-        (IconUtils.isIconDefinition(rightIcon) ? (
+        (isIconDefinition(rightIcon) ? (
           <Icon
             iconSet={rightIcon.iconSet}
             icon={rightIcon.icon}

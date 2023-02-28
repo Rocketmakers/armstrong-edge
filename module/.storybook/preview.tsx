@@ -4,7 +4,8 @@ import { themes } from '@storybook/theming';
 
 import '../src/stories/theme.scss';
 
-export const decorators = [(Story) => {
+export const decorators = [
+  Story => {
     return (
       <div id="host">
         <ModalProvider>
@@ -47,5 +48,5 @@ export const parameters = {
   },
   backgrounds: {
     default: 'light',
-  }
-}
+  },
+};

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ValidationMessage } from '../../hooks/form';
 import { concat } from '../../utils/classNames';
-import { IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, IconSet, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
@@ -118,7 +118,9 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
 });
 
 Button.defaultProps = {
-  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
+  errorIcon: getIconDefinition('Icomoon', 'warning'),
   statusPosition: 'right',
   hideIconOnStatus: true,
 };
+
+Button.displayName = 'Button';

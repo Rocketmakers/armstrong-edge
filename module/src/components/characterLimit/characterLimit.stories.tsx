@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import { TextInput } from '../..';
 import * as Form from '../../hooks/form';
-import { IconUtils } from '../icon';
+import { getIconDefinition } from '../icon';
 import { CharacterLimit } from './characterLimit.component';
 
 /** metadata */
@@ -122,7 +122,7 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
     );
   },
   args: {
-    exceedsIcon: IconUtils.getIconDefinition('Icomoon', 'tree'),
+    exceedsIcon: getIconDefinition('Icomoon', 'tree'),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);

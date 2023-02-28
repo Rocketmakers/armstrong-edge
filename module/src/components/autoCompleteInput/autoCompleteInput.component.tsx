@@ -340,3 +340,5 @@ AutoCompleteInput.defaultProps = {
   showAllOptionsOnFocus: true,
   placeholder: 'Begin typing to filter options...',
 };
+
+AutoCompleteInput.displayName = 'AutoCompleteInput';

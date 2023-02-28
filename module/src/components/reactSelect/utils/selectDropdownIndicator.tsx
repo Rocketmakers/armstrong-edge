@@ -6,6 +6,7 @@ import { Icon, IconSet, IIcon } from '../../icon';
 
 const { DropdownIndicator } = components;
 
+// eslint-disable-next-line @typescript-eslint/naming-convention -- this component is being deleted shortly.
 export interface IDropdownIndicatorProps<Id extends ArmstrongId, isMulti extends boolean>
   extends DropdownIndicatorProps<IArmstrongReactSelectOption<Id>, isMulti> {
   icon: IIcon<IconSet>;

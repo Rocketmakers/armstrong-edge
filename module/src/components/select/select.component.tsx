@@ -6,7 +6,7 @@ import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongOption } from '../../types/options';
 import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon, isIconDefinition } from '../icon';
 import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
@@ -151,7 +151,7 @@ export const Select = React.forwardRef(
             ))}
           </select>
           {selectOverlayIcon &&
-            (IconUtils.isIconDefinition(selectOverlayIcon) ? (
+            (isIconDefinition(selectOverlayIcon) ? (
               <Icon
                 className="arm-select-overlay-icon"
                 icon={selectOverlayIcon.icon}
@@ -171,7 +171,7 @@ export const Select = React.forwardRef(
               event.stopPropagation();
             }}
             onMouseDown={e => e.stopPropagation()}
-            icon={typeof deleteButton === 'boolean' ? IconUtils.getIconDefinition('Icomoon', 'cross2') : deleteButton}
+            icon={typeof deleteButton === 'boolean' ? getIconDefinition('Icomoon', 'cross2') : deleteButton}
             minimalStyle
           />
         )}
@@ -186,5 +186,7 @@ export const Select = React.forwardRef(
   ArmstrongFCExtensions<ISelectProps<any, any>>;
 
 Select.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
+  selectOverlayIcon: getIconDefinition('Icomoon', 'arrow-down3'),
 };
+
+Select.displayName = 'Select';

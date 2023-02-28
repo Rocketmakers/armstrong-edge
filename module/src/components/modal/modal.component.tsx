@@ -5,7 +5,7 @@ import { concat } from '../../utils/classNames';
 import { Document, Window } from '../../utils/globals';
 import { IPortalProps, Portal } from '../portal';
 import { useModalLayerElement } from './modal.context';
-import { ModalUtils } from './modal.utils';
+import { closeModal } from './modal.utils';
 
 export interface IModalProps
   extends Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
@@ -92,7 +92,7 @@ export const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IM
     React.useImperativeHandle(ref, () => internalRef.current!);
 
     const close = React.useCallback(
-      () => ModalUtils.closeModal({ disableClose, onClose, onOpenChange }),
+      () => closeModal({ disableClose, onClose, onOpenChange }),
       [onOpenChange, disableClose, onClose]
     );
 
@@ -109,7 +109,7 @@ export const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IM
     /** Close when the user clicks outside of the dropdown */
     const onWindowClick = React.useCallback(() => {
       if (isOpen && closeOnWindowClick && !mouseDownIsInsideModal) {
-        void close();
+        close();
       }
       setMouseDownIsInsideModal(false);
     }, [isOpen, close, closeOnWindowClick, mouseDownIsInsideModal]);
@@ -119,7 +119,7 @@ export const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IM
     /** Close when the user blurs the window */
     const onWindowBlur = React.useCallback(() => {
       if (isOpen && closeOnWindowBlur) {
-        void close();
+        close();
       }
     }, [isOpen, close, closeOnWindowBlur]);
 
@@ -131,7 +131,7 @@ export const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IM
         onClickWrapper?.(event);
 
         if (closeOnBackgroundClick && !mouseDownIsInsideModal) {
-          void close();
+          close();
         }
       },
       [onClickWrapper, close, closeOnBackgroundClick, mouseDownIsInsideModal]
@@ -156,6 +156,7 @@ export const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IM
           aria-hidden={isClosing}
           tabIndex={isClosing ? -1 : undefined}
           data-centred={centred}
+          role="presentation"
         >
           <div
             role="dialog"
@@ -178,3 +179,5 @@ Modal.defaultProps = {
   closeTime: 300,
   centred: true,
 };
+
+Modal.displayName = 'Modal';

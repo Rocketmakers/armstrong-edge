@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
 
 export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
@@ -63,5 +63,5 @@ export const CharacterLimit = React.forwardRef(
   ArmstrongFCExtensions<ICharacterLimitProps<any>>;
 
 CharacterLimit.defaultProps = {
-  exceedsIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
+  exceedsIcon: getIconDefinition('Icomoon', 'warning'),
 };

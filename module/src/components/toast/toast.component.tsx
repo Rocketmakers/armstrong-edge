@@ -5,7 +5,7 @@ import { useTemporaryState, useTimeout } from '../../hooks';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { contentDependency } from '../../utils/objects';
-import { IconUtils } from '../icon';
+import { getIconDefinition } from '../icon';
 import { IconButton } from '../iconButton';
 import { useToasts } from './toast.context';
 import { IToastNotification } from './toast.types';
@@ -25,8 +25,8 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
     const { set: setAutoDismissTimeout, clear: clearAutoDismissTimeout } = useTimeout(beginDismiss, autoDismissTime);
 
     React.useEffect(() => {
-      void setAutoDismissTimeout();
-    }, []);
+      setAutoDismissTimeout();
+    }, [setAutoDismissTimeout]);
 
     const id = React.useId();
 
@@ -41,7 +41,7 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
 
     const timestampString = React.useMemo(
       () => timestampFormatString && Dates.dateToString(timestamp!, timestampFormatString),
-      [timestamp]
+      [timestamp, timestampFormatString]
     );
 
     return (
@@ -74,7 +74,7 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
                   type="button"
                   className="arm-toast-notification-close-button"
                   minimalStyle
-                  icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
+                  icon={getIconDefinition('Icomoon', 'cross2')}
                   onClick={beginDismiss}
                 />
               )}

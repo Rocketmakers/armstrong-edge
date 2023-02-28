@@ -26,6 +26,9 @@ describe('useThrottle', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(middleValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(value);
     });
 
@@ -36,6 +39,9 @@ describe('useThrottle', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(newValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(newValue);
     });
 
@@ -62,6 +68,9 @@ describe('useThrottle', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(newValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(newValue);
     });
 
@@ -71,6 +80,9 @@ describe('useThrottle', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(value);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(value);
     });
   });
@@ -95,6 +107,9 @@ describe('useThrottle', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(newValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(value);
     });
 

@@ -10,7 +10,6 @@ const armstrongTheme = create({
   colorSecondary: '#ed5d21',
 });
 
-
 addons.setConfig({
   theme: armstrongTheme,
 });

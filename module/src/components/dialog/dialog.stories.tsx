@@ -4,7 +4,7 @@ import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 
 import { Button } from '../button';
-import { IconUtils } from '../icon/icons.utils';
+import { getIconDefinition } from '../icon/icons.utils';
 import { Dialog } from './dialog.component';
 
 /** metadata */
@@ -54,7 +54,7 @@ export const WithTitleAndIcon: StoryObj<typeof Dialog> = {
   ...Template,
   args: {
     title: "I'm the dialog",
-    titleIcon: IconUtils.getIconDefinition('Icomoon', 'stats-bars5'),
+    titleIcon: getIconDefinition('Icomoon', 'stats-bars5'),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -73,7 +73,7 @@ export const CustomCloseIcon: StoryObj<typeof Dialog> = {
   ...Template,
   args: {
     title: "I'm the dialog",
-    closeButtonIcon: IconUtils.getIconDefinition('Icomoon', 'station'),
+    closeButtonIcon: getIconDefinition('Icomoon', 'station'),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);

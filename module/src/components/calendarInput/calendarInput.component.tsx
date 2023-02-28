@@ -17,7 +17,7 @@ import { assertNever } from '../../utils/typescript';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 import { Dropdown, IDropdownProps } from '../dropdown';
-import { IconSet, IconUtils } from '../icon';
+import { getIconDefinition, IconSet } from '../icon';
 import { IconButton } from '../iconButton';
 import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
@@ -357,6 +357,7 @@ export const CalendarInput = React.forwardRef(
       if (displayMode === 'calendar' && selectedDate) {
         return Dates.dateToString(Dates.dateLikeToDate(selectedDate)!, displayFormatString);
       }
+      return '';
     }, [displayMode, selectedDate, displayFormatString]);
 
     const onClickCalendarButton = React.useCallback(
@@ -375,6 +376,9 @@ export const CalendarInput = React.forwardRef(
           data-calendar-open={keepCalendarOpen || calendarOpen}
           onClick={onClickWrapperEvent}
           data-display-mode={displayMode}
+          role="menu"
+          onKeyDown={onClickWrapperEvent}
+          tabIndex={0}
         >
           <Dropdown
             isOpen={calendarPosition === 'dropdown' && (calendarOpen || !!keepCalendarOpen)}
@@ -418,7 +422,7 @@ export const CalendarInput = React.forwardRef(
                   <IconButton
                     type="button"
                     minimalStyle
-                    icon={IconUtils.getIconDefinition('Icomoon', 'calendar')}
+                    icon={getIconDefinition('Icomoon', 'calendar')}
                     onClick={onClickCalendarButton}
                   />
                 ))}

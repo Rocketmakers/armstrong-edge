@@ -7,7 +7,7 @@ import { repeat } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
 import { clamp } from '../../utils/maths';
 import { Button } from '../button';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { Icon, IconSet, IIcon, isIconDefinition } from '../icon';
 import { IInputWrapperProps } from '../inputWrapper';
 
 export interface IRatingPartProps
@@ -25,22 +25,24 @@ export interface IRatingPartProps
   readOnly?: boolean;
 }
 
-export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
+const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
   ({ index, value, onSelectPart, filledIcon, emptyIcon, step, mode, readOnly, name }, ref) => {
     const steps = Math.floor(1 / (step || 1));
 
     const filledIconJsx = React.useMemo(() => {
       const calculated = typeof filledIcon === 'function' ? filledIcon(index) : filledIcon;
       if (calculated) {
-        return IconUtils.isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
+        return isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
       }
+      return undefined;
     }, [filledIcon, index]);
 
     const emptyIconJsx = React.useMemo(() => {
       const calculated = typeof emptyIcon === 'function' ? emptyIcon(index) : emptyIcon;
       if (calculated) {
-        return IconUtils.isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
+        return isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
       }
+      return undefined;
     }, [emptyIcon, index]);
 
     return (
@@ -115,7 +117,9 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
   }
 );
 
-export type RatingIcon = IIcon<IconSet> | JSX.Element | ((index: number) => IIcon<IconSet> | JSX.Element);
+RatingPart.displayName = 'RatingPart';
+
+type RatingIcon = IIcon<IconSet> | JSX.Element | ((index: number) => IIcon<IconSet> | JSX.Element);
 
 export interface IRatingProps<TBind extends NullOrUndefined<number>>
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
@@ -261,3 +265,5 @@ Rating.defaultProps = {
   step: 1,
   mode: 'buttons',
 };
+
+Rating.displayName = 'Rating';

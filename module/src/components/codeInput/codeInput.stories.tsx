@@ -4,7 +4,7 @@ import { userEvent, within } from '@storybook/testing-library';
 import React from 'react';
 
 import { Form } from '../../hooks';
-import { IconUtils } from '../icon/icons.utils';
+import { getIconDefinition } from '../icon/icons.utils';
 import { CodeInput } from './codeInput.component';
 
 /** metadata */
@@ -103,11 +103,11 @@ export const WithTextBetween: StoryObj<typeof CodeInput> = {
   },
 };
 
-const icon = IconUtils.getIconDefinition('Icomoon', 'chess-king');
+const icon = getIconDefinition('Icomoon', 'chess-king');
 export const WithIcons: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
-    parts: [1, { length: 1, rightIcon: IconUtils.getIconDefinition('Icomoon', 'chrome') }, 1],
+    parts: [1, { length: 1, rightIcon: getIconDefinition('Icomoon', 'chrome') }, 1],
     leftIcon: icon,
     rightIcon: icon,
   },

@@ -26,6 +26,9 @@ describe('useDebounce', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(middleValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(value);
     });
 
@@ -36,6 +39,9 @@ describe('useDebounce', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(newValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(value);
     });
 
@@ -45,6 +51,9 @@ describe('useDebounce', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(newValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(newValue);
     });
 
@@ -56,7 +65,7 @@ describe('useDebounce', () => {
     const value = 'test';
     const newValue = 'value';
     const onChange = jest.fn(() => null);
-    const { result } = renderHook(prop => useDebounce(ms, value, onChange));
+    const { result } = renderHook(() => useDebounce(ms, value, onChange));
 
     expect(result.current[0]).toBe(value);
     expect(result.current[2]).toBe(value);
@@ -67,6 +76,9 @@ describe('useDebounce', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(newValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(newValue);
     });
 
@@ -76,6 +88,9 @@ describe('useDebounce', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(value);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(value);
     });
   });
@@ -99,6 +114,9 @@ describe('useDebounce', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(newValue);
+    });
+
+    await waitFor(() => {
       expect(result.current[2]).toBe(value);
     });
 
