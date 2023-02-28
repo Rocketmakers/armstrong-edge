@@ -3,6 +3,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import * as React from "react";
 import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker";
 
+import { enGB } from "date-fns/locale";
+
 import { Form, useOverridableState } from "../../hooks";
 import { IBindingProps } from "../../hooks/form";
 import { concat } from "../../utils/classNames";
@@ -143,6 +145,7 @@ export const CalendarInput: React.FunctionComponent<TCalendarInputProps> = (
           {props.content}
 
           <ReactDatePicker
+            {...CalendarInput.defaultProps?.config}
             {...props.config}
             selectsRange={props.selectsRange}
             onChange={(newValue) => {
@@ -184,4 +187,5 @@ export const CalendarInput: React.FunctionComponent<TCalendarInputProps> = (
 CalendarInput.defaultProps = {
   validationMode: "both",
   selectsRange: false,
+  config: { locale: enGB },
 };

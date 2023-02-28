@@ -4,6 +4,8 @@ import { Form } from "../..";
 import { Button } from "../button";
 import { CalendarInput } from "./calendarInput.component";
 import { Meta, StoryObj } from "@storybook/react";
+import { getMonth, getYear } from "date-fns";
+import { enGB, enUS } from "date-fns/locale";
 
 /** metadata */
 
@@ -25,69 +27,64 @@ export const Default: StoryObj<typeof CalendarInput> = {
   render: () => {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
-      <CalendarInput selectsRange={false} bind={formProp("date").bind()} />
+      <CalendarInput
+        selectsRange={false}
+        bind={formProp("date").bind()}
+        config={{ locale: enGB }}
+      />
     );
   },
 };
 
-// export const InputsOnly = () => {
-//   const { formProp } = Form.use({ date: undefined });
+export const TimeSelect: StoryObj<typeof CalendarInput> = {
+  render: () => {
+    const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
+    return (
+      <CalendarInput
+        selectsRange={false}
+        bind={formProp("date").bind()}
+        config={{
+          showTimeSelect: true,
+          dateFormat: "MMMM d, yyyy h:mm aa",
+        }}
+      />
+    );
+  },
+};
 
-//   return <NewCalendarInput bind={formProp('date').bind()} config={{inp}} />;
-// };
+export const OnlyTime: StoryObj<typeof CalendarInput> = {
+  render: () => {
+    const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
+    return (
+      <CalendarInput
+        selectsRange={false}
+        bind={formProp("date").bind()}
+        config={{
+          showTimeSelect: true,
+          showTimeSelectOnly: true,
+          timeIntervals: 15,
+          timeCaption: "Time",
+          dateFormat: "h:mm aa",
+        }}
+      />
+    );
+  },
+};
 
-// export const CustomInputFormats = () => {
-//   const { formProp } = Form.use({ date: undefined });
-
-//   return <NewCalendarInput dayInputDisplayFormat="EEEE d" monthInputDisplayFormat="LLLL" bind={formProp('date').bind()} displayMode="inputs" />;
-// };
-
-// export const CustomInputOrder = () => {
-//   const { formProp, formState } = Form.use({
-//     date: undefined,
-//     date2: undefined,
-//     monthDate: undefined,
-//     month: undefined,
-//     yearDate: undefined,
-//     backwards: undefined,
-//   });
-
-//   return (
-//     <>
-//       <NewCalendarInput bind={formProp('date').bind()} inputOrder={['year', 'month', 'day']} formatString="dd-MM-yyyy" />
-//       <br />
-//       <NewCalendarInput bind={formProp('date2').bind()} inputOrder={['month', 'day', 'year']} formatString="dd-MM-yyyy" />
-//       <br />
-//       <NewCalendarInput
-//         bind={formProp('monthDate').bind()}
-//         inputOrder={['month', 'year']}
-//         displayMode="inputs"
-//         formatString="MM-yyyy"
-//         monthInputDisplayFormat="LLLL"
-//       />
-//       <br />
-//       <NewCalendarInput
-//         bind={formProp('month').bind()}
-//         inputOrder={['month']}
-//         displayMode="inputs"
-//         formatString="MM"
-//         monthInputDisplayFormat="LLLL"
-//       />
-//       <br />
-//       <NewCalendarInput bind={formProp('yearDate').bind()} inputOrder={['year']} displayMode="inputs" formatString="yyyy" />
-//       <br />
-//       <NewCalendarInput bind={formProp('backwards').bind()} inputOrder={['year', 'month', 'day']} formatString="dd-MM-yyyy" />
-//       <div className="bound-value">
-//         <p>1 (UK) - {formState.date}</p>
-//         <p>2 (US) - {formState.date2}</p>
-//         <p>3 (month) - {formState.monthDate}</p>
-//         <p>4 (just month) - {formState.month}</p>
-//         <p>5 (year) - {formState.yearDate}</p>
-//         <p>6 (backwards) - {formState.backwards}</p>
-//       </div>
-//     </>
-//   );
-// };
+export const Clearable: StoryObj<typeof CalendarInput> = {
+  render: () => {
+    const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
+    return (
+      <CalendarInput
+        selectsRange={false}
+        bind={formProp("date").bind()}
+        config={{
+          isClearable: true,
+        }}
+      />
+    );
+  },
+};
 
 export const CalendarOnly: StoryObj<typeof CalendarInput> = {
   render: () => {
@@ -113,7 +110,7 @@ export const CustomWeekStart = () => {
     <CalendarInput
       selectsRange={false}
       bind={formProp("date").bind()}
-      config={{ locale: "en-US" }}
+      config={{ locale: enUS }}
     />
   );
 };
@@ -197,26 +194,6 @@ export const CustomOpenButton = () => {
   );
 };
 
-// export const CustomPaginationButtons = () => {
-//   const { formProp } = Form.use({ date: undefined });
-
-//   return (
-//     <NewCalendarInput
-//       bind={formProp('date').bind()}
-//       backButton={(onClick) => (
-//         <Button leftIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-left')} minimalStyle onClick={onClick}>
-//           back
-//         </Button>
-//       )}
-//       forwardsButton={(onClick) => (
-//         <Button rightIcon={IconUtils.getIconDefinition('LinearIcons', 'arrow-right')} minimalStyle onClick={onClick}>
-//           next
-//         </Button>
-//       )}
-//     />
-//   );
-// };
-
 export const RangeExample = () => {
   const { formProp } = Form.use<{ startDate?: Date; endDate?: Date }>({
     startDate: undefined,
@@ -236,30 +213,106 @@ export const RangeExample = () => {
   );
 };
 
-// export const NoControls = () => {
-//   const { formProp } = Form.use({ date: undefined });
-//   return <NewCalendarInput bind={formProp('date').bind()} controls={false} />;
-// };
+export const MultiMonthRangeExample = () => {
+  const { formProp } = Form.use<{ startDate?: Date; endDate?: Date }>({
+    startDate: undefined,
+    endDate: undefined,
+  });
 
-// export const NoJumplist = () => {
-//   const { formProp } = Form.use({ date: undefined });
-//   return <NewCalendarInput bind={formProp('date').bind()} jumpList={[]} />;
-// };
+  return (
+    <div className="story-cols">
+      <label>
+        <CalendarInput
+          selectsRange={true}
+          startBind={formProp("startDate").bind()}
+          endBind={formProp("endDate").bind()}
+          config={{ monthsShown: 2 }}
+        />
+      </label>
+    </div>
+  );
+};
 
-// export const CustomJumplist = () => {
-//   const { formProp } = Form.use({ date: undefined });
+export const CustomMonthNav = () => {
+  const { formProp } = Form.use<{ startDate?: Date }>({
+    startDate: undefined,
+  });
 
-//   const jumpList = React.useMemo<ICalendarDisplayProps['jumpList']>(() => {
-//     const date = new Date();
+  const range = (start: number, end: number) => {
+    return Array.from(Array(end - start).keys()).map((x) => start + x);
+  };
 
-//     const threeMonthsAgo = new Date(date);
-//     threeMonthsAgo.setMonth(date.getMonth() - 3);
+  const years = range(1990, getYear(new Date()) + 1);
 
-//     return [
-//       { date: threeMonthsAgo, name: '3 Months Ago', buttonProps: { leftIcon: IconUtils.getIconDefinition('Icomoon', 'tree') } },
-//       { date, name: 'Today' },
-//     ];
-//   }, []);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
-//   return <NewCalendarInput bind={formProp('date').bind()} jumpList={jumpList} />;
-// };
+  return (
+    <CalendarInput
+      selectsRange={false}
+      bind={formProp("startDate").bind()}
+      config={{
+        renderCustomHeader: ({
+          date,
+          changeYear,
+          changeMonth,
+          decreaseMonth,
+          increaseMonth,
+          prevMonthButtonDisabled,
+          nextMonthButtonDisabled,
+        }) => (
+          <div
+            style={{
+              margin: 10,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+              {"<"}
+            </button>
+            <select
+              value={getYear(date)}
+              onChange={({ target: { value } }) => changeYear(parseInt(value))}
+            >
+              {years.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={months[getMonth(date)]}
+              onChange={({ target: { value } }) =>
+                changeMonth(months.indexOf(value))
+              }
+            >
+              {months.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+
+            <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+              {">"}
+            </button>
+          </div>
+        ),
+      }}
+    />
+  );
+};
