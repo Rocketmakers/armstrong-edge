@@ -4,5 +4,10 @@
   ],
   "jest.jestCommandLine": "./module/node_modules/.bin/jest --config=./module/jest.config.ts",
   "jestrunner.configPath": "",
-  "jestrunner.jestCommand": ""
+  "jestrunner.jestCommand": "",
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#253206",
+    "titleBar.activeBackground": "#344609",
+    "titleBar.activeForeground": "#F7FCE9"
+  }
 }

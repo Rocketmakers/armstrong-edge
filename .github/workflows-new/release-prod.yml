@@ -5,6 +5,7 @@ on:
       - main
 jobs:
   release-pre-release:
+    needs: [test]
     name: Release
     runs-on: ubuntu-latest
   steps:  

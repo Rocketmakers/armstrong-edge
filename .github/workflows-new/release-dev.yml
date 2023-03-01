@@ -6,6 +6,7 @@ on:
 jobs:
   release-pre-release:
     name: Release from develop
+    needs: [test]
     runs-on: ubuntu-latest
   steps:  
       - name: Release pre-release
