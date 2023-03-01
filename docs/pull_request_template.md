@@ -11,6 +11,7 @@ ARM-XX
 
 ## Checklist
 
+- [ ] does this work have _all_ the relevant tests?
 - [ ] are your changes in Storybook?
 - [ ] are any breaking changes documented in `docs/migrating_from_oldstrong.md`?
 - [ ] does _everything_ have jsdoc?
