@@ -1,15 +1,18 @@
-name: Release
+name: Release from main
 on:
   push:
     branches:
       - main
 jobs:
-  release-pre-release:
-    needs: [test]
-    name: Release
+  build-workflow:
+    uses: ./.github/workflows/build.yml
+  
+  release:
+    needs: test
     runs-on: ubuntu-latest
   steps:  
       - name: Release
+        id: release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

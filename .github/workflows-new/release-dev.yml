@@ -4,12 +4,15 @@ on:
     branches:
       - develop
 jobs:
+  build-workflow:
+    uses: ./.github/workflows/build.yml
+  
   release-pre-release:
-    name: Release from develop
-    needs: [test]
+    needs: test
     runs-on: ubuntu-latest
   steps:  
-      - name: Release pre-release
+      - name: Release from develop
+        id: release-from-develop
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

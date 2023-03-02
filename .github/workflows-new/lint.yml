@@ -1,8 +1,7 @@
 name: Lint module
-on: [push]
+on: workflow_call
 jobs: 
   lint-module:
-    needs: build-module
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
