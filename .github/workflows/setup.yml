@@ -19,9 +19,10 @@ jobs:
       
       - name: Install node dependencies in root
         id: install-node-dependencies-root
-        run: npm i
+        run: npm ci --legacy-peer-deps
 
       - if: ${{ steps.npm.outputs.cache-hit != 'true' }}
         name: Install node dependencies in module
         id: install-node-dependencies-module
-        run: (cd module && npm i)
+        run: npm ci --legacy-peer-deps
+        working-directory: ./module
