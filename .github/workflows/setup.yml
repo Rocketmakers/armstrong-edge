@@ -1,5 +1,5 @@
 name: Setup and cache Node for Module
-on: [workflow_call]
+on: [push, workflow_call]
 jobs: 
   setup-and-cache-node-module:
     runs-on: ubuntu-latest
@@ -26,3 +26,20 @@ jobs:
         id: install-node-dependencies-module
         run: npm ci --legacy-peer-deps
         working-directory: ./module
+
+  build:
+    runs-on: ubuntu-latest
+    needs: setup-workflow
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+      
+      - name: build
+        id: build
+        run: npm run build
+        working-directory: ./module
+
+  linting-workflow:
+    uses: ./.github/workflows/lint.yml
+    needs: build
