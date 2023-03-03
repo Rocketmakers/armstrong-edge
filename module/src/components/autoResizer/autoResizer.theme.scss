@@ -2,7 +2,7 @@
 
 .arm-auto-resizer {
   overflow: hidden;
-  transition-duration: variables.$transition-quick;
+  transition-duration: 300ms;
 
   &[data-animate-horizontal="true"] {
     width: var(--arm-auto-resizer-width);

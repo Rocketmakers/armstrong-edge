@@ -1,62 +1,62 @@
-@use "sass:math";
+// @use "sass:math";
 
-.input-styling-demo {
-  > * {
-    margin-bottom: $spacing-small;
-  }
+// .input-styling-demo {
+//   > * {
+//     margin-bottom: $spacing-small;
+//   }
 
-  &.outlines {
-    .arm-input-wrapper {
-      box-shadow: none;
-      border: 1px solid $gray-light;
+//   &.outlines {
+//     .arm-input-wrapper {
+//       box-shadow: none;
+//       border: 1px solid $gray-light;
 
-      &:focus-within,
-      &:focus {
-        border-color: $brand-primary;
-      }
-    }
-  }
+//       &:focus-within,
+//       &:focus {
+//         border-color: $brand-primary;
+//       }
+//     }
+//   }
 
-  &.rounded {
-    .arm-input-wrapper {
-      border-radius: math.div($arm-input-height, 2);
-    }
-  }
+//   &.rounded {
+//     .arm-input-wrapper {
+//       border-radius: math.div($arm-input-height, 2);
+//     }
+//   }
 
-  &.fancy {
-    .arm-input-wrapper {
-      border-radius: 0;
-      background-color: $gray-dark;
-      color: $white;
-      border-bottom: 2px solid $brand-primary;
-    }
-  }
+//   &.fancy {
+//     .arm-input-wrapper {
+//       border-radius: 0;
+//       background-color: $gray-dark;
+//       color: $white;
+//       border-bottom: 2px solid $brand-primary;
+//     }
+//   }
 
-  &.underline {
-    .arm-input-wrapper {
-      border-radius: 0;
-      background-color: transparent;
-      box-shadow: none;
-      border-bottom: 2px solid $gray-medium;
+//   &.underline {
+//     .arm-input-wrapper {
+//       border-radius: 0;
+//       background-color: transparent;
+//       box-shadow: none;
+//       border-bottom: 2px solid $gray-medium;
 
-      &:focus-within,
-      &:focus {
-        border-bottom-color: $brand-primary;
-      }
-    }
-  }
-}
+//       &:focus-within,
+//       &:focus {
+//         border-bottom-color: $brand-primary;
+//       }
+//     }
+//   }
+// }
 
-.funky-dropdown {
-  background-color: $gray-dark !important;
-  border: 1px solid $gray-light;
-  color: $white;
-}
+// .funky-dropdown {
+//   background-color: $gray-dark !important;
+//   border: 1px solid $gray-light;
+//   color: $white;
+// }
 
-.group1 {
-  background-color: #f00;
-}
+// .group1 {
+//   background-color: #f00;
+// }
 
-.group2 {
-  background-color: #0ff;
-}
+// .group2 {
+//   background-color: #0ff;
+// }

@@ -88,6 +88,8 @@ export const CodeInputPart = React.forwardRef(
 
     const { className, ...textInputProps } = part;
 
+    console.log(part);
+
     return (
       <TextInput
         ref={ref}
@@ -316,6 +318,8 @@ export const CodeInput = React.forwardRef(
                 <CodeInputPart
                   part={part}
                   key={index}
+                  data-left-icon={!!leftIcon}
+                  data-right-icon={!!rightIcon}
                   value={getValueForPart(index) || ""}
                   onChange={(event) => onPartChange(event, index)}
                   onKeyDown={(event) => onKeyDown(event, index)}
