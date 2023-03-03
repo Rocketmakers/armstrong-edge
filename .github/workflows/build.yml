@@ -19,4 +19,4 @@ jobs:
 
   linting-workflow:
     uses: ./.github/workflows/lint.yml
-    needs: build-dev
+    needs: build
