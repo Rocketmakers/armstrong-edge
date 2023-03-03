@@ -15,7 +15,8 @@ jobs:
       
       - name: build
         id: build
-        run: (npm run build && cd module && npm run build)
+        run: npm run build
+        working-directory: ./module
 
   linting-workflow:
     uses: ./.github/workflows/lint.yml
