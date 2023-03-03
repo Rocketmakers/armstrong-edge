@@ -16,10 +16,12 @@ jobs:
           cache: 'npm'
           cache-dependency-path: |
             module/package-lock.json
-            package-lock.json
-      - run: npm ci
       
+      - name: Install node dependencies in root
+        id: install-node-dependencies-root
+        run: npm i
+
       - if: ${{ steps.npm.outputs.cache-hit != 'true' }}
         name: Install node dependencies in module
         id: install-node-dependencies-module
-        run: (npm i && cd module && npm i)
+        run: (cd module && npm i)
