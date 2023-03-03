@@ -1,20 +1,18 @@
 name: Build module
-on: 
-  workflow_run:
-    workflows: ['Setup and cache Node for Module']
-    types:
-      - completed
+on: [push, workflow_call]
+
 jobs:
   setup-workflow:
     uses: ./.github/workflows/setup.yml
 
   build-dev:
     runs-on: ubuntu-latest
+    needs: setup-and-cache-node-module
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
-
+      
       - if: ${{ github.event.workflow_run.conclusion == 'success' }}
         name: build
         id: build
