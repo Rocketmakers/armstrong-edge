@@ -9,14 +9,5 @@ jobs:
           fetch-depth: 0
 
       - name: lint-module
-        run: (cd module && npm run lint)
-    
-  lint-marketing:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 0
-
-      - name: lint-marketing
-        run: (cd marketing && npm run lint)
+        run: npm run lint
+        working-directory: ./module

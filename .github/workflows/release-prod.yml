@@ -10,7 +10,7 @@ jobs:
   release:
     needs: test
     runs-on: ubuntu-latest
-  steps:  
+    steps:  
       - name: Release
         id: release
         env:
