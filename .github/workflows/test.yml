@@ -6,7 +6,7 @@ on:
       - main
       - develop
 jobs:
-  build-workflow:
+  setup-workflow:
     uses: ./.github/workflows/build.yml
 
   test:
