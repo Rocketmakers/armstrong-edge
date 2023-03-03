@@ -22,7 +22,4 @@ jobs:
       - if: ${{ steps.npm.outputs.cache-hit != 'true' }}
         name: Install node dependencies in module
         id: install-node-dependencies-module
-        run: npm i
-        working-directory: |
-          module
-          .
+        run: (npm i && cd module && npm i)
