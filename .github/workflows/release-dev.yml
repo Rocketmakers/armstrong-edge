@@ -10,7 +10,7 @@ jobs:
   release-pre-release:
     needs: test
     runs-on: ubuntu-latest
-  steps:  
+    steps:  
       - name: Release from develop
         id: release-from-develop
         env:
