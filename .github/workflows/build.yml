@@ -1,6 +1,5 @@
 name: Build module
 on: 
-  workflow_call:
   workflow_run:
     workflows: ['Setup and cache Node for Module']
     types:
