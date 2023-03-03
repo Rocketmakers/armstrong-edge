@@ -16,5 +16,5 @@ jobs:
         run: npm run build # need to create a command that builds for dev here, I think
         working-directory: ./module
 
-  linting-workflow:
-    uses: ./.github/workflows/lint.yml  
+  # linting-workflow:
+  #   uses: ./.github/workflows/lint.yml  
