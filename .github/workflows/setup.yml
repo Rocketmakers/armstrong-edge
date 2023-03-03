@@ -23,4 +23,6 @@ jobs:
         name: Install node dependencies in module
         id: install-node-dependencies-module
         run: npm i
-        working-directory: ./module
+        working-directory: |
+          ./module
+          .

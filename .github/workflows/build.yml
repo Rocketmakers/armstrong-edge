@@ -12,6 +12,14 @@ jobs:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
+
+      - uses: ylemkimon/cache-restore@v2
+        id: cache
+        with:
+          path: |
+            ./module
+            .
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       
       - name: build
         id: build
