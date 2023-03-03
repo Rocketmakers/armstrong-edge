@@ -13,10 +13,10 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version-file: '.tool-versions'
-          cache: 'npm-cache'
+          cache: 'npm'
           cache-dependency-path: module/package-lock.json
       
-      - if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.npm.outputs.cache-hit != 'true' }}
         name: Install node dependencies in module
         id: install-node-dependencies-module
         run: npm ci
