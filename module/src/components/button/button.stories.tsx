@@ -64,6 +64,12 @@ export const Styles: StoryObj<typeof Button> = {
       </div>
     );
   },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/f6yAoBwAQop8YahTF2ASSG/Block-up-design-system?node-id=197%3A3561&t=ccw4zqPQDfhSLCVL-1",
+    },
+  },
 };
 
 export const WithIcons: StoryObj<typeof Button> = {
