@@ -16,10 +16,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: |
             module/package-lock.json
-      
-      - name: Install node dependencies in root
-        id: install-node-dependencies-root
-        run: npm ci --legacy-peer-deps
+
+      - name: Install node dependencies
+        id: install-node-dependencies
+        run: npm i
+        working-directory: ./module
 
       - if: ${{ steps.npm.outputs.cache-hit != 'true' }}
         name: Install node dependencies in module
