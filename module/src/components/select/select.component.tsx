@@ -206,7 +206,6 @@ export const Select = React.forwardRef(
                 ? IconUtils.getIconDefinition("Icomoon", "cross2")
                 : deleteButton
             }
-            minimalStyle
           />
         )}
       </InputWrapper>

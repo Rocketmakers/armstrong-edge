@@ -94,6 +94,8 @@ export const CodeInputPart = React.forwardRef(
 
     const { className, ...textInputProps } = part;
 
+    console.log(part);
+
     return (
       <TextInput
         ref={ref}

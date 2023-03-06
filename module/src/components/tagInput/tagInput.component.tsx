@@ -293,7 +293,6 @@ export const TagInput = React.forwardRef(
         {deleteAllButton && !!boundValue?.length && (
           <IconButton
             type="button"
-            minimalStyle
             onClick={clearTags}
             icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
           />

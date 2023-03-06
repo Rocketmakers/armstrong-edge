@@ -19,7 +19,7 @@ export interface IStatusProps {
 
 /** Render a status icon which can either be pending or errored */
 export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
-  ({ pending, error, errorIcon, spinnerIcon }, ref) => {
+  ({ pending, error, errorIcon, spinnerIcon, ...rest }, ref) => {
     if (!error && !pending) {
       return null;
     }
@@ -30,7 +30,8 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
         data-active={!!pending || !!error}
         data-error={!!error && !pending}
         data-pending={pending}
-        role='status'
+        role="status"
+        {...rest}
       >
         {error && !pending && (
           <Icon
