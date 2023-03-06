@@ -94,7 +94,7 @@ const CustomHeaderSwipe01: React.FC<ReactDatePickerCustomHeaderProps> = (
       <div className="swipe01-date-navigation">
         <IconButton
           icon={IconUtils.getIconDefinition("Icomoon", "arrow-left")}
-          onClick={props.decreaseYear}
+          onClick={props.decreaseMonth}
         />
         <IconButton
           icon={IconUtils.getIconDefinition("Icomoon", "arrow-right")}
