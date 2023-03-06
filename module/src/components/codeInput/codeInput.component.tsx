@@ -94,11 +94,10 @@ export const CodeInputPart = React.forwardRef(
 
     const { className, ...textInputProps } = part;
 
-    console.log(part);
-
     return (
       <TextInput
         ref={ref}
+        bind={bind}
         className={concat("arm-code-input-part-input", className)}
         onChange={onChange}
         onKeyDown={onKeyDown}
@@ -111,6 +110,7 @@ export const CodeInputPart = React.forwardRef(
         data-length={length}
         onClick={(event) => event.currentTarget.select()}
         {...textInputProps}
+        maxLength={part.length}
       />
     );
   }
@@ -138,9 +138,6 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
 
-  /** the current value */
-  value?: TBind;
-
   /** Fired when the code input changes */
   onChange?: (newValue: TBind) => void;
 
@@ -161,7 +158,6 @@ export const CodeInput = React.forwardRef(
       className,
       parts,
       bind,
-      value,
       onChange,
       validationMode,
       validationErrorMessages,
@@ -178,7 +174,6 @@ export const CodeInput = React.forwardRef(
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
-      value,
       onChange,
       validationErrorMessages,
       validationMode,
