@@ -43,15 +43,20 @@ export type CodeInputPartDefinition<TBind extends NullOrUndefined<string>> =
   | number;
 
 export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
+  /** The given length of this part. If this is a string, the string will be rendered. */
   part: CodeInputPartDefinition<TBind>;
 
-  /** the current value of this part */
-  value: string;
+    /**
+   * The binding for the input.
+   * - Can be bound to a string, number or Date object.
+   * - WARNING: If no initial value is passed it will assume the type is string.
+   */
+    bind?: IBindingProps<string>;
 
-  /** called when the text input changes */
+  /** Called when the text input changes */
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
-  /** called when the user presses a key inside the input */
+  /** Called when the user presses a key inside the input */
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
@@ -59,11 +64,11 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
 
 export const CodeInputPart = React.forwardRef(
   <TBind extends NullOrUndefined<string>>(
-    { part, onChange, onKeyDown, value }: ICodeInputPartProps<TBind>,
+    { part, onChange, onKeyDown, bind }: ICodeInputPartProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const length = React.useMemo(
-      () => CodeInputUtils.getLengthFromPart(part),
+      () => CodeInputUtils.getPartLength(part),
       [part]
     );
 
@@ -74,14 +79,15 @@ export const CodeInputPart = React.forwardRef(
     if (typeof part === "number") {
       return (
         <TextInput
+          bind={bind}
           ref={ref}
           className="arm-code-input-part-input"
           onChange={onChange}
-          value={value}
           onKeyDown={onKeyDown}
           style={{ "--arm-code-input-length": length } as React.CSSProperties}
           data-length={length}
           onClick={(event) => event.currentTarget.select()}
+          maxLength={part}
         />
       );
     }
@@ -93,7 +99,6 @@ export const CodeInputPart = React.forwardRef(
         ref={ref}
         className={concat("arm-code-input-part-input", className)}
         onChange={onChange}
-        value={value}
         onKeyDown={onKeyDown}
         style={
           {
@@ -140,7 +145,7 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   /**
    * the parts of the code input
    * Can be a number representing the length of an input, I.E [1,1,1]
-   * Can be a string representing a piece of text inbetween inputs I.E. [1,1,'-',1,1]
+   * Can be a string representing a piece of text in-between inputs I.E. [1,1,'-',1,1]
    * Can be an object representing an input with some properties
    */
   parts: CodeInputPartDefinition<TBind>[];
@@ -178,114 +183,101 @@ export const CodeInput = React.forwardRef(
       validationErrorIcon: errorIcon,
     });
 
-    const totalLength = React.useMemo(
+    const totalCodeLength = React.useMemo(
       () =>
         parts.reduce<number>(
-          (total, part) => total + CodeInputUtils.getLengthFromPart(part),
+          (total, part) => total + CodeInputUtils.getPartLength(part),
           0
         ),
       [parts]
     );
 
+    const goNextPart = React.useCallback(
+      (partIndex: number) => {
+        const nextIndex =
+        parts.slice(partIndex + 1).findIndex((part) => typeof part !== "string") + partIndex + 1;
+        
+        if (nextIndex !== -1) {
+          inputRefs.current[nextIndex]?.focus();
+        }
+      },
+      [parts]
+      );
+      
+    const goPreviousPart = React.useCallback(
+      (partIndex: number) => {
+        const previousIndex = findLastIndex(
+          parts.slice(0, partIndex),
+          (part) => typeof part !== "string"
+          );
+          if (previousIndex !== -1) {
+            inputRefs.current[previousIndex]?.focus();
+          }
+        },
+        [parts]
+        );
+        
     const getValueForPart = React.useCallback(
       (partIndex: number) => {
         const sliceStart = parts
           .slice(0, partIndex)
           .reduce<number>(
-            (output, part) => output + CodeInputUtils.getLengthFromPart(part),
+            (output, part) => output + CodeInputUtils.getPartLength(part),
             0
           );
         const sliceEnd =
-          sliceStart + CodeInputUtils.getLengthFromPart(parts[partIndex]);
+          sliceStart + CodeInputUtils.getPartLength(parts[partIndex]);
 
         return boundValue?.slice(sliceStart, sliceEnd) || "";
       },
       [boundValue, parts]
     );
 
-    const goNext = React.useCallback(
-      (partIndex: number) => {
-        const nextIndex =
-          parts
-            .slice(partIndex + 1)
-            .findIndex((part) => typeof part !== "string") +
-          partIndex +
-          1;
-
-        if (nextIndex !== -1) {
-          inputRefs.current[nextIndex]?.focus();
-        }
-      },
-      [parts]
-    );
-    const goPrevious = React.useCallback(
-      (partIndex: number) => {
-        const previousIndex = findLastIndex(
-          parts.slice(0, partIndex),
-          (part) => typeof part !== "string"
-        );
-        if (previousIndex !== -1) {
-          inputRefs.current[previousIndex]?.focus();
-        }
-      },
-      [parts]
-    );
-
-    const onPartChange = React.useCallback(
+    const onPartValueChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
-        const currentPartLength = CodeInputUtils.getLengthFromPart(
+        const currentPartLength = CodeInputUtils.getPartLength(
           parts[partIndex]
         );
 
-        const newPartValue = event.currentTarget.value || "";
+        const currentPartValue = event.currentTarget.value || "";
 
-        const sliceStart = parts
-          .slice(0, partIndex)
-          .reduce<number>(
-            (output, part) => output + CodeInputUtils.getLengthFromPart(part),
-            0
-          );
-        const sliceEnd = sliceStart + currentPartLength;
-
-        if (newPartValue.length >= currentPartLength) {
-          goNext(partIndex);
+        if (currentPartValue.length >= currentPartLength) {
+          goNextPart(partIndex);
         }
-
-        const newValue = (
-          boundValue
-            ? boundValue.slice(0, sliceStart) +
-              newPartValue +
-              boundValue.slice(sliceEnd)
-            : newPartValue
-        ).slice(0, totalLength);
-
-        setBoundValue?.(newValue as TBind);
       },
-      [boundValue, parts, goNext, totalLength]
+      [boundValue, parts, goNextPart, totalCodeLength]
     );
 
+    const boundValueArray = React.useMemo(() => {
+      return parts.map((_, partIndex) => getValueForPart(partIndex))
+    }, []);
+
     const onKeyDown = React.useCallback(
-      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number) => {
+      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
         switch (event.key) {
           case "Backspace": {
             if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
-              goPrevious(partIndex);
+              goPreviousPart(partIndex);
             }
             break;
           }
-          case "Left": {
+          case "ArrowLeft": {
             if (event.currentTarget.selectionStart === 0 && partIndex > 0) {
-              goPrevious(partIndex);
+              goPreviousPart(partIndex);
             }
             break;
           }
-          case "Right": {
+          case "ArrowRight": {
             if (
               event.currentTarget.selectionEnd === 0 &&
               partIndex < parts.length
-            ) {
-              goNext(partIndex);
+              ) {
+              goNextPart(partIndex);
             }
+            break;
+          }
+          case "ArrowUp": {
+            console.log(event.currentTarget.selectionEnd);
             break;
           }
           default: {
@@ -293,39 +285,52 @@ export const CodeInput = React.forwardRef(
           }
         }
       },
-      [goPrevious, parts]
+      [goPreviousPart, parts]
     );
+
+
+
+    interface IFormState {
+      parts: string[];
+    }
+
+    const {formProp, formState} = Form.use<IFormState>({parts: boundValueArray});
+
+    React.useEffect(() => {
+      setBoundValue?.(formState?.parts?.join('') as TBind)
+    }, [formState])
 
     return (
       <>
         <div
-          className={concat("arm-code-input", className)}
           ref={ref}
           title="Code input"
         >
-          <StatusWrapper
-            error={error}
-            validationErrorMessages={bindConfig.validationErrorMessages}
-            errorIcon={bindConfig.validationErrorIcon}
-            statusPosition={statusPosition}
-            pending={pending}
-            validationMode={bindConfig.validationMode}
-          >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-              {parts.map((part, index) => (
-                <CodeInputPart
-                  part={part}
-                  key={index}
-                  value={getValueForPart(index) || ""}
-                  onChange={(event) => onPartChange(event, index)}
-                  onKeyDown={(event) => onKeyDown(event, index)}
-                  ref={(r) => {
-                    inputRefs.current[index] = r;
-                  }}
-                />
-              ))}
-            </IconWrapper>
-          </StatusWrapper>
+          <form className={concat("arm-code-input", className)}>
+            <StatusWrapper
+              error={error}
+              validationErrorMessages={bindConfig.validationErrorMessages}
+              errorIcon={bindConfig.validationErrorIcon}
+              statusPosition={statusPosition}
+              pending={pending}
+              validationMode={bindConfig.validationMode}
+            >
+              <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+                {parts?.map((part, index) => (
+                    <CodeInputPart
+                      bind={formProp("parts", index).bind()}
+                      part={part}
+                      key={index}
+                      onChange={(event) => onPartValueChange(event, index)}
+                      onKeyDown={(event) => onKeyDown(event, index, part)}
+                      ref={(r) => {
+                        inputRefs.current[index] = r;
+                      }}
+                    />
+                ))}
+              </IconWrapper>
+            </StatusWrapper>
+          </form>
         </div>
 
         {!!bindConfig.validationErrorMessages?.length &&

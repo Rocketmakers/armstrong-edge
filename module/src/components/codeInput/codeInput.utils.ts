@@ -1,7 +1,7 @@
 import { CodeInputPartDefinition } from '.';
 
 export namespace CodeInputUtils {
-  export const getLengthFromPart = (part: CodeInputPartDefinition<any>) => {
+  export const getPartLength = (part: CodeInputPartDefinition<any>) => {
     if (typeof part === 'number') {
       return part;
     }
