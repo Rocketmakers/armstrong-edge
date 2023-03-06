@@ -253,7 +253,7 @@ export const CodeInput = React.forwardRef(
     }, []);
 
     const onKeyDown = React.useCallback(
-      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
+      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number) => {
         switch (event.key) {
           case "Backspace": {
             if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
@@ -276,10 +276,6 @@ export const CodeInput = React.forwardRef(
             }
             break;
           }
-          case "ArrowUp": {
-            console.log(event.currentTarget.selectionEnd);
-            break;
-          }
           default: {
             break;
           }
@@ -287,8 +283,6 @@ export const CodeInput = React.forwardRef(
       },
       [goPreviousPart, parts]
     );
-
-
 
     interface IFormState {
       parts: string[];
@@ -322,7 +316,7 @@ export const CodeInput = React.forwardRef(
                       part={part}
                       key={index}
                       onChange={(event) => onPartValueChange(event, index)}
-                      onKeyDown={(event) => onKeyDown(event, index, part)}
+                      onKeyDown={(event) => onKeyDown(event, index)}
                       ref={(r) => {
                         inputRefs.current[index] = r;
                       }}
