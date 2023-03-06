@@ -10,8 +10,6 @@ import { IconButton } from "../iconButton";
 import { useToasts } from "./toast.context";
 import { IToastNotification } from "./toast.types";
 
-import "./toast.basic.scss";
-
 export interface IToastNotificationProps
   extends Omit<IToastNotification, "timestamp">,
     Required<Pick<IToastNotification, "timestamp">> {}
@@ -66,10 +64,7 @@ export const ToastNotification = React.forwardRef<
   return (
     <div
       {...htmlProps}
-      className={concat(
-        "arm-toast-notification",
-        htmlProps?.className
-      )}
+      className={concat("arm-toast-notification", htmlProps?.className)}
       data-type={type}
       data-dismissing={dismissing}
       onMouseEnter={clearAutoDismissTimeout}
@@ -90,7 +85,6 @@ export const ToastNotification = React.forwardRef<
             <IconButton
               type="button"
               className="arm-toast-notification-close-button"
-              minimalStyle
               icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
               onClick={beginDismiss}
             />
@@ -132,8 +126,7 @@ export const ToastNotificationContainer = React.forwardRef<
   );
 
   const splitToasts = React.useMemo(
-    () =>
-      arrayToArrayDictionary(combinedToasts, (toast) => toast.position!),
+    () => arrayToArrayDictionary(combinedToasts, (toast) => toast.position!),
     [combinedToasts]
   );
 
@@ -147,19 +140,13 @@ export const ToastNotificationContainer = React.forwardRef<
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-top">
           {!!splitToasts["top-left"]?.length &&
             splitToasts["top-left"].map((toast) => (
-              <ToastNotification
-                {...toast}
-                key={contentDependency(toast)}
-              />
+              <ToastNotification {...toast} key={contentDependency(toast)} />
             ))}
         </div>
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-bottom">
           {!!splitToasts["bottom-left"]?.length &&
             splitToasts["bottom-left"].map((toast) => (
-              <ToastNotification
-                {...toast}
-                key={contentDependency(toast)}
-              />
+              <ToastNotification {...toast} key={contentDependency(toast)} />
             ))}
         </div>
       </div>
@@ -167,19 +154,13 @@ export const ToastNotificationContainer = React.forwardRef<
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-top">
           {!!splitToasts["top-right"]?.length &&
             splitToasts["top-right"].map((toast) => (
-              <ToastNotification
-                {...toast}
-                key={contentDependency(toast)}
-              />
+              <ToastNotification {...toast} key={contentDependency(toast)} />
             ))}
         </div>
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-bottom">
           {!!splitToasts["bottom-right"]?.length &&
             splitToasts["bottom-right"].map((toast) => (
-              <ToastNotification
-                {...toast}
-                key={contentDependency(toast)}
-              />
+              <ToastNotification {...toast} key={contentDependency(toast)} />
             ))}
         </div>
       </div>

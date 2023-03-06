@@ -22,8 +22,6 @@ import { Button } from "../button";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IInputWrapperProps } from "../inputWrapper";
 
-import "./rating.basic.scss";
-
 export interface IRatingPartProps
   extends Pick<
     IRatingProps<any>,
@@ -90,11 +88,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
         style={
           value
             ? ({
-                "--rating-amount": `${clamp(
-                  (value - index) * 100,
-                  0,
-                  100
-                )}%`,
+                "--rating-amount": `${clamp((value - index) * 100, 0, 100)}%`,
               } as React.CSSProperties)
             : undefined
         }
@@ -124,7 +118,6 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
                 <Button
                   type="button"
                   key={buttonIndex}
-                  minimalStyle
                   onClick={() => onSelectPart((step || 1) * (buttonIndex + 1))}
                   aria-label={`${inputValue}`}
                 />

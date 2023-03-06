@@ -12,8 +12,6 @@ import { concat } from "../../utils/classNames";
 import { Icon } from "../icon";
 import { Status } from "../status";
 import { ValidationErrors } from "../validationErrors";
-
-import "./switchInput.basic.scss";
 import { IDragReleaseCallbackArgs, useDrag } from "./switchInput.hooks";
 
 export interface ISwitchInputProps<TBind extends NullOrUndefined<boolean>>

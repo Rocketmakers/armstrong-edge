@@ -25,6 +25,7 @@ export function useTimeout<T = void>(callback?: () => T, time?: number): IUseTim
 
   const clear = React.useCallback(() => {
     clearTimeout(timeout.current);
+    setWaiting(false);
     resolvePromise.current?.(undefined as any as T);
     resolvePromise.current = undefined;
   }, []);

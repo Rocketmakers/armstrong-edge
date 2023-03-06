@@ -1,0 +1,14 @@
+import { ArgsTable, Canvas, Meta, Story } from "@storybook/addon-docs";
+import { CharacterLimit } from "./characterLimit.component";
+
+<Meta title="Form/Character Limit" component={CharacterLimit} />
+
+# Character Limit
+
+A character limiter for form components, especially text components - can be optionally used to act as a limiter as well as simply displaying the current character count.
+
+<Canvas withSource="open">
+  <Story id="form-character-limit--default" />
+</Canvas>
+
+<ArgsTable of={CharacterLimit} />

@@ -21,8 +21,6 @@ import { OptionContent } from "../optionContent";
 import { Status } from "../status";
 import { ValidationErrors } from "../validationErrors";
 
-import "./checkboxInput.basic.scss";
-
 export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<
       React.DetailedHTMLProps<
@@ -74,11 +72,11 @@ export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
   /** the direction for the content to flow */
   direction?: "vertical" | "horizontal";
 
-  /** should hide the checkbox itself, showing only the label, allowing you to handle visualising the state of the input yourself */
-  hideCheckbox?: boolean;
-
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
   content?: IArmstrongExtendedOption<ArmstrongId>["content"];
+
+  /** apply a test ID to the component for Storybook, Playwright etc */
+  testId?: string;
 }
 
 /** Render a checkbox that uses DOM elements allow for easier styling */
@@ -105,7 +103,7 @@ export const CheckboxInput = React.forwardRef(
       inputProps,
       direction,
       name,
-      hideCheckbox,
+      testId,
       ...nativeProps
     }: ICheckboxInputProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
@@ -136,46 +134,34 @@ export const CheckboxInput = React.forwardRef(
     return (
       <>
         <div
-          className={concat(
-            "arm-input",
-            "arm-checkbox-input",
-            className
-          )}
+          className={concat("arm-input", "arm-checkbox-input", className)}
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
           data-checked={isChecked}
           data-direction={direction}
+          data-testid={testId}
+          data-content={!!content}
           {...nativeProps}
         >
-          <input
-            className="arm-checkbox-input-checkbox-input"
-            onChange={onChangeEvent}
-            type="checkbox"
-            ref={ref}
-            checked={isChecked ?? undefined}
-            {...inputProps}
-          />
-
           <label>
-            {!hideCheckbox && (
-              <div className="arm-checkbox-input-checkbox">
-                {checkedIcon && (
-                  <Icon
-                    className="arm-checkbox-input-checked-icon"
-                    iconSet={checkedIcon.iconSet}
-                    icon={checkedIcon.icon}
-                  />
-                )}
-                {uncheckedIcon && (
-                  <Icon
-                    className="arm-checkbox-input-unchecked-icon"
-                    iconSet={uncheckedIcon.iconSet}
-                    icon={uncheckedIcon.icon}
-                  />
-                )}
-              </div>
-            )}
-
+            <div className="arm-checkbox-input-checkbox">
+              {checkedIcon && isChecked && (
+                <Icon
+                  className="arm-checkbox-input-checked-icon"
+                  iconSet={checkedIcon.iconSet}
+                  icon={checkedIcon.icon}
+                  title="Checked icon"
+                />
+              )}
+              {uncheckedIcon && !isChecked && (
+                <Icon
+                  className="arm-checkbox-input-unchecked-icon"
+                  iconSet={uncheckedIcon.iconSet}
+                  icon={uncheckedIcon.icon}
+                  title="Unchecked icon"
+                />
+              )}
+            </div>
             <OptionContent
               content={content}
               name={name}
@@ -193,6 +179,15 @@ export const CheckboxInput = React.forwardRef(
               errorIcon={bindConfig.validationErrorIcon}
             />
           </label>
+
+          <input
+            className="arm-checkbox-input-checkbox-input"
+            onChange={onChangeEvent}
+            type="checkbox"
+            ref={ref}
+            checked={isChecked ?? undefined}
+            {...inputProps}
+          />
         </div>
 
         {!!bindConfig.validationErrorMessages?.length &&

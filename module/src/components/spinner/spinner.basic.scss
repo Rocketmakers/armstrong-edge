@@ -1,6 +1,12 @@
 @use "../../theme/variables.scss";
 @use "../../theme/mixins.scss";
 
+@keyframes spin {
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
 .arm-spinner {
   @include mixins.flex-centre-content;
 
@@ -21,7 +27,7 @@
 }
 
 .arm-spinner-inner {
-  animation: spin-clockwise variables.$transition-slow linear infinite;
+  animation: spin variables.$transition-slow linear infinite;
   width: max-content;
   height: max-content;
 }

@@ -11,8 +11,6 @@ import { concat } from "../../../utils/classNames";
 import { Button } from "../../button";
 import { OptionContent } from "../../optionContent";
 
-import "./tabControl.basic.scss";
-
 export interface ITab<Id extends ArmstrongId>
   extends Pick<
     IArmstrongExtendedOption<Id, never>,
@@ -50,7 +48,6 @@ export const TabControlTab = React.forwardRef(
         className={concat("arm-tab-control-tab", className)}
         data-is-current={isCurrent}
         ref={ref}
-        minimalStyle
       >
         <OptionContent
           leftIcon={leftIcon}
