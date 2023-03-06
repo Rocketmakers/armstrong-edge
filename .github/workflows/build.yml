@@ -1,5 +1,5 @@
 name: Build module
-on: [push, workflow_call]
+on: workflow_call
 
 jobs:
   setup-workflow:
@@ -17,7 +17,3 @@ jobs:
         id: build
         run: npm run build
         working-directory: ./module
-
-  linting-workflow:
-    uses: ./.github/workflows/lint.yml
-    needs: build

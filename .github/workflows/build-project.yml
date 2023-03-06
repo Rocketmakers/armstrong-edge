@@ -1,0 +1,14 @@
+name: Build project
+on: push
+
+jobs:
+  setup-workflow:
+    uses: ./.github/workflows/setup.yml
+
+  build:
+    uses: ./.github/workflows/build.yml
+    needs: setup-workflow
+
+  linting-workflow:
+    uses: ./.github/workflows/lint.yml
+    needs: build
