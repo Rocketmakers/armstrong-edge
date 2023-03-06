@@ -1,4 +1,5 @@
 export * from "./autoResizer";
+export * from "./baseCalendarInput";
 export * from "./button";
 export * from "./calendarInput";
 export * from "./characterLimit";

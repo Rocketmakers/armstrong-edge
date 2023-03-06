@@ -1,191 +1,194 @@
-import "react-datepicker/dist/react-datepicker.css";
-
 import * as React from "react";
-import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker";
+import { addDays, format } from "date-fns";
+import { ReactDatePickerCustomHeaderProps } from "react-datepicker";
+import { Form } from "../../hooks";
 
-import { enGB } from "date-fns/locale";
+import {
+  BaseCalendarInput,
+  TBaseCalendarInputProps,
+  TBaseDatePickerConfig,
+} from "../baseCalendarInput";
 
-import { Form, useOverridableState } from "../../hooks";
-import { IBindingProps } from "../../hooks/form";
-import { concat } from "../../utils/classNames";
-import { IInputWrapperProps } from "../inputWrapper";
-import { Status } from "../status";
-import { ValidationErrors } from "../validationErrors";
+import { Button } from "../button";
+import { IconUtils } from "../icon";
+import { IconButton } from "../iconButton";
+import { ISelectOption, Select } from "../select";
+import { TextInput } from "../textInput";
 
-type TDate = Date;
-type TDateRange = [Date | null, Date | null];
+export type TCalendarInputProps = {
+  /** not implemented for selectsRange=true */
+  quickSelectionTags?: boolean;
 
-export type TCalendarInputProps = Pick<
-  IInputWrapperProps,
-  | "scrollValidationErrorsIntoView"
-  | "validationMode"
-  | "errorIcon"
-  | "disabled"
-  | "pending"
-  | "error"
-  | "validationErrorMessages"
-  | "className"
-> & {
-  /** props to spread onto the calendar component */
-  config?: Omit<
-    ReactDatePickerProps,
-    "onChange" | "value" | "selectsRange" | "selected" | "startDate" | "endDate"
-  >;
+  /** swipe02 is default */
+  dateSelectionHeader?: "swipe01" | "swipe02" | "dropdown";
 
-  /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
-  content?: React.ReactElement;
-} & (
-    | {
-        selectsRange: true;
+  locale?: TBaseDatePickerConfig["locale"];
 
-        /**  prop for binding start date (range) to an Armstrong form binder (see forms documentation) */
-        startBind?: IBindingProps<TDate>;
-        /** current start date of input */
-        startValue?: TDate;
+  /** default to english */
+  language?: {
+    todayLabel: string;
+    tomorrowLabel: string;
+  };
+} & TBaseCalendarInputProps;
 
-        /**  prop for binding end date (range) to an Armstrong form binder (see forms documentation) */
-        endBind?: IBindingProps<TDate>;
-        /** current end date of input */
-        endValue?: TDate;
+const CustomInput = React.forwardRef<HTMLInputElement>((props, ref) => (
+  <TextInput
+    leftIcon={IconUtils.getIconDefinition("Icomoon", "calendar")}
+    {...props}
+    ref={ref}
+  />
+));
 
-        /** fired when the value changes */
-        onChange?: (value: TDateRange) => void;
-      }
-    | {
-        selectsRange: false;
-        bind?: IBindingProps<TDate>;
-        value?: TDate;
-
-        /** fired when the value changes */
-        onChange?: (value: TDate) => void;
-      }
-  );
-
-/**
- * third-party docs: https://reactdatepicker.com
- * decided to use single component to keep as close to third party as possible */
-export const CalendarInput: React.FunctionComponent<TCalendarInputProps> = (
+const CustomHeaderDropdown: React.FC<ReactDatePickerCustomHeaderProps> = (
   props
 ) => {
-  const singleValue = !props.selectsRange ? props.value : undefined;
-  const startValue = props.selectsRange ? props.startValue : undefined;
-  const endValue = props.selectsRange ? props.endValue : undefined;
+  const today = new Date();
 
-  const commonBindingState = {
-    validationErrorIcon: props.errorIcon,
-    validationMode: props.validationMode,
+  const { formState, formProp } = Form.use<{ month: number; year: number }>({
+    month: today.getMonth(),
+    year: today.getFullYear(),
+  });
+
+  React.useEffect(() => {
+    if (formState?.month) {
+      props.changeMonth(formState.month);
+    }
+    if (formState?.year) {
+      props.changeYear(formState.year);
+    }
+  }, [formState?.month, formState?.year]);
+
+  /** @todo - how to set locale? */
+  const getLocaleMonth = (month: number) => {
+    const date = new Date();
+
+    date.setMonth(month);
+    return format(date, "MMMM");
   };
 
-  // SINGLE DATE...
-
-  const [boundDateValue, setBoundDateValue, bindDateConfig] =
-    Form.useBindingState(!props.selectsRange ? props.bind : undefined, {
-      ...commonBindingState,
-      validationErrorMessages: props.validationErrorMessages,
-      value: singleValue,
-      onChange: !props.selectsRange ? props.onChange : undefined,
-    });
-  // use an overridable internal state so it can be used without a binding
-  const [date, setDate] = useOverridableState(
-    (singleValue ?? undefined) as TDate,
-    boundDateValue,
-    setBoundDateValue
+  const monthOptions = new Array(12).map<ISelectOption<number, any>>(
+    (_, index) => ({ id: index, name: getLocaleMonth(index) })
   );
 
-  // DATE RANGE...
-
-  const [boundStartDateValue, setBoundStartDateValue, bindStartDateConfig] =
-    Form.useBindingState(props.selectsRange ? props.startBind : undefined, {
-      ...commonBindingState,
-      validationErrorMessages: props.validationErrorMessages,
-      value: startValue,
-      onChange: !props.selectsRange ? props.onChange : undefined,
-    });
-  // use an overridable internal state so it can be used without a binding
-  const [startDate, setStartDate] = useOverridableState(
-    (startValue ?? undefined) as TDate,
-    boundStartDateValue,
-    setBoundStartDateValue
+  const yearOptions = new Array(100).map<ISelectOption<number, any>>(
+    (_, index) => {
+      const year = today.getFullYear() - 50 + index;
+      return { id: year, name: `${year}` };
+    }
   );
-
-  const [boundEndDateValue, setBoundEndDateValue, bindEndDateConfig] =
-    Form.useBindingState(props.selectsRange ? props.endBind : undefined, {
-      ...commonBindingState,
-      // only pass in validationErrorMessages once for date range as errors will be combined!
-      validationErrorMessages: [],
-      value: endValue,
-      onChange: !props.selectsRange ? props.onChange : undefined,
-    });
-  // use an overridable internal state so it can be used without a binding
-  const [endDate, setEndDate] = useOverridableState(
-    (endValue ?? undefined) as TDate,
-    boundEndDateValue,
-    setBoundEndDateValue
-  );
-
-  const validationErrorMessages = props.selectsRange
-    ? [
-        ...bindStartDateConfig.validationErrorMessages,
-        ...bindEndDateConfig.validationErrorMessages,
-      ]
-    : bindDateConfig.validationErrorMessages;
 
   return (
-    <>
-      <div
-        className={concat("arm-input", "arm-calendar-input", props.className)}
-        data-disabled={props.disabled || props.pending}
-        data-error={props.error || !!validationErrorMessages?.length}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
-        <label>
-          {props.content}
-
-          <ReactDatePicker
-            {...CalendarInput.defaultProps?.config}
-            {...props.config}
-            selectsRange={props.selectsRange}
-            onChange={(newValue) => {
-              if (!props.selectsRange) {
-                setDate?.(newValue as TDate);
-              } else {
-                setStartDate?.(newValue?.[0]);
-                setEndDate?.(newValue?.[1]);
-              }
-            }}
-            selected={date}
-            startDate={startDate}
-            endDate={endDate}
-          />
-
-          <Status
-            error={
-              bindDateConfig.shouldShowValidationErrorIcon &&
-              (!!validationErrorMessages?.length || props.error)
-            }
-            pending={props.pending}
-            errorIcon={bindDateConfig.validationErrorIcon}
-          />
-        </label>
-      </div>
-
-      {!!validationErrorMessages?.length &&
-        bindDateConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            validationErrors={validationErrorMessages}
-            icon={bindDateConfig.validationErrorIcon}
-            scrollIntoView={props.scrollValidationErrorsIntoView}
-          />
-        )}
-    </>
+    <div className="custom-header dropdown">
+      <Select options={monthOptions} bind={formProp("month").bind()} />
+      <Select options={yearOptions} bind={formProp("year").bind()} />
+    </div>
   );
 };
 
-CalendarInput.defaultProps = {
-  validationMode: "both",
-  selectsRange: false,
-  config: { locale: enGB },
+const CustomHeaderSwipe01: React.FC<ReactDatePickerCustomHeaderProps> = (
+  props
+) => {
+  return (
+    <div className="custom-header swipe01">
+      <span>{format(props.monthDate, "MMMM yyyy")}</span>
+      <div className="swipe01-date-navigation">
+        <IconButton
+          icon={IconUtils.getIconDefinition("Icomoon", "arrow-left")}
+          onClick={props.decreaseYear}
+        />
+        <IconButton
+          icon={IconUtils.getIconDefinition("Icomoon", "arrow-right")}
+          onClick={props.increaseMonth}
+        />
+      </div>
+    </div>
+  );
+};
+
+const CustomHeaderSwipe02: React.FC<ReactDatePickerCustomHeaderProps> = (
+  props
+) => {
+  return (
+    <div className="custom-header swipe02">
+      <IconButton
+        icon={IconUtils.getIconDefinition("Icomoon", "arrow-left")}
+        onClick={props.decreaseYear}
+      />
+      <span>{format(props.monthDate, "MMMM yyyy")}</span>
+      <IconButton
+        icon={IconUtils.getIconDefinition("Icomoon", "arrow-right")}
+        onClick={props.increaseMonth}
+      />
+    </div>
+  );
+};
+
+/**
+ * @decision option to use native input on mobile / tablet? - leave this issue entirely up to the consuming code
+ * @decision JC says quick selection tags only make sense when not selecting a range
+ * the following config is overridden: todayButton, customInput, renderCustomHeader, locale
+ */
+export const CalendarInput: React.FC<TCalendarInputProps> = ({
+  quickSelectionTags,
+  dateSelectionHeader,
+  locale,
+  language,
+  ...props
+}) => {
+  const renderCustomHeader = React.useCallback(
+    (customerHeaderProps: ReactDatePickerCustomHeaderProps) => {
+      const today = new Date();
+      const tomorrow = addDays(today, 1);
+      return (
+        <div className="customer-header-container">
+          {!props.selectsRange && !!quickSelectionTags && (
+            <div className="quick-selection-tags">
+              <Button
+                onClick={() =>
+                  props.bind?.setValue(today) ?? props.onChange?.(today)
+                }
+              >
+                {language?.todayLabel ?? "Today"}
+              </Button>
+              <Button
+                onClick={() =>
+                  props.bind?.setValue(tomorrow) ?? props.onChange?.(tomorrow)
+                }
+              >
+                {language?.tomorrowLabel ?? "Tomorrow"}
+              </Button>
+            </div>
+          )}
+          {dateSelectionHeader === "dropdown" && (
+            <CustomHeaderDropdown {...customerHeaderProps} />
+          )}
+          {dateSelectionHeader === "swipe01" && (
+            <CustomHeaderSwipe01 {...customerHeaderProps} />
+          )}
+          {!dateSelectionHeader ||
+            (dateSelectionHeader === "swipe02" && (
+              <CustomHeaderSwipe02 {...customerHeaderProps} />
+            ))}
+        </div>
+      );
+    },
+    [dateSelectionHeader, quickSelectionTags]
+  );
+
+  const config = React.useMemo<TBaseDatePickerConfig>(() => {
+    return {
+      monthsShown: props.selectsRange ? 2 : 1,
+
+      ...props.config,
+
+      // replaced by dateSelectionHeader
+      todayButton: undefined,
+
+      customInput: <CustomInput />,
+      renderCustomHeader: props.selectsRange ? undefined : renderCustomHeader,
+      locale,
+    };
+  }, [quickSelectionTags, renderCustomHeader, locale, props.config]);
+
+  return <BaseCalendarInput {...props} config={config} />;
 };
