@@ -11,5 +11,4 @@ jobs:
       
       - name: build
         id: build
-        run: npm run build
-        working-directory: ./module
+        run: (cd module && npm run build)
