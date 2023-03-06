@@ -43,11 +43,11 @@ export const Default: StoryObj<typeof CodeInput> = {
     const value = canvas.getByText("Value:");
     const inputs = within(wrapper).getAllByRole("textbox", { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], "123");
-    expect(inputs[0]).toHaveValue("1");
-    expect(inputs[1]).toHaveValue("2");
-    expect(inputs[2]).toHaveValue("3");
-    expect(value).toHaveTextContent("Value: 123");
+    userEvent.type(inputs[0], "abc");
+    expect(inputs[0]).toHaveValue("a");
+    expect(inputs[1]).toHaveValue("b");
+    expect(inputs[2]).toHaveValue("c");
+    expect(value).toHaveTextContent("Value: abc");
     userEvent.clear(inputs[0]);
     expect(inputs[0]).toHaveValue("2");
     expect(inputs[1]).toHaveValue("3");
