@@ -12,7 +12,6 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-    needs: setup-and-cache-node-module
     steps:
       - uses: actions/checkout@master
         with:
@@ -20,6 +19,7 @@ jobs:
 
       - name: Download node modules artifact
         id: download-node-modules
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         uses: dawidd6/action-download-artifact@v2
         with: 
           workflow: setup.yml
