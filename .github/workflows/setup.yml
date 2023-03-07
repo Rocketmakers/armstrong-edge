@@ -14,9 +14,13 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version-file: '.tool-versions'
-          cache: 'npm'
-          cache-dependency-path: |
-            module/package-lock.json
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install node dependencies
         if: ${{ steps.setup-node.outputs.cache-hit != 'true' }}
