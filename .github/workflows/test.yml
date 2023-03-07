@@ -1,7 +1,7 @@
 name: Test
 on:
   workflow_run:
-    workflows: ['Build project']
+    workflows: [Build project]
     types:
       - completed
 env:
