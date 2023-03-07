@@ -14,16 +14,19 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version-file: '.tool-versions'
-          cache: 'npm'
-          cache-dependency-path: |
-            module/package-lock.json
+
+      - name: Cache npm packages
+        id: cache-packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm        
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+            ${{ runner.os }}-
 
       - name: Install node dependencies
+        if: ${{ steps.npm.outputs.cache-hit != 'true' }}
         id: install-node-dependencies
-        run: (cd module && npm ci --legacy-peer-deps)
-
-      # - if: ${{ steps.npm.outputs.cache-hit != 'true' }}
-      #   name: Install node dependencies in module
-      #   id: install-node-dependencies-module
-      #   run: npm ci --legacy-peer-deps
-      #   working-directory: ./module
+        run: npm ci --legacy-peer-deps
+        working-directory: ./module
