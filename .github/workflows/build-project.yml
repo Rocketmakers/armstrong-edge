@@ -5,10 +5,6 @@ jobs:
   setup-workflow:
     uses: ./.github/workflows/setup.yml
 
-  build:
-    uses: ./.github/workflows/build.yml
-    needs: setup-workflow
-
 # Ready for when linting is back
   # linting-workflow:
   #   uses: ./.github/workflows/lint.yml
