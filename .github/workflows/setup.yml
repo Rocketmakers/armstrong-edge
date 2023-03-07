@@ -1,5 +1,8 @@
 name: Setup and cache Node for Module
-on: workflow_call
+on: 
+  workflow_call:
+    outputs:
+      dependencies: module/node_modules
 
 jobs: 
   setup-and-cache-node-module:
@@ -14,19 +17,17 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version-file: '.tool-versions'
-
-      - name: Cache npm packages
-        id: cache-packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm        
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
-            ${{ runner.os }}-
+          cache: 'npm'
+          cache-dependency-path: |
+            module/package-lock.json
 
       - name: Install node dependencies
-        if: ${{ steps.npm.outputs.cache-hit != 'true' }}
+        if: ${{ steps.setup-node.outputs.cache-hit != 'true' }}
         id: install-node-dependencies
         run: npm ci --legacy-peer-deps
+        working-directory: ./module
+    
+      - name: Build
+        id: build
+        run: npm run build
         working-directory: ./module
