@@ -203,10 +203,12 @@ export const CodeInput = React.forwardRef(
       
     const goPreviousPart = React.useCallback(
       (partIndex: number) => {
+        
         const previousIndex = findLastIndex(
           parts.slice(0, partIndex),
           (part) => typeof part !== "string"
           );
+
           if (previousIndex !== -1) {
             inputRefs.current[previousIndex]?.focus();
           }
@@ -250,7 +252,7 @@ export const CodeInput = React.forwardRef(
     }, []);
 
     const onKeyDown = React.useCallback(
-      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number) => {
+      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
         switch (event.key) {
           case "Backspace": {
             if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
@@ -266,7 +268,7 @@ export const CodeInput = React.forwardRef(
           }
           case "ArrowRight": {
             if (
-              event.currentTarget.selectionEnd === 0 &&
+              event.currentTarget.selectionEnd === CodeInputUtils.getPartLength(part) &&
               partIndex < parts.length
               ) {
               goNextPart(partIndex);
@@ -278,7 +280,7 @@ export const CodeInput = React.forwardRef(
           }
         }
       },
-      [goPreviousPart, parts]
+      [goPreviousPart, goNextPart, parts]
     );
 
     interface IFormState {
@@ -313,7 +315,7 @@ export const CodeInput = React.forwardRef(
                       part={part}
                       key={index}
                       onChange={(event) => onPartValueChange(event, index)}
-                      onKeyDown={(event) => onKeyDown(event, index)}
+                      onKeyDown={(event) => onKeyDown(event, index, +part)}
                       ref={(r) => {
                         inputRefs.current[index] = r;
                       }}
