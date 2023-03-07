@@ -5,7 +5,6 @@ import {
   useEventListener,
   useHasTimeElapsed,
 } from "../../hooks";
-import { useGeneratedId } from "../../hooks/useGeneratedId";
 import { ArmstrongId } from "../../types/core";
 import { IArmstrongExtendedOption } from "../../types/options";
 import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from "../../utils/arrays";
@@ -13,8 +12,6 @@ import { concat } from "../../utils/classNames";
 import { Dropdown, IDropdownProps } from "../dropdown";
 import { Icon } from "../icon";
 import { OptionContent } from "../optionContent/optionContent.component";
-
-import "./dropdownItems.basic.scss";
 
 export interface IDropdownItem
   extends IArmstrongExtendedOption<
@@ -95,7 +92,6 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
             iconSet="Icomoon"
             icon="checkmark3"
             className="arm-dropdown-item-checkmark"
-            cypressTag="dropdown-item-icon"
           />
         )}
       </li>
@@ -316,7 +312,7 @@ export const DropdownItems: React.FunctionComponent<
     ]
   );
 
-  const id = useGeneratedId("arm_dd", htmlId);
+  const id = React.useId();
 
   return (
     <Dropdown

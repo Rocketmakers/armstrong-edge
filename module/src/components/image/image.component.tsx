@@ -1,7 +1,6 @@
 import * as React from "react";
 import { HTMLAttributes } from "react";
 
-import { useElementStatus } from "./useElementStatus";
 import { useHasTimeElapsedSinceMount } from "../../hooks/useHasTimeElapsed";
 import {
   IUseInViewportOptions,
@@ -10,7 +9,7 @@ import {
 import { concat } from "../../utils/classNames";
 import { IStatusProps, Status } from "../status";
 
-import "./image.basic.scss";
+import { useElementStatus } from "./image.hooks";
 
 export interface IImageSource {
   /** the url source which will replace the main src if the right conditions are met */

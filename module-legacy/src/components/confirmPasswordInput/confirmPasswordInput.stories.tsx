@@ -9,10 +9,6 @@ import { ConfirmPasswordInput } from './confirmPasswordInput.component';
 
 export default StoryUtils.createMeta(ConfirmPasswordInput, 'Form', 'Confirm Password Input', {});
 
-/** component template */
-
-// const Template = StoryUtils.createTemplate(ScrollToEndListener as React.FC<IScrollToEndListenerProps<any, any>>);
-
 /** stories */
 
 export const Default = () => {

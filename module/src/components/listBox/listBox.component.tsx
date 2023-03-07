@@ -15,8 +15,6 @@ import { IconButton } from "../iconButton";
 import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
 import { ISelectOption } from "../select";
 
-import "./listBox.basic.scss";
-
 export interface IListBoxOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongExtendedOption<
       Id,
@@ -168,10 +166,7 @@ export const ListBox = React.forwardRef(
         childRootElementSelector=".arm-input-inner"
         className={concat("arm-listbox-wrapper", wrapperClassName)}
         noItemsText={noItemsText}
-        contentClassName={concat(
-          "arm-listbox-options",
-          dropdownClassName
-        )}
+        contentClassName={concat("arm-listbox-options", dropdownClassName)}
         closeOnBackgroundClick={closeOnBackgroundClick}
         closeOnScroll={closeOnScroll}
         closeOnWindowBlur={closeOnWindowBlur}
@@ -227,7 +222,6 @@ export const ListBox = React.forwardRef(
                   ? IconUtils.getIconDefinition("Icomoon", "cross2")
                   : deleteButton
               }
-              minimalStyle
             />
           )}
         </InputWrapper>

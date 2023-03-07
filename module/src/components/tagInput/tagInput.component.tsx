@@ -20,8 +20,6 @@ import { IconButton } from "../iconButton";
 import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
 import { Tag } from "../tag/tag.component";
 
-import "./tagInput.basic.scss";
-
 export interface ITag
   extends Pick<
     IArmstrongExtendedOption<
@@ -295,7 +293,6 @@ export const TagInput = React.forwardRef(
         {deleteAllButton && !!boundValue?.length && (
           <IconButton
             type="button"
-            minimalStyle
             onClick={clearTags}
             icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
           />

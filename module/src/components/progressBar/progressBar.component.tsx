@@ -3,8 +3,6 @@ import * as React from "react";
 import { Color, colorToRGB, multiLerpRGB, RGBToHex } from "../../utils/color";
 import { concat } from "../../utils/classNames";
 
-import "./progressBar.basic.scss";
-
 export type ProgressBarLabelVariant = "centre" | "centre-progress";
 
 export type ProgressBarDirection = "left" | "right" | "down" | "up";

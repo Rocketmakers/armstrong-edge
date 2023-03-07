@@ -8,7 +8,6 @@ import {
   StatusWrapper,
   ValidationErrors,
 } from "../..";
-import { useGeneratedId } from "../../hooks";
 import { IBindingProps } from "../../hooks/form";
 import {
   ArmstrongFCExtensions,
@@ -22,8 +21,6 @@ import { concat } from "../../utils/classNames";
 import { Button } from "../button";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IInputWrapperProps } from "../inputWrapper";
-
-import "./rating.basic.scss";
 
 export interface IRatingPartProps
   extends Pick<
@@ -91,11 +88,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
         style={
           value
             ? ({
-                "--rating-amount": `${clamp(
-                  (value - index) * 100,
-                  0,
-                  100
-                )}%`,
+                "--rating-amount": `${clamp((value - index) * 100, 0, 100)}%`,
               } as React.CSSProperties)
             : undefined
         }
@@ -125,7 +118,6 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
                 <Button
                   type="button"
                   key={buttonIndex}
-                  minimalStyle
                   onClick={() => onSelectPart((step || 1) * (buttonIndex + 1))}
                   aria-label={`${inputValue}`}
                 />
@@ -253,7 +245,7 @@ export const Rating = React.forwardRef(
       validationErrorIcon: errorIcon,
     });
 
-    const generatedName = useGeneratedId("radio", name);
+    const generatedName = React.useId();
 
     return (
       <>

@@ -9,10 +9,6 @@ import { Rating } from './rating.component';
 
 export default StoryUtils.createMeta(Rating, 'Form', 'Rating', {});
 
-/** component template */
-
-// const Template = StoryUtils.createTemplate(ScrollToEndListener as React.FC<IScrollToEndListenerProps<any, any>>);
-
 /** stories */
 
 export const Default = () => {

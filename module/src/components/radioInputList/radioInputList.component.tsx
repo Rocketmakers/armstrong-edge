@@ -16,8 +16,6 @@ import {
 } from "../radioInput/radioInput.component";
 import { ValidationErrors } from "../validationErrors";
 
-import "./radioInputList.basic.scss";
-
 export interface IRadioInputListOption<Id extends ArmstrongId>
   extends IArmstrongExtendedOptionWithInput<
     Id,

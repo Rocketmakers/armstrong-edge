@@ -5,8 +5,6 @@ import { IconSet, IconUtils } from "../icon";
 import { IconButton } from "../iconButton";
 import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
 
-import "./tag.basic.scss";
-
 export interface ITagProps
   extends IIconWrapperProps<IconSet, IconSet>,
     React.DetailedHTMLProps<
@@ -36,11 +34,7 @@ export const Tag = React.forwardRef<
     },
     ref
   ) => (
-    <div
-      ref={ref}
-      className={concat("arm-tag", className)}
-      {...nativeProps}
-    >
+    <div ref={ref} className={concat("arm-tag", className)} {...nativeProps}>
       <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
         {typeof children === "string" || !children ? (
           <span>{content}</span>
@@ -52,7 +46,6 @@ export const Tag = React.forwardRef<
       {onRemove && (
         <IconButton
           type="button"
-          minimalStyle
           className="arm-tag-close"
           onMouseDown={(event) => event.stopPropagation()}
           onClick={(event) => {

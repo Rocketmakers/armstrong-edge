@@ -1,13 +1,10 @@
 import * as React from "react";
 
-import { useGeneratedId } from "../../hooks";
 import { concat } from "../../utils/classNames";
 import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import { IconButton } from "../iconButton";
 import { IModalProps, Modal } from "../modal";
 import { ModalUtils } from "../modal/modal.utils";
-
-import "./dialog.basic.scss";
 
 export interface IDialogProps extends Omit<IModalProps, "darkenBackground"> {
   /** the value to render as the title, will have necessary aria tag added */
@@ -48,7 +45,7 @@ export const Dialog = React.forwardRef<
     },
     ref
   ) => {
-    const id = useGeneratedId(htmlId);
+    const id = React.useId();
 
     const titleId = title && `${id}_label`;
 
@@ -61,10 +58,7 @@ export const Dialog = React.forwardRef<
       <Modal
         {...modalProps}
         className={concat("arm-dialog", className)}
-        wrapperClassName={concat(
-          "arm-dialog-wrapper",
-          wrapperClassName
-        )}
+        wrapperClassName={concat("arm-dialog-wrapper", wrapperClassName)}
         darkenBackground
         id={id}
         aria-labelledby={title && titleId}
@@ -72,6 +66,7 @@ export const Dialog = React.forwardRef<
         ref={ref}
         onClose={onClose}
         disableClose={disableClose}
+        role="dialog"
       >
         {!!title || !!titleIcon ? (
           <div className="arm-dialog-top">
@@ -89,7 +84,6 @@ export const Dialog = React.forwardRef<
               type="button"
               className="arm-dialog-close-button"
               icon={closeButtonIcon!}
-              minimalStyle
               onClick={close}
             />
           </div>
@@ -98,7 +92,6 @@ export const Dialog = React.forwardRef<
             type="button"
             className="arm-dialog-close-button"
             icon={closeButtonIcon!}
-            minimalStyle
             onClick={close}
           />
         )}

@@ -15,8 +15,6 @@ import { IconButton } from "../iconButton";
 import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
 import { Tag } from "../tag";
 
-import "./listBoxMulti.basic.scss";
-
 export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<
@@ -162,15 +160,9 @@ export const ListBoxMulti = React.forwardRef(
         currentValue={boundValue}
         childRootElementSelector=".arm-input-inner"
         closeOnSelection={closeOnSelection}
-        className={concat(
-          "arm-listbox-multi-wrapper",
-          wrapperClassName
-        )}
+        className={concat("arm-listbox-multi-wrapper", wrapperClassName)}
         noItemsText={noItemsText}
-        contentClassName={concat(
-          "arm-listbox-options",
-          dropdownClassName
-        )}
+        contentClassName={concat("arm-listbox-options", dropdownClassName)}
         closeOnScroll={closeOnScroll}
         closeOnWindowBlur={closeOnWindowBlur}
         closeOnWindowClick={closeOnWindowClick}
@@ -240,7 +232,6 @@ export const ListBoxMulti = React.forwardRef(
               onMouseDown={(event) => event.stopPropagation()}
               onMouseUp={(event) => event.stopPropagation()}
               icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
-              minimalStyle
             />
           )}
         </InputWrapper>

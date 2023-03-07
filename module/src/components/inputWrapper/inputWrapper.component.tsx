@@ -11,8 +11,6 @@ import {
 } from "../statusWrapper/statusWrapper.component";
 import { ValidationErrors } from "../validationErrors";
 
-import "./inputWrapper.basic.scss";
-
 export interface IInputWrapperProps
   extends IIconWrapperProps<IconSet, IconSet>,
     IStatusWrapperProps {
@@ -106,13 +104,11 @@ export const InputWrapper = React.forwardRef<
       <>
         <div
           ref={ref}
-          className={concat(
-            "arm-input",
-            "arm-input-wrapper",
-            className
-          )}
+          className={concat("arm-input", "arm-input-wrapper", className)}
           data-disabled={disabled || (pending && disableOnPending)}
           data-error={error || !!validationErrorMessages?.length}
+          data-left-icon={!!leftIcon || undefined}
+          data-right-icon={!!rightIcon || undefined}
           onClick={onClick}
           {...nativeProps}
         >

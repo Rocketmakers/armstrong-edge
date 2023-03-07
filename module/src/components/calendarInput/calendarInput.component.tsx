@@ -1,5 +1,6 @@
 import { isSameDay } from "date-fns";
 import * as React from "react";
+import { isNil } from "lodash";
 
 import { Calendar, DataAttributes, Form } from "../..";
 import { IBindingProps } from "../../hooks/form";
@@ -12,7 +13,6 @@ import {
 import { assertNever } from "../../utils/typescript";
 import { concat } from "../../utils/classNames";
 import { Dates } from "../../utils/dates";
-import { JavaScript } from "../../utils/javascript";
 import {
   AutoCompleteInput,
   IAutoCompleteInputProps,
@@ -33,8 +33,6 @@ import {
   getDaySelectOptions,
   validateDateSelection,
 } from "./calendarInput.utils";
-
-import "./calendarInput.basic.scss";
 
 type AdditionalInputProps = Omit<
   IAutoCompleteInputProps<number>,
@@ -282,9 +280,7 @@ export const CalendarInput = React.forwardRef(
         setSelectedDate?.(
           calendarDayToDateLike(
             day,
-            !JavaScript.isNullOrUndefined(selectedDate)
-              ? typeof selectedDate
-              : "string",
+            !isNil(selectedDate) ? typeof selectedDate : "string",
             formatString,
             locale
           ) as TValue
@@ -369,9 +365,7 @@ export const CalendarInput = React.forwardRef(
         ) {
           const newDate = Dates.dateObjectToDateLike(
             date,
-            !JavaScript.isNullOrUndefined(selectedDate)
-              ? typeof selectedDate
-              : "string",
+            !isNil(selectedDate) ? typeof selectedDate : "string",
             formatString,
             locale
           );
@@ -503,7 +497,6 @@ export const CalendarInput = React.forwardRef(
                 ) || (
                   <IconButton
                     type="button"
-                    minimalStyle
                     icon={IconUtils.getIconDefinition("Icomoon", "calendar")}
                     onClick={onClickCalendarButton}
                   />

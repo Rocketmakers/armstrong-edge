@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { useWillUnMountEffect } from '.';
-
 export interface IUseTimeoutReturn<T = void> {
   /** Set the timeout, optionally give a callback which will override the one set at hook level */
   set: (callback?: () => T, time?: number) => Promise<T>;
@@ -27,6 +25,7 @@ export function useTimeout<T = void>(callback?: () => T, time?: number): IUseTim
 
   const clear = React.useCallback(() => {
     clearTimeout(timeout.current);
+    setWaiting(false);
     resolvePromise.current?.(undefined as any as T);
     resolvePromise.current = undefined;
   }, []);
@@ -49,7 +48,7 @@ export function useTimeout<T = void>(callback?: () => T, time?: number): IUseTim
     [time, callback]
   );
 
-  useWillUnMountEffect(clear);
+  React.useEffect(() => clear , []);
 
   return { set, clear, waiting };
 }

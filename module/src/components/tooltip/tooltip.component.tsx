@@ -1,15 +1,12 @@
 import * as React from "react";
 
 import { IPortalProps } from "../..";
-import { useGeneratedId } from "../../hooks";
 import { useBoundingClientRect } from "../../hooks/useBoundingClientRect";
 import { useIsFocused } from "../../hooks/useIsFocused";
-import { useIsHovering } from "../../hooks/useIsHovering";
+import { useIsHovered } from "../../hooks/useIsHovered";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { concat } from "../../utils/classNames";
 import { Modal } from "../modal";
-
-import "./tooltip.basic.scss";
 
 export type TooltipPosition = "above" | "below" | "left" | "right";
 
@@ -78,12 +75,12 @@ export const Tooltip = React.forwardRef<
     const rootRef = React.useRef<HTMLDivElement>(null);
     const innerRef = React.useRef<HTMLDivElement>();
 
-    const [isHovering, hoveringProps] = useIsHovering();
+    const [isHovered, hoveredProps] = useIsHovered();
     const [isFocused, focusedProps] = useIsFocused();
 
     const isOpen =
       isOpenProp ||
-      (openOnHover && isHovering) ||
+      (openOnHover && isHovered) ||
       (openOnFocus && isFocused) ||
       false;
 
@@ -232,7 +229,7 @@ export const Tooltip = React.forwardRef<
       [position]
     );
 
-    const generatedId = useGeneratedId(id);
+    const generatedId = React.useId();
 
     return (
       <div
@@ -242,7 +239,7 @@ export const Tooltip = React.forwardRef<
           wrapperAttributes?.className
         )}
         ref={rootRef}
-        {...hoveringProps}
+        {...hoveredProps}
         {...focusedProps}
         aria-describedby={generatedId}
       >

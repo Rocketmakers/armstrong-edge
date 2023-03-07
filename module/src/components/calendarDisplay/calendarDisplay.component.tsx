@@ -14,8 +14,6 @@ import {
   getDaysWithDisplayFormat,
 } from "./calendarDisplay.utils";
 
-import "./calendarDisplay.basic.scss";
-
 export interface ICalendarDisplayProps {
   /**
    * An optional "day of the week" index to be the first day of the week.
@@ -197,10 +195,7 @@ export const CalendarDisplay = React.forwardRef<
     }, [days, weekdayStartIndex]);
 
     return (
-      <div
-        ref={ref}
-        className={concat("arm-calendar-display", className)}
-      >
+      <div ref={ref} className={concat("arm-calendar-display", className)}>
         {controls && (
           <div className="arm-calendar-display-controls">
             {onBackClicked &&
@@ -208,7 +203,6 @@ export const CalendarDisplay = React.forwardRef<
                 <IconButton
                   type="button"
                   icon={IconUtils.getIconDefinition("Icomoon", "arrow-left3")}
-                  minimalStyle
                   className="arm-calendar-display-button arm-calendar-display-button-prev"
                   onClick={onBackClicked}
                 />
@@ -230,7 +224,6 @@ export const CalendarDisplay = React.forwardRef<
                 <IconButton
                   type="button"
                   icon={IconUtils.getIconDefinition("Icomoon", "arrow-right3")}
-                  minimalStyle
                   className="arm-calendar-display-button arm-calendar-display-button-next"
                   onClick={onForwardClicked}
                 />
@@ -272,7 +265,6 @@ export const CalendarDisplay = React.forwardRef<
                 data-range-middle={displayDay.day.isRangeMiddle}
                 data-range-end={displayDay.day.isRangeEnd}
                 data-highlight={displayDay.day.isHighlighted}
-                minimalStyle
               >
                 <p>{displayDay.displayFormat}</p>
                 {displayDay.day.isHighlighted && (
@@ -287,7 +279,6 @@ export const CalendarDisplay = React.forwardRef<
           <div className="arm-calendar-jump-list">
             {jumpList.map((jump) => (
               <Button
-                minimalStyle
                 {...jump.buttonProps}
                 key={jump.name}
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => {

@@ -1,5 +1,6 @@
 import { isSameMinute, isValid } from "date-fns";
 import * as React from "react";
+import { isNil } from "lodash";
 
 import { Form } from "../..";
 import { IBindingProps, useBindingState } from "../../hooks/form";
@@ -10,13 +11,10 @@ import {
   NullOrUndefined,
 } from "../../types";
 import { concat, Dates } from "../../utils";
-import { JavaScript } from "../../utils/javascript";
 import { CalendarInput, ICalendarInputProps } from "../calendarInput";
 import { InputWrapper } from "../inputWrapper";
 import { IStatusWrapperProps } from "../statusWrapper";
 import { ITimeInputProps, TimeInput } from "../timeInput";
-
-import "./dateTimeInput.basic.scss";
 
 type AdditionalCalendarInputProps<
   TValue extends NullOrUndefined<Dates.DateLike>
@@ -143,7 +141,7 @@ export const DateTimeInput = React.forwardRef(
             bind?.addValidationError("Invalid date selection");
             return;
           }
-          const unset = JavaScript.isNullOrUndefined(selectedDateTime);
+          const unset = isNil(selectedDateTime);
           if (
             unset ||
             !isSameMinute(
