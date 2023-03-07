@@ -32,3 +32,10 @@ jobs:
         id: build
         run: npm run build
         working-directory: ./module
+      
+      - name: Upload node modules artifact
+        id: node-modules-artifact
+        uses: actions/upload-artifact@master
+        with: 
+          name: node-modules
+          path: ./module/node_modules/

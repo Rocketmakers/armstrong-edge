@@ -6,15 +6,19 @@ env:
   NODE_OPTIONS: --max-old-space-size=6144
   
 jobs:
-  setup-workflow:
-    uses: ./.github/workflows/setup.yml
-
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
+
+      - name: Download node modules artifact
+        id: download-node-modules
+        uses: actions/download-artifact@master
+        with: 
+          name: node-modules
+          path: ./module/node_modules
 
       - name: Run Jest Tests
         run: npm run test-ci
