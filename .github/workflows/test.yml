@@ -12,7 +12,7 @@ env:
   NODE_OPTIONS: --max-old-space-size=6144
   
 jobs:
-  test:
+  download-artifacts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -31,6 +31,14 @@ jobs:
           path: ./modules/node_modules/
           if_no_artifact_found: fail
 
+  test: 
+    runs-on: ubuntu-latest
+    needs: download-artifacts
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+          
       - name: Run Jest Tests
         run: npm run test-ci
         working-directory: ./module
