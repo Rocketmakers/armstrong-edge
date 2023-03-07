@@ -28,7 +28,7 @@ jobs:
         run: npm ci --legacy-peer-deps
         working-directory: ./module
     
-      # - name: Build
-      #   id: build
-      #   run: npm run build
-      #   working-directory: ./module
+      - name: Build
+        id: build
+        run: npm run build
+        working-directory: ./module
