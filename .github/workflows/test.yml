@@ -1,9 +1,11 @@
 name: Test
-on:
+on: 
+  pull_request:
   workflow_run:
-    workflows: [Build project]
+    workflows:
+      - 'Build project'
     types:
-      - completed
+      - 'completed'
 env:
   # 7 GiB by default on GitHub, setting to 6 GiB
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
@@ -16,6 +18,7 @@ jobs:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
+          ref: ${{ github.event.workflow_run.head_branch }}
 
       - name: Download node modules artifact
         id: download-node-modules
