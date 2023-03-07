@@ -11,4 +11,4 @@ jobs:
 
   linting-workflow:
     uses: ./.github/workflows/lint.yml
-    needs: build
+    needs: setup-workflow
