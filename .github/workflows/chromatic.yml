@@ -9,12 +9,13 @@ on:
       - develop
 
 jobs:
+  setup-workflow:
+    uses: ./.github/workflows/setup.yml
+
   chromatic-deployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Install dependencies
-        run: npm i
 
       - name: Publish to Chromatic
         uses: chromaui/action@v1

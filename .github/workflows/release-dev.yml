@@ -3,9 +3,10 @@ on:
   push:
     branches:
       - develop
+      
 jobs:
-  build-workflow:
-    uses: ./.github/workflows/build.yml
+  setup-workflow:
+    uses: ./.github/workflows/setup.yml
   
   release-pre-release:
     needs: test
