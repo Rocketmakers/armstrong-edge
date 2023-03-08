@@ -1,5 +1,9 @@
 name: Test
-on: pull_request
+on:
+  workflow_run:
+    workflows: ['Build']
+    types:
+      - completed
 env:
   # 7 GiB by default on GitHub, setting to 6 GiB
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
@@ -12,14 +16,6 @@ jobs:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
-    
-      - name: Wait for build to succeed
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          ref: ${{ github.ref }}
-          check-name: 'Build project'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
 
       - name: Restore node modules cache
         id: node-modules
