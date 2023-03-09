@@ -1,39 +1,38 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form, IListBoxOption, IListBoxProps } from "../..";
-import { IBindingProps } from "../../hooks/form";
+import { Button, Form, IListBoxOption, IListBoxProps } from '../..';
+import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
   ArmstrongFCReturn,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { concat } from "../../utils/classNames";
-import { DropdownItems } from "../dropdownItems";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IconButton } from "../iconButton";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
-import { Tag } from "../tag";
+} from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { concat } from '../../utils/classNames';
+import { DropdownItems } from '../dropdownItems';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { Tag } from '../tag';
 
 export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<
       IListBoxProps<Id, TSelectData>,
-      | "options"
-      | "onSelectOption"
-      | "selectOverlayIcon"
-      | "placeholder"
-      | "wrapperClassName"
-      | "deleteButton"
-      | "noItemsText"
-      | "dropdownClassName"
-      | "closeOnScroll"
-      | "closeOnWindowBlur"
-      | "closeOnWindowClick"
-      | "closeOnBackgroundClick"
-      | "closeOnSelection"
-      | "alignment"
-      | "position"
+      | 'options'
+      | 'onSelectOption'
+      | 'selectOverlayIcon'
+      | 'placeholder'
+      | 'wrapperClassName'
+      | 'deleteButton'
+      | 'noItemsText'
+      | 'dropdownClassName'
+      | 'closeOnScroll'
+      | 'closeOnWindowBlur'
+      | 'closeOnWindowClick'
+      | 'closeOnBackgroundClick'
+      | 'closeOnSelection'
+      | 'alignment'
+      | 'position'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -160,9 +159,9 @@ export const ListBoxMulti = React.forwardRef(
         currentValue={boundValue}
         childRootElementSelector=".arm-input-inner"
         closeOnSelection={closeOnSelection}
-        className={concat("arm-listbox-multi-wrapper", wrapperClassName)}
+        className={concat('arm-listbox-multi-wrapper', wrapperClassName)}
         noItemsText={noItemsText}
-        contentClassName={concat("arm-listbox-options", dropdownClassName)}
+        contentClassName={concat('arm-listbox-options', dropdownClassName)}
         closeOnScroll={closeOnScroll}
         closeOnWindowBlur={closeOnWindowBlur}
         closeOnWindowClick={closeOnWindowClick}
@@ -173,7 +172,7 @@ export const ListBoxMulti = React.forwardRef(
       >
         <InputWrapper
           ref={internalRef}
-          className={concat("arm-listbox-multi", className)}
+          className={concat('arm-listbox-multi', className)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}
@@ -221,8 +220,7 @@ export const ListBoxMulti = React.forwardRef(
             ))}
 
           {deleteButton && !!boundValue?.length && (
-            <IconButton
-              type="button"
+            <Button
               className="arm-listbox-multi-delete"
               onClick={(event) => {
                 onItemSelected(undefined);
@@ -231,8 +229,9 @@ export const ListBoxMulti = React.forwardRef(
               }}
               onMouseDown={(event) => event.stopPropagation()}
               onMouseUp={(event) => event.stopPropagation()}
-              icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
-            />
+            >
+              <Icon iconSet="Icomoon" icon="cross2" />
+            </Button>
           )}
         </InputWrapper>
       </DropdownItems>
@@ -249,7 +248,7 @@ export const ListBoxMulti = React.forwardRef(
   ArmstrongFCExtensions<IListBoxMultiProps<any, any>>;
 
 ListBoxMulti.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+  selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
   deleteButton: true,
   closeOnSelection: false,
 };

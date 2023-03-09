@@ -1,18 +1,17 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form } from "../..";
-import { IBindingProps } from "../../hooks/form";
+import { Button, Form } from '../..';
+import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
   ArmstrongVFCProps,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { IArmstrongOption } from "../../types/options";
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IconButton } from "../iconButton";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
+} from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongOption } from '../../types/options';
+import { concat } from '../../utils/classNames';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongOption<
@@ -22,7 +21,7 @@ export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
         React.BaseHTMLAttributes<HTMLOptionElement>,
         HTMLOptionElement
       >,
-      "ref" | "onClick" | "value" | "disabled"
+      'ref' | 'onClick' | 'value' | 'disabled'
     >
   > {
   /** data which will be passed into the onSelectOption callback */
@@ -34,7 +33,7 @@ export interface ISelectProps<Id extends ArmstrongId, TSelectData = any>
       React.InputHTMLAttributes<HTMLSelectElement>,
       HTMLSelectElement
     >,
-    Omit<IInputWrapperProps, "onClick"> {
+    Omit<IInputWrapperProps, 'onClick'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
@@ -135,7 +134,7 @@ export const Select = React.forwardRef(
 
     return (
       <InputWrapper
-        className={concat("arm-select", className)}
+        className={concat('arm-select', className)}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         leftOverlay={leftOverlay}
@@ -160,7 +159,7 @@ export const Select = React.forwardRef(
             disabled={disabled}
             defaultValue={
               placeholderOption && !nativeProps.defaultValue && !boundValue
-                ? ""
+                ? ''
                 : nativeProps.defaultValue
             }
           >
@@ -193,20 +192,25 @@ export const Select = React.forwardRef(
         </div>
 
         {deleteButton && boundValue && (
-          <IconButton
-            type="button"
-            className="arm-select-delete"
+          <Button
             onClick={(event) => {
               clearSelect();
               event.stopPropagation();
             }}
             onMouseDown={(e) => e.stopPropagation()}
-            icon={
-              typeof deleteButton === "boolean"
-                ? IconUtils.getIconDefinition("Icomoon", "cross2")
-                : deleteButton
-            }
-          />
+            className="arm-select-delete"
+          >
+            <Icon
+              iconSet={
+                typeof deleteButton === 'boolean'
+                  ? 'Icomoon'
+                  : deleteButton.iconSet
+              }
+              icon={
+                typeof deleteButton === 'boolean' ? 'cross2' : deleteButton.icon
+              }
+            />
+          </Button>
         )}
       </InputWrapper>
     );
@@ -219,5 +223,5 @@ export const Select = React.forwardRef(
   ArmstrongFCExtensions<ISelectProps<any, any>>;
 
 Select.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+  selectOverlayIcon: IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
 };

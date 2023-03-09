@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IconButton } from "../iconButton";
-import { IModalProps, Modal } from "../modal";
-import { ModalUtils } from "../modal/modal.utils";
+import { concat } from '../../utils/classNames';
+import { Button } from '../button';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IModalProps, Modal } from '../modal';
+import { ModalUtils } from '../modal/modal.utils';
 
-export interface IDialogProps extends Omit<IModalProps, "darkenBackground"> {
+export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
   /** the value to render as the title, will have necessary aria tag added */
   title?: string;
 
@@ -57,8 +57,8 @@ export const Dialog = React.forwardRef<
     return (
       <Modal
         {...modalProps}
-        className={concat("arm-dialog", className)}
-        wrapperClassName={concat("arm-dialog-wrapper", wrapperClassName)}
+        className={concat('arm-dialog', className)}
+        wrapperClassName={concat('arm-dialog-wrapper', wrapperClassName)}
         darkenBackground
         id={id}
         aria-labelledby={title && titleId}
@@ -80,20 +80,14 @@ export const Dialog = React.forwardRef<
               </p>
             )}
 
-            <IconButton
-              type="button"
-              className="arm-dialog-close-button"
-              icon={closeButtonIcon!}
-              onClick={close}
-            />
+            <Button className="arm-dialog-close-button" onClick={close}>
+              <Icon iconSet={'Icomoon'} icon={closeButtonIcon!.icon} />
+            </Button>
           </div>
         ) : (
-          <IconButton
-            type="button"
-            className="arm-dialog-close-button"
-            icon={closeButtonIcon!}
-            onClick={close}
-          />
+          <Button className="arm-dialog-close-button" onClick={close}>
+            <Icon iconSet={'Icomoon'} icon={closeButtonIcon!.icon} />
+          </Button>
         )}
         <div className="arm-dialog-inner">{children}</div>
       </Modal>
@@ -102,5 +96,5 @@ export const Dialog = React.forwardRef<
 );
 
 Dialog.defaultProps = {
-  closeButtonIcon: IconUtils.getIconDefinition("Icomoon", "cross2"),
+  closeButtonIcon: IconUtils.getIconDefinition('Icomoon', 'cross2'),
 };

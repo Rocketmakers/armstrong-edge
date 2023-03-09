@@ -1,21 +1,25 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form, IInputWrapperProps, ValidationErrors } from "../..";
-import { IBindingProps } from "../../hooks/form";
+import {
+  Form,
+  IButtonCoreProps,
+  IInputWrapperProps,
+  ValidationErrors,
+} from '../..';
+import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
   ArmstrongVFCProps,
   NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { getPercent } from "../../utils/maths";
-import { Icon, IconSet, IIcon } from "../icon";
-import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
+} from '../../types';
+import { concat } from '../../utils/classNames';
+import { getPercent } from '../../utils/maths';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import {
   IStatusWrapperProps,
   StatusWrapper,
-} from "../statusWrapper/statusWrapper.component";
+} from '../statusWrapper/statusWrapper.component';
 
 export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
   extends Omit<
@@ -23,16 +27,16 @@ export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
         React.InputHTMLAttributes<HTMLInputElement>,
         HTMLInputElement
       >,
-      "min" | "max" | "value"
+      'min' | 'max' | 'value'
     >,
-    IIconWrapperProps<IconSet, IconSet>,
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     IStatusWrapperProps,
     Pick<
       IInputWrapperProps,
-      | "scrollValidationErrorsIntoView"
-      | "validationMode"
-      | "errorIcon"
-      | "validationErrorMessages"
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'validationErrorMessages'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -105,13 +109,13 @@ export const RangeInput = React.forwardRef(
     return (
       <>
         <div
-          className={concat("arm-range-input", className)}
+          className={concat('arm-range-input', className)}
           style={
             {
-              "--arm-range-input-percent": `${currentPercent}%`,
-              "--arm-range-input-value": boundValue,
-              "--arm-range-input-minimum": minimum,
-              "--arm-range-input-maximum": maximum,
+              '--arm-range-input-percent': `${currentPercent}%`,
+              '--arm-range-input-value': boundValue,
+              '--arm-range-input-minimum': minimum,
+              '--arm-range-input-maximum': maximum,
             } as React.CSSProperties
           }
           data-disabled={disabled}
@@ -125,7 +129,16 @@ export const RangeInput = React.forwardRef(
             validationMode={bindConfig.validationMode}
             pending={pending}
           >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+            <>
+              {leftIcon && (
+                <>
+                  {IconUtils.isIconDefinition(leftIcon) ? (
+                    <Icon {...leftIcon} />
+                  ) : (
+                    leftIcon
+                  )}
+                </>
+              )}
               <div className="arm-range-input-track">
                 <input
                   className="arm-range-input-input"
@@ -147,7 +160,16 @@ export const RangeInput = React.forwardRef(
                   )}
                 </div>
               </div>
-            </IconWrapper>
+              {rightIcon && (
+                <>
+                  {IconUtils.isIconDefinition(rightIcon) ? (
+                    <Icon {...rightIcon} />
+                  ) : (
+                    rightIcon
+                  )}
+                </>
+              )}
+            </>
           </StatusWrapper>
         </div>
 

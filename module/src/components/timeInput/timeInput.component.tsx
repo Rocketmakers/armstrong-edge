@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import {
   ArmstrongFCExtensions,
@@ -8,36 +8,36 @@ import {
   DataAttributes,
   Form,
   IAutoCompleteInputProps,
+  IButtonCoreProps,
   ISelectOption,
   NullOrUndefined,
-} from "../..";
-import { IBindingProps } from "../../hooks/form";
-import { concat } from "../../utils/classNames";
-import { Dates } from "../../utils/dates";
-import { IconSet } from "../icon";
-import { IIconWrapperProps } from "../iconWrapper";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
-import { IStatusWrapperProps } from "../statusWrapper";
-import { TimeParts } from "./timeInput.types";
+} from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { concat } from '../../utils/classNames';
+import { Dates } from '../../utils/dates';
+import { IconSet } from '../icon';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { IStatusWrapperProps } from '../statusWrapper';
+import { TimeParts } from './timeInput.types';
 import {
   getHourOptions,
   getMinuteOptions,
   parseTimePartsToDate,
   parseTimeStringToParts,
-} from "./timeInput.utils";
+} from './timeInput.utils';
 
 type AdditionalInputProps = Omit<
   IAutoCompleteInputProps<number>,
-  "bind" | "options" | "min" | "max"
+  'bind' | 'options' | 'min' | 'max'
 > &
   DataAttributes;
 
 export interface ITimeInputProps<TBind extends NullOrUndefined<string>>
   extends IStatusWrapperProps,
-    IIconWrapperProps<IconSet, IconSet>,
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     Pick<
       IInputWrapperProps,
-      "above" | "below" | "leftOverlay" | "rightOverlay"
+      'above' | 'below' | 'leftOverlay' | 'rightOverlay'
     > {
   /** The binding for the input. */
   bind?: IBindingProps<TBind>;
@@ -184,7 +184,7 @@ export const TimeInput = React.forwardRef(
     const onHourChange = React.useCallback(
       (newHour: number) => {
         if (formState?.minute && zeroMinutesOnHourSelected) {
-          formProp("minute").set(0);
+          formProp('minute').set(0);
         }
         return additionalHourInputProps?.onChange?.(newHour);
       },
@@ -220,7 +220,7 @@ export const TimeInput = React.forwardRef(
     return (
       <InputWrapper
         ref={ref}
-        className={concat("arm-time-input", className)}
+        className={concat('arm-time-input', className)}
         error={error}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}
@@ -235,12 +235,12 @@ export const TimeInput = React.forwardRef(
         <AutoCompleteInput
           placeholder="hours"
           {...(additionalHourInputProps ?? {})}
-          bind={formProp("hour").bind()}
+          bind={formProp('hour').bind()}
           options={hourOptions}
           disabled={disabled}
           onChange={onHourChange}
         />
-        {typeof betweenInputs === "string" ? (
+        {typeof betweenInputs === 'string' ? (
           <p className="arm-time-input-between-inputs">{betweenInputs}</p>
         ) : (
           betweenInputs
@@ -248,7 +248,7 @@ export const TimeInput = React.forwardRef(
         <AutoCompleteInput
           placeholder="minutes"
           {...(additionalMinuteInputProps ?? {})}
-          bind={formProp("minute").bind()}
+          bind={formProp('minute').bind()}
           options={minuteOptions}
           disabled={disabled}
         />
@@ -258,13 +258,13 @@ export const TimeInput = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<T extends NullOrUndefined<string>>(
-  props: ArmstrongFCProps<Omit<ITimeInputProps<T>, "type">, HTMLInputElement>
+  props: ArmstrongFCProps<Omit<ITimeInputProps<T>, 'type'>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<Omit<ITimeInputProps<any>, "type">>;
+  ArmstrongFCExtensions<Omit<ITimeInputProps<any>, 'type'>>;
 
 TimeInput.defaultProps = {
-  formatString: "HH:mm",
-  hourInputDisplayFormat: "H",
-  minuteInputDisplayFormat: "m",
-  betweenInputs: ":",
+  formatString: 'HH:mm',
+  hourInputDisplayFormat: 'H',
+  minuteInputDisplayFormat: 'm',
+  betweenInputs: ':',
 };
