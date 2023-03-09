@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Hooks/Utility Hooks" />
 
@@ -98,7 +98,7 @@ Fire a series of console logs alongside lifecycle events
 The argument it takes will be prefixed on console logs
 
 ```tsx
-useDebug("my_component");
+useDebug('my_component');
 ```
 
 ### useDidMountEffect
@@ -174,7 +174,7 @@ Hook to add an event listener, and remove it when the component unmounts
 // the callback passed into the hook must be memoised in a useCallback
 const onClick = React.useCallback(() => {}, []);
 
-useEventListener("click", onClick, document);
+useEventListener('click', onClick, document);
 ```
 
 ### useGeneratedId
@@ -294,7 +294,7 @@ Returns whether the document matches the given media query string
 
 ```tsx
 // will return true while the window size is less than 1600px
-const isMatching = useMatchMedia("max-width: 1600px");
+const isMatching = useMatchMedia('max-width: 1600px');
 ```
 
 [see here for information on the match media api](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia)
@@ -339,7 +339,7 @@ or to put it on the document
 ```tsx
 const { scrolledToEnd, onScroll } = useOnScrolToEnd(onScrollToEnd);
 
-useEventListener("scroll", onScroll, document);
+useEventListener('scroll', onScroll, document);
 ```
 
 though, again, the ScrollToEndListener is more reliable as it doesn't rely on scroll listeners, so most of the time you'll want to use that
@@ -355,7 +355,7 @@ Returns either an internal useState or the given value and onChange
 ```tsx
 const MyComponent = ({ value, onChange }) => {
   const [internaValue, setInternalValue] = useOverridableState(
-    "",
+    '',
     value,
     onChange
   );
@@ -420,7 +420,7 @@ const { set, clear, waiting } = useTimeout(callback, time);
 i.e.
 
 ```tsx
-const { set } = useTimeout(() => console.log("DONE"), 500);
+const { set } = useTimeout(() => console.log('DONE'), 500);
 
 set();
 ```
@@ -430,7 +430,7 @@ Values can also be overriden at the function call
 ```tsx
 const { set } = useTimeout();
 
-set(() => console.log("DONE"), 500);
+set(() => console.log('DONE'), 500);
 ```
 
 FYI - don't actually call set in your render method, you'll cause an infinite loop and everything will explode.
@@ -461,7 +461,7 @@ which can resolve to something
 
 ```tsx
 const { set } = useTimeout(() => {
-  return "hello";
+  return 'hello';
 }, 1000);
 
 const run = useCallback(async () => {
