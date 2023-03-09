@@ -1,0 +1,22 @@
+.arm-character-limit {
+    display: flex;
+    align-items: center;
+
+    &.is-inside {
+    margin-right: var(--arm-spacing-small);
+
+    p{
+      margin: unset;
+    }
+    }
+
+    .arm-icon {
+    margin-left: var(--arm-spacing-xsmall);
+    }
+
+    &[data-exceeded='true'] {
+    p, .arm-icon {
+      color: var(--arm-color-negative);
+    }
+      }
+  }

@@ -1,4 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
+
+import { concat } from "../../utils/classNames";
 
 import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
@@ -42,7 +44,7 @@ export const CharacterLimit = React.forwardRef(
     }, [boundValue]);
 
     return (
-      <div ref={ref} className={ClassNames.concat('arm-character-limit', className)} data-exceeded={exceeded}>
+      <div ref={ref} className={concat('arm-character-limit', className)} data-exceeded={exceeded}>
         <p>
           {boundValue?.length}/{limit}
         </p>

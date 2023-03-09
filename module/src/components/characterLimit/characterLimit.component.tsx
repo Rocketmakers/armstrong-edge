@@ -31,6 +31,9 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
 
   /** apply a test ID to the component for Storybook, Playwright etc */
   testId?: string;
+
+  /** Adds a margin between CharacterLimit and it's parent */
+  isInside?: boolean;
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
@@ -44,6 +47,7 @@ export const CharacterLimit = React.forwardRef(
       className,
       exceedsIcon,
       testId,
+      isInside,
     }: ICharacterLimitProps<TBind>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -60,7 +64,7 @@ export const CharacterLimit = React.forwardRef(
     return (
       <div
         ref={ref}
-        className={concat("arm-character-limit", className)}
+        className={concat("arm-character-limit", { "is-inside": isInside }, className)}
         data-exceeded={exceeded}
         data-testid={testId}
       >

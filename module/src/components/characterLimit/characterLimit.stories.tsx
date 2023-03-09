@@ -93,7 +93,7 @@ export const InsideInput: StoryObj<typeof CharacterLimit> = {
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} rightOverlay={<CharacterLimit bind={formProp('thing').bind()} {...props} />} />
+        <TextInput bind={formProp('thing').bind()} rightOverlay={<CharacterLimit isInside bind={formProp('thing').bind()} {...props} />} />
       </>
     );
   },
