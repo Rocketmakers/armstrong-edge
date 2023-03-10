@@ -5,7 +5,6 @@ import { Button } from '../button/button.component';
 import { DropdownButton } from '../dropdownButton/dropdownButton.component';
 import { Group } from '../group/group.component';
 import { IconUtils } from '../icon/icons.utils';
-import { Image } from '../image/image.component';
 import { Header } from './header.component';
 
 /** metadata */
