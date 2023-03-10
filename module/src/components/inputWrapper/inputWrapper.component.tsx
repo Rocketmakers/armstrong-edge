@@ -134,7 +134,11 @@ export const InputWrapper = React.forwardRef<
                 {showLeftIcon && leftIcon && (
                   <>
                     {IconUtils.isIconDefinition(leftIcon) ? (
-                      <Icon {...leftIcon} />
+                      <Icon
+                        {...leftIcon}
+                        className="left-icon"
+                        title={`${leftIcon.icon} icon on left`}
+                      />
                     ) : (
                       leftIcon
                     )}
@@ -162,7 +166,11 @@ export const InputWrapper = React.forwardRef<
                 {showRightIcon && rightIcon && (
                   <>
                     {IconUtils.isIconDefinition(rightIcon) ? (
-                      <Icon {...rightIcon} />
+                      <Icon
+                        {...rightIcon}
+                        className="right-icon"
+                        title={`${rightIcon.icon} icon on right`}
+                      />
                     ) : (
                       rightIcon
                     )}

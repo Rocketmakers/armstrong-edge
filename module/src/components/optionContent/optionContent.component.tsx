@@ -48,7 +48,7 @@ export const OptionContent: React.FC<IOptionContentProps> = ({
       {leftIcon && (
         <>
           {IconUtils.isIconDefinition(leftIcon) ? (
-            <Icon {...leftIcon} />
+            <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`}/>
           ) : (
             leftIcon
           )}
@@ -58,7 +58,7 @@ export const OptionContent: React.FC<IOptionContentProps> = ({
       {rightIcon && (
         <>
           {IconUtils.isIconDefinition(rightIcon) ? (
-            <Icon {...rightIcon} />
+            <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`}/>
           ) : (
             rightIcon
           )}

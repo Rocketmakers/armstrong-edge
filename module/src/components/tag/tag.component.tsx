@@ -38,7 +38,11 @@ export const Tag = React.forwardRef<
         {leftIcon && (
           <>
             {IconUtils.isIconDefinition(leftIcon) ? (
-              <Icon {...leftIcon} />
+              <Icon
+                {...leftIcon}
+                className="left-icon"
+                title={`${leftIcon.icon} icon on left`}
+              />
             ) : (
               leftIcon
             )}
@@ -52,7 +56,11 @@ export const Tag = React.forwardRef<
         {rightIcon && (
           <>
             {IconUtils.isIconDefinition(rightIcon) ? (
-              <Icon {...rightIcon} />
+              <Icon
+                {...rightIcon}
+                className="right-icon"
+                title={`${rightIcon.icon} icon on right`}
+              />
             ) : (
               rightIcon
             )}
