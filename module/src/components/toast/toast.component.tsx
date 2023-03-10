@@ -5,7 +5,7 @@ import { useTemporaryState, useTimeout } from '../../hooks';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { contentDependency } from '../../utils/objects';
-import { Icon, IconUtils } from '../icon';
+import { Icon } from '../icon';
 import { useToasts } from './toast.context';
 import { IToastNotification } from './toast.types';
 

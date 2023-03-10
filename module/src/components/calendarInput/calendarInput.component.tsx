@@ -28,7 +28,7 @@ import {
   ICalendarDisplayProps,
 } from '../calendarDisplay/calendarDisplay.component';
 import { Dropdown, IDropdownProps } from '../dropdown';
-import { Icon, IconSet, IconUtils } from '../icon';
+import { Icon, IconSet } from '../icon';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Modal } from '../modal';
 import { IStatusWrapperProps } from '../statusWrapper';
