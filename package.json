@@ -14,6 +14,7 @@
     "test": "(cd module && npm test)",
     "prepare": "husky install",
     "storybook": "(cd module && npm run storybook)",
+    "watch-scss": "(cd module && ts-node ./_build/scss/watch.ts)",
     "test-storybook": "(cd module && npm run test-storybook)"
   },
   "devDependencies": {
