@@ -24,8 +24,6 @@ export const DontPortal = StoryUtils.cloneTemplate(Template, { children: <p>I'm 
 export const Complex = () => {
   return (
     <Header>
-      <Image src="https://raw.githubusercontent.com/Rocketmakers/armstrong/master/marketing/src/assets/armstrong-logo.svg" alt="armstrong logo" />
-
       <Group>
         <Button minimalStyle>Something</Button>
 
