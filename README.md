@@ -1,5 +1,7 @@
 [![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest) [![storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://github.com/storybookjs)
 
+![armstrong logo](https://raw.githubusercontent.com/Rocketmakers/armstrong-edge/develop/src/assets/armstrong-logo.svg)
+
 Armstrong is a React component library made by [Rocketmakers](rocketmakers.com/) written in Typescript and SCSS.
 
 By default, Armstrong doesn't pre-compile its SCSS into CSS, allowing consuming projects to make use of its various SCSS variables and mixins.

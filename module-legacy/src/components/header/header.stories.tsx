@@ -5,6 +5,7 @@ import { Button } from '../button/button.component';
 import { DropdownButton } from '../dropdownButton/dropdownButton.component';
 import { Group } from '../group/group.component';
 import { IconUtils } from '../icon/icons.utils';
+import { Image } from '../image/image.component';
 import { Header } from './header.component';
 
 /** metadata */
@@ -23,6 +24,7 @@ export const DontPortal = StoryUtils.cloneTemplate(Template, { children: <p>I'm 
 export const Complex = () => {
   return (
     <Header>
+      <Image src="https://raw.githubusercontent.com/Rocketmakers/armstrong-edge/develop/src/assets/armstrong-logo.svg" alt="armstrong logo" />
       <Group>
         <Button minimalStyle>Something</Button>
 
