@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
-import { action } from "@storybook/addon-actions";
 
 import { SwitchInput } from "./switchInput.component";
-import { userEvent, waitFor, within } from "@storybook/testing-library";
+import { userEvent, within } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
 import { IconUtils } from "../icon";
 
