@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 
 import { SwitchInput } from "./switchInput.component";
-import { userEvent, within } from "@storybook/testing-library";
+import { userEvent, waitFor, within } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
 import { IconUtils } from "../icon";
 
@@ -45,7 +45,7 @@ export const Default: StoryObj<typeof SwitchInput> = {
     const canvas = within(canvasElement);
     const inputWrapper = canvas.getByTestId('switch-input-test-id');
     const checkbox = canvas.getByRole("checkbox", { hidden: true });
-    userEvent.click(checkbox);
-    expect(inputWrapper).toHaveAttribute("data-checked", "true");
+    await userEvent.click(checkbox);
+    await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
   },
 };
