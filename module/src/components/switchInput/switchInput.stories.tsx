@@ -44,7 +44,7 @@ export const Default: StoryObj<typeof SwitchInput> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const inputWrapper = canvas.getByTestId('switch-input-test-id');
-    const checkbox = canvas.getByRole("checkbox", { hidden: true });
+    const checkbox = within(inputWrapper).getByRole("checkbox", { hidden: true });
     await userEvent.click(checkbox);
     await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
   },
