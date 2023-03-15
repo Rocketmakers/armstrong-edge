@@ -36,6 +36,8 @@ $font-size-small: pxToRem(16) !default;
 $font-size-medium: pxToRem(18) !default;
 $font-size-large: pxToRem(20) !default;
 $font-size-xlarge: pxToRem(24) !default;
+$font-size-xxlarge: pxToRem(32) !default;
+$font-size-xxxlarge: pxToRem(40) !default;
 
 //// components
 
@@ -56,6 +58,34 @@ $form-element-square-size: 25px !default;
 // spinner
 $spinner-speed: 500ms;
 
+// shadows
+$shadow-opacity: 0.25 !default;
+$shadow-color: rgba($color-grey-1, $shadow-opacity) !default;
+
+$shadow-size-xsmall: 0.2rem !default;
+$shadow-size-small: 0.5rem !default;
+$shadow-size-medium: 1rem !default;
+$shadow-size-large: 2rem !default;
+$shadow-size-xlarge: 3rem !default;
+
+$shadow-offset-xsmall: 0.05rem 0.05rem !default;
+$shadow-offset-small: 0.1rem 0.1rem !default;
+$shadow-offset-medium: 0.2rem 0.2rem !default;
+$shadow-offset-large: 0.4rem 0.4rem !default;
+$shadow-offset-xlarge: 1.5rem 1.5rem !default;
+
+$shadow-xsmall: $shadow-offset-xsmall $shadow-size-xsmall $shadow-color !default;
+$shadow-small: $shadow-offset-small $shadow-size-small $shadow-color !default;
+$shadow-medium: $shadow-offset-medium $shadow-size-medium $shadow-color !default;
+$shadow-large: $shadow-offset-large $shadow-size-large $shadow-color !default;
+$shadow-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color !default;
+
+$shadow-inner-xsmall: $shadow-offset-xsmall $shadow-size-xsmall $shadow-color inset !default;
+$shadow-inner-small: $shadow-offset-small $shadow-size-small $shadow-color inset !default;
+$shadow-inner-medium: $shadow-offset-medium $shadow-size-medium $shadow-color inset !default;
+$shadow-inner-large: $shadow-offset-large $shadow-size-large $shadow-color inset !default;
+$shadow-inner-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color inset !default;
+
 :root {
   --arm-color-black: #{$color-black};
   --arm-color-white: #{$color-white};
@@ -73,6 +103,8 @@ $spinner-speed: 500ms;
   --arm-font-size-medium: #{$font-size-medium};
   --arm-font-size-large: #{$font-size-large};
   --arm-font-size-xlarge: #{$font-size-xlarge};
+  --arm-font-size-xxlarge: #{$font-size-xxlarge};
+  --arm-font-size-xxxlarge: #{$font-size-xxxlarge};
 
   --arm-spacing-xxxsmall: #{$spacing-xxxsmall};
   --arm-spacing-xxsmall: #{$spacing-xxsmall};
@@ -106,4 +138,17 @@ $spinner-speed: 500ms;
   --arm-form-square-size: #{$form-element-square-size};
   --arm-form-checked-bg-color: #{$color-grey-1};
   --arm-form-checked-fg-color: #{$color-white};
+
+  // Shadows
+  --arm-shadow-xsmall: #{$shadow-xsmall};
+  --arm-shadow-small: #{$shadow-small};
+  --arm-shadow-medium: #{$shadow-medium};
+  --arm-shadow-large: #{$shadow-large};
+  --arm-shadow-xlarge: #{$shadow-xlarge};
+
+  --arm-inner-shadow-xsmall: #{$shadow-inner-xsmall};
+  --arm-inner-shadow-small: #{$shadow-inner-small};
+  --arm-inner-shadow-medium: #{$shadow-inner-medium};
+  --arm-inner-shadow-large: #{$shadow-inner-large};
+  --arm-inner-shadow-xlarge: #{$shadow-inner-xlarge};
 }

@@ -48,6 +48,9 @@ export interface ISwitchInputProps<TBind extends NullOrUndefined<boolean>>
 
   /** allow clicking and dragging horizontally to change the value of the switch - defaults to true */
   changeOnDrag?: boolean;
+
+  /** test id for storybook component testing */
+  testId: string;
 }
 
 export const SwitchInput = React.forwardRef(
@@ -68,6 +71,7 @@ export const SwitchInput = React.forwardRef(
       uncheckedIcon,
       iconStyle,
       changeOnDrag,
+      testId,
       ...nativeProps
     }: ISwitchInputProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
@@ -109,6 +113,7 @@ export const SwitchInput = React.forwardRef(
           data-pending={pending}
           data-checked={boundValue}
           data-icon-style={iconStyle}
+          data-testid={testId}
         >
           <div className="arm-switch-input-inner">
             <input
