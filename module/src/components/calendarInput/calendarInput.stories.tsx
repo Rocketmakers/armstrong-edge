@@ -68,19 +68,6 @@ export const Dropdown: StoryObj<typeof CalendarInput> = {
   },
 };
 
-export const QuickSelectionTags: StoryObj<typeof CalendarInput> = {
-  render: () => {
-    const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
-    return (
-      <CalendarInput
-        bind={formProp("date").bind()}
-        config={{ locale: enGB }}
-        quickSelectionTags
-      />
-    );
-  },
-};
-
 export const Range: StoryObj<typeof CalendarInput> = {
   render: () => {
     const { formProp } = Form.use<{ startDate?: Date; endDate?: Date }>({

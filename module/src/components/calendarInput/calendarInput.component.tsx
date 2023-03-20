@@ -16,9 +16,6 @@ import { TextInput } from "../textInput";
 import { concat } from "../../utils";
 
 export type TCalendarInputProps = {
-  /** not implemented for selectsRange=true */
-  quickSelectionTags?: boolean;
-
   /** swipe02 is default */
   dateSelectionHeader?: "swipe01" | "swipe02" | "dropdown";
 
@@ -92,10 +89,10 @@ const Swipe01Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
       <span>{format(props.monthDate, "MMMM yyyy")}</span>
       <div className="swipe01-date-navigation">
         <Button displayStyle="blank" onClick={props.decreaseMonth}>
-          <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-left")} />
+          <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-left2")} />
         </Button>
         <Button displayStyle="blank" onClick={props.increaseMonth}>
-          <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-right")} />
+          <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-right2")} />
         </Button>
       </div>
     </div>
@@ -106,30 +103,26 @@ const Swipe02Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
   return (
     <div className="arm-calendar-input-header swipe02">
       <Button displayStyle="blank" onClick={props.decreaseMonth}>
-        <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-left")} />
+        <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-left2")} />
       </Button>
       <span>{format(props.monthDate, "MMMM yyyy")}</span>
 
       <Button displayStyle="blank" onClick={props.increaseMonth}>
-        <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-right")} />
+        <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-right2")} />
       </Button>
     </div>
   );
 };
 
-const renderDayContents = (day, date) => {
-  console.log("day", day);
-  console.log("date", date);
+const renderDayContents = (day) => {
   return <div className="arm-calendar-input-day-contents">{day}</div>;
 };
 
 /**
  * @decision option to use native input on mobile / tablet? - leave this issue entirely up to the consuming code
- * @decision JC says quick selection tags only make sense when not selecting a range
- * the following config is overridden: todayButton, customInput, renderCustomHeader, locale
+ * the following config is overridden: customInput, renderCustomHeader, locale
  */
 export const CalendarInput: React.FC<TCalendarInputProps> = ({
-  quickSelectionTags,
   dateSelectionHeader,
   locale,
   language,
@@ -137,30 +130,8 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
 }) => {
   const renderCustomHeader = React.useCallback(
     (customerHeaderProps: ReactDatePickerCustomHeaderProps) => {
-      const today = new Date();
-      const tomorrow = addDays(today, 1);
       return (
         <div className="customer-header-container">
-          {!props.selectsRange && !!quickSelectionTags && (
-            <div className="quick-selection-tags">
-              <Button
-                displaySize="small"
-                onClick={() =>
-                  props.bind?.setValue(today) ?? props.onChange?.(today)
-                }
-              >
-                {language?.todayLabel ?? "Today"}
-              </Button>
-              <Button
-                displaySize="small"
-                onClick={() =>
-                  props.bind?.setValue(tomorrow) ?? props.onChange?.(tomorrow)
-                }
-              >
-                {language?.tomorrowLabel ?? "Tomorrow"}
-              </Button>
-            </div>
-          )}
           {dateSelectionHeader === "dropdown" && (
             <DropdownHeader {...customerHeaderProps} />
           )}
@@ -173,7 +144,7 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
         </div>
       );
     },
-    [dateSelectionHeader, quickSelectionTags]
+    [dateSelectionHeader]
   );
 
   const config = React.useMemo<TBaseDatePickerConfig>(() => {
@@ -182,15 +153,12 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
 
       ...props.config,
 
-      // replaced by dateSelectionHeader
-      todayButton: undefined,
-
       customInput: <Input />,
       renderCustomHeader: props.selectsRange ? undefined : renderCustomHeader,
       renderDayContents,
       locale,
     };
-  }, [quickSelectionTags, renderCustomHeader, locale, props.config]);
+  }, [renderCustomHeader, locale, props.config]);
 
   return (
     <BaseCalendarInput
