@@ -68,3 +68,38 @@ export const Click: StoryObj<typeof SwitchInput> = {
     await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
   },
 };
+
+export const ToggleState: StoryObj<typeof SwitchInput> = {
+  render: (args) => {
+    const [checked, setChecked] = React.useState<boolean | null | undefined>(
+      false
+    );
+
+    return (
+      <>
+        <SwitchInput {...args} checked={checked} onChange={setChecked} 
+          checkedIcon={IconUtils.getIconDefinition("Icomoon", "circle2")} 
+          uncheckedIcon={IconUtils.getIconDefinition("Icomoon", "circle2")} 
+          iconStyle='static'
+          testId="switch-input-test-id"
+        />
+        <br />
+        <p data-testid="result">I am {checked ? "checked" : "unchecked"}</p>
+      </>
+    );
+  },
+  args: {
+    checked: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const inputWrapper = canvas.getByTestId("switch-input-test-id");
+    expect(inputWrapper).toHaveAttribute("data-checked", "false")
+    const checkbox = within(inputWrapper).getByRole("checkbox", { hidden: true });
+    expect(canvas.getByText("I am unchecked"));
+    userEvent.click(checkbox);
+    fireEvent.mouseMove(checkbox, { clientX: 100, clientY: 0 });
+    await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
+    expect(canvas.getByText("I am checked"));
+  },
+};
