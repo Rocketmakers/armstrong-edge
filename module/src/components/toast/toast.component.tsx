@@ -1,18 +1,17 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { arrayToArrayDictionary } from "../..";
-import { useTemporaryState, useTimeout } from "../../hooks";
-import { concat } from "../../utils/classNames";
-import { Dates } from "../../utils/dates";
-import { contentDependency } from "../../utils/objects";
-import { IconUtils } from "../icon";
-import { IconButton } from "../iconButton";
-import { useToasts } from "./toast.context";
-import { IToastNotification } from "./toast.types";
+import { arrayToArrayDictionary, Button } from '../..';
+import { useTemporaryState, useTimeout } from '../../hooks';
+import { concat } from '../../utils/classNames';
+import { Dates } from '../../utils/dates';
+import { contentDependency } from '../../utils/objects';
+import { Icon } from '../icon';
+import { useToasts } from './toast.context';
+import { IToastNotification } from './toast.types';
 
 export interface IToastNotificationProps
-  extends Omit<IToastNotification, "timestamp">,
-    Required<Pick<IToastNotification, "timestamp">> {}
+  extends Omit<IToastNotification, 'timestamp'>,
+    Required<Pick<IToastNotification, 'timestamp'>> {}
 
 /** Render a single toast notification with a title and some given information */
 export const ToastNotification = React.forwardRef<
@@ -44,7 +43,7 @@ export const ToastNotification = React.forwardRef<
 
   const contentNode = React.useMemo<React.ReactNode>(
     () =>
-      typeof content === "function"
+      typeof content === 'function'
         ? content({ dismiss: beginDismiss, toast })
         : content,
     [content, beginDismiss, toast]
@@ -64,7 +63,7 @@ export const ToastNotification = React.forwardRef<
   return (
     <div
       {...htmlProps}
-      className={concat("arm-toast-notification", htmlProps?.className)}
+      className={concat('arm-toast-notification', htmlProps?.className)}
       data-type={type}
       data-dismissing={dismissing}
       onMouseEnter={clearAutoDismissTimeout}
@@ -82,18 +81,18 @@ export const ToastNotification = React.forwardRef<
           </p>
 
           {allowManualDismiss && (
-            <IconButton
-              type="button"
+            <Button
               className="arm-toast-notification-close-button"
-              icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
               onClick={beginDismiss}
-            />
+            >
+              <Icon iconSet="Icomoon" icon="cross2" />
+            </Button>
           )}
         </div>
 
         {timestampString && <p>{timestampString}</p>}
 
-        {typeof contentNode === "string" || typeof contentNode === "number" ? (
+        {typeof contentNode === 'string' || typeof contentNode === 'number' ? (
           <p>{contentNode}</p>
         ) : (
           contentNode
@@ -138,28 +137,28 @@ export const ToastNotificationContainer = React.forwardRef<
     <div className="arm-toast-notification-container" ref={ref}>
       <div className="arm-toast-notification-container-left">
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-top">
-          {!!splitToasts["top-left"]?.length &&
-            splitToasts["top-left"].map((toast) => (
+          {!!splitToasts['top-left']?.length &&
+            splitToasts['top-left'].map((toast) => (
               <ToastNotification {...toast} key={contentDependency(toast)} />
             ))}
         </div>
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-bottom">
-          {!!splitToasts["bottom-left"]?.length &&
-            splitToasts["bottom-left"].map((toast) => (
+          {!!splitToasts['bottom-left']?.length &&
+            splitToasts['bottom-left'].map((toast) => (
               <ToastNotification {...toast} key={contentDependency(toast)} />
             ))}
         </div>
       </div>
       <div className="arm-toast-notification-container-right">
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-top">
-          {!!splitToasts["top-right"]?.length &&
-            splitToasts["top-right"].map((toast) => (
+          {!!splitToasts['top-right']?.length &&
+            splitToasts['top-right'].map((toast) => (
               <ToastNotification {...toast} key={contentDependency(toast)} />
             ))}
         </div>
         <div className="arm-toast-notification-toasts arm-toast-notification-toasts-bottom">
-          {!!splitToasts["bottom-right"]?.length &&
-            splitToasts["bottom-right"].map((toast) => (
+          {!!splitToasts['bottom-right']?.length &&
+            splitToasts['bottom-right'].map((toast) => (
               <ToastNotification {...toast} key={contentDependency(toast)} />
             ))}
         </div>

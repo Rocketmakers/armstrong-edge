@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
+import { IButtonCoreProps } from '../components';
 
-import { IconSet } from "../components/icon/icon.component";
-import { IIconWrapperProps } from "../components/iconWrapper/iconWrapper.component";
-import { ArmstrongId, DataAttributes } from "./core";
+import { IconSet } from '../components/icon/icon.component';
+import { ArmstrongId, DataAttributes } from './core';
 
 /** an option in an array of options, intended for use in a component like a Select or RadioList */
 export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
@@ -21,7 +21,7 @@ export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
 
 export type IArmstrongReactSelectOption<Id extends ArmstrongId> = Omit<
   IArmstrongOption<Id>,
-  "htmlProps"
+  'htmlProps'
 >;
 export interface IArmstrongReactSelectCreatingOption<Id extends ArmstrongId>
   extends IArmstrongReactSelectOption<Id> {
@@ -35,7 +35,7 @@ export interface IArmstrongExtendedOption<
   Id extends ArmstrongId,
   HtmlProps = unknown
 > extends IArmstrongOption<Id, HtmlProps>,
-    IIconWrapperProps<IconSet, IconSet> {
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'> {
   /** a group to show this item under */
   group?: string;
 

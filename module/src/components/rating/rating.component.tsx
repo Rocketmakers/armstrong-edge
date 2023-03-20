@@ -1,31 +1,29 @@
-import * as React from "react";
+import * as React from 'react';
 
 import {
   Form,
-  IconWrapper,
-  IIconWrapperProps,
   IStatusWrapperProps,
   StatusWrapper,
   ValidationErrors,
-} from "../..";
-import { IBindingProps } from "../../hooks/form";
+} from '../..';
+import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
   ArmstrongVFCProps,
   NullOrUndefined,
-} from "../../types";
-import { repeat } from "../../utils/arrays";
-import { clamp } from "../../utils/maths";
-import { concat } from "../../utils/classNames";
-import { Button } from "../button";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IInputWrapperProps } from "../inputWrapper";
+} from '../../types';
+import { repeat } from '../../utils/arrays';
+import { clamp } from '../../utils/maths';
+import { concat } from '../../utils/classNames';
+import { Button, IButtonCoreProps } from '../button';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { IInputWrapperProps } from '../inputWrapper';
 
 export interface IRatingPartProps
   extends Pick<
     IRatingProps<any>,
-    "filledIcon" | "emptyIcon" | "step" | "mode" | "name"
+    'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'name'
   > {
   /** the index of this rating part */
   index: number;
@@ -59,7 +57,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
 
     const filledIconJsx = React.useMemo(() => {
       const calculated =
-        typeof filledIcon === "function" ? filledIcon(index) : filledIcon;
+        typeof filledIcon === 'function' ? filledIcon(index) : filledIcon;
       if (calculated) {
         return IconUtils.isIconDefinition(calculated) ? (
           <Icon {...calculated} />
@@ -71,7 +69,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
 
     const emptyIconJsx = React.useMemo(() => {
       const calculated =
-        typeof emptyIcon === "function" ? emptyIcon(index) : emptyIcon;
+        typeof emptyIcon === 'function' ? emptyIcon(index) : emptyIcon;
       if (calculated) {
         return IconUtils.isIconDefinition(calculated) ? (
           <Icon {...calculated} />
@@ -88,7 +86,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
         style={
           value
             ? ({
-                "--rating-amount": `${clamp((value - index) * 100, 0, 100)}%`,
+                '--rating-amount': `${clamp((value - index) * 100, 0, 100)}%`,
               } as React.CSSProperties)
             : undefined
         }
@@ -109,7 +107,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
           )}
         </div>
 
-        {!readOnly && mode === "buttons" && (
+        {!readOnly && mode === 'buttons' && (
           <div className="arm-rating-part-buttons">
             {repeat(steps, (buttonIndex) => {
               const inputValue = index + steps * (buttonIndex + 1);
@@ -126,7 +124,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
           </div>
         )}
 
-        {!readOnly && mode === "radio" && (
+        {!readOnly && mode === 'radio' && (
           <div className="arm-rating-part-radios">
             {repeat(steps, (buttonIndex) => {
               const inputValue = index + steps * (buttonIndex + 1);
@@ -168,16 +166,16 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
         React.BaseHTMLAttributes<HTMLDivElement>,
         HTMLDivElement
       >,
-      "onChange"
+      'onChange'
     >,
     Pick<
       IInputWrapperProps,
-      | "scrollValidationErrorsIntoView"
-      | "validationMode"
-      | "errorIcon"
-      | "validationErrorMessages"
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'validationErrorMessages'
     >,
-    IIconWrapperProps<IconSet, IconSet>,
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     IStatusWrapperProps {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -205,7 +203,7 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
    *
    * range will use an input with type='range' to handle the interaction, buttons will render a series of buttons, radio will render radio inputs
    */
-  mode?: "range" | "buttons" | "radio";
+  mode?: 'range' | 'buttons' | 'radio';
 
   /** used for accessibility labelling and (with mode="radio") grouping inputs - for the latter use this must be unique */
   name?: string;
@@ -251,7 +249,7 @@ export const Rating = React.forwardRef(
       <>
         <div
           ref={ref}
-          className={concat("arm-rating", className)}
+          className={concat('arm-rating', className)}
           {...htmlProps}
           data-read-only={!setBoundValue}
         >
@@ -263,7 +261,20 @@ export const Rating = React.forwardRef(
             validationMode={bindConfig.validationMode}
             pending={pending}
           >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+            <>
+              {leftIcon && (
+                <>
+                  {IconUtils.isIconDefinition(leftIcon) ? (
+                    <Icon
+                      {...leftIcon}
+                      className="left-icon"
+                      title={`${leftIcon.icon} icon on left`}
+                    />
+                  ) : (
+                    leftIcon
+                  )}
+                </>
+              )}
               <div className="arm-rating-parts">
                 {repeat(maximum!, (index) => (
                   <RatingPart
@@ -282,7 +293,7 @@ export const Rating = React.forwardRef(
                   />
                 ))}
 
-                {setBoundValue && mode === "range" && (
+                {setBoundValue && mode === 'range' && (
                   <input
                     className="arm-rating-range"
                     type="range"
@@ -298,7 +309,20 @@ export const Rating = React.forwardRef(
                   />
                 )}
               </div>
-            </IconWrapper>
+              {rightIcon && (
+                <>
+                  {IconUtils.isIconDefinition(rightIcon) ? (
+                    <Icon
+                      {...rightIcon}
+                      className="right-icon"
+                      title={`${rightIcon.icon} icon on right`}
+                    />
+                  ) : (
+                    rightIcon
+                  )}
+                </>
+              )}
+            </>
           </StatusWrapper>
         </div>
 
@@ -322,8 +346,8 @@ export const Rating = React.forwardRef(
 
 Rating.defaultProps = {
   maximum: 5,
-  filledIcon: { iconSet: "Icomoon", icon: "star-full" },
-  emptyIcon: { iconSet: "Icomoon", icon: "star-empty" },
+  filledIcon: { iconSet: 'Icomoon', icon: 'star-full' },
+  emptyIcon: { iconSet: 'Icomoon', icon: 'star-empty' },
   step: 1,
-  mode: "buttons",
+  mode: 'buttons',
 };
