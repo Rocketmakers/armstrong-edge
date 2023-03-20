@@ -50,7 +50,7 @@ export interface ISwitchInputProps<TBind extends NullOrUndefined<boolean>>
   changeOnDrag?: boolean;
 
   /** test id for storybook component testing */
-  testId: string;
+  testId?: string;
 }
 
 export const SwitchInput = React.forwardRef(

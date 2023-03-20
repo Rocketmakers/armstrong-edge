@@ -1,5 +1,5 @@
 @function pxToRem($value) {
-  $remValue: ($value / 16) + rem;
+  $remValue: calc($value / 16) + rem;
   @return $remValue;
 }
 
@@ -29,6 +29,7 @@ $spacing-large: pxToRem(20) !default;
 $spacing-xlarge: pxToRem(24) !default;
 $spacing-xxlarge: pxToRem(32) !default;
 $spacing-xxxlarge: pxToRem(40) !default;
+$spacing-xxxxlarge: pxToRem(48) !default;
 
 // fonts
 $font-size-xsmall: pxToRem(14) !default;
@@ -86,6 +87,12 @@ $shadow-inner-medium: $shadow-offset-medium $shadow-size-medium $shadow-color in
 $shadow-inner-large: $shadow-offset-large $shadow-size-large $shadow-color inset !default;
 $shadow-inner-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color inset !default;
 
+// transitions
+
+$transition-quick: 0.15s !default;
+$transition-medium: 0.4s !default;
+$transition-slow: 0.8s !default;
+
 :root {
   --arm-color-black: #{$color-black};
   --arm-color-white: #{$color-white};
@@ -115,6 +122,7 @@ $shadow-inner-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color in
   --arm-spacing-xlarge: #{$spacing-xlarge};
   --arm-spacing-xxlarge: #{$spacing-xxlarge};
   --arm-spacing-xxxlarge: #{$spacing-xxxlarge};
+  --arm-spacing-xxxxlarge: #{$spacing-xxxxlarge};
 
   // Button
   --arm-button-border-radius: #{$button-border-radius};
@@ -151,4 +159,9 @@ $shadow-inner-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color in
   --arm-inner-shadow-medium: #{$shadow-inner-medium};
   --arm-inner-shadow-large: #{$shadow-inner-large};
   --arm-inner-shadow-xlarge: #{$shadow-inner-xlarge};
+
+  // transitions
+  --arm-transition-slow: #{$transition-slow};
+  --arm-transition-medium: #{$transition-medium};
+  --arm-transition-quick: #{$transition-quick};
 }

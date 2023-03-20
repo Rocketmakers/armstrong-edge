@@ -1,5 +1,5 @@
-$arm-switch-input-width: 50px !default;
-$arm-switch-input-height: 30px !default;
+$arm-switch-input-width: var(--arm-spacing-xxxxlarge);
+$arm-switch-input-height: var(--arm-spacing-xxlarge);
 $arm-switch-input-handle-padding: var(--arm-spacing-xxsmall);
 $arm-switch-input-handle: calc(
   #{$arm-switch-input-height} - #{$arm-switch-input-handle-padding} * 2
@@ -51,15 +51,15 @@ $arm-switch-input-handle: calc(
   height: $arm-switch-input-height;
   width: $arm-switch-input-width;
   box-shadow: var(--arm-shadow-xsmall);
-  transition: background-color 0.15s;
-  border-radius: 30px;
+  transition: background-color var(--arm-transition-quick);
+  border-radius: var(--arm-spacing-xxlarge);
 
   &::after {
     display: block;
     content: "";
     width: $arm-switch-input-handle;
     height: $arm-switch-input-handle;
-    transition: transform 0.15s;
+    transition: transform var(--arm-transition-quick);
 
     top: $arm-switch-input-handle-padding;
     left: $arm-switch-input-handle-padding;
@@ -75,11 +75,9 @@ $arm-switch-input-handle: calc(
 
   appearance: none;
   -webkit-appearance: none;
-  border: 0;
-  border-radius: 30px;
+  border-radius: var(--arm-spacing-xxlarge);
   outline: none;
   background-color: var(--arm-color-grey-5);
-  padding: 0;
   margin: 0;
   cursor: pointer;
 }
@@ -91,7 +89,7 @@ $arm-switch-input-handle: calc(
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.15s, transform 0.15s;
+  transition: opacity var(--arm-transition-quick), transform var(--arm-transition-quick);
   font-size: var(--arm-font-size-xxlarge);
   color: var(--arm-color-white);
 
@@ -107,6 +105,5 @@ $arm-switch-input-handle: calc(
 }
 
 .arm-switch-input-unchecked-icon {
-  color: var(--arm-color-white);
   left: $arm-switch-input-handle-padding;
 }
