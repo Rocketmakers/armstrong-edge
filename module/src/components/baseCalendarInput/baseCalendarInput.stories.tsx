@@ -28,7 +28,6 @@ export const Default: StoryObj<typeof BaseCalendarInput> = {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
       <BaseCalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{ locale: enGB }}
       />
@@ -41,7 +40,6 @@ export const TimeSelect: StoryObj<typeof BaseCalendarInput> = {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
       <BaseCalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{
           showTimeSelect: true,
@@ -57,7 +55,6 @@ export const OnlyTime: StoryObj<typeof BaseCalendarInput> = {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
       <BaseCalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{
           showTimeSelect: true,
@@ -76,7 +73,6 @@ export const Clearable: StoryObj<typeof BaseCalendarInput> = {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
       <BaseCalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{
           isClearable: true,
@@ -94,7 +90,6 @@ export const CalendarOnly: StoryObj<typeof BaseCalendarInput> = {
 
     return (
       <BaseCalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{ inline: true }}
         key="calendar-only"
@@ -108,7 +103,6 @@ export const CustomWeekStart = () => {
 
   return (
     <BaseCalendarInput
-      selectsRange={false}
       bind={formProp("date").bind()}
       config={{ locale: enUS }}
     />
@@ -120,7 +114,6 @@ export const DontCloseOnSelect = () => {
 
   return (
     <BaseCalendarInput
-      selectsRange={false}
       bind={formProp("date").bind()}
       config={{ shouldCloseOnSelect: false }}
     />
@@ -132,7 +125,6 @@ export const Below = () => {
 
   return (
     <BaseCalendarInput
-      selectsRange={false}
       bind={formProp("date").bind()}
       config={{ popperPlacement: "bottom-end" }}
     />
@@ -144,7 +136,6 @@ export const Above = () => {
 
   return (
     <BaseCalendarInput
-      selectsRange={false}
       bind={formProp("date").bind()}
       config={{ popperPlacement: "top-end" }}
     />
@@ -156,7 +147,6 @@ export const Modal = () => {
 
   return (
     <BaseCalendarInput
-      selectsRange={false}
       bind={formProp("date").bind()}
       config={{ withPortal: true }}
     />
@@ -178,7 +168,6 @@ export const CustomOpenButton = () => {
         {isOpen ? "Close" : "Open"}
       </Button>
       <BaseCalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{
           open: isOpen,
@@ -204,7 +193,7 @@ export const RangeExample = () => {
     <div className="story-cols">
       <label>
         <BaseCalendarInput
-          selectsRange={true}
+          selectsRange
           startBind={formProp("startDate").bind()}
           endBind={formProp("endDate").bind()}
         />
@@ -223,7 +212,7 @@ export const MultiMonthRangeExample = () => {
     <div className="story-cols">
       <label>
         <BaseCalendarInput
-          selectsRange={true}
+          selectsRange
           startBind={formProp("startDate").bind()}
           endBind={formProp("endDate").bind()}
           config={{ monthsShown: 2 }}
@@ -261,7 +250,6 @@ export const CustomMonthNav = () => {
 
   return (
     <BaseCalendarInput
-      selectsRange={false}
       bind={formProp("startDate").bind()}
       config={{
         renderCustomHeader: ({

@@ -40,6 +40,10 @@
       var(--arm-button-outline-stroke-color) solid;
     color: var(--arm-button-outline-stroke-color);
   }
+  &[data-style="blank"] {
+    background-color: transparent;
+    color: var(--arm-button-outline-stroke-color);
+  }
   &[data-size="small"] {
     padding: var(--arm-spacing-xxsmall) var(--arm-spacing-medium);
     font-size: var(--arm-font-size-xsmall);

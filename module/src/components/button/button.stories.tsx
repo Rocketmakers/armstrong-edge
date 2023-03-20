@@ -61,6 +61,7 @@ export const Styles: StoryObj<typeof Button> = {
         <Button displayStyle="primary">Primary</Button>
         <Button displayStyle="secondary">Secondary</Button>
         <Button displayStyle="outline">Outline</Button>
+        <Button displayStyle="blank">Blank</Button>
       </div>
     );
   },

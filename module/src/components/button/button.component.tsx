@@ -1,22 +1,22 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { concat } from "../../utils/classNames";
+import { Icon, IconSet, IconUtils, IIcon } from "../icon";
 import {
   IStatusWrapperProps,
   StatusWrapper,
-} from '../statusWrapper/statusWrapper.component';
+} from "../statusWrapper/statusWrapper.component";
 
 type ButtonHTMLProps = Omit<
   React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   >,
-  'ref'
+  "ref"
 >;
 
-type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline';
-type ButtonDisplaySize = 'small' | 'medium' | 'large' | 'extra-large';
+type ButtonDisplayStyle = "primary" | "secondary" | "outline" | "blank";
+type ButtonDisplaySize = "small" | "medium" | "large" | "extra-large";
 
 export type IButtonCoreProps<
   TLeftIcon extends IconSet,
@@ -69,11 +69,11 @@ export const ButtonInner: React.FC<
   const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
 
   const showLeftIcon =
-    statusPosition !== 'left' ||
+    statusPosition !== "left" ||
     !hideIconOnStatus ||
     (!pending && !shouldShowErrorIcon);
   const showRightIcon =
-    statusPosition !== 'right' ||
+    statusPosition !== "right" ||
     !hideIconOnStatus ||
     (!pending && !shouldShowErrorIcon);
 
@@ -99,7 +99,7 @@ export const ButtonInner: React.FC<
         error={error}
         validationErrorMessages={validationErrorMessages}
       >
-        {typeof children === 'string' || typeof children === 'number' ? (
+        {typeof children === "string" || typeof children === "number" ? (
           <span>{children}</span>
         ) : (
           children
@@ -144,7 +144,7 @@ export const Button = React.forwardRef<
 
   return (
     <button
-      className={concat('arm-button', className)}
+      className={concat("arm-button", className)}
       data-pending={pending}
       data-disabled={disabled || pending}
       data-size={displaySize}
@@ -161,6 +161,6 @@ export const Button = React.forwardRef<
 });
 
 Button.defaultProps = {
-  statusPosition: 'right',
+  statusPosition: "right",
   hideIconOnStatus: true,
 };

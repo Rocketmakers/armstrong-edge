@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Form, IInputWrapperProps, ValidationErrors } from "../..";
+import { Form, IconUtils, IInputWrapperProps, ValidationErrors } from "../..";
 import { IBindingProps } from "../../hooks/form";
 import {
   ArmstrongFCExtensions,
@@ -139,7 +139,6 @@ export const CheckboxInputList = React.forwardRef(
                   <p>{group.key}</p>
                 </div>
               )}
-
               {group.items.map((option) => (
                 <CheckboxInput
                   key={option.id}
@@ -185,4 +184,6 @@ export const CheckboxInputList = React.forwardRef(
 
 CheckboxInputList.defaultProps = {
   direction: "vertical",
+  checkedIcon: IconUtils.getIconDefinition("Icomoon", "minus3"),
+  uncheckedIcon: IconUtils.getIconDefinition("Icomoon", "minus3"),
 };

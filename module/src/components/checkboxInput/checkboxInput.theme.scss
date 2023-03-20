@@ -35,6 +35,12 @@
     opacity: 0.5;
   }
 
+  &[data-checked="false"] {
+    .arm-icon {
+      opacity: 0.5;
+    }
+  }
+
   &[data-checked="true"] {
     .arm-checkbox-input-checkbox {
       background-color: var(--arm-form-checked-bg-color);

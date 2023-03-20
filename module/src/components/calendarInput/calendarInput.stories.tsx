@@ -21,14 +21,22 @@ const Template: StoryObj<typeof CalendarInput> = {
 
 /** stories */
 
-export const Default: StoryObj<typeof CalendarInput> = {
+export const DefaultSwipe02: StoryObj<typeof CalendarInput> = {
+  render: () => {
+    const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
+    return (
+      <CalendarInput bind={formProp("date").bind()} config={{ locale: enGB }} />
+    );
+  },
+};
+
+export const CalendarOnly: StoryObj<typeof CalendarInput> = {
   render: () => {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
       <CalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
-        config={{ locale: enGB }}
+        config={{ locale: enGB, inline: true }}
       />
     );
   },
@@ -39,7 +47,6 @@ export const Swipe01: StoryObj<typeof CalendarInput> = {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
       <CalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{ locale: enGB }}
         dateSelectionHeader="swipe01"
@@ -53,7 +60,6 @@ export const Dropdown: StoryObj<typeof CalendarInput> = {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
       <CalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{ locale: enGB }}
         dateSelectionHeader="dropdown"
@@ -62,15 +68,13 @@ export const Dropdown: StoryObj<typeof CalendarInput> = {
   },
 };
 
-export const DropdownWithQuickSelectionTags: StoryObj<typeof CalendarInput> = {
+export const QuickSelectionTags: StoryObj<typeof CalendarInput> = {
   render: () => {
     const { formProp } = Form.use<{ date?: Date }>({ date: undefined });
     return (
       <CalendarInput
-        selectsRange={false}
         bind={formProp("date").bind()}
         config={{ locale: enGB }}
-        dateSelectionHeader="dropdown"
         quickSelectionTags
       />
     );
@@ -85,7 +89,7 @@ export const Range: StoryObj<typeof CalendarInput> = {
     });
     return (
       <CalendarInput
-        selectsRange={true}
+        selectsRange
         startBind={formProp("startDate").bind()}
         endBind={formProp("endDate").bind()}
         config={{ locale: enGB }}

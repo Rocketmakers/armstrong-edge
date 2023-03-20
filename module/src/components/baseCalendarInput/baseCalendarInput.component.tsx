@@ -1,10 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import * as React from "react";
-import ReactDatePicker, {
-  ReactDatePickerProps,
-  ReactDatePickerCustomHeaderProps,
-} from "react-datepicker";
+import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker";
 
 import { enGB } from "date-fns/locale";
 
@@ -14,12 +11,6 @@ import { concat } from "../../utils/classNames";
 import { IInputWrapperProps } from "../inputWrapper";
 import { Status } from "../status";
 import { ValidationErrors } from "../validationErrors";
-import { TextInput } from "../textInput";
-import { IconUtils } from "../icon";
-import { format } from "date-fns";
-import { IconButton } from "../iconButton";
-import { ISelectOption, Select } from "../select";
-import { Button } from "../button";
 
 type TDate = Date;
 type TDateRange = [Date | null, Date | null];
@@ -71,7 +62,7 @@ export type TBaseCalendarInputSelectsRangeProps = {
 };
 
 export type TBaseCalendarInputNotSelectsRangeProps = {
-  selectsRange: false;
+  selectsRange?: false;
   bind?: IBindingProps<TDate>;
   value?: TDate;
 
@@ -157,7 +148,11 @@ export const BaseCalendarInput: React.FunctionComponent<
   return (
     <>
       <div
-        className={concat("arm-input", "arm-calendar-input", props.className)}
+        className={concat(
+          "arm-input",
+          "arm-base-calendar-input",
+          props.className
+        )}
         data-disabled={props.disabled || props.pending}
         data-error={props.error || !!validationErrorMessages?.length}
         onClick={(e) => {

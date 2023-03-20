@@ -1,13 +1,9 @@
-import { addDays, format } from "date-fns";
 import * as React from "react";
-import { ReactDatePickerCustomHeaderProps } from "react-datepicker";
-import { Form } from "../../hooks";
 
 import {
   BaseCalendarInput,
   TBaseCalendarInputCommonProps,
   TBaseCalendarInputNotSelectsRangeProps,
-  TBaseCalendarInputProps,
   TBaseDatePickerConfig,
 } from "../baseCalendarInput";
 import { IconUtils } from "../icon";
@@ -48,5 +44,5 @@ export const TimeInput: React.FC<TTimeInputProps> = ({ locale, ...props }) => {
     };
   }, [locale, props.config]);
 
-  return <BaseCalendarInput selectsRange={false} {...props} config={config} />;
+  return <BaseCalendarInput {...props} config={config} />;
 };

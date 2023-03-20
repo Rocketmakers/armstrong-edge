@@ -10,10 +10,10 @@ import {
 } from "../baseCalendarInput";
 
 import { Button } from "../button";
-import { IconUtils } from "../icon";
-import { IconButton } from "../iconButton";
+import { IconUtils, Icon } from "../icon";
 import { ISelectOption, Select } from "../select";
 import { TextInput } from "../textInput";
+import { concat } from "../../utils";
 
 export type TCalendarInputProps = {
   /** not implemented for selectsRange=true */
@@ -31,7 +31,7 @@ export type TCalendarInputProps = {
   };
 } & TBaseCalendarInputProps;
 
-const CustomInput = React.forwardRef<HTMLInputElement>((props, ref) => (
+const Input = React.forwardRef<HTMLInputElement>((props, ref) => (
   <TextInput
     leftIcon={IconUtils.getIconDefinition("Icomoon", "calendar")}
     {...props}
@@ -39,9 +39,7 @@ const CustomInput = React.forwardRef<HTMLInputElement>((props, ref) => (
   />
 ));
 
-const CustomHeaderDropdown: React.FC<ReactDatePickerCustomHeaderProps> = (
-  props
-) => {
+const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
   const today = new Date();
 
   const { formState, formProp } = Form.use<{ month: number; year: number }>({
@@ -66,61 +64,63 @@ const CustomHeaderDropdown: React.FC<ReactDatePickerCustomHeaderProps> = (
     return format(date, "MMMM");
   };
 
-  const monthOptions = new Array(12).map<ISelectOption<number, any>>(
-    (_, index) => ({ id: index, name: getLocaleMonth(index) })
-  );
+  const monthOptions = new Array(12)
+    .fill(null)
+    .map<ISelectOption<number, any>>((_, index) => ({
+      id: index,
+      name: getLocaleMonth(index),
+    }));
 
-  const yearOptions = new Array(100).map<ISelectOption<number, any>>(
-    (_, index) => {
+  const yearOptions = new Array(100)
+    .fill(null)
+    .map<ISelectOption<number, any>>((_, index) => {
       const year = today.getFullYear() - 50 + index;
       return { id: year, name: `${year}` };
-    }
-  );
+    });
 
   return (
-    <div className="custom-header dropdown">
+    <div className="arm-calendar-input-header dropdown">
       <Select options={monthOptions} bind={formProp("month").bind()} />
       <Select options={yearOptions} bind={formProp("year").bind()} />
     </div>
   );
 };
 
-const CustomHeaderSwipe01: React.FC<ReactDatePickerCustomHeaderProps> = (
-  props
-) => {
+const Swipe01Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
   return (
-    <div className="custom-header swipe01">
+    <div className="arm-calendar-input-header swipe01">
       <span>{format(props.monthDate, "MMMM yyyy")}</span>
       <div className="swipe01-date-navigation">
-        <IconButton
-          icon={IconUtils.getIconDefinition("Icomoon", "arrow-left")}
-          onClick={props.decreaseMonth}
-        />
-        <IconButton
-          icon={IconUtils.getIconDefinition("Icomoon", "arrow-right")}
-          onClick={props.increaseMonth}
-        />
+        <Button displayStyle="blank" onClick={props.decreaseMonth}>
+          <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-left")} />
+        </Button>
+        <Button displayStyle="blank" onClick={props.increaseMonth}>
+          <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-right")} />
+        </Button>
       </div>
     </div>
   );
 };
 
-const CustomHeaderSwipe02: React.FC<ReactDatePickerCustomHeaderProps> = (
-  props
-) => {
+const Swipe02Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
   return (
-    <div className="custom-header swipe02">
-      <IconButton
-        icon={IconUtils.getIconDefinition("Icomoon", "arrow-left")}
-        onClick={props.decreaseYear}
-      />
+    <div className="arm-calendar-input-header swipe02">
+      <Button displayStyle="blank" onClick={props.decreaseMonth}>
+        <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-left")} />
+      </Button>
       <span>{format(props.monthDate, "MMMM yyyy")}</span>
-      <IconButton
-        icon={IconUtils.getIconDefinition("Icomoon", "arrow-right")}
-        onClick={props.increaseMonth}
-      />
+
+      <Button displayStyle="blank" onClick={props.increaseMonth}>
+        <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-right")} />
+      </Button>
     </div>
   );
+};
+
+const renderDayContents = (day, date) => {
+  console.log("day", day);
+  console.log("date", date);
+  return <div className="arm-calendar-input-day-contents">{day}</div>;
 };
 
 /**
@@ -144,6 +144,7 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
           {!props.selectsRange && !!quickSelectionTags && (
             <div className="quick-selection-tags">
               <Button
+                displaySize="small"
                 onClick={() =>
                   props.bind?.setValue(today) ?? props.onChange?.(today)
                 }
@@ -151,6 +152,7 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
                 {language?.todayLabel ?? "Today"}
               </Button>
               <Button
+                displaySize="small"
                 onClick={() =>
                   props.bind?.setValue(tomorrow) ?? props.onChange?.(tomorrow)
                 }
@@ -160,15 +162,14 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
             </div>
           )}
           {dateSelectionHeader === "dropdown" && (
-            <CustomHeaderDropdown {...customerHeaderProps} />
+            <DropdownHeader {...customerHeaderProps} />
           )}
           {dateSelectionHeader === "swipe01" && (
-            <CustomHeaderSwipe01 {...customerHeaderProps} />
+            <Swipe01Header {...customerHeaderProps} />
           )}
-          {!dateSelectionHeader ||
-            (dateSelectionHeader === "swipe02" && (
-              <CustomHeaderSwipe02 {...customerHeaderProps} />
-            ))}
+          {(!dateSelectionHeader || dateSelectionHeader === "swipe02") && (
+            <Swipe02Header {...customerHeaderProps} />
+          )}
         </div>
       );
     },
@@ -184,11 +185,18 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
       // replaced by dateSelectionHeader
       todayButton: undefined,
 
-      customInput: <CustomInput />,
+      customInput: <Input />,
       renderCustomHeader: props.selectsRange ? undefined : renderCustomHeader,
+      renderDayContents,
       locale,
     };
   }, [quickSelectionTags, renderCustomHeader, locale, props.config]);
 
-  return <BaseCalendarInput {...props} config={config} />;
+  return (
+    <BaseCalendarInput
+      {...props}
+      className={concat("arm-calendar-input", props.className)}
+      config={config}
+    />
+  );
 };
