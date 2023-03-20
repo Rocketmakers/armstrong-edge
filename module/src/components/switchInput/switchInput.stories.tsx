@@ -1,8 +1,9 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 
 import { SwitchInput } from "./switchInput.component";
-import { userEvent, waitFor, within } from "@storybook/testing-library";
+import { fireEvent, userEvent, waitFor, within } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
 import { IconUtils } from "../icon";
 
@@ -39,13 +40,32 @@ const Template: StoryObj<typeof SwitchInput> = {
 export const Default: StoryObj<typeof SwitchInput> = {
   ...Template,
   args: {
-    checked: false
+    checked: false,
   },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const inputWrapper = canvas.getByTestId('switch-input-test-id');
+    const inputWrapper = canvas.getByTestId("switch-input-test-id");
+    expect(inputWrapper).toHaveAttribute("data-checked", "false")
     const checkbox = within(inputWrapper).getByRole("checkbox", { hidden: true });
-    await userEvent.click(checkbox);
+    userEvent.click(checkbox);
+    fireEvent.mouseMove(checkbox, { clientX: 100, clientY: 0 });
+    await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
+  },
+};
+
+export const Click: StoryObj<typeof SwitchInput> = {
+  ...Template,
+  args: {
+    checked: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const inputWrapper = canvas.getByTestId("switch-input-test-id");
+    expect(inputWrapper).toHaveAttribute("data-checked", "false")
+    const checkbox = within(inputWrapper).getByRole("checkbox", { hidden: true });
+    userEvent.click(checkbox);
+    fireEvent.mouseDown(checkbox);
+    fireEvent.mouseUp(checkbox);
     await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
   },
 };
