@@ -52,6 +52,7 @@ $button-outline-stroke-thickness: 2px;
 $form-element-border-radius: 5px !default;
 $form-element-border-thickness: 2px !default;
 $form-element-square-size: 25px !default;
+$form-input-max-width: pxToRem(375) !default;
 
 // spinner
 $spinner-speed: 500ms;
@@ -64,6 +65,8 @@ $spinner-speed: 500ms;
   --arm-color-grey-3: #{$color-grey-3};
   --arm-color-grey-4: #{$color-grey-4};
   --arm-color-grey-5: #{$color-grey-5};
+
+  --arm-color-negative: #{$color-negative};
 
   --arm-color-brand-primary: #{$color-brand-primary};
   --arm-color-brand-secondary: #{$color-brand-secondary};
@@ -106,4 +109,5 @@ $spinner-speed: 500ms;
   --arm-form-square-size: #{$form-element-square-size};
   --arm-form-checked-bg-color: #{$color-grey-1};
   --arm-form-checked-fg-color: #{$color-white};
+  --arm-form-input-max-width: #{$form-input-max-width};
 }

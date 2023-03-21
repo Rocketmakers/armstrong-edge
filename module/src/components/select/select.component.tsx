@@ -12,6 +12,7 @@ import { IArmstrongOption } from '../../types/options';
 import { concat } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { CodeInput } from '../..';
 
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongOption<
@@ -97,6 +98,8 @@ export const Select = React.forwardRef(
       value,
       validationErrorMessages,
     });
+
+    console.log(bindConfig);
 
     const clearSelect = React.useCallback(() => {
       onSelectOption?.(undefined);

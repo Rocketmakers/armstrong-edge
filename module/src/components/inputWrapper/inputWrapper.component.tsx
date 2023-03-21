@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { FormValidationMode, ValidationMessage } from '../../hooks/form';
 import { concat } from '../../utils/classNames';
-import { AutoResizer } from '../autoResizer';
 import { IButtonCoreProps } from '../button';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import {
@@ -38,12 +37,6 @@ export interface IInputWrapperProps
   /** hide the icon on the given side if there is an active status - defaults to true */
   hideIconOnStatus?: boolean;
 
-  /** content to render above the actual input */
-  above?: JSX.Element;
-
-  /** content to render below the actual input */
-  below?: JSX.Element;
-
   /** fired when the user clicks on the div */
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 
@@ -75,8 +68,6 @@ export const InputWrapper = React.forwardRef<
       error,
       statusPosition,
       hideIconOnStatus,
-      above,
-      below,
       onClick,
       disableOnPending,
       scrollValidationErrorsIntoView,
@@ -112,14 +103,6 @@ export const InputWrapper = React.forwardRef<
           onClick={onClick}
           {...nativeProps}
         >
-          {above && (
-            <AutoResizer
-              className="arm-input-wrapper-above"
-              resizeHorizontal={false}
-            >
-              {above}
-            </AutoResizer>
-          )}
 
           <div className="arm-input-inner">
             <StatusWrapper
@@ -180,24 +163,16 @@ export const InputWrapper = React.forwardRef<
             </StatusWrapper>
           </div>
 
-          {below && (
-            <AutoResizer
-              className="arm-input-wrapper-below"
-              resizeHorizontal={false}
-            >
-              {below}
-            </AutoResizer>
-          )}
+          {!!validationErrorMessages?.length &&
+            shouldShowValidationErrorsList && (
+              <ValidationErrors
+                validationMode={validationMode}
+                validationErrors={validationErrorMessages}
+                icon={errorIcon}
+                scrollIntoView={scrollValidationErrorsIntoView}
+              />
+            )}
         </div>
-
-        {!!validationErrorMessages?.length &&
-          shouldShowValidationErrorsList && (
-            <ValidationErrors
-              validationErrors={validationErrorMessages}
-              icon={errorIcon}
-              scrollIntoView={scrollValidationErrorsIntoView}
-            />
-          )}
       </>
     );
   }

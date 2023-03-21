@@ -1,4 +1,4 @@
-@use "../../theme/variables.scss";
+@use '../../theme/variables.scss';
 
 $arm-calendar-select-width: 57px;
 $arm-calendar-display-width: 300px !default;
@@ -42,15 +42,12 @@ $arm-calendar-display-width: 300px !default;
   .arm-dropdown {
     width: 100%;
 
-    .arm-input-wrapper-above,
-    .arm-input-wrapper-below {
-      .arm-calendar-display {
-        max-width: none;
-      }
+    .arm-calendar-display {
+      max-width: none;
     }
   }
 
-  &[data-display-mode="calendar"] {
+  &[data-display-mode='calendar'] {
     cursor: pointer;
 
     .arm-input-inner {
