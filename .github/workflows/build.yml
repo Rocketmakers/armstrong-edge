@@ -12,9 +12,9 @@ jobs:
         id: set-node-and-cache-module
         uses: actions/setup-node@master
         with:
-          node-version-file: '.tool-versions'
-          cache: 'npm'
-          cache-dependency-path: 'module/package-lock.json'
+          node-version-file: ".tool-versions"
+          cache: "npm"
+          cache-dependency-path: "module/package-lock.json"
 
       - name: npm install module
         run: (cd module && npm ci --legacy-peer-deps)
