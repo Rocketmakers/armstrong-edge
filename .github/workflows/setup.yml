@@ -16,7 +16,7 @@ jobs:
           node-version-file: '.tool-versions'
 
       - name: Cache node modules
-        id: node-modules
+        id: ~/.npm
         uses: actions/cache@v3
         with:
           path: node_modules
