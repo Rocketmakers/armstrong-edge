@@ -1,6 +1,6 @@
 name: Test
 on:
-  [pull_request]
+  [pull_request, push]
 env:
   # 7 GiB by default on GitHub, setting to 6 GiB
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
