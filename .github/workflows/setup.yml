@@ -20,8 +20,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            {{pwd}}/node_modules
-            {{pwd}}/module/node_modules
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/module/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
