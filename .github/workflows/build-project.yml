@@ -4,6 +4,8 @@ on: push
 jobs:
   setup-workflow:
     uses: ./.github/workflows/setup.yml
+  test:
+    uses: ./.github/workflows/test.yml
 
 # Ready for when linting is back
   # linting-workflow:
