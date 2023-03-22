@@ -27,7 +27,6 @@ const Template: StoryObj<typeof SwitchInput> = {
           checkedIcon={IconUtils.getIconDefinition("Icomoon", "circle2")} 
           uncheckedIcon={IconUtils.getIconDefinition("Icomoon", "circle2")} 
           iconStyle='static'
-          testId="switch-input-test-id"
         />
       </>
     );
@@ -43,12 +42,11 @@ export const Default: StoryObj<typeof SwitchInput> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const inputWrapper = canvas.getByTestId("switch-input-test-id");
-    expect(inputWrapper).toHaveAttribute("data-checked", "false")
-    const checkbox = within(inputWrapper).getByRole("checkbox", { hidden: true });
+    const checkbox = canvas.getByRole("checkbox", { hidden: true });
+    expect(checkbox.parentElement?.parentElement).toHaveAttribute("data-checked", "false");
     userEvent.click(checkbox);
     fireEvent.mouseMove(checkbox, { clientX: 100, clientY: 0 });
-    await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
+    await waitFor(() => expect(checkbox.parentElement?.parentElement).toHaveAttribute("data-checked", "true"));
   },
 };
 
@@ -59,13 +57,12 @@ export const Click: StoryObj<typeof SwitchInput> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const inputWrapper = canvas.getByTestId("switch-input-test-id");
-    expect(inputWrapper).toHaveAttribute("data-checked", "false")
-    const checkbox = within(inputWrapper).getByRole("checkbox", { hidden: true });
+    const checkbox = canvas.getByRole("checkbox", { hidden: true });
+    expect(checkbox.parentElement?.parentElement).toHaveAttribute("data-checked", "false");
     userEvent.click(checkbox);
     fireEvent.mouseDown(checkbox);
     fireEvent.mouseUp(checkbox);
-    await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
+    await waitFor(() => expect(checkbox.parentElement?.parentElement).toHaveAttribute("data-checked", "true"));
   },
 };
 
@@ -81,7 +78,6 @@ export const ToggleState: StoryObj<typeof SwitchInput> = {
           checkedIcon={IconUtils.getIconDefinition("Icomoon", "circle2")} 
           uncheckedIcon={IconUtils.getIconDefinition("Icomoon", "circle2")} 
           iconStyle='static'
-          testId="switch-input-test-id"
         />
         <br />
         <p data-testid="result">I am {checked ? "checked" : "unchecked"}</p>
@@ -93,13 +89,12 @@ export const ToggleState: StoryObj<typeof SwitchInput> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const inputWrapper = canvas.getByTestId("switch-input-test-id");
-    expect(inputWrapper).toHaveAttribute("data-checked", "false")
-    const checkbox = within(inputWrapper).getByRole("checkbox", { hidden: true });
+    const checkbox = canvas.getByRole("checkbox", { hidden: true });
+    expect(checkbox.parentElement?.parentElement).toHaveAttribute("data-checked", "false");
     expect(canvas.getByText("I am unchecked"));
     userEvent.click(checkbox);
     fireEvent.mouseMove(checkbox, { clientX: 100, clientY: 0 });
-    await waitFor(() => expect(inputWrapper).toHaveAttribute("data-checked", "true"));
+    await waitFor(() => expect(checkbox.parentElement?.parentElement).toHaveAttribute("data-checked", "true"));
     expect(canvas.getByText("I am checked"));
   },
 };
