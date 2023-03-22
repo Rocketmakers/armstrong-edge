@@ -266,10 +266,10 @@ export const TagInput = React.forwardRef(
         disableOnPending={disableOnPending}
         statusPosition={statusPosition}
         onClick={() => internalRef.current?.focus()}
-        above={tagPosition === 'above' ? tagsJsx : undefined}
-        below={tagPosition === 'below' ? tagsJsx : undefined}
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
+        {tagPosition === 'above' && tagsJsx}
+
         <div className="arm-tag-input-inner">
           {tagPosition === 'inside' && tagsJsx}
           <input
@@ -289,6 +289,8 @@ export const TagInput = React.forwardRef(
             onKeyDown={onKeyDown}
           />
         </div>
+
+        {tagPosition === 'below' && tagsJsx}
 
         {deleteAllButton && !!boundValue?.length && (
           <Button onClick={clearTags}>

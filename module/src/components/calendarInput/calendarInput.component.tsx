@@ -475,24 +475,16 @@ export const CalendarInput = React.forwardRef(
               pending={pending}
               validationMode={bindConfig.validationMode}
               className="arm-calendar-input-inner"
-              above={
-                calendarPosition === 'above' &&
-                (calendarOpen || keepCalendarOpen) ? (
-                  <CalendarDisplay {...calendarDisplayProps} />
-                ) : undefined
-              }
-              below={
-                calendarPosition === 'below' &&
-                (calendarOpen || keepCalendarOpen) ? (
-                  <CalendarDisplay {...calendarDisplayProps} />
-                ) : undefined
-              }
               leftIcon={leftIcon}
               rightIcon={rightIcon}
               leftOverlay={leftOverlay}
               rightOverlay={rightOverlay}
               scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
             >
+              {calendarPosition === 'above' &&
+              (calendarOpen || keepCalendarOpen) ? (
+                <CalendarDisplay {...calendarDisplayProps} />
+              ) : undefined}
               {showCalendarButton &&
                 !keepCalendarOpen &&
                 (openCalendarButton?.(
@@ -588,6 +580,10 @@ export const CalendarInput = React.forwardRef(
                   })}
                 </>
               )}
+              {calendarPosition === 'below' &&
+              (calendarOpen || keepCalendarOpen) ? (
+                <CalendarDisplay {...calendarDisplayProps} />
+              ) : undefined}
             </InputWrapper>
           </Dropdown>
         </div>
