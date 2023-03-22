@@ -1,9 +1,6 @@
 name: Test
 on:
-  workflow_run:
-    workflows: ['Build']
-    types:
-      - completed
+  [pull_request]
 env:
   # 7 GiB by default on GitHub, setting to 6 GiB
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
@@ -11,6 +8,7 @@ env:
   
 jobs:
   test: 
+    needs: [setup]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
