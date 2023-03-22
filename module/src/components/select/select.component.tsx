@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { Button, Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import {
@@ -12,7 +11,6 @@ import { IArmstrongOption } from '../../types/options';
 import { concat } from '../../utils/classNames';
 import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
-import { CodeInput } from '../..';
 
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
   extends IArmstrongOption<

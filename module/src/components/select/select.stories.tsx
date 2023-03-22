@@ -1,11 +1,8 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { within, userEvent, waitFor } from '@storybook/testing-library';
-import { action } from '@storybook/addon-actions';
+import { within, userEvent } from '@storybook/testing-library';
 import React from 'react';
 import { Select } from './select.component';
-import { IconUtils } from '../icon/icons.utils';
-import { Form } from '../../hooks';
 
 /** metadata */
 
