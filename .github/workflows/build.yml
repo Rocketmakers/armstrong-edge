@@ -21,8 +21,10 @@ jobs:
 
       # - name: lint
       #   run: (cd module && npm run lint)
+
       - name: build
         run: (cd module && npm run build)
+
       # - name: artifact
       #   uses: actions/upload-artifact@master
       #   with:
