@@ -23,6 +23,8 @@ jobs:
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
       - name: Install node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
@@ -33,6 +35,7 @@ jobs:
       - name: Build
         id: build
         run: |
+          (cd ~/.npm && ls -la)
           (cd ../ && ls -la)
           ls -la
           npm run build
