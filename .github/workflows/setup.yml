@@ -19,7 +19,9 @@ jobs:
         id: node-modules
         uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: |
+            {{pwd}}/node_modules
+            {{pwd}}/module/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
