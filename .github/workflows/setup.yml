@@ -32,5 +32,8 @@ jobs:
     
       - name: Build
         id: build
-        run: npm run build
+        run: |
+          (cd ../ && ls -la)
+          ls -la
+          npm run build
         working-directory: ./module
