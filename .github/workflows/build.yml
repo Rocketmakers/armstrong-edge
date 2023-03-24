@@ -10,6 +10,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Restore node modules cache
+        id: node-modules
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/module/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-
+
       - name: Build
         id: build
         run: |
