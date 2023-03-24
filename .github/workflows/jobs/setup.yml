@@ -1,4 +1,8 @@
 name: Setup and cache Node for Module
+
+on: 
+  workflow_call:
+
 jobs: 
   setup-and-cache-node-module:
     runs-on: ubuntu-latest
