@@ -5,3 +5,7 @@ on: push
 jobs:
   setup:
     uses: ./.github/workflows/setup.yml
+  
+  build:
+    needs: [setup]
+    uses: ./.github/workflows/build.yml
