@@ -31,5 +31,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: ${{ runner.os }}-module/dist
+          path: ${{ github.workspace }}/module/dist
           retention-days: 5

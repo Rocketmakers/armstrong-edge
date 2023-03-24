@@ -15,7 +15,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
-          path: ${{ runner.os }}-module/dist
+          path: ${{ github.workspace }}/module/dist
 
       - name: Release
         id: release
