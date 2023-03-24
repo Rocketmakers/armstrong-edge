@@ -1,6 +1,6 @@
 [![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest) [![storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://github.com/storybookjs)
 
-![armstrong logo](https://raw.githubusercontent.com/Rocketmakers/armstrong/master/marketing/src/assets/armstrong-logo.svg)
+![armstrong logo](https://raw.githubusercontent.com/Rocketmakers/armstrong-edge/develop/src/assets/armstrong-logo.svg)
 
 Armstrong is a React component library made by [Rocketmakers](rocketmakers.com/) written in Typescript and SCSS.
 
@@ -55,14 +55,31 @@ First cd into the root of the repo and run
 npm run setup
 ```
 
-There are two options for working on Armstrong.
+We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx` or `*.stroies.mdx`
 
-- We have a playground, which is just a really simple react app with no linting, which has the Armstrong module linked in using `npm link`
-- We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx` or `*.stroies.mdx`
+_For Storybook_, run
+
+```sh
+npm run storybook
+
+# then in separate window run
+npm run watch-scss
+```
+
+then go to `localhost:6006`
+
+`npm run watch-scss` will spin up a watcher which will watch all SASS files and rebuild them
+
+For more information on using SASS, see SASS Concatenation in [SCSS](STORYBOOK LINK TODO)
+
+### Legacy development
+
+In the past we have also used playground, which is just a really simple react app with no linting, which has the Armstrong module linked in using `npm link`.
 
 _For the playground_, run
 
 ```sh
+cd module-legacy
 npm start
 
 # then in separate window from /module run
@@ -70,21 +87,6 @@ npm run start-sass
 ```
 
 then go to `localhost:3001`
-
-_For Storybook_, run
-
-```sh
-npm run storybook
-
-# then in separate window from /module run
-npm run start-sass
-```
-
-then go to `localhost:6006`
-
-`npm run start-sass` will spin up a watcher which will watch all SASS files and rebuild them
-
-For more information on using SASS, see SASS Concatenation in [SCSS](STORYBOOK LINK TODO)
 
 ### Linting
 

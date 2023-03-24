@@ -1,18 +1,17 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Calendar, Select } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import { reIndex, repeat } from "../../utils/arrays";
-import { concat } from "../../utils/classNames";
-import { Dates } from "../../utils/dates";
-import { positiveModulo } from "../../utils/maths";
-import { Button, IButtonProps } from "../button";
-import { IconUtils } from "../icon";
-import { IconButton } from "../iconButton";
+import { Calendar, Select } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { reIndex, repeat } from '../../utils/arrays';
+import { concat } from '../../utils/classNames';
+import { Dates } from '../../utils/dates';
+import { positiveModulo } from '../../utils/maths';
+import { Button, IButtonProps } from '../button';
+import { Icon } from '../icon';
 import {
   getDayOfWeekHeadings,
   getDaysWithDisplayFormat,
-} from "./calendarDisplay.utils";
+} from './calendarDisplay.utils';
 
 export interface ICalendarDisplayProps {
   /**
@@ -195,17 +194,19 @@ export const CalendarDisplay = React.forwardRef<
     }, [days, weekdayStartIndex]);
 
     return (
-      <div ref={ref} className={concat("arm-calendar-display", className)}>
+      <div ref={ref} className={concat('arm-calendar-display', className)}>
         {controls && (
           <div className="arm-calendar-display-controls">
             {onBackClicked &&
               (backButton?.(onBackClicked) || (
-                <IconButton
-                  type="button"
-                  icon={IconUtils.getIconDefinition("Icomoon", "arrow-left3")}
-                  className="arm-calendar-display-button arm-calendar-display-button-prev"
+                <Button
+                  className={
+                    'arm-calendar-display-button arm-calendar-display-button-prev'
+                  }
                   onClick={onBackClicked}
-                />
+                >
+                  <Icon iconSet={'Icomoon'} icon={'arrow-left3'} />
+                </Button>
               ))}
 
             <Select
@@ -221,12 +222,12 @@ export const CalendarDisplay = React.forwardRef<
 
             {onForwardClicked &&
               (forwardsButton?.(onForwardClicked) || (
-                <IconButton
-                  type="button"
-                  icon={IconUtils.getIconDefinition("Icomoon", "arrow-right3")}
+                <Button
                   className="arm-calendar-display-button arm-calendar-display-button-next"
                   onClick={onForwardClicked}
-                />
+                >
+                  <Icon iconSet={'Icomoon'} icon={'arrow-right3'}></Icon>
+                </Button>
               ))}
           </div>
         )}
@@ -252,7 +253,7 @@ export const CalendarDisplay = React.forwardRef<
               <Button
                 type="button"
                 className={concat(
-                  "arm-calendar-date-grid-day",
+                  'arm-calendar-date-grid-day',
                   displayDay.day.highlightedClassName
                 )}
                 onClick={() => onDayClicked?.(displayDay.day)}
@@ -260,7 +261,7 @@ export const CalendarDisplay = React.forwardRef<
                 data-selected={displayDay.day.isSelected}
                 disabled={displayDay.day.isDisabled}
                 data-today={highlightToday && displayDay.day.isToday}
-                aria-current={displayDay.day.isToday && "date"}
+                aria-current={displayDay.day.isToday && 'date'}
                 data-range-start={displayDay.day.isRangeStart}
                 data-range-middle={displayDay.day.isRangeMiddle}
                 data-range-end={displayDay.day.isRangeEnd}
@@ -300,11 +301,11 @@ export const CalendarDisplay = React.forwardRef<
 
 CalendarDisplay.defaultProps = {
   weekdayStartIndex: 0,
-  calendarDayOfTheWeekHeadingDisplayFormat: "eeeee",
-  calendarMonthSelectDisplayFormat: "MMMM",
-  calendarYearSelectDisplayFormat: "yyyy",
-  calendarDayDisplayFormat: "d",
+  calendarDayOfTheWeekHeadingDisplayFormat: 'eeeee',
+  calendarMonthSelectDisplayFormat: 'MMMM',
+  calendarYearSelectDisplayFormat: 'yyyy',
+  calendarDayDisplayFormat: 'd',
   highlightToday: true,
   controls: true,
-  jumpList: [{ date: new Date(), name: "Today" }],
+  jumpList: [{ date: new Date(), name: 'Today' }],
 };

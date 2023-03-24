@@ -1,17 +1,17 @@
-import * as React from "react";
+import * as React from 'react';
 
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
   ArmstrongVFCProps,
   NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { IconButton, IconSet, IIcon } from "..";
-import { IInputProps, Input } from "../input/input.component";
+} from '../../types';
+import { concat } from '../../utils/classNames';
+import { Button, Icon, IconSet, IIcon } from '..';
+import { IInputProps, Input } from '../input/input.component';
 
 interface IPasswordInputProps<TBind extends NullOrUndefined<string>>
-  extends Omit<IInputProps<TBind>, "type"> {
+  extends Omit<IInputProps<TBind>, 'type'> {
   showPasswordButton?: boolean;
   showPasswordButtonIcon?: (showing?: boolean) => IIcon<IconSet>;
 }
@@ -32,17 +32,18 @@ export const PasswordInput = React.forwardRef(
     return (
       <Input
         {...props}
-        className={concat("arm-password-input", className)}
+        className={concat('arm-password-input', className)}
         ref={ref}
-        type={showPassword ? "text" : "password"}
+        type={showPassword ? 'text' : 'password'}
         rightOverlay={
           showPasswordButton &&
           showPasswordButtonIcon && (
-            <IconButton
-              type="button"
-              icon={showPasswordButtonIcon(showPassword)}
-              onClick={() => setShowPassword(!showPassword)}
-            />
+            <Button onClick={() => setShowPassword(!showPassword)}>
+              <Icon
+                iconSet={showPasswordButtonIcon(showPassword).iconSet}
+                icon={showPasswordButtonIcon(showPassword).icon}
+              />
+            </Button>
           )
         }
       />
@@ -55,7 +56,7 @@ export const PasswordInput = React.forwardRef(
 
 PasswordInput.defaultProps = {
   showPasswordButtonIcon: (checked) => ({
-    iconSet: "Icomoon",
-    icon: checked ? "eye-blocked" : "eye",
+    iconSet: 'Icomoon',
+    icon: checked ? 'eye-blocked' : 'eye',
   }),
 };

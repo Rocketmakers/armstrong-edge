@@ -1,18 +1,18 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { FormValidationMode, ValidationMessage } from "../../hooks/form";
-import { concat } from "../../utils/classNames";
-import { AutoResizer } from "../autoResizer";
-import { IconSet, IconUtils, IIcon } from "../icon";
-import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
+import { FormValidationMode, ValidationMessage } from '../../hooks/form';
+import { concat } from '../../utils/classNames';
+import { AutoResizer } from '../autoResizer';
+import { IButtonCoreProps } from '../button';
+import { Icon, IconSet, IconUtils, IIcon } from '../icon';
 import {
   IStatusWrapperProps,
   StatusWrapper,
-} from "../statusWrapper/statusWrapper.component";
-import { ValidationErrors } from "../validationErrors";
+} from '../statusWrapper/statusWrapper.component';
+import { ValidationErrors } from '../validationErrors';
 
 export interface IInputWrapperProps
-  extends IIconWrapperProps<IconSet, IconSet>,
+  extends Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     IStatusWrapperProps {
   /** CSS className property */
   className?: string;
@@ -85,18 +85,18 @@ export const InputWrapper = React.forwardRef<
     ref
   ) => {
     const shouldShowValidationErrorsList =
-      validationMode === "both" || validationMode === "message";
+      validationMode === 'both' || validationMode === 'message';
     const shouldShowErrorIcon =
       (!!validationErrorMessages?.length &&
-        (validationMode === "both" || validationMode === "icon")) ||
+        (validationMode === 'both' || validationMode === 'icon')) ||
       error;
 
     const showLeftIcon =
-      statusPosition !== "left" ||
+      statusPosition !== 'left' ||
       !hideIconOnStatus ||
       (!pending && !shouldShowErrorIcon);
     const showRightIcon =
-      statusPosition !== "right" ||
+      statusPosition !== 'right' ||
       !hideIconOnStatus ||
       (!pending && !shouldShowErrorIcon);
 
@@ -104,7 +104,7 @@ export const InputWrapper = React.forwardRef<
       <>
         <div
           ref={ref}
-          className={concat("arm-input", "arm-input-wrapper", className)}
+          className={concat('arm-input', 'arm-input-wrapper', className)}
           data-disabled={disabled || (pending && disableOnPending)}
           data-error={error || !!validationErrorMessages?.length}
           data-left-icon={!!leftIcon || undefined}
@@ -130,13 +130,23 @@ export const InputWrapper = React.forwardRef<
               validationErrorMessages={validationErrorMessages}
               validationMode={validationMode}
             >
-              <IconWrapper
-                leftIcon={showLeftIcon ? leftIcon : undefined}
-                rightIcon={showRightIcon ? rightIcon : undefined}
-              >
+              <>
+                {showLeftIcon && leftIcon && (
+                  <>
+                    {IconUtils.isIconDefinition(leftIcon) ? (
+                      <Icon
+                        {...leftIcon}
+                        className="left-icon"
+                        title={`${leftIcon.icon} icon on left`}
+                      />
+                    ) : (
+                      leftIcon
+                    )}
+                  </>
+                )}
                 {leftOverlay && (
                   <div className="arm-input-overlay arm-input-overlay-left">
-                    {typeof leftOverlay === "string" ? (
+                    {typeof leftOverlay === 'string' ? (
                       <p className="arm-input-overlay-text">{leftOverlay}</p>
                     ) : (
                       leftOverlay
@@ -146,14 +156,27 @@ export const InputWrapper = React.forwardRef<
                 {children}
                 {rightOverlay && (
                   <div className="arm-input-overlay arm-input-overlay-right">
-                    {typeof rightOverlay === "string" ? (
+                    {typeof rightOverlay === 'string' ? (
                       <p className="arm-input-overlay-text">{rightOverlay}</p>
                     ) : (
                       rightOverlay
                     )}
                   </div>
                 )}
-              </IconWrapper>
+                {showRightIcon && rightIcon && (
+                  <>
+                    {IconUtils.isIconDefinition(rightIcon) ? (
+                      <Icon
+                        {...rightIcon}
+                        className="right-icon"
+                        title={`${rightIcon.icon} icon on right`}
+                      />
+                    ) : (
+                      rightIcon
+                    )}
+                  </>
+                )}
+              </>
             </StatusWrapper>
           </div>
 
@@ -181,9 +204,9 @@ export const InputWrapper = React.forwardRef<
 );
 
 InputWrapper.defaultProps = {
-  validationMode: "both",
-  errorIcon: IconUtils.getIconDefinition("Icomoon", "warning"),
-  statusPosition: "right",
+  validationMode: 'both',
+  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
+  statusPosition: 'right',
   hideIconOnStatus: true,
   disableOnPending: true,
 };

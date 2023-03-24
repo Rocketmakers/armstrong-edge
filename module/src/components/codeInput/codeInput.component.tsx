@@ -1,34 +1,41 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form, IconSet, IInputWrapperProps, ValidationErrors } from "../..";
-import { IBindingProps } from "../../hooks/form";
+import {
+  Form,
+  IButtonCoreProps,
+  Icon,
+  IconSet,
+  IconUtils,
+  IInputWrapperProps,
+  ValidationErrors,
+} from '../..';
+import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
   ArmstrongVFCProps,
   NullOrUndefined,
-} from "../../types";
-import { findLastIndex } from "../../utils/arrays";
-import { concat } from "../../utils/classNames";
-import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
-import { IInputProps } from "../input";
-import { StatusWrapper } from "../statusWrapper/statusWrapper.component";
-import { TextInput } from "../textInput";
-import { CodeInputUtils } from ".";
+} from '../../types';
+import { findLastIndex } from '../../utils/arrays';
+import { concat } from '../../utils/classNames';
+import { IInputProps } from '../input';
+import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
+import { TextInput } from '../textInput';
+import { CodeInputUtils } from '.';
 
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
     IInputProps<TBind>,
-    | "onChange"
-    | "value"
-    | "delay"
-    | "onValueChange"
-    | "validationErrorMessages"
-    | "validationMode"
-    | "ref"
-    | "maxLength"
-    | "onKeyDown"
-    | "bind"
+    | 'onChange'
+    | 'value'
+    | 'delay'
+    | 'onValueChange'
+    | 'validationErrorMessages'
+    | 'validationMode'
+    | 'ref'
+    | 'maxLength'
+    | 'onKeyDown'
+    | 'bind'
   > {
   length: number;
 }
@@ -67,11 +74,11 @@ export const CodeInputPart = React.forwardRef(
       [part]
     );
 
-    if (typeof part === "string") {
+    if (typeof part === 'string') {
       return <p className="arm-code-input-part-text">{part}</p>;
     }
 
-    if (typeof part === "number") {
+    if (typeof part === 'number') {
       return (
         <TextInput
           ref={ref}
@@ -79,7 +86,7 @@ export const CodeInputPart = React.forwardRef(
           onChange={onChange}
           value={value}
           onKeyDown={onKeyDown}
-          style={{ "--arm-code-input-length": length } as React.CSSProperties}
+          style={{ '--arm-code-input-length': length } as React.CSSProperties}
           data-length={length}
           onClick={(event) => event.currentTarget.select()}
         />
@@ -93,14 +100,14 @@ export const CodeInputPart = React.forwardRef(
     return (
       <TextInput
         ref={ref}
-        className={concat("arm-code-input-part-input", className)}
+        className={concat('arm-code-input-part-input', className)}
         onChange={onChange}
         value={value}
         onKeyDown={onKeyDown}
         style={
           {
             ...(textInputProps.style || {}),
-            "--arm-code-input-length": length,
+            '--arm-code-input-length': length,
           } as React.CSSProperties
         }
         data-length={length}
@@ -118,17 +125,17 @@ export const CodeInputPart = React.forwardRef(
 
 /** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
 export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
-  extends IIconWrapperProps<IconSet, IconSet>,
+  extends Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     Pick<
       IInputWrapperProps,
-      | "scrollValidationErrorsIntoView"
-      | "validationMode"
-      | "errorIcon"
-      | "disabled"
-      | "pending"
-      | "error"
-      | "statusPosition"
-      | "validationErrorMessages"
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'disabled'
+      | 'pending'
+      | 'error'
+      | 'statusPosition'
+      | 'validationErrorMessages'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -200,7 +207,7 @@ export const CodeInput = React.forwardRef(
         const sliceEnd =
           sliceStart + CodeInputUtils.getLengthFromPart(parts[partIndex]);
 
-        return boundValue?.slice(sliceStart, sliceEnd) || "";
+        return boundValue?.slice(sliceStart, sliceEnd) || '';
       },
       [boundValue, parts]
     );
@@ -210,7 +217,7 @@ export const CodeInput = React.forwardRef(
         const nextIndex =
           parts
             .slice(partIndex + 1)
-            .findIndex((part) => typeof part !== "string") +
+            .findIndex((part) => typeof part !== 'string') +
           partIndex +
           1;
 
@@ -224,7 +231,7 @@ export const CodeInput = React.forwardRef(
       (partIndex: number) => {
         const previousIndex = findLastIndex(
           parts.slice(0, partIndex),
-          (part) => typeof part !== "string"
+          (part) => typeof part !== 'string'
         );
         if (previousIndex !== -1) {
           inputRefs.current[previousIndex]?.focus();
@@ -239,7 +246,7 @@ export const CodeInput = React.forwardRef(
           parts[partIndex]
         );
 
-        const newPartValue = event.currentTarget.value || "";
+        const newPartValue = event.currentTarget.value || '';
 
         const sliceStart = parts
           .slice(0, partIndex)
@@ -269,19 +276,19 @@ export const CodeInput = React.forwardRef(
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number) => {
         switch (event.key) {
-          case "Backspace": {
+          case 'Backspace': {
             if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
               goPrevious(partIndex);
             }
             break;
           }
-          case "Left": {
+          case 'Left': {
             if (event.currentTarget.selectionStart === 0 && partIndex > 0) {
               goPrevious(partIndex);
             }
             break;
           }
-          case "Right": {
+          case 'Right': {
             if (
               event.currentTarget.selectionEnd === 0 &&
               partIndex < parts.length
@@ -301,7 +308,7 @@ export const CodeInput = React.forwardRef(
     return (
       <>
         <div
-          className={concat("arm-code-input", className)}
+          className={concat('arm-code-input', className)}
           ref={ref}
           title="Code input"
         >
@@ -313,14 +320,28 @@ export const CodeInput = React.forwardRef(
             pending={pending}
             validationMode={bindConfig.validationMode}
           >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+            <>
+              {leftIcon && (
+                <>
+                  {IconUtils.isIconDefinition(leftIcon) ? (
+                    <Icon
+                      {...leftIcon}
+                      className="left-icon"
+                      title={`${leftIcon.icon} icon on left`}
+                    />
+                  ) : (
+                    leftIcon
+                  )}
+                </>
+              )}
+
               {parts.map((part, index) => (
                 <CodeInputPart
                   part={part}
                   key={index}
                   data-left-icon={!!leftIcon}
                   data-right-icon={!!rightIcon}
-                  value={getValueForPart(index) || ""}
+                  value={getValueForPart(index) || ''}
                   onChange={(event) => onPartChange(event, index)}
                   onKeyDown={(event) => onKeyDown(event, index)}
                   ref={(r) => {
@@ -328,7 +349,21 @@ export const CodeInput = React.forwardRef(
                   }}
                 />
               ))}
-            </IconWrapper>
+
+              {rightIcon && (
+                <>
+                  {IconUtils.isIconDefinition(rightIcon) ? (
+                    <Icon
+                      {...rightIcon}
+                      className="right-icon"
+                      title={`${rightIcon.icon} icon on right`}
+                    />
+                  ) : (
+                    rightIcon
+                  )}
+                </>
+              )}
+            </>
           </StatusWrapper>
         </div>
 
