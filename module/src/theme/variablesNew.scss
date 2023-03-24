@@ -56,6 +56,12 @@ $form-element-border-radius: 5px !default;
 $form-element-border-thickness: 2px !default;
 $form-element-square-size: 25px !default;
 
+// inputs
+$arm-input-width: pxToRem(320px) !default;
+$arm-input-width-large: pxToRem(420px) !default;
+$arm-input-height: pxToRem(34px) !default;
+$arm-input-height-large: pxToRem(70px) !default;
+
 // spinner
 $spinner-speed: 500ms;
 
@@ -136,7 +142,13 @@ $transition-slow: 0.8s !default;
   --arm-button-outline-stroke-color: #{$button-outline-stroke-color};
   --arm-button-outline-stroke-thickness: #{$button-outline-stroke-thickness};
 
-  // Spinner
+  // Inputs
+  --arm-input-width: #{$arm-input-width};
+  --arm-input-width-large: #{$arm-input-width-large};
+  --arm-input-height: #{$arm-input-height};
+  --arm-input-height-large: #{$arm-input-height-large};
+
+// Spinner
   --arm-spinner-speed: #{$spinner-speed};
 
   // Form - Shared
