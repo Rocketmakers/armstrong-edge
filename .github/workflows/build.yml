@@ -22,7 +22,6 @@ jobs:
       - name: Build
         id: build
         run: |
-          (cd ~/.npm && ls -la)
           (cd ../ && ls -la)
           ls -la
           npm run build
