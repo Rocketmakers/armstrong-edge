@@ -9,3 +9,7 @@ jobs:
   build:
     needs: [setup]
     uses: ./.github/workflows/build.yml
+
+  test: 
+    needs: [setup, build]
+    uses: ./.github/workflows/test.yml
