@@ -1,0 +1,7 @@
+name: Pull Request
+
+on: push
+
+jobs:
+  setup:
+    uses: ./.github/workflows/setup.yml
