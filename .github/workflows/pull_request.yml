@@ -4,4 +4,4 @@ on: push
 
 jobs:
   setup:
-    uses: ./.github/workflows/setup.yml
+    uses: ./jobs/setup.yml
