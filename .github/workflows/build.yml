@@ -17,7 +17,7 @@ jobs:
           path: |
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/module/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Build
         id: build
