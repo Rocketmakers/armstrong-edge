@@ -26,3 +26,10 @@ jobs:
           ls -la
           npm run build
         working-directory: ./module
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: ${{ runner.os }}-build
+          retention-days: 5

@@ -9,8 +9,12 @@ on:
       - develop
 
 jobs:
-  setup-workflow:
-    uses: ./.github/workflows/setup.yml
+  setup:
+    uses: ./.github/workflows/job_setup.yml
+  
+  build:
+    needs: [setup]
+    uses: ./.github/workflows/job_build.yml
 
   chromatic-deployment:
     runs-on: ubuntu-latest

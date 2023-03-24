@@ -5,13 +5,17 @@ on:
       - develop
       
 jobs:
-  setup-workflow:
-    uses: ./.github/workflows/setup.yml
-  
-  release-pre-release:
-    needs: test
+  build-job:
+    uses: ./.github/workflows/job_build.yml
+
+  release-develop:
     runs-on: ubuntu-latest
     steps:  
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+
       - name: Release from develop
         id: release-from-develop
         env:
