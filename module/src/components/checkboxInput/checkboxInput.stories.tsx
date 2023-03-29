@@ -38,6 +38,7 @@ export const Default: StoryObj<typeof CheckboxInput> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole("checkbox", { hidden: true });
+    
     expect(checkbox.previousSibling).toHaveTextContent(args.content as string);
     userEvent.click(checkbox);
     await waitFor(() => expect(args.onChange).toHaveBeenCalled());

@@ -35,10 +35,7 @@ type AdditionalInputProps = Omit<
 export interface ITimeInputProps<TBind extends NullOrUndefined<string>>
   extends IStatusWrapperProps,
     Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
-    Pick<
-      IInputWrapperProps,
-      'above' | 'below' | 'leftOverlay' | 'rightOverlay'
-    > {
+    Pick<IInputWrapperProps, 'leftOverlay' | 'rightOverlay'> {
   /** The binding for the input. */
   bind?: IBindingProps<TBind>;
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { Button, Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import {
@@ -97,6 +96,8 @@ export const Select = React.forwardRef(
       value,
       validationErrorMessages,
     });
+
+    console.log(bindConfig);
 
     const clearSelect = React.useCallback(() => {
       onSelectOption?.(undefined);
