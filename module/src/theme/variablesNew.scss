@@ -1,5 +1,5 @@
 @function pxToRem($value) {
-  $remValue: ($value / 16) + rem;
+  $remValue: calc($value / 16) + rem;
   @return $remValue;
 }
 
@@ -29,6 +29,7 @@ $spacing-large: pxToRem(20) !default;
 $spacing-xlarge: pxToRem(24) !default;
 $spacing-xxlarge: pxToRem(32) !default;
 $spacing-xxxlarge: pxToRem(40) !default;
+$spacing-xxxxlarge: pxToRem(48) !default;
 
 // fonts
 $font-size-xsmall: pxToRem(14) !default;
@@ -36,6 +37,8 @@ $font-size-small: pxToRem(16) !default;
 $font-size-medium: pxToRem(18) !default;
 $font-size-large: pxToRem(20) !default;
 $font-size-xlarge: pxToRem(24) !default;
+$font-size-xxlarge: pxToRem(32) !default;
+$font-size-xxxlarge: pxToRem(40) !default;
 
 //// components
 
@@ -54,8 +57,48 @@ $form-element-border-thickness: 2px !default;
 $form-element-square-size: 25px !default;
 $form-input-max-width: pxToRem(375) !default;
 
+// inputs
+$arm-input-width: pxToRem(320px) !default;
+$arm-input-width-large: pxToRem(420px) !default;
+$arm-input-height: pxToRem(34px) !default;
+$arm-input-height-large: pxToRem(70px) !default;
+
 // spinner
 $spinner-speed: 500ms;
+
+// shadows
+$shadow-opacity: 0.25 !default;
+$shadow-color: rgba($color-grey-1, $shadow-opacity) !default;
+
+$shadow-size-xsmall: 0.2rem !default;
+$shadow-size-small: 0.5rem !default;
+$shadow-size-medium: 1rem !default;
+$shadow-size-large: 2rem !default;
+$shadow-size-xlarge: 3rem !default;
+
+$shadow-offset-xsmall: 0.05rem 0.05rem !default;
+$shadow-offset-small: 0.1rem 0.1rem !default;
+$shadow-offset-medium: 0.2rem 0.2rem !default;
+$shadow-offset-large: 0.4rem 0.4rem !default;
+$shadow-offset-xlarge: 1.5rem 1.5rem !default;
+
+$shadow-xsmall: $shadow-offset-xsmall $shadow-size-xsmall $shadow-color !default;
+$shadow-small: $shadow-offset-small $shadow-size-small $shadow-color !default;
+$shadow-medium: $shadow-offset-medium $shadow-size-medium $shadow-color !default;
+$shadow-large: $shadow-offset-large $shadow-size-large $shadow-color !default;
+$shadow-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color !default;
+
+$shadow-inner-xsmall: $shadow-offset-xsmall $shadow-size-xsmall $shadow-color inset !default;
+$shadow-inner-small: $shadow-offset-small $shadow-size-small $shadow-color inset !default;
+$shadow-inner-medium: $shadow-offset-medium $shadow-size-medium $shadow-color inset !default;
+$shadow-inner-large: $shadow-offset-large $shadow-size-large $shadow-color inset !default;
+$shadow-inner-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color inset !default;
+
+// transitions
+
+$transition-quick: 0.15s !default;
+$transition-medium: 0.4s !default;
+$transition-slow: 0.8s !default;
 
 :root {
   --arm-color-black: #{$color-black};
@@ -76,6 +119,8 @@ $spinner-speed: 500ms;
   --arm-font-size-medium: #{$font-size-medium};
   --arm-font-size-large: #{$font-size-large};
   --arm-font-size-xlarge: #{$font-size-xlarge};
+  --arm-font-size-xxlarge: #{$font-size-xxlarge};
+  --arm-font-size-xxxlarge: #{$font-size-xxxlarge};
 
   --arm-spacing-xxxsmall: #{$spacing-xxxsmall};
   --arm-spacing-xxsmall: #{$spacing-xxsmall};
@@ -86,6 +131,7 @@ $spinner-speed: 500ms;
   --arm-spacing-xlarge: #{$spacing-xlarge};
   --arm-spacing-xxlarge: #{$spacing-xxlarge};
   --arm-spacing-xxxlarge: #{$spacing-xxxlarge};
+  --arm-spacing-xxxxlarge: #{$spacing-xxxxlarge};
 
   // Button
   --arm-button-border-radius: #{$button-border-radius};
@@ -99,7 +145,13 @@ $spinner-speed: 500ms;
   --arm-button-outline-stroke-color: #{$button-outline-stroke-color};
   --arm-button-outline-stroke-thickness: #{$button-outline-stroke-thickness};
 
-  // Spinner
+  // Inputs
+  --arm-input-width: #{$arm-input-width};
+  --arm-input-width-large: #{$arm-input-width-large};
+  --arm-input-height: #{$arm-input-height};
+  --arm-input-height-large: #{$arm-input-height-large};
+
+// Spinner
   --arm-spinner-speed: #{$spinner-speed};
 
   // Form - Shared
@@ -110,4 +162,22 @@ $spinner-speed: 500ms;
   --arm-form-checked-bg-color: #{$color-grey-1};
   --arm-form-checked-fg-color: #{$color-white};
   --arm-form-input-max-width: #{$form-input-max-width};
+
+  // Shadows
+  --arm-shadow-xsmall: #{$shadow-xsmall};
+  --arm-shadow-small: #{$shadow-small};
+  --arm-shadow-medium: #{$shadow-medium};
+  --arm-shadow-large: #{$shadow-large};
+  --arm-shadow-xlarge: #{$shadow-xlarge};
+
+  --arm-inner-shadow-xsmall: #{$shadow-inner-xsmall};
+  --arm-inner-shadow-small: #{$shadow-inner-small};
+  --arm-inner-shadow-medium: #{$shadow-inner-medium};
+  --arm-inner-shadow-large: #{$shadow-inner-large};
+  --arm-inner-shadow-xlarge: #{$shadow-inner-xlarge};
+
+  // transitions
+  --arm-transition-slow: #{$transition-slow};
+  --arm-transition-medium: #{$transition-medium};
+  --arm-transition-quick: #{$transition-quick};
 }
