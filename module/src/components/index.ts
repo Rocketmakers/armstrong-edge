@@ -16,8 +16,6 @@ export * from './dropdown';
 export * from './dropdownItems';
 export * from './expandable';
 export * from './icon';
-export * from './iconButton';
-export * from './iconWrapper';
 export * from './image';
 export * from './input';
 export * from './inputWrapper';

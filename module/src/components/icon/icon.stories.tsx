@@ -15,7 +15,7 @@ export default {
 
 export const Default: StoryObj<typeof Icon> = {
   render: args => {
-    return <Icon {...args} style={{ height: '40px' }} title="Icon" />;
+    return <Icon {...args} title="Icon" />;
   },
   args: {
     iconSet: 'Icomoon',
@@ -30,7 +30,7 @@ export const Default: StoryObj<typeof Icon> = {
 
 export const IcomoonOnly: StoryObj<typeof IcomoonIcon> = {
   render: args => {
-    return <IcomoonIcon {...args} style={{ height: '40px' }} title="Icon" />;
+    return <IcomoonIcon {...args} title="Icon" />;
   },
   args: {
     icon: 'heart',
@@ -44,7 +44,7 @@ export const IcomoonOnly: StoryObj<typeof IcomoonIcon> = {
 
 export const LinearIconOnly: StoryObj<typeof LinearIcon> = {
   render: args => {
-    return <LinearIcon {...args} style={{ height: '40px' }} title="Icon" />;
+    return <LinearIcon {...args} title="Icon" />;
   },
   args: {
     icon: 'heart',

@@ -31,7 +31,6 @@ html {
 .bound-value {
   position: absolute;
   left: 0;
-  bottom: -$spacing-xlarge * 2;
   white-space: nowrap;
 }
 
@@ -87,17 +86,10 @@ html {
   }
 }
 
-.arm-validation-errors {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
 header,
 .sidebar {
   position: fixed;
-  background-color: $white;
-  box-shadow: $shadow-small;
+  background-color: white;
 }
 
 header {

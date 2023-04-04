@@ -35,6 +35,7 @@ export const Default: StoryObj<typeof AutoResizer> = {
               height: bigger ? '150px' : '70px',
               border: '1px solid black',
               padding: '5px',
+              boxSizing: 'border-box',
             }}
           >
             <Button onClick={() => setBigger(!bigger)}>Change Size</Button>

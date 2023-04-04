@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { Form, IconWrapper, IIconWrapperProps, IStatusWrapperProps, StatusWrapper, ValidationErrors } from '../..';
+import { Form, IStatusWrapperProps, StatusWrapper, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { repeat } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
 import { clamp } from '../../utils/maths';
-import { Button } from '../button';
+import { Button, IButtonCoreProps } from '../button';
 import { Icon, IconSet, IIcon, isIconDefinition } from '../icon';
 import { IInputWrapperProps } from '../inputWrapper';
 
@@ -82,7 +82,6 @@ const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
                 <Button
                   type="button"
                   key={buttonIndex}
-                  minimalStyle
                   onClick={() => onSelectPart((step || 1) * (buttonIndex + 1))}
                   aria-label={`${inputValue}`}
                 />
@@ -127,7 +126,7 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
       IInputWrapperProps,
       'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
     >,
-    IIconWrapperProps<IconSet, IconSet>,
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     IStatusWrapperProps {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -208,7 +207,16 @@ export const Rating = React.forwardRef(
             validationMode={bindConfig.validationMode}
             pending={pending}
           >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+            <>
+              {leftIcon && (
+                <>
+                  {isIconDefinition(leftIcon) ? (
+                    <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
+                  ) : (
+                    leftIcon
+                  )}
+                </>
+              )}
               <div className="arm-rating-parts">
                 {repeat(maximum!, index => (
                   <RatingPart
@@ -237,7 +245,16 @@ export const Rating = React.forwardRef(
                   />
                 )}
               </div>
-            </IconWrapper>
+              {rightIcon && (
+                <>
+                  {isIconDefinition(rightIcon) ? (
+                    <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
+                  ) : (
+                    rightIcon
+                  )}
+                </>
+              )}
+            </>
           </StatusWrapper>
         </div>
 

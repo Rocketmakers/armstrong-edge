@@ -33,7 +33,6 @@ export const TabControlTab = React.forwardRef(
         className={concat('arm-tab-control-tab', className)}
         data-is-current={isCurrent}
         ref={ref}
-        minimalStyle
       >
         <OptionContent
           leftIcon={leftIcon}

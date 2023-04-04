@@ -5,7 +5,7 @@ import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 
 import { Form } from '../../hooks';
-import { getIconDefinition } from '../icon/icons.utils';
+import { getIconDefinition } from '../icon';
 import { CheckboxInput } from './checkboxInput.component';
 
 /** metadata */
@@ -35,7 +35,8 @@ export const Default: StoryObj<typeof CheckboxInput> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole('checkbox', { hidden: true });
-    expect(checkbox.nextSibling).toHaveTextContent(args.content as string);
+
+    expect(checkbox.previousSibling).toHaveTextContent(args.content as string);
     userEvent.click(checkbox);
     await waitFor(() => expect(args.onChange).toHaveBeenCalled());
   },
@@ -50,7 +51,7 @@ export const Pending: StoryObj<typeof CheckboxInput> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole('checkbox', { hidden: true });
-    const label = checkbox.nextSibling as HTMLLabelElement;
+    const label = checkbox.previousSibling as HTMLLabelElement;
     const status = within(label).getByRole('status');
     expect(status).toHaveAttribute('data-pending', 'true');
     expect(within(status).getByTitle('Active spinner icon')).toHaveAttribute('data-icon-set', 'Icomoon');
@@ -68,7 +69,7 @@ export const CustomIcons: StoryObj<typeof CheckboxInput> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole('checkbox', { hidden: true });
-    const label = checkbox.nextSibling as HTMLLabelElement;
+    const label = checkbox.previousSibling as HTMLLabelElement;
     const unchecked = within(label).getByTitle('Unchecked icon');
     expect(unchecked).toHaveAttribute('data-icon-set', args.uncheckedIcon?.iconSet);
     expect(unchecked).toHaveAttribute('data-i', args.uncheckedIcon?.icon);
@@ -92,7 +93,7 @@ export const DynamicLabel: StoryObj<typeof CheckboxInput> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole('checkbox', { hidden: true });
-    const label = checkbox.nextSibling as HTMLLabelElement;
+    const label = checkbox.previousSibling as HTMLLabelElement;
     expect(label).toHaveTextContent(uncheckedText);
     userEvent.click(checkbox);
     expect(label).toHaveTextContent(checkedText);

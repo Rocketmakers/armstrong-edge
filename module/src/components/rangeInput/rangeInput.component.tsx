@@ -1,12 +1,11 @@
 import * as React from 'react';
 
-import { Form, IInputWrapperProps, ValidationErrors } from '../..';
+import { Form, IButtonCoreProps, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { getPercent } from '../../utils/maths';
-import { Icon, IconSet, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { Icon, IconSet, IIcon, isIconDefinition } from '../icon';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 
 export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
@@ -14,7 +13,7 @@ export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
       React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
       'min' | 'max' | 'value'
     >,
-    IIconWrapperProps<IconSet, IconSet>,
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     IStatusWrapperProps,
     Pick<
       IInputWrapperProps,
@@ -111,7 +110,16 @@ export const RangeInput = React.forwardRef(
             validationMode={bindConfig.validationMode}
             pending={pending}
           >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+            <>
+              {leftIcon && (
+                <>
+                  {isIconDefinition(leftIcon) ? (
+                    <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
+                  ) : (
+                    leftIcon
+                  )}
+                </>
+              )}
               <div className="arm-range-input-track">
                 <input
                   className="arm-range-input-input"
@@ -131,7 +139,16 @@ export const RangeInput = React.forwardRef(
                   {handleIcon && <Icon iconSet={handleIcon.iconSet} icon={handleIcon.icon} />}
                 </div>
               </div>
-            </IconWrapper>
+              {rightIcon && (
+                <>
+                  {isIconDefinition(rightIcon) ? (
+                    <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
+                  ) : (
+                    rightIcon
+                  )}
+                </>
+              )}
+            </>
           </StatusWrapper>
         </div>
 

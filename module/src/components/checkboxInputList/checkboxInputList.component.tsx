@@ -27,7 +27,7 @@ export interface ICheckboxInputListOption<Id extends ArmstrongId>
 }
 
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
-  extends Pick<ICheckboxInputProps<any>, 'checkedIcon' | 'uncheckedIcon' | 'hideCheckbox'>,
+  extends Pick<ICheckboxInputProps<any>, 'checkedIcon' | 'uncheckedIcon'>,
     Pick<
       IInputWrapperProps,
       'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
@@ -74,7 +74,6 @@ export const CheckboxInputList = React.forwardRef(
       error,
       validationErrorMessages,
       direction,
-      hideCheckbox,
       testId,
     }: ICheckboxInputListProps<Id>,
     ref: React.ForwardedRef<HTMLDivElement>
@@ -136,7 +135,6 @@ export const CheckboxInputList = React.forwardRef(
                   inputProps={option.htmlInputProps}
                   disabled={option.disabled}
                   direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
-                  hideCheckbox={hideCheckbox}
                   {...option.htmlProps}
                 />
               ))}

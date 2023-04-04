@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { Form, useDidUpdateEffect, useTemporaryState } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
-import { IconUtils } from '../icon';
 import { AutoCompleteInput } from './autoCompleteInput.component';
+import { IconUtils } from '../icon';
 
 /** metadata */
 

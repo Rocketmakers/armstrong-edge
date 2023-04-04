@@ -15,14 +15,15 @@
     pointer-events: none;
     user-select: none;
   }
-
+  
+  
   .arm-input-wrapper {
     width: initial;
     flex: 1;
-
+    
     .arm-input-inner {
       width: 100%;
-
+      
       input {
         background-color: transparent;
       }
@@ -30,11 +31,6 @@
   }
 }
 
-.arm-input-wrapper-below,
-.arm-input-wrapper-above {
+.arm-auto-resizer-content {
   width: 100%;
-
-  .arm-auto-resizer-content {
-    width: 100%;
-  }
 }

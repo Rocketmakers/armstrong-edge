@@ -354,7 +354,11 @@ Returns either an internal useState or the given value and onChange
 
 ```tsx
 const MyComponent = ({ value, onChange }) => {
-  const [internaValue, setInternalValue] = useOverridableState('', value, onChange);
+  const [internaValue, setInternalValue] = useOverridableState(
+    '',
+    value,
+    onChange
+  );
 
   // ... do some stuff with internal state
 };

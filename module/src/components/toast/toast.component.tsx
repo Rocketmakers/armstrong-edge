@@ -1,12 +1,11 @@
 import * as React from 'react';
 
-import { arrayToArrayDictionary } from '../..';
+import { arrayToArrayDictionary, Button } from '../..';
 import { useTemporaryState, useTimeout } from '../../hooks';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { contentDependency } from '../../utils/objects';
-import { getIconDefinition } from '../icon';
-import { IconButton } from '../iconButton';
+import { Icon } from '../icon';
 import { useToasts } from './toast.context';
 import { IToastNotification } from './toast.types';
 
@@ -25,8 +24,8 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
     const { set: setAutoDismissTimeout, clear: clearAutoDismissTimeout } = useTimeout(beginDismiss, autoDismissTime);
 
     React.useEffect(() => {
-      setAutoDismissTimeout();
-    }, [setAutoDismissTimeout]);
+      void setAutoDismissTimeout();
+    }, []);
 
     const id = React.useId();
 
@@ -41,7 +40,7 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
 
     const timestampString = React.useMemo(
       () => timestampFormatString && Dates.dateToString(timestamp!, timestampFormatString),
-      [timestamp, timestampFormatString]
+      [timestamp]
     );
 
     return (
@@ -54,38 +53,24 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
         onMouseLeave={() => setAutoDismissTimeout()}
         ref={ref}
       >
-        <div
-          {...htmlProps}
-          className={concat('arm-toast-notification', htmlProps?.className)}
-          data-type={type}
-          data-dismissing={dismissing}
-          onMouseEnter={clearAutoDismissTimeout}
-          onMouseLeave={() => setAutoDismissTimeout()}
-          ref={ref}
-        >
-          <div className="arm-toast-notification-inner" role="status" aria-labelledby={`${id}_title`}>
-            <div className="arm-toast-notification-top">
-              <p className="arm-toast-notification-title" id={`${id}_title`}>
-                {title}
-              </p>
+        <div className="arm-toast-notification-inner" role="status" aria-labelledby={`${id}_title`}>
+          <div className="arm-toast-notification-top">
+            <p className="arm-toast-notification-title" id={`${id}_title`}>
+              {title}
+            </p>
 
-              {allowManualDismiss && (
-                <IconButton
-                  type="button"
-                  className="arm-toast-notification-close-button"
-                  minimalStyle
-                  icon={getIconDefinition('Icomoon', 'cross2')}
-                  onClick={beginDismiss}
-                />
-              )}
-            </div>
-
-            {timestampString && <p>{timestampString}</p>}
-
-            {typeof contentNode === 'string' || typeof contentNode === 'number' ? <p>{contentNode}</p> : contentNode}
-
-            {children}
+            {allowManualDismiss && (
+              <Button className="arm-toast-notification-close-button" onClick={beginDismiss}>
+                <Icon iconSet="Icomoon" icon="cross2" />
+              </Button>
+            )}
           </div>
+
+          {timestampString && <p>{timestampString}</p>}
+
+          {typeof contentNode === 'string' || typeof contentNode === 'number' ? <p>{contentNode}</p> : contentNode}
+
+          {children}
         </div>
       </div>
     );
@@ -95,8 +80,6 @@ export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWit
 ToastNotification.defaultProps = {
   allowManualDismiss: true,
 };
-
-ToastNotification.displayName = 'ToastNotification';
 
 export interface IToastNotificationContainerProps {
   /** the toasts to render inside this component */
@@ -144,5 +127,3 @@ export const ToastNotificationContainer = React.forwardRef<HTMLDivElement, IToas
     );
   }
 );
-
-ToastNotificationContainer.displayName = 'ToastNotificationContainer';

@@ -1,0 +1,25 @@
+@use '../../theme/variables.scss';
+
+.arm-auto-resizer {
+  overflow: hidden;
+  transition-duration: 300ms;
+
+  &[data-animate-horizontal='true'] {
+    width: var(--arm-auto-resizer-width);
+    transition-property: width;
+  }
+
+  &[data-animate-vertical='true'] {
+    height: var(--arm-auto-resizer-height);
+    transition-property: height;
+  }
+
+  &[data-animate-vertical='true'][data-animate-horizontal='true'] {
+    transition-property: height, width;
+  }
+}
+
+.arm-auto-resizer-content {
+  width: max-content;
+  height: max-content;
+}

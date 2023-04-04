@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
-import { IconWrapper } from '../iconWrapper';
+import { Icon, isIconDefinition } from '../icon';
 
 export interface IOptionContentProps
   extends Partial<
@@ -31,11 +31,31 @@ export const OptionContent: React.FC<IOptionContentProps> = ({ name, content, le
     if (name) {
       return <span>{name}</span>;
     }
+
+    return undefined;
   }, [content, name, id, isActive, leftIcon, rightIcon]);
 
   return (
-    <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+    <>
+      {leftIcon && (
+        <>
+          {isIconDefinition(leftIcon) ? (
+            <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
+          ) : (
+            leftIcon
+          )}
+        </>
+      )}
       {renderedContent}
-    </IconWrapper>
+      {rightIcon && (
+        <>
+          {isIconDefinition(rightIcon) ? (
+            <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
+          ) : (
+            rightIcon
+          )}
+        </>
+      )}
+    </>
   );
 };

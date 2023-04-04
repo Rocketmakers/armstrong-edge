@@ -108,9 +108,7 @@ export const TextArea = React.forwardRef(
       errorIcon: validationErrorIcon,
       disabled,
       pending,
-      above,
       scrollValidationErrorsIntoView,
-      below,
       statusPosition,
       disableOnPending,
       delay,
@@ -166,10 +164,8 @@ export const TextArea = React.forwardRef(
         validationMode={bindConfig.validationMode}
         disabled={disabled}
         pending={pending}
-        above={above}
         disableOnPending={disableOnPending}
         statusPosition={statusPosition}
-        below={below}
         onClick={() => internalRef.current?.focus()}
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >

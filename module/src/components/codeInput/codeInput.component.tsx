@@ -1,15 +1,22 @@
 import * as React from 'react';
 
-import { Form, IconSet, IInputWrapperProps, ValidationErrors } from '../..';
+import {
+  Form,
+  getLengthFromPart,
+  IButtonCoreProps,
+  Icon,
+  IconSet,
+  IInputWrapperProps,
+  isIconDefinition,
+  ValidationErrors,
+} from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { findLastIndex } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IInputProps } from '../input';
 import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { TextInput } from '../textInput';
-import { getLengthFromPart } from './codeInput.utils';
 
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
@@ -76,6 +83,8 @@ const CodeInputPart = React.forwardRef(
 
     const { className, ...textInputProps } = part;
 
+    console.log(part);
+
     return (
       <TextInput
         ref={ref}
@@ -106,7 +115,7 @@ CodeInputPart.displayName = 'CodeInputPart';
 
 /** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
 export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
-  extends IIconWrapperProps<IconSet, IconSet>,
+  extends Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     Pick<
       IInputWrapperProps,
       | 'scrollValidationErrorsIntoView'
@@ -269,11 +278,23 @@ export const CodeInput = React.forwardRef(
             pending={pending}
             validationMode={bindConfig.validationMode}
           >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+            <>
+              {leftIcon && (
+                <>
+                  {isIconDefinition(leftIcon) ? (
+                    <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
+                  ) : (
+                    leftIcon
+                  )}
+                </>
+              )}
+
               {parts.map((part, index) => (
                 <CodeInputPart
                   part={part}
                   key={index}
+                  data-left-icon={!!leftIcon}
+                  data-right-icon={!!rightIcon}
                   value={getValueForPart(index) || ''}
                   onChange={event => onPartChange(event, index)}
                   onKeyDown={event => onKeyDown(event, index)}
@@ -282,7 +303,17 @@ export const CodeInput = React.forwardRef(
                   }}
                 />
               ))}
-            </IconWrapper>
+
+              {rightIcon && (
+                <>
+                  {isIconDefinition(rightIcon) ? (
+                    <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
+                  ) : (
+                    rightIcon
+                  )}
+                </>
+              )}
+            </>
           </StatusWrapper>
         </div>
 

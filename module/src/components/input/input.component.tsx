@@ -76,8 +76,6 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
       validationMode,
       errorIcon: validationErrorIcon,
       pending,
-      above,
-      below,
       disabled,
       disableOnPending,
       statusPosition,
@@ -147,10 +145,8 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps<any>>(
         validationMode={bindConfig.validationMode}
         pending={pending}
         disabled={disabled}
-        above={above}
         statusPosition={statusPosition}
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
-        below={below}
         disableOnPending={disableOnPending}
         hideIconOnStatus={hideIconOnStatus}
         onClick={() => internalRef.current?.focus()}

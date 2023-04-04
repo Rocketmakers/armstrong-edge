@@ -2,24 +2,16 @@ import { isSameDay } from 'date-fns';
 import { isNil } from 'lodash';
 import * as React from 'react';
 
-import { Calendar, Form } from '../../hooks';
+import { Button, Calendar, DataAttributes, Form, IButtonCoreProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-  DataAttributes,
-  NullOrUndefined,
-} from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { assertNever } from '../../utils/typescript';
 import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { CalendarDisplay, ICalendarDisplayProps } from '../calendarDisplay/calendarDisplay.component';
 import { Dropdown, IDropdownProps } from '../dropdown';
-import { getIconDefinition, IconSet } from '../icon';
-import { IconButton } from '../iconButton';
-import { IIconWrapperProps } from '../iconWrapper';
+import { Icon, IconSet } from '../icon';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Modal } from '../modal';
 import { IStatusWrapperProps } from '../statusWrapper';
@@ -46,7 +38,7 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
       | 'jumpList'
     >,
     IStatusWrapperProps,
-    IIconWrapperProps<IconSet, IconSet>,
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     Pick<IInputWrapperProps, 'leftOverlay' | 'rightOverlay' | 'scrollValidationErrorsIntoView'> {
   /** CSS className property */
   className?: string;
@@ -400,31 +392,21 @@ export const CalendarInput = React.forwardRef(
               pending={pending}
               validationMode={bindConfig.validationMode}
               className="arm-calendar-input-inner"
-              above={
-                calendarPosition === 'above' && (calendarOpen || keepCalendarOpen) ? (
-                  <CalendarDisplay {...calendarDisplayProps} />
-                ) : undefined
-              }
-              below={
-                calendarPosition === 'below' && (calendarOpen || keepCalendarOpen) ? (
-                  <CalendarDisplay {...calendarDisplayProps} />
-                ) : undefined
-              }
               leftIcon={leftIcon}
               rightIcon={rightIcon}
               leftOverlay={leftOverlay}
               rightOverlay={rightOverlay}
               scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
             >
+              {calendarPosition === 'above' && (calendarOpen || keepCalendarOpen) ? (
+                <CalendarDisplay {...calendarDisplayProps} />
+              ) : undefined}
               {showCalendarButton &&
                 !keepCalendarOpen &&
                 (openCalendarButton?.(onClickCalendarButton, calendarOpen || !!keepCalendarOpen) || (
-                  <IconButton
-                    type="button"
-                    minimalStyle
-                    icon={getIconDefinition('Icomoon', 'calendar')}
-                    onClick={onClickCalendarButton}
-                  />
+                  <Button onClick={onClickCalendarButton}>
+                    <Icon iconSet={'Icomoon'} icon={'calendar'} />
+                  </Button>
                 ))}
 
               {disableInputs ? (
@@ -500,6 +482,9 @@ export const CalendarInput = React.forwardRef(
                   })}
                 </>
               )}
+              {calendarPosition === 'below' && (calendarOpen || keepCalendarOpen) ? (
+                <CalendarDisplay {...calendarDisplayProps} />
+              ) : undefined}
             </InputWrapper>
           </Dropdown>
         </div>

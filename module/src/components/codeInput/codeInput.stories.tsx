@@ -107,7 +107,15 @@ const icon = getIconDefinition('Icomoon', 'chess-king');
 export const WithIcons: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
-    parts: [1, { length: 1, rightIcon: getIconDefinition('Icomoon', 'chrome') }, 1],
+    parts: [
+      1,
+      {
+        length: 1,
+        rightIcon: getIconDefinition('Icomoon', 'chrome'),
+        leftIcon: getIconDefinition('Icomoon', 'aid-kit'),
+      },
+      1,
+    ],
     leftIcon: icon,
     rightIcon: icon,
   },

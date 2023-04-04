@@ -1,12 +1,11 @@
 import * as React from 'react';
 
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, concat, Form } from '../..';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, Button, concat, Form } from '../..';
 import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
 import { useOverridableState } from '../../hooks/useOverridableState';
 import { ArmstrongId, NullOrUndefined } from '../../types/core';
 import { IArmstrongExtendedOption } from '../../types/options';
-import { getIconDefinition } from '../icon';
-import { IconButton } from '../iconButton';
+import { Icon } from '../icon';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag/tag.component';
 
@@ -229,10 +228,10 @@ export const TagInput = React.forwardRef(
         disableOnPending={disableOnPending}
         statusPosition={statusPosition}
         onClick={() => internalRef.current?.focus()}
-        above={tagPosition === 'above' ? tagsJsx : undefined}
-        below={tagPosition === 'below' ? tagsJsx : undefined}
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
+        {tagPosition === 'above' && tagsJsx}
+
         <div className="arm-tag-input-inner">
           {tagPosition === 'inside' && tagsJsx}
           <input
@@ -249,8 +248,12 @@ export const TagInput = React.forwardRef(
           />
         </div>
 
+        {tagPosition === 'below' && tagsJsx}
+
         {deleteAllButton && !!boundValue?.length && (
-          <IconButton type="button" minimalStyle onClick={clearTags} icon={getIconDefinition('Icomoon', 'cross2')} />
+          <Button onClick={clearTags}>
+            <Icon iconSet="Icomoon" icon="cross2" />
+          </Button>
         )}
       </InputWrapper>
     );

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
+import { Button } from '../button';
 import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
-import { IconButton } from '../iconButton';
 import { IModalProps, Modal } from '../modal';
 import { closeModal } from '../modal/modal.utils';
 
@@ -75,22 +75,14 @@ export const Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<I
               </p>
             )}
 
-            <IconButton
-              type="button"
-              className="arm-dialog-close-button"
-              icon={closeButtonIcon!}
-              minimalStyle
-              onClick={close}
-            />
+            <Button className="arm-dialog-close-button" onClick={close}>
+              <Icon iconSet={'Icomoon'} icon={closeButtonIcon!.icon} />
+            </Button>
           </div>
         ) : (
-          <IconButton
-            type="button"
-            className="arm-dialog-close-button"
-            icon={closeButtonIcon!}
-            minimalStyle
-            onClick={close}
-          />
+          <Button className="arm-dialog-close-button" onClick={close}>
+            <Icon iconSet={'Icomoon'} icon={closeButtonIcon!.icon} />
+          </Button>
         )}
         <div className="arm-dialog-inner">{children}</div>
       </Modal>

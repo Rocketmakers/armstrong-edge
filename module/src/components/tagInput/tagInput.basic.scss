@@ -24,8 +24,7 @@
   flex-grow: 1;
 }
 
-.arm-input-wrapper-above .arm-auto-resizer-content,
-.arm-input-wrapper-below .arm-auto-resizer-content {
+.arm-auto-resizer-content {
   @include mixins.space-between-children-horizontal(variables.$spacing-xxsmall);
 
   overflow-y: auto;

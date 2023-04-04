@@ -1,13 +1,12 @@
 import * as React from 'react';
 
-import { Form } from '../..';
+import { Button, Form } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { IArmstrongOption } from '../../types/options';
 import { concat } from '../../utils/classNames';
 import { getIconDefinition, Icon, IconSet, IIcon, isIconDefinition } from '../icon';
-import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 
 export interface ISelectOption<Id extends ArmstrongId, TSelectData = any>
@@ -163,17 +162,19 @@ export const Select = React.forwardRef(
         </div>
 
         {deleteButton && boundValue && (
-          <IconButton
-            type="button"
-            className="arm-select-delete"
+          <Button
             onClick={event => {
               clearSelect();
               event.stopPropagation();
             }}
             onMouseDown={e => e.stopPropagation()}
-            icon={typeof deleteButton === 'boolean' ? getIconDefinition('Icomoon', 'cross2') : deleteButton}
-            minimalStyle
-          />
+            className="arm-select-delete"
+          >
+            <Icon
+              iconSet={typeof deleteButton === 'boolean' ? 'Icomoon' : deleteButton.iconSet}
+              icon={typeof deleteButton === 'boolean' ? 'cross2' : deleteButton.icon}
+            />
+          </Button>
         )}
       </InputWrapper>
     );

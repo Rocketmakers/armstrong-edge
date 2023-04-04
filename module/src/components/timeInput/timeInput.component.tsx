@@ -1,21 +1,22 @@
 import * as React from 'react';
 
-import { Form } from '../../hooks';
-import { IBindingProps } from '../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
   ArmstrongFCReturn,
+  AutoCompleteInput,
   DataAttributes,
+  Form,
+  IAutoCompleteInputProps,
+  IButtonCoreProps,
+  ISelectOption,
   NullOrUndefined,
-} from '../../types';
+} from '../..';
+import { IBindingProps } from '../../hooks/form';
 import { concat } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
-import { AutoCompleteInput, IAutoCompleteInputProps } from '../autoCompleteInput';
 import { IconSet } from '../icon';
-import { IIconWrapperProps } from '../iconWrapper';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
-import { ISelectOption } from '../select';
 import { IStatusWrapperProps } from '../statusWrapper';
 import { TimeParts } from './timeInput.types';
 import { getHourOptions, getMinuteOptions, parseTimePartsToDate, parseTimeStringToParts } from './timeInput.utils';
@@ -24,8 +25,8 @@ type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'opti
 
 export interface ITimeInputProps<TBind extends NullOrUndefined<string>>
   extends IStatusWrapperProps,
-    IIconWrapperProps<IconSet, IconSet>,
-    Pick<IInputWrapperProps, 'above' | 'below' | 'leftOverlay' | 'rightOverlay'> {
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
+    Pick<IInputWrapperProps, 'leftOverlay' | 'rightOverlay'> {
   /** The binding for the input. */
   bind?: IBindingProps<TBind>;
 

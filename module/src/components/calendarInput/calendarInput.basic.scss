@@ -42,11 +42,8 @@ $arm-calendar-display-width: 300px !default;
   .arm-dropdown {
     width: 100%;
 
-    .arm-input-wrapper-above,
-    .arm-input-wrapper-below {
-      .arm-calendar-display {
-        max-width: none;
-      }
+    .arm-calendar-display {
+      max-width: none;
     }
   }
 

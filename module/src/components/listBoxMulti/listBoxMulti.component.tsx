@@ -1,13 +1,12 @@
 import * as React from 'react';
 
-import { Form, IListBoxOption, IListBoxProps } from '../..';
+import { Button, Form, IListBoxOption, IListBoxProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
 import { ArmstrongId } from '../../types/core';
 import { concat } from '../../utils/classNames';
 import { DropdownItems } from '../dropdownItems';
 import { getIconDefinition, Icon, IconSet, IIcon, isIconDefinition } from '../icon';
-import { IconButton } from '../iconButton';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
 import { Tag } from '../tag';
 
@@ -213,8 +212,7 @@ export const ListBoxMulti = React.forwardRef(
             ))}
 
           {deleteButton && !!boundValue?.length && (
-            <IconButton
-              type="button"
+            <Button
               className="arm-listbox-multi-delete"
               onClick={event => {
                 onItemSelected(undefined);
@@ -223,9 +221,9 @@ export const ListBoxMulti = React.forwardRef(
               }}
               onMouseDown={event => event.stopPropagation()}
               onMouseUp={event => event.stopPropagation()}
-              icon={getIconDefinition('Icomoon', 'cross2')}
-              minimalStyle
-            />
+            >
+              <Icon iconSet="Icomoon" icon="cross2" />
+            </Button>
           )}
         </InputWrapper>
       </DropdownItems>

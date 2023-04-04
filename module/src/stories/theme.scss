@@ -1,8 +1,11 @@
 /** STORY BOOK SPECIFIC GENERAL STYLES **/
 
 // import variables
-@import '../../dist/scss/imports';
-@import '../../dist/scss/animations';
+@import '../../dist/scss/variablesNew';
+@import '../../dist/scss/mixins';
+//@import '../../dist/scss/imports';
+//@import '../../dist/scss/animations';
+
 
 // import custom variables
 @import './theme/variables';
@@ -12,7 +15,7 @@
 @import '../../dist/scss/linearicons';
 
 // import base component styles
-@import '../../dist/scss/basic';
+@import '../../dist/scss/theme';
 
 // storybook specific styles
 @import './theme/fonts';
