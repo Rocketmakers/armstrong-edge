@@ -7,7 +7,6 @@ import { ClassNames } from '../../utils/classNames';
 import { Dates } from '../../utils/dates';
 import { Maths } from '../../utils/maths';
 import { Button, IButtonProps } from '../button';
-import { IconUtils } from '../icon';
 import { IconButton } from '../iconButton';
 import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarDisplay.utils';
 

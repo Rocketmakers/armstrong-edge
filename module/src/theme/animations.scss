@@ -201,6 +201,7 @@ $expand-max-large: 700px !default;
     from {
       max-width: 0;
     }
+
     to {
       max-width: $max;
     }
@@ -212,6 +213,7 @@ $expand-max-large: 700px !default;
     from {
       max-height: 0;
     }
+
     to {
       max-height: $max;
     }

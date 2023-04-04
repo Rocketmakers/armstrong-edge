@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="SCSS Utilities/Variables" />
 
@@ -9,7 +9,7 @@ These are all the defaults for variables exported by Armstorng - you can overrid
 They can be used after an import of:
 
 ```css
-@import "~@rocketmakers/armstrong/dist/imports.scss";
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 ```
 
 (see setup/scss for more info)
@@ -106,14 +106,11 @@ $shadow-medium: $shadow-offset-medium $shadow-size-medium $shadow-color;
 $shadow-large: $shadow-offset-large $shadow-size-large $shadow-color;
 $shadow-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color;
 
-$shadow-inner-xsmall: $shadow-offset-xsmall $shadow-size-xsmall $shadow-color
-  inset;
+$shadow-inner-xsmall: $shadow-offset-xsmall $shadow-size-xsmall $shadow-color inset;
 $shadow-inner-small: $shadow-offset-small $shadow-size-small $shadow-color inset;
-$shadow-inner-medium: $shadow-offset-medium $shadow-size-medium $shadow-color
-  inset;
+$shadow-inner-medium: $shadow-offset-medium $shadow-size-medium $shadow-color inset;
 $shadow-inner-large: $shadow-offset-large $shadow-size-large $shadow-color inset;
-$shadow-inner-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color
-  inset;
+$shadow-inner-xlarge: $shadow-offset-xlarge $shadow-size-xlarge $shadow-color inset;
 ```
 
 ### Transitions
@@ -249,9 +246,7 @@ $arm-switch-input-height: 30px;
 $arm-switch-input-handle-padding: $spacing-xxxsmall;
 
 /* the size of the handle, by default calculated using the given height and padding */
-$arm-switch-input-handle: calc(
-  #{$arm-switch-input-height} - #{$arm-switch-input-handle-padding * 2}
-);
+$arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input-handle-padding * 2});
 ```
 
 ### TimeInput

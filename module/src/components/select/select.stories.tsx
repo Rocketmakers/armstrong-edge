@@ -14,7 +14,7 @@ export default {
 /** component template */
 
 const Template: StoryObj<typeof Select> = {
-  render: (args) => {
+  render: args => {
     return (
       <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Select {...args} />
@@ -60,10 +60,7 @@ export const WithCustomDropDownIcon: StoryObj<typeof Select> = {
     const select = option[0].parentElement; // Finding select by finding parent of the first option
     const customArrow = select?.nextSibling;
 
-    expect(customArrow).toHaveAttribute(
-      'data-icon-set',
-      args.selectOverlayIcon?.iconSet
-    );
+    expect(customArrow).toHaveAttribute('data-icon-set', args.selectOverlayIcon?.iconSet);
     expect(customArrow).toHaveAttribute('data-i', args.selectOverlayIcon?.icon);
   },
 };

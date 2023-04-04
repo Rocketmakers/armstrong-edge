@@ -1,42 +1,23 @@
 import * as React from 'react';
 
-import {
-  Form,
-  IButtonCoreProps,
-  IInputWrapperProps,
-  ValidationErrors,
-} from '../..';
+import { Form, IButtonCoreProps, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-  NullOrUndefined,
-} from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { getPercent } from '../../utils/maths';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import {
-  IStatusWrapperProps,
-  StatusWrapper,
-} from '../statusWrapper/statusWrapper.component';
+import { Icon, IconSet, IIcon, isIconDefinition } from '../icon';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 
 export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
   extends Omit<
-      React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-      >,
+      React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
       'min' | 'max' | 'value'
     >,
     Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     IStatusWrapperProps,
     Pick<
       IInputWrapperProps,
-      | 'scrollValidationErrorsIntoView'
-      | 'validationMode'
-      | 'errorIcon'
-      | 'validationErrorMessages'
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -132,12 +113,8 @@ export const RangeInput = React.forwardRef(
             <>
               {leftIcon && (
                 <>
-                  {IconUtils.isIconDefinition(leftIcon) ? (
-                    <Icon
-                      {...leftIcon}
-                      className="left-icon"
-                      title={`${leftIcon.icon} icon on left`}
-                    />
+                  {isIconDefinition(leftIcon) ? (
+                    <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
                   ) : (
                     leftIcon
                   )}
@@ -159,19 +136,13 @@ export const RangeInput = React.forwardRef(
 
                 <div className="arm-range-input-track-inner" />
                 <div className="arm-range-input-handle">
-                  {handleIcon && (
-                    <Icon iconSet={handleIcon.iconSet} icon={handleIcon.icon} />
-                  )}
+                  {handleIcon && <Icon iconSet={handleIcon.iconSet} icon={handleIcon.icon} />}
                 </div>
               </div>
               {rightIcon && (
                 <>
-                  {IconUtils.isIconDefinition(rightIcon) ? (
-                    <Icon
-                      {...rightIcon}
-                      className="right-icon"
-                      title={`${rightIcon.icon} icon on right`}
-                    />
+                  {isIconDefinition(rightIcon) ? (
+                    <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
                   ) : (
                     rightIcon
                   )}
@@ -181,14 +152,13 @@ export const RangeInput = React.forwardRef(
           </StatusWrapper>
         </div>
 
-        {!!validationErrorMessages?.length &&
-          bindConfig.shouldShowValidationErrorMessage && (
-            <ValidationErrors
-              validationErrors={validationErrorMessages}
-              icon={bindConfig.validationErrorIcon}
-              scrollIntoView={scrollValidationErrorsIntoView}
-            />
-          )}
+        {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors
+            validationErrors={validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
+        )}
       </>
     );
   }

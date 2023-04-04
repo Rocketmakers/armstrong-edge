@@ -230,7 +230,12 @@ You simply need to write a component that accepts some of the same core props as
 The following example uses a few recommended utilities which are optional:
 
 ```tsx
-import { IModalProps, useModalLayerElement, Portal, IUseModalLayerPromiseComponentProps } from '@rocketmakers/armstrong';
+import {
+  IModalProps,
+  useModalLayerElement,
+  Portal,
+  IUseModalLayerPromiseComponentProps,
+} from '@rocketmakers/armstrong';
 
 interface ISidebarProps extends Pick<IModalProps, 'isOpen' | 'onOpenChange'> {}
 
@@ -249,7 +254,7 @@ export const Sidebar: React.FC<ISidebarProps> = ({ children }) => {
 export const useSidebar = <T, TArg = unknown>(
   Children: React.FC<IUseModalLayerPromiseComponentProps<T, TArg>>,
   props?: Omit<IModalProps, 'isOpen' | 'onOpenChange'>
-) => useModalLayerPromise(Children, (internalProps) => <Sidebar {...internalProps} {...props} />);
+) => useModalLayerPromise(Children, internalProps => <Sidebar {...internalProps} {...props} />);
 
 // this can then be used in the same way as the useModal component, and will use the Sidebar component
 const MyComponent = () => {

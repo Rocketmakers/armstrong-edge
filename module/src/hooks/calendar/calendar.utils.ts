@@ -1,4 +1,16 @@
-import { addDays, addMonths, addYears, endOfMonth, format, getDaysInMonth, isAfter, isBefore, isSameDay, startOfMonth, startOfYear } from 'date-fns';
+import {
+  addDays,
+  addMonths,
+  addYears,
+  endOfMonth,
+  format,
+  getDaysInMonth,
+  isAfter,
+  isBefore,
+  isSameDay,
+  startOfMonth,
+  startOfYear,
+} from 'date-fns';
 
 import { ICalendarHighlightParsed, IDay, IMonth, IYear } from './calendar.types';
 
@@ -58,7 +70,7 @@ export function getDays(
     // The day object for this loop iteration.
     const currentDay = i === 0 ? forDate : addDays(forDate, i);
     // Is this day highlighted?
-    const highlight = highlights?.find((h) => isSameDay(currentDay, h.date));
+    const highlight = highlights?.find(h => isSameDay(currentDay, h.date));
     days.push({
       date: currentDay,
       numberInMonth: i + 1,
@@ -95,7 +107,8 @@ export function getMonths(forYear: number, min?: Date, max?: Date): IMonth[] {
     months.push({
       date: currentDate,
       indexInYear: i,
-      isDisabled: (!!min && isBefore(currentDate, startOfMonth(min))) || (!!max && isAfter(currentDate, endOfMonth(max))),
+      isDisabled:
+        (!!min && isBefore(currentDate, startOfMonth(min))) || (!!max && isAfter(currentDate, endOfMonth(max))),
     });
   }
   return months;

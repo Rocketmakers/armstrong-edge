@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { Form } from '../../hooks';
 import { StoryUtils } from '../../stories/storyUtils';
-import { IconUtils } from '../icon';
 import { AutoCompleteInputMulti } from './autoCompleteInputMulti.component';
+import { IconUtils } from '../icon';
 
 /** metadata */
 

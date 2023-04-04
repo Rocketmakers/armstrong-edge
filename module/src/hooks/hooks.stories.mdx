@@ -28,8 +28,7 @@ Get the size of the element with the given ref - uses a resize observer, listens
 ```tsx
 const contentRef = React.useRef<HTMLDivElement>(null);
 
-const [{ height, width, bottom, left, right, top, x, y }] =
-  useBoundingClientRect(contentRef);
+const [{ height, width, bottom, left, right, top, x, y }] = useBoundingClientRect(contentRef);
 
 return <div ref={contentRef} />;
 ```
@@ -39,10 +38,8 @@ The second element in the return array can be used to force `useBoundingClientRe
 ```tsx
 const contentRef = React.useRef<HTMLDivElement>(null);
 
-const [
-  { height, width, bottom, left, right, top, x, y },
-  forceGetBoundingClientRect,
-] = useBoundingClientRect(contentRef);
+const [{ height, width, bottom, left, right, top, x, y }, forceGetBoundingClientRect] =
+  useBoundingClientRect(contentRef);
 
 const [showThing] = React.useState(false);
 
@@ -64,8 +61,11 @@ To rectify this limitation, the hook listens to resize and scroll events, and if
 Like a state hook, but also exports a "throttled" value (set after x amount of inactivity through the setter method)
 
 ```tsx
-const [actualValue, setActualValue, debouncedValue, setDebouncedValue] =
-  useDebounce(milliseconds, value, onValueChange);
+const [actualValue, setActualValue, debouncedValue, setDebouncedValue] = useDebounce(
+  milliseconds,
+  value,
+  onValueChange
+);
 ```
 
 ### useDelayedDependentSwitch
@@ -393,11 +393,7 @@ return <div ref={ref} />;
 useState but the state returns to initialValue after a given amount of time from whenever setState is called
 
 ```tsx
-const [state, setState, cancel] = useTemporaryState(
-  initialValue,
-  time,
-  onReset
-);
+const [state, setState, cancel] = useTemporaryState(initialValue, time, onReset);
 ```
 
 ### useThrottle
@@ -405,8 +401,7 @@ const [state, setState, cancel] = useTemporaryState(
 Like a state hook, but also exports a "throttled" value which changes at regular intervals
 
 ```tsx
-const [actualValue, setActualValue, throttleValue, setThrottledValue] =
-  useThrottle(milliseconds, value, onValueChange);
+const [actualValue, setActualValue, throttleValue, setThrottledValue] = useThrottle(milliseconds, value, onValueChange);
 ```
 
 ### useTimeout
@@ -438,10 +433,7 @@ FYI - don't actually call set in your render method, you'll cause an infinite lo
 You can also use `useTimeout` like a boolean `useTemporaryState`. In this example, on the button click, hasClickedTheThing will be true for 1000ms
 
 ```tsx
-const { waiting: hasClickedTheThing, set: onClickTheThing } = useTimeout(
-  undefined,
-  1000
-);
+const { waiting: hasClickedTheThing, set: onClickTheThing } = useTimeout(undefined, 1000);
 
 return <Button onClick={onClickTheThing} />;
 ```

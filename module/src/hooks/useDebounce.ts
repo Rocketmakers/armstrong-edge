@@ -45,7 +45,11 @@ export function useDebounce<T>(
  * @param ms How long a period of inactivity before running the effect
  * @param deps List of dependencies to trigger rerunning the effect
  */
-export function useDebounceEffect<TFunc extends (...params: any[]) => any>(fn: TFunc, ms: number, deps: React.DependencyList) {
+export function useDebounceEffect<TFunc extends (...params: any[]) => any>(
+  fn: TFunc,
+  ms: number,
+  deps: React.DependencyList
+) {
   const throttleRef = React.useRef<NodeJS.Timeout>();
 
   useDidUpdateEffect(() => {

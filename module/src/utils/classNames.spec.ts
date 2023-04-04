@@ -1,43 +1,43 @@
-import { concat } from "./classNames";
+import { concat } from './classNames';
 
-describe("Classname utils", () => {
-  it("joins a list of string arg classnames into a single string using concat", () => {
-    const string1 = "string1";
-    const string2 = "string2";
+describe('Classname utils', () => {
+  it('joins a list of string arg classnames into a single string using concat', () => {
+    const string1 = 'string1';
+    const string2 = 'string2';
 
     const result = concat(string1, string2);
 
-    expect(result).toEqual("string1 string2");
+    expect(result).toBe('string1 string2');
   });
 
-  it("spreads an array arg of classnames into a single string using concat", () => {
-    const array = ["string1", "string2"];
+  it('spreads an array arg of classnames into a single string using concat', () => {
+    const array = ['string1', 'string2'];
 
     const result = concat(array);
 
-    expect(result).toEqual("string1 string2");
+    expect(result).toBe('string1 string2');
   });
 
-  it("merges an array arg of classnames and a string arg of classnames into a single string using concat", () => {
-    const string = "stringa";
-    const array = ["string1", "string2"];
+  it('merges an array arg of classnames and a string arg of classnames into a single string using concat', () => {
+    const string = 'stringa';
+    const array = ['string1', 'string2'];
 
     const result = concat(string, array);
 
-    expect(result).toEqual("stringa string1 string2");
+    expect(result).toBe('stringa string1 string2');
   });
 
-  it("dereferences an object into a single string using concat", () => {
+  it('dereferences an object into a single string using concat', () => {
     const obj = {
       key1: true,
     };
 
     const result = concat(obj);
 
-    expect(result).toEqual("key1");
+    expect(result).toBe('key1');
   });
 
-  it("only dereferences keys from an object whose value is true into a single string using concat", () => {
+  it('only dereferences keys from an object whose value is true into a single string using concat', () => {
     const obj = {
       key1: true,
       key2: false,
@@ -48,6 +48,6 @@ describe("Classname utils", () => {
 
     const result = concat(obj);
 
-    expect(result).toEqual("key1 key4");
+    expect(result).toBe('key1 key4');
   });
 });

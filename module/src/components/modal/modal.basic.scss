@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-modal {
   background-color: variables.$white;
@@ -15,11 +15,11 @@
   height: 100vh;
   z-index: 4;
 
-  &[data-centred="true"] {
+  &[data-centred='true'] {
     @include mixins.flex-centre-content;
   }
 
-  &[data-close-on-background-click="false"] {
+  &[data-close-on-background-click='false'] {
     pointer-events: none;
 
     .arm-modal {
@@ -27,8 +27,8 @@
     }
   }
 
-  &[data-darken-background="true"] {
-    background-color: rgba(variables.$black, 0.2);
+  &[data-darken-background='true'] {
+    background-color: #{rgba(variables.$black, 20%)};
     cursor: pointer;
 
     .arm-modal {
@@ -36,7 +36,7 @@
     }
   }
 
-  &[data-is-closing="true"] {
+  &[data-is-closing='true'] {
     opacity: 0;
     pointer-events: none;
 

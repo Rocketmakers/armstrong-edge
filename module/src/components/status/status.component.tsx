@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { Spinner } from "../spinner";
+import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
+import { Spinner } from '../spinner';
 
 export interface IStatusProps {
   /** show a spinner */
@@ -34,25 +34,14 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
         {...rest}
       >
         {error && !pending && (
-          <Icon
-            className="arm-status-error"
-            iconSet={errorIcon!.iconSet}
-            icon={errorIcon!.icon}
-            title="Error icon"
-          />
+          <Icon className="arm-status-error" iconSet={errorIcon!.iconSet} icon={errorIcon!.icon} title="Error icon" />
         )}
-        {pending && (
-          <Spinner
-            className="arm-status-spinner"
-            fillContainer={false}
-            icon={spinnerIcon}
-          />
-        )}
+        {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />}
       </div>
     );
   }
 );
 
 Status.defaultProps = {
-  errorIcon: IconUtils.getIconDefinition("Icomoon", "warning"),
+  errorIcon: getIconDefinition('Icomoon', 'warning'),
 };

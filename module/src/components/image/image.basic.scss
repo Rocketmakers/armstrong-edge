@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-image {
   position: relative;
@@ -20,8 +20,8 @@
 }
 
 .arm-image-inner {
-  &[data-loading="true"],
-  &[data-error="true"] {
+  &[data-loading='true'],
+  &[data-error='true'] {
     min-height: variables.$spacing-large;
     min-width: variables.$spacing-large;
   }

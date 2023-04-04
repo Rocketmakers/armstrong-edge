@@ -1,11 +1,11 @@
-@use "../../theme/variables.scss";
+@use '../../theme/variables.scss';
 
 .arm-radio-options-list {
   width: 100%;
   max-width: variables.$arm-input-width;
 
   .arm-radio-input {
-    &[data-checked="true"] {
+    &[data-checked='true'] {
       color: variables.$brand-primary;
     }
   }

@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Utilities/Maths" />
 
@@ -15,7 +15,7 @@ function clamp(input: number, minimum: number, maximum: number): number;
 ```
 
 ```ts
-import { clamp } from "@rocketmakers/armstrong";
+import { clamp } from '@rocketmakers/armstrong';
 
 clamp(200, 0, 50);
 // 50
@@ -38,7 +38,7 @@ function positiveModulo(numerator: number, denominator: number): number;
 ```
 
 ```ts
-import { positiveModulo } from "@rocketmakers/armstrong";
+import { positiveModulo } from '@rocketmakers/armstrong';
 
 positiveModulo(-2, 10);
 // 8
@@ -59,7 +59,7 @@ function getPercent(value: number, total: number);
 ```
 
 ```ts
-import { getPercent } from "@rocketmakers/armstrong";
+import { getPercent } from '@rocketmakers/armstrong';
 
 getPercent(40, 200);
 // 20
@@ -70,15 +70,11 @@ getPercent(40, 200);
 lerp between two numbers based on a progress
 
 ```ts
-function lerp(
-  start: number,
-  end: number,
-  /** out of 100 */ progress: number
-): number;
+function lerp(start: number, end: number, /** out of 100 */ progress: number): number;
 ```
 
 ```ts
-import { lerp } from "@rocketmakers/armstrong";
+import { lerp } from '@rocketmakers/armstrong';
 
 lerp(0, 500, 50);
 // 250
@@ -96,7 +92,7 @@ function multiLerp(breakpoints: number[], progress: number): number;
 ```
 
 ```ts
-import { multiLerp } from "@rocketmakers/armstrong";
+import { multiLerp } from '@rocketmakers/armstrong';
 
 multiLerp([0, 20, 10], 25);
 // 10

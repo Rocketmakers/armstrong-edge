@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ValidationMessage } from '../../hooks/form';
 import { ClassNames } from '../../utils/classNames';
-import { IconSet, IconUtils, IIcon } from '../icon';
+import { IconSet, IIcon } from '../icon';
 import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
