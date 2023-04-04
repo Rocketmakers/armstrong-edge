@@ -65,7 +65,7 @@ export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps<Icon
       {showLeftIcon && leftIcon && (
         <>
           {isIconDefinition(leftIcon) ? (
-            <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
+            <Icon {...leftIcon} className="arm-button-left-icon" title={`${leftIcon.icon} icon on left`} />
           ) : (
             leftIcon
           )}
@@ -77,13 +77,14 @@ export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps<Icon
         statusPosition={statusPosition}
         error={error}
         validationErrorMessages={validationErrorMessages}
+        className="arm-button-status"
       >
         {typeof children === 'string' || typeof children === 'number' ? <span>{children}</span> : children}
       </StatusWrapper>
       {showRightIcon && rightIcon && (
         <>
           {isIconDefinition(rightIcon) ? (
-            <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
+            <Icon {...rightIcon} className="arm-button-right-icon" title={`${rightIcon.icon} icon on right`} />
           ) : (
             rightIcon
           )}

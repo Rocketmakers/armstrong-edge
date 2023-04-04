@@ -22,6 +22,9 @@ export interface IStatusWrapperProps {
 
   /** the icon to use for validation errors */
   errorIcon?: IIcon<IconSet>;
+
+  /** an optional CSS className for the rendered status */
+  className?: string;
 }
 
 export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps>> = ({
@@ -32,6 +35,7 @@ export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps
   validationErrorMessages,
   validationMode,
   children,
+  className,
 }) => {
   const shouldShowErrorIcon =
     (!!validationErrorMessages?.length && (validationMode === 'both' || validationMode === 'icon')) || error;
@@ -39,11 +43,23 @@ export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps
   return (
     <>
       {statusPosition === 'left' && (
-        <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} data-position="left" />
+        <Status
+          className={className}
+          error={shouldShowErrorIcon}
+          pending={pending}
+          errorIcon={errorIcon}
+          data-position="left"
+        />
       )}
       {children}
       {statusPosition === 'right' && (
-        <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} data-position="right" />
+        <Status
+          className={className}
+          error={shouldShowErrorIcon}
+          pending={pending}
+          errorIcon={errorIcon}
+          data-position="right"
+        />
       )}
     </>
   );

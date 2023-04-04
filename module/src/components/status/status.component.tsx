@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { concat } from '../../utils/classNames';
 import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
 import { Spinner } from '../spinner';
 
@@ -15,18 +16,21 @@ export interface IStatusProps {
 
   /** the icon to use for the spinner */
   spinnerIcon?: IIcon<IconSet>;
+
+  /** an optional CSS className for the rendered status */
+  className?: string;
 }
 
 /** Render a status icon which can either be pending or errored */
 export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
-  ({ pending, error, errorIcon, spinnerIcon, ...rest }, ref) => {
+  ({ pending, error, errorIcon, spinnerIcon, className, ...rest }, ref) => {
     if (!error && !pending) {
       return null;
     }
     return (
       <div
         ref={ref}
-        className="arm-status"
+        className={concat('arm-status', className)}
         data-active={!!pending || !!error}
         data-error={!!error && !pending}
         data-pending={pending}
