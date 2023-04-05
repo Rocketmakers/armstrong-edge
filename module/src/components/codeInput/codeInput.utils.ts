@@ -1,6 +1,7 @@
+import { NullOrUndefined } from '../../types';
 import { CodeInputPartDefinition } from '.';
 
-export const getLengthFromPart = (part: CodeInputPartDefinition<any>) => {
+export const getLengthFromPart = <T extends NullOrUndefined<string>>(part: CodeInputPartDefinition<T>) => {
   if (typeof part === 'number') {
     return part;
   }

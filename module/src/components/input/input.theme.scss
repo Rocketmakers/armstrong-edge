@@ -5,15 +5,17 @@
     border: none;
     background-color: transparent;
     outline: none;
+    font-size: inherit;
   }
 
   background-color: white;
   border: var(--arm-form-border-thickness) solid var(--arm-color-grey-3);
   border-radius: var(--arm-form-border-radius);
   font-size: var(--arm-font-size-small);
+  overflow: hidden;
 
   &:focus-within {
-    border-color: var(--arm-color-grey-1);
+    box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-grey-1);
   }
 
   &[data-right-icon='true'] {
