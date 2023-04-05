@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { ArmstrongId, DataAttributes, Form, IArmstrongExtendedOption } from '../..';
-import { useOverridableState } from '../../hooks';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
@@ -94,15 +93,16 @@ export const CheckboxInput = React.forwardRef(
       onChange: onValueChange,
     });
 
-    // use an overridable internal state so it can be used without a binding
-    const [isChecked, setIsChecked] = useOverridableState((checked ?? false) as TBind, boundValue, setBoundValue);
+    const [isCheckedInternal, setIsCheckedInternal] = React.useState((checked ?? false) as TBind);
+    const isChecked = setBoundValue ? boundValue : isCheckedInternal;
+    const setIsChecked = setBoundValue ?? setIsCheckedInternal;
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsChecked(event.currentTarget.checked as TBind);
         onChange?.(event);
       },
-      [bind, onChange]
+      [setIsChecked, onChange]
     );
 
     return (
@@ -178,7 +178,7 @@ export const CheckboxInput = React.forwardRef(
 ) as (<TBind extends NullOrUndefined<boolean>>(
   props: ArmstrongFCProps<ICheckboxInputProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICheckboxInputProps<any>>;
+  ArmstrongFCExtensions<ICheckboxInputProps<NullOrUndefined<boolean>>>;
 
 CheckboxInput.defaultProps = {
   checkedIcon: getIconDefinition('Icomoon', 'checkmark3'),
