@@ -93,29 +93,16 @@ export const CheckboxInput = React.forwardRef(
       onChange: onValueChange,
     });
 
-    // Allows checkbox to use internal state that can be overriden by props
-    function useOverridableState<T>(
-      initialState?: T,
-      overrideValue?: T,
-      overrideSetValue?: (newValue: T) => void
-    ): [T, (newValue: T) => void] {
-      const [value, setValue] = React.useState(initialState);
-
-      const overridenValue = overrideSetValue ? overrideValue : value;
-      const setOverridenValue = overrideSetValue ?? setValue;
-
-      return [overridenValue!, setOverridenValue];
-    }
-
-    // use an overridable internal state so it can be used without a binding
-    const [isChecked, setIsChecked] = useOverridableState((checked ?? false) as TBind, boundValue, setBoundValue);
+    const [isCheckedInternal, setIsCheckedInternal] = React.useState((checked ?? false) as TBind);
+    const isChecked = setBoundValue ? boundValue : isCheckedInternal;
+    const setIsChecked = setBoundValue ?? setIsCheckedInternal;
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsChecked(event.currentTarget.checked as TBind);
         onChange?.(event);
       },
-      [bind, onChange]
+      [setIsChecked, onChange]
     );
 
     return (
@@ -191,7 +178,7 @@ export const CheckboxInput = React.forwardRef(
 ) as (<TBind extends NullOrUndefined<boolean>>(
   props: ArmstrongFCProps<ICheckboxInputProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICheckboxInputProps<any>>;
+  ArmstrongFCExtensions<ICheckboxInputProps<NullOrUndefined<boolean>>>;
 
 CheckboxInput.defaultProps = {
   checkedIcon: getIconDefinition('Icomoon', 'checkmark3'),
