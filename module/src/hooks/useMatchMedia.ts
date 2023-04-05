@@ -30,20 +30,32 @@ export function useMatchMedia(
     const media = Window?.matchMedia(query);
 
     if (!media) {
-      return;
+      return undefined;
     }
 
     if (media.matches !== isMatching) {
       setIsMatching(media.matches);
     }
 
-    media.addEventListener('change', onMatchesChangeEvent, eventListenerOptions);
+    try {
+      media.addEventListener('change', onMatchesChangeEvent, eventListenerOptions);
+    } catch (err) {
+      try {
+        // Fallback for < IOS 15 which doesnt support addEventListener
+        media.addListener(onMatchesChangeEvent);
+      } catch (err1) {
+        // eslint-disable-next-line no-console -- Ouput error incase both methods fail
+        console.error(err1);
+      }
+    }
 
     return () =>
       media.removeEventListener(
         'change',
         onMatchesChangeEvent,
-        typeof eventListenerOptions === 'boolean' ? eventListenerOptions : eventListenerOptions && { capture: eventListenerOptions.capture }
+        typeof eventListenerOptions === 'boolean'
+          ? eventListenerOptions
+          : eventListenerOptions && { capture: eventListenerOptions.capture }
       );
   }, [query, onMatchesChangeEvent]);
 

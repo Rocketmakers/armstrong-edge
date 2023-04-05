@@ -1,38 +1,23 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form, IInputWrapperProps, ValidationErrors } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-  NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { getPercent } from "../../utils/maths";
-import { Icon, IconSet, IIcon } from "../icon";
-import { IconWrapper, IIconWrapperProps } from "../iconWrapper";
-import {
-  IStatusWrapperProps,
-  StatusWrapper,
-} from "../statusWrapper/statusWrapper.component";
+import { Form, IButtonCoreProps, IInputWrapperProps, ValidationErrors } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { getPercent } from '../../utils/maths';
+import { Icon, IconSet, IIcon, isIconDefinition } from '../icon';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 
 export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
   extends Omit<
-      React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-      >,
-      "min" | "max" | "value"
+      React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+      'min' | 'max' | 'value'
     >,
-    IIconWrapperProps<IconSet, IconSet>,
+    Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     IStatusWrapperProps,
     Pick<
       IInputWrapperProps,
-      | "scrollValidationErrorsIntoView"
-      | "validationMode"
-      | "errorIcon"
-      | "validationErrorMessages"
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -105,13 +90,13 @@ export const RangeInput = React.forwardRef(
     return (
       <>
         <div
-          className={concat("arm-range-input", className)}
+          className={concat('arm-range-input', className)}
           style={
             {
-              "--arm-range-input-percent": `${currentPercent}%`,
-              "--arm-range-input-value": boundValue,
-              "--arm-range-input-minimum": minimum,
-              "--arm-range-input-maximum": maximum,
+              '--arm-range-input-percent': `${currentPercent}%`,
+              '--arm-range-input-value': boundValue,
+              '--arm-range-input-minimum': minimum,
+              '--arm-range-input-maximum': maximum,
             } as React.CSSProperties
           }
           data-disabled={disabled}
@@ -125,7 +110,16 @@ export const RangeInput = React.forwardRef(
             validationMode={bindConfig.validationMode}
             pending={pending}
           >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
+            <>
+              {leftIcon && (
+                <>
+                  {isIconDefinition(leftIcon) ? (
+                    <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
+                  ) : (
+                    leftIcon
+                  )}
+                </>
+              )}
               <div className="arm-range-input-track">
                 <input
                   className="arm-range-input-input"
@@ -142,23 +136,29 @@ export const RangeInput = React.forwardRef(
 
                 <div className="arm-range-input-track-inner" />
                 <div className="arm-range-input-handle">
-                  {handleIcon && (
-                    <Icon iconSet={handleIcon.iconSet} icon={handleIcon.icon} />
-                  )}
+                  {handleIcon && <Icon iconSet={handleIcon.iconSet} icon={handleIcon.icon} />}
                 </div>
               </div>
-            </IconWrapper>
+              {rightIcon && (
+                <>
+                  {isIconDefinition(rightIcon) ? (
+                    <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
+                  ) : (
+                    rightIcon
+                  )}
+                </>
+              )}
+            </>
           </StatusWrapper>
         </div>
 
-        {!!validationErrorMessages?.length &&
-          bindConfig.shouldShowValidationErrorMessage && (
-            <ValidationErrors
-              validationErrors={validationErrorMessages}
-              icon={bindConfig.validationErrorIcon}
-              scrollIntoView={scrollValidationErrorsIntoView}
-            />
-          )}
+        {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors
+            validationErrors={validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
+        )}
       </>
     );
   }

@@ -1,0 +1,25 @@
+.arm-text-area {
+  max-width: var(--arm-input-width-large);
+  width: 100%;
+
+  textarea {
+    padding: var(--arm-spacing-small);
+  }
+
+  .arm-input-inner {
+    cursor: text;
+  }
+}
+
+.arm-text-area-textarea {
+  min-height: var(--arm-input-height-large);
+  background-color: var(--arm-color-white);
+  border: var(--arm-color-grey-5 1px);
+  border-radius: var(--arm-form-border-radius);
+  font-family: inherit;
+  color: inherit;
+
+  &:focus {
+    outline-color: var(--arm-color-grey-1);
+  }
+}

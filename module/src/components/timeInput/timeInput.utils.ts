@@ -4,7 +4,10 @@ import { Dates } from '../../utils/dates';
 import { ISelectOption } from '../select';
 import { TimeParts } from './timeInput.types';
 
-export function getHourOptions(formatString: string, locale: Dates.DateLocale = Dates.defaultLocale): ISelectOption<number>[] {
+export function getHourOptions(
+  formatString: string,
+  locale: Dates.DateLocale = Dates.defaultLocale
+): ISelectOption<number>[] {
   const firstHour = startOfDay(new Date());
   const hours: ISelectOption<number>[] = [];
   for (let i = 0; i < 24; i += 1) {
@@ -59,7 +62,15 @@ export function parseTimePartsToDate(
     return undefined;
   }
   const today = new Date();
-  const dateObject = new Date(today.getFullYear(), today.getMonth(), today.getDate(), timeParts.hour, timeParts.minute, 0, 0);
+  const dateObject = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+    timeParts.hour,
+    timeParts.minute,
+    0,
+    0
+  );
   if (!isValid(dateObject)) {
     throw new Error(`Invalid time selection: ${JSON.stringify(timeParts)}`);
   }

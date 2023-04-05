@@ -4,20 +4,22 @@ import { themes } from '@storybook/theming';
 
 import '../src/stories/theme.scss';
 
-export const decorators = [(Story) => {
-  return (
-    <div id="host">
-      <ModalProvider>
-        <div className="story-wrapper">
-          <Story />
-        </div>
-      </ModalProvider>
-    </div>
-  );
-},];
+export const decorators = [
+  Story => {
+    return (
+      <div id="host">
+        <ModalProvider>
+          <div className="story-wrapper">
+            <Story />
+          </div>
+        </ModalProvider>
+      </div>
+    );
+  },
+];
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -46,5 +48,5 @@ export const parameters = {
   },
   backgrounds: {
     default: 'light',
-  }
-}
+  },
+};

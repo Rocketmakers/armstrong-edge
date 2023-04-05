@@ -35,58 +35,6 @@ Adds the base properties needed to initialise a pseudo-element
 }
 ```
 
-### range-input-thumb
-
-Selects the thumb of a range input
-
-```css
-/* definition */
-@mixin range-input-thumb {
-  &::-webkit-slider-thumb {
-    @content;
-  }
-  &::-moz-range-thumb {
-    @content;
-  }
-  &::-ms-thumb {
-    @content;
-  }
-}
-
-/* use */
-@import '~@rocketmakers/armstrong/dist/imports.scss';
-
-@incude range-input-thumb {
-  ...some stuff;
-}
-```
-
-### range-input-track
-
-Selects the track of a range input
-
-```css
-/* definition */
-@mixin range-input-runnable-track {
-  &::-webkit-slider-track {
-    @content;
-  }
-  &::-moz-range-track {
-    @content;
-  }
-  &::-ms-track {
-    @content;
-  }
-}
-
-/* use */
-@import '~@rocketmakers/armstrong/dist/imports.scss';
-
-@incude range-input-track {
-  ...some stuff;
-}
-```
-
 ## <a name="layout">Layout</a>
 
 ### fill

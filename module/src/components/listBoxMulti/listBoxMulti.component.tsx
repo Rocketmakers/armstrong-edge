@@ -1,39 +1,34 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form, IListBoxOption, IListBoxProps } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-} from "../../types";
-import { ArmstrongId } from "../../types/core";
-import { concat } from "../../utils/classNames";
-import { DropdownItems } from "../dropdownItems";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IconButton } from "../iconButton";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
-import { Tag } from "../tag";
+import { Button, Form, IListBoxOption, IListBoxProps } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
+import { ArmstrongId } from '../../types/core';
+import { concat } from '../../utils/classNames';
+import { DropdownItems } from '../dropdownItems';
+import { getIconDefinition, Icon, IconSet, IIcon, isIconDefinition } from '../icon';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { Tag } from '../tag';
 
 export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   extends IInputWrapperProps,
     Pick<
       IListBoxProps<Id, TSelectData>,
-      | "options"
-      | "onSelectOption"
-      | "selectOverlayIcon"
-      | "placeholder"
-      | "wrapperClassName"
-      | "deleteButton"
-      | "noItemsText"
-      | "dropdownClassName"
-      | "closeOnScroll"
-      | "closeOnWindowBlur"
-      | "closeOnWindowClick"
-      | "closeOnBackgroundClick"
-      | "closeOnSelection"
-      | "alignment"
-      | "position"
+      | 'options'
+      | 'onSelectOption'
+      | 'selectOverlayIcon'
+      | 'placeholder'
+      | 'wrapperClassName'
+      | 'deleteButton'
+      | 'noItemsText'
+      | 'dropdownClassName'
+      | 'closeOnScroll'
+      | 'closeOnWindowBlur'
+      | 'closeOnWindowClick'
+      | 'closeOnBackgroundClick'
+      | 'closeOnSelection'
+      | 'alignment'
+      | 'position'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
@@ -48,9 +43,7 @@ export interface IListBoxMultiProps<Id extends ArmstrongId, TSelectData = any>
   onValueChange?: (neWValue: Id[]) => void;
 
   /** if set, will render the result of this function instead of Tags, i.e. a string like "X selected" or a custom component */
-  renderPreview?: (
-    selectedOptions: IListBoxOption<Id, TSelectData>[]
-  ) => React.ReactChild;
+  renderPreview?: (selectedOptions: IListBoxOption<Id, TSelectData>[]) => React.ReactChild;
 }
 
 /** A DOM recreation of a select element, which binds to an array of Id values */
@@ -107,7 +100,7 @@ export const ListBoxMulti = React.forwardRef(
 
     const removeItem = React.useCallback(
       (id: ArmstrongId) => {
-        setBoundValue?.(boundValue?.filter((item) => item !== id) || []);
+        setBoundValue?.(boundValue?.filter(item => item !== id) || []);
       },
       [boundValue, setBoundValue]
     );
@@ -117,7 +110,7 @@ export const ListBoxMulti = React.forwardRef(
         onSelectOption?.(option);
 
         if (option) {
-          if (boundValue?.find((item) => item === option.id)) {
+          if (boundValue?.find(item => item === option.id)) {
             removeItem(option.id);
           } else {
             setBoundValue?.([...(boundValue || []), option.id]);
@@ -132,8 +125,8 @@ export const ListBoxMulti = React.forwardRef(
     const currentOptions = React.useMemo(
       () =>
         boundValue?.map<IListBoxOption<Id, TSelectData>>(
-          (item) =>
-            options.find((option) => option.id === item) || {
+          item =>
+            options.find(option => option.id === item) || {
               id: item,
               name: item?.toString(),
             }
@@ -145,24 +138,22 @@ export const ListBoxMulti = React.forwardRef(
       <DropdownItems
         isOpen={dropdownOpen}
         onOpenChange={setDropdownOpen}
-        items={options.map((option) => ({
+        items={options.map(option => ({
           content: option.name ?? option.id?.toString(),
           id: option.id,
           leftIcon: option.leftIcon,
           rightIcon: option.rightIcon,
           group: option.group,
         }))}
-        onItemSelected={(item) =>
-          onItemSelected(options.find((option) => option.id === item)!)
-        }
+        onItemSelected={item => onItemSelected(options.find(option => option.id === item)!)}
         allowKeyboardNavigation
         focusableWrapper
         currentValue={boundValue}
         childRootElementSelector=".arm-input-inner"
         closeOnSelection={closeOnSelection}
-        className={concat("arm-listbox-multi-wrapper", wrapperClassName)}
+        className={concat('arm-listbox-multi-wrapper', wrapperClassName)}
         noItemsText={noItemsText}
-        contentClassName={concat("arm-listbox-options", dropdownClassName)}
+        contentClassName={concat('arm-listbox-options', dropdownClassName)}
         closeOnScroll={closeOnScroll}
         closeOnWindowBlur={closeOnWindowBlur}
         closeOnWindowClick={closeOnWindowClick}
@@ -173,7 +164,7 @@ export const ListBoxMulti = React.forwardRef(
       >
         <InputWrapper
           ref={internalRef}
-          className={concat("arm-listbox-multi", className)}
+          className={concat('arm-listbox-multi', className)}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           leftOverlay={leftOverlay}
@@ -193,7 +184,7 @@ export const ListBoxMulti = React.forwardRef(
                 <>
                   {renderPreview
                     ? renderPreview(currentOptions)
-                    : currentOptions.map((tag) => (
+                    : currentOptions.map(tag => (
                         <Tag
                           content={tag.name ?? tag.id?.toString()}
                           leftIcon={tag.leftIcon}
@@ -210,7 +201,7 @@ export const ListBoxMulti = React.forwardRef(
           </div>
 
           {selectOverlayIcon &&
-            (IconUtils.isIconDefinition(selectOverlayIcon) ? (
+            (isIconDefinition(selectOverlayIcon) ? (
               <Icon
                 className="arm-listbox-multi-overlay-icon"
                 icon={selectOverlayIcon.icon}
@@ -221,18 +212,18 @@ export const ListBoxMulti = React.forwardRef(
             ))}
 
           {deleteButton && !!boundValue?.length && (
-            <IconButton
-              type="button"
+            <Button
               className="arm-listbox-multi-delete"
-              onClick={(event) => {
+              onClick={event => {
                 onItemSelected(undefined);
                 setDropdownOpen(false);
                 event.stopPropagation();
               }}
-              onMouseDown={(event) => event.stopPropagation()}
-              onMouseUp={(event) => event.stopPropagation()}
-              icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
-            />
+              onMouseDown={event => event.stopPropagation()}
+              onMouseUp={event => event.stopPropagation()}
+            >
+              <Icon iconSet="Icomoon" icon="cross2" />
+            </Button>
           )}
         </InputWrapper>
       </DropdownItems>
@@ -241,15 +232,14 @@ export const ListBoxMulti = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId, TSelectData = any>(
-  props: ArmstrongFCProps<
-    IListBoxMultiProps<Id, TSelectData>,
-    HTMLSelectElement
-  >
+  props: ArmstrongFCProps<IListBoxMultiProps<Id, TSelectData>, HTMLSelectElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IListBoxMultiProps<any, any>>;
 
 ListBoxMulti.defaultProps = {
-  selectOverlayIcon: IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+  selectOverlayIcon: getIconDefinition('Icomoon', 'arrow-down3'),
   deleteButton: true,
   closeOnSelection: false,
 };
+
+ListBoxMulti.displayName = 'ListBoxMulti';

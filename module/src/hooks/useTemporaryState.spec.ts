@@ -1,12 +1,13 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
-import { useTemporaryState } from "./useTemporaryState";
+import { act, renderHook, waitFor } from '@testing-library/react';
 
-describe("useTemporaryState", () => {
-    beforeEach(() => {
-        jest.useRealTimers();
-    });
+import { useTemporaryState } from './useTemporaryState';
 
-  it("resets a value back to its original after a given time", async () => {
+describe('useTemporaryState', () => {
+  beforeEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('resets a value back to its original after a given time', async () => {
     jest.useFakeTimers();
     const ms = 600;
     const value = 'test';
@@ -38,7 +39,7 @@ describe("useTemporaryState", () => {
     expect(onReset).toHaveBeenCalled();
   });
 
-  it("allows a user to reset back to the initial value before the given time", async () => {
+  it('allows a user to reset back to the initial value before the given time', async () => {
     jest.useFakeTimers();
     const ms = 600;
     const value = 'test';

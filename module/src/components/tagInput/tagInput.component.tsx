@@ -1,43 +1,22 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  concat,
-  Form,
-} from "../..";
-import {
-  FormValidationMode,
-  IBindingProps,
-  ValidationMessage,
-} from "../../hooks/form";
-import { useOverridableState } from "../../hooks/useOverridableState";
-import { ArmstrongId, NullOrUndefined } from "../../types/core";
-import { IArmstrongExtendedOption } from "../../types/options";
-import { IconUtils } from "../icon";
-import { IconButton } from "../iconButton";
-import { IInputWrapperProps, InputWrapper } from "../inputWrapper";
-import { Tag } from "../tag/tag.component";
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, Button, concat, Form } from '../..';
+import { FormValidationMode, IBindingProps, ValidationMessage } from '../../hooks/form';
+import { useOverridableState } from '../../hooks/useOverridableState';
+import { ArmstrongId, NullOrUndefined } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
+import { Icon } from '../icon';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper';
+import { Tag } from '../tag/tag.component';
 
-export interface ITag
-  extends Pick<
-    IArmstrongExtendedOption<
-      ArmstrongId,
-      React.BaseHTMLAttributes<HTMLDivElement>
-    >,
-    "id" | "name" | "htmlProps" | "leftIcon" | "rightIcon"
-  > {}
+export type ITag = Pick<
+  IArmstrongExtendedOption<ArmstrongId, React.BaseHTMLAttributes<HTMLDivElement>>,
+  'id' | 'name' | 'htmlProps' | 'leftIcon' | 'rightIcon'
+>;
 
 export interface ITagInputProps<TBind extends NullOrUndefined<string[]>>
-  extends Omit<IInputWrapperProps, "above" | "below" | "onClick">,
-    Omit<
-      React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-      >,
-      "onChange" | "value"
-    > {
+  extends Omit<IInputWrapperProps, 'above' | 'below' | 'onClick'>,
+    Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange' | 'value'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
 
@@ -75,7 +54,7 @@ export interface ITagInputProps<TBind extends NullOrUndefined<string[]>>
   spaceCreatesTags?: boolean;
 
   /** where to render the tags - defaults to inside */
-  tagPosition?: "inside" | "above" | "below";
+  tagPosition?: 'inside' | 'above' | 'below';
 
   /** should allow deletion of tags with a cross */
   deleteButton?: boolean;
@@ -144,30 +123,28 @@ export const TagInput = React.forwardRef(
     });
 
     // internal state for the text input, overriden by props
-    const [textInputInternalValue, setTextInputInternalValue] =
-      useOverridableState("", textInputValue, onTextInputValueChange);
+    const [textInputInternalValue, setTextInputInternalValue] = useOverridableState(
+      '',
+      textInputValue,
+      onTextInputValueChange
+    );
 
     const currentTags = React.useMemo(() => {
       if (tags) {
         return tags;
       }
       if (boundValue) {
-        return boundValue.map<ITag>((val) => ({ name: val, id: val }));
+        return boundValue.map<ITag>(val => ({ name: val, id: val }));
       }
       return [];
     }, [tags, boundValue]);
 
     const addTag = React.useCallback(
       (newTag: string) => {
-        if (
-          newTag &&
-          (allowDuplicates ||
-            (!boundValue?.includes(newTag) &&
-              (!getCanAddTag || getCanAddTag(newTag))))
-        ) {
+        if (newTag && (allowDuplicates || (!boundValue?.includes(newTag) && (!getCanAddTag || getCanAddTag(newTag))))) {
           setBoundValue?.([...(boundValue ?? []), newTag.trim()] as TBind);
         }
-        setTextInputInternalValue("");
+        setTextInputInternalValue('');
         onAddTag?.(newTag);
       },
       [boundValue, allowDuplicates, setBoundValue, onAddTag]
@@ -175,12 +152,8 @@ export const TagInput = React.forwardRef(
 
     const removeTag = React.useCallback(
       (tagToRemove: ArmstrongId) => {
-        setBoundValue?.(
-          ((boundValue as string[]) || []).filter(
-            (tag) => tag !== tagToRemove
-          ) as TBind
-        );
-        setTextInputInternalValue("");
+        setBoundValue?.(((boundValue as string[]) || []).filter(tag => tag !== tagToRemove) as TBind);
+        setTextInputInternalValue('');
         onRemoveTag?.(tagToRemove);
       },
       [boundValue, setBoundValue, onRemoveTag]
@@ -188,31 +161,27 @@ export const TagInput = React.forwardRef(
 
     const clearTags = React.useCallback(() => {
       setBoundValue?.([] as string[] as TBind);
-      setTextInputInternalValue("");
+      setTextInputInternalValue('');
       onRemoveAllTags?.();
     }, [setBoundValue, onRemoveAllTags]);
 
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>) => {
         switch (event.key) {
-          case "Enter": {
+          case 'Enter': {
             addTag(textInputInternalValue);
             event.preventDefault();
             break;
           }
-          case " ": {
+          case ' ': {
             if (spaceCreatesTags) {
               addTag(textInputInternalValue);
               event.preventDefault();
             }
             break;
           }
-          case "Backspace": {
-            if (
-              textInputInternalValue === "" &&
-              currentTags?.length >= 1 &&
-              tagPosition === "inside"
-            ) {
+          case 'Backspace': {
+            if (textInputInternalValue === '' && currentTags?.length >= 1 && tagPosition === 'inside') {
               removeTag(currentTags[currentTags.length - 1].id);
             }
             break;
@@ -222,14 +191,7 @@ export const TagInput = React.forwardRef(
           }
         }
       },
-      [
-        textInputInternalValue,
-        addTag,
-        spaceCreatesTags,
-        tagPosition,
-        boundValue,
-        removeTag,
-      ]
+      [textInputInternalValue, addTag, spaceCreatesTags, tagPosition, boundValue, removeTag]
     );
 
     const tagsJsx = (
@@ -249,7 +211,7 @@ export const TagInput = React.forwardRef(
 
     return (
       <InputWrapper
-        className={concat("arm-tag-input", className)}
+        className={concat('arm-tag-input', className)}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}
         validationMode={bindConfig.validationMode}
@@ -266,23 +228,19 @@ export const TagInput = React.forwardRef(
         disableOnPending={disableOnPending}
         statusPosition={statusPosition}
         onClick={() => internalRef.current?.focus()}
-        above={tagPosition === "above" ? tagsJsx : undefined}
-        below={tagPosition === "below" ? tagsJsx : undefined}
         scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
       >
+        {tagPosition === 'above' && tagsJsx}
+
         <div className="arm-tag-input-inner">
-          {tagPosition === "inside" && tagsJsx}
+          {tagPosition === 'inside' && tagsJsx}
           <input
             className="arm-tag-input-input"
             {...nativeProps}
             ref={internalRef}
             value={textInputInternalValue}
-            placeholder={
-              !boundValue?.length || tagPosition !== "inside"
-                ? placeholder
-                : undefined
-            }
-            onChange={(event) => {
+            placeholder={!boundValue?.length || tagPosition !== 'inside' ? placeholder : undefined}
+            onChange={event => {
               setTextInputInternalValue(event.currentTarget.value);
               onTextInputChange?.(event);
             }}
@@ -290,12 +248,12 @@ export const TagInput = React.forwardRef(
           />
         </div>
 
+        {tagPosition === 'below' && tagsJsx}
+
         {deleteAllButton && !!boundValue?.length && (
-          <IconButton
-            type="button"
-            onClick={clearTags}
-            icon={IconUtils.getIconDefinition("Icomoon", "cross2")}
-          />
+          <Button onClick={clearTags}>
+            <Icon iconSet="Icomoon" icon="cross2" />
+          </Button>
         )}
       </InputWrapper>
     );
@@ -308,7 +266,7 @@ export const TagInput = React.forwardRef(
   ArmstrongFCExtensions<ITagInputProps<any>>;
 
 TagInput.defaultProps = {
-  tagPosition: "inside",
+  tagPosition: 'inside',
   deleteButton: true,
   deleteAllButton: true,
 };

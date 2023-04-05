@@ -37,5 +37,5 @@ export function getDaysWithDisplayFormat(
   formatString: string,
   locale: Locale = Dates.defaultLocale
 ): { day: Calendar.IDay; displayFormat: string }[] {
-  return days.map((day) => ({ day, displayFormat: format(day.date, formatString, { locale }) }));
+  return days.map(day => ({ day, displayFormat: format(day.date, formatString, { locale }) }));
 }

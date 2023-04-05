@@ -1,49 +1,29 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  ArmstrongId,
-  DataAttributes,
-  Form,
-  IArmstrongExtendedOption,
-} from "../..";
-import { useOverridableState } from "../../hooks";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IconUtils, IIcon } from "../icon";
-import { IInputWrapperProps } from "../inputWrapper";
-import { OptionContent } from "../optionContent";
-import { Status } from "../status";
-import { ValidationErrors } from "../validationErrors";
+import { ArmstrongId, DataAttributes, Form, IArmstrongExtendedOption } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
+import { IInputWrapperProps } from '../inputWrapper';
+import { OptionContent } from '../optionContent';
+import { Status } from '../status';
+import { ValidationErrors } from '../validationErrors';
 
 export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
-  extends Omit<
-      React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      "type" | "checked"
-    >,
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type' | 'checked'>,
     Pick<
       IInputWrapperProps,
-      | "scrollValidationErrorsIntoView"
-      | "validationMode"
-      | "errorIcon"
-      | "disabled"
-      | "pending"
-      | "error"
-      | "validationErrorMessages"
-      | "className"
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'disabled'
+      | 'pending'
+      | 'error'
+      | 'validationErrorMessages'
+      | 'className'
     >,
-    Pick<
-      IArmstrongExtendedOption<ArmstrongId>,
-      "name" | "leftIcon" | "rightIcon"
-    > {
+    Pick<IArmstrongExtendedOption<ArmstrongId>, 'name' | 'leftIcon' | 'rightIcon'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
 
@@ -61,19 +41,16 @@ export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
 
   /** props to spread onto the input element */
   inputProps?: Omit<
-    React.DetailedHTMLProps<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      HTMLInputElement
-    >,
-    "onChange" | "type" | "ref" | "checked"
+    React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+    'onChange' | 'type' | 'ref' | 'checked'
   > &
     DataAttributes;
 
   /** the direction for the content to flow */
-  direction?: "vertical" | "horizontal";
+  direction?: 'vertical' | 'horizontal';
 
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
-  content?: IArmstrongExtendedOption<ArmstrongId>["content"];
+  content?: IArmstrongExtendedOption<ArmstrongId>['content'];
 
   /** apply a test ID to the component for Storybook, Playwright etc */
   testId?: string;
@@ -116,25 +93,22 @@ export const CheckboxInput = React.forwardRef(
       onChange: onValueChange,
     });
 
-    // use an overridable internal state so it can be used without a binding
-    const [isChecked, setIsChecked] = useOverridableState(
-      (checked ?? false) as TBind,
-      boundValue,
-      setBoundValue
-    );
+    const [isCheckedInternal, setIsCheckedInternal] = React.useState((checked ?? false) as TBind);
+    const isChecked = setBoundValue ? boundValue : isCheckedInternal;
+    const setIsChecked = setBoundValue ?? setIsCheckedInternal;
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsChecked(event.currentTarget.checked as TBind);
         onChange?.(event);
       },
-      [bind, onChange]
+      [setIsChecked, onChange]
     );
 
     return (
       <>
         <div
-          className={concat("arm-input", "arm-checkbox-input", className)}
+          className={concat('arm-input', 'arm-checkbox-input', className)}
           data-disabled={disabled || pending}
           data-error={error || !!validationErrorMessages?.length}
           data-checked={isChecked}
@@ -172,8 +146,7 @@ export const CheckboxInput = React.forwardRef(
 
             <Status
               error={
-                bindConfig.shouldShowValidationErrorIcon &&
-                (!!bindConfig.validationErrorMessages?.length || error)
+                bindConfig.shouldShowValidationErrorIcon && (!!bindConfig.validationErrorMessages?.length || error)
               }
               pending={pending}
               errorIcon={bindConfig.validationErrorIcon}
@@ -190,14 +163,13 @@ export const CheckboxInput = React.forwardRef(
           />
         </div>
 
-        {!!bindConfig.validationErrorMessages?.length &&
-          bindConfig.shouldShowValidationErrorMessage && (
-            <ValidationErrors
-              validationErrors={bindConfig.validationErrorMessages}
-              icon={bindConfig.validationErrorIcon}
-              scrollIntoView={scrollValidationErrorsIntoView}
-            />
-          )}
+        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
+        )}
       </>
     );
   }
@@ -206,10 +178,10 @@ export const CheckboxInput = React.forwardRef(
 ) as (<TBind extends NullOrUndefined<boolean>>(
   props: ArmstrongFCProps<ICheckboxInputProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICheckboxInputProps<any>>;
+  ArmstrongFCExtensions<ICheckboxInputProps<NullOrUndefined<boolean>>>;
 
 CheckboxInput.defaultProps = {
-  checkedIcon: IconUtils.getIconDefinition("Icomoon", "checkmark3"),
-  validationMode: "both",
-  direction: "horizontal",
+  checkedIcon: getIconDefinition('Icomoon', 'checkmark3'),
+  validationMode: 'both',
+  direction: 'horizontal',
 };

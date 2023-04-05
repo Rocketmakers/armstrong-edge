@@ -1,7 +1,10 @@
-import { format, formatISO, parse, parseISO, Locale } from 'date-fns';
+// eslint-disable-next-line import/no-duplicates -- Not actually a duplicate due to date-fns splitting.
+import { format, formatISO, parse, parseISO } from 'date-fns';
+// eslint-disable-next-line import/no-duplicates -- Not actually a duplicate due to date-fns splitting.
 import { enGB } from 'date-fns/locale';
 
-import { Calendar, ISelectOption } from '..';
+import { ISelectOption } from '../components/select';
+import { Calendar } from '../hooks';
 import { NullOrUndefined } from '../types';
 
 /** Set of utilities and types relating to the native JS date object */
@@ -28,7 +31,11 @@ export namespace Dates {
    * @param locale The locale to use if `date` is a string, if not passed, will use the system default locale of `en-GB`.
    * @returns The parsed `Date` object, or `undefined` if no `date` was passed.
    */
-  export function dateLikeToDate(date: NullOrUndefined<DateLike>, formatString?: string, locale: Locale = defaultLocale): Date | undefined {
+  export function dateLikeToDate(
+    date: NullOrUndefined<DateLike>,
+    formatString?: string,
+    locale: Locale = defaultLocale
+  ): Date | undefined {
     if (typeof date === 'string') {
       return formatString ? parse(date, formatString, new Date(), { locale }) : parseISO(date);
     }
@@ -55,7 +62,7 @@ export namespace Dates {
     formatString: string,
     locale: Locale = Dates.defaultLocale
   ): ISelectOption<number, Calendar.IMonth>[] {
-    return months.map((month) => ({
+    return months.map(month => ({
       id: month.indexInYear,
       name: format(month.date, formatString, { locale }),
       data: month,
@@ -68,7 +75,7 @@ export namespace Dates {
     formatString: string,
     locale: Locale = Dates.defaultLocale
   ): ISelectOption<number, Calendar.IYear>[] {
-    return years.map((year) => ({ id: year.number, name: format(year.date, formatString, { locale }), data: year }));
+    return years.map(year => ({ id: year.number, name: format(year.date, formatString, { locale }), data: year }));
   }
 
   /**

@@ -55,7 +55,9 @@ export interface IModalProviderProps {
 export const ModalProvider = React.forwardRef<HTMLDivElement | null, React.PropsWithChildren<IModalProviderProps>>(
   ({ children, modalLayerProps }, ref) => {
     const [modalLayerReference, setModalLayerReference] = React.useState<HTMLDivElement>();
-    React.useImperativeHandle<HTMLDivElement | null, HTMLDivElement | null>(ref, () => modalLayerReference!, [modalLayerReference]);
+    React.useImperativeHandle<HTMLDivElement | null, HTMLDivElement | null>(ref, () => modalLayerReference!, [
+      modalLayerReference,
+    ]);
 
     // set the reference to the modal layer element to context
     const setRef = React.useCallback((node: HTMLDivElement) => {

@@ -1,18 +1,18 @@
-@use "../../theme/variables.scss";
-
 .arm-code-input {
   display: grid;
   grid-auto-flow: column;
   gap: var(--arm-spacing-xxsmall);
   align-items: center;
+}
 
-  .arm-input-base {
-    width: auto;
-    position: relative;
+.arm-code-input-part-input {
+  width: auto;
+  position: relative;
+}
 
-    .arm-input-base-input {
-      width: calc(var(--arm-code-input-length, 1) * 0.5rem);
-      text-align: center;
-    }
-  }
+.arm-code-input-part-input .arm-input-base-input {
+  width: calc(var(--arm-code-input-length, 1) * var(--arm-input-height-medium));
+  text-align: center;
+  height: var(--arm-input-height-medium);
+  padding: 0;
 }

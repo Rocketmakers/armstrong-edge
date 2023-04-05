@@ -1,31 +1,21 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { useEventListener, useResizeObserver } from "../../hooks";
-import { useBoundingClientRect } from "../../hooks/useBoundingClientRect";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { concat } from "../../utils/classNames";
-import { Document } from "../../utils/globals";
-import { clamp } from "../../utils/maths";
-import { AutoResizer } from "../autoResizer";
-import { IModalProps, Modal } from "../modal";
-import { IPortalProps } from "../portal";
+import { useEventListener, useResizeObserver } from '../../hooks';
+import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { concat } from '../../utils/classNames';
+import { Document } from '../../utils/globals';
+import { clamp } from '../../utils/maths';
+import { AutoResizer } from '../autoResizer';
+import { IModalProps, Modal } from '../modal';
+import { IPortalProps } from '../portal';
 
 export interface IDropdownProps
-  extends Omit<
-      React.DetailedHTMLProps<
-        React.BaseHTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      "ref"
-    >,
-    Pick<IPortalProps, "portalToSelector" | "portalTo">,
+  extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>,
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'>,
     Pick<
       IModalProps,
-      | "isOpen"
-      | "onOpenChange"
-      | "closeOnWindowBlur"
-      | "closeOnWindowClick"
-      | "closeOnBackgroundClick"
+      'isOpen' | 'onOpenChange' | 'closeOnWindowBlur' | 'closeOnWindowClick' | 'closeOnBackgroundClick'
     > {
   /** rendered inside the dropdown */
   dropdownContent: JSX.Element;
@@ -61,22 +51,16 @@ export interface IDropdownProps
   reopenOnWindowFocusWhileFocused?: boolean;
 
   /** props to spread into the modal's root div */
-  modalHtmlProps?: Omit<
-    React.DetailedHTMLProps<
-      React.BaseHTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >,
-    "ref"
-  >;
+  modalHtmlProps?: Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref'>;
 
   /** should the modal attempt to fill the width of the parent element */
   stretch?: boolean;
 
   /** how should the dropdown align horizontally to the child element - if stretch is true, used if wider than the child element */
-  alignment?: "left" | "centre" | "right";
+  alignment?: 'left' | 'centre' | 'right';
 
   /** how should the dropdown be positioned vertically */
-  position?: "above" | "below";
+  position?: 'above' | 'below';
 }
 
 export interface IDropdownRef {
@@ -93,10 +77,7 @@ export interface IDropdownRef {
  * Default html props given to this component are applied to the static div that wraps its children. To supply html props to the modal div
  * see modalHtmlProps
  */
-export const Dropdown = React.forwardRef<
-  IDropdownRef,
-  React.PropsWithChildren<IDropdownProps>
->(
+export const Dropdown = React.forwardRef<IDropdownRef, React.PropsWithChildren<IDropdownProps>>(
   (
     {
       isOpen,
@@ -132,11 +113,7 @@ export const Dropdown = React.forwardRef<
     const elementToRenderBelowRef = React.useRef<Element>();
     const modalRef = React.useRef<HTMLDivElement>();
 
-    const [rootRect, getRootRectContentRect] = useBoundingClientRect(
-      elementToRenderBelowRef,
-      undefined,
-      isOpen
-    );
+    const [rootRect, getRootRectContentRect] = useBoundingClientRect(elementToRenderBelowRef, undefined, isOpen);
     const windowSize = useWindowSize();
 
     // used to stop the dropdown from reopening if focused when the blurs then refocuses the window
@@ -159,57 +136,35 @@ export const Dropdown = React.forwardRef<
       getRootRectContentRect();
     }, [isOpen]);
 
-    React.useImperativeHandle(ref, () => ({ rootRef, modalRef }), [
-      rootRef,
-      modalRef,
-    ]);
+    React.useImperativeHandle(ref, () => ({ rootRef, modalRef }), [rootRef, modalRef]);
 
     const [modalSize, setModalSize] = React.useState({ width: 0, height: 0 });
 
-    const onSizeChange = React.useCallback(
-      (size: { width: number; height: number }) => {
-        setModalSize(size);
-      },
-      []
-    );
+    const onSizeChange = React.useCallback((size: { width: number; height: number }) => {
+      setModalSize(size);
+    }, []);
 
     // get top position of modal from root rect and modal's size if position is below
     const top = React.useMemo(() => {
-      if (rootRect && modalSize && position === "below") {
+      if (rootRect && modalSize && position === 'below') {
         return clamp(
           rootRect.top + rootRect.height,
           edgeDetectionMargin!,
-          (windowSize.innerHeight || 0) -
-            modalSize.height -
-            edgeDetectionMargin!
+          (windowSize.innerHeight || 0) - modalSize.height - edgeDetectionMargin!
         );
       }
-    }, [
-      rootRect?.top,
-      rootRect?.height,
-      modalSize?.height,
-      windowSize.innerHeight,
-      position,
-    ]);
+    }, [rootRect?.top, rootRect?.height, modalSize?.height, windowSize.innerHeight, position]);
 
     // get bottom position of modal from root rect and modal's size if position is above
     const bottom = React.useMemo(() => {
-      if (rootRect && modalSize && position === "above") {
+      if (rootRect && modalSize && position === 'above') {
         return clamp(
           windowSize.innerHeight - rootRect.top,
           edgeDetectionMargin!,
-          (windowSize.innerHeight || 0) -
-            modalSize.height -
-            edgeDetectionMargin!
+          (windowSize.innerHeight || 0) - modalSize.height - edgeDetectionMargin!
         );
       }
-    }, [
-      rootRect?.top,
-      rootRect?.height,
-      modalSize?.height,
-      windowSize.innerHeight,
-      position,
-    ]);
+    }, [rootRect?.top, rootRect?.height, modalSize?.height, windowSize.innerHeight, position]);
 
     // get left position of modal from root rect and modal's size
     const left = React.useMemo(() => {
@@ -217,15 +172,14 @@ export const Dropdown = React.forwardRef<
         let leftToClamp = 0;
 
         switch (alignment) {
-          case "left":
+          case 'left':
           default:
             leftToClamp = rootRect.left;
             break;
-          case "centre":
-            leftToClamp =
-              rootRect.left + rootRect.width / 2 - modalSize.width / 2;
+          case 'centre':
+            leftToClamp = rootRect.left + rootRect.width / 2 - modalSize.width / 2;
             break;
-          case "right":
+          case 'right':
             leftToClamp = rootRect.right - modalSize.width;
             break;
         }
@@ -236,14 +190,7 @@ export const Dropdown = React.forwardRef<
           (windowSize.innerWidth || 0) - modalSize.width - edgeDetectionMargin!
         );
       }
-    }, [
-      rootRect?.left,
-      modalSize?.width,
-      windowSize.innerWidth,
-      edgeDetectionMargin,
-      alignment,
-      rootRect?.width,
-    ]);
+    }, [rootRect?.left, modalSize?.width, windowSize.innerWidth, edgeDetectionMargin, alignment, rootRect?.width]);
 
     /** only used if stretch is true */
     const width = React.useMemo(() => rootRect?.width, [rootRect?.width]);
@@ -252,8 +199,7 @@ export const Dropdown = React.forwardRef<
     React.useLayoutEffect(() => {
       if (rootRef.current) {
         elementToRenderBelowRef.current = childRootElementSelector
-          ? rootRef.current.querySelector(childRootElementSelector) ??
-            rootRef.current
+          ? rootRef.current.querySelector(childRootElementSelector) ?? rootRef.current
           : rootRef.current;
       }
     }, [childRootElementSelector]);
@@ -265,8 +211,7 @@ export const Dropdown = React.forwardRef<
           isOpen &&
           closeOnScroll &&
           // check if scrolling element is inside the dropdown content
-          ((event.target instanceof HTMLDivElement &&
-            !event.target.classList.contains("arm-dropdown-content")) ||
+          ((event.target instanceof HTMLDivElement && !event.target.classList.contains('arm-dropdown-content')) ||
             !(event.target instanceof HTMLDivElement))
         ) {
           onOpenChange?.(false);
@@ -275,11 +220,11 @@ export const Dropdown = React.forwardRef<
       [onOpenChange, closeOnScroll, isOpen]
     );
 
-    useEventListener("scroll", onScrollDocument, Document, {
+    useEventListener('scroll', onScrollDocument, Document, {
       capture: true,
       passive: true,
     });
-    useEventListener("resize", onScrollDocument, Document, {
+    useEventListener('resize', onScrollDocument, Document, {
       capture: true,
       passive: true,
     });
@@ -293,52 +238,31 @@ export const Dropdown = React.forwardRef<
         }
         onMouseDown?.(event);
       },
-      [
-        openWhenClickInside,
-        closeWhenClickInside,
-        onOpenChange,
-        onMouseDown,
-        isOpen,
-      ]
+      [openWhenClickInside, closeWhenClickInside, onOpenChange, onMouseDown, isOpen]
     );
     // open on focus
     const onFocusEvent = React.useCallback(
       (event: React.FocusEvent<HTMLDivElement>) => {
-        if (
-          openWhenFocusInside &&
-          (!windowBlurred || reopenOnWindowFocusWhileFocused)
-        ) {
+        if (openWhenFocusInside && (!windowBlurred || reopenOnWindowFocusWhileFocused)) {
           onOpenChange?.(true);
         }
 
         onFocus?.(event);
       },
-      [
-        openWhenFocusInside,
-        onOpenChange,
-        onFocus,
-        windowBlurred,
-        reopenOnWindowFocusWhileFocused,
-      ]
+      [openWhenFocusInside, onOpenChange, onFocus, windowBlurred, reopenOnWindowFocusWhileFocused]
     );
 
-    const onScrollContent = React.useCallback(
-      (event: React.UIEvent) => event.stopPropagation(),
-      []
-    );
-    const onMouseDownContent = React.useCallback(
-      (event: React.UIEvent) => event.stopPropagation(),
-      []
-    );
+    const onScrollContent = React.useCallback((event: React.UIEvent) => event.stopPropagation(), []);
+    const onMouseDownContent = React.useCallback((event: React.UIEvent) => event.stopPropagation(), []);
 
     // assign sizing to css variables for consumption in CSS
     const modalStyle = React.useMemo(
       () =>
         ({
-          "--arm-dropdown-top": top && `${top}px`,
-          "--arm-dropdown-bottom": bottom && `${bottom}px`,
-          "--arm-dropdown-left": `${left}px`,
-          "--arm-dropdown-width": `${width}px`,
+          '--arm-dropdown-top': top && `${top}px`,
+          '--arm-dropdown-bottom': bottom && `${bottom}px`,
+          '--arm-dropdown-left': `${left}px`,
+          '--arm-dropdown-width': `${width}px`,
         } as React.CSSProperties),
       [top, left, width, bottom]
     );
@@ -356,18 +280,15 @@ export const Dropdown = React.forwardRef<
 
     // logic for ensuring that when the window is focused, the dropdown doesn't reopen if the element is focused
     const onWindowBlur = React.useCallback(() => setWindowBlurred(true), []);
-    const onWindowFocus = React.useCallback(
-      () => setTimeout(() => setWindowBlurred(false)),
-      []
-    );
-    useEventListener("blur", onWindowBlur);
-    useEventListener("focus", onWindowFocus);
+    const onWindowFocus = React.useCallback(() => setTimeout(() => setWindowBlurred(false)), []);
+    useEventListener('blur', onWindowBlur);
+    useEventListener('focus', onWindowFocus);
 
     return (
       <>
         <div
           {...htmlProps}
-          className={concat("arm-dropdown", className)}
+          className={concat('arm-dropdown', className)}
           onMouseDown={onMouseDownEvent}
           ref={rootRef}
           data-is-open={isOpen}
@@ -381,11 +302,7 @@ export const Dropdown = React.forwardRef<
           {...modalHtmlProps}
           portalTo={portalTo}
           portalToSelector={portalToSelector}
-          className={concat(
-            "arm-dropdown-content",
-            contentClassName,
-            modalHtmlProps?.className
-          )}
+          className={concat('arm-dropdown-content', contentClassName, modalHtmlProps?.className)}
           style={modalStyle}
           ref={setModalRef}
           isOpen={isOpen}
@@ -416,6 +333,6 @@ Dropdown.defaultProps = {
   edgeDetectionMargin: 10,
   closeOnWindowBlur: true,
   closeOnWindowClick: true,
-  alignment: "centre",
-  position: "below",
+  alignment: 'centre',
+  position: 'below',
 };

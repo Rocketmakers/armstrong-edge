@@ -1,42 +1,31 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Form, ICheckboxInputProps, IInputWrapperProps } from "../..";
-import { IBindingProps } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { Icon } from "../icon";
-import { Status } from "../status";
-import { ValidationErrors } from "../validationErrors";
-import { IDragReleaseCallbackArgs, useDrag } from "./switchInput.hooks";
+import { Form, ICheckboxInputProps, IInputWrapperProps } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { Icon } from '../icon';
+import { Status } from '../status';
+import { ValidationErrors } from '../validationErrors';
+import { IDragReleaseCallbackArgs, useDrag } from './switchInput.hooks';
 
 export interface ISwitchInputProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<
-      React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-      >,
-      "onChange" | "checked"
+      React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+      'onChange' | 'checked'
     >,
     Pick<
       IInputWrapperProps,
-      | "scrollValidationErrorsIntoView"
-      | "validationMode"
-      | "errorIcon"
-      | "validationErrorMessages"
-      | "error"
-      | "pending"
-      | "disabled"
-      | "className"
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'validationErrorMessages'
+      | 'error'
+      | 'pending'
+      | 'disabled'
+      | 'className'
     >,
-    Pick<
-      ICheckboxInputProps<TBind>,
-      "checkedIcon" | "uncheckedIcon" | "checked"
-    > {
+    Pick<ICheckboxInputProps<TBind>, 'checkedIcon' | 'uncheckedIcon' | 'checked'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
 
@@ -44,7 +33,7 @@ export interface ISwitchInputProps<TBind extends NullOrUndefined<boolean>>
   onChange?: (newValue: TBind) => void;
 
   /** where to render the icon, will either follow the handle or stay in place */
-  iconStyle?: "on-handle" | "static";
+  iconStyle?: 'on-handle' | 'static';
 
   /** allow clicking and dragging horizontally to change the value of the switch - defaults to true */
   changeOnDrag?: boolean;
@@ -104,7 +93,7 @@ export const SwitchInput = React.forwardRef(
     return (
       <>
         <div
-          className={concat("arm-switch-input", className)}
+          className={concat('arm-switch-input', className)}
           data-error={error}
           data-pending={pending}
           data-checked={boundValue}
@@ -116,44 +105,29 @@ export const SwitchInput = React.forwardRef(
               {...nativeProps}
               ref={ref}
               type="checkbox"
-              // eslint-disable-next-line @typescript-eslint/no-empty-function
               onChange={() => {}}
               checked={boundValue || (bind && false)}
               disabled={disabled}
               {...dragProps}
             />
-            {checkedIcon && (
-              <Icon
-                className="arm-switch-input-checked-icon"
-                {...checkedIcon}
-              />
-            )}
-            {uncheckedIcon && (
-              <Icon
-                className="arm-switch-input-unchecked-icon"
-                {...uncheckedIcon}
-              />
-            )}
+            {checkedIcon && <Icon className="arm-switch-input-checked-icon" {...checkedIcon} />}
+            {uncheckedIcon && <Icon className="arm-switch-input-unchecked-icon" {...uncheckedIcon} />}
           </div>
 
           <Status
-            error={
-              bindConfig.shouldShowValidationErrorIcon &&
-              (error || !!bindConfig.validationErrorMessages?.length)
-            }
+            error={bindConfig.shouldShowValidationErrorIcon && (error || !!bindConfig.validationErrorMessages?.length)}
             pending={pending}
             errorIcon={bindConfig.validationErrorIcon}
           />
         </div>
 
-        {bindConfig.validationErrorMessages &&
-          bindConfig.shouldShowValidationErrorMessage && (
-            <ValidationErrors
-              validationErrors={bindConfig.validationErrorMessages}
-              icon={bindConfig.validationErrorIcon}
-              scrollIntoView={scrollValidationErrorsIntoView}
-            />
-          )}
+        {bindConfig.validationErrorMessages && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
+        )}
       </>
     );
   }

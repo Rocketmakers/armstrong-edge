@@ -1,38 +1,10 @@
-@use "./variables.scss";
+@use './variables.scss';
 
 // psuedo elements
 
 @mixin init-pseudo {
   display: block;
-  content: "";
-}
-
-@mixin range-input-thumb {
-  // an unusual limitation with browser specific selectors means that these all need to be
-  // separate selectors and cannot be combined with commas (like a, b, c {} )
-  &::-webkit-slider-thumb {
-    @content;
-  }
-  &::-moz-range-thumb {
-    @content;
-  }
-  &::-ms-thumb {
-    @content;
-  }
-}
-
-@mixin range-input-track {
-  // an unusual limitation with browser specific selectors means that these all need to be
-  // separate selectors and cannot be combined with commas (like a, b, c {} )
-  &::-webkit-slider-runnable-track {
-    @content;
-  }
-  &::-moz-range-track {
-    @content;
-  }
-  &::-ms-track {
-    @content;
-  }
+  content: '';
 }
 
 // layout

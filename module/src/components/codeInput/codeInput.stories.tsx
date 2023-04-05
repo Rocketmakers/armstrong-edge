@@ -1,29 +1,30 @@
-import { expect } from "@storybook/jest";
-import { Meta, StoryObj } from "@storybook/react";
-import { within, userEvent, waitFor } from "@storybook/testing-library";
-import React from "react";
-import { Form } from "../../hooks";
-import { IconUtils } from "../icon/icons.utils";
-import { CodeInput } from "./codeInput.component";
+import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { userEvent, waitFor, within } from '@storybook/testing-library';
+import React from 'react';
+
+import { Form } from '../../hooks';
+import { getIconDefinition } from '../icon/icons.utils';
+import { CodeInput } from './codeInput.component';
 
 /** metadata */
 
 export default {
-  title: "Form/Code Input",
+  title: 'Form/Code Input',
   component: CodeInput,
 } as Meta<typeof CodeInput>;
 
 /** template */
 
 const Template: StoryObj<typeof CodeInput> = {
-  render: (args) => {
+  render: args => {
     interface IFormData {
       code: string | null | undefined;
     }
-    const { formProp, formState } = Form.use<IFormData>({ code: "" });
+    const { formProp, formState } = Form.use<IFormData>({ code: '' });
     return (
       <>
-        <CodeInput {...args} bind={formProp("code").bind()} />
+        <CodeInput {...args} bind={formProp('code').bind()} />
         <br />
         <p>Value: {formState?.code}</p>
       </>
@@ -39,32 +40,32 @@ export const Default: StoryObj<typeof CodeInput> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const wrapper = canvas.getByTitle("Code input");
-    const value = canvas.getByText("Value:");
-    const inputs = within(wrapper).getAllByRole("textbox", { hidden: true });
+    const wrapper = canvas.getByTitle('Code input');
+    const value = canvas.getByText('Value:');
+    const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], "123");
-    expect(inputs[0]).toHaveValue("1");
-    expect(inputs[1]).toHaveValue("2");
-    expect(inputs[2]).toHaveValue("3");
+    userEvent.type(inputs[0], '123');
+    expect(inputs[0]).toHaveValue('1');
+    expect(inputs[1]).toHaveValue('2');
+    expect(inputs[2]).toHaveValue('3');
     await waitFor(() => {
-      expect(value).toHaveTextContent("Value: 123");
+      expect(value).toHaveTextContent('Value: 123');
     });
     userEvent.clear(inputs[0]);
-    expect(inputs[1]).toHaveValue("2");
-    expect(inputs[2]).toHaveValue("3");
+    expect(inputs[1]).toHaveValue('2');
+    expect(inputs[2]).toHaveValue('3');
     await waitFor(() => {
-      expect(value).toHaveTextContent("Value: 23");
+      expect(value).toHaveTextContent('Value: 23');
     });
     userEvent.clear(inputs[0]);
     userEvent.clear(inputs[1]);
     userEvent.clear(inputs[2]);
-    userEvent.type(inputs[0], "4567");
-    expect(inputs[0]).toHaveValue("4");
-    expect(inputs[1]).toHaveValue("5");
-    expect(inputs[2]).toHaveValue("6");
+    userEvent.type(inputs[0], '4567');
+    expect(inputs[0]).toHaveValue('4');
+    expect(inputs[1]).toHaveValue('5');
+    expect(inputs[2]).toHaveValue('6');
     await waitFor(() => {
-      expect(value).toHaveTextContent("Value: 456");
+      expect(value).toHaveTextContent('Value: 456');
     });
   },
 };
@@ -76,16 +77,16 @@ export const DifferentLengths: StoryObj<typeof CodeInput> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const wrapper = canvas.getByTitle("Code input");
-    const value = canvas.getByText("Value:");
-    const inputs = within(wrapper).getAllByRole("textbox", { hidden: true });
+    const wrapper = canvas.getByTitle('Code input');
+    const value = canvas.getByText('Value:');
+    const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], "abcdefghijklmnop");
-    expect(inputs[0]).toHaveValue("abcd");
-    expect(inputs[1]).toHaveValue("efg");
-    expect(inputs[2]).toHaveValue("hijklmno");
+    userEvent.type(inputs[0], 'abcdefghijklmnop');
+    expect(inputs[0]).toHaveValue('abcd');
+    expect(inputs[1]).toHaveValue('efg');
+    expect(inputs[2]).toHaveValue('hijklmno');
     await waitFor(() => {
-      expect(value).toHaveTextContent("Value: abcdefghijklmno");
+      expect(value).toHaveTextContent('Value: abcdefghijklmno');
     });
   },
 };
@@ -93,31 +94,27 @@ export const DifferentLengths: StoryObj<typeof CodeInput> = {
 export const WithTextBetween: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
-    parts: [4, "-", 4, "-", 4],
+    parts: [4, '-', 4, '-', 4],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const wrapper = canvas.getByTitle("Code input");
-    const value = canvas.getByText("Value:");
-    const inputs = within(wrapper).getAllByRole("textbox", { hidden: true });
+    const wrapper = canvas.getByTitle('Code input');
+    const value = canvas.getByText('Value:');
+    const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], "abcdefghijklmnop");
-    expect(inputs[0]).toHaveValue("abcd");
-    expect(inputs[1]).toHaveValue("efgh");
-    expect(inputs[2]).toHaveValue("ijkl");
+    userEvent.type(inputs[0], 'abcdefghijklmnop');
+    expect(inputs[0]).toHaveValue('abcd');
+    expect(inputs[1]).toHaveValue('efgh');
+    expect(inputs[2]).toHaveValue('ijkl');
     await waitFor(() => {
-      expect(value).toHaveTextContent("Value: abcdefghijkl");
+      expect(value).toHaveTextContent('Value: abcdefghijkl');
     });
-    expect(
-      inputs[0].parentElement?.parentElement?.nextSibling
-    ).toHaveTextContent("-");
-    expect(
-      inputs[1].parentElement?.parentElement?.nextSibling
-    ).toHaveTextContent("-");
+    expect(inputs[0].parentElement?.parentElement?.nextSibling).toHaveTextContent('-');
+    expect(inputs[1].parentElement?.parentElement?.nextSibling).toHaveTextContent('-');
   },
 };
 
-const icon = IconUtils.getIconDefinition("Icomoon", "chess-king");
+const icon = getIconDefinition('Icomoon', 'chess-king');
 export const WithIcons: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
@@ -125,8 +122,8 @@ export const WithIcons: StoryObj<typeof CodeInput> = {
       1,
       {
         length: 1,
-        rightIcon: IconUtils.getIconDefinition("Icomoon", "chrome"),
-        leftIcon: IconUtils.getIconDefinition("Icomoon", "aid-kit"),
+        rightIcon: getIconDefinition('Icomoon', 'chrome'),
+        leftIcon: getIconDefinition('Icomoon', 'aid-kit'),
       },
       1,
     ],
@@ -135,24 +132,20 @@ export const WithIcons: StoryObj<typeof CodeInput> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const wrapper = canvas.getByTitle("Code input");
-    const value = canvas.getByText("Value:");
-    const inputs = within(wrapper).getAllByRole("textbox", { hidden: true });
+    const wrapper = canvas.getByTitle('Code input');
+    const value = canvas.getByText('Value:');
+    const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], "abc");
-    expect(inputs[0]).toHaveValue("a");
-    expect(inputs[1]).toHaveValue("b");
-    expect(inputs[2]).toHaveValue("c");
+    userEvent.type(inputs[0], 'abc');
+    expect(inputs[0]).toHaveValue('a');
+    expect(inputs[1]).toHaveValue('b');
+    expect(inputs[2]).toHaveValue('c');
     await waitFor(() => {
-      expect(value).toHaveTextContent("Value: abc");
+      expect(value).toHaveTextContent('Value: abc');
     });
-    expect(inputs[1].nextSibling).toHaveAttribute("data-icon-set", "Icomoon");
-    expect(inputs[1].nextSibling).toHaveAttribute("data-i", "chrome");
-    expect(
-      within(wrapper).getByTitle(`${icon.icon} icon on left`)
-    ).toHaveAttribute("data-i", icon.icon);
-    expect(
-      within(wrapper).getByTitle(`${icon.icon} icon on right`)
-    ).toHaveAttribute("data-i", icon.icon);
+    expect(inputs[1].nextSibling).toHaveAttribute('data-icon-set', 'Icomoon');
+    expect(inputs[1].nextSibling).toHaveAttribute('data-i', 'chrome');
+    expect(within(wrapper).getByTitle(`${icon.icon} icon on left`)).toHaveAttribute('data-i', icon.icon);
+    expect(within(wrapper).getByTitle(`${icon.icon} icon on right`)).toHaveAttribute('data-i', icon.icon);
   },
 };

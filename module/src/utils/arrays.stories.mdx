@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Utilities/Arrays" />
 
@@ -15,15 +15,15 @@ function flatten<T>(...arrays: (T[] | undefined)[]);
 ```
 
 ```ts
-import { flatten } from "@rocketmakers/armstrong";
+import { flatten } from '@rocketmakers/armstrong';
 
-const array1 = ["a", "b"];
-const array2 = ["c", "d"];
+const array1 = ['a', 'b'];
+const array2 = ['c', 'd'];
 
 const result = flatten(array1, array2);
 
 // result
-["a", "b", "c", "d"];
+['a', 'b', 'c', 'd'];
 ```
 
 ### arrayToDictionary
@@ -31,10 +31,7 @@ const result = flatten(array1, array2);
 Turn an array into a dictionary of items in that array by a given key
 
 ```ts
-function arrayToDictionary<T, Keys extends string = string>(
-  array: T[],
-  getKey: keyof T | ((item: T) => Keys)
-);
+function arrayToDictionary<T, Keys extends string = string>(array: T[], getKey: keyof T | ((item: T) => Keys));
 ```
 
 ```ts
@@ -66,23 +63,23 @@ function arrayToArrayDictionary<T, Keys extends string = string>(
 ```
 
 ```ts
-import { arrayToArrayDictionary } from "@rocketmakers/armstrong";
+import { arrayToArrayDictionary } from '@rocketmakers/armstrong';
 
 const things = [
-  { type: "plant", name: "rose" },
-  { type: "plant", name: "tree" },
-  { type: "animal", name: "cat" },
+  { type: 'plant', name: 'rose' },
+  { type: 'plant', name: 'tree' },
+  { type: 'animal', name: 'cat' },
 ];
 
-const result = arrayToArrayDictionary(things, (item) => item.type);
+const result = arrayToArrayDictionary(things, item => item.type);
 
 // result
 {
   plant: [
-    { type: "plant", name: "rose" },
-    { type: "plant", name: "tree" },
+    { type: 'plant', name: 'rose' },
+    { type: 'plant', name: 'tree' },
   ];
-  animal: [{ type: "animal", name: "cat" }];
+  animal: [{ type: 'animal', name: 'cat' }];
 }
 ```
 
@@ -91,35 +88,32 @@ const result = arrayToArrayDictionary(things, (item) => item.type);
 Sort an array into an array of objects with a key and an array of items on it
 
 ```ts
-function arrayToArraysByKey<T, Keys extends string = string>(
-  array: T[],
-  getKey: (item: T) => Keys
-);
+function arrayToArraysByKey<T, Keys extends string = string>(array: T[], getKey: (item: T) => Keys);
 ```
 
 ```ts
-import { arrayToArraysByKey } from "@rocketmakers/armstrong";
+import { arrayToArraysByKey } from '@rocketmakers/armstrong';
 
 const things = [
-  { type: "plant", name: "rose" },
-  { type: "plant", name: "tree" },
-  { type: "animal", name: "cat" },
+  { type: 'plant', name: 'rose' },
+  { type: 'plant', name: 'tree' },
+  { type: 'animal', name: 'cat' },
 ];
 
-const result = arrayToArraysByKey(things, (item) => item.type);
+const result = arrayToArraysByKey(things, item => item.type);
 
 // result
 [
   {
-    key: "plant",
+    key: 'plant',
     items: [
-      { type: "plant", name: "rose" },
-      { type: "plant", name: "tree" },
+      { type: 'plant', name: 'rose' },
+      { type: 'plant', name: 'tree' },
     ],
   },
   {
-    key: "animal",
-    items: [{ type: "animal", name: "cat" }],
+    key: 'animal',
+    items: [{ type: 'animal', name: 'cat' }],
   },
 ];
 ```
@@ -133,11 +127,11 @@ function findLastIndex<T>(array: T[], callback: (item: T) => boolean);
 ```
 
 ```ts
-import { findLastIndex } from "@rocketmakers/armstrong";
+import { findLastIndex } from '@rocketmakers/armstrong';
 
-const array = ["a", "a", "b"];
+const array = ['a', 'a', 'b'];
 
-const result = findLastIndex((item) => item === "a");
+const result = findLastIndex(item => item === 'a');
 
 // result
 1;
@@ -152,14 +146,14 @@ function reIndex<T>(array: T[], startFrom: number): T[];
 ```
 
 ```ts
-import { reIndex } from "@rocketmakers/armstrong";
+import { reIndex } from '@rocketmakers/armstrong';
 
-const array = ["a", "b", "c"];
+const array = ['a', 'b', 'c'];
 
 const result = reIndex(array, 1);
 
 // result
-["b", "c", "a"];
+['b', 'c', 'a'];
 ```
 
 ### repeat
@@ -167,16 +161,13 @@ const result = reIndex(array, 1);
 A version of `map` which loops a specified number of times and returns the index as the map arg.
 
 ```ts
-function repeat<TMapped>(
-  count: number,
-  mapper: (index: number) => TMapped
-): TMapped[];
+function repeat<TMapped>(count: number, mapper: (index: number) => TMapped): TMapped[];
 ```
 
 ```ts
-import { repeat } from "@rocketmakers/armstrong";
+import { repeat } from '@rocketmakers/armstrong';
 
-repeat(5, (index) => console.log(index));
+repeat(5, index => console.log(index));
 
 // console
 0;
@@ -185,7 +176,7 @@ repeat(5, (index) => console.log(index));
 3;
 4;
 
-const result = repeat(5, (index) => index * 2);
+const result = repeat(5, index => index * 2);
 
 // result
 [0, 2, 4, 6, 8];
@@ -202,21 +193,13 @@ Get the overall index of an item inside an array of arrays
 I.E. `[[0,1,2], [3,4], [5,6,7]]`
 
 ```ts
-function getArrayIndex<T>(
-  innerIndex: number,
-  outerIndex: number,
-  arrays: { items: T[] }[]
-);
+function getArrayIndex<T>(innerIndex: number, outerIndex: number, arrays: { items: T[] }[]);
 ```
 
 ```ts
-import { getArrayIndex } from "@rocketmakers/armstrong";
+import { getArrayIndex } from '@rocketmakers/armstrong';
 
-const nestedArrays = [
-  { items: ["a", "b", "c"] },
-  { items: ["d", "e", "f"] },
-  { items: ["g", "h", "i"] },
-];
+const nestedArrays = [{ items: ['a', 'b', 'c'] }, { items: ['d', 'e', 'f'] }, { items: ['g', 'h', 'i'] }];
 
 const result = getArrayIndex(1, 1, nestedArrays);
 
@@ -235,13 +218,9 @@ function getAtOverallIndex<T>(index: number, arrays: { items: T[] }[]);
 ```
 
 ```ts
-import { getAtOverallIndex } from "@rocketmakers/armstrong";
+import { getAtOverallIndex } from '@rocketmakers/armstrong';
 
-const nestedArrays = [
-  { items: ["a", "b", "c"] },
-  { items: ["d", "e", "f"] },
-  { items: ["g", "h", "i"] },
-];
+const nestedArrays = [{ items: ['a', 'b', 'c'] }, { items: ['d', 'e', 'f'] }, { items: ['g', 'h', 'i'] }];
 
 const result = getAtOverallIndex(5, nestedArrays);
 
