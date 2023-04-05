@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-input-inner {
   @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
@@ -11,18 +11,19 @@
 }
 
 .arm-input-wrapper {
-  &[data-disabled="true"] {
+  &[data-disabled='true'] {
     pointer-events: none;
     user-select: none;
   }
-
+  
+  
   .arm-input-wrapper {
     width: initial;
     flex: 1;
-
+    
     .arm-input-inner {
       width: 100%;
-
+      
       input {
         background-color: transparent;
       }
@@ -30,11 +31,6 @@
   }
 }
 
-.arm-input-wrapper-below,
-.arm-input-wrapper-above {
+.arm-auto-resizer-content {
   width: 100%;
-
-  .arm-auto-resizer-content {
-    width: 100%;
-  }
 }

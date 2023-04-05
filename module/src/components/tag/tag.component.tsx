@@ -2,14 +2,11 @@ import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
 import { Button, IButtonCoreProps } from '../button';
-import { Icon, IconSet, IconUtils } from '../icon';
+import { Icon, IconSet, isIconDefinition } from '../icon';
 
 export interface ITagProps
   extends Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
-    React.DetailedHTMLProps<
-      React.BaseHTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    > {
+    React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /** the text to render inside the tag */
   content?: string;
 
@@ -17,50 +14,24 @@ export interface ITagProps
   onRemove?: () => void;
 }
 
-export const Tag = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<ITagProps>
->(
-  (
-    {
-      content,
-      className,
-      leftIcon,
-      rightIcon,
-      children,
-      onRemove,
-      ...nativeProps
-    },
-    ref
-  ) => (
+export const Tag = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITagProps>>(
+  ({ content, className, leftIcon, rightIcon, children, onRemove, ...nativeProps }, ref) => (
     <div ref={ref} className={concat('arm-tag', className)} {...nativeProps}>
       <>
         {leftIcon && (
           <>
-            {IconUtils.isIconDefinition(leftIcon) ? (
-              <Icon
-                {...leftIcon}
-                className="left-icon"
-                title={`${leftIcon.icon} icon on left`}
-              />
+            {isIconDefinition(leftIcon) ? (
+              <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
             ) : (
               leftIcon
             )}
           </>
         )}
-        {typeof children === 'string' || !children ? (
-          <span>{content}</span>
-        ) : (
-          children
-        )}
+        {typeof children === 'string' || !children ? <span>{content}</span> : children}
         {rightIcon && (
           <>
-            {IconUtils.isIconDefinition(rightIcon) ? (
-              <Icon
-                {...rightIcon}
-                className="right-icon"
-                title={`${rightIcon.icon} icon on right`}
-              />
+            {isIconDefinition(rightIcon) ? (
+              <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
             ) : (
               rightIcon
             )}
@@ -71,8 +42,8 @@ export const Tag = React.forwardRef<
       {onRemove && (
         <Button
           className="arm-tag-close"
-          onMouseDown={(event) => event.stopPropagation()}
-          onClick={(event) => {
+          onMouseDown={event => event.stopPropagation()}
+          onClick={event => {
             onRemove();
             event.stopPropagation();
           }}

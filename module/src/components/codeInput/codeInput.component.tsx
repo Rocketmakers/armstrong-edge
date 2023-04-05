@@ -2,26 +2,21 @@ import * as React from 'react';
 
 import {
   Form,
+  getLengthFromPart,
   IButtonCoreProps,
   Icon,
   IconSet,
-  IconUtils,
   IInputWrapperProps,
+  isIconDefinition,
   ValidationErrors,
 } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-  NullOrUndefined,
-} from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { findLastIndex } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
 import { IInputProps } from '../input';
 import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { TextInput } from '../textInput';
-import { CodeInputUtils } from '.';
 
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
@@ -44,10 +39,7 @@ export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
  * Can be a string representing a piece of text inbetween inputs I.E. [1,1,'-',1,1]
  * Can be an object representing an input with some properties
  */
-export type CodeInputPartDefinition<TBind extends NullOrUndefined<string>> =
-  | ICodeInputInput<TBind>
-  | string
-  | number;
+export type CodeInputPartDefinition<TBind extends NullOrUndefined<string>> = ICodeInputInput<TBind> | string | number;
 
 export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
   part: CodeInputPartDefinition<TBind>;
@@ -63,16 +55,12 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
 }
 
 /** an individual input from the CodeInput */
-
-export const CodeInputPart = React.forwardRef(
+const CodeInputPart = React.forwardRef(
   <TBind extends NullOrUndefined<string>>(
     { part, onChange, onKeyDown, value }: ICodeInputPartProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const length = React.useMemo(
-      () => CodeInputUtils.getLengthFromPart(part),
-      [part]
-    );
+    const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
     if (typeof part === 'string') {
       return <p className="arm-code-input-part-text">{part}</p>;
@@ -88,7 +76,7 @@ export const CodeInputPart = React.forwardRef(
           onKeyDown={onKeyDown}
           style={{ '--arm-code-input-length': length } as React.CSSProperties}
           data-length={length}
-          onClick={(event) => event.currentTarget.select()}
+          onClick={event => event.currentTarget.select()}
         />
       );
     }
@@ -111,7 +99,7 @@ export const CodeInputPart = React.forwardRef(
           } as React.CSSProperties
         }
         data-length={length}
-        onClick={(event) => event.currentTarget.select()}
+        onClick={event => event.currentTarget.select()}
         {...textInputProps}
       />
     );
@@ -122,6 +110,8 @@ export const CodeInputPart = React.forwardRef(
   props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICodeInputPartProps<any>>;
+
+CodeInputPart.displayName = 'CodeInputPart';
 
 /** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
 export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
@@ -188,11 +178,7 @@ export const CodeInput = React.forwardRef(
     });
 
     const totalLength = React.useMemo(
-      () =>
-        parts.reduce<number>(
-          (total, part) => total + CodeInputUtils.getLengthFromPart(part),
-          0
-        ),
+      () => parts.reduce<number>((total, part) => total + getLengthFromPart(part), 0),
       [parts]
     );
 
@@ -200,12 +186,8 @@ export const CodeInput = React.forwardRef(
       (partIndex: number) => {
         const sliceStart = parts
           .slice(0, partIndex)
-          .reduce<number>(
-            (output, part) => output + CodeInputUtils.getLengthFromPart(part),
-            0
-          );
-        const sliceEnd =
-          sliceStart + CodeInputUtils.getLengthFromPart(parts[partIndex]);
+          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
+        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
 
         return boundValue?.slice(sliceStart, sliceEnd) || '';
       },
@@ -214,12 +196,7 @@ export const CodeInput = React.forwardRef(
 
     const goNext = React.useCallback(
       (partIndex: number) => {
-        const nextIndex =
-          parts
-            .slice(partIndex + 1)
-            .findIndex((part) => typeof part !== 'string') +
-          partIndex +
-          1;
+        const nextIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string') + partIndex + 1;
 
         if (nextIndex !== -1) {
           inputRefs.current[nextIndex]?.focus();
@@ -229,10 +206,7 @@ export const CodeInput = React.forwardRef(
     );
     const goPrevious = React.useCallback(
       (partIndex: number) => {
-        const previousIndex = findLastIndex(
-          parts.slice(0, partIndex),
-          (part) => typeof part !== 'string'
-        );
+        const previousIndex = findLastIndex(parts.slice(0, partIndex), part => typeof part !== 'string');
         if (previousIndex !== -1) {
           inputRefs.current[previousIndex]?.focus();
         }
@@ -242,18 +216,13 @@ export const CodeInput = React.forwardRef(
 
     const onPartChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
-        const currentPartLength = CodeInputUtils.getLengthFromPart(
-          parts[partIndex]
-        );
+        const currentPartLength = getLengthFromPart(parts[partIndex]);
 
         const newPartValue = event.currentTarget.value || '';
 
         const sliceStart = parts
           .slice(0, partIndex)
-          .reduce<number>(
-            (output, part) => output + CodeInputUtils.getLengthFromPart(part),
-            0
-          );
+          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
         const sliceEnd = sliceStart + currentPartLength;
 
         if (newPartValue.length >= currentPartLength) {
@@ -261,16 +230,12 @@ export const CodeInput = React.forwardRef(
         }
 
         const newValue = (
-          boundValue
-            ? boundValue.slice(0, sliceStart) +
-              newPartValue +
-              boundValue.slice(sliceEnd)
-            : newPartValue
+          boundValue ? boundValue.slice(0, sliceStart) + newPartValue + boundValue.slice(sliceEnd) : newPartValue
         ).slice(0, totalLength);
 
         setBoundValue?.(newValue as TBind);
       },
-      [boundValue, parts, goNext, totalLength]
+      [boundValue, parts, goNext, totalLength, setBoundValue]
     );
 
     const onKeyDown = React.useCallback(
@@ -289,10 +254,7 @@ export const CodeInput = React.forwardRef(
             break;
           }
           case 'Right': {
-            if (
-              event.currentTarget.selectionEnd === 0 &&
-              partIndex < parts.length
-            ) {
+            if (event.currentTarget.selectionEnd === 0 && partIndex < parts.length) {
               goNext(partIndex);
             }
             break;
@@ -302,16 +264,12 @@ export const CodeInput = React.forwardRef(
           }
         }
       },
-      [goPrevious, parts]
+      [goPrevious, parts, goNext]
     );
 
     return (
       <>
-        <div
-          className={concat('arm-code-input', className)}
-          ref={ref}
-          title="Code input"
-        >
+        <div className={concat('arm-code-input', className)} ref={ref} title="Code input">
           <StatusWrapper
             error={error}
             validationErrorMessages={bindConfig.validationErrorMessages}
@@ -323,12 +281,8 @@ export const CodeInput = React.forwardRef(
             <>
               {leftIcon && (
                 <>
-                  {IconUtils.isIconDefinition(leftIcon) ? (
-                    <Icon
-                      {...leftIcon}
-                      className="left-icon"
-                      title={`${leftIcon.icon} icon on left`}
-                    />
+                  {isIconDefinition(leftIcon) ? (
+                    <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
                   ) : (
                     leftIcon
                   )}
@@ -342,9 +296,9 @@ export const CodeInput = React.forwardRef(
                   data-left-icon={!!leftIcon}
                   data-right-icon={!!rightIcon}
                   value={getValueForPart(index) || ''}
-                  onChange={(event) => onPartChange(event, index)}
-                  onKeyDown={(event) => onKeyDown(event, index)}
-                  ref={(r) => {
+                  onChange={event => onPartChange(event, index)}
+                  onKeyDown={event => onKeyDown(event, index)}
+                  ref={r => {
                     inputRefs.current[index] = r;
                   }}
                 />
@@ -352,12 +306,8 @@ export const CodeInput = React.forwardRef(
 
               {rightIcon && (
                 <>
-                  {IconUtils.isIconDefinition(rightIcon) ? (
-                    <Icon
-                      {...rightIcon}
-                      className="right-icon"
-                      title={`${rightIcon.icon} icon on right`}
-                    />
+                  {isIconDefinition(rightIcon) ? (
+                    <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
                   ) : (
                     rightIcon
                   )}
@@ -367,14 +317,13 @@ export const CodeInput = React.forwardRef(
           </StatusWrapper>
         </div>
 
-        {!!bindConfig.validationErrorMessages?.length &&
-          bindConfig.shouldShowValidationErrorMessage && (
-            <ValidationErrors
-              validationErrors={bindConfig.validationErrorMessages}
-              icon={bindConfig.validationErrorIcon}
-              scrollIntoView={scrollValidationErrorsIntoView}
-            />
-          )}
+        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
+        )}
       </>
     );
   }
@@ -384,3 +333,5 @@ export const CodeInput = React.forwardRef(
   props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICodeInputProps<any>>;
+
+CodeInput.displayName = 'CodeInput';

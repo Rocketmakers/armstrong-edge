@@ -22,7 +22,10 @@ export interface IUseModalLayerPromiseReturnState {
   isOpen?: boolean;
 }
 
-export type UseModalLayerPromiseReturn<T, TArg> = [(argument?: TArg) => Promise<T | undefined>, IUseModalLayerPromiseReturnState];
+export type UseModalLayerPromiseReturn<T, TArg> = [
+  (argument?: TArg) => Promise<T | undefined>,
+  IUseModalLayerPromiseReturnState
+];
 
 /** Returns a callback which will add an element to the modal layer and return a promise - mostly for internal use, you likely want to use useModal, but you can use this to use a completely custom Modal component */
 export const useModalLayerPromise = <T, TArg = unknown>(
@@ -73,8 +76,13 @@ export const useModalLayerPromise = <T, TArg = unknown>(
 
         // add the internal props to the wrapper (taking hold of isOpen and onOpenChange) and pass promise callbacks into the child component
         const modalComponent: React.FC = () => (
-          <Wrapper isOpen onOpenChange={(shouldOpen) => shouldOpen === false && resolvePromise(undefined)}>
-            <Children close={() => resolvePromise(undefined)} reject={rejectPromise} resolve={resolvePromise} argument={argument} />
+          <Wrapper isOpen onOpenChange={shouldOpen => shouldOpen === false && resolvePromise(undefined)}>
+            <Children
+              close={() => resolvePromise(undefined)}
+              reject={rejectPromise}
+              resolve={resolvePromise}
+              argument={argument}
+            />
           </Wrapper>
         );
 
@@ -109,4 +117,4 @@ export const useModal = <T, TArg = unknown>(
   Children: React.FC<IUseModalLayerPromiseComponentProps<T, TArg>>,
   /** The props to give to the actual Modal component */
   props?: UseModalModalProps
-) => useModalLayerPromise(Children, (internalProps) => <Modal {...internalProps} {...props} />);
+) => useModalLayerPromise(Children, internalProps => <Modal {...internalProps} {...props} />);

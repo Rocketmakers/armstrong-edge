@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 $arm-calendar-display-width: 300px !default;
 $arm-calendar-display-date-circle: 1.6rem !default;
@@ -73,7 +73,7 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
     box-sizing: border-box;
   }
 
-  &[data-selected="true"] {
+  &[data-selected='true'] {
     color: variables.$white;
 
     &::before {
@@ -81,19 +81,19 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
     }
   }
 
-  &[disabled="true"] {
+  &[disabled='true'] {
     color: variables.$gray-very-light;
   }
 
-  &[data-today="true"] {
+  &[data-today='true'] {
     &::before {
       border: variables.$line-thick variables.$brand-primary;
     }
   }
 
-  &[data-range-middle="true"],
-  &[data-range-start="true"],
-  &[data-range-end="true"] {
+  &[data-range-middle='true'],
+  &[data-range-start='true'],
+  &[data-range-end='true'] {
     &::after {
       @include mixins.init-pseudo;
 
@@ -109,17 +109,15 @@ $arm-calendar-display-date-highlight-size: 0.4rem !default;
     }
   }
 
-  &[data-range-end="true"] {
+  &[data-range-end='true'] {
     &::after {
       right: calc(50% - #{$arm-calendar-display-date-circle} / 2);
       border-top-right-radius: calc(#{$arm-calendar-display-date-circle} / 2);
-      border-bottom-right-radius: calc(
-        #{$arm-calendar-display-date-circle} / 2
-      );
+      border-bottom-right-radius: calc(#{$arm-calendar-display-date-circle} / 2);
     }
   }
 
-  &[data-range-start="true"] {
+  &[data-range-start='true'] {
     &::after {
       left: calc(50% - #{$arm-calendar-display-date-circle} / 2);
       border-top-left-radius: calc(#{$arm-calendar-display-date-circle} / 2);

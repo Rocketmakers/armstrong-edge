@@ -30,7 +30,7 @@ export function useMatchMedia(
     const media = Window?.matchMedia(query);
 
     if (!media) {
-      return;
+      return undefined;
     }
 
     if (media.matches !== isMatching) {
@@ -53,7 +53,9 @@ export function useMatchMedia(
       media.removeEventListener(
         'change',
         onMatchesChangeEvent,
-        typeof eventListenerOptions === 'boolean' ? eventListenerOptions : eventListenerOptions && { capture: eventListenerOptions.capture }
+        typeof eventListenerOptions === 'boolean'
+          ? eventListenerOptions
+          : eventListenerOptions && { capture: eventListenerOptions.capture }
       );
   }, [query, onMatchesChangeEvent]);
 

@@ -1,30 +1,17 @@
 import * as React from 'react';
 
-import {
-  Form,
-  IStatusWrapperProps,
-  StatusWrapper,
-  ValidationErrors,
-} from '../..';
+import { Form, IStatusWrapperProps, StatusWrapper, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-  NullOrUndefined,
-} from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { repeat } from '../../utils/arrays';
-import { clamp } from '../../utils/maths';
 import { concat } from '../../utils/classNames';
+import { clamp } from '../../utils/maths';
 import { Button, IButtonCoreProps } from '../button';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { Icon, IconSet, IIcon, isIconDefinition } from '../icon';
 import { IInputWrapperProps } from '../inputWrapper';
 
 export interface IRatingPartProps
-  extends Pick<
-    IRatingProps<any>,
-    'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'name'
-  > {
+  extends Pick<IRatingProps<any>, 'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'name'> {
   /** the index of this rating part */
   index: number;
 
@@ -38,45 +25,24 @@ export interface IRatingPartProps
   readOnly?: boolean;
 }
 
-export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
-  (
-    {
-      index,
-      value,
-      onSelectPart,
-      filledIcon,
-      emptyIcon,
-      step,
-      mode,
-      readOnly,
-      name,
-    },
-    ref
-  ) => {
+const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
+  ({ index, value, onSelectPart, filledIcon, emptyIcon, step, mode, readOnly, name }, ref) => {
     const steps = Math.floor(1 / (step || 1));
 
     const filledIconJsx = React.useMemo(() => {
-      const calculated =
-        typeof filledIcon === 'function' ? filledIcon(index) : filledIcon;
+      const calculated = typeof filledIcon === 'function' ? filledIcon(index) : filledIcon;
       if (calculated) {
-        return IconUtils.isIconDefinition(calculated) ? (
-          <Icon {...calculated} />
-        ) : (
-          calculated
-        );
+        return isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
       }
+      return undefined;
     }, [filledIcon, index]);
 
     const emptyIconJsx = React.useMemo(() => {
-      const calculated =
-        typeof emptyIcon === 'function' ? emptyIcon(index) : emptyIcon;
+      const calculated = typeof emptyIcon === 'function' ? emptyIcon(index) : emptyIcon;
       if (calculated) {
-        return IconUtils.isIconDefinition(calculated) ? (
-          <Icon {...calculated} />
-        ) : (
-          calculated
-        );
+        return isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
       }
+      return undefined;
     }, [emptyIcon, index]);
 
     return (
@@ -109,7 +75,7 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
 
         {!readOnly && mode === 'buttons' && (
           <div className="arm-rating-part-buttons">
-            {repeat(steps, (buttonIndex) => {
+            {repeat(steps, buttonIndex => {
               const inputValue = index + steps * (buttonIndex + 1);
 
               return (
@@ -126,20 +92,15 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
 
         {!readOnly && mode === 'radio' && (
           <div className="arm-rating-part-radios">
-            {repeat(steps, (buttonIndex) => {
+            {repeat(steps, buttonIndex => {
               const inputValue = index + steps * (buttonIndex + 1);
 
               return (
-                <div
-                  className="arm-rating-part-radio-wrapper"
-                  key={buttonIndex}
-                >
+                <div className="arm-rating-part-radio-wrapper" key={buttonIndex}>
                   <input
                     className="arm-rating-part-radio"
                     type="radio"
-                    onChange={() =>
-                      onSelectPart((step || 1) * (buttonIndex + 1))
-                    }
+                    onChange={() => onSelectPart((step || 1) * (buttonIndex + 1))}
                     aria-label={`${inputValue}`}
                     value={inputValue}
                     checked={inputValue === value}
@@ -155,25 +116,15 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
   }
 );
 
-export type RatingIcon =
-  | IIcon<IconSet>
-  | JSX.Element
-  | ((index: number) => IIcon<IconSet> | JSX.Element);
+RatingPart.displayName = 'RatingPart';
+
+type RatingIcon = IIcon<IconSet> | JSX.Element | ((index: number) => IIcon<IconSet> | JSX.Element);
 
 export interface IRatingProps<TBind extends NullOrUndefined<number>>
-  extends Omit<
-      React.DetailedHTMLProps<
-        React.BaseHTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      'onChange'
-    >,
+  extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
     Pick<
       IInputWrapperProps,
-      | 'scrollValidationErrorsIntoView'
-      | 'validationMode'
-      | 'errorIcon'
-      | 'validationErrorMessages'
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
     >,
     Pick<IButtonCoreProps<IconSet, IconSet>, 'leftIcon' | 'rightIcon'>,
     IStatusWrapperProps {
@@ -247,12 +198,7 @@ export const Rating = React.forwardRef(
 
     return (
       <>
-        <div
-          ref={ref}
-          className={concat('arm-rating', className)}
-          {...htmlProps}
-          data-read-only={!setBoundValue}
-        >
+        <div ref={ref} className={concat('arm-rating', className)} {...htmlProps} data-read-only={!setBoundValue}>
           <StatusWrapper
             error={error}
             statusPosition={statusPosition}
@@ -264,28 +210,22 @@ export const Rating = React.forwardRef(
             <>
               {leftIcon && (
                 <>
-                  {IconUtils.isIconDefinition(leftIcon) ? (
-                    <Icon
-                      {...leftIcon}
-                      className="left-icon"
-                      title={`${leftIcon.icon} icon on left`}
-                    />
+                  {isIconDefinition(leftIcon) ? (
+                    <Icon {...leftIcon} className="left-icon" title={`${leftIcon.icon} icon on left`} />
                   ) : (
                     leftIcon
                   )}
                 </>
               )}
               <div className="arm-rating-parts">
-                {repeat(maximum!, (index) => (
+                {repeat(maximum!, index => (
                   <RatingPart
                     key={index}
                     index={index}
                     filledIcon={filledIcon}
                     emptyIcon={emptyIcon}
                     value={boundValue || undefined}
-                    onSelectPart={(proportion) =>
-                      setBoundValue?.((index + proportion) as TBind)
-                    }
+                    onSelectPart={proportion => setBoundValue?.((index + proportion) as TBind)}
                     step={step}
                     mode={mode}
                     readOnly={!setBoundValue}
@@ -301,22 +241,14 @@ export const Rating = React.forwardRef(
                     min={0}
                     max={maximum}
                     value={boundValue || undefined}
-                    onChange={(event) =>
-                      setBoundValue?.(
-                        event.currentTarget.valueAsNumber as TBind
-                      )
-                    }
+                    onChange={event => setBoundValue?.(event.currentTarget.valueAsNumber as TBind)}
                   />
                 )}
               </div>
               {rightIcon && (
                 <>
-                  {IconUtils.isIconDefinition(rightIcon) ? (
-                    <Icon
-                      {...rightIcon}
-                      className="right-icon"
-                      title={`${rightIcon.icon} icon on right`}
-                    />
+                  {isIconDefinition(rightIcon) ? (
+                    <Icon {...rightIcon} className="right-icon" title={`${rightIcon.icon} icon on right`} />
                   ) : (
                     rightIcon
                   )}
@@ -326,14 +258,13 @@ export const Rating = React.forwardRef(
           </StatusWrapper>
         </div>
 
-        {!!validationErrorMessages?.length &&
-          bindConfig.shouldShowValidationErrorMessage && (
-            <ValidationErrors
-              validationErrors={validationErrorMessages}
-              icon={bindConfig.validationErrorIcon}
-              scrollIntoView={scrollValidationErrorsIntoView}
-            />
-          )}
+        {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors
+            validationErrors={validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
+        )}
       </>
     );
   }
@@ -351,3 +282,5 @@ Rating.defaultProps = {
   step: 1,
   mode: 'buttons',
 };
+
+Rating.displayName = 'Rating';

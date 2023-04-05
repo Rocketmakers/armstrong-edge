@@ -1,11 +1,19 @@
-import { ClientValidationConfig, IClientValidatorFieldConfig, KeyChain, ValidationMessage, ValidationMessageBuilder } from './form.types';
+import {
+  ClientValidationConfig,
+  IClientValidatorFieldConfig,
+  KeyChain,
+  ValidationMessage,
+  ValidationMessageBuilder,
+} from './form.types';
 import { valueByKeyChain } from './form.utils';
 
 function isValidator<TValue>(val: ClientValidationConfig<any>): val is IClientValidatorFieldConfig<TValue> {
   return !!val?.validator;
 }
 
-function isValidationMessageBuilder<TData>(val: ValidationMessage | ValidationMessageBuilder<TData>): val is ValidationMessageBuilder<TData> {
+function isValidationMessageBuilder<TData>(
+  val: ValidationMessage | ValidationMessageBuilder<TData>
+): val is ValidationMessageBuilder<TData> {
   return typeof val === 'function';
 }
 
@@ -22,9 +30,12 @@ export function validateAll<TData>(
   onValidate: (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[]) => void,
   baseKeyChain: KeyChain
 ) {
-  Object.keys(validatorConfig).forEach((key) => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    validateKeyChainProperty(valueByKeyChain(validatorConfig, [key]), [key], formState, onValidate, [...baseKeyChain, key]);
+  Object.keys(validatorConfig).forEach(key => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define -- Function calls validateAll, cannot define both before each other.
+    validateKeyChainProperty(valueByKeyChain(validatorConfig, [key]), [key], formState, onValidate, [
+      ...baseKeyChain,
+      key,
+    ]);
   });
 }
 

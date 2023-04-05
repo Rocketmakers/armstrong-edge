@@ -8,10 +8,7 @@ import { Dates } from '../../utils/dates';
 import { positiveModulo } from '../../utils/maths';
 import { Button, IButtonProps } from '../button';
 import { Icon } from '../icon';
-import {
-  getDayOfWeekHeadings,
-  getDaysWithDisplayFormat,
-} from './calendarDisplay.utils';
+import { getDayOfWeekHeadings, getDaysWithDisplayFormat } from './calendarDisplay.utils';
 
 export interface ICalendarDisplayProps {
   /**
@@ -100,14 +97,10 @@ export interface ICalendarDisplayProps {
   className?: string;
 
   /** Override the back button JSX used to move the calendar back a month */
-  backButton?: (
-    onClick: (event: React.MouseEvent<HTMLElement>) => void
-  ) => JSX.Element | string;
+  backButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
 
   /** Override the forwards button JSX used to move the calendar forwards a month */
-  forwardsButton?: (
-    onClick: (event: React.MouseEvent<HTMLElement>) => void
-  ) => JSX.Element | string;
+  forwardsButton?: (onClick: (event: React.MouseEvent<HTMLElement>) => void) => JSX.Element | string;
 
   /** Should show pagination and picker controls (next,prev,select month, select year) */
   controls?: boolean;
@@ -129,10 +122,7 @@ export interface ICalendarDisplayProps {
  * - For a date input, use `CalendarInput`.
  * - For an interactive calendar view, use `CalendarDisplay`.
  */
-export const CalendarDisplay = React.forwardRef<
-  HTMLDivElement,
-  ICalendarDisplayProps
->(
+export const CalendarDisplay = React.forwardRef<HTMLDivElement, ICalendarDisplayProps>(
   (
     {
       onForwardClicked,
@@ -161,26 +151,15 @@ export const CalendarDisplay = React.forwardRef<
     ref
   ) => {
     const dayOfWeekHeadings = React.useMemo(() => {
-      return reIndex(
-        getDayOfWeekHeadings(calendarDayOfTheWeekHeadingDisplayFormat!, locale),
-        weekdayStartIndex!
-      );
+      return reIndex(getDayOfWeekHeadings(calendarDayOfTheWeekHeadingDisplayFormat!, locale), weekdayStartIndex!);
     }, [weekdayStartIndex, locale, calendarDayOfTheWeekHeadingDisplayFormat]);
 
     const monthOptions = React.useMemo(() => {
-      return Dates.getMonthSelectOptions(
-        months,
-        calendarMonthSelectDisplayFormat!,
-        locale
-      );
+      return Dates.getMonthSelectOptions(months, calendarMonthSelectDisplayFormat!, locale);
     }, [months, locale, calendarMonthSelectDisplayFormat]);
 
     const yearOptions = React.useMemo(() => {
-      return Dates.getYearSelectOptions(
-        years,
-        calendarYearSelectDisplayFormat!,
-        locale
-      );
+      return Dates.getYearSelectOptions(years, calendarYearSelectDisplayFormat!, locale);
     }, [years, locale, calendarYearSelectDisplayFormat]);
 
     const displayDays = React.useMemo(() => {
@@ -200,9 +179,7 @@ export const CalendarDisplay = React.forwardRef<
             {onBackClicked &&
               (backButton?.(onBackClicked) || (
                 <Button
-                  className={
-                    'arm-calendar-display-button arm-calendar-display-button-prev'
-                  }
+                  className={'arm-calendar-display-button arm-calendar-display-button-prev'}
                   onClick={onBackClicked}
                 >
                   <Icon iconSet={'Icomoon'} icon={'arrow-left3'} />
@@ -242,20 +219,14 @@ export const CalendarDisplay = React.forwardRef<
           </div>
 
           <div className="arm-calendar-date-grid-days">
-            {repeat(blankDaysAtStartCount, (index) => (
-              <div
-                key={index}
-                className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty"
-              />
+            {repeat(blankDaysAtStartCount, index => (
+              <div key={index} className="arm-calendar-date-grid-day arm-calendar-date-grid-day-empty" />
             ))}
 
-            {displayDays.map((displayDay) => (
+            {displayDays.map(displayDay => (
               <Button
                 type="button"
-                className={concat(
-                  'arm-calendar-date-grid-day',
-                  displayDay.day.highlightedClassName
-                )}
+                className={concat('arm-calendar-date-grid-day', displayDay.day.highlightedClassName)}
                 onClick={() => onDayClicked?.(displayDay.day)}
                 key={displayDay.day.numberInMonth}
                 data-selected={displayDay.day.isSelected}
@@ -268,9 +239,7 @@ export const CalendarDisplay = React.forwardRef<
                 data-highlight={displayDay.day.isHighlighted}
               >
                 <p>{displayDay.displayFormat}</p>
-                {displayDay.day.isHighlighted && (
-                  <div className="arm-calendar-date-grid-day-highlight" />
-                )}
+                {displayDay.day.isHighlighted && <div className="arm-calendar-date-grid-day-highlight" />}
               </Button>
             ))}
           </div>
@@ -278,7 +247,7 @@ export const CalendarDisplay = React.forwardRef<
 
         {!!jumpList?.length && (
           <div className="arm-calendar-jump-list">
-            {jumpList.map((jump) => (
+            {jumpList.map(jump => (
               <Button
                 {...jump.buttonProps}
                 key={jump.name}
@@ -309,3 +278,5 @@ CalendarDisplay.defaultProps = {
   controls: true,
   jumpList: [{ date: new Date(), name: 'Today' }],
 };
+
+CalendarDisplay.displayName = 'CalendarDisplay';

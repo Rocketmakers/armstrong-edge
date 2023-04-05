@@ -1,17 +1,11 @@
 import * as React from 'react';
 
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-  NullOrUndefined,
-} from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { Button, Icon, IconSet, IIcon } from '..';
 import { IInputProps, Input } from '../input/input.component';
 
-interface IPasswordInputProps<TBind extends NullOrUndefined<string>>
-  extends Omit<IInputProps<TBind>, 'type'> {
+interface IPasswordInputProps<TBind extends NullOrUndefined<string>> extends Omit<IInputProps<TBind>, 'type'> {
   showPasswordButton?: boolean;
   showPasswordButtonIcon?: (showing?: boolean) => IIcon<IconSet>;
 }
@@ -19,12 +13,7 @@ interface IPasswordInputProps<TBind extends NullOrUndefined<string>>
 /** Wrap up a text input with type=password */
 export const PasswordInput = React.forwardRef(
   <TBind extends NullOrUndefined<string>>(
-    {
-      className,
-      showPasswordButton,
-      showPasswordButtonIcon,
-      ...props
-    }: IPasswordInputProps<TBind>,
+    { className, showPasswordButton, showPasswordButtonIcon, ...props }: IPasswordInputProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -55,7 +44,7 @@ export const PasswordInput = React.forwardRef(
   ArmstrongFCExtensions<IPasswordInputProps<any>>;
 
 PasswordInput.defaultProps = {
-  showPasswordButtonIcon: (checked) => ({
+  showPasswordButtonIcon: checked => ({
     iconSet: 'Icomoon',
     icon: checked ? 'eye-blocked' : 'eye',
   }),

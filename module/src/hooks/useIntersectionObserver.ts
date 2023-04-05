@@ -42,6 +42,7 @@ export function useIntersectionObserver(
         }
       };
     }
+    return undefined;
   }, [ref?.current, observer, callback]);
 
   React.useEffect(

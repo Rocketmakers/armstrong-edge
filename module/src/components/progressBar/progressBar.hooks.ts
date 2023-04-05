@@ -44,7 +44,13 @@ export interface IUseProgressReturn {
 }
 
 /** Get an incrementable spoofed progress designed for use with a ProgressBar or GlobalProgressBar component to make loads appear less static */
-export const useProgress = ({ trickle, trickleAmount, trickleInterval, maximum, minimum }: IUseProgressConfig = {}): IUseProgressReturn => {
+export const useProgress = ({
+  trickle,
+  trickleAmount,
+  trickleInterval,
+  maximum,
+  minimum,
+}: IUseProgressConfig = {}): IUseProgressReturn => {
   // progress is stored both in state and in a ref so the existing state can easily be accessed inside the timeout callback (otherwise it will only have access to the state at the time the first timeout was set)
   const [progress, setProgressState] = React.useState(0);
   const progressRef = React.useRef(0);

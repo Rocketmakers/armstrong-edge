@@ -32,7 +32,7 @@ export function getDaySelectOptions(
   formatString: string,
   locale: Locale = Dates.defaultLocale
 ): ISelectOption<number, Calendar.IDay>[] {
-  return days.map((day) => ({ id: day.numberInMonth, name: format(day.date, formatString, { locale }), data: day }));
+  return days.map(day => ({ id: day.numberInMonth, name: format(day.date, formatString, { locale }), data: day }));
 }
 
 /**

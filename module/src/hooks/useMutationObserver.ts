@@ -38,6 +38,7 @@ export function useMutationObserver(
         }
       };
     }
+    return undefined;
   }, [ref?.current, observer, callback, options]);
 
   React.useEffect(

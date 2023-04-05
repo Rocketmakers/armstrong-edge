@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { use as useForm } from '../../hooks/form';
 import { Dates } from '../../utils/dates';
+import { use as useForm } from '../form';
 import { ICalendarHighlightParsed, IConfig } from './calendar.types';
 import { getDays, getMonths, getYears } from './calendar.utils';
 
@@ -24,7 +24,7 @@ export const use = ({ formatString, locale, highlights, max, min, rangeTo, selec
   }, [rangeTo, formatString, locale]);
 
   const highlightsParsed = React.useMemo<ICalendarHighlightParsed[] | undefined>(() => {
-    return highlights?.map((highlight) => ({
+    return highlights?.map(highlight => ({
       ...highlight,
       date: Dates.dateLikeToDate(highlight.date, formatString, locale)!,
     }));
@@ -65,23 +65,25 @@ export const use = ({ formatString, locale, highlights, max, min, rangeTo, selec
       if (currentMonth === 0 && direction === 'back') {
         // going back from first month
         const prevYear = currentYear - 1;
-        if (selectableYears.map((year) => year.number).indexOf(prevYear) > -1) {
+        if (selectableYears.map(year => year.number).indexOf(prevYear) > -1) {
           formProp('viewingYear').set(prevYear);
-          formProp('viewingMonth').set(selectableMonths.find((__, index) => index === selectableMonths.length - 1)!.indexInYear);
+          formProp('viewingMonth').set(
+            selectableMonths.find((__, index) => index === selectableMonths.length - 1)!.indexInYear
+          );
         }
         return;
       }
       if (currentMonth === selectableMonths.length - 1 && direction === 'forward') {
         // going forward from last month
         const nextYear = currentYear + 1;
-        if (selectableYears.map((year) => year.number).indexOf(nextYear) > -1) {
+        if (selectableYears.map(year => year.number).indexOf(nextYear) > -1) {
           formProp('viewingYear').set(nextYear);
           formProp('viewingMonth').set(0);
         }
         return;
       }
       const nextMonthNumber = direction === 'forward' ? currentMonth + 1 : currentMonth - 1;
-      const nextMonth = selectableMonths.find((month) => month.indexInYear === nextMonthNumber);
+      const nextMonth = selectableMonths.find(month => month.indexInYear === nextMonthNumber);
       if (nextMonth && !nextMonth.isDisabled) {
         formProp('viewingMonth').set(nextMonthNumber);
       }

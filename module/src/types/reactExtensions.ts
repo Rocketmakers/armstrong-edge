@@ -4,4 +4,7 @@ import * as React from 'react';
 export type ArmstrongFCProps<TProps, TRef> = React.PropsWithChildren<TProps> & React.RefAttributes<TRef | undefined>;
 export type ArmstrongVFCProps<TProps, TRef> = TProps & React.RefAttributes<TRef | undefined>;
 export type ArmstrongFCReturn = ReturnType<React.FC>;
-export type ArmstrongFCExtensions<TDefaultProps> = Pick<React.FC<TDefaultProps>, 'contextTypes' | 'defaultProps' | 'displayName' | 'propTypes'>;
+export type ArmstrongFCExtensions<TDefaultProps> = Pick<
+  React.FC<TDefaultProps>,
+  'contextTypes' | 'defaultProps' | 'displayName' | 'propTypes'
+>;

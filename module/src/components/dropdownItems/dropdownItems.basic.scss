@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-dropdown-items {
   &:focus {
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
 
-  &[data-disabled="true"] {
+  &[data-disabled='true'] {
     pointer-events: none;
 
     > * {

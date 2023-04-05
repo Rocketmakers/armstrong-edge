@@ -392,7 +392,7 @@ export const CalendarInput = React.forwardRef(
               {showCalendarButton &&
                 !keepCalendarOpen &&
                 (openCalendarButton?.(onClickCalendarButton, calendarOpen || !!keepCalendarOpen) || (
-                  <IconButton type="button" minimalStyle icon={IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={onClickCalendarButton} />
+                  <IconButton type="button" minimalStyle icon={IconUtils.IconUtils.getIconDefinition('Icomoon', 'calendar')} onClick={onClickCalendarButton} />
                 ))}
 
               {disableInputs ? (

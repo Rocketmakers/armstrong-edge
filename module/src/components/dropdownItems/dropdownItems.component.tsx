@@ -1,29 +1,21 @@
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  useDidUpdateEffect,
-  useEventListener,
-  useHasTimeElapsed,
-} from "../../hooks";
-import { ArmstrongId } from "../../types/core";
-import { IArmstrongExtendedOption } from "../../types/options";
-import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from "../../utils/arrays";
-import { concat } from "../../utils/classNames";
-import { Dropdown, IDropdownProps } from "../dropdown";
-import { Icon } from "../icon";
-import { OptionContent } from "../optionContent/optionContent.component";
+import { useDidUpdateEffect, useEventListener, useHasTimeElapsed } from '../../hooks';
+import { ArmstrongId } from '../../types/core';
+import { IArmstrongExtendedOption } from '../../types/options';
+import { arrayToArraysByKey, getAtOverallIndex, getOverallIndex } from '../../utils/arrays';
+import { concat } from '../../utils/classNames';
+import { Dropdown, IDropdownProps } from '../dropdown';
+import { Icon } from '../icon';
+import { OptionContent } from '../optionContent/optionContent.component';
 
-export interface IDropdownItem
-  extends IArmstrongExtendedOption<
-    ArmstrongId,
-    Omit<
-      React.DetailedHTMLProps<
-        React.BaseHTMLAttributes<HTMLLIElement>,
-        HTMLLIElement
-      >,
-      "onMouseUp" | "ref" | "onClick" | "onMouseEnter"
-    >
-  > {}
+export type IDropdownItem = IArmstrongExtendedOption<
+  ArmstrongId,
+  Omit<
+    React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLLIElement>, HTMLLIElement>,
+    'onMouseUp' | 'ref' | 'onClick' | 'onMouseEnter'
+  >
+>;
 
 export interface IDropdownItemProps extends IDropdownItem {
   /** fired when clicking on the dropdown item */
@@ -68,9 +60,9 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
       <li
         {...htmlProps}
         ref={ref}
-        className={concat("arm-dropdown-item", htmlProps?.className)}
+        className={concat('arm-dropdown-item', htmlProps?.className)}
         onMouseUp={onMouseUp}
-        onMouseDown={(event) => event.stopPropagation()}
+        onMouseDown={event => event.stopPropagation()}
         onClick={onClick}
         data-keyboard-selected={isKeyboardSelected}
         data-selected={isSelected}
@@ -87,20 +79,13 @@ export const DropdownItem = React.forwardRef<HTMLLIElement, IDropdownItemProps>(
           id={id}
           isActive={isSelected}
         />
-        {isSelected && (
-          <Icon
-            iconSet="Icomoon"
-            icon="checkmark3"
-            className="arm-dropdown-item-checkmark"
-          />
-        )}
+        {isSelected && <Icon iconSet="Icomoon" icon="checkmark3" className="arm-dropdown-item-checkmark" />}
       </li>
     );
   }
 );
 
-export interface IDropdownItemsProps
-  extends Omit<IDropdownProps, "dropdownContent"> {
+export interface IDropdownItemsProps extends Omit<IDropdownProps, 'dropdownContent'> {
   /** The selectable items rendered inside the dropdown */
   items: IDropdownItem[];
 
@@ -127,9 +112,7 @@ export interface IDropdownItemsProps
 }
 
 /** A dropdown which renders a list of selectable options and allows keyboard navigation when its children are focused */
-export const DropdownItems: React.FunctionComponent<
-  React.PropsWithChildren<IDropdownItemsProps>
-> = ({
+export const DropdownItems: React.FunctionComponent<React.PropsWithChildren<IDropdownItemsProps>> = ({
   items,
   allowKeyboardNavigation,
   onItemSelected,
@@ -149,21 +132,13 @@ export const DropdownItems: React.FunctionComponent<
   ...dropdownProps
 }) => {
   const itemRefs = React.useRef<Record<string, HTMLLIElement | null>>({});
-  const [keyboardSelectedItemIndex, setKeyboardSelectedItemIndex] =
-    React.useState(0);
+  const [keyboardSelectedItemIndex, setKeyboardSelectedItemIndex] = React.useState(0);
 
-  const groupedItems = React.useMemo(
-    () => arrayToArraysByKey(items, (item) => item.group || ""),
-    [items]
-  );
+  const groupedItems = React.useMemo(() => arrayToArraysByKey(items, item => item.group || ''), [items]);
 
   const resetKeyboardSelectedItemIndex = React.useCallback(() => {
-    const selectedItemIndex = items.findIndex((item) =>
-      currentValue?.includes(item.id)
-    );
-    setKeyboardSelectedItemIndex(
-      selectedItemIndex > -1 ? selectedItemIndex : 0
-    );
+    const selectedItemIndex = items.findIndex(item => currentValue?.includes(item.id));
+    setKeyboardSelectedItemIndex(selectedItemIndex > -1 ? selectedItemIndex : 0);
   }, [currentValue]);
 
   React.useLayoutEffect(() => {
@@ -178,9 +153,7 @@ export const DropdownItems: React.FunctionComponent<
 
   useDidUpdateEffect(() => {
     if (isOpen && searchTerm?.length) {
-      const newIndex = items.findIndex((item) =>
-        item.name?.startsWith(searchTerm)
-      );
+      const newIndex = items.findIndex(item => item.name?.startsWith(searchTerm));
 
       if (newIndex > -1) {
         setKeyboardSelectedItemIndex(newIndex);
@@ -192,39 +165,28 @@ export const DropdownItems: React.FunctionComponent<
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       onKeyDown?.(event);
 
-      if (
-        !isOpen &&
-        allowKeyboardNavigation &&
-        event.key !== "Tab" &&
-        event.key !== "Escape"
-      ) {
+      if (!isOpen && allowKeyboardNavigation && event.key !== 'Tab' && event.key !== 'Escape') {
         onOpenChange?.(true);
       }
 
       if (isOpen && allowKeyboardNavigation) {
         switch (event.key) {
-          case "ArrowDown": {
-            const newItemIndex = Math.min(
-              (items.length || 0) - 1,
-              keyboardSelectedItemIndex + 1
-            );
+          case 'ArrowDown': {
+            const newItemIndex = Math.min((items.length || 0) - 1, keyboardSelectedItemIndex + 1);
             setKeyboardSelectedItemIndex(newItemIndex);
             itemRefs.current?.[items[newItemIndex].id!]?.scrollIntoView(false);
             event.preventDefault();
             break;
           }
-          case "ArrowUp": {
+          case 'ArrowUp': {
             const newItemIndex = Math.max(0, keyboardSelectedItemIndex - 1);
             setKeyboardSelectedItemIndex(newItemIndex);
             itemRefs.current?.[items[newItemIndex].id!]?.scrollIntoView();
             event.preventDefault();
             break;
           }
-          case "Enter": {
-            const selectedItem = getAtOverallIndex(
-              keyboardSelectedItemIndex,
-              groupedItems
-            );
+          case 'Enter': {
+            const selectedItem = getAtOverallIndex(keyboardSelectedItemIndex, groupedItems);
 
             if (selectedItem) {
               onItemSelected(selectedItem.id);
@@ -236,8 +198,8 @@ export const DropdownItems: React.FunctionComponent<
             event.preventDefault();
             break;
           }
-          case "Tab":
-          case "Escape": {
+          case 'Tab':
+          case 'Escape': {
             event.stopPropagation();
             onOpenChange?.(false);
             break;
@@ -262,19 +224,13 @@ export const DropdownItems: React.FunctionComponent<
   useDidUpdateEffect(() => {
     if (isOpen) {
       setTimeout(() => {
-        itemRefs.current?.[
-          items[keyboardSelectedItemIndex].id!
-        ]?.scrollIntoView({ block: "center" });
+        itemRefs.current?.[items[keyboardSelectedItemIndex].id!]?.scrollIntoView({ block: 'center' });
       });
     }
   }, [isOpen]);
 
   // used to ensure that clicks on the dropdown are not misread as a mouseUp on a dropdown item if the dropdown content is overlaying the click listener
-  const [
-    hasTimePassedSinceMouseDown,
-    beginHasTimeElapsed,
-    resetHasTimeElapsed,
-  ] = useHasTimeElapsed(500);
+  const [hasTimePassedSinceMouseDown, beginHasTimeElapsed, resetHasTimeElapsed] = useHasTimeElapsed(500);
 
   // track if is on initial click to enable click and drag behaviour on dropdowns
   const [isFirstClick, setIsFirstClick] = React.useState(false);
@@ -292,7 +248,7 @@ export const DropdownItems: React.FunctionComponent<
     setIsFirstClick(false);
   }, []);
 
-  useEventListener("mouseup", onWindowMouseUpEvent);
+  useEventListener('mouseup', onWindowMouseUpEvent);
 
   const onSelectItem = React.useCallback(
     (id: ArmstrongId, ignoreHasTimePassed?: boolean) => {
@@ -304,12 +260,7 @@ export const DropdownItems: React.FunctionComponent<
         resetHasTimeElapsed();
       }
     },
-    [
-      closeOnSelection,
-      onOpenChange,
-      onItemSelected,
-      hasTimePassedSinceMouseDown,
-    ]
+    [closeOnSelection, onOpenChange, onItemSelected, hasTimePassedSinceMouseDown]
   );
 
   const id = React.useId();
@@ -317,12 +268,8 @@ export const DropdownItems: React.FunctionComponent<
   return (
     <Dropdown
       {...dropdownProps}
-      className={concat("arm-dropdown-items", className)}
-      contentClassName={concat(
-        "arm-dropdown-items-content",
-        contentClassName,
-        dropdownProps.modalHtmlProps?.className
-      )}
+      className={concat('arm-dropdown-items', className)}
+      contentClassName={concat('arm-dropdown-items-content', contentClassName, dropdownProps.modalHtmlProps?.className)}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       onKeyDown={onKeyDownEvent}
@@ -339,10 +286,7 @@ export const DropdownItems: React.FunctionComponent<
           role="listbox"
         >
           {items.length === 0 ? (
-            <li
-              className="arm-dropdown-items-no-item-text"
-              data-cy="dropdown-empty"
-            >
+            <li className="arm-dropdown-items-no-item-text" data-cy="dropdown-empty">
               <p>{noItemsText}</p>
             </li>
           ) : (
@@ -356,36 +300,27 @@ export const DropdownItems: React.FunctionComponent<
 
                 {group.items.map((item, index) => {
                   // get overall index in array
-                  const arrayIndex = getOverallIndex(
-                    index,
-                    groupIndex,
-                    groupedItems
-                  );
+                  const arrayIndex = getOverallIndex(index, groupIndex, groupedItems);
 
                   return (
                     <DropdownItem
                       {...item}
                       key={item.id + index.toString()}
-                      onMouseUp={(event) => {
+                      onMouseUp={event => {
                         if (isFirstClick) {
                           onSelectItem(item.id);
                           event.preventDefault();
                         }
                       }}
                       idPrefix={`${id}_item`}
-                      onClick={(event) => {
+                      onClick={event => {
                         onSelectItem(item.id, true);
                         event.preventDefault();
                       }}
-                      onMouseEnter={() =>
-                        setKeyboardSelectedItemIndex(arrayIndex)
-                      }
-                      isKeyboardSelected={
-                        !!allowKeyboardNavigation &&
-                        keyboardSelectedItemIndex === arrayIndex
-                      }
+                      onMouseEnter={() => setKeyboardSelectedItemIndex(arrayIndex)}
+                      isKeyboardSelected={!!allowKeyboardNavigation && keyboardSelectedItemIndex === arrayIndex}
                       isSelected={!!currentValue?.includes(item.id)}
-                      ref={(optionItemRef) => {
+                      ref={optionItemRef => {
                         itemRefs.current[item.id!] = optionItemRef;
                       }}
                     />
@@ -404,5 +339,5 @@ export const DropdownItems: React.FunctionComponent<
 
 DropdownItems.defaultProps = {
   closeOnSelection: true,
-  noItemsText: "No results",
+  noItemsText: 'No results',
 };

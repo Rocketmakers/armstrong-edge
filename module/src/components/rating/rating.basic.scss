@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-rating {
   display: flex;
@@ -15,14 +15,14 @@
   height: 1rem;
   position: relative;
 
-  &[data-part="true"],
-  &[data-filled="true"] {
+  &[data-part='true'],
+  &[data-filled='true'] {
     .arm-rating-part-filled {
       opacity: 1;
     }
   }
 
-  &[data-filled="true"] {
+  &[data-filled='true'] {
     .arm-rating-part-empty {
       opacity: 0;
     }
@@ -77,7 +77,7 @@
   @include mixins.absolute-fill;
 
   appearance: none;
-  -webkit-appearance: none;
+  appearance: none;
   margin: 0;
   cursor: pointer;
 }
