@@ -1,15 +1,11 @@
-import * as React from "react";
-import { HTMLAttributes } from "react";
+import * as React from 'react';
+import { HTMLAttributes } from 'react';
 
-import { useHasTimeElapsedSinceMount } from "../../hooks/useHasTimeElapsed";
-import {
-  IUseInViewportOptions,
-  useInViewport,
-} from "../../hooks/useIsInViewport";
-import { concat } from "../../utils/classNames";
-import { IStatusProps, Status } from "../status";
-
-import { useElementStatus } from "./image.hooks";
+import { useHasTimeElapsedSinceMount } from '../../hooks/useHasTimeElapsed';
+import { IUseInViewportOptions, useInViewport } from '../../hooks/useIsInViewport';
+import { concat } from '../../utils/classNames';
+import { IStatusProps, Status } from '../status';
+import { useElementStatus } from './image.hooks';
 
 export interface IImageSource {
   /** the url source which will replace the main src if the right conditions are met */
@@ -22,25 +18,22 @@ export interface IImageSource {
   type?: string;
 
   /** Attributes to spread onto the source element */
-  attributes?: Omit<
-    HTMLAttributes<HTMLSourceElement>,
-    "srcSet" | "media" | "type"
-  >;
+  attributes?: Omit<HTMLAttributes<HTMLSourceElement>, 'srcSet' | 'media' | 'type'>;
 }
 
 type ImageSource = string | IImageSource;
 
 export interface IImageProps
-  extends Omit<IUseInViewportOptions, "once">,
-    Pick<IStatusProps, "spinnerIcon" | "errorIcon"> {
+  extends Omit<IUseInViewportOptions, 'once'>,
+    Pick<IStatusProps, 'spinnerIcon' | 'errorIcon'> {
   /** attributes to spread onto the picture element */
-  pictureAttributes?: Omit<HTMLAttributes<HTMLPictureElement>, "ref">;
+  pictureAttributes?: Omit<HTMLAttributes<HTMLPictureElement>, 'ref'>;
 
   /** attributes to spread onto the img element */
-  imgAttributes?: Omit<HTMLAttributes<HTMLImageElement>, "ref" | "src" | "alt">;
+  imgAttributes?: Omit<HTMLAttributes<HTMLImageElement>, 'ref' | 'src' | 'alt'>;
 
   /** attributes to spread onto the wrapping div element */
-  wrapperAttributes?: Omit<HTMLAttributes<HTMLDivElement>, "ref">;
+  wrapperAttributes?: Omit<HTMLAttributes<HTMLDivElement>, 'ref'>;
 
   /** the main src for the image */
   src: string;
@@ -66,25 +59,15 @@ const ImageInner: React.FC<IImageProps> = ({
   spinnerIcon,
 }) => {
   const internalImageRef = React.useRef<HTMLImageElement>(null);
-  const {
-    error,
-    loaded,
-    loading,
-    props: elementStatusProps,
-  } = useElementStatus(internalImageRef);
+  const { error, loaded, loading, props: elementStatusProps } = useElementStatus(internalImageRef);
   const showSpinner = useHasTimeElapsedSinceMount(timeToSpinner!);
 
   return (
-    <div
-      className="arm-image-inner"
-      data-loading={loading}
-      data-loaded={loaded}
-      data-error={error}
-    >
+    <div className="arm-image-inner" data-loading={loading} data-loaded={loaded} data-error={error}>
       {!error && (
         <picture {...pictureAttributes}>
-          {additionalSources?.map((source) =>
-            typeof source === "string" ? (
+          {additionalSources?.map(source =>
+            typeof source === 'string' ? (
               <source srcSet={source} key={source} />
             ) : (
               <source
@@ -99,59 +82,45 @@ const ImageInner: React.FC<IImageProps> = ({
           <img
             {...imgAttributes}
             {...elementStatusProps}
-            src={typeof src === "string" ? src : src[0]}
+            src={typeof src === 'string' ? src : src[0]}
             ref={internalImageRef}
           />
         </picture>
       )}
 
-      <Status
-        pending={loading && showSpinner}
-        error={error}
-        spinnerIcon={spinnerIcon}
-        errorIcon={errorIcon}
-      />
+      <Status pending={loading && showSpinner} error={error} spinnerIcon={spinnerIcon} errorIcon={errorIcon} />
     </div>
   );
 };
 
 /** A lazy loaded image which will show a spinner if the image is taking a while to load */
-export const Image = React.forwardRef<HTMLDivElement, IImageProps>(
-  (props, ref) => {
-    const {
-      wrapperAttributes,
-      rootMargin,
-      threshold,
-      onEnter,
-      onExit,
-      ...innerImageProps
-    } = props;
+export const Image = React.forwardRef<HTMLDivElement, IImageProps>((props, ref) => {
+  const { wrapperAttributes, rootMargin, threshold, onEnter, onExit, ...innerImageProps } = props;
 
-    const internalRef = React.useRef<HTMLDivElement>(null);
-    React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+  const internalRef = React.useRef<HTMLDivElement>(null);
+  React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
 
-    const enteredViewport = useInViewport(internalRef, {
-      rootMargin,
-      threshold,
-      onEnter,
-      onExit,
-      once: true,
-    });
+  const enteredViewport = useInViewport(internalRef, {
+    rootMargin,
+    threshold,
+    onEnter,
+    onExit,
+    once: true,
+  });
 
-    return (
-      <div
-        {...wrapperAttributes}
-        className={concat("arm-image", wrapperAttributes?.className)}
-        data-entered-viewport={enteredViewport}
-        ref={internalRef}
-      >
-        {enteredViewport && <ImageInner {...innerImageProps} />}
-      </div>
-    );
-  }
-);
+  return (
+    <div
+      {...wrapperAttributes}
+      className={concat('arm-image', wrapperAttributes?.className)}
+      data-entered-viewport={enteredViewport}
+      ref={internalRef}
+    >
+      {enteredViewport && <ImageInner {...innerImageProps} />}
+    </div>
+  );
+});
 
 Image.defaultProps = {
-  rootMargin: "50%",
+  rootMargin: '50%',
   timeToSpinner: 1000,
 };

@@ -1,18 +1,6 @@
 .arm-calendar-input {
   width: 100%;
   max-width: $arm-input-width;
-
-  .arm-input-wrapper-above,
-  .arm-input-wrapper-below {
-    max-height: 0;
-  }
-
-  &[data-calendar-open='true'] {
-    .arm-input-wrapper-above,
-    .arm-input-wrapper-below {
-      max-height: 400px;
-    }
-  }
 }
 
 .arm-calendar-input-preview {

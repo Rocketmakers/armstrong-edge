@@ -1,1 +1,1 @@
-export * from "./singleSelect.component";
+export * from './singleSelect.component';

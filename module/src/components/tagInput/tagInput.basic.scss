@@ -1,10 +1,10 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 .arm-tag-input-input {
   flex-grow: 1;
   appearance: none;
-  -webkit-appearance: none;
+  appearance: none;
   border: 0;
   outline: none;
   background-color: transparent;
@@ -24,8 +24,7 @@
   flex-grow: 1;
 }
 
-.arm-input-wrapper-above .arm-auto-resizer-content,
-.arm-input-wrapper-below .arm-auto-resizer-content {
+.arm-auto-resizer-content {
   @include mixins.space-between-children-horizontal(variables.$spacing-xxsmall);
 
   overflow-y: auto;

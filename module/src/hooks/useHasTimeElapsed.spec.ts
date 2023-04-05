@@ -1,16 +1,13 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from '@testing-library/react';
 
-import {
-  useHasTimeElapsed,
-  useHasTimeElapsedSinceMount,
-} from "./useHasTimeElapsed";
+import { useHasTimeElapsed, useHasTimeElapsedSinceMount } from './useHasTimeElapsed';
 
-describe("useHasTimeElapsed", () => {
+describe('useHasTimeElapsed', () => {
   beforeEach(() => {
     jest.useRealTimers();
   });
 
-  it("indicates that the required time has passed", async () => {
+  it('indicates that the required time has passed', async () => {
     // Assign
     const dummyFunc = jest.fn(() => null);
     const time = 25;
@@ -39,10 +36,10 @@ describe("useHasTimeElapsed", () => {
       expect(result.current[0]).toBeTruthy();
     });
 
-    expect(dummyFunc).toBeCalledTimes(1);
+    expect(dummyFunc).toHaveBeenCalledTimes(1);
   });
 
-  it("allows the user to reset the timer", async () => {
+  it('allows the user to reset the timer', async () => {
     // Assign
     const time = 25;
 
@@ -71,12 +68,12 @@ describe("useHasTimeElapsed", () => {
   });
 });
 
-describe("useHasTimeElapsedSinceMount", () => {
+describe('useHasTimeElapsedSinceMount', () => {
   beforeEach(() => {
     jest.useRealTimers();
   });
 
-  it("indicates that the required time has passed since mount", async () => {
+  it('indicates that the required time has passed since mount', async () => {
     // Assign
     const time = 25;
     jest.useFakeTimers();

@@ -20,12 +20,15 @@ export interface IUseInViewportOptions {
 }
 
 /** Take a ref and return a piece of React state reflecting whether the referenced element is currently in the viewport or not  */
-export function useInViewport(ref: React.MutableRefObject<HTMLElement | undefined | null>, options: IUseInViewportOptions = {}) {
+export function useInViewport(
+  ref: React.MutableRefObject<HTMLElement | undefined | null>,
+  options: IUseInViewportOptions = {}
+) {
   const [isInViewport, setIsInViewport] = React.useState(false);
 
   const onIntersect = React.useCallback<IntersectionObserverCallback>(
     (entries, observer) => {
-      const isIntersecting = !!entries.find((entry) => entry.isIntersecting);
+      const isIntersecting = !!entries.find(entry => entry.isIntersecting);
 
       if (isIntersecting && !isInViewport) {
         options.onEnter?.(entries);

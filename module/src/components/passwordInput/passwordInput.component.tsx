@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
-import { IconButton, IconSet, IIcon } from '..';
+import { Button, Icon, IconSet, IIcon } from '..';
 import { IInputProps, Input } from '../input/input.component';
 
 interface IPasswordInputProps<TBind extends NullOrUndefined<string>> extends Omit<IInputProps<TBind>, 'type'> {
@@ -27,15 +27,25 @@ export const PasswordInput = React.forwardRef(
         rightOverlay={
           showPasswordButton &&
           showPasswordButtonIcon && (
-            <IconButton type="button" icon={showPasswordButtonIcon(showPassword)} onClick={() => setShowPassword(!showPassword)} minimalStyle />
+            <Button onClick={() => setShowPassword(!showPassword)}>
+              <Icon
+                iconSet={showPasswordButtonIcon(showPassword).iconSet}
+                icon={showPasswordButtonIcon(showPassword).icon}
+              />
+            </Button>
           )
         }
       />
     );
   }
-) as (<TBind extends NullOrUndefined<string>>(props: ArmstrongVFCProps<IPasswordInputProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) &
+) as (<TBind extends NullOrUndefined<string>>(
+  props: ArmstrongVFCProps<IPasswordInputProps<TBind>, HTMLInputElement>
+) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IPasswordInputProps<any>>;
 
 PasswordInput.defaultProps = {
-  showPasswordButtonIcon: (checked) => ({ iconSet: 'Icomoon', icon: checked ? 'eye-blocked' : 'eye' }),
+  showPasswordButtonIcon: checked => ({
+    iconSet: 'Icomoon',
+    icon: checked ? 'eye-blocked' : 'eye',
+  }),
 };

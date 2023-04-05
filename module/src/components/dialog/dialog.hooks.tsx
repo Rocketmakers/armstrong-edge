@@ -12,7 +12,7 @@ export const useDialog = <T, TArg = unknown>(
   Children: React.FC<IUseModalLayerPromiseComponentProps<T, TArg>>,
   /** The props to give to the actual Modal component */
   props?: UseDialogDialogProps
-) => useModalLayerPromise(Children, (internalProps) => <Dialog {...internalProps} {...props} />);
+) => useModalLayerPromise(Children, internalProps => <Dialog {...internalProps} {...props} />);
 
 export interface IUseConfirmationDialogConfig {
   /** The content of the confirmation dialog, usually a message like "are you sure?" */
@@ -30,7 +30,11 @@ export const useConfirmationDialog = (config: IUseConfirmationDialogConfig = {},
   return useDialog<boolean>(
     ({ resolve }) => (
       <>
-        {!config.content || typeof config.content === 'string' ? <p>{config.content || 'Are you sure?'}</p> : config.content}
+        {!config.content || typeof config.content === 'string' ? (
+          <p>{config.content || 'Are you sure?'}</p>
+        ) : (
+          config.content
+        )}
         <div className="arm-confirmation-dialog-buttons">
           <Button type="button" className="arm-confirmation-dialog-no-button" onClick={() => resolve(false)}>
             {config.buttons?.no || 'No'}

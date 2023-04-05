@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Setup/SCSS" />
 
@@ -20,17 +20,17 @@ To use SCSS from Armstrong, it must be imported into your app's SCSS:
 
 ```css
 // variables and mixins - required for the rest of armstrong to work
-@import "~@rocketmakers/armstrong/dist/imports.scss";
+@import '~@rocketmakers/armstrong/dist/imports.scss';
 
 // includes a tonne of useful animations (required for use in the animated.scss theme)
-@import "~@rocketmakers/armstrong/dist/animations.scss";
+@import '~@rocketmakers/armstrong/dist/animations.scss';
 
 // basic theme - includes only functional and layout styling
-@import "~@rocketmakers/armstrong/dist/basic.scss";
+@import '~@rocketmakers/armstrong/dist/basic.scss';
 
 // OPTIONAL prototyping theme - includes more production-ready styling, like drop shadows and colours
 // must be imported on top of basic theme
-@import "~@rocketmakers/armstrong/dist/prototyping.scss";
+@import '~@rocketmakers/armstrong/dist/prototyping.scss';
 ```
 
 ### Themes

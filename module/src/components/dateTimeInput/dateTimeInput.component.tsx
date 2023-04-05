@@ -1,32 +1,23 @@
-import { isSameMinute, isValid } from "date-fns";
-import * as React from "react";
-import { isNil } from "lodash";
+import { isSameMinute, isValid } from 'date-fns';
+import { isNil } from 'lodash';
+import * as React from 'react';
 
-import { Form } from "../..";
-import { IBindingProps, useBindingState } from "../../hooks/form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-  NullOrUndefined,
-} from "../../types";
-import { concat, Dates } from "../../utils";
-import { CalendarInput, ICalendarInputProps } from "../calendarInput";
-import { InputWrapper } from "../inputWrapper";
-import { IStatusWrapperProps } from "../statusWrapper";
-import { ITimeInputProps, TimeInput } from "../timeInput";
+import { Form } from '../..';
+import { IBindingProps, useBindingState } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
+import { concat, Dates } from '../../utils';
+import { CalendarInput, ICalendarInputProps } from '../calendarInput';
+import { InputWrapper } from '../inputWrapper';
+import { IStatusWrapperProps } from '../statusWrapper';
+import { ITimeInputProps, TimeInput } from '../timeInput';
 
-type AdditionalCalendarInputProps<
-  TValue extends NullOrUndefined<Dates.DateLike>
-> = Omit<ICalendarInputProps<TValue>, "bind" | "formatString" | "locale">;
-type AdditionalTimeInputProps = Omit<
-  ITimeInputProps<any>,
-  "bind" | "formatString" | "locale"
+type AdditionalCalendarInputProps<TValue extends NullOrUndefined<Dates.DateLike>> = Omit<
+  ICalendarInputProps<TValue>,
+  'bind' | 'formatString' | 'locale'
 >;
+type AdditionalTimeInputProps = Omit<ITimeInputProps<any>, 'bind' | 'formatString' | 'locale'>;
 
-export interface IDateTimeInputProps<
-  TValue extends NullOrUndefined<Dates.DateLike>
-> extends IStatusWrapperProps {
+export interface IDateTimeInputProps<TValue extends NullOrUndefined<Dates.DateLike>> extends IStatusWrapperProps {
   /** The binding for the input. */
   bind?: IBindingProps<TValue>;
 
@@ -65,7 +56,7 @@ export interface IDateTimeInputProps<
 }
 
 /** Format used to bind the internal time input, does not effect the format of the bound datetime value */
-const innerTimeInputFormat = "HH:mm";
+const innerTimeInputFormat = 'HH:mm';
 
 export const DateTimeInput = React.forwardRef(
   <TValue extends NullOrUndefined<Dates.DateLike>>(
@@ -87,25 +78,19 @@ export const DateTimeInput = React.forwardRef(
     }: IDateTimeInputProps<TValue>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const [selectedDateTime, setSelectedDateTime, bindConfig] = useBindingState(
-      bind,
-      {
-        validationErrorIcon: errorIcon,
-        validationErrorMessages,
-        validationMode,
-        onChange: onValueChange,
-        value,
-      }
-    );
+    const [selectedDateTime, setSelectedDateTime, bindConfig] = useBindingState(bind, {
+      validationErrorIcon: errorIcon,
+      validationErrorMessages,
+      validationMode,
+      onChange: onValueChange,
+      value,
+    });
 
     const timeParsed = React.useMemo(() => {
       if (selectedDateTime) {
-        return Dates.dateToString(
-          Dates.dateLikeToDate(selectedDateTime)!,
-          innerTimeInputFormat
-        );
+        return Dates.dateToString(Dates.dateLikeToDate(selectedDateTime)!, innerTimeInputFormat);
       }
-      return "";
+      return '';
     }, [selectedDateTime]);
 
     const { formProp, formState } = Form.use({
@@ -115,21 +100,9 @@ export const DateTimeInput = React.forwardRef(
 
     React.useEffect(() => {
       if (formState?.date && formState?.time) {
-        const dateFromTime = Dates.dateLikeToDate(
-          formState.time,
-          innerTimeInputFormat
-        );
-        const dateFromDate = Dates.dateLikeToDate(
-          formState.date,
-          formatString,
-          locale
-        );
-        if (
-          dateFromTime &&
-          dateFromDate &&
-          isValid(dateFromTime) &&
-          isValid(dateFromTime)
-        ) {
+        const dateFromTime = Dates.dateLikeToDate(formState.time, innerTimeInputFormat);
+        const dateFromDate = Dates.dateLikeToDate(formState.date, formatString, locale);
+        if (dateFromTime && dateFromDate && isValid(dateFromTime) && isValid(dateFromTime)) {
           const finalDateSelected = new Date(
             dateFromDate.getFullYear(),
             dateFromDate.getMonth(),
@@ -138,21 +111,15 @@ export const DateTimeInput = React.forwardRef(
             dateFromTime.getMinutes()
           );
           if (!isValid(finalDateSelected)) {
-            bind?.addValidationError("Invalid date selection");
+            bind?.addValidationError('Invalid date selection');
             return;
           }
           const unset = isNil(selectedDateTime);
-          if (
-            unset ||
-            !isSameMinute(
-              finalDateSelected,
-              Dates.dateLikeToDate(selectedDateTime)!
-            )
-          ) {
+          if (unset || !isSameMinute(finalDateSelected, Dates.dateLikeToDate(selectedDateTime)!)) {
             setSelectedDateTime?.(
               Dates.dateObjectToDateLike(
                 finalDateSelected,
-                !unset ? typeof selectedDateTime : "string",
+                !unset ? typeof selectedDateTime : 'string',
                 formatString,
                 locale
               ) as TValue
@@ -165,7 +132,7 @@ export const DateTimeInput = React.forwardRef(
     return (
       <InputWrapper
         ref={ref}
-        className={concat("arm-date-time-input", className)}
+        className={concat('arm-date-time-input', className)}
         error={error}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}
@@ -175,14 +142,10 @@ export const DateTimeInput = React.forwardRef(
       >
         {/* The nasty cast on the prop spread below is a workaround for a suspected TS bug to do with generics. */}
         <CalendarInput
-          bind={formProp("date").bind()}
-          {...((additionalCalendarInputProps ??
-            {}) as AdditionalCalendarInputProps<any>)}
+          bind={formProp('date').bind()}
+          {...((additionalCalendarInputProps ?? {}) as AdditionalCalendarInputProps<any>)}
         />
-        <TimeInput
-          bind={formProp("time").bind()}
-          {...(additionalTimeInputProps ?? {})}
-        />
+        <TimeInput bind={formProp('time').bind()} {...(additionalTimeInputProps ?? {})} />
       </InputWrapper>
     );
   }
@@ -190,3 +153,5 @@ export const DateTimeInput = React.forwardRef(
   props: ArmstrongVFCProps<IDateTimeInputProps<TValue>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IDateTimeInputProps<any>>;
+
+DateTimeInput.displayName = 'DateTimeInput';

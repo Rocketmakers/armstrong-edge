@@ -1,7 +1,6 @@
 .arm-tag-input {
   &[data-has-tags='true'] {
-    .arm-input-wrapper-above .arm-auto-resizer-content,
-    .arm-input-wrapper-below .arm-auto-resizer-content {
+    .arm-auto-resizer-content {
       padding: $spacing-xsmall;
     }
   }

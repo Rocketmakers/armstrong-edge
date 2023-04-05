@@ -31,7 +31,7 @@ export const NumberInput = React.forwardRef(
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
-      value: (value !== null && value !== undefined) ? (Number(value.toString()) as TBind) : undefined,
+      value: value !== null && value !== undefined ? (Number(value.toString()) as TBind) : undefined,
       validationErrorMessages,
       validationMode,
       validationErrorIcon,
@@ -70,7 +70,7 @@ export const NumberInput = React.forwardRef(
         <input
           {...nativeProps}
           ref={ref}
-          className={'arm-input-base-input'}
+          className={concat('arm-input', 'arm-input-number-input')}
           onChange={onChangeEvent}
           value={boundValue ?? (bind && '')}
           disabled={disabled}
@@ -79,5 +79,7 @@ export const NumberInput = React.forwardRef(
       </InputWrapper>
     );
   }
-) as (<TBind extends NullOrUndefined<number>>(props: ArmstrongVFCProps<Omit<IInputProps<TBind>, 'type'>, HTMLInputElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<Omit<IInputProps<any>, 'type'>>;
+) as (<TBind extends NullOrUndefined<number>>(
+  props: ArmstrongVFCProps<Omit<IInputProps<TBind>, 'type'>, HTMLInputElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<Omit<IInputProps<unknown>, 'type'>>;

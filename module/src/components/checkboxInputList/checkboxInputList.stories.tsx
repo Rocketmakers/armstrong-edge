@@ -1,10 +1,11 @@
-import { expect } from "@storybook/jest";
-import { Meta, StoryObj } from "@storybook/react";
-import { within, userEvent } from "@storybook/testing-library";
-import React from "react";
-import { CheckboxInputList } from "./checkboxInputList.component";
-import { Form } from "../../hooks";
-import { IconUtils } from "../icon/icons.utils";
+import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { userEvent, within } from '@storybook/testing-library';
+import React from 'react';
+
+import { Form } from '../../hooks';
+import { getIconDefinition } from '../icon/icons.utils';
+import { CheckboxInputList } from './checkboxInputList.component';
 
 /** metadata */
 
@@ -19,7 +20,7 @@ export const Default: StoryObj<typeof CheckboxInputList> = {
   render: () => {
     interface IFormData {
       value: (1 | 2 | 3 | 4)[];
-    };
+    }
 
     const data: IFormData = { value: [] };
 
@@ -52,14 +53,14 @@ export const Default: StoryObj<typeof CheckboxInputList> = {
     expect(result).toHaveTextContent('Bound value: 3, 1');
     userEvent.click(within(pink!).getByRole('checkbox'));
     expect(result).toHaveTextContent('Bound value: 1');
-  }
+  },
 };
 
 export const Grouped: StoryObj<typeof CheckboxInputList> = {
   render: () => {
     interface IFormData {
       value: (1 | 2 | 3 | 4)[];
-    };
+    }
 
     const data: IFormData = { value: [] };
 
@@ -70,9 +71,19 @@ export const Grouped: StoryObj<typeof CheckboxInputList> = {
         <CheckboxInputList
           bind={formProp('value').bind()}
           options={[
-            { id: 1, content: 'red', group: 'primary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
+            {
+              id: 1,
+              content: 'red',
+              group: 'primary',
+              rightIcon: getIconDefinition('Icomoon', 'cheese'),
+            },
             { id: 2, content: 'blue', group: 'primary' },
-            { id: 3, content: 'pink', group: 'secondary', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
+            {
+              id: 3,
+              content: 'pink',
+              group: 'secondary',
+              rightIcon: getIconDefinition('Icomoon', 'heart'),
+            },
             { id: 4, content: 'brown', group: 'secondary' },
           ]}
         />
@@ -87,14 +98,14 @@ export const Grouped: StoryObj<typeof CheckboxInputList> = {
     const group2 = canvas.getByText('secondary').parentElement;
     expect(group2?.nextSibling).toContainElement(canvas.getByText('pink'));
     expect(group2?.nextSibling?.nextSibling).toContainElement(canvas.getByText('brown'));
-  }
+  },
 };
 
 export const CustomIcons: StoryObj<typeof CheckboxInputList> = {
   render: () => {
     interface IFormData {
       value: (1 | 2 | 3 | 4)[];
-    };
+    }
 
     const data: IFormData = { value: [3] };
 
@@ -104,12 +115,21 @@ export const CustomIcons: StoryObj<typeof CheckboxInputList> = {
       <>
         <CheckboxInputList
           bind={formProp('value').bind()}
-          checkedIcon={IconUtils.getIconDefinition('Icomoon', 'checkmark3')}
-          uncheckedIcon={IconUtils.getIconDefinition('Icomoon', 'cross3')}
+          checkedIcon={getIconDefinition('Icomoon', 'checkmark3')}
+          uncheckedIcon={getIconDefinition('Icomoon', 'cross3')}
           options={[
-            { id: 1, content: 'red', rightIcon: IconUtils.getIconDefinition('Icomoon', 'cheese') },
+            {
+              id: 1,
+              content: 'red',
+              rightIcon: getIconDefinition('Icomoon', 'cheese'),
+            },
             { id: 2, content: 'blue' },
-            { id: 3, content: 'pink', rightIcon: IconUtils.getIconDefinition('Icomoon', 'heart') },
+            {
+              id: 3,
+              content: 'pink',
+              rightIcon: getIconDefinition('Icomoon', 'heart'),
+              leftIcon: getIconDefinition('Icomoon', 'heart'),
+            },
             { id: 4, content: 'brown' },
           ]}
         />
@@ -126,44 +146,37 @@ export const CustomIcons: StoryObj<typeof CheckboxInputList> = {
     const checked = within(pink).getByTitle('Checked icon');
     expect(checked).toHaveAttribute('data-icon-set', 'Icomoon');
     expect(checked).toHaveAttribute('data-i', 'checkmark3');
-  }
+  },
 };
 
 const checkedUrl = 'https://cdn.pixabay.com/photo/2019/02/19/19/45/thumbs-up-4007573_960_720.png';
-const uncheckedUrl = 'https://www.stylist.co.uk/images/app/uploads/2021/07/02125306/psychology-of-second-hand-sadness-1120x1120.jpg?w=1200&h=1&fit=max&auto=format%2Ccompress';
+const uncheckedUrl =
+  'https://www.stylist.co.uk/images/app/uploads/2021/07/02125306/psychology-of-second-hand-sadness-1120x1120.jpg?w=1200&h=1&fit=max&auto=format%2Ccompress';
 export const CustomContentWithoutCheckbox: StoryObj<typeof CheckboxInputList> = {
   render: () => {
     interface IFormData {
-      value: ('a' | 'b' | 'c' | 'd' )[];
-    };
+      value: ('a' | 'b' | 'c' | 'd')[];
+    }
 
     const data: IFormData = { value: ['c'] };
 
     const { formProp } = Form.use(data);
 
     const content = React.useCallback(
-    (checked: boolean) => (
-      <>
-        <img
-          width={50}
-          src={
-            checked
-              ? checkedUrl
-              : uncheckedUrl
-          }
-        />
-        <p>I'm {!checked && 'not'} checked</p>
-      </>
-    ),
-    []
-  );
+      (checked: boolean) => (
+        <>
+          <img width={50} src={checked ? checkedUrl : uncheckedUrl} />
+          <p>I'm {!checked && 'not'} checked</p>
+        </>
+      ),
+      []
+    );
 
     return (
       <>
         <CheckboxInputList
           bind={formProp('value').bind()}
           direction="horizontal"
-          hideCheckbox
           options={[
             {
               id: 'a',
@@ -194,5 +207,5 @@ export const CustomContentWithoutCheckbox: StoryObj<typeof CheckboxInputList> = 
     expect(within(checked).getByRole('img')).toHaveAttribute('src', checkedUrl);
     expect(unchecked).toHaveAttribute('data-checked', 'false');
     expect(within(unchecked).getByRole('img')).toHaveAttribute('src', uncheckedUrl);
-  }
+  },
 };

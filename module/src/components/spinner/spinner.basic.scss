@@ -1,12 +1,18 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
+
+@keyframes spin {
+  100%{
+    transform: rotate(360deg);
+  }
+}
 
 .arm-spinner {
   @include mixins.flex-centre-content;
 
   flex-direction: column;
 
-  &[data-fill-container="true"] {
+  &[data-fill-container='true'] {
     @include mixins.fill;
 
     flex-grow: 1;
@@ -14,14 +20,14 @@
     justify-self: stretch;
   }
 
-  &[data-fill-container="false"] {
+  &[data-fill-container='false'] {
     width: max-content;
     height: max-content;
   }
 }
 
 .arm-spinner-inner {
-  animation: spin-clockwise variables.$transition-slow linear infinite;
+  animation: spin variables.$transition-slow linear infinite;
   width: max-content;
   height: max-content;
 }

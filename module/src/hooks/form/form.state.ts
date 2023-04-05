@@ -2,8 +2,8 @@
  * FORM - State file.
  * Contains everything related to form state such as the reducer and action factories.
  ******************************************************* */
-import { mergeDeepFromKeyChain } from './form.utils';
 import { FormAction, IValidationError, ValidationAction } from './form.types';
+import { mergeDeepFromKeyChain } from './form.utils';
 
 /**
  * The reducer for the form state object
@@ -28,19 +28,23 @@ export function dataReducer<TData extends object>(state: TData, action: FormActi
   }
 }
 
-export function validationReducer(state: IValidationError[] = [], action: ValidationAction): IValidationError[] {
+export function validationReducer(state: IValidationError[], action: ValidationAction): IValidationError[] {
+  const safeState = state ?? [];
+  let validationToClear: IValidationError[];
   switch (action.type) {
     case 'add-validation':
-      return [...state, ...(action.errors ?? [])];
+      return [...safeState, ...(action.errors ?? [])];
     case 'clear-validation':
-      const validationToClear = state.filter((e) => {
+      validationToClear = safeState.filter(e => {
         if (!action.key && !action.identifiers?.length) {
           return true;
         }
-        return action.key === e.key && (!action.identifiers?.length || action.identifiers.some((id) => id === e.identifier));
+        return (
+          action.key === e.key && (!action.identifiers?.length || action.identifiers.some(id => id === e.identifier))
+        );
       });
-      return state.filter((e) => !validationToClear.some((c) => c === e));
+      return safeState.filter(e => !validationToClear.some(c => c === e));
     default:
-      return state;
+      return safeState;
   }
 }

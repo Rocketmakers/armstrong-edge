@@ -1,4 +1,4 @@
-import { Dictionary } from "./objects";
+import { Dictionary } from './objects';
 
 /** Convert an array of arrays into a single array */
 export function flatten<T>(...arrays: (T[] | undefined)[]) {
@@ -18,7 +18,10 @@ export function arrayToDictionary<T, Keys extends string = string>(array: T[], g
 type ArrayDictionary<T, Keys extends string> = Record<Keys, T[]>;
 
 /** Sort an array into a dictionary of arrays keyed by a value to sort on */
-export function arrayToArrayDictionary<T, Keys extends string = string>(array: T[], getKey: (item: T) => Keys): ArrayDictionary<T, Keys> {
+export function arrayToArrayDictionary<T, Keys extends string = string>(
+  array: T[],
+  getKey: (item: T) => Keys
+): ArrayDictionary<T, Keys> {
   return array.reduce<ArrayDictionary<T, Keys>>((dictionary, currentValue) => {
     const key = getKey(currentValue);
 
@@ -34,7 +37,7 @@ interface IArrayWithKey<T, Keys extends string> {
 /** Sort an array into an array of objects with a key and an array of items on it */
 export function arrayToArraysByKey<T, Keys extends string = string>(array: T[], getKey: (item: T) => Keys) {
   const dictionary = arrayToArrayDictionary(array, getKey);
-  return Object.keys(dictionary).map<IArrayWithKey<T, Keys>>((key) => ({ key: key as Keys, items: dictionary[key] }));
+  return Object.keys(dictionary).map<IArrayWithKey<T, Keys>>(key => ({ key: key as Keys, items: dictionary[key] }));
 }
 
 /** A variant of findIndex that returns the index of the last item in the array where the callback returns true */
@@ -93,4 +96,5 @@ export function getAtOverallIndex<T>(index: number, arrays: { items: T[] }[]) {
 
     totalIndex = newIndex;
   }
+  return undefined;
 }
