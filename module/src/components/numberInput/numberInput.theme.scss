@@ -1,6 +1,3 @@
-.arm-input-base-input {
-
-  &:focus {
-    outline-color: var(--arm-color-grey-1);
-  }
+.arm-input-number-input:focus {
+  outline-color: var(--arm-color-grey-1);
 }
