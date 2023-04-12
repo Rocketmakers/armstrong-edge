@@ -87,6 +87,7 @@
     "wait-on": "^7.0.1"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.0.3",
     "@types/glob": "^8.1.0",
     "lodash": "^4.17.21",
     "react-select": "5.5.7"
