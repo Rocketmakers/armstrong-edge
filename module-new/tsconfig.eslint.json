@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src",
+    "_build",
+    "_test",
+    "_storybook",
+    ".eslintrc.js",
+    "prettier.config.js",
+    "stylelint.config.js",
+    "jest.config.ts",
+    "vite.config.ts"
+  ],
+  "exclude": []
+}

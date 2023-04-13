@@ -34,3 +34,23 @@ jobs:
 
       - name: Serve Storybook and run tests
         run: (cd module && npm run test-storybook-ci)
+
+      - name: Set Node.js to current version and cache in module-new
+        id: set-node-and-cache-module-new
+        uses: actions/setup-node@master
+        with:
+          node-version-file: ".tool-versions"
+          cache: "npm"
+          cache-dependency-path: "module-new/package-lock.json"
+
+      - name: Install Dependencies in module-new
+        run: (cd module-new && npm ci --legacy-peer-deps)
+
+      - name: Run Jest Tests in module-new
+        run: (cd module-new && npm run test-ci)
+
+      - name: Build Armstrong & Storybook in module-new
+        run: (cd module-new && npm run build && npm run build-storybook)
+
+      - name: Serve Storybook and run tests in module-new
+        run: (cd module-new && npm run test-storybook-ci)
