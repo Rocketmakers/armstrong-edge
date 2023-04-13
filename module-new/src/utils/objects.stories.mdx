@@ -1,0 +1,55 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
+
+<Meta title="Utilities/Objects" />
+
+## Objects
+
+Utils for performing non-standard operations on objects
+
+### contentDependency
+
+Creates a unique string based on contents of an object.
+
+Can be used as a dependency for hooks which take non-memoized objects as a parameter.
+
+```ts
+function contentDependency<TObject extends object>(object?: TObject): string;
+```
+
+```ts
+import { contentDependency } from '@rocketmakers/armstrong';
+
+const thing = { a: 'hello', b: 'hiya' };
+
+React.useEffect(() => {
+  // will only rerun when the actual value of thing changes
+}, [contentDependency(thing)]);
+```
+
+### mergeDeep
+
+Deep merges any two or more given objects.
+
+```ts
+function deepMerge<TObject extends object>(target: TObject, ...sources: Partial<TObject>[]): TObject;
+```
+
+```ts
+import { mergeDeep } from '@rocketmakers/armstrong';
+
+const thing1 = { a: 'hello', b: 'hiya' };
+const thing2 = { a: 'goodbye', c: { d: 'hola' } };
+const thing3 = { a: 'adios', c: { d: 'ciao' } };
+
+result = mergeDeep(thing1, thing2, thing3);
+
+// result
+{
+  a: 'adios',
+  b: 'hiya',
+  c: {
+    d: 'ciao'
+  }
+}
+
+```

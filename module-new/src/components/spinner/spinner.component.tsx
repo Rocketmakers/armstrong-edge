@@ -30,6 +30,8 @@ export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
   )
 );
 
+Spinner.displayName = 'Spinner';
+
 Spinner.defaultProps = {
   icon: <ImSpinner2 />,
   fillContainer: true,
