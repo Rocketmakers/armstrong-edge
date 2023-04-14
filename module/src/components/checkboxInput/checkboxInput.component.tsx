@@ -9,7 +9,7 @@ import { ValidationErrors } from '../validationErrors';
 
 type BindType = NullOrUndefined<boolean | 'indeterminate'>;
 
-export interface IArmstrongCheckboxInterface<TData extends BindType>
+interface IArmstrongCheckboxInterface<TData extends BindType>
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type' | 'checked'> {
   /** An IBindingProps<TData> object to bind the checkbox input to a form. (Optional) */
   bind?: IBindingProps<TData>;

@@ -2,7 +2,6 @@
   "cSpell.words": [
     "listbox"
   ],
-  "jest.jestCommandLine": "./module/node_modules/.bin/jest --config=./module/jest.config.ts",
   "eslint.workingDirectories": [
     "module"
   ]
