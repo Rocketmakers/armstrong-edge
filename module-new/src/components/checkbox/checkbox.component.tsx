@@ -66,7 +66,7 @@ export const Checkbox = React.forwardRef(
   ) => {
     const id = React.useId();
 
-    const [value, setValue, bindConfig] = useBindingState(bind, { onChange: onCheckedChange, value: checked });
+    const [value, setValue /* , bindConfig */] = useBindingState(bind, { onChange: onCheckedChange, value: checked });
 
     const onCheckedChangeInternal = React.useCallback<Required<CheckboxProps>['onCheckedChange']>(
       newValue => {
@@ -123,8 +123,8 @@ export const Checkbox = React.forwardRef(
   }
 );
 
-Checkbox.displayName = 'CheckboxInput';
-
 Checkbox.defaultProps = {
   direction: 'horizontal',
 };
+
+Checkbox.displayName = 'CheckboxInput';

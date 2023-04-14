@@ -63,7 +63,7 @@
   --arm-input-height: 2.25rem;
   --arm-input-height-medium: 3rem;
   --arm-input-height-large: 3.5rem;
-  --arm-input-label-spacing: var(--spacing-small);
+  --arm-input-label-spacing: var(--arm-spacing-small);
 
   /* Spinner */
   --arm-spinner-speed: 500ms;
