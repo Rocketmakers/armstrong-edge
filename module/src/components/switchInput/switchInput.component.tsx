@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Form, ICheckboxInputProps, IInputWrapperProps } from '../..';
+import { Form, IInputWrapperProps } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
@@ -8,6 +8,7 @@ import { Icon } from '../icon';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 import { IDragReleaseCallbackArgs, useDrag } from './switchInput.hooks';
+import { ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
 
 export interface ISwitchInputProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<
