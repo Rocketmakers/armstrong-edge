@@ -1,0 +1,105 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
+
+<Meta title="Utilities/Maths" />
+
+## Maths
+
+Utils for performing mathematical operations that aren't in the standard JS Math
+
+### clamp
+
+Get a number, clamped to a maximum and minimum
+
+```ts
+function clamp(input: number, minimum: number, maximum: number): number;
+```
+
+```ts
+import { clamp } from '@rocketmakers/armstrong';
+
+clamp(200, 0, 50);
+// 50
+
+clamp(-20, 0, 50);
+// 0
+
+clamp(30, 0, 50);
+// 30
+```
+
+### positiveModulo
+
+Perform a modulo operation that ensures that the output is always positive - javascript modulos behave unusually with negative numbers
+
+see: [this blog](https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm)
+
+```ts
+function positiveModulo(numerator: number, denominator: number): number;
+```
+
+```ts
+import { positiveModulo } from '@rocketmakers/armstrong';
+
+positiveModulo(-2, 10);
+// 8
+
+positiveModulo(16, 10);
+// 6
+
+positiveModulo(-13, 10);
+// 7
+```
+
+### getPercent
+
+Get a value as a percent of another value
+
+```ts
+function getPercent(value: number, total: number);
+```
+
+```ts
+import { getPercent } from '@rocketmakers/armstrong';
+
+getPercent(40, 200);
+// 20
+```
+
+### lerp
+
+lerp between two numbers based on a progress
+
+```ts
+function lerp(start: number, end: number, /** out of 100 */ progress: number): number;
+```
+
+```ts
+import { lerp } from '@rocketmakers/armstrong';
+
+lerp(0, 500, 50);
+// 250
+
+lerp(0, 2, 25);
+// 0.5
+```
+
+### multilerp
+
+lerp between multiple numbers, assuming a smooth transition with equally spaced breakpoints
+
+```ts
+function multiLerp(breakpoints: number[], progress: number): number;
+```
+
+```ts
+import { multiLerp } from '@rocketmakers/armstrong';
+
+multiLerp([0, 20, 10], 25);
+// 10
+
+multiLerp([0, 20, 10], 50);
+// 20
+
+multiLerp([0, 20, 10], 75);
+// 15
+```
