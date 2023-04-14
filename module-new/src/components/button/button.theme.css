@@ -12,7 +12,7 @@
 /* STATUSES */
 
 .arm-button:active {
-  filter: brightness(90%);
+  filter: brightness(85%);
 }
 
 .arm-button:disabled {

@@ -1,0 +1,14 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Checkbox } from './checkbox.component';
+
+<Meta title="Controls/Checkbox" component={Checkbox} />
+
+# Checkbox
+
+A styled Radix Primitive checkbox with validation errors and label text. Provides options for: a custom className for project specific styles, a custom "checked" indicator and direction of the label.
+
+<Canvas withSource="open">
+  <Story id="controls-checkbox--default" />
+</Canvas>
+
+<ArgsTable of={CheckboxInput} />
