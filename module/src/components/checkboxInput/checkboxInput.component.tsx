@@ -1,115 +1,168 @@
-import { CheckboxProps, Indicator, Root } from '@radix-ui/react-checkbox';
 import * as React from 'react';
 
-import { IBindingProps, useBindingState } from '../../hooks/form';
-import { NullOrUndefined } from '../../types';
+import { ArmstrongId, DataAttributes, Form, IArmstrongExtendedOption } from '../..';
+import { IBindingProps } from '../../hooks/form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
-import { IcomoonIcon } from '../icon';
+import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
+import { IInputWrapperProps } from '../inputWrapper';
+import { OptionContent } from '../optionContent';
+import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
-type BindType = NullOrUndefined<boolean | 'indeterminate'>;
+export interface ICheckboxInputProps<TBind extends NullOrUndefined<boolean>>
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type' | 'checked'>,
+    Pick<
+      IInputWrapperProps,
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'disabled'
+      | 'pending'
+      | 'error'
+      | 'validationErrorMessages'
+      | 'className'
+    >,
+    Pick<IArmstrongExtendedOption<ArmstrongId>, 'name' | 'leftIcon' | 'rightIcon'> {
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
+  bind?: IBindingProps<TBind>;
 
-interface IArmstrongCheckboxInterface<TData extends BindType>
-  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type' | 'checked'> {
-  /** An IBindingProps<TData> object to bind the checkbox input to a form. (Optional) */
-  bind?: IBindingProps<TData>;
+  /** icon to render on the input when checked */
+  checkedIcon?: IIcon<IconSet>;
 
-  /** A TData value representing the initial checked state of the checkbox. This can be true, false, or 'indeterminate'. (Optional) */
-  checked?: TData;
+  /** icon to render on the input when not checked */
+  uncheckedIcon?: IIcon<IconSet>;
 
-  /** A custom className to style the checkbox container. (Optional) */
-  className?: string;
+  /** current checked status of input */
+  checked?: TBind;
 
-  /** A custom JSX.Element for the indeterminate state indicator. (Optional) */
-  customIndeterminateIndicator?: JSX.Element;
+  /** fired when the value changes */
+  onValueChange?: (newValue: TBind) => void;
 
-  /** A custom JSX.Element for the checked indicator. (Optional) */
-  customIndicator?: JSX.Element;
+  /** props to spread onto the input element */
+  inputProps?: Omit<
+    React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+    'onChange' | 'type' | 'ref' | 'checked'
+  > &
+    DataAttributes;
 
-  /** A string representing the direction of the label relative to the checkbox. Default value is 'horizontal'. (Optional) */
+  /** the direction for the content to flow */
   direction?: 'vertical' | 'horizontal';
 
-  /** A boolean flag to disable the checkbox input. (Optional) */
-  disabled?: boolean;
+  /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
+  content?: IArmstrongExtendedOption<ArmstrongId>['content'];
 
-  /** A React.ReactNode to display a label for the checkbox input. (Optional) */
-  label?: React.ReactNode;
-
-  /** A callback function (newValue: TData) => void to handle state when 'checked' is changed. (Optional) */
-  onCheckedChange?: (newValue: TData) => void;
-
-  /** A string to set a custom data-testid attribute for the checkbox container. (Optional) */
+  /** apply a test ID to the component for Storybook, Playwright etc */
   testId?: string;
-
-  /** A boolean flag to automatically scroll validation error messages into view. (Optional) */
-  scrollValidationErrorsIntoView?: boolean;
 }
 
+/** Render a checkbox that uses DOM elements allow for easier styling */
 export const CheckboxInput = React.forwardRef(
-  <TData extends BindType>(
+  <TBind extends NullOrUndefined<boolean>>(
     {
       bind,
+      validationErrorMessages,
+      validationMode,
       className,
-      checked,
-      customIndicator,
-      customIndeterminateIndicator,
-      direction,
+      errorIcon,
+      error,
+      pending,
       disabled,
-      onCheckedChange,
-      label,
-      testId,
+      checked,
+      onChange,
+      checkedIcon,
+      content,
+      uncheckedIcon,
+      leftIcon,
+      rightIcon,
       scrollValidationErrorsIntoView,
+      onValueChange,
+      inputProps,
+      direction,
+      name,
+      testId,
       ...nativeProps
-    }: IArmstrongCheckboxInterface<TData>,
-    ref: React.ForwardedRef<HTMLButtonElement>
+    }: ICheckboxInputProps<TBind>,
+    ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const id = React.useId();
+    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
+      value: checked as TBind,
+      validationErrorMessages,
+      validationErrorIcon: errorIcon,
+      validationMode,
+      onChange: onValueChange,
+    });
 
-    const [value, setValue, bindConfig] = useBindingState(bind, { onChange: onCheckedChange, value: checked });
+    const [isCheckedInternal, setIsCheckedInternal] = React.useState((checked ?? false) as TBind);
+    const isChecked = setBoundValue ? boundValue : isCheckedInternal;
+    const setIsChecked = setBoundValue ?? setIsCheckedInternal;
 
-    const onCheckedChangeInternal = React.useCallback<Required<CheckboxProps>['onCheckedChange']>(
-      newValue => {
-        setValue?.(newValue as TData);
+    const onChangeEvent = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsChecked(event.currentTarget.checked as TBind);
+        onChange?.(event);
       },
-      [setValue]
+      [setIsChecked, onChange]
     );
-
-    const indicator = React.useMemo(() => {
-      switch (value) {
-        case 'indeterminate':
-          return customIndeterminateIndicator ?? <IcomoonIcon icon="minus2" />;
-        default:
-          return customIndicator ?? <IcomoonIcon icon="checkmark3" />;
-      }
-    }, [value, customIndicator, customIndeterminateIndicator]);
 
     return (
       <>
         <div
-          className={concat('arm-checkbox-container', className)}
-          data-disabled={disabled}
+          className={concat('arm-input', 'arm-checkbox-input', className)}
+          data-disabled={disabled || pending}
+          data-error={error || !!validationErrorMessages?.length}
+          data-checked={isChecked}
           data-direction={direction}
           data-testid={testId}
+          data-content={!!content}
           {...nativeProps}
         >
-          <Root
-            className="arm-checkbox"
-            disabled={disabled}
-            id={id}
-            checked={value ?? undefined}
-            onCheckedChange={onCheckedChangeInternal}
+          <label>
+            <div className="arm-checkbox-input-checkbox">
+              {checkedIcon && isChecked && (
+                <Icon
+                  className="arm-checkbox-input-checked-icon"
+                  iconSet={checkedIcon.iconSet}
+                  icon={checkedIcon.icon}
+                  title="Checked icon"
+                />
+              )}
+              {uncheckedIcon && !isChecked && (
+                <Icon
+                  className="arm-checkbox-input-unchecked-icon"
+                  iconSet={uncheckedIcon.iconSet}
+                  icon={uncheckedIcon.icon}
+                  title="Unchecked icon"
+                />
+              )}
+            </div>
+            <OptionContent
+              content={content}
+              name={name}
+              leftIcon={leftIcon}
+              rightIcon={rightIcon}
+              isActive={isChecked ?? undefined}
+            />
+
+            <Status
+              error={
+                bindConfig.shouldShowValidationErrorIcon && (!!bindConfig.validationErrorMessages?.length || error)
+              }
+              pending={pending}
+              errorIcon={bindConfig.validationErrorIcon}
+            />
+          </label>
+
+          <input
+            className="arm-checkbox-input-checkbox-input"
+            onChange={onChangeEvent}
+            type="checkbox"
             ref={ref}
-          >
-            <Indicator className="arm-checkbox-indicator" asChild>
-              {indicator}
-            </Indicator>
-          </Root>
-          {label && (
-            <label className="arm-checkbox-label" data-direction={direction} htmlFor={id}>
-              {label}
-            </label>
-          )}
+            checked={isChecked ?? undefined}
+            {...inputProps}
+          />
         </div>
+
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
           <ValidationErrors
             validationErrors={bindConfig.validationErrorMessages}
@@ -120,8 +173,15 @@ export const CheckboxInput = React.forwardRef(
       </>
     );
   }
-);
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TBind extends NullOrUndefined<boolean>>(
+  props: ArmstrongFCProps<ICheckboxInputProps<TBind>, HTMLInputElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ICheckboxInputProps<NullOrUndefined<boolean>>>;
 
 CheckboxInput.defaultProps = {
+  checkedIcon: getIconDefinition('Icomoon', 'checkmark3'),
+  validationMode: 'both',
   direction: 'horizontal',
 };

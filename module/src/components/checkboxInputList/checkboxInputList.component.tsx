@@ -4,26 +4,30 @@ import { Form, IInputWrapperProps, ValidationErrors } from '../..';
 import { IBindingProps } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps } from '../../types';
 import { ArmstrongId } from '../../types/core';
-import { IArmstrongExtendedOptionWithInput } from '../../types/options';
+import { IArmstrongExtendedOption, IArmstrongExtendedOptionWithInput } from '../../types/options';
 import { arrayToArraysByKey } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
-import { CheckboxInput, IArmstrongCheckboxInterface } from '../checkboxInput/checkboxInput.component';
+import { CheckboxInput, ICheckboxInputProps } from '../checkboxInput/checkboxInput.component';
 
-export type ICheckboxInputListOption<Id extends ArmstrongId> = Omit<
-  IArmstrongExtendedOptionWithInput<
-    Id,
-    Omit<
-      React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>,
-      'onChange' | 'type' | 'ref'
+export interface ICheckboxInputListOption<Id extends ArmstrongId>
+  extends Omit<
+    IArmstrongExtendedOptionWithInput<
+      Id,
+      Omit<
+        React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+        'onChange' | 'type' | 'ref'
+      >,
+      ICheckboxInputProps<any>['inputProps']
     >,
-    IArmstrongCheckboxInterface<any>
-  >,
-  // omitted for replaced JSDoc below
-  'label'
->;
+    // omitted for replaced JSDoc below
+    'content'
+  > {
+  /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
+  content: IArmstrongExtendedOption<Id>['content'];
+}
 
 export interface ICheckboxInputListProps<Id extends ArmstrongId>
-  extends Pick<IArmstrongCheckboxInterface<any>, 'customIndicator'>,
+  extends Pick<ICheckboxInputProps<any>, 'checkedIcon' | 'uncheckedIcon'>,
     Pick<
       IInputWrapperProps,
       'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
@@ -62,8 +66,9 @@ export const CheckboxInputList = React.forwardRef(
       className,
       validationMode,
       value,
-      customIndicator,
+      checkedIcon,
       onChange,
+      uncheckedIcon,
       errorIcon,
       scrollValidationErrorsIntoView,
       error,
@@ -119,10 +124,15 @@ export const CheckboxInputList = React.forwardRef(
               {group.items.map(option => (
                 <CheckboxInput
                   key={option.id}
+                  leftIcon={option.leftIcon}
+                  rightIcon={option.rightIcon}
                   checked={includesOption(option)}
                   onChange={() => !option.disabled && onCheckboxInputChange(option)}
-                  customIndicator={customIndicator}
-                  label={option.label}
+                  name={option.name ?? option.id?.toString()}
+                  checkedIcon={checkedIcon}
+                  uncheckedIcon={uncheckedIcon}
+                  content={option.content}
+                  inputProps={option.htmlInputProps}
                   disabled={option.disabled}
                   direction={direction === 'horizontal' ? 'vertical' : 'horizontal'}
                   {...option.htmlProps}
