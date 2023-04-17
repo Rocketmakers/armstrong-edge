@@ -39,7 +39,7 @@ export interface ICheckboxProps<TData extends BindType>
   /** A callback function (newValue: TData) => void to handle state when 'checked' is changed. (Optional) */
   onCheckedChange?: (newValue: TData) => void;
 
-  /** A string to set a custom data-testid attribute for the checkbox container. (Optional) */
+  /** A string to set a custom data-testId attribute for the checkbox container. (Optional) */
   testId?: string;
 
   /** A boolean flag to automatically scroll validation error messages into view. (Optional) */
@@ -90,7 +90,7 @@ export const Checkbox = React.forwardRef(
           className={concat('arm-checkbox-container', className)}
           data-disabled={disabled}
           data-direction={direction}
-          data-testid={testId}
+          data-testId={testId}
           {...nativeProps}
         >
           <Root
