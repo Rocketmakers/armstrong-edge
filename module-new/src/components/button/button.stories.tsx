@@ -7,8 +7,6 @@ import { ImPencil } from 'react-icons/im';
 
 import { Button } from './button.component';
 
-/** metadata */
-
 export default {
   title: 'Button/Button',
   component: Button,
@@ -17,16 +15,9 @@ export default {
   },
 } as Meta<typeof Button>;
 
-/** component template */
+type Story = StoryObj<typeof Button>;
 
-const Template: StoryObj<typeof Button> = {
-  render: args => <Button {...args} />,
-};
-
-/** stories */
-
-export const Default: StoryObj<typeof Button> = {
-  ...Template,
+export const Default: Story = {
   args: {
     onClick: action('onClick'),
   },
@@ -39,8 +30,7 @@ export const Default: StoryObj<typeof Button> = {
   },
 };
 
-export const Sizes: StoryObj<typeof Button> = {
-  ...Template,
+export const Sizes: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
@@ -52,8 +42,7 @@ export const Sizes: StoryObj<typeof Button> = {
   },
 };
 
-export const Styles: StoryObj<typeof Button> = {
-  ...Template,
+export const Styles: Story = {
   render: () => {
     return (
       <>
@@ -122,8 +111,7 @@ export const Styles: StoryObj<typeof Button> = {
   },
 };
 
-export const WithIcons: StoryObj<typeof Button> = {
-  ...Template,
+export const WithIcons: Story = {
   args: {
     onClick: action('onClick'),
     leftIcon: <ImPencil title="left-icon-test" />,
@@ -139,8 +127,7 @@ export const WithIcons: StoryObj<typeof Button> = {
   },
 };
 
-export const Disabled: StoryObj<typeof Button> = {
-  ...Template,
+export const Disabled: Story = {
   args: {
     onClick: action('onClick'),
     leftIcon: <ImPencil title="left-icon-test" />,
@@ -155,8 +142,7 @@ export const Disabled: StoryObj<typeof Button> = {
   },
 };
 
-export const Pending: StoryObj<typeof Button> = {
-  ...Template,
+export const Pending: Story = {
   args: {
     onClick: action('onClick'),
     leftIcon: <ImPencil title="left-icon-test" />,
@@ -174,8 +160,7 @@ export const Pending: StoryObj<typeof Button> = {
   },
 };
 
-export const PendingOnLeft: StoryObj<typeof Button> = {
-  ...Template,
+export const PendingOnLeft: Story = {
   args: {
     onClick: action('onClick'),
     leftIcon: <ImPencil title="left-icon-test" />,

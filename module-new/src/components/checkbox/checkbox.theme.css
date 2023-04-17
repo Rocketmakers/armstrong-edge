@@ -27,8 +27,8 @@
 }
 
 .arm-checkbox:focus-visible {
-  // AWAITING UPDATED STYLES
-  border: 2px solid cyan;
+  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+    var(--arm-color-grey-1000);
 }
 
 .arm-checkbox[data-state='unchecked'] {

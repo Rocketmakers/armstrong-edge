@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ImCheckmark, ImMinus } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../hooks/form';
-import { NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 
 import './checkbox.theme.css';
@@ -39,7 +39,7 @@ export interface ICheckboxProps<TData extends BindType>
   /** A callback function (newValue: TData) => void to handle state when 'checked' is changed. (Optional) */
   onCheckedChange?: (newValue: TData) => void;
 
-  /** A string to set a custom data-testId attribute for the checkbox container. (Optional) */
+  /** A string to set a custom data-testid attribute for the checkbox container. (Optional) */
   testId?: string;
 
   /** A boolean flag to automatically scroll validation error messages into view. (Optional) */
@@ -58,8 +58,8 @@ export const Checkbox = React.forwardRef(
       disabled,
       onCheckedChange,
       label,
-      testId,
       scrollValidationErrorsIntoView,
+      testId,
       ...nativeProps
     }: ICheckboxProps<TData>,
     ref: React.ForwardedRef<HTMLButtonElement>
@@ -90,7 +90,7 @@ export const Checkbox = React.forwardRef(
           className={concat('arm-checkbox-container', className)}
           data-disabled={disabled}
           data-direction={direction}
-          data-testId={testId}
+          data-testid={testId}
           {...nativeProps}
         >
           <Root
@@ -121,7 +121,10 @@ export const Checkbox = React.forwardRef(
       </>
     );
   }
-);
+) as (<TBind extends NullOrUndefined<boolean>>(
+  props: ArmstrongFCProps<ICheckboxProps<TBind>, HTMLInputElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ICheckboxProps<NullOrUndefined<boolean>>>;
 
 Checkbox.defaultProps = {
   direction: 'horizontal',

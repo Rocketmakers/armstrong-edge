@@ -1,4 +1,3 @@
-import { action } from '@storybook/addon-actions';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { within } from '@storybook/testing-library';
@@ -7,28 +6,16 @@ import { ImRocket } from 'react-icons/im';
 
 import { Checkbox } from './checkbox.component';
 
-/** metadata */
-
 export default {
   title: 'Controls/Checkbox',
   component: Checkbox,
 } as Meta<typeof Checkbox>;
 
-/** component template */
+type Story = StoryObj<typeof Checkbox>;
 
-const Template: StoryObj<typeof Checkbox> = {
-  render: args => {
-    return <Checkbox {...args} />;
-  },
-};
-
-/** stories */
-
-export const Default: StoryObj<typeof Checkbox> = {
-  ...Template,
+export const Default: Story = {
   args: {
     label: 'Here is label',
-    onClick: action('onClick'),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -39,8 +26,7 @@ export const Default: StoryObj<typeof Checkbox> = {
   },
 };
 
-export const Disabled: StoryObj<typeof Checkbox> = {
-  ...Template,
+export const Disabled: Story = {
   args: {
     label: 'Checkbox is disabled',
     disabled: true,
@@ -54,8 +40,7 @@ export const Disabled: StoryObj<typeof Checkbox> = {
   },
 };
 
-export const Vertical: StoryObj<typeof Checkbox> = {
-  ...Template,
+export const Vertical: Story = {
   args: {
     label: 'Check',
     direction: 'vertical',
@@ -69,8 +54,7 @@ export const Vertical: StoryObj<typeof Checkbox> = {
   },
 };
 
-export const CustomIndicator: StoryObj<typeof Checkbox> = {
-  ...Template,
+export const CustomIndicator: Story = {
   args: {
     label: 'Check for Custom Indicator',
     customIndicator: <ImRocket />,
