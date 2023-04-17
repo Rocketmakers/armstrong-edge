@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner/spinner.component';
 
 import './button.theme.css';
@@ -10,9 +11,9 @@ type ButtonHTMLProps = Omit<
   'ref'
 >;
 
-type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline';
-type ButtonDisplaySize = 'small' | 'medium' | 'large' | 'extra-large';
-type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info';
+export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline';
+export type ButtonDisplaySize = 'small' | 'medium' | 'large';
+export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info';
 
 export interface IButtonProps extends ButtonHTMLProps {
   /** CSS className property */
@@ -63,6 +64,12 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
     ...nativeProps
   } = props;
 
+  const globals = useArmstrongConfig({
+    buttonDisplaySize: displaySize,
+    buttonDisplayStyle: displayStyle,
+    buttonPendingPosition: pendingPosition,
+  });
+
   const spinner = (
     <Spinner className={concat('arm-button-spinner', `arm-button-${pendingPosition}-icon`)} role="status" />
   );
@@ -74,8 +81,8 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
       className={concat('arm-button', className)}
       data-pending={pending}
       data-disabled={disabled || pending}
-      data-size={displaySize}
-      data-style={displayStyle}
+      data-size={globals.buttonDisplaySize}
+      data-style={globals.buttonDisplayStyle}
       data-status={displayStatus}
       disabled={disabled || pending}
       tabIndex={disabled ? -1 : nativeProps.tabIndex}
@@ -83,9 +90,9 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
       ref={ref}
       {...nativeProps}
     >
-      {pending && pendingPosition === 'left' ? spinner : wrappedLeftIcon}
+      {pending && globals.buttonPendingPosition === 'left' ? spinner : wrappedLeftIcon}
       <span className="arm-button-contents">{children}</span>
-      {pending && pendingPosition === 'right' ? spinner : wrappedRightIcon}
+      {pending && globals.buttonPendingPosition === 'right' ? spinner : wrappedRightIcon}
     </button>
   );
 });
