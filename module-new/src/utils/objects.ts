@@ -48,3 +48,18 @@ export function mergeDeep<TObject>(target: TObject, ...sources: Partial<TObject>
 
   return newTarget;
 }
+
+/**
+ * Removes key/value pairs from dictionary objects where the value is null or undefined
+ * @param object The object to check
+ * @returns A new object with the relevant key/value pairs removed
+ */
+export function stripNullOrUndefined<TObject extends object | undefined>(object: TObject): TObject {
+  if (!object) {
+    return object;
+  }
+  return Object.entries(object).reduce(
+    (finalObject, [key, val]) => ({ ...finalObject, ...(val !== null && val !== undefined ? { [key]: val } : {}) }),
+    {} as TObject
+  );
+}

@@ -389,25 +389,27 @@ function useFormBase<TData extends object>(
  * @returns The form state, property accessor, and associated helper methods.
  */
 export function useForm<TData extends object>(
-  initialData: TData | InitialDataFunction<TData>,
+  initialData?: TData | InitialDataFunction<TData>,
   formConfig?: IFormConfig<TData>
 ): HookReturn<TData> {
-  const firstInitialData = React.useRef<TData>(initialDataIsCallback(initialData) ? initialData() : initialData);
+  const firstInitialData = React.useRef<TData | undefined>(
+    initialDataIsCallback(initialData) ? initialData() : initialData
+  );
 
-  const [formState, setFormState] = React.useState<TData>(firstInitialData.current);
+  const [formState, setFormState] = React.useState<TData | undefined>(firstInitialData.current);
 
-  const formStateRef = React.useRef<TData>(firstInitialData.current);
+  const formStateRef = React.useRef<TData | undefined>(firstInitialData.current);
 
   const liveInitialDataDependency = initialDataIsCallback(initialData) ? initialData : contentDependency(initialData);
 
-  const liveInitialData = React.useMemo<TData>(() => {
+  const liveInitialData = React.useMemo<TData | undefined>(() => {
     return initialDataIsCallback(initialData) ? initialData(formStateRef.current) : initialData;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- turnery based dependency
   }, [liveInitialDataDependency]);
 
   const dispatch = React.useCallback<FormDispatcher<TData | undefined>>(
     action => {
-      formStateRef.current = dataReducer(formStateRef.current, action as FormAction<object, unknown>) as TData;
+      formStateRef.current = dataReducer(formStateRef.current ?? {}, action as FormAction<object, unknown>) as TData;
       setFormState(formStateRef.current);
       return formStateRef.current;
     },
@@ -510,7 +512,7 @@ interface IUseBindingStateReturnUtils<TData> {
 
 type UseBindingStateReturn<TData> = [
   TData | undefined,
-  ((newValue: TData | undefined) => void) | undefined,
+  (newValue: TData | undefined) => void,
   IUseBindingStateReturnUtils<TData>
 ];
 
@@ -579,7 +581,7 @@ export function useBindingState<TData>(
 
   return [
     value,
-    overrides?.onChange || bind?.setValue ? onChange : undefined,
+    onChange,
     {
       getFormattedValueFromData,
       getFormattedValueToData,

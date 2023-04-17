@@ -510,21 +510,6 @@ export interface HookReturn<TData extends object> {
   isValid: boolean;
 }
 
-/**
- * The delay config, used to set throttle and debounce values.
- */
-export interface IDelayInputConfig {
-  /**
-   * Whether to use a debounce or a throttle delay.
-   */
-  mode: 'debounce' | 'throttle';
-
-  /**
-   * The number of milliseconds to delay for.
-   */
-  milliseconds: number;
-}
-
 export interface IAddValidationAction {
   type: 'add-validation';
   errors: IValidationError[];
