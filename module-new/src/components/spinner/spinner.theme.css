@@ -15,6 +15,5 @@
 
 .arm-spinner-label {
   margin-top: var(--arm-spacing-small);
-  font-size: 0.7rem;
-  display: block;
+  font-size: var(--arm-font-size-xsmall);
 }

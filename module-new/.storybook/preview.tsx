@@ -3,6 +3,7 @@ import { themes } from '@storybook/theming';
 
 import '../src/theme/variables.css';
 import '../src/theme/theme.css';
+import './storybook-theme.css';
 
 export const decorators = [
   Story => {
