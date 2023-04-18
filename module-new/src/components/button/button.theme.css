@@ -20,6 +20,10 @@
   opacity: 0.6;
 }
 
+.arm-button:focus-visible {
+  outline: var(--arm-form-border-thickness-highlight) inset var(--arm-focus-visible-color);
+}
+
 .arm-button[data-status="positive"] {
   background-color: var(--arm-color-positive);
 }

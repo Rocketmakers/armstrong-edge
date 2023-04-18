@@ -85,6 +85,7 @@
     "wait-on": "^7.0.1"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.3",
     "lodash": "^4.17.21",
     "react-icons": "^4.8.0",
     "react-select": "5.5.7"
