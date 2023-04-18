@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ImSpinner2 } from 'react-icons/im';
+import { ImCross, ImSpinner2 } from 'react-icons/im';
 import { IoIosWarning } from 'react-icons/io';
 
 import { stripNullOrUndefined } from '../../utils/objects';
@@ -45,6 +45,9 @@ export interface IArmstrongConfigContext {
 
   /** the icon to use for the spinner */
   spinnerIcon?: JSX.Element;
+
+  /** the icon to use for the dialog close button */
+  dialogCloseButtonIcon?: JSX.Element | false;
 }
 
 /**
@@ -63,6 +66,7 @@ const systemDefaults: Required<IArmstrongConfigContext> = {
   requiredIndicator: '*',
   validationErrorIcon: <IoIosWarning size={24} />,
   spinnerIcon: <ImSpinner2 />,
+  dialogCloseButtonIcon: <ImCross />,
 };
 
 const ArmstrongConfigContext = React.createContext<Required<IArmstrongConfigContext>>(systemDefaults);
