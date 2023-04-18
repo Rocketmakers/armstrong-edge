@@ -1,0 +1,12 @@
+@use '../../theme/variables.scss';
+
+.arm-time-input {
+  .arm-input {
+    margin-right: 0;
+  }
+
+  .arm-time-input-between-inputs {
+    color: variables.$gray-light;
+    margin-right: 0;
+  }
+}

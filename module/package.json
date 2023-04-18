@@ -14,7 +14,10 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook --url http://127.0.0.1:6006",
-    "test-storybook-ci": "npx concurrently -k -s first -n 'SB,TEST' -c 'magenta,blue' 'npx http-server storybook-static --port 6006 --silent' 'npx wait-on http://127.0.0.1:6006 && npm run test-storybook'"
+    "test-storybook-ci": "npx concurrently -k -s first -n 'SB,TEST' -c 'magenta,blue' 'npx http-server storybook-static --port 6006 --silent' 'npx wait-on http://127.0.0.1:6006 && npm run test-storybook'",
+    "format": "prettier --write .",
+    "lint": "eslint . --fix --quiet",
+    "stylelint": "stylelint 'src/**/*.{css,scss}' --fix"
   },
   "peerDependencies": {
     "date-fns": "2.x",
@@ -40,7 +43,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@rocketmakers/eslint": "1.0.1",
+    "@rocketmakers/prettier-config": "1.0.1",
     "@rocketmakers/shell-commands": "^6.1.0",
+    "@rocketmakers/stylelint-config": "1.0.1",
     "@storybook/addon-a11y": "7.0.0-beta.50",
     "@storybook/addon-essentials": "7.0.0-beta.50",
     "@storybook/addon-interactions": "7.0.0-beta.50",
@@ -79,12 +85,11 @@
     "vite": "3.1.8",
     "vite-plugin-dts": "1.4.1",
     "vite-plugin-static-copy": "0.11.0",
-    "wait-on": "7.0.1"
+    "wait-on": "^7.0.1"
   },
   "dependencies": {
-    "react-datepicker": "^4.10.0",
-    "react-select": "5.5.7",
-    "vite-plugin-dts": "1.4.1",
-    "vite-plugin-static-copy": "0.11.0"
+    "@types/glob": "^8.1.0",
+    "lodash": "^4.17.21",
+    "react-select": "5.5.7"
   }
 }

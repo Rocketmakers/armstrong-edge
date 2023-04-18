@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Document } from "../utils/globals";
-import { contentDependency } from "../utils/objects";
-import { useDidUpdateEffect } from "./useDidUpdateEffect";
-import { useEventListener } from "./useEventListener";
-import { useResizeObserver } from "./useResizeObserver";
+import { Document } from '../utils/globals';
+import { contentDependency } from '../utils/objects';
+import { useDidUpdateEffect } from './useDidUpdateEffect';
+import { useEventListener } from './useEventListener';
+import { useResizeObserver } from './useResizeObserver';
 
-export type useBoundingClientRectReturn = [DOMRect, () => void];
+export type UseBoundingClientRectReturn = [DOMRect, () => void];
 
 /**
  * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
@@ -18,7 +18,7 @@ export function useBoundingClientRect(
   ref: React.MutableRefObject<Element | undefined | null>,
   onChange?: (newBoundingClientRect: DOMRect) => void,
   listenToScroll = true
-): useBoundingClientRectReturn {
+): UseBoundingClientRectReturn {
   const [rect, setRect] = React.useState<DOMRect>(
     ref.current?.getBoundingClientRect() || {
       bottom: 0,
@@ -29,7 +29,7 @@ export function useBoundingClientRect(
       width: 0,
       x: 0,
       y: 0,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
+
       toJSON: () => {},
     }
   );
@@ -43,10 +43,7 @@ export function useBoundingClientRect(
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
 
-      if (
-        contentDependency(domRectToObject(boundingClientRect)) !==
-        contentDependency(domRectToObject(rect))
-      ) {
+      if (contentDependency(domRectToObject(boundingClientRect)) !== contentDependency(domRectToObject(rect))) {
         onChange?.(boundingClientRect);
         setRect(boundingClientRect);
       }
@@ -68,8 +65,8 @@ export function useBoundingClientRect(
     }
   }, [listenToScroll, setRectSize]);
 
-  useEventListener("resize", setRectSize, Document);
-  useEventListener("scroll", onScroll, Document, { capture: true });
+  useEventListener('resize', setRectSize, Document);
+  useEventListener('scroll', onScroll, Document, { capture: true });
 
   React.useEffect(() => setRectSize(), []);
 

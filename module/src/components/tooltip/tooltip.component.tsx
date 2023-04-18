@@ -1,24 +1,21 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { IPortalProps } from "../..";
-import { useBoundingClientRect } from "../../hooks/useBoundingClientRect";
-import { useIsFocused } from "../../hooks/useIsFocused";
-import { useIsHovered } from "../../hooks/useIsHovered";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { concat } from "../../utils/classNames";
-import { Modal } from "../modal";
+import { IPortalProps } from '../..';
+import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
+import { useIsFocused } from '../../hooks/useIsFocused';
+import { useIsHovered } from '../../hooks/useIsHovered';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { concat } from '../../utils/classNames';
+import { Modal } from '../modal';
 
-export type TooltipPosition = "above" | "below" | "left" | "right";
+export type TooltipPosition = 'above' | 'below' | 'left' | 'right';
 
 export interface ITooltipProps
   extends Omit<
-      React.DetailedHTMLProps<
-        React.BaseHTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      "onMouseEnter" | "onMouseLeave" | "ref"
+      React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+      'onMouseEnter' | 'onMouseLeave' | 'ref'
     >,
-    Pick<IPortalProps, "portalToSelector" | "portalTo"> {
+    Pick<IPortalProps, 'portalToSelector' | 'portalTo'> {
   /** the contents of the tooltip */
   content: React.ReactNode;
 
@@ -50,10 +47,7 @@ export interface ITooltipRef {
 }
 
 /** Portals a piece of text or some JSX into a floating element next to its children when the children are hovered or focused */
-export const Tooltip = React.forwardRef<
-  ITooltipRef,
-  React.PropsWithChildren<ITooltipProps>
->(
+export const Tooltip = React.forwardRef<ITooltipRef, React.PropsWithChildren<ITooltipProps>>(
   (
     {
       content,
@@ -78,22 +72,10 @@ export const Tooltip = React.forwardRef<
     const [isHovered, hoveredProps] = useIsHovered();
     const [isFocused, focusedProps] = useIsFocused();
 
-    const isOpen =
-      isOpenProp ||
-      (openOnHover && isHovered) ||
-      (openOnFocus && isFocused) ||
-      false;
+    const isOpen = isOpenProp || (openOnHover && isHovered) || (openOnFocus && isFocused) || false;
 
-    const [rootRect, getRootRect] = useBoundingClientRect(
-      rootRef,
-      undefined,
-      isOpen
-    );
-    const [innerRect, getInnerRect] = useBoundingClientRect(
-      innerRef,
-      undefined,
-      isOpen
-    );
+    const [rootRect, getRootRect] = useBoundingClientRect(rootRef, undefined, isOpen);
+    const [innerRect, getInnerRect] = useBoundingClientRect(innerRef, undefined, isOpen);
     const windowSize = useWindowSize();
 
     const setInnerRef = React.useCallback(
@@ -105,10 +87,7 @@ export const Tooltip = React.forwardRef<
       [getRootRect, getInnerRect]
     );
 
-    React.useImperativeHandle(ref, () => ({ rootRef, modalRef: innerRef }), [
-      rootRef,
-      innerRef,
-    ]);
+    React.useImperativeHandle(ref, () => ({ rootRef, modalRef: innerRef }), [rootRef, innerRef]);
 
     React.useEffect(() => {
       if (isOpen) {
@@ -120,70 +99,58 @@ export const Tooltip = React.forwardRef<
     const getIsInside = React.useCallback(
       (top: number, left: number) =>
         top > edgeDetectionMargin! &&
-        top + (innerRect?.height || 0!) <
-          windowSize.innerHeight - edgeDetectionMargin! &&
+        top + (innerRect?.height || 0!) < windowSize.innerHeight - edgeDetectionMargin! &&
         left > edgeDetectionMargin! &&
-        left + (innerRect?.width || 0!) <
-          windowSize.innerWidth - edgeDetectionMargin!,
-      [
-        innerRect?.width,
-        innerRect?.height,
-        windowSize.innerWidth,
-        windowSize.innerHeight,
-        edgeDetectionMargin,
-      ]
+        left + (innerRect?.width || 0!) < windowSize.innerWidth - edgeDetectionMargin!,
+      [innerRect?.width, innerRect?.height, windowSize.innerWidth, windowSize.innerHeight, edgeDetectionMargin]
     );
 
     /** Get left and top values when placing the tooltip in a tooltipPosition */
     const getPosition = React.useCallback(
       (position: TooltipPosition) => {
         switch (position) {
-          case "above": {
+          case 'above': {
             const top = rootRect.top - innerRect.height;
-            const left =
-              rootRect.left + rootRect.width / 2 - innerRect.width / 2;
+            const left = rootRect.left + rootRect.width / 2 - innerRect.width / 2;
             return {
               top,
               left,
               outside: !getIsInside(top, left),
-              position: "above",
+              position: 'above',
             };
           }
-          case "below": {
+          case 'below': {
             const top = rootRect.top + rootRect.height;
-            const left =
-              rootRect.left + rootRect.width / 2 - innerRect.width / 2;
+            const left = rootRect.left + rootRect.width / 2 - innerRect.width / 2;
             return {
               top,
               left,
               outside: !getIsInside(top, left),
-              position: "below",
+              position: 'below',
             };
           }
-          case "left": {
+          case 'left': {
             const left = rootRect.left - innerRect.width;
-            const top =
-              rootRect.top + rootRect.height / 2 - innerRect.height / 2;
+            const top = rootRect.top + rootRect.height / 2 - innerRect.height / 2;
             return {
               left,
               top,
               outside: !getIsInside(top, left),
-              position: "left",
+              position: 'left',
             };
           }
-          case "right": {
+          case 'right': {
             const left = rootRect.left + rootRect.width;
-            const top =
-              rootRect.top + rootRect.height / 2 - innerRect.height / 2;
+            const top = rootRect.top + rootRect.height / 2 - innerRect.height / 2;
             return {
               left,
               top,
               outside: !getIsInside(top, left),
-              position: "right",
+              position: 'right',
             };
           }
           default: {
-            break;
+            return undefined;
           }
         }
       },
@@ -201,10 +168,7 @@ export const Tooltip = React.forwardRef<
 
     /** Loop through the given positions and use the first one where the tooltip is not off the edge */
     const position = React.useMemo(() => {
-      const positions =
-        typeof tooltipPosition === "string"
-          ? [tooltipPosition]
-          : tooltipPosition;
+      const positions = typeof tooltipPosition === 'string' ? [tooltipPosition] : tooltipPosition;
 
       if (positions?.length) {
         for (let index = 0; index < positions.length; index += 1) {
@@ -218,13 +182,14 @@ export const Tooltip = React.forwardRef<
           }
         }
       }
+      return undefined;
     }, [getPosition, tooltipPosition]);
 
     const style = React.useMemo(
       () =>
         ({
-          "--arm-tooltip-left": `${position?.left || 0}px`,
-          "--arm-tooltip-top": `${position?.top || 0}px`,
+          '--arm-tooltip-left': `${position?.left || 0}px`,
+          '--arm-tooltip-top': `${position?.top || 0}px`,
         } as React.CSSProperties),
       [position]
     );
@@ -234,10 +199,7 @@ export const Tooltip = React.forwardRef<
     return (
       <div
         {...(wrapperAttributes || {})}
-        className={concat(
-          "arm-tooltip-wrapper",
-          wrapperAttributes?.className
-        )}
+        className={concat('arm-tooltip-wrapper', wrapperAttributes?.className)}
         ref={rootRef}
         {...hoveredProps}
         {...focusedProps}
@@ -246,7 +208,7 @@ export const Tooltip = React.forwardRef<
         {children}
 
         <Modal
-          className={concat("arm-tooltip", className)}
+          className={concat('arm-tooltip', className)}
           portalTo={portalTo}
           portalToSelector={portalToSelector}
           isOpen={isOpen}
@@ -254,19 +216,13 @@ export const Tooltip = React.forwardRef<
           style={style}
           data-position={position?.position}
           role="tooltip"
-          data-is-text={
-            typeof content === "string" || typeof content === "number"
-          }
+          data-is-text={typeof content === 'string' || typeof content === 'number'}
           centred={false}
           {...nativeProps}
         >
           <div id={generatedId} className="arm-tooltip-inner" ref={setInnerRef}>
             <div className="arm-tooltip-content">
-              {typeof content === "string" || typeof content === "number" ? (
-                <p>{content}</p>
-              ) : (
-                content
-              )}
+              {typeof content === 'string' || typeof content === 'number' ? <p>{content}</p> : content}
             </div>
           </div>
         </Modal>
@@ -276,7 +232,9 @@ export const Tooltip = React.forwardRef<
 );
 
 Tooltip.defaultProps = {
-  tooltipPosition: ["below", "right", "above", "left"],
+  tooltipPosition: ['below', 'right', 'above', 'left'],
   edgeDetectionMargin: 5,
   openOnHover: true,
 };
+
+Tooltip.displayName = 'Tooltip';

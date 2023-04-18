@@ -1,0 +1,36 @@
+@use '../../theme/variables.scss';
+
+$arm-listbox-min-width: 160px;
+
+.arm-input.arm-listbox {
+  cursor: pointer;
+}
+
+.arm-listbox-inner {
+  flex-grow: 1;
+  position: relative;
+}
+
+.arm-icon.arm-listbox-overlay-icon {
+  position: absolute;
+  right: variables.$spacing-xsmall;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+}
+
+.arm-listbox-content {
+  height: variables.$arm-input-height;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  min-width: $arm-listbox-min-width;
+
+  .placeholder {
+    color: variables.$gray-light;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+}

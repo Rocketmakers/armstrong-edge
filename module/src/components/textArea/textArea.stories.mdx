@@ -1,0 +1,14 @@
+import { ArgsTable, Canvas, Meta, Story } from "@storybook/addon-docs";
+import { TextArea } from "./textArea.component";
+
+<Meta title="Form/Text Area" component={TextArea} />
+
+# Text Area
+
+A text area for gathering multiple lines.
+
+<Canvas withSource="open">
+  <Story id="form-text-area--default" />
+</Canvas>
+
+<ArgsTable of={TextArea} />

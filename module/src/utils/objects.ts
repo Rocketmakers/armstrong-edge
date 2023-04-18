@@ -1,16 +1,14 @@
 /** A dictionary of T */
-  export type Dictionary<T, Keys extends string> = Record<Keys, T>;
+export type Dictionary<T, Keys extends string> = Record<Keys, T>;
 
 /**
  * Creates a unique string based on contents of an object.
  * Can be used as a dependency for hooks which take non-memoized objects as a parameter.
  * @param object The object to create a content dependency for
  */
-export function contentDependency<TObject extends object>(
-  object?: TObject
-): string {
+export function contentDependency<TObject extends object>(object?: TObject): string {
   if (!object) {
-    return "";
+    return '';
   }
   if (Array.isArray(object)) {
     return JSON.stringify([...object].sort());
@@ -27,17 +25,14 @@ export function contentDependency<TObject extends object>(
  * @param target The target object to merge into
  * @param source The new source objects
  */
-export function mergeDeep<TObject>(
-  target: TObject,
-  ...sources: Partial<TObject>[]
-) {
+export function mergeDeep<TObject>(target: TObject, ...sources: Partial<TObject>[]) {
   if (!target || typeof target !== 'object') {
     return target;
   }
   const newTarget = { ...target };
   for (const source of sources) {
     if (typeof source === 'object') {
-      Object.keys(source).forEach((key) => {
+      Object.keys(source).forEach(key => {
         const targetValue = newTarget[key];
         const sourceValue = source[key];
         if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {

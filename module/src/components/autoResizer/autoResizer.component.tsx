@@ -1,13 +1,9 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { useBoundingClientRect } from "../../hooks";
-import { concat } from "../../utils/classNames";
+import { useBoundingClientRect } from '../../hooks';
+import { concat } from '../../utils/classNames';
 
-export interface IAutoResizerProps
-  extends React.DetailedHTMLProps<
-    React.HTMLProps<HTMLDivElement>,
-    HTMLDivElement
-  > {
+export interface IAutoResizerProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
   /** Fired when the size changes with the new width and height */
   onSizeChange?: (newSize: { width: number; height: number }) => void;
 
@@ -19,22 +15,8 @@ export interface IAutoResizerProps
 }
 
 /** A div which will automatically resize depending on the size of its children */
-export const AutoResizer = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<IAutoResizerProps>
->(
-  (
-    {
-      className,
-      children,
-      style,
-      onSizeChange,
-      resizeHorizontal,
-      resizeVertical,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const AutoResizer = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IAutoResizerProps>>(
+  ({ className, children, style, onSizeChange, resizeHorizontal, resizeVertical, ...nativeProps }, ref) => {
     const contentRef = React.useRef<HTMLDivElement>(null);
 
     const onChange = React.useCallback(
@@ -44,24 +26,16 @@ export const AutoResizer = React.forwardRef<
       [onSizeChange]
     );
 
-    const [{ height, width }] = useBoundingClientRect(
-      contentRef,
-      onChange,
-      false
-    );
+    const [{ height, width }] = useBoundingClientRect(contentRef, onChange, false);
 
     return (
       <div
         {...nativeProps}
-        className={concat("arm-auto-resizer", className)}
+        className={concat('arm-auto-resizer', className)}
         style={
           {
-            ...(resizeHorizontal
-              ? { "--arm-auto-resizer-width": `${width}px` }
-              : {}),
-            ...(resizeVertical
-              ? { "--arm-auto-resizer-height": `${height}px` }
-              : {}),
+            ...(resizeHorizontal ? { '--arm-auto-resizer-width': `${width}px` } : {}),
+            ...(resizeVertical ? { '--arm-auto-resizer-height': `${height}px` } : {}),
             ...(style || {}),
           } as React.CSSProperties
         }

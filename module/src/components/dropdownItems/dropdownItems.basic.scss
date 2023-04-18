@@ -1,0 +1,40 @@
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
+
+.arm-dropdown-items {
+  &:focus {
+    border: 0;
+    outline: none;
+  }
+}
+
+.arm-modal.arm-dropdown-items-content {
+  padding: 0;
+
+  .arm-dropdown-content-inner {
+    padding: variables.$spacing-xxsmall 0;
+  }
+}
+
+.arm-dropdown-items-content {
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.arm-dropdown-item {
+  @include mixins.space-between-children-horizontal(variables.$spacing-xsmall);
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &[data-disabled='true'] {
+    pointer-events: none;
+
+    > * {
+      opacity: 0.5;
+    }
+  }
+}

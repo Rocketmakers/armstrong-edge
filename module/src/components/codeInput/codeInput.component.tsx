@@ -2,26 +2,21 @@ import * as React from 'react';
 
 import {
   Form,
+  getLengthFromPart,
   IButtonCoreProps,
   Icon,
   IconSet,
-  IconUtils,
   IInputWrapperProps,
+  isIconDefinition,
   ValidationErrors,
 } from '../..';
 import { IBindingProps } from '../../hooks/form';
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCReturn,
-  ArmstrongVFCProps,
-  NullOrUndefined,
-} from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { findLastIndex } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
 import { IInputProps } from '../input';
 import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { TextInput } from '../textInput';
-import { CodeInputUtils } from '.';
 
 export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
   extends Omit<
@@ -44,35 +39,29 @@ export interface ICodeInputInput<TBind extends NullOrUndefined<string>>
  * Can be a string representing a piece of text inbetween inputs I.E. [1,1,'-',1,1]
  * Can be an object representing an input with some properties
  */
-export type CodeInputPartDefinition<TBind extends NullOrUndefined<string>> =
-  | ICodeInputInput<TBind>
-  | string
-  | number;
+export type CodeInputPartDefinition<TBind extends NullOrUndefined<string>> = ICodeInputInput<TBind> | string | number;
 
 export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
+  /** The given length of this part. If this is a string, the string will be rendered. */
   part: CodeInputPartDefinition<TBind>;
 
-  /** the current value of this part */
-  value: string;
+  /** The binding for the input. */
+  bind?: IBindingProps<string>;
 
-  /** called when the text input changes */
+  /** Called when the text input changes */
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
-  /** called when the user presses a key inside the input */
+  /** Called when the user presses a key inside the input */
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 /** an individual input from the CodeInput */
-
-export const CodeInputPart = React.forwardRef(
+const CodeInputPart = React.forwardRef(
   <TBind extends NullOrUndefined<string>>(
-    { part, onChange, onKeyDown, value }: ICodeInputPartProps<TBind>,
+    { part, onChange, onKeyDown, bind }: ICodeInputPartProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const length = React.useMemo(
-      () => CodeInputUtils.getLengthFromPart(part),
-      [part]
-    );
+    const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
     if (typeof part === 'string') {
       return <p className="arm-code-input-part-text">{part}</p>;
@@ -81,28 +70,27 @@ export const CodeInputPart = React.forwardRef(
     if (typeof part === 'number') {
       return (
         <TextInput
+          bind={bind}
           ref={ref}
           className="arm-code-input-part-input"
           onChange={onChange}
-          value={value}
           onKeyDown={onKeyDown}
           style={{ '--arm-code-input-length': length } as React.CSSProperties}
           data-length={length}
-          onClick={(event) => event.currentTarget.select()}
+          onClick={event => event.currentTarget.select()}
+          maxLength={part}
         />
       );
     }
 
     const { className, ...textInputProps } = part;
 
-    console.log(part);
-
     return (
       <TextInput
         ref={ref}
+        bind={bind}
         className={concat('arm-code-input-part-input', className)}
         onChange={onChange}
-        value={value}
         onKeyDown={onKeyDown}
         style={
           {
@@ -111,8 +99,9 @@ export const CodeInputPart = React.forwardRef(
           } as React.CSSProperties
         }
         data-length={length}
-        onClick={(event) => event.currentTarget.select()}
+        onClick={event => event.currentTarget.select()}
         {...textInputProps}
+        maxLength={part.length}
       />
     );
   }
@@ -121,7 +110,9 @@ export const CodeInputPart = React.forwardRef(
 ) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICodeInputPartProps<any>>;
+  ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
+
+CodeInputPart.displayName = 'CodeInputPart';
 
 /** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
 export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
@@ -140,16 +131,13 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
 
-  /** the current value */
-  value?: TBind;
-
   /** Fired when the code input changes */
   onChange?: (newValue: TBind) => void;
 
   /**
    * the parts of the code input
-   * Can be a number representing the length of an input, I.E [1,1,1]
-   * Can be a string representing a piece of text inbetween inputs I.E. [1,1,'-',1,1]
+   * Can be a number representing the length of an input, e.g. [1,1,1]
+   * Can be a string representing a piece of text in-between inputs, e.g. [1,1,'-',1,1]
    * Can be an object representing an input with some properties
    */
   parts: CodeInputPartDefinition<TBind>[];
@@ -163,7 +151,6 @@ export const CodeInput = React.forwardRef(
       className,
       parts,
       bind,
-      value,
       onChange,
       validationMode,
       validationErrorMessages,
@@ -180,46 +167,15 @@ export const CodeInput = React.forwardRef(
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
-      value,
       onChange,
       validationErrorMessages,
       validationMode,
       validationErrorIcon: errorIcon,
     });
 
-    const totalLength = React.useMemo(
-      () =>
-        parts.reduce<number>(
-          (total, part) => total + CodeInputUtils.getLengthFromPart(part),
-          0
-        ),
-      [parts]
-    );
-
-    const getValueForPart = React.useCallback(
+    const goNextPart = React.useCallback(
       (partIndex: number) => {
-        const sliceStart = parts
-          .slice(0, partIndex)
-          .reduce<number>(
-            (output, part) => output + CodeInputUtils.getLengthFromPart(part),
-            0
-          );
-        const sliceEnd =
-          sliceStart + CodeInputUtils.getLengthFromPart(parts[partIndex]);
-
-        return boundValue?.slice(sliceStart, sliceEnd) || '';
-      },
-      [boundValue, parts]
-    );
-
-    const goNext = React.useCallback(
-      (partIndex: number) => {
-        const nextIndex =
-          parts
-            .slice(partIndex + 1)
-            .findIndex((part) => typeof part !== 'string') +
-          partIndex +
-          1;
+        const nextIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string') + partIndex + 1;
 
         if (nextIndex !== -1) {
           inputRefs.current[nextIndex]?.focus();
@@ -227,12 +183,11 @@ export const CodeInput = React.forwardRef(
       },
       [parts]
     );
-    const goPrevious = React.useCallback(
+
+    const goPreviousPart = React.useCallback(
       (partIndex: number) => {
-        const previousIndex = findLastIndex(
-          parts.slice(0, partIndex),
-          (part) => typeof part !== 'string'
-        );
+        const previousIndex = findLastIndex(parts.slice(0, partIndex), part => typeof part !== 'string');
+
         if (previousIndex !== -1) {
           inputRefs.current[previousIndex]?.focus();
         }
@@ -240,60 +195,53 @@ export const CodeInput = React.forwardRef(
       [parts]
     );
 
-    const onPartChange = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
-        const currentPartLength = CodeInputUtils.getLengthFromPart(
-          parts[partIndex]
-        );
-
-        const newPartValue = event.currentTarget.value || '';
-
+    const getValueForPart = React.useCallback(
+      (partIndex: number) => {
         const sliceStart = parts
           .slice(0, partIndex)
-          .reduce<number>(
-            (output, part) => output + CodeInputUtils.getLengthFromPart(part),
-            0
-          );
-        const sliceEnd = sliceStart + currentPartLength;
+          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
+        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
 
-        if (newPartValue.length >= currentPartLength) {
-          goNext(partIndex);
-        }
-
-        const newValue = (
-          boundValue
-            ? boundValue.slice(0, sliceStart) +
-              newPartValue +
-              boundValue.slice(sliceEnd)
-            : newPartValue
-        ).slice(0, totalLength);
-
-        setBoundValue?.(newValue as TBind);
+        return boundValue?.slice(sliceStart, sliceEnd) || '';
       },
-      [boundValue, parts, goNext, totalLength]
+      [boundValue, parts]
     );
 
+    const onPartValueChange = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
+        const currentPartLength = getLengthFromPart(parts[partIndex]);
+
+        const currentPartValue = event.currentTarget.value || '';
+
+        if (currentPartValue.length >= currentPartLength) {
+          goNextPart(partIndex);
+        }
+      },
+      [parts, goNextPart]
+    );
+
+    const boundValueArray = React.useMemo(() => {
+      return parts.map((_, partIndex) => getValueForPart(partIndex));
+    }, [getValueForPart, parts]);
+
     const onKeyDown = React.useCallback(
-      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number) => {
+      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
         switch (event.key) {
           case 'Backspace': {
             if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
-              goPrevious(partIndex);
+              goPreviousPart(partIndex);
             }
             break;
           }
-          case 'Left': {
+          case 'ArrowLeft': {
             if (event.currentTarget.selectionStart === 0 && partIndex > 0) {
-              goPrevious(partIndex);
+              goPreviousPart(partIndex);
             }
             break;
           }
-          case 'Right': {
-            if (
-              event.currentTarget.selectionEnd === 0 &&
-              partIndex < parts.length
-            ) {
-              goNext(partIndex);
+          case 'ArrowRight': {
+            if (event.currentTarget.selectionEnd === getLengthFromPart(part) && partIndex < parts.length) {
+              goNextPart(partIndex);
             }
             break;
           }
@@ -302,79 +250,84 @@ export const CodeInput = React.forwardRef(
           }
         }
       },
-      [goPrevious, parts]
+      [goPreviousPart, goNextPart, parts]
     );
+
+    interface IFormState {
+      parts: string[];
+    }
+
+    const { formProp, formState } = Form.use<IFormState>({ parts: boundValueArray });
+
+    React.useEffect(() => {
+      setBoundValue?.(formState?.parts?.join('') as TBind);
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want the trigger the effect when the function is re-defined
+    }, [formState]);
 
     return (
       <>
-        <div
-          className={concat('arm-code-input', className)}
-          ref={ref}
-          title="Code input"
-        >
-          <StatusWrapper
-            error={error}
-            validationErrorMessages={bindConfig.validationErrorMessages}
-            errorIcon={bindConfig.validationErrorIcon}
-            statusPosition={statusPosition}
-            pending={pending}
-            validationMode={bindConfig.validationMode}
-          >
-            <>
-              {leftIcon && (
-                <>
-                  {IconUtils.isIconDefinition(leftIcon) ? (
-                    <Icon
-                      {...leftIcon}
-                      className="left-icon"
-                      title={`${leftIcon.icon} icon on left`}
-                    />
-                  ) : (
-                    leftIcon
-                  )}
-                </>
-              )}
-
-              {parts.map((part, index) => (
-                <CodeInputPart
-                  part={part}
-                  key={index}
-                  data-left-icon={!!leftIcon}
-                  data-right-icon={!!rightIcon}
-                  value={getValueForPart(index) || ''}
-                  onChange={(event) => onPartChange(event, index)}
-                  onKeyDown={(event) => onKeyDown(event, index)}
-                  ref={(r) => {
-                    inputRefs.current[index] = r;
-                  }}
-                />
-              ))}
-
-              {rightIcon && (
-                <>
-                  {IconUtils.isIconDefinition(rightIcon) ? (
-                    <Icon
-                      {...rightIcon}
-                      className="right-icon"
-                      title={`${rightIcon.icon} icon on right`}
-                    />
-                  ) : (
-                    rightIcon
-                  )}
-                </>
-              )}
-            </>
-          </StatusWrapper>
+        <div ref={ref} title="Code input">
+          <form className={concat('arm-code-input', className)}>
+            <StatusWrapper
+              error={error}
+              validationErrorMessages={bindConfig.validationErrorMessages}
+              errorIcon={bindConfig.validationErrorIcon}
+              statusPosition={statusPosition}
+              pending={pending}
+              validationMode={bindConfig.validationMode}
+            >
+              <>
+                {leftIcon && (
+                  <>
+                    {isIconDefinition(leftIcon) ? (
+                      <Icon
+                        {...leftIcon}
+                        className="arm-code-input-left-icon"
+                        title={`${leftIcon.icon} icon on left`}
+                      />
+                    ) : (
+                      leftIcon
+                    )}
+                  </>
+                )}
+                {parts?.map((part, index) => (
+                  <CodeInputPart
+                    data-position={index}
+                    bind={formProp('parts', index).bind()}
+                    part={part}
+                    key={index}
+                    onChange={event => onPartValueChange(event, index)}
+                    onKeyDown={event => onKeyDown(event, index, +part)}
+                    ref={r => {
+                      inputRefs.current[index] = r;
+                    }}
+                  />
+                ))}
+                {rightIcon && (
+                  <>
+                    {isIconDefinition(rightIcon) ? (
+                      <Icon
+                        {...rightIcon}
+                        className="arm-code-input-right-icon"
+                        title={`${rightIcon.icon} icon on right`}
+                      />
+                    ) : (
+                      rightIcon
+                    )}
+                  </>
+                )}
+              </>
+            </StatusWrapper>
+          </form>
         </div>
 
-        {!!bindConfig.validationErrorMessages?.length &&
-          bindConfig.shouldShowValidationErrorMessage && (
-            <ValidationErrors
-              validationErrors={bindConfig.validationErrorMessages}
-              icon={bindConfig.validationErrorIcon}
-              scrollIntoView={scrollValidationErrorsIntoView}
-            />
-          )}
+        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            icon={bindConfig.validationErrorIcon}
+            scrollIntoView={scrollValidationErrorsIntoView}
+          />
+        )}
       </>
     );
   }
@@ -383,4 +336,4 @@ export const CodeInput = React.forwardRef(
 ) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICodeInputProps<any>>;
+  ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;

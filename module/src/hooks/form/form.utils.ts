@@ -3,8 +3,7 @@
  * A set of helper functions to support the form logic.
  ******************************************************* */
 
-import { InitialDataFunction } from '.';
-import { IBindingProps, IValidationError, KeyChain } from './form.types';
+import { IBindingProps, InitialDataFunction, IValidationError, KeyChain } from './form.types';
 
 /**
  * Converts a keyChain into a validation error key string
@@ -15,7 +14,7 @@ import { IBindingProps, IValidationError, KeyChain } from './form.types';
 export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots' | 'brackets'): string {
   switch (mode) {
     case 'dots':
-      return keyChain.filter((key) => !!key).join('.');
+      return keyChain.filter(key => !!key).join('.');
     case 'brackets':
       return keyChain.reduce<string>((attrString, key) => {
         if (typeof key === 'string') {
@@ -38,7 +37,7 @@ export function validationKeyStringFromKeyChain(keyChain: KeyChain, mode: 'dots'
  * @returns {boolean} `true` if the validation error belongs to (or is a child of) one of the passed property keyChains, else `false`.
  */
 export function isMyValidationError(validationErrorKey: string, ...propertyKeyChainStrings: string[]): boolean {
-  return propertyKeyChainStrings.some((propertyKeyChain) => {
+  return propertyKeyChainStrings.some(propertyKeyChain => {
     return (
       propertyKeyChain === validationErrorKey ||
       validationErrorKey.indexOf(`${propertyKeyChain}.`) === 0 ||
@@ -53,13 +52,18 @@ export function isMyValidationError(validationErrorKey: string, ...propertyKeyCh
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object. If no keychain to a property is passed, then no errors will be returned.
  * @returns {Array} A filtered set of validation errors that apply to the property in question and its sub-properties.
  */
-export function validationErrorsByKeyChain(rootErrors: IValidationError[] = [], keyChain: KeyChain = []): IValidationError[] {
+export function validationErrorsByKeyChain(
+  rootErrors: IValidationError[] = [],
+  keyChain: KeyChain = []
+): IValidationError[] {
   if (!keyChain.length) {
     return [];
   }
   const keyChainAttrStringDots = validationKeyStringFromKeyChain(keyChain, 'dots');
   const keyChainAttrStringSquareArray = validationKeyStringFromKeyChain(keyChain, 'brackets');
-  return rootErrors.filter((error) => isMyValidationError(error.key, keyChainAttrStringDots, keyChainAttrStringSquareArray));
+  return rootErrors.filter(error =>
+    isMyValidationError(error.key, keyChainAttrStringDots, keyChainAttrStringSquareArray)
+  );
 }
 
 /**
@@ -130,9 +134,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
   value: TValue
 ): TObject {
   const output = (
-    Array.isArray(target) || Number.isInteger(keyChain[0])
-      ? [...((target || []) as any[])]
-      : { ...(target || {}) }
+    Array.isArray(target) || Number.isInteger(keyChain[0]) ? [...((target || []) as any[])] : { ...(target || {}) }
   ) as TObject;
   let bookmarkRef: any = output;
   for (let i = 0; i < keyChain.length; i += 1) {
@@ -140,7 +142,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
     if (i === keyChain.length - 1) {
       if (Array.isArray(value)) {
         bookmarkRef[key] = [...value];
-      } else if (typeof value === "object") {
+      } else if (typeof value === 'object') {
         bookmarkRef[key] = { ...value };
       } else {
         bookmarkRef[key] = value;
@@ -148,7 +150,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
     } else if (Array.isArray(bookmarkRef[key])) {
       bookmarkRef[key] = [...bookmarkRef[key]];
       bookmarkRef = bookmarkRef[key];
-    } else if (typeof bookmarkRef[key] === "object") {
+    } else if (typeof bookmarkRef[key] === 'object') {
       bookmarkRef[key] = { ...bookmarkRef[key] };
       bookmarkRef = bookmarkRef[key];
     } else if (Number.isInteger(key)) {

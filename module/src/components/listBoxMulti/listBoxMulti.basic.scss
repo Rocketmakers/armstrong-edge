@@ -1,0 +1,37 @@
+@use '../../theme/variables.scss';
+
+$arm-listbox-min-width: 160px;
+
+.arm-listbox-multi {
+  cursor: pointer;
+
+  .arm-input-inner {
+    cursor: pointer;
+  }
+}
+
+.arm-listbox-multi-inner {
+  flex-grow: 1;
+  position: relative;
+  overflow-x: auto;
+}
+
+.arm-listbox-multi-content {
+  height: variables.$arm-input-height;
+  display: flex;
+  align-items: center;
+  margin-right: variables.$spacing-large;
+  min-width: $arm-listbox-min-width;
+
+  .arm-tag {
+    margin-right: variables.$spacing-xsmall;
+  }
+
+  .placeholder {
+    color: variables.$gray-light;
+  }
+}
+
+.arm-icon.arm-listbox-multi-overlay-icon {
+  font-size: 0.6rem;
+}

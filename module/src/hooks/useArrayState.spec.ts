@@ -1,10 +1,10 @@
-import { act, renderHook } from "@testing-library/react";
-import { useArrayObjectState, useArrayState } from "./useArrayState";
+import { act, renderHook } from '@testing-library/react';
 
-describe("useArrayState", () => {
+import { useArrayObjectState, useArrayState } from './useArrayState';
 
-  it("allows a user to push to an array", async () => {
-    const initArray = ['a', 'b']
+describe('useArrayState', () => {
+  it('allows a user to push to an array', async () => {
+    const initArray = ['a', 'b'];
     const { result } = renderHook(() => useArrayState(initArray));
 
     expect(result.current[0]).toBe(initArray);
@@ -12,12 +12,12 @@ describe("useArrayState", () => {
     act(() => {
       result.current[1].push('fish');
     });
-    
+
     expect(result.current[0]).toEqual(['a', 'b', 'fish']);
   });
 
-  it("does not allow a user to push a duplicate value to an array", async () => {
-    const initArray = ['a', 'b']
+  it('does not allow a user to push a duplicate value to an array', async () => {
+    const initArray = ['a', 'b'];
     const { result } = renderHook(() => useArrayState(initArray));
 
     expect(result.current[0]).toBe(initArray);
@@ -25,12 +25,12 @@ describe("useArrayState", () => {
     act(() => {
       result.current[1].push('b');
     });
-    
+
     expect(result.current[0]).toEqual(['a', 'b']);
   });
 
-  it("allows a user to pull a value from an array", async () => {
-    const initArray = ['a', 'b', 'fish', 'c']
+  it('allows a user to pull a value from an array', async () => {
+    const initArray = ['a', 'b', 'fish', 'c'];
     const { result } = renderHook(() => useArrayState(initArray));
 
     expect(result.current[0]).toBe(initArray);
@@ -38,12 +38,12 @@ describe("useArrayState", () => {
     act(() => {
       result.current[1].pull('fish');
     });
-    
+
     expect(result.current[0]).toEqual(['a', 'b', 'c']);
   });
 
-  it("allows a user to attempt to pull a non-existent value from an array safely", async () => {
-    const initArray = ['a', 'b', 'c']
+  it('allows a user to attempt to pull a non-existent value from an array safely', async () => {
+    const initArray = ['a', 'b', 'c'];
     const { result } = renderHook(() => useArrayState(initArray));
 
     expect(result.current[0]).toBe(initArray);
@@ -51,12 +51,12 @@ describe("useArrayState", () => {
     act(() => {
       result.current[1].pull('fish');
     });
-    
+
     expect(result.current[0]).toEqual(['a', 'b', 'c']);
   });
 
-  it("allows a user to check to if a value exists in an array", async () => {
-    const initArray = ['a', 'b', 'fish', 'c']
+  it('allows a user to check to if a value exists in an array', async () => {
+    const initArray = ['a', 'b', 'fish', 'c'];
     const { result } = renderHook(() => useArrayState(initArray));
 
     expect(result.current[0]).toBe(initArray);
@@ -66,12 +66,12 @@ describe("useArrayState", () => {
     act(() => {
       contains = result.current[1].contains('fish');
     });
-    
+
     expect(contains).toBeTruthy();
   });
 
-  it("allows a user to reset an array to its original value", async () => {
-    const initArray = ['a', 'b', 'c']
+  it('allows a user to reset an array to its original value', async () => {
+    const initArray = ['a', 'b', 'c'];
     const { result } = renderHook(() => useArrayState(initArray));
 
     expect(result.current[0]).toBe(initArray);
@@ -87,12 +87,12 @@ describe("useArrayState", () => {
     act(() => {
       result.current[1].clear();
     });
-    
+
     expect(result.current[0]).toBe(initArray);
   });
 
-  it("allows a user to switch a value in and out of an array", async () => {
-    const initArray = ['a', 'b', 'c']
+  it('allows a user to switch a value in and out of an array', async () => {
+    const initArray = ['a', 'b', 'c'];
     const { result } = renderHook(() => useArrayState(initArray));
 
     expect(result.current[0]).toBe(initArray);
@@ -106,68 +106,66 @@ describe("useArrayState", () => {
     act(() => {
       result.current[1].toggle('fish');
     });
-    
+
     expect(result.current[0]).toEqual(initArray);
   });
-  
 });
 
-describe("useArrayObjectState", () => {
-
-  it("allows a user to push an object to an array", async () => {
-    const initArray = [{string: 'a'}, {string: 'b'}]
+describe('useArrayObjectState', () => {
+  it('allows a user to push an object to an array', async () => {
+    const initArray = [{ string: 'a' }, { string: 'b' }];
     const { result } = renderHook(() => useArrayObjectState(initArray, 'string'));
 
     expect(result.current[0]).toBe(initArray);
 
     act(() => {
-      result.current[1].push({string: 'fish'});
+      result.current[1].push({ string: 'fish' });
     });
-    
-    expect(result.current[0]).toEqual([{string: 'a'}, {string: 'b'}, {string: 'fish'}]);
+
+    expect(result.current[0]).toEqual([{ string: 'a' }, { string: 'b' }, { string: 'fish' }]);
   });
 
-  it("does not allow a user to push a duplicate value to an array", async () => {
-    const initArray = [{string: 'a'}, {string: 'b'}]
+  it('does not allow a user to push a duplicate value to an array', async () => {
+    const initArray = [{ string: 'a' }, { string: 'b' }];
     const { result } = renderHook(() => useArrayObjectState(initArray, 'string'));
 
     expect(result.current[0]).toBe(initArray);
 
     act(() => {
-      result.current[1].push({string: 'b'});
+      result.current[1].push({ string: 'b' });
     });
-    
-    expect(result.current[0]).toEqual([{string: 'a'}, {string: 'b'}]);
+
+    expect(result.current[0]).toEqual([{ string: 'a' }, { string: 'b' }]);
   });
 
-  it("allows a user to pull a value from an array", async () => {
-    const initArray = [{string: 'a'}, {string: 'b'}, {string: 'fish'}, {string: 'c'}]
+  it('allows a user to pull a value from an array', async () => {
+    const initArray = [{ string: 'a' }, { string: 'b' }, { string: 'fish' }, { string: 'c' }];
     const { result } = renderHook(() => useArrayObjectState(initArray, 'string'));
 
     expect(result.current[0]).toBe(initArray);
 
     act(() => {
-      result.current[1].pull({string: 'fish'});
+      result.current[1].pull({ string: 'fish' });
     });
-    
-    expect(result.current[0]).toEqual([{string: 'a'}, {string: 'b'}, {string: 'c'}]);
+
+    expect(result.current[0]).toEqual([{ string: 'a' }, { string: 'b' }, { string: 'c' }]);
   });
 
-  it("allows a user to attempt to pull a non-existent value from an array safely", async () => {
-    const initArray = [{string: 'a'}, {string: 'b'}, {string: 'c'}]
+  it('allows a user to attempt to pull a non-existent value from an array safely', async () => {
+    const initArray = [{ string: 'a' }, { string: 'b' }, { string: 'c' }];
     const { result } = renderHook(() => useArrayObjectState(initArray, 'string'));
 
     expect(result.current[0]).toBe(initArray);
 
     act(() => {
-      result.current[1].pull({string: 'fish'});
+      result.current[1].pull({ string: 'fish' });
     });
-    
-    expect(result.current[0]).toEqual([{string: 'a'}, {string: 'b'}, {string: 'c'}]);
+
+    expect(result.current[0]).toEqual([{ string: 'a' }, { string: 'b' }, { string: 'c' }]);
   });
 
-  it("allows a user to check to if a value exists in an array", async () => {
-    const initArray = [{string: 'a'}, {string: 'b'}, {string: 'fish'}, {string: 'c'}]
+  it('allows a user to check to if a value exists in an array', async () => {
+    const initArray = [{ string: 'a' }, { string: 'b' }, { string: 'fish' }, { string: 'c' }];
     const { result } = renderHook(() => useArrayObjectState(initArray, 'string'));
 
     expect(result.current[0]).toBe(initArray);
@@ -175,50 +173,49 @@ describe("useArrayObjectState", () => {
     let contains = false;
 
     act(() => {
-      contains = result.current[1].contains({string: 'fish'});
+      contains = result.current[1].contains({ string: 'fish' });
     });
-    
+
     expect(contains).toBeTruthy();
   });
 
-  it("allows a user to reset an array to its original value", async () => {
-    const initArray = [{string: 'a'}, {string: 'b'}, {string: 'c'}]
+  it('allows a user to reset an array to its original value', async () => {
+    const initArray = [{ string: 'a' }, { string: 'b' }, { string: 'c' }];
     const { result } = renderHook(() => useArrayObjectState(initArray, 'string'));
 
     expect(result.current[0]).toBe(initArray);
 
     act(() => {
-      result.current[1].push({string: 'fish'});
-      result.current[1].push({string: 'potato'});
-      result.current[1].pull({string: 'c'});
+      result.current[1].push({ string: 'fish' });
+      result.current[1].push({ string: 'potato' });
+      result.current[1].pull({ string: 'c' });
     });
 
-    expect(result.current[0]).toEqual([{string: 'a'}, {string: 'b'}, {string: 'fish'}, {string: 'potato'}]);
+    expect(result.current[0]).toEqual([{ string: 'a' }, { string: 'b' }, { string: 'fish' }, { string: 'potato' }]);
 
     act(() => {
       result.current[1].clear();
     });
-    
+
     expect(result.current[0]).toBe(initArray);
   });
 
-  it("allows a user to switch a value in and out of an array", async () => {
-    const initArray = [{string: 'a'}, {string: 'b'}, {string: 'c'}]
+  it('allows a user to switch a value in and out of an array', async () => {
+    const initArray = [{ string: 'a' }, { string: 'b' }, { string: 'c' }];
     const { result } = renderHook(() => useArrayObjectState(initArray, 'string'));
 
     expect(result.current[0]).toBe(initArray);
 
     act(() => {
-      result.current[1].toggle({string: 'fish'});
+      result.current[1].toggle({ string: 'fish' });
     });
 
-    expect(result.current[0]).toEqual([{string: 'a'}, {string: 'b'}, {string: 'c'}, {string: 'fish'}]);
+    expect(result.current[0]).toEqual([{ string: 'a' }, { string: 'b' }, { string: 'c' }, { string: 'fish' }]);
 
     act(() => {
-      result.current[1].toggle({string: 'fish'});
+      result.current[1].toggle({ string: 'fish' });
     });
-    
+
     expect(result.current[0]).toEqual(initArray);
   });
-  
 });

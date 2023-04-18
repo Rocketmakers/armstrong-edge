@@ -1,19 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { ArmstrongId, IArmstrongOption } from "../..";
-import { concat } from "../../utils/classNames";
-import { Icon, IconSet, IIcon } from "../icon";
-import { OptionContent } from "../optionContent";
+import { ArmstrongId, IArmstrongExtendedOption } from '../..';
+import { concat } from '../../utils/classNames';
+import { Icon, IconSet, IIcon } from '../icon';
+import { OptionContent } from '../optionContent';
 
 export interface IRadioInputProps
-  extends Omit<
-      React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      "onChange"
-    >,
-    IArmstrongOption<ArmstrongId> {
+  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
+    Pick<IArmstrongExtendedOption<ArmstrongId>, 'content' | 'name' | 'leftIcon' | 'rightIcon'> {
   /** fired when the user changes the current value */
   onChange?: (newValue: boolean) => void;
 
@@ -25,12 +19,15 @@ export interface IRadioInputProps
 
   /** props to spread onto the input element */
   inputProps?: Omit<
-    React.DetailedHTMLProps<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      HTMLInputElement
-    >,
-    "onChange" | "type" | "ref" | "checked"
+    React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+    'onChange' | 'type' | 'ref' | 'checked'
   >;
+
+  /** the direction for the content to flow */
+  direction?: 'horizontal' | 'vertical';
+
+  /** should hide the circular radio, showing only the label, allowing you to handle visualising the state of the input yourself */
+  hideRadio?: boolean;
 }
 
 /** Render a single radio input */
@@ -55,7 +52,7 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
 
     return (
       <div
-        className={concat("arm-radio-input", className)}
+        className={concat('arm-radio-input', className)}
         {...nativeProps}
         data-checked={checked}
         data-has-checked-icon={!!checkedIcon}
@@ -63,10 +60,7 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
       >
         <input
           {...inputProps}
-          className={concat(
-            "arm-radio-input-radio-input",
-            inputProps?.className
-          )}
+          className={concat('arm-radio-input-radio-input', inputProps?.className)}
           ref={ref}
           type="radio"
           checked={checked}
@@ -77,18 +71,20 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
         <label className="arm-radio-input-label" htmlFor={generatedId}>
           {!hideRadio && (
             <div className="arm-radio-input-radio">
-              {checkedIcon}
-              {uncheckedIcon}
+              {checkedIcon && (
+                <Icon className="arm-radio-input-checked-icon" iconSet={checkedIcon.iconSet} icon={checkedIcon.icon} />
+              )}
+              {uncheckedIcon && (
+                <Icon
+                  className="arm-radio-input-unchecked-icon"
+                  iconSet={uncheckedIcon.iconSet}
+                  icon={uncheckedIcon.icon}
+                />
+              )}
             </div>
           )}
 
-          <OptionContent
-            content={content}
-            name={name}
-            leftIcon={leftIcon}
-            rightIcon={rightIcon}
-            isActive={checked}
-          />
+          <OptionContent content={content} name={name} leftIcon={leftIcon} rightIcon={rightIcon} isActive={checked} />
         </label>
       </div>
     );
@@ -96,5 +92,5 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
 );
 
 RadioInput.defaultProps = {
-  direction: "vertical",
+  direction: 'horizontal',
 };

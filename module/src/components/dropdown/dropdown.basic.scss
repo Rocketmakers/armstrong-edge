@@ -1,5 +1,5 @@
-@use "../../theme/variables.scss";
-@use "../../theme/mixins.scss";
+@use '../../theme/variables.scss';
+@use '../../theme/mixins.scss';
 
 $arm-dropdown-min-width: 50px !default;
 $arm-dropdown-height: 180px !default;
@@ -27,13 +27,13 @@ $arm-dropdown-height: 180px !default;
     }
   }
 
-  &[data-scrolling="true"] {
+  &[data-scrolling='true'] {
     .arm-dropdown-content-inner {
       max-height: min(#{$arm-dropdown-height}, 100vh);
     }
   }
 
-  &[data-stretch="true"] {
+  &[data-stretch='true'] {
     min-width: max(#{$arm-dropdown-min-width}, var(--arm-dropdown-width));
   }
 }
