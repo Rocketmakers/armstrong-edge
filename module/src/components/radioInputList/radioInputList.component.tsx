@@ -8,7 +8,7 @@ import {
   ArmstrongVFCProps,
 } from "../../types";
 import { ArmstrongId } from "../../types/core";
-import { IArmstrongExtendedOptionWithInput } from "../../types/options";
+import { IArmstrongOptionWithInput } from "../../types/options";
 import { concat } from "../../utils/classNames";
 import {
   IRadioInputProps,
@@ -17,7 +17,7 @@ import {
 import { ValidationErrors } from "../validationErrors";
 
 export interface IRadioInputListOption<Id extends ArmstrongId>
-  extends IArmstrongExtendedOptionWithInput<
+  extends IArmstrongOptionWithInput<
     Id,
     Omit<
       React.DetailedHTMLProps<
@@ -30,7 +30,7 @@ export interface IRadioInputListOption<Id extends ArmstrongId>
   > {}
 
 export interface IRadioInputListProps<Id extends ArmstrongId>
-  extends Pick<IRadioInputProps, "checkedIcon" | "uncheckedIcon" | "hideRadio">,
+  extends Pick<IRadioInputProps, "checkedIcon" | "uncheckedIcon">,
     Pick<
       IInputWrapperProps,
       | "scrollValidationErrorsIntoView"
@@ -55,9 +55,6 @@ export interface IRadioInputListProps<Id extends ArmstrongId>
 
   /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
-
-  /** the direction for the options in the list to flow */
-  direction?: "horizontal" | "vertical";
 }
 
 /** Render a list of radio inputs which binds to a single string */
@@ -75,8 +72,6 @@ export const RadioInputList = React.forwardRef(
       checkedIcon,
       uncheckedIcon,
       error,
-      direction,
-      hideRadio,
     }: IRadioInputListProps<Id>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -112,8 +107,6 @@ export const RadioInputList = React.forwardRef(
               {group.items.map((option) => (
                 <RadioInput
                   key={option.id}
-                  leftIcon={option.leftIcon}
-                  rightIcon={option.rightIcon}
                   id={option.id}
                   checked={boundValue === option.id}
                   onChange={() => setBoundValue?.(option.id)}
@@ -149,6 +142,4 @@ export const RadioInputList = React.forwardRef(
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRadioInputListProps<any>>;
 
-RadioInputList.defaultProps = {
-  direction: "vertical",
-};
+RadioInputList.defaultProps = {};

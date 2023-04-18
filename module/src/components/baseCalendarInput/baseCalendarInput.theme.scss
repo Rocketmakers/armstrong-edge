@@ -3,7 +3,8 @@
   top: 0;
   left: 0;
   display: inline-block;
-  .react-datepicker {
-    display: inline-flex;
-  }
+}
+
+.arm-base-calendar-input .react-datepicker {
+  display: inline-flex;
 }

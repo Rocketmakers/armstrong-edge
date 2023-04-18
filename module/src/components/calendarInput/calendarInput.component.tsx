@@ -77,8 +77,16 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
 
   return (
     <div className="arm-calendar-input-header dropdown">
-      <Select options={monthOptions} bind={formProp("month").bind()} />
-      <Select options={yearOptions} bind={formProp("year").bind()} />
+      <Select
+        className="calendar-dropdown-select"
+        options={monthOptions}
+        bind={formProp("month").bind()}
+      />
+      <Select
+        className="calendar-dropdown-select"
+        options={yearOptions}
+        bind={formProp("year").bind()}
+      />
     </div>
   );
 };
@@ -86,13 +94,29 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
 const Swipe01Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
   return (
     <div className="arm-calendar-input-header swipe01">
-      <span>{format(props.monthDate, "MMMM yyyy")}</span>
+      <span className="swipe01-date">
+        {format(props.monthDate, "MMMM yyyy")}
+      </span>
       <div className="swipe01-date-navigation">
-        <Button displayStyle="blank" onClick={props.decreaseMonth}>
-          <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-left2")} />
+        <Button
+          className="arm-calendar-input-header-button swipe01-button"
+          displayStyle="blank"
+          onClick={props.decreaseMonth}
+        >
+          <Icon
+            className="arm-calendar-input-header-icon"
+            {...IconUtils.getIconDefinition("Icomoon", "arrow-left2")}
+          />
         </Button>
-        <Button displayStyle="blank" onClick={props.increaseMonth}>
-          <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-right2")} />
+        <Button
+          className="arm-calendar-input-header-button swipe01-button"
+          displayStyle="blank"
+          onClick={props.increaseMonth}
+        >
+          <Icon
+            className="arm-calendar-input-header-icon"
+            {...IconUtils.getIconDefinition("Icomoon", "arrow-right2")}
+          />
         </Button>
       </div>
     </div>
@@ -102,13 +126,27 @@ const Swipe01Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
 const Swipe02Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
   return (
     <div className="arm-calendar-input-header swipe02">
-      <Button displayStyle="blank" onClick={props.decreaseMonth}>
-        <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-left2")} />
+      <Button
+        className="arm-calendar-input-header-button"
+        displayStyle="blank"
+        onClick={props.decreaseMonth}
+      >
+        <Icon
+          className="arm-calendar-input-header-icon"
+          {...IconUtils.getIconDefinition("Icomoon", "arrow-left2")}
+        />
       </Button>
       <span>{format(props.monthDate, "MMMM yyyy")}</span>
 
-      <Button displayStyle="blank" onClick={props.increaseMonth}>
-        <Icon {...IconUtils.getIconDefinition("Icomoon", "arrow-right2")} />
+      <Button
+        className="arm-calendar-input-header-button"
+        displayStyle="blank"
+        onClick={props.increaseMonth}
+      >
+        <Icon
+          className="arm-calendar-input-header-icon"
+          {...IconUtils.getIconDefinition("Icomoon", "arrow-right2")}
+        />
       </Button>
     </div>
   );
