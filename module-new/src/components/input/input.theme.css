@@ -67,8 +67,8 @@
 /** FOCUS **/
 
 .arm-input-base .arm-input-inner:focus-within {
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
-    var(--arm-color-grey-1000);
+  border-color: var(--arm-focus-visible-color);
+  outline: calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) solid var(--arm-focus-visible-color);
 }
 
 /** STATUS **/
@@ -93,6 +93,5 @@
 }
 
 .arm-input-base[data-error] .arm-input-inner:focus-within {
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
-    var(--arm-color-negative);
+  outline-color: var(--arm-color-negative);
 }
