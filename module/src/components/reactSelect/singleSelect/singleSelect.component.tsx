@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 import Select, {
   GetOptionLabel,
   GetOptionValue,
   GroupBase,
   OnChangeValue,
-} from "react-select";
-import SelectRef from "react-select/dist/declarations/src/Select";
+} from 'react-select';
+import SelectRef from 'react-select/dist/declarations/src/Select';
 import {
   CustomDropdownIndicator,
   IDropdownIndicatorProps,
-} from "../utils/selectDropdownIndicator";
-import { Form } from "../../../hooks";
+} from '../utils/selectDropdownIndicator';
+import { Form } from '../../../hooks';
 import {
   IArmstrongReactSelectOption,
   NullOrUndefined,
@@ -19,12 +19,16 @@ import {
   ArmstrongFCReturn,
   ArmstrongFCExtensions,
   IArmstrongReactSelectCreatingOption,
-} from "../../../types";
-import { concat } from "../../../utils";
-import { IIcon, IconSet, IconUtils } from "../../icon";
-import { ValidationErrors } from "../../validationErrors";
-import { isCreatingOption, isGroupedOptions } from "./singleSelect.utils";
-import CreatableSelect from "react-select/creatable";
+} from '../../../types';
+import { concat } from '../../../utils';
+import { IIcon, IconSet, IconUtils } from '../../icon';
+import { ValidationErrors } from '../../validationErrors';
+import { isCreatingOption, isGroupedOptions } from './singleSelect.utils';
+import CreatableSelect from 'react-select/creatable';
+import {
+  CustomLoadingIndicator,
+  ILoadingIndicatorProps,
+} from '../utils/selectLoadingIndicator';
 
 export type ReactSelectRef = React.Ref<
   SelectRef<
@@ -58,7 +62,7 @@ export interface IReactSelectBaseProps<
   placeholder?: string;
 
   /** overrides the error messaging and icon display used in the error validation display */
-  validationMode?: "icon" | "message" | "both";
+  validationMode?: 'icon' | 'message' | 'both';
 
   /** overrides the error message(s) used in the validation display */
   errorMessages?: Form.ValidationMessage[];
@@ -106,7 +110,7 @@ export interface IReactSelectBaseProps<
   isSearchable?: boolean;
 
   /** how should the dropdown be positioned vertically */
-  position?: "auto" | "bottom" | "top";
+  position?: 'auto' | 'bottom' | 'top';
 
   /** overrides the dropdown icon in the input */
   dropdownIcon?: IIcon<IconSet>;
@@ -180,7 +184,7 @@ const SingleSelectOnly = React.forwardRef(
     >(
       (option) => {
         return (
-          getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? ""
+          getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? ''
         );
       },
       [getOptionValue]
@@ -190,17 +194,41 @@ const SingleSelectOnly = React.forwardRef(
       GetOptionLabel<IArmstrongReactSelectOption<Id>>
     >(
       (option) => {
-        return getOptionName?.(option) ?? option.name?.toString() ?? "";
+        return getOptionName?.(option) ?? option.name?.toString() ?? '';
       },
       [getOptionName]
     );
 
     const showValidation = !!validationErrorMessages?.length;
 
+    const emptyStyles = () => {
+      return {
+        control: () => ({}),
+        valueContainer: () => ({}),
+        indicatorsContainer: () => ({}),
+        // indicatorSeparator: () => ({}),
+        dropdownIndicator: () => ({}),
+        loadingIndicator: () => ({}),
+        input: () => ({}),
+        singleValue: () => ({}),
+        multiValue: () => ({}),
+        multiValueLabel: () => ({}),
+        multiValueRemove: () => ({}),
+        clearIndicator: () => ({}),
+        menu: () => ({}),
+        menuList: () => ({}),
+        menuPortal: () => ({}),
+        noOptionsMessage: () => ({}),
+        loadingMessage: () => ({}),
+        placeholder: () => ({}),
+        option: () => ({}),
+        group: () => ({}),
+        groupHeading: () => ({}),
+      };
+    };
+
     return (
-      <div
-        className={concat("arm-single-select-wrapper", className)}
-      >
+      <div className={concat('arm-single-select-wrapper', className)}>
         <Select
           ref={ref}
           id={id}
@@ -209,12 +237,12 @@ const SingleSelectOnly = React.forwardRef(
           classNamePrefix="arm-single-select"
           onChange={handleChange}
           options={options}
-          placeholder={placeholder || "Please select..."}
+          placeholder={placeholder || 'Please select...'}
           value={selectedValue}
           getOptionLabel={labelGetter}
           getOptionValue={valueGetter}
           aria-invalid={showValidation}
-          aria-label={ariaLabel || "single-select-input"}
+          aria-label={ariaLabel || 'single-select-input'}
           isClearable={isClearable}
           isDisabled={isDisabled}
           isOptionDisabled={(o) => !!o.disabled}
@@ -226,11 +254,17 @@ const SingleSelectOnly = React.forwardRef(
               CustomDropdownIndicator({
                 icon:
                   dropdownIcon ||
-                  IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+                  IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
                 ...props,
               } as IDropdownIndicatorProps<Id, false>),
+
+            LoadingIndicator: (props) =>
+              CustomLoadingIndicator({
+                ...props,
+              } as ILoadingIndicatorProps<Id, false>),
           }}
           closeMenuOnSelect={closeMenuOnSelect}
+          styles={emptyStyles()}
         />
 
         {showValidation && (
@@ -328,10 +362,10 @@ const SingleSelectCreatable = React.forwardRef(
     >(
       (option) => {
         if (isCreatingOption(option)) {
-          return getOptionName?.(option) ?? option.label?.toString() ?? "";
+          return getOptionName?.(option) ?? option.label?.toString() ?? '';
         } else {
           return (
-            getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? ""
+            getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? ''
           );
         }
       },
@@ -346,9 +380,9 @@ const SingleSelectCreatable = React.forwardRef(
     >(
       (option) => {
         if (isCreatingOption(option)) {
-          return getOptionName?.(option) ?? option.label?.toString() ?? "";
+          return getOptionName?.(option) ?? option.label?.toString() ?? '';
         } else {
-          return getOptionName?.(option) ?? option.name?.toString() ?? "";
+          return getOptionName?.(option) ?? option.name?.toString() ?? '';
         }
       },
       [getOptionName]
@@ -364,12 +398,7 @@ const SingleSelectCreatable = React.forwardRef(
     const showValidation = !!validationErrorMessages?.length;
 
     return (
-      <div
-        className={concat(
-          "arm-single-select-creatable-wrapper",
-          className
-        )}
-      >
+      <div className={concat('arm-single-select-creatable-wrapper', className)}>
         <CreatableSelect
           ref={ref}
           id={id}
@@ -383,9 +412,9 @@ const SingleSelectCreatable = React.forwardRef(
           formatOptionLabel={formatOptionLabel}
           className="arm-single-select-creatable-input"
           classNamePrefix="arm-single-select-creatable"
-          placeholder={placeholder || "Please select..."}
+          placeholder={placeholder || 'Please select...'}
           aria-invalid={showValidation}
-          aria-label={ariaLabel || "single-select-creatable-input"}
+          aria-label={ariaLabel || 'single-select-creatable-input'}
           isDisabled={isDisabled}
           isOptionDisabled={(o) => !!o.disabled}
           isLoading={isLoading}
@@ -396,7 +425,7 @@ const SingleSelectCreatable = React.forwardRef(
               CustomDropdownIndicator({
                 icon:
                   dropdownIcon ||
-                  IconUtils.getIconDefinition("Icomoon", "arrow-down3"),
+                  IconUtils.getIconDefinition('Icomoon', 'arrow-down3'),
                 ...props,
               } as IDropdownIndicatorProps<Id, false>),
           }}
