@@ -1,0 +1,154 @@
+/** OVERLAY **/
+
+.arm-toast-viewport {
+  --arm-toast-viewport-padding: var(--arm-spacing-xlarge);
+
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  padding: var(--arm-toast-viewport-padding);
+  gap: var(--arm-spacing-xsmall);
+  width: var(--arm-toast-width, 390px);
+  max-width: var(--arm-toast-max-width, 100vw);
+  margin: 0;
+  list-style: none;
+  z-index: var(--arm-toast-z-index, 2);
+  outline: none;
+}
+
+/** POSITIONS **/
+
+.arm-toast-viewport[data-position="top-left"] {
+  top: 0;
+  left: 0;
+}
+
+.arm-toast-viewport[data-position="top-right"] {
+  top: 0;
+  right: 0;
+}
+
+.arm-toast-viewport[data-position="bottom-left"] {
+  bottom: 0;
+  left: 0;
+}
+
+.arm-toast-viewport[data-position="bottom-right"] {
+  bottom: 0;
+  right: 0;
+}
+
+/** TOAST ITEM **/
+
+.arm-toast {
+  position: relative;
+  background-color: var(--arm-color-white);
+  border: 1px solid var(--arm-color-grey-100);
+  border-radius: var(--arm-toast-border-radius, var(--arm-button-border-radius));
+  box-shadow: var(--arm-toast-box-shadow, 0 4px 50px rgb(0 0 0 / 3%));
+  padding: var(--arm-spacing-medium);
+}
+
+/** TOAST ITEM CONTENTS **/
+
+.arm-toast-close {
+  all: unset;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: var(--arm-spacing-xsmall);
+  display: flex;
+  cursor: pointer;
+  color: var(--arm-color-grey-400);
+}
+
+.arm-toast-title {
+  font-size: var(--arm-font-size-large);
+  font-weight: var(--arm-font-weight-medium);
+  margin-bottom: var(--arm-spacing-xxsmall);
+}
+
+.arm-toast-description {
+  color: var(--arm-color-grey-700);
+}
+
+/** TOAST ITEM ANIMATIONS **/
+
+.arm-toast[data-state='open'][data-position="top-right"], .arm-toast[data-state='open'][data-position="bottom-right"] {
+  animation: slideInRight var(--arm-toast-slide-speed, 150ms) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arm-toast[data-state='open'][data-position="top-left"], .arm-toast[data-state='open'][data-position="bottom-left"] {
+  animation: slideInLeft var(--arm-toast-slide-speed, 150ms) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arm-toast[data-state='closed'] {
+  animation: hide var(--arm-toast-swipe-speed, 100ms) ease-in;
+}
+
+.arm-toast[data-swipe='move'] {
+  transform: translateX(var(--radix-toast-swipe-move-x));
+}
+
+.arm-toast[data-swipe='cancel'] {
+  transform: translateX(0);
+  transition: transform var(--arm-toast-hide-speed, 200ms) ease-out;
+}
+
+.arm-toast[data-swipe='end'][data-position="top-right"], .arm-toast[data-swipe='end'][data-position="bottom-right"] {
+  animation: swipeOutRight var(--arm-toast-swipe-speed, 100ms) ease-out;
+}
+
+.arm-toast[data-swipe='end'][data-position="top-left"], .arm-toast[data-swipe='end'][data-position="bottom-left"] {
+  animation: swipeOutLeft var(--arm-toast-swipe-speed, 100ms) ease-out;
+}
+
+@keyframes hide {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(calc(100% + var(--arm-toast-viewport-padding)));
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(calc(-100% + var(--arm-toast-viewport-padding)));
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes swipeOutRight {
+  from {
+    transform: translateX(var(--radix-toast-swipe-end-x));
+  }
+
+  to {
+    transform: translateX(calc(100% + var(--arm-toast-viewport-padding)));
+  }
+}
+
+@keyframes swipeOutLeft {
+  from {
+    transform: translateX(var(--radix-toast-swipe-end-x));
+  }
+
+  to {
+    transform: translateX(calc(-100% + var(--arm-toast-viewport-padding)));
+  }
+}
