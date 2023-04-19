@@ -67,7 +67,6 @@
   justify-content: center;
   align-items: center;
   gap: var(--arm-spacing-xsmall);
-  cursor: inherit;
   cursor: pointer;
 }
 
