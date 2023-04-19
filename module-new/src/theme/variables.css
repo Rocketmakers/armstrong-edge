@@ -54,7 +54,7 @@
   --arm-button-primary-fg-color: var(--arm-color-white);
   --arm-button-secondary-bg-color: var(--arm-color-grey-100);
   --arm-button-secondary-fg-color: var(--arm-color-grey-1000);
-  --arm-button-outline-stroke-color: var(--arm-color-grey-1000));
+  --arm-button-outline-stroke-color: var(--arm-button-primary-bg-color);
   --arm-button-outline-stroke-thickness: 2px;
 
   /* Inputs */

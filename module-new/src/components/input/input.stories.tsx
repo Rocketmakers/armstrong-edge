@@ -6,8 +6,6 @@ import { BiSearch } from 'react-icons/bi';
 import { useForm } from '../../hooks/form';
 import { Input } from './input.component';
 
-/** metadata */
-
 export default {
   title: 'Inputs/Input',
   component: Input,
@@ -16,24 +14,15 @@ export default {
   },
 } as Meta<typeof Input>;
 
-/** component template */
+type Story = StoryObj<typeof Input>;
 
-const Template: StoryObj<typeof Input> = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on Input prevents storybook from spreading pure props on here without a cast
-  render: (props: any) => <Input {...props} />,
-};
-
-/** stories */
-
-export const Default: StoryObj<typeof Input> = {
-  ...Template,
+export const Default: Story = {
   args: {
     type: 'text',
   },
 };
 
-export const Labelled: StoryObj<typeof Input> = {
-  ...Template,
+export const Labelled: Story = {
   render: () => {
     return (
       <div>
@@ -46,8 +35,7 @@ export const Labelled: StoryObj<typeof Input> = {
   },
 };
 
-export const Sizes: StoryObj<typeof Input> = {
-  ...Template,
+export const Sizes: Story = {
   render: () => {
     return (
       <div>
@@ -62,8 +50,7 @@ export const Sizes: StoryObj<typeof Input> = {
   },
 };
 
-export const Overlay: StoryObj<typeof Input> = {
-  ...Template,
+export const Overlay: Story = {
   render: () => {
     return (
       <div>
@@ -78,8 +65,7 @@ export const Overlay: StoryObj<typeof Input> = {
   },
 };
 
-export const Pending: StoryObj<typeof Input> = {
-  ...Template,
+export const Pending: Story = {
   render: () => {
     return (
       <div>
@@ -92,8 +78,7 @@ export const Pending: StoryObj<typeof Input> = {
   },
 };
 
-export const ValidationError: StoryObj<typeof Input> = {
-  ...Template,
+export const ValidationError: Story = {
   render: () => {
     return (
       <div>
@@ -110,8 +95,7 @@ export const ValidationError: StoryObj<typeof Input> = {
   },
 };
 
-export const InputTypes: StoryObj<typeof Input> = {
-  ...Template,
+export const InputTypes: Story = {
   render: () => {
     return (
       <div>
@@ -126,8 +110,7 @@ export const InputTypes: StoryObj<typeof Input> = {
   },
 };
 
-export const Bound: StoryObj<typeof Input> = {
-  ...Template,
+export const Bound: Story = {
   render: () => {
     const { formProp, formState } = useForm({ text: '', number: 2, debounce: '' });
     return (

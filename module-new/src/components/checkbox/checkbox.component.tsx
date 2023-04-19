@@ -5,6 +5,8 @@ import { ImCheckmark, ImMinus } from 'react-icons/im';
 import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
+import { Label } from '../label/label.component';
+import { ValidationErrors } from '../validationErrors/validationErrors.component';
 
 import './checkbox.theme.css';
 
@@ -36,6 +38,9 @@ export interface ICheckboxProps<TData extends BindType>
   /** A React.ReactNode to display a label for the checkbox input. (Optional) */
   label?: React.ReactNode;
 
+  /** Class name for the label component */
+  labelClassName?: string;
+
   /** A callback function (newValue: TData) => void to handle state when 'checked' is changed. (Optional) */
   onCheckedChange?: (newValue: TData) => void;
 
@@ -58,6 +63,7 @@ export const Checkbox = React.forwardRef(
       disabled,
       onCheckedChange,
       label,
+      labelClassName,
       scrollValidationErrorsIntoView,
       testId,
       ...nativeProps
@@ -66,7 +72,7 @@ export const Checkbox = React.forwardRef(
   ) => {
     const id = React.useId();
 
-    const [value, setValue /* , bindConfig */] = useBindingState(bind, { onChange: onCheckedChange, value: checked });
+    const [value, setValue, bindConfig] = useBindingState(bind, { onChange: onCheckedChange, value: checked });
 
     const onCheckedChangeInternal = React.useCallback<Required<CheckboxProps>['onCheckedChange']>(
       newValue => {
@@ -106,18 +112,18 @@ export const Checkbox = React.forwardRef(
             </Indicator>
           </Root>
           {label && (
-            <label className="arm-checkbox-label" data-direction={direction} htmlFor={id}>
+            <Label className={concat('arm-checkbox-label', labelClassName)} data-direction={direction} htmlFor={id}>
               {label}
-            </label>
+            </Label>
           )}
         </div>
-        {/* {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
           <ValidationErrors
             validationErrors={bindConfig.validationErrorMessages}
-            icon={bindConfig.validationErrorIcon}
+            validationMode={bindConfig.validationMode}
             scrollIntoView={scrollValidationErrorsIntoView}
           />
-        )} */}
+        )}
       </>
     );
   }

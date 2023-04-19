@@ -20,20 +20,20 @@
 
 /** SIZES **/
 
-.arm-input-base[data-size="small"] {
+.arm-input-base[data-size='small'] {
   font-size: var(--arm-font-size-xsmall);
 }
 
-.arm-input-base[data-size="large"] {
+.arm-input-base[data-size='large'] {
   font-size: var(--arm-font-size-medium);
 }
 
-.arm-input-base[data-size="small"] .arm-input-base-input {
+.arm-input-base[data-size='small'] .arm-input-base-input {
   padding-top: var(--arm-spacing-xxsmall);
   padding-bottom: var(--arm-spacing-xxsmall);
 }
 
-.arm-input-base[data-size="large"] .arm-input-base-input {
+.arm-input-base[data-size='large'] .arm-input-base-input {
   padding-top: var(--arm-spacing-medium);
   padding-bottom: var(--arm-spacing-medium);
 }
@@ -46,11 +46,11 @@
   margin-left: var(--arm-spacing-xxxsmall);
 }
 
-.arm-input-base[data-size="small"] .arm-input-base-label {
+.arm-input-base[data-size='small'] .arm-input-base-label {
   font-size: var(--arm-font-size-xsmall);
 }
 
-.arm-input-base[data-size="large"] .arm-input-base-label {
+.arm-input-base[data-size='large'] .arm-input-base-label {
   font-size: var(--arm-font-size-medium);
 }
 
@@ -67,7 +67,8 @@
 /** FOCUS **/
 
 .arm-input-base .arm-input-inner:focus-within {
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-grey-1000);
+  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+    var(--arm-color-grey-1000);
 }
 
 /** STATUS **/
@@ -77,11 +78,11 @@
   align-items: center;
 }
 
-.arm-input-base-status[data-position="right"] {
+.arm-input-base-status[data-position='right'] {
   padding-right: var(--arm-spacing-small);
 }
 
-.arm-input-base-status[data-position="left"] {
+.arm-input-base-status[data-position='left'] {
   padding-left: var(--arm-spacing-small);
 }
 
@@ -92,5 +93,6 @@
 }
 
 .arm-input-base[data-error] .arm-input-inner:focus-within {
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-negative);
+  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+    var(--arm-color-negative);
 }
