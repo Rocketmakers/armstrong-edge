@@ -86,6 +86,7 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.3",
+    "@radix-ui/react-switch": "^1.0.2",
     "lodash": "^4.17.21",
     "react-icons": "^4.8.0",
     "react-select": "5.5.7"
