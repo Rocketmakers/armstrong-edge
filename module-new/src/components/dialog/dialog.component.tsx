@@ -1,5 +1,6 @@
 import * as RadixDialog from '@radix-ui/react-dialog';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import { useCompareValues } from '../../hooks/useCompareValues';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
@@ -135,7 +136,7 @@ export const Dialog = React.forwardRef(
 
     return (
       <RadixDialog.Root open={!finishAction} onOpenChange={onInnerOpenChange}>
-        <RadixDialog.Portal>
+        {ReactDOM.createPortal(
           <RadixDialog.Overlay className={concat('arm-dialog-overlay', overlayClassName)}>
             <RadixDialog.Content className={concat('arm-dialog', className)} data-has-title={title ? true : undefined}>
               {title && <RadixDialog.Title className="arm-dialog-title">{title}</RadixDialog.Title>}
@@ -147,8 +148,9 @@ export const Dialog = React.forwardRef(
                 <RadixDialog.Close className="arm-dialog-close">{globals.dialogCloseButtonIcon}</RadixDialog.Close>
               )}
             </RadixDialog.Content>
-          </RadixDialog.Overlay>
-        </RadixDialog.Portal>
+          </RadixDialog.Overlay>,
+          globals.globalPortalTo
+        )}
       </RadixDialog.Root>
     );
   }
