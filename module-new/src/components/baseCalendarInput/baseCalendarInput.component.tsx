@@ -1,41 +1,33 @@
-import "react-datepicker/dist/react-datepicker.css";
+import { enGB } from 'date-fns/locale';
+import * as React from 'react';
+import ReactDatePicker, { ReactDatePickerProps } from 'react-datepicker';
 
-import * as React from "react";
-import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker";
+import { IBindingProps, useBindingState } from '../../hooks/form';
+import { concat } from '../../utils/classNames';
+import { IInputWrapperProps } from '../inputWrapper';
+import { Status } from '../status';
+import { ValidationErrors } from '../validationErrors';
 
-import { enGB } from "date-fns/locale";
-
-import { Form, useOverridableState } from "../../hooks";
-import { IBindingProps } from "../../hooks/form";
-import { concat } from "../../utils/classNames";
-import { IInputWrapperProps } from "../inputWrapper";
-import { Status } from "../status";
-import { ValidationErrors } from "../validationErrors";
+import 'react-datepicker/dist/react-datepicker.css';
 
 type TDate = Date;
 type TDateRange = [Date | null, Date | null];
 
 export type TBaseDatePickerConfig = Omit<
   ReactDatePickerProps,
-  | "onChange"
-  | "value"
-  | "selectsRange"
-  | "selected"
-  | "startDate"
-  | "endDate"
-  | "disabled"
+  'onChange' | 'value' | 'selectsRange' | 'selected' | 'startDate' | 'endDate' | 'disabled'
 >;
 
 export type TBaseCalendarInputCommonProps = Pick<
   IInputWrapperProps,
-  | "scrollValidationErrorsIntoView"
-  | "validationMode"
-  | "errorIcon"
-  | "disabled"
-  | "pending"
-  | "error"
-  | "validationErrorMessages"
-  | "className"
+  | 'scrollValidationErrorsIntoView'
+  | 'validationMode'
+  | 'errorIcon'
+  | 'disabled'
+  | 'pending'
+  | 'error'
+  | 'validationErrorMessages'
+  | 'className'
 > & {
   /** props to spread onto the calendar component */
   config?: TBaseDatePickerConfig;
@@ -71,17 +63,12 @@ export type TBaseCalendarInputNotSelectsRangeProps = {
 };
 
 export type TBaseCalendarInputProps = TBaseCalendarInputCommonProps &
-  (
-    | TBaseCalendarInputSelectsRangeProps
-    | TBaseCalendarInputNotSelectsRangeProps
-  );
+  (TBaseCalendarInputSelectsRangeProps | TBaseCalendarInputNotSelectsRangeProps);
 
 /**
  * third-party docs: https://reactdatepicker.com
  * decided to use single component to keep as close to third party as possible */
-export const BaseCalendarInput: React.FunctionComponent<
-  TBaseCalendarInputProps
-> = (props) => {
+export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps> = props => {
   const singleValue = !props.selectsRange ? props.value : undefined;
   const startValue = props.selectsRange ? props.startValue : undefined;
   const endValue = props.selectsRange ? props.endValue : undefined;
@@ -93,72 +80,47 @@ export const BaseCalendarInput: React.FunctionComponent<
 
   // SINGLE DATE...
 
-  const [boundDateValue, setBoundDateValue, bindDateConfig] =
-    Form.useBindingState(!props.selectsRange ? props.bind : undefined, {
-      ...commonBindingState,
-      validationErrorMessages: props.validationErrorMessages,
-      value: singleValue,
-      onChange: !props.selectsRange ? props.onChange : undefined,
-    });
-  // use an overridable internal state so it can be used without a binding
-  const [date, setDate] = useOverridableState(
-    (singleValue ?? undefined) as TDate,
-    boundDateValue,
-    setBoundDateValue
-  );
+  const [date, setDate, bindDateConfig] = useBindingState(!props.selectsRange ? props.bind : undefined, {
+    ...commonBindingState,
+    validationErrorMessages: props.validationErrorMessages,
+    value: singleValue,
+    onChange: !props.selectsRange ? props.onChange : undefined,
+  });
 
   // DATE RANGE...
 
-  const [boundStartDateValue, setBoundStartDateValue, bindStartDateConfig] =
-    Form.useBindingState(props.selectsRange ? props.startBind : undefined, {
+  const [startDate, setStartDate, bindStartDateConfig] = useBindingState(
+    props.selectsRange ? props.startBind : undefined,
+    {
       ...commonBindingState,
       validationErrorMessages: props.validationErrorMessages,
       value: startValue,
       onChange: !props.selectsRange ? props.onChange : undefined,
-    });
-  // use an overridable internal state so it can be used without a binding
-  const [startDate, setStartDate] = useOverridableState(
-    (startValue ?? undefined) as TDate,
-    boundStartDateValue,
-    setBoundStartDateValue
+    }
   );
 
-  const [boundEndDateValue, setBoundEndDateValue, bindEndDateConfig] =
-    Form.useBindingState(props.selectsRange ? props.endBind : undefined, {
-      ...commonBindingState,
-      // only pass in validationErrorMessages once for date range as errors will be combined!
-      validationErrorMessages: [],
-      value: endValue,
-      onChange: !props.selectsRange ? props.onChange : undefined,
-    });
-  // use an overridable internal state so it can be used without a binding
-  const [endDate, setEndDate] = useOverridableState(
-    (endValue ?? undefined) as TDate,
-    boundEndDateValue,
-    setBoundEndDateValue
-  );
+  const [endDate, setEndDate, bindEndDateConfig] = useBindingState(props.selectsRange ? props.endBind : undefined, {
+    ...commonBindingState,
+    // only pass in validationErrorMessages once for date range as errors will be combined!
+    validationErrorMessages: [],
+    value: endValue,
+    onChange: !props.selectsRange ? props.onChange : undefined,
+  });
 
   const validationErrorMessages = props.selectsRange
-    ? [
-        ...bindStartDateConfig.validationErrorMessages,
-        ...bindEndDateConfig.validationErrorMessages,
-      ]
+    ? [...bindStartDateConfig.validationErrorMessages, ...bindEndDateConfig.validationErrorMessages]
     : bindDateConfig.validationErrorMessages;
 
   return (
     <>
       <div
-        className={concat(
-          "arm-input",
-          "arm-base-calendar-input",
-          props.className
-        )}
+        className={concat('arm-input', 'arm-base-calendar-input', props.className)}
         data-disabled={props.disabled || props.pending}
         data-error={props.error || !!validationErrorMessages?.length}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
+        // onClick={e => {
+        //   e.preventDefault();
+        //   e.stopPropagation();
+        // }}
       >
         <label>
           {props.content}
@@ -168,7 +130,7 @@ export const BaseCalendarInput: React.FunctionComponent<
             {...props.config}
             disabled={props.disabled}
             selectsRange={props.selectsRange}
-            onChange={(newValue) => {
+            onChange={newValue => {
               if (!props.selectsRange) {
                 setDate?.(newValue as TDate);
               } else {
@@ -182,30 +144,25 @@ export const BaseCalendarInput: React.FunctionComponent<
           />
 
           <Status
-            error={
-              bindDateConfig.shouldShowValidationErrorIcon &&
-              (!!validationErrorMessages?.length || props.error)
-            }
+            error={bindDateConfig.shouldShowValidationErrorIcon && (!!validationErrorMessages?.length || props.error)}
             pending={props.pending}
             errorIcon={bindDateConfig.validationErrorIcon}
           />
         </label>
       </div>
 
-      {!!validationErrorMessages?.length &&
-        bindDateConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            validationErrors={validationErrorMessages}
-            icon={bindDateConfig.validationErrorIcon}
-            scrollIntoView={props.scrollValidationErrorsIntoView}
-          />
-        )}
+      {!!validationErrorMessages?.length && bindDateConfig.shouldShowValidationErrorMessage && (
+        <ValidationErrors
+          validationErrors={validationErrorMessages}
+          scrollIntoView={props.scrollValidationErrorsIntoView}
+        />
+      )}
     </>
   );
 };
 
 BaseCalendarInput.defaultProps = {
-  validationMode: "both",
+  validationMode: 'both',
   selectsRange: false,
   config: { locale: enGB },
 };

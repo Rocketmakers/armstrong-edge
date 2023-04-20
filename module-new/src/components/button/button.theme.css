@@ -56,6 +56,23 @@
   border-color: var(--arm-color-info);
 }
 
+.arm-button[data-status="positive"][data-style="blank"] {
+  color: var(--arm-color-positive);
+}
+
+.arm-button[data-status="negative"][data-style="blank"] {
+  color: var(--arm-color-negative);
+}
+
+.arm-button[data-status="warning"][data-style="blank"] {
+  color: var(--arm-color-warning);
+}
+
+.arm-button[data-status="info"][data-style="blank"] {
+  color: var(--arm-color-info);
+}
+
+
 .arm-button[data-status="positive"][data-style="secondary"] {
   background-color: var(--arm-color-positive-secondary);
 }
@@ -82,6 +99,12 @@
 .arm-button[data-style="outline"] {
   background-color: transparent;
   border: var(--arm-button-outline-stroke-thickness) var(--arm-button-outline-stroke-color) solid;
+  color: var(--arm-button-outline-stroke-color);
+}
+
+.arm-button[data-style="blank"] {
+  background-color: transparent;
+  border: none;
   color: var(--arm-button-outline-stroke-color);
 }
 
