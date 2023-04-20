@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ImSpinner2 } from 'react-icons/im';
+import { FaCheck } from 'react-icons/fa';
+import { ImMinus, ImSpinner2 } from 'react-icons/im';
 import { IoIosWarning } from 'react-icons/io';
 import { RiCloseLine } from 'react-icons/ri';
 
@@ -62,6 +63,12 @@ export interface IArmstrongConfigContext {
 
   /** the icon to use for the dialog close button */
   toastCloseButtonIcon?: JSX.Element | false;
+
+  /** A custom JSX.Element for the checked indicator. (Optional) */
+  checkboxCustomIndicator?: JSX.Element;
+
+  /** A custom JSX.Element for the indeterminate state indicator. (Optional) */
+  checkboxCustomIndeterminateIndicator?: JSX.Element;
 }
 
 /**
@@ -85,6 +92,8 @@ const systemDefaults: Required<IArmstrongConfigContext> = {
   toastDuration: 5000,
   toastPosition: 'bottom-right',
   toastCloseButtonIcon: <RiCloseLine size={18} />,
+  checkboxCustomIndicator: <FaCheck />,
+  checkboxCustomIndeterminateIndicator: <ImMinus />,
 };
 
 const ArmstrongConfigContext = React.createContext<Required<IArmstrongConfigContext>>(systemDefaults);

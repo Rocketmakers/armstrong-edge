@@ -1,10 +1,10 @@
 import { CheckboxProps, Indicator, Root } from '@radix-ui/react-checkbox';
 import * as React from 'react';
-import { ImCheckmark, ImMinus } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 import { Label } from '../label/label.component';
 import { ValidationErrors } from '../validationErrors/validationErrors.component';
 
@@ -81,14 +81,19 @@ export const Checkbox = React.forwardRef(
       [setValue]
     );
 
+    const globals = useArmstrongConfig({
+      checkboxCustomIndicator: customIndicator,
+      checkboxCustomIndeterminateIndicator: customIndeterminateIndicator,
+    });
+
     const indicator = React.useMemo(() => {
       switch (value) {
         case 'indeterminate':
-          return customIndeterminateIndicator ?? <ImMinus />;
+          return globals.checkboxCustomIndeterminateIndicator;
         default:
-          return customIndicator ?? <ImCheckmark />;
+          return globals.checkboxCustomIndicator;
       }
-    }, [value, customIndicator, customIndeterminateIndicator]);
+    }, [value, globals.checkboxCustomIndicator, globals.checkboxCustomIndeterminateIndicator]);
 
     return (
       <>
@@ -136,4 +141,4 @@ Checkbox.defaultProps = {
   direction: 'horizontal',
 };
 
-Checkbox.displayName = 'CheckboxInput';
+Checkbox.displayName = 'Checkbox';
