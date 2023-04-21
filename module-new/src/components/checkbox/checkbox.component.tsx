@@ -15,7 +15,7 @@ type BindType = NullOrUndefined<boolean | 'indeterminate'>;
 
 export interface ICheckboxProps<TData extends BindType>
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type' | 'checked'>,
-    Omit<IValidationErrorsProps, 'validationMode' | 'validationErrors'> {
+    Omit<IValidationErrorsProps, 'validationErrors'> {
   /** (Optional) An IBindingProps<TData> object to bind the checkbox input to a form. */
   bind?: IBindingProps<TData>;
 
