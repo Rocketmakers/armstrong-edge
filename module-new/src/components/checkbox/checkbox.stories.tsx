@@ -68,7 +68,6 @@ export const ValidationError: Story = {
     testId: 'checkbox-container',
   },
   render: () => {
-    <h2>Validation mode - both</h2>;
     return <Checkbox label={'Option 1'} validationErrorMessages={['This field is required']} />;
   },
   play: async ({ canvasElement }) => {

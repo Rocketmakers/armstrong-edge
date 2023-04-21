@@ -43,8 +43,14 @@ export interface ICheckboxProps<TData extends BindType>
   /** (Optional) Class name for the label component */
   labelClassName?: string;
 
+  /** (Optional) Id to use for the checkbox. Falls back to React ID if not provided */
+  labelId?: string;
+
   /** (Optional) A callback function (newValue: TData) => void to handle state when 'checked' is changed. */
   onCheckedChange?: (newValue: TData) => void;
+
+  /** (Optional) Classname to use for the status wrapper */
+  statusClassName?: string;
 
   /** (Optional) A string to set a custom data-testid attribute for the checkbox container. */
   testId?: string;
@@ -72,7 +78,9 @@ export const Checkbox = React.forwardRef(
       onCheckedChange,
       label,
       labelClassName,
+      labelId,
       scrollValidationErrorsIntoView,
+      statusClassName,
       testId,
       validationErrorsClassName,
       validationErrorMessages,
@@ -80,7 +88,8 @@ export const Checkbox = React.forwardRef(
     }: ICheckboxProps<TData>,
     ref: React.ForwardedRef<HTMLButtonElement>
   ) => {
-    const id = React.useId();
+    const reactId = React.useId();
+    const id = nativeProps.id ?? reactId;
 
     const globals = useArmstrongConfig({
       scrollValidationErrorsIntoView,
@@ -113,7 +122,7 @@ export const Checkbox = React.forwardRef(
 
     return (
       <StatusWrapper
-        className={concat(validationErrorsClassName, 'arm-input-base')}
+        className={concat(statusClassName, 'arm-input-base')}
         validationMode={bindConfig.validationMode}
         errorIcon={bindConfig.validationErrorIcon}
       >
@@ -151,7 +160,7 @@ export const Checkbox = React.forwardRef(
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
           <ValidationErrors
             className={validationErrorsClassName}
-            validationMode={'message'}
+            validationMode={globals.validationMode}
             validationErrors={bindConfig.validationErrorMessages}
             scrollIntoView={globals.scrollValidationErrorsIntoView}
           />
