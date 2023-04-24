@@ -30,11 +30,11 @@ export const Disabled: Story = {
   args: {
     label: 'Checkbox is disabled',
     disabled: true,
-    testId: 'checkbox-container',
+    testId: 'arm-checkbox-container',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const checkbox = await canvas.getByTestId('checkbox-container');
+    const checkbox = await canvas.getByTestId('arm-checkbox-container');
     const isDisabled = await checkbox.getAttribute('data-disabled');
     expect(isDisabled).toBe('true');
   },
@@ -44,11 +44,11 @@ export const Vertical: Story = {
   args: {
     label: 'Check',
     direction: 'vertical',
-    testId: 'checkbox-container',
+    testId: 'arm-checkbox-container',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const checkboxContainer = await canvas.getByTestId('checkbox-container');
+    const checkboxContainer = await canvas.getByTestId('arm-checkbox-container');
     const direction = await checkboxContainer.getAttribute('data-direction');
     expect(direction).toBe('vertical');
   },
@@ -57,23 +57,25 @@ export const Vertical: Story = {
 export const CustomIndicator: Story = {
   args: {
     label: 'Check for Custom Indicator',
-    customIndicator: <ImRocket />,
+    testId: 'arm-checkbox-container',
+    customIndicator: <ImRocket data-testid={'rocket-indicator'} />,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const checkbox = await canvas.getByRole('checkbox');
+    await checkbox.click();
+    const indicator = await canvas.getByTestId('rocket-indicator');
+    expect(indicator);
   },
 };
 
 export const ValidationError: Story = {
   args: {
-    label: 'Check',
-    direction: 'vertical',
-    testId: 'checkbox-container',
-  },
-  render: () => {
-    return <Checkbox label={'Option 1'} validationErrorMessages={['This field is required']} />;
+    label: 'Option 1',
+    validationErrorMessages: ['This field is required'],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const checkboxContainer = await canvas.getByTestId('checkbox-container');
-    const direction = await checkboxContainer.getAttribute('data-direction');
-    expect(direction).toBe('vertical');
+    expect(canvas).toContain('This field is required');
   },
 };

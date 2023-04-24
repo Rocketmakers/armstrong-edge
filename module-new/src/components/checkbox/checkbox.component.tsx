@@ -151,6 +151,7 @@ export const Checkbox = React.forwardRef(
               className={concat('arm-checkbox-label', labelClassName)}
               data-direction={direction}
               data-disabled={disabled}
+              data-testid={'arm-checkbox-label'}
               htmlFor={id}
             >
               {label}
