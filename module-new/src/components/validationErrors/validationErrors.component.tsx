@@ -6,7 +6,7 @@ import { useArmstrongConfig } from '../config';
 
 import './validationErrors.theme.css';
 
-export interface IValidationErrorsProps {
+export interface IValidationErrorsProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The errors to render */
   /** Can be a string or {key, element} key is necessary for animating in new messages   */
   validationErrors: ValidationMessage[];
@@ -23,7 +23,7 @@ export interface IValidationErrorsProps {
 
 /** Render an array of validation errors as error messages */
 export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IValidationErrorsProps>>(
-  ({ validationErrors, className, scrollIntoView, validationMode }, ref) => {
+  ({ validationErrors, className, scrollIntoView, validationMode, ...nativeProps }, ref) => {
     const globals = useArmstrongConfig({
       validationMode,
       scrollValidationErrorsIntoView: scrollIntoView,
@@ -52,7 +52,7 @@ export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWith
     const shouldShowErrorMessage = globals.validationMode === 'both' || globals.validationMode === 'message';
 
     return (
-      <div ref={internalRef} className={concat('arm-validation-errors', className)}>
+      <div ref={internalRef} className={concat('arm-validation-errors', className)} {...nativeProps}>
         {validationErrors.map((error, i) => (
           <div className="arm-validation-error-message" key={getKey(error, i)}>
             {shouldShowErrorMessage && <span>{error}</span>}
