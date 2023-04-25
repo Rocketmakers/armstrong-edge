@@ -76,6 +76,7 @@ export const ValidationError: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    expect(canvas).toContain('This field is required');
+    const label = await canvas.getAllByText('This field is required');
+    expect(label);
   },
 };
