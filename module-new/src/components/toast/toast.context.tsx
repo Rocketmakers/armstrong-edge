@@ -21,6 +21,8 @@ export interface IToast {
   hideClose?: boolean;
   /** optional class name to add to the toast element */
   className?: string;
+  /** optional test id to add to the toast element */
+  testId?: string;
 }
 
 /** Type denoting the position of a toast message */
