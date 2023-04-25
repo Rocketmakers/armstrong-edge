@@ -29,6 +29,8 @@ export interface IDialogProps<TData = unknown> extends React.PropsWithChildren {
   data?: TData;
   /** Function called when the dialog is closed. Don't use for state control, only for side effects. `onOpenChange` should be used for state control */
   onClose?: () => void;
+  /** Optional test ID for the dialog */
+  testId?: string;
 }
 
 /** String union describing the various actions that can be used to close a dialog */
@@ -73,6 +75,7 @@ export const Dialog = React.forwardRef(
       className,
       data,
       overlayClassName,
+      testId,
     } = props;
 
     /** Pull globals from context */
@@ -138,7 +141,11 @@ export const Dialog = React.forwardRef(
       <RadixDialog.Root open={!finishAction} onOpenChange={onInnerOpenChange}>
         {ReactDOM.createPortal(
           <RadixDialog.Overlay className={concat('arm-dialog-overlay', overlayClassName)}>
-            <RadixDialog.Content className={concat('arm-dialog', className)} data-has-title={title ? true : undefined}>
+            <RadixDialog.Content
+              className={concat('arm-dialog', className)}
+              data-has-title={title ? true : undefined}
+              data-testid={testId}
+            >
               {title && <RadixDialog.Title className="arm-dialog-title">{title}</RadixDialog.Title>}
               {description && (
                 <RadixDialog.Description className="arm-dialog-description">{description}</RadixDialog.Description>
