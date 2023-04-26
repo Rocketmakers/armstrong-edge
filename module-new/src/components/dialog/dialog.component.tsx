@@ -152,7 +152,9 @@ export const Dialog = React.forwardRef(
               )}
               {children && <div className="arm-dialog-content">{children}</div>}
               {globals.dialogCloseButtonIcon !== false && (
-                <RadixDialog.Close className="arm-dialog-close">{globals.dialogCloseButtonIcon}</RadixDialog.Close>
+                <RadixDialog.Close className="arm-dialog-close" aria-label="Close">
+                  {globals.dialogCloseButtonIcon}
+                </RadixDialog.Close>
               )}
             </RadixDialog.Content>
           </RadixDialog.Overlay>,
