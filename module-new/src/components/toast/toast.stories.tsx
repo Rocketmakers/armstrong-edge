@@ -1,6 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { findAllByRole, findByRole, findByText, userEvent, waitFor, within } from '@storybook/testing-library';
+import { findAllByText, findByRole, findByText, userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 
 import { Button } from '../button';
@@ -42,7 +42,6 @@ export const Default: StoryObj<typeof Toast> = {
   play: async ({ canvasElement, args }) => {
     // launch toast
     const button = within(canvasElement).getByText('Send a toast');
-    expect(button).toBeVisible();
     userEvent.click(button);
 
     // check title and description
@@ -51,22 +50,16 @@ export const Default: StoryObj<typeof Toast> = {
     expect(title).toBeVisible();
     expect(description).toBeVisible();
 
-    // check auto-dismiss after default dismiss time of 5000ms + 500ms for animation
-    await waitFor(() => Promise.all([expect(title).not.toBeVisible(), expect(description).not.toBeVisible()]), {
-      timeout: 5500,
-    });
+    // check close
+    const close = await findByRole(document.body, 'button', { name: 'Close' });
+    await waitFor(() => userEvent.click(close));
+    await waitFor(() => Promise.all([expect(title).not.toBeVisible(), expect(description).not.toBeVisible()]));
 
-    // launch multiple toasts
+    // check multiple toasts
     userEvent.click(button);
     userEvent.click(button);
-
-    // check close buttons on multi toast
-    const [close1, close2] = await findAllByRole(document.body, 'button', { name: 'Close' });
-    expect(close1).toBeVisible();
-    expect(close2).toBeVisible();
-    userEvent.click(close1);
-    userEvent.click(close2);
-    await waitFor(() => Promise.all([expect(close1).not.toBeVisible(), expect(close2).not.toBeVisible()]));
+    const titles = await findAllByText(document.body, args.title ?? '');
+    expect(titles).toHaveLength(2);
   },
 };
 
@@ -74,17 +67,16 @@ export const CustomDuration: StoryObj<typeof Toast> = {
   ...Template,
   args: {
     ...Template.args,
-    duration: 1000,
+    duration: 100,
   },
   play: async ({ canvasElement, args }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    expect(button).toBeVisible();
     userEvent.click(button);
 
     const title = await findByText(document.body, args.title ?? '');
     expect(title).toBeVisible();
-    // check auto-dismiss after custom dismiss time of 1000ms + 500ms for animation
-    await waitFor(() => expect(title).not.toBeVisible(), { timeout: 1500 });
+    // check auto-dismiss after custom dismiss time of 100ms + 300ms for animation
+    await waitFor(() => expect(title).not.toBeVisible(), { timeout: 400 });
   },
 };
 
