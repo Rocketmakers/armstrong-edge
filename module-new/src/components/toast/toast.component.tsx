@@ -23,13 +23,22 @@ export const Toast: React.FC<IToastProps> = ({
   closeButtonIcon,
   hideClose,
   className,
+  testId,
 }) => {
   return (
-    <RadixToast.Root className={concat('arm-toast', className)} duration={duration} data-position={position}>
+    <RadixToast.Root
+      className={concat('arm-toast', className)}
+      duration={duration}
+      data-position={position}
+      data-testid={testId}
+      aria-label="Notification"
+    >
       {title && <RadixToast.Title className="arm-toast-title">{title}</RadixToast.Title>}
       {description && <RadixToast.Description className="arm-toast-description">{description}</RadixToast.Description>}
       {closeButtonIcon !== false && !hideClose && (
-        <RadixToast.Close className="arm-toast-close">{closeButtonIcon}</RadixToast.Close>
+        <RadixToast.Close className="arm-toast-close" aria-label="Close">
+          {closeButtonIcon}
+        </RadixToast.Close>
       )}
       {content}
     </RadixToast.Root>
