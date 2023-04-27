@@ -1,0 +1,60 @@
+/* WRAPPER */
+
+.arm-text-area-wrapper {
+}
+
+/* TEXT AREA */
+
+.arm-text-area {
+  width: var(--arm-input-width);
+  min-height: var(--arm-text-area-height, 8rem);
+  padding: 1em;
+  background-color: var(--arm-color-white);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: inherit;
+  border: var(--arm-form-border-thickness) solid var(--arm-color-grey-600);
+}
+
+.arm-text-area:focus-within {
+  border-color: var(--arm-focus-visible-color);
+  outline: calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) solid
+    var(--arm-focus-visible-color);
+}
+
+.arm-text-area[data-disabled] {
+  cursor: not-allowed;
+  resize: none;
+}
+
+/** SIZES **/
+
+.arm-text-area[data-size='small'] {
+  min-height: var(--arm-text-area-small-height, 7rem);
+  font-size: var(--arm-font-size-xsmall);
+}
+
+.arm-text-area[data-size='large'] {
+  min-height: var(--arm-text-area-small-height, 9rem);
+  font-size: var(--arm-font-size-medium);
+}
+
+/** LABEL **/
+
+.arm-text-area-wrapper[data-size='small'] .arm-input-base-label {
+  font-size: var(--arm-font-size-xsmall);
+}
+
+.arm-text-area-wrapper[data-size='large'] .arm-input-base-label {
+  font-size: var(--arm-font-size-medium);
+}
+
+/* ERROR */
+
+.arm-text-area-wrapper[data-error] .arm-text-area {
+  border-color: var(--arm-color-negative);
+}
+
+.arm-text-area-wrapper[data-error] .arm-text-area:focus-within {
+  outline-color: var(--arm-color-negative);
+}
