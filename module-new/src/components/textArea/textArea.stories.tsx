@@ -1,6 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/testing-library';
 import * as React from 'react';
 
 import { useForm } from '../../hooks/form/form.hooks';
@@ -40,37 +40,40 @@ export const Labelled: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const textArea = canvas.getByRole('textbox') as HTMLTextAreaElement;
-    const label = canvas.getByRole(args.label) as HTMLLabelElement;
+    const label = canvas.getByLabelText(`${args.label} *`);
 
     expect(textArea).toBeInTheDocument();
     expect(textArea).toHaveAttribute('placeholder', args.placeholder as string);
-    expect(label).toContain(args.label as string);
+    expect(label).toBeInTheDocument();
   },
 };
 
-// Write Test
 export const Sizes: Story = {
   ...Template,
   args: {
     placeholder: 'Enter text here...',
-    testId: 'text-area-wrapper',
   },
   render: args => {
     return (
       <>
-        <TextArea label={'Small'} displaySize="small" {...args} />
-        <TextArea label={'Medium (default)'} {...args} />
-        <TextArea label={'Large'} displaySize="large" {...args} />
+        <TextArea testId={'small'} label={'Small'} displaySize="small" {...args} />
+        <TextArea testId={'medium'} label={'Medium (default)'} {...args} />
+        <TextArea testId={'large'} label={'Large'} displaySize="large" {...args} />
       </>
     );
   },
   play: async ({ canvasElement }) => {
-    // const smallTextArea = canvas.getByAttribute()
+    const canvas = within(canvasElement);
+    const smallTextArea = canvas.getByTestId('small');
+    const mediumTextArea = canvas.getByTestId('medium');
+    const largeTextArea = canvas.getByTestId('large');
+
+    expect(smallTextArea.getAttribute('data-size')).toEqual('small');
+    expect(mediumTextArea.getAttribute('data-size')).toEqual('medium');
+    expect(largeTextArea.getAttribute('data-size')).toEqual('large');
   },
 };
 
-// Write Story
-// Write tests
 export const Pending: Story = {
   ...Template,
   args: {
@@ -78,11 +81,15 @@ export const Pending: Story = {
     label: 'Text Area Label',
     pending: true,
   },
-  play: async ({ canvasElement }) => {},
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const spinner = canvas.getByRole('status');
+
+    expect(spinner).toBeInTheDocument();
+    expect(spinner.getAttribute('data-pending')).toBe('true');
+  },
 };
 
-// Write Story
-// Write tests
 export const ValidationError: Story = {
   ...Template,
   args: {
@@ -90,8 +97,14 @@ export const ValidationError: Story = {
     label: 'Text Area Label',
     required: true,
     validationErrorMessages: ['This field is required'],
+    testId: 'text-area-wrapper',
   },
-  play: async ({ canvasElement }) => {},
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const textAreaWrapper = canvas.getByTestId('text-area-wrapper');
+
+    expect(textAreaWrapper.getAttribute('data-error')).toBe('true');
+  },
 };
 
 export const Disabled: Story = {
@@ -118,12 +131,28 @@ export const Bound: Story = {
     const { formProp, formState } = useForm({ text: '', debounce: '' });
     return (
       <>
-        <TextArea label="Bound text area" bind={formProp('text').bind()} />
-        <p>Value: {formState?.text}</p>
+        <TextArea testId={'bound-text-area'} label="Bound text area" bind={formProp('text').bind()} />
+        <p data-testid={'bound-result'}>Value: {formState?.text}</p>
         <TextArea label="Bound debounce text area (400ms)" bind={formProp('debounce').bind()} delay={400} />
-        <p>Value: {formState?.debounce}</p>
+        <p data-testid={'debounce-result'}>Value: {formState?.debounce}</p>
       </>
     );
   },
-  play: async ({ canvasElement }) => {},
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Get the text areas
+    const boundTextArea = canvas.getByLabelText('Bound text area');
+    const debounceTextArea = canvas.getByLabelText('Bound debounce text area (400ms)');
+    const boundResult = canvas.getByTestId('bound-result');
+    const debounceResult = canvas.getByTestId('debounce-result');
+    // Test Bound Text Area
+    userEvent.type(boundTextArea, 'Hello, bound world');
+    userEvent.type(debounceTextArea, 'Hello, bound world (but slower)');
+
+    // Check that the form state values match the typed input
+    expect(boundResult.textContent).toBe('Value: Hello, bound world');
+    setTimeout(() => {
+      expect(debounceResult.textContent).toBe('Value: Hello, bound world (but slower)');
+    }, 500);
+  },
 };

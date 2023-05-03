@@ -200,7 +200,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
             {...nativeProps}
             onChange={onChangeEvent}
             ref={ref}
-            disabled={pending}
+            disabled={disabled || pending}
           />
         )}
       </InputWrapper>
