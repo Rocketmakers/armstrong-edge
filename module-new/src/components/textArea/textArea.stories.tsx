@@ -1,109 +1,100 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { within } from '@storybook/testing-library';
-import React from 'react';
+import * as React from 'react';
 
 import { useForm } from '../../hooks/form/form.hooks';
 import { TextArea } from './textArea.component';
 
-/** metadata */
-
 export default {
-  title: 'Inputs/Text Area',
+  title: 'Inputs/TextArea',
   component: TextArea,
-  args: {},
+  args: {
+    type: 'text',
+  },
 } as Meta<typeof TextArea>;
 
-/** component template */
-
 const Template: StoryObj<typeof TextArea> = {
-  render: args => {
-    return <TextArea {...args} />;
-  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on Input prevents storybook from spreading pure props on here without a cast
+  render: (props: any) => <TextArea {...props} />,
 };
 
-export const Default: StoryObj<typeof TextArea> = {
+type Story = StoryObj<typeof TextArea>;
+
+export const Default: Story = {
   ...Template,
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const textArea = canvas.getByRole('textbox');
-    expect(textArea).toHaveAttribute('placeholder', args.placeholder as string);
+    expect(textArea).toBeInTheDocument();
   },
 };
 
-// Write Test
-export const Labelled: StoryObj<typeof TextArea> = {
+export const Labelled: Story = {
   ...Template,
   args: {
     placeholder: 'Placeholder content 🚀',
     label: 'Please write below',
+    required: true,
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const textArea = canvas.getByRole('textbox');
+    const textArea = canvas.getByRole('textbox') as HTMLTextAreaElement;
+    const label = canvas.getByRole(args.label) as HTMLLabelElement;
+
+    expect(textArea).toBeInTheDocument();
     expect(textArea).toHaveAttribute('placeholder', args.placeholder as string);
+    expect(label).toContain(args.label as string);
   },
 };
 
 // Write Test
-export const Sizes: StoryObj<typeof TextArea> = {
+export const Sizes: Story = {
+  ...Template,
+  args: {
+    placeholder: 'Enter text here...',
+    testId: 'text-area-wrapper',
+  },
+  render: args => {
+    return (
+      <>
+        <TextArea label={'Small'} displaySize="small" {...args} />
+        <TextArea label={'Medium (default)'} {...args} />
+        <TextArea label={'Large'} displaySize="large" {...args} />
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    // const smallTextArea = canvas.getByAttribute()
+  },
+};
+
+// Write Story
+// Write tests
+export const Pending: Story = {
   ...Template,
   args: {
     placeholder: 'Enter text here...',
     label: 'Text Area Label',
-  },
-  render: args => {
-    return (
-      <div>
-        <h2>Small</h2>
-        <TextArea displaySize="small" {...args} />
-        <h2>Medium (default)</h2>
-        <TextArea {...args} />
-        <h2>Large</h2>
-        <TextArea displaySize="large" {...args} />
-      </div>
-    );
+    pending: true,
   },
   play: async ({ canvasElement }) => {},
 };
 
 // Write Story
 // Write tests
-export const Pending: StoryObj<typeof TextArea> = {
+export const ValidationError: Story = {
   ...Template,
   args: {
     placeholder: 'Enter text here...',
     label: 'Text Area Label',
-    pending: 'true',
+    required: true,
+    validationErrorMessages: ['This field is required'],
   },
   play: async ({ canvasElement }) => {},
 };
 
-// Write Story
-// Write tests
-export const ValidationError: StoryObj<typeof TextArea> = {
-  ...Template,
-  args: {
-    placeholder: 'Enter text here...',
-    label: 'Text Area Label',
-  },
-  render: args => {
-    return (
-      <div>
-        <h2>Validation error</h2>
-        <TextArea
-          required={true}
-          validationMode="message"
-          validationErrorMessages={['This field is required']}
-          {...args}
-        />
-      </div>
-    );
-  },
-  play: async ({ canvasElement }) => {},
-};
-
-export const Disabled: StoryObj<typeof TextArea> = {
+export const Disabled: Story = {
   ...Template,
   args: {
     disabled: true,
@@ -117,24 +108,21 @@ export const Disabled: StoryObj<typeof TextArea> = {
   },
 };
 
-// Add bind
 // Write test
-export const Bound: StoryObj<typeof TextArea> = {
+export const Bound: Story = {
   ...Template,
   args: {
-    label: 'Label text',
+    placeholder: 'Enter text here...',
   },
   render: () => {
     const { formProp, formState } = useForm({ text: '', debounce: '' });
     return (
-      <div>
-        <h2>Bound</h2>
-        <TextArea bind={formProp('text').bind()} />
+      <>
+        <TextArea label="Bound text area" bind={formProp('text').bind()} />
         <p>Value: {formState?.text}</p>
-        <h2>Bound - debounced text (200ms)</h2>
-        <TextArea bind={formProp('debounce').bind()} delay={200} />
+        <TextArea label="Bound debounce text area (400ms)" bind={formProp('debounce').bind()} delay={400} />
         <p>Value: {formState?.debounce}</p>
-      </div>
+      </>
     );
   },
   play: async ({ canvasElement }) => {},
