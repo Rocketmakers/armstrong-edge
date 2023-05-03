@@ -10,10 +10,6 @@
   opacity: 0.6;
 }
 
-.arm-switch-container[data-direction='vertical'] {
-  flex-direction: column;
-}
-
 /* SWITCH */
 
 .arm-switch {
@@ -70,16 +66,9 @@
   align-items: center;
   gap: var(--arm-spacing-xsmall);
   cursor: pointer;
+  margin-left: var(--arm-switch-label-spacing, var(--arm-spacing-small));
 }
 
 .arm-switch-label[data-disabled] {
   cursor: not-allowed;
-}
-
-.arm-switch-label[data-direction='horizontal'] {
-  margin-left: var(--arm-switch-label-spacing, var(--arm-spacing-small));
-}
-
-.arm-switch-label[data-direction='vertical'] {
-  margin-top: var(--arm-switch-label-spacing, var(--arm-spacing-small));
 }

@@ -77,7 +77,6 @@ export const Switch = React.forwardRef(
       checked,
       onCheckedChange,
       defaultChecked,
-      direction,
       disabled,
       labelClassName,
       label,
@@ -111,12 +110,7 @@ export const Switch = React.forwardRef(
 
     return (
       <>
-        <div
-          className={'arm-switch-container'}
-          data-disabled={disabled}
-          data-direction={direction}
-          data-testid={testId}
-        >
+        <div className={'arm-switch-container'} data-disabled={disabled} data-testid={testId}>
           <Root
             className={'arm-switch'}
             id={id}
@@ -130,12 +124,7 @@ export const Switch = React.forwardRef(
             <Thumb className="arm-switch-nub" />
           </Root>
 
-          <Label
-            className={concat(labelClassName, 'arm-switch-label')}
-            data-disabled={disabled}
-            data-direction={direction}
-            htmlFor={id}
-          >
+          <Label className={concat(labelClassName, 'arm-switch-label')} data-disabled={disabled} htmlFor={id}>
             {label}
           </Label>
         </div>
@@ -160,7 +149,3 @@ export const Switch = React.forwardRef(
   ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>;
 
 Switch.displayName = 'Input';
-
-Switch.defaultProps = {
-  direction: 'horizontal',
-};

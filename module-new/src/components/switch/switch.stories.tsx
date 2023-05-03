@@ -1,8 +1,9 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/testing-library';
 import * as React from 'react';
 
+import { useForm } from '../../hooks/form/form.hooks';
 import { Switch } from './switch.component';
 
 export default {
@@ -33,36 +34,45 @@ export const Disabled: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const checkbox = await canvas.getByTestId('switch-container');
-    const isDisabled = await checkbox.getAttribute('data-disabled');
-    expect(isDisabled).toBe('true');
-  },
-};
-
-export const Vertical: Story = {
-  args: {
-    label: 'Vertical switch box',
-    direction: 'vertical',
-    testId: 'switch-container',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+    const checkbox = await canvas.getByRole('switch');
     const checkboxContainer = await canvas.getByTestId('switch-container');
-    const direction = await checkboxContainer.getAttribute('data-direction');
-    expect(direction).toBe('vertical');
+    const isDisabled = await checkboxContainer.getAttribute('data-disabled');
+    expect(isDisabled).toBe('true');
+    userEvent.click(checkboxContainer);
+    expect(checkbox.getAttribute('aria-checked')).toBe('false');
   },
 };
 
 export const ValidationError: Story = {
   args: {
     label: 'Check',
-  },
-  render: () => {
-    return <Switch label={'Option 1'} validationErrorMessages={['An error has occurred']} />;
+    validationErrorMessages: ['An error has occurred'],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const errorContainer = await canvas.getByTestId('switch-validation-errors');
     expect(errorContainer).toHaveTextContent('An error has occurred');
+  },
+};
+
+export const Bound: Story = {
+  args: {
+    label: 'Bound label',
+  },
+  render: () => {
+    const { formProp, formState } = useForm({ checked: false });
+    return (
+      <>
+        <Switch bind={formProp('checked').bind()} />
+        <p data-testid={'bound-result'}>Bound value is {formState?.checked ? 'checked' : 'not checked'}</p>
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const switchInput = canvas.getByRole('switch');
+    const boundResult = canvas.getByTestId('bound-result');
+    await userEvent.click(switchInput);
+    expect(boundResult).toHaveTextContent('Bound value is checked');
   },
 };
