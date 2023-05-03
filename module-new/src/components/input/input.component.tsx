@@ -67,6 +67,9 @@ interface IInputProps<TValue extends NullOrUndefined<string> | NullOrUndefined<n
 
   /** which size variant to use */
   displaySize?: InputDisplaySize;
+
+  /** optional test ID for root input */
+  testId?: string;
 }
 
 type SupportedStringInputTypes =
@@ -126,6 +129,7 @@ export const Input = React.forwardRef<
       displaySize,
       labelClassName,
       labelId,
+      testId,
       ...nativeProps
     },
     ref
@@ -192,12 +196,13 @@ export const Input = React.forwardRef<
       [onValueChange, onBindValueChange, parseValue]
     );
 
-    const inputProps: NativeInputProps & { value?: string } = {
+    const inputProps: NativeInputProps & { value?: string; 'data-testid'?: string } = {
       id,
       className: concat('arm-input-base-input', inputClassName),
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
       value: boundValue?.toString() ?? (bind && ''),
       disabled,
+      'data-testid': testId,
     };
 
     return (
