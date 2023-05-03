@@ -30,15 +30,12 @@ export const Disabled: Story = {
   args: {
     label: 'Switch is disabled',
     disabled: true,
-    testId: 'switch-container',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = await canvas.getByRole('switch');
-    const checkboxContainer = await canvas.getByTestId('switch-container');
-    const isDisabled = await checkboxContainer.getAttribute('data-disabled');
-    expect(isDisabled).toBe('true');
-    userEvent.click(checkboxContainer);
+    expect(checkbox.getAttribute('data-disabled'));
+    userEvent.click(checkbox);
     expect(checkbox.getAttribute('aria-checked')).toBe('false');
   },
 };

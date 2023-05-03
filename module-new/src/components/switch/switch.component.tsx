@@ -57,9 +57,6 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   /** (Optional) Indicates if switch is required */
   required?: boolean;
 
-  /** (Optional) A string to set a custom data-testid attribute for the checkbox container. */
-  testId?: string;
-
   /** (Optional) Can be a string or {key, element} key is necessary for animating in new messages   */
   validationErrorMessages?: ValidationMessage[];
 
@@ -81,7 +78,6 @@ export const Switch = React.forwardRef(
       labelClassName,
       label,
       required,
-      testId,
       validationErrorMessages,
       validationErrorsClassName,
       scrollValidationErrorsIntoView,
@@ -110,7 +106,7 @@ export const Switch = React.forwardRef(
 
     return (
       <>
-        <div className={'arm-switch-container'} data-disabled={disabled} data-testid={testId}>
+        <div className={'arm-switch-container'} data-disabled={disabled}>
           <Root
             className={'arm-switch'}
             id={id}
