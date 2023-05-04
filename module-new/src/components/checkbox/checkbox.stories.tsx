@@ -1,9 +1,10 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/testing-library';
 import * as React from 'react';
 import { ImRocket } from 'react-icons/im';
 
+import { useForm } from '../../hooks/form/form.hooks';
 import { Checkbox } from './checkbox.component';
 
 export default {
@@ -64,5 +65,28 @@ export const ValidationError: Story = {
     const canvas = within(canvasElement);
     const label = await canvas.getAllByText('This field is required');
     expect(label);
+  },
+};
+
+export const Bound: Story = {
+  args: {
+    label: 'Bound checkbox',
+  },
+  render: () => {
+    const { formProp, formState } = useForm({ checked: false });
+
+    return (
+      <>
+        <Checkbox bind={formProp('checked').bind()} />
+        <p data-testid={'bound-result'}>Bound value is {formState?.checked ? 'checked' : 'not checked'}</p>
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const checkbox = canvas.getByRole('checkbox');
+    const boundResult = canvas.getByTestId('bound-result');
+    await userEvent.click(checkbox);
+    expect(boundResult).toHaveTextContent('Bound value is checked');
   },
 };

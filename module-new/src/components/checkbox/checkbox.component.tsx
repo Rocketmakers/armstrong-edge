@@ -62,8 +62,8 @@ export interface ICheckboxProps<TData extends BindType>
   scrollValidationErrorsIntoView?: boolean;
 }
 
-export const Checkbox = React.forwardRef(
-  <TData extends BindType>(
+export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindType>>(
+  (
     {
       bind,
       checkboxClassName,
@@ -81,7 +81,7 @@ export const Checkbox = React.forwardRef(
       validationErrorsClassName,
       validationErrorMessages,
       ...nativeProps
-    }: ICheckboxProps<TData>,
+    },
     ref: React.ForwardedRef<HTMLButtonElement>
   ) => {
     const reactId = React.useId();
@@ -102,7 +102,7 @@ export const Checkbox = React.forwardRef(
 
     const onCheckedChangeInternal = React.useCallback<Required<CheckboxProps>['onCheckedChange']>(
       newValue => {
-        setBoundValue?.(newValue as TData);
+        setBoundValue?.(newValue);
       },
       [setBoundValue]
     );
