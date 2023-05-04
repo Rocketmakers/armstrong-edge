@@ -67,8 +67,8 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   validationErrorsClassName?: string;
 }
 
-export const Switch = React.forwardRef(
-  <TBind extends NullOrUndefined<boolean>>(
+export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUndefined<boolean>>>(
+  (
     {
       bind,
       checked,
@@ -81,7 +81,7 @@ export const Switch = React.forwardRef(
       validationErrorMessages,
       validationErrorsClassName,
       scrollValidationErrorsIntoView,
-    }: ISwitchProps<TBind>,
+    },
     ref
   ) => {
     const id = React.useId();
@@ -99,7 +99,7 @@ export const Switch = React.forwardRef(
 
     const onCheckedChangeInternal = React.useCallback<Required<SwitchProps>['onCheckedChange']>(
       newValue => {
-        setBoundValue?.(newValue as TBind);
+        setBoundValue?.(newValue);
       },
       [setBoundValue]
     );
