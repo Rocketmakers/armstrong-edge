@@ -40,20 +40,6 @@ export const Disabled: Story = {
   },
 };
 
-export const Vertical: Story = {
-  args: {
-    label: 'Check',
-    direction: 'vertical',
-    testId: 'arm-checkbox-container',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const checkboxContainer = await canvas.getByTestId('arm-checkbox-container');
-    const direction = await checkboxContainer.getAttribute('data-direction');
-    expect(direction).toBe('vertical');
-  },
-};
-
 export const CustomIndicator: Story = {
   args: {
     label: 'Check for Custom Indicator',

@@ -31,9 +31,6 @@ export interface ICheckboxProps<TData extends BindType>
   /** (Optional) A custom JSX.Element for the checked indicator. */
   customIndicator?: JSX.Element;
 
-  /** (Optional) A string representing the direction of the label relative to the checkbox. Default value is 'horizontal'. */
-  direction?: 'vertical' | 'horizontal';
-
   /** (Optional) A boolean flag to disable the checkbox input. */
   disabled?: boolean;
 
@@ -73,7 +70,6 @@ export const Checkbox = React.forwardRef(
       checked,
       customIndicator,
       customIndeterminateIndicator,
-      direction,
       disabled,
       onCheckedChange,
       label,
@@ -129,7 +125,6 @@ export const Checkbox = React.forwardRef(
         <div
           className={concat('arm-checkbox-container', checkboxClassName)}
           data-disabled={disabled}
-          data-direction={direction}
           data-testid={testId}
           {...nativeProps}
         >
@@ -147,12 +142,7 @@ export const Checkbox = React.forwardRef(
           </Root>
 
           {label && (
-            <Label
-              className={concat('arm-checkbox-label', labelClassName)}
-              data-direction={direction}
-              data-disabled={disabled}
-              htmlFor={id}
-            >
+            <Label className={concat('arm-checkbox-label', labelClassName)} data-disabled={disabled} htmlFor={id}>
               {label}
             </Label>
           )}
@@ -172,9 +162,5 @@ export const Checkbox = React.forwardRef(
   props: ArmstrongFCProps<ICheckboxProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICheckboxProps<NullOrUndefined<boolean>>>;
-
-Checkbox.defaultProps = {
-  direction: 'horizontal',
-};
 
 Checkbox.displayName = 'Checkbox';
