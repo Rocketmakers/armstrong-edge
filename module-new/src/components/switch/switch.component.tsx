@@ -20,7 +20,6 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
       IInputWrapperProps,
       | 'scrollValidationErrorsIntoView'
       | 'validationMode'
-      | 'errorIcon'
       | 'validationErrorMessages'
       | 'error'
       | 'pending'
@@ -41,9 +40,6 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
 
   /** (Optional) The state of the switch when it is initially rendered. Use when you do not need to control its state. */
   defaultChecked?: boolean;
-
-  /** (Optional) Changes direction of the label text. Defaults to horizontal */
-  direction?: 'horizontal' | 'vertical';
 
   /** (Optional) A boolean flag to disable the checkbox input. */
   disabled?: boolean;
