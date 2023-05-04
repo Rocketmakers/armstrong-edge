@@ -1,4 +1,6 @@
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
+import { userEvent, within } from '@storybook/testing-library';
 import * as React from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
@@ -30,6 +32,11 @@ export const Default: StoryObj<typeof Input> = {
   args: {
     type: 'text',
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('textbox');
+    expect(input).toBeInTheDocument();
+  },
 };
 
 export const Labelled: StoryObj<typeof Input> = {
@@ -40,9 +47,17 @@ export const Labelled: StoryObj<typeof Input> = {
         <h2>Default</h2>
         <Input label="Name" />
         <h2>Required</h2>
-        <Input label="Name" required={true} />
+        <Input label="Required Name" required={true} />
       </div>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText('Name') as HTMLInputElement;
+    const requiredInput = canvas.getByLabelText('Required Name *') as HTMLInputElement;
+
+    expect(input).toBeInTheDocument();
+    expect(requiredInput).toBeInTheDocument();
   },
 };
 
