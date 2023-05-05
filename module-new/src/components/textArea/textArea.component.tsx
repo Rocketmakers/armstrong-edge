@@ -121,17 +121,12 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
       validationMode: 'message',
     });
 
-    const parseValue = React.useCallback((unparsedValue?: string) => {
-      return unparsedValue;
-    }, []);
-
     const onBindValueChange = React.useCallback(
       (currentValue?: string) => {
-        const parsedValue = parseValue(currentValue);
-        const formattedValue = bind?.bindConfig?.format?.toData?.(parsedValue) || parsedValue;
+        const formattedValue = bind?.bindConfig?.format?.toData?.(currentValue) || currentValue;
         setBoundValue(formattedValue);
       },
-      [setBoundValue, bind, parseValue]
+      [setBoundValue, bind]
     );
 
     const onChangeEvent = React.useCallback(
@@ -139,18 +134,18 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
         onChange?.(event);
         const currentValue = event.currentTarget.value;
         onBindValueChange(currentValue);
-        onValueChange?.(parseValue(currentValue));
+        onValueChange?.(currentValue);
       },
-      [onBindValueChange, onChange, onValueChange, parseValue]
+      [onBindValueChange, onChange, onValueChange]
     );
 
     /** onChange used for throttled inputs */
     const onValueChangeEvent = React.useCallback(
       (currentValue?: string) => {
         onBindValueChange(currentValue);
-        onValueChange?.(parseValue(currentValue));
+        onValueChange?.(currentValue);
       },
-      [onValueChange, onBindValueChange, parseValue]
+      [onValueChange, onBindValueChange]
     );
 
     const textAreaProps: NativeTextAreaProps & { value?: string } = {

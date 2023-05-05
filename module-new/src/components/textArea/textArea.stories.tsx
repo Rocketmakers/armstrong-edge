@@ -121,7 +121,6 @@ export const Disabled: Story = {
   },
 };
 
-// Write test
 export const Bound: Story = {
   ...Template,
   args: {
