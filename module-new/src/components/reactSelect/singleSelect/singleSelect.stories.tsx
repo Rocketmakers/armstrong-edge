@@ -1,9 +1,6 @@
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
 import React from 'react';
 
-import { IArmstrongReactSelectOption } from '../../../types';
 import { SingleSelect } from './singleSelect.component';
 
 /** meta  */

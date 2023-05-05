@@ -52,10 +52,13 @@ export interface IRadioGroupProps
   /** which size variant to use */
   displaySize?: DisplaySize;
 
+  /** Label for the whole radio group itself */
   label?: string;
 
+  /** Indicates if field must be used to submit form */
   required?: boolean;
 
+  /** wether input's value can be changed by user */
   disabled?: boolean;
 }
 
@@ -145,7 +148,7 @@ export const RadioGroup = React.forwardRef(
             );
           })}
           {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
-            <ValidationErrors validationErrors={bindConfig.validationErrorMessages} />
+            <ValidationErrors validationErrors={bindConfig.validationErrorMessages} className="arm-radio-errors" />
           )}
         </RadixRadioGroup.Root>
       </>

@@ -52,17 +52,19 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMont
   return (
     <>
       <div className="arm-calendar-input-header dropdown">
+        {/** @todo -- typings */}
         <SingleSelect
           className="arm-calendar-dropdown-select"
           options={monthOptions}
-          onSelectOption={newValue => changeMonth(newValue)}
+          onSelectOption={newValue => changeMonth(newValue as number)}
           currentValue={date.getMonth()}
           isClearable={false}
         />
+        {/** @todo -- typings */}
         <SingleSelect
           className="arm-calendar-dropdown-select"
           options={yearOptions}
-          onSelectOption={newValue => changeYear(newValue)}
+          onSelectOption={newValue => changeYear(newValue as number)}
           currentValue={date.getFullYear()}
           isClearable={false}
         />
@@ -135,7 +137,7 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
         </div>
       );
     },
-    [dateSelectionHeader, displaySize]
+    [dateSelectionHeader]
   );
 
   const config = React.useMemo<TBaseDatePickerConfig>(() => {

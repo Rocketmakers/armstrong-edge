@@ -58,6 +58,7 @@ export type TBaseCalendarInputSelectsRangeProps = {
 
   /**  prop for binding end date (range) to an Armstrong form binder (see forms documentation) */
   endBind?: IBindingProps<TDate>;
+
   /** current end date of input */
   endValue?: TDate;
 
@@ -171,7 +172,6 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
           selected={date}
           startDate={startDate}
           endDate={endDate}
-          id={props.id}
         />
 
         <Status
@@ -184,8 +184,9 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
         <ValidationErrors
           validationErrors={validationErrorMessages}
           scrollIntoView={props.scrollValidationErrorsIntoView}
+          className="arm-calendar-errors"
         />
-      )}{' '}
+      )}
     </div>
   );
 };
@@ -193,5 +194,5 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
 BaseCalendarInput.defaultProps = {
   validationMode: 'both',
   selectsRange: false,
-  config: { locale: enGB },
+  config: { locale: enGB, dateFormat: 'dd/MM/yyyy' },
 };

@@ -84,6 +84,13 @@ export const Disabled: StoryObj<typeof RadioGroup> = {
       </>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const radio = await canvas.getByRole('radio');
+    expect(radio.getAttribute('data-disabled'));
+    userEvent.click(radio);
+    expect(radio.getAttribute('aria-checked')).toBe('false');
+  },
 };
 
 export const ValidationError: StoryObj<typeof RadioGroup> = {
@@ -114,6 +121,10 @@ export const ValidationError: StoryObj<typeof RadioGroup> = {
       </>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    expect(canvas.getByText('Invalid selection'));
+  },
 };
 
 export const CustomIcon: StoryObj<typeof RadioGroup> = {
@@ -122,7 +133,7 @@ export const CustomIcon: StoryObj<typeof RadioGroup> = {
       value?: string;
     }
 
-    const data: IFormData = { value: undefined };
+    const data: IFormData = { value: '1' };
 
     const { formProp, formState } = useForm(data);
 
@@ -142,6 +153,13 @@ export const CustomIcon: StoryObj<typeof RadioGroup> = {
         <p>Bound value: {formState?.value}</p>
       </>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const radioChecked = await canvas.getByRole('radio', { checked: true });
+    expect(radioChecked.getElementsByTagName('svg').length > 0);
+    const radioUnchecked = await canvas.getAllByRole('radio', { checked: false })[0];
+    expect(radioUnchecked.getElementsByTagName('svg').length === 0);
   },
 };
 
@@ -172,6 +190,11 @@ export const CustomIconUnchecked: StoryObj<typeof RadioGroup> = {
         <p>Bound value: {formState?.value}</p>
       </>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const radioUnchecked = await canvas.getAllByRole('radio', { checked: false })[0];
+    expect(radioUnchecked.getElementsByTagName('svg').length > 0);
   },
 };
 

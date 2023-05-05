@@ -1,5 +1,7 @@
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { addDays } from 'date-fns';
+import { fireEvent, userEvent, waitFor, within } from '@storybook/testing-library';
+import { addDays, format } from 'date-fns';
 // comment needed to prevent date-fns input lint fix bug
 import { enGB } from 'date-fns/locale';
 import * as React from 'react';
@@ -53,6 +55,14 @@ export const Default: StoryObj<typeof CalendarInput> = {
         <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} />
       </div>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const input = canvasElement.getElementsByTagName('input')[0];
+    const dateString = format(new Date(), 'dd/MM/yyyy');
+    userEvent.type(input, dateString);
+    await waitFor(() => {
+      expect(input).toHaveValue(dateString);
+    });
   },
 };
 
@@ -123,6 +133,13 @@ export const ValidationError: StoryObj<typeof CalendarInput> = {
       </div>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await waitFor(() => {
+      expect(canvas.getByText('invalid date'));
+    });
+  },
 };
 
 export const Disabled: StoryObj<typeof CalendarInput> = {
@@ -142,6 +159,15 @@ export const Disabled: StoryObj<typeof CalendarInput> = {
         <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} disabled />
       </div>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const input = await canvasElement.getElementsByTagName('input')[0];
+    const dateString = format(new Date(), 'dd/MM/yyyy');
+    userEvent.type(input, dateString);
+    userEvent.click(canvasElement);
+    await waitFor(() => {
+      expect(input).not.toHaveValue(dateString);
+    });
   },
 };
 
@@ -211,6 +237,23 @@ export const MinMaxDays: StoryObj<typeof CalendarInput> = {
       />
     );
   },
+  play: async ({ canvasElement }) => {
+    const input = await canvasElement.getElementsByTagName('input')[0];
+    // max
+    const overDateString = format(addDays(new Date(), 6), 'dd/MM/yyyy');
+    userEvent.type(input, overDateString);
+    userEvent.click(canvasElement);
+    await waitFor(() => {
+      expect(input).not.toHaveValue(overDateString);
+    });
+    // min
+    const underDateString = format(addDays(new Date(), -1), 'dd/MM/yyyy');
+    userEvent.type(input, underDateString);
+    userEvent.click(canvasElement);
+    await waitFor(() => {
+      expect(input).not.toHaveValue(underDateString);
+    });
+  },
 };
 
 export const RangeValidation: StoryObj<typeof CalendarInput> = {
@@ -234,5 +277,13 @@ export const RangeValidation: StoryObj<typeof CalendarInput> = {
         dateSelectionHeader="swipe01"
       />
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await waitFor(() => {
+      expect(canvas.getByText('Invalid start date'));
+      expect(canvas.getByText('Invalid end date'));
+    });
   },
 };
