@@ -47,8 +47,8 @@ export const ValidationError: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const errorContainer = await canvas.getByTestId('switch-validation-errors');
-    expect(errorContainer).toHaveTextContent('An error has occurred');
+    const errorContainer = await canvas.getByText('An error has occurred');
+    expect(errorContainer).toBeVisible();
   },
 };
 

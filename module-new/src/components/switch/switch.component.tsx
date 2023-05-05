@@ -123,7 +123,6 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
 
         {bindConfig.validationErrorMessages && bindConfig.shouldShowValidationErrorMessage && (
           <ValidationErrors
-            data-testid={'switch-validation-errors'}
             className={validationErrorsClassName}
             validationMode={globals.validationMode}
             validationErrors={bindConfig.validationErrorMessages}
