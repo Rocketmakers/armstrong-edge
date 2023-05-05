@@ -18,7 +18,9 @@ export default {
   },
 } as Meta<typeof Input>;
 
-export const Default: StoryObj<typeof Input> = {
+type Story = StoryObj<typeof Input>;
+
+export const Default: Story = {
   args: {
     type: 'text',
   },
@@ -29,7 +31,7 @@ export const Default: StoryObj<typeof Input> = {
   },
 };
 
-export const Labelled: StoryObj<typeof Input> = {
+export const Labelled: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -48,7 +50,7 @@ export const Labelled: StoryObj<typeof Input> = {
   },
 };
 
-export const Sizes: StoryObj<typeof Input> = {
+export const Sizes: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -70,7 +72,7 @@ export const Sizes: StoryObj<typeof Input> = {
   },
 };
 
-export const Overlay: StoryObj<typeof Input> = {
+export const Overlay: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -98,7 +100,7 @@ export const Overlay: StoryObj<typeof Input> = {
   },
 };
 
-export const Pending: StoryObj<typeof Input> = {
+export const Pending: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -110,13 +112,14 @@ export const Pending: StoryObj<typeof Input> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const spinners = canvas.getAllByRole('status');
+    // const defaultInput = canvas.getByLabelText('Default');
 
     expect(spinners[0]).toBeVisible();
     expect(spinners[1]).toBeVisible();
   },
 };
 
-export const ValidationError: StoryObj<typeof Input> = {
+export const ValidationError: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -177,7 +180,7 @@ export const ValidationError: StoryObj<typeof Input> = {
   },
 };
 
-export const InputTypes: StoryObj<typeof Input> = {
+export const InputTypes: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -224,7 +227,7 @@ export const InputTypes: StoryObj<typeof Input> = {
   },
 };
 
-export const Bound: StoryObj<typeof Input> = {
+export const Bound: Story = {
   render: () => {
     const { formProp, formState } = useForm({ text: '', number: 0, debounce: '' });
     return (
