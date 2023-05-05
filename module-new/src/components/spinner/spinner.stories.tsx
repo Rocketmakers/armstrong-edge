@@ -26,7 +26,7 @@ export const Default: StoryObj<typeof Spinner> = {
   ...Template,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByRole('status');
+    const spinner = canvas.getByTestId('spinner');
 
     expect(spinner).toBeInTheDocument();
   },
@@ -39,7 +39,7 @@ export const CustomIcon: StoryObj<typeof Spinner> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByRole('status');
+    const spinner = canvas.getByTestId('spinner');
 
     expect(spinner).toBeInTheDocument();
   },
@@ -52,7 +52,7 @@ export const Labelled: StoryObj<typeof Spinner> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByRole('status');
+    const spinner = canvas.getByTestId('spinner');
 
     expect(spinner).toBeInTheDocument();
 

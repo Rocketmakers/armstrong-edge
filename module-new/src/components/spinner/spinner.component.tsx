@@ -26,7 +26,7 @@ export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
         className={concat('arm-spinner', className)}
         {...HTMLProps}
         data-fill-container={fillContainer}
-        role="status"
+        data-testid={'spinner'}
       >
         <div className="arm-spinner-inner">{children || spinnerIcon}</div>
         {label && (
