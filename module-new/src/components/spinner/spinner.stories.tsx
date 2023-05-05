@@ -56,6 +56,7 @@ export const Labelled: StoryObj<typeof Spinner> = {
 
     expect(spinner).toBeInTheDocument();
 
-    expect(canvas.getByText(args.label as string));
+    const label = canvas.getByText(args.label as string);
+    expect(label).toBeVisible();
   },
 };

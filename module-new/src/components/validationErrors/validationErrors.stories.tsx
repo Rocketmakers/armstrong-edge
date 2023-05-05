@@ -27,8 +27,10 @@ export const Default: StoryObj<typeof ValidationErrors> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
-    expect(canvas.getByText((args.validationErrors[0] as string) ?? ''));
-    expect(canvas.getByText((args.validationErrors[1] as string) ?? ''));
+    const validationError1 = canvas.getByText((args.validationErrors[0] as string) ?? '');
+    const validationError2 = canvas.getByText((args.validationErrors[1] as string) ?? '');
+    expect(validationError1).toBeVisible();
+    expect(validationError2).toBeVisible();
   },
 };
 

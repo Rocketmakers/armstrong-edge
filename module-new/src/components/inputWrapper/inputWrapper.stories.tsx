@@ -40,8 +40,8 @@ export const Default: StoryObj<typeof InputWrapper> = {
     expect(input.value).toEqual(testInputText);
 
     // test input wrapper label
-
-    expect(canvas.getByText(args.label as string));
+    const label = canvas.getByText(args.label as string);
+    expect(label).toBeVisible();
   },
 };
 
@@ -54,7 +54,8 @@ export const Required: StoryObj<typeof InputWrapper> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    expect(canvas.getByText('*'));
+    const requiredLabel = canvas.getByText('*');
+    expect(requiredLabel).toBeVisible();
   },
 };
 
@@ -82,8 +83,10 @@ export const WithOverlays: StoryObj<typeof InputWrapper> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
-    expect(canvas.getByText(args.leftOverlay as string));
-    expect(canvas.getByText(args.rightOverlay as string));
+    const leftOverlay = canvas.getByText(args.leftOverlay as string);
+    const rightOverlay = canvas.getByText(args.rightOverlay as string);
+    expect(leftOverlay).toBeVisible();
+    expect(rightOverlay).toBeVisible();
   },
 };
 
@@ -96,6 +99,7 @@ export const ValidationError: StoryObj<typeof InputWrapper> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    expect(canvas.getByText('This field is required'));
+    const label = canvas.getByText('This field is required');
+    expect(label).toBeVisible();
   },
 };
