@@ -206,42 +206,40 @@ export const Input = React.forwardRef<
     };
 
     return (
-      <>
-        <InputWrapper
-          data-size={globals.inputDisplaySize}
-          className={concat(className, 'arm-input-base')}
-          statusClassName={concat(statusClassName, 'arm-input-base-status')}
-          validationErrorsClassName={concat(validationErrorsClassName, 'arm-input-base-validation')}
-          leftOverlay={leftOverlay}
-          rightOverlay={rightOverlay}
-          validationErrorMessages={bindConfig.validationErrorMessages}
-          errorIcon={bindConfig.validationErrorIcon}
-          validationMode={bindConfig.validationMode}
-          pending={pending}
-          disabled={disabled}
-          statusPosition={globals.inputStatusPosition}
-          scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
-          disableOnPending={globals.disableInputOnPending}
-          hideIconOnStatus={globals.hideInputErrorIconOnStatus}
-          label={label}
-          labelId={labelId ?? id}
-          labelClassName={concat(labelClassName, 'arm-input-base-label')}
-          required={required}
-          requiredIndicator={globals.requiredIndicator}
-        >
-          {!!delay && (
-            <DebounceInputBase
-              {...nativeProps}
-              {...inputProps}
-              milliseconds={delay}
-              onChange={onChange}
-              onValueChange={onValueChangeEvent}
-              ref={ref}
-            />
-          )}
-          {!delay && <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={ref} />}
-        </InputWrapper>
-      </>
+      <InputWrapper
+        data-size={globals.inputDisplaySize}
+        className={concat(className, 'arm-input-base')}
+        statusClassName={concat(statusClassName, 'arm-input-base-status')}
+        validationErrorsClassName={concat(validationErrorsClassName, 'arm-input-base-validation')}
+        leftOverlay={leftOverlay}
+        rightOverlay={rightOverlay}
+        validationErrorMessages={bindConfig.validationErrorMessages}
+        errorIcon={bindConfig.validationErrorIcon}
+        validationMode={bindConfig.validationMode}
+        pending={pending}
+        disabled={disabled}
+        statusPosition={globals.inputStatusPosition}
+        scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
+        disableOnPending={globals.disableInputOnPending}
+        hideIconOnStatus={globals.hideInputErrorIconOnStatus}
+        label={label}
+        labelId={labelId ?? id}
+        labelClassName={concat(labelClassName, 'arm-input-base-label')}
+        required={required}
+        requiredIndicator={globals.requiredIndicator}
+      >
+        {!!delay && (
+          <DebounceInputBase
+            {...nativeProps}
+            {...inputProps}
+            milliseconds={delay}
+            onChange={onChange}
+            onValueChange={onValueChangeEvent}
+            ref={ref}
+          />
+        )}
+        {!delay && <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={ref} />}
+      </InputWrapper>
     );
   }
   // type assertion to ensure generic works with RefForwarded component
