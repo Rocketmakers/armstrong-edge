@@ -228,28 +228,65 @@ export const Bound: StoryObj<typeof Input> = {
   render: () => {
     const { formProp, formState } = useForm({ text: '', number: 0, debounce: '' });
     return (
-      <div>
-        <Input label={'Bound - text'} type="text" bind={formProp('text').bind()} />
-        <ul>
-          <li>Value: {formState?.text}</li>
-          <li>Type: {typeof formState?.text}</li>
-        </ul>
-        <Input label={'Bound - number'} type="number" bind={formProp('number').bind()} />
-        <ul>
-          <li>Value: {formState?.number}</li>
-          <li>Type: {typeof formState?.number}</li>
-        </ul>
-        <Input label={'Bound - debounced text (200ms)'} type="text" bind={formProp('debounce').bind()} delay={200} />
-        <ul>
-          <li>Value: {formState?.debounce}</li>
-          <li>Type: {typeof formState?.debounce}</li>
-        </ul>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div>
+          <Input label={'Bound - text'} type="text" bind={formProp('text').bind()} />
+          <ul>
+            <li data-testid={'bound-result'}>Value: {formState?.text}</li>
+            <li data-testid={'bound-type'}>Type: {typeof formState?.text}</li>
+          </ul>
+        </div>
+        <div>
+          <Input label={'Bound - number'} type="number" bind={formProp('number').bind()} />
+          <ul>
+            <li data-testid={'number-result'}>Value: {formState?.number}</li>
+            <li data-testid={'number-type'}>Type: {typeof formState?.number}</li>
+          </ul>
+        </div>
+        <div>
+          <Input label={'Bound - debounced text (200ms)'} type="text" bind={formProp('debounce').bind()} delay={200} />
+          <ul>
+            <li data-testid={'debounce-result'}>Value: {formState?.debounce}</li>
+            <li data-testid={'debounce-type'}>Type: {typeof formState?.debounce}</li>
+          </ul>
+        </div>
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    // Get the Inputs
+    const boundInput = canvas.getByLabelText('Bound - text') as HTMLInputElement;
+    const numberInput = canvas.getByLabelText('Bound - number') as HTMLInputElement;
+    const debounceInput = canvas.getByLabelText('Bound - debounced text (200ms)') as HTMLInputElement;
 
-    
+    // Input results
+    const boundResult = canvas.getByTestId('bound-result');
+    const numberResult = canvas.getByTestId('number-result');
+    const debounceResult = canvas.getByTestId('debounce-result');
+
+    // Input Types
+    const boundType = canvas.getByTestId('bound-type');
+    const numberType = canvas.getByTestId('number-type');
+    const debounceType = canvas.getByTestId('debounce-type');
+
+    // Test Bound Text Area
+    userEvent.type(boundInput, 'Hello, bound world');
+    userEvent.type(numberInput, '42');
+    userEvent.type(debounceInput, 'Hello, bound world (but slower)');
+
+    // Check that the form state values match the typed input
+    expect(boundResult.textContent).toBe('Value: Hello, bound world');
+    expect(numberResult.textContent).toBe('Value: 42');
+    setTimeout(() => {
+      expect(debounceResult.textContent).toBe('Value: Hello, bound world (but slower)');
+    }, 500);
+
+    // Check that the input types are correct
+    expect(boundType.textContent).toBe('Type: string');
+    expect(numberType.textContent).toBe('Type: number');
+    setTimeout(() => {
+      expect(debounceType.textContent).toBe('Type: string');
+    }, 500);
   },
 };
