@@ -70,6 +70,9 @@ interface IInputProps<TValue extends NullOrUndefined<string> | NullOrUndefined<n
 
   /** optional test ID for root input */
   testId?: string;
+
+  /** optional test ID to use for the input wrapper */
+  wrapperTestId?: string;
 }
 
 type SupportedStringInputTypes =
@@ -130,6 +133,7 @@ export const Input = React.forwardRef<
       labelClassName,
       labelId,
       testId,
+      wrapperTestId,
       ...nativeProps
     },
     ref
@@ -228,6 +232,7 @@ export const Input = React.forwardRef<
           labelClassName={concat(labelClassName, 'arm-input-base-label')}
           required={required}
           requiredIndicator={globals.requiredIndicator}
+          data-testid={wrapperTestId}
         >
           {!!delay && (
             <DebounceInputBase
@@ -237,9 +242,12 @@ export const Input = React.forwardRef<
               onChange={onChange}
               onValueChange={onValueChangeEvent}
               ref={ref}
+              data-size={displaySize}
             />
           )}
-          {!delay && <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={ref} />}
+          {!delay && (
+            <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={ref} data-size={displaySize} />
+          )}
         </InputWrapper>
       </>
     );
