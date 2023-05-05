@@ -1,6 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/testing-library';
 import * as React from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
@@ -8,7 +8,7 @@ import { BiSearch } from 'react-icons/bi';
 import { useForm } from '../../hooks/form';
 import { Input } from './input.component';
 
-/** metadata */
+/** Inputs with options to track errors, pending data and so on. */
 
 export default {
   title: 'Inputs/Input',
@@ -18,17 +18,7 @@ export default {
   },
 } as Meta<typeof Input>;
 
-/** component template */
-
-const Template: StoryObj<typeof Input> = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on Input prevents storybook from spreading pure props on here without a cast
-  render: (props: any) => <Input {...props} />,
-};
-
-/** stories */
-
 export const Default: StoryObj<typeof Input> = {
-  ...Template,
   args: {
     type: 'text',
   },
@@ -40,46 +30,39 @@ export const Default: StoryObj<typeof Input> = {
 };
 
 export const Labelled: StoryObj<typeof Input> = {
-  ...Template,
   render: () => {
     return (
-      <div>
-        <h2>Default</h2>
-        <Input label="Name" />
-        <h2>Required</h2>
-        <Input label="Required Name" required={true} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <Input label={'Default'} />
+        <Input label={'Required'} required={true} />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByLabelText('Name') as HTMLInputElement;
-    const requiredInput = canvas.getByLabelText('Required Name *') as HTMLInputElement;
+    const defaultInput = canvas.getByLabelText('Default') as HTMLInputElement;
+    const requiredInput = canvas.getByLabelText('Required *') as HTMLInputElement;
 
-    expect(input).toBeInTheDocument();
+    expect(defaultInput).toBeInTheDocument();
     expect(requiredInput).toBeInTheDocument();
   },
 };
 
 export const Sizes: StoryObj<typeof Input> = {
-  ...Template,
   render: () => {
     return (
-      <div>
-        <h2>Small Input</h2>
-        <Input testId={'small'} displaySize="small" required={true} />
-        <h2>Medium Input</h2>
-        <Input testId={'medium'} required={true} />
-        <h2>Large Input</h2>
-        <Input testId={'large'} displaySize="large" required={true} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Input label={'Small Input'} displaySize="small" required={true} />
+        <Input label={'Medium Input'} required={true} />
+        <Input label={'Large Input'} displaySize="large" required={true} />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const smallInput = canvas.getByTestId('small');
-    const mediumInput = canvas.getByTestId('medium');
-    const largeInput = canvas.getByTestId('large');
+    const smallInput = canvas.getByLabelText('Small Input *');
+    const mediumInput = canvas.getByLabelText('Medium Input *');
+    const largeInput = canvas.getByLabelText('Large Input *');
 
     expect(smallInput.getAttribute('data-size')).toEqual('small');
     expect(mediumInput.getAttribute('data-size')).toEqual(null);
@@ -88,16 +71,16 @@ export const Sizes: StoryObj<typeof Input> = {
 };
 
 export const Overlay: StoryObj<typeof Input> = {
-  ...Template,
   render: () => {
     return (
-      <div>
-        <h2>Left overlay</h2>
-        <Input leftOverlay={<BiSearch size={22} data-testid={'search-icon'} />} />
-        <h2>Right overlay</h2>
-        <Input rightOverlay="ml" />
-        <h2>Both</h2>
-        <Input leftOverlay={<AiFillThunderbolt size={22} data-testid={'thunderbolt-icon'} />} rightOverlay="kw/h" />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <Input label={'Left Overlay'} leftOverlay={<BiSearch size={22} data-testid={'search-icon'} />} />
+        <Input label={'Right Overlay'} rightOverlay="ml" />
+        <Input
+          label={'Both overlays'}
+          leftOverlay={<AiFillThunderbolt size={22} data-testid={'thunderbolt-icon'} />}
+          rightOverlay="kw/h"
+        />
       </div>
     );
   },
@@ -116,14 +99,11 @@ export const Overlay: StoryObj<typeof Input> = {
 };
 
 export const Pending: StoryObj<typeof Input> = {
-  ...Template,
   render: () => {
     return (
-      <div>
-        <h2>Default</h2>
-        <Input pending={true} />
-        <h2>Icon on left</h2>
-        <Input pending={true} statusPosition="left" />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Input label={'Default'} pending={true} />
+        <Input label={'Icon on left'} pending={true} statusPosition="left" />
       </div>
     );
   },
@@ -137,30 +117,29 @@ export const Pending: StoryObj<typeof Input> = {
 };
 
 export const ValidationError: StoryObj<typeof Input> = {
-  ...Template,
   render: () => {
     return (
-      <div>
-        <h2>Validation mode - both</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <Input
+          label={'Validation mode - both'}
           validationMode="both"
           wrapperTestId={'both-validation'}
           validationErrorMessages={['This field is required']}
         />
-        <h2>Validation mode - icon only</h2>
         <Input
+          label={'Validation mode - icon only'}
           validationMode="icon"
           validationErrorMessages={['This field is required']}
           wrapperTestId={'icon-validation'}
         />
-        <h2>Validation mode - message only</h2>
         <Input
+          label={'Validation mode - message only'}
           validationMode="message"
           validationErrorMessages={['This field is required']}
           wrapperTestId={'message-validation'}
         />
-        <h2>Icon on left</h2>
         <Input
+          label={'Icon on left'}
           validationMode="icon"
           statusPosition="left"
           validationErrorMessages={['This field is required']}
@@ -199,18 +178,13 @@ export const ValidationError: StoryObj<typeof Input> = {
 };
 
 export const InputTypes: StoryObj<typeof Input> = {
-  ...Template,
   render: () => {
     return (
       <div>
-        <h2>Number</h2>
-        <Input type="number" testId="number-input" />
-        <h2>Password</h2>
-        <Input type="password" testId="password-input" />
-        <h2>Email</h2>
-        <Input type="email" testId="email-input" />
-        <h2> Telephone number</h2>
-        <Input type="email" testId="telephone-input" />
+        <Input label={'Number'} type="number" testId="number-input" />
+        <Input label={'Password'} type="password" testId="password-input" />
+        <Input label={'Email'} type="email" testId="email-input" />
+        <Input label={'Telephone number'} type="tel" testId="telephone-input" />
       </div>
     );
   },
@@ -218,53 +192,64 @@ export const InputTypes: StoryObj<typeof Input> = {
     const canvas = within(canvasElement);
 
     // Number Input
-    const numberInput = canvas.getByTestId('number-input');
+    const numberInput = canvas.getByTestId('number-input') as HTMLInputElement;
     expect(numberInput).toBeInTheDocument();
-    // userEvent.type(numberInput, 'no txt only numb');
-    // expect(numberInput).not.toHaveTextContent('no txt only numb');
-    await userEvent.type(numberInput, '42');
-    // await expect(numberInput).toHaveTextContent('1337420');
-    expect(numberInput).toHaveTextContent('42');
+    expect(numberInput.getAttribute('type')).toBe('number');
+
+    userEvent.type(numberInput, 'no txt only numb');
+    expect(numberInput.value).not.toEqual('no txt only numb');
+
+    userEvent.type(numberInput, '42');
+    expect(numberInput.value).toEqual('42');
 
     // Password Input
-    const passwordInput = canvas.getByTestId('password-input');
+    const passwordInput = canvas.getByTestId('password-input') as HTMLInputElement;
     expect(passwordInput).toBeInTheDocument();
+    expect(passwordInput.getAttribute('type')).toBe('password');
+    userEvent.type(passwordInput, 'password123');
+    expect(passwordInput.value).toEqual('password123');
 
     // Email Input
-    const emailInput = canvas.getByTestId('email-input');
+    const emailInput = canvas.getByTestId('email-input') as HTMLInputElement;
     expect(emailInput).toBeInTheDocument();
+    expect(emailInput.getAttribute('type')).toBe('email');
+    userEvent.type(emailInput, 'helloworld@rocketmakers.com');
+    expect(emailInput.value).toEqual('helloworld@rocketmakers.com');
 
     // Telephone Input
-    const telephoneInput = canvas.getByTestId('telephone-input');
+    const telephoneInput = canvas.getByTestId('telephone-input') as HTMLInputElement;
     expect(telephoneInput).toBeInTheDocument();
+    expect(telephoneInput.getAttribute('type')).toBe('tel');
+    userEvent.type(telephoneInput, '01189998819991197253');
   },
 };
 
 export const Bound: StoryObj<typeof Input> = {
-  ...Template,
   render: () => {
-    const { formProp, formState } = useForm({ text: '', number: 2, debounce: '' });
+    const { formProp, formState } = useForm({ text: '', number: 0, debounce: '' });
     return (
       <div>
-        <h2>Bound - text</h2>
-        <Input type="text" bind={formProp('text').bind()} />
+        <Input label={'Bound - text'} type="text" bind={formProp('text').bind()} />
         <ul>
           <li>Value: {formState?.text}</li>
           <li>Type: {typeof formState?.text}</li>
         </ul>
-        <h2>Bound - number</h2>
-        <Input type="number" bind={formProp('number').bind()} />
+        <Input label={'Bound - number'} type="number" bind={formProp('number').bind()} />
         <ul>
           <li>Value: {formState?.number}</li>
           <li>Type: {typeof formState?.number}</li>
         </ul>
-        <h2>Bound - debounced text (200ms)</h2>
-        <Input type="text" bind={formProp('debounce').bind()} delay={200} />
+        <Input label={'Bound - debounced text (200ms)'} type="text" bind={formProp('debounce').bind()} delay={200} />
         <ul>
           <li>Value: {formState?.debounce}</li>
           <li>Type: {typeof formState?.debounce}</li>
         </ul>
       </div>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    
   },
 };
