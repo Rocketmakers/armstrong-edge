@@ -180,7 +180,7 @@ export const ValidationError: StoryObj<typeof Input> = {
 export const InputTypes: StoryObj<typeof Input> = {
   render: () => {
     return (
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <Input label={'Number'} type="number" testId="number-input" />
         <Input label={'Password'} type="password" testId="password-input" />
         <Input label={'Email'} type="email" testId="email-input" />
