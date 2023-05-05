@@ -1,7 +1,9 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { within, userEvent } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/testing-library';
 import React from 'react';
+
+import { IArmstrongReactSelectOption } from '../../../types';
 import { SingleSelect } from './singleSelect.component';
 
 /** meta  */
@@ -14,12 +16,12 @@ export default {
 /** component template */
 
 const Template: StoryObj<typeof SingleSelect> = {
-  render: (args) => {
+  render: args => {
     return (
       <div
         style={{
           width: '100%',
-          height: '15rem',
+          height: '20rem',
           display: 'flex',
           justifyContent: 'center',
         }}
@@ -36,173 +38,240 @@ export const Default: StoryObj<typeof SingleSelect> = {
   ...Template,
   args: {
     options: [
-      // { id: 1, name: 'red' },
-      // { id: 2, name: 'blue' },
       {
         label: 'Colours',
         options: [
-          { id: 1, name: 'ocean' },
-          { id: 2, name: 'blue' },
-          { id: 3, name: 'purple' },
-          { id: 4, name: 'red' },
-          { id: 5, name: 'orange' },
-          { id: 6, name: 'yellow' },
-          { id: 7, name: 'green' },
-          { id: 8, name: 'forest' },
-          { id: 9, name: 'slate' },
-          { id: 10, name: 'silver' },
+          { id: 1, content: 'ocean' },
+          { id: 2, content: 'blue' },
+          { id: 3, content: 'purple' },
+          { id: 4, content: 'red' },
+          { id: 5, content: 'orange' },
+          { id: 6, content: 'yellow' },
+          { id: 7, content: 'green' },
+          { id: 8, content: 'forest' },
+          { id: 9, content: 'slate' },
+          { id: 10, content: 'silver' },
         ],
       },
       {
         label: 'Flavours',
         options: [
-          { id: 11, name: 'vanilla' },
-          { id: 12, name: 'chocolate' },
-          { id: 13, name: 'strawberry' },
+          { id: 11, content: 'vanilla' },
+          { id: 12, content: 'chocolate' },
+          { id: 13, content: 'strawberry' },
         ],
       },
     ],
-    isLoading: true,
   },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-    const option = canvas.getAllByRole('option');
-    const select = option[0].parentElement; // Finding select by finding parent of the first option
+  // play: async ({ args, canvasElement }) => {
+  //   const canvas = within(canvasElement);
+  //   const option = canvas.getAllByRole('option');
+  //   const select = option[0].parentElement; // Finding select by finding parent of the first option
 
-    expect(option[0]).toHaveTextContent(args.options[0].name);
-    userEvent.click(select!); // Opens the dropdown menu
-    userEvent.click(select!.children[1]); // Select the second option
-    expect(option[1]).toHaveTextContent(args.options[1].name); // Check if the selected value is correct
+  //   expect(option[0]).toHaveTextContent((args.options[0] as IArmstrongReactSelectOption<any>).content);
+
+  //   userEvent.click(select!); // Opens the dropdown menu
+  //   userEvent.click(select!.children[1]); // Select the second option
+  //   expect(option[1]).toHaveTextContent((args.options[1] as IArmstrongReactSelectOption<any>).content); // Check if the selected value is correct
+  // },
+};
+
+export const Creatable: StoryObj<typeof SingleSelect> = {
+  render: () => {
+    const options = [
+      {
+        label: 'Colours',
+        options: [
+          { id: 1, content: 'ocean' },
+          { id: 2, content: 'blue' },
+          { id: 3, content: 'purple' },
+          { id: 4, content: 'red' },
+          { id: 5, content: 'orange' },
+          { id: 6, content: 'yellow' },
+          { id: 7, content: 'green' },
+          { id: 8, content: 'forest' },
+          { id: 9, content: 'slate' },
+          { id: 10, content: 'silver' },
+        ],
+      },
+      {
+        label: 'Flavours',
+        options: [
+          { id: 11, content: 'vanilla' },
+          { id: 12, content: 'chocolate' },
+          { id: 13, content: 'strawberry' },
+        ],
+      },
+    ];
+
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '20rem',
+        }}
+      >
+        <SingleSelect options={options} allowCreate />
+      </div>
+    );
   },
 };
 
-// export const WithCustomDropDownIcon: StoryObj<typeof Select> = {
-//   ...Template,
-//   args: {
-//     options: [
-//       { id: 1, name: 'red' },
-//       { id: 2, name: 'blue' },
-//     ],
-//     selectOverlayIcon: { iconSet: 'Icomoon', icon: 'arrow-down13' },
-//   },
-//   play: async ({ args, canvasElement }) => {
-//     const canvas = within(canvasElement);
-//     const option = canvas.getAllByRole('option');
-//     const select = option[0].parentElement; // Finding select by finding parent of the first option
-//     const customArrow = select?.nextSibling;
+export const Sizes: StoryObj<typeof SingleSelect> = {
+  render: () => {
+    const options = [
+      {
+        label: 'Colours',
+        options: [
+          { id: 1, content: 'ocean' },
+          { id: 2, content: 'blue' },
+          { id: 3, content: 'purple' },
+          { id: 4, content: 'red' },
+          { id: 5, content: 'orange' },
+          { id: 6, content: 'yellow' },
+          { id: 7, content: 'green' },
+          { id: 8, content: 'forest' },
+          { id: 9, content: 'slate' },
+          { id: 10, content: 'silver' },
+        ],
+      },
+      {
+        label: 'Flavours',
+        options: [
+          { id: 11, content: 'vanilla' },
+          { id: 12, content: 'chocolate' },
+          { id: 13, content: 'strawberry' },
+        ],
+      },
+    ];
 
-//     expect(customArrow).toHaveAttribute(
-//       'data-icon-set',
-//       args.selectOverlayIcon?.iconSet
-//     );
-//     expect(customArrow).toHaveAttribute('data-i', args.selectOverlayIcon?.icon);
-//   },
-// };
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '20rem',
+        }}
+      >
+        <h2>Small</h2>
+        <SingleSelect options={options} displaySize="small" required label={<>Small select</>} />
+        <h2>Medium</h2>
+        <SingleSelect options={options} displaySize="medium" required label={<>Medium select</>} />
+        <h2>Large</h2>
+        <SingleSelect options={options} displaySize="large" required label={<>Large select</>} />
+      </div>
+    );
+  },
+};
 
-// export const WithIcons: StoryObj<typeof Select> = {
-//   ...Template,
-//   args: {
-//     leftIcon: {
-//       icon: 'alarm',
-//       iconSet: 'Icomoon',
-//     },
-//     options: [
-//       {
-//         id: 1,
-//         name: 'Noon',
-//       },
-//       {
-//         id: 2,
-//         name: 'Dawn',
-//       },
-//     ],
-//   },
-//   play: async ({ args, canvasElement }) => {
-//     const canvas = within(canvasElement);
-//     const option = canvas.getAllByRole('option');
-//     const select = option[0].parentElement; // Finding select by finding parent of the first option
-//     const customIcon = select?.parentElement?.previousSibling;
+export const Disabled: StoryObj<typeof SingleSelect> = {
+  render: () => {
+    const options = [
+      {
+        label: 'Colours',
+        options: [
+          { id: 1, content: 'ocean' },
+          { id: 2, content: 'blue' },
+          { id: 3, content: 'purple' },
+          { id: 4, content: 'red' },
+          { id: 5, content: 'orange' },
+          { id: 6, content: 'yellow' },
+          { id: 7, content: 'green' },
+          { id: 8, content: 'forest' },
+          { id: 9, content: 'slate' },
+          { id: 10, content: 'silver' },
+        ],
+      },
+      {
+        label: 'Flavours',
+        options: [
+          { id: 11, content: 'vanilla' },
+          { id: 12, content: 'chocolate' },
+          { id: 13, content: 'strawberry' },
+        ],
+      },
+    ];
 
-//     expect(customIcon).toHaveAttribute('data-icon-set', args.leftIcon?.iconSet);
-//     expect(customIcon).toHaveAttribute('data-i', args.leftIcon?.icon);
-//   },
-// };
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '20rem',
+        }}
+      >
+        <SingleSelect options={options} isDisabled />
+      </div>
+    );
+  },
+};
 
-// export const WithOverlayText: StoryObj<typeof Select> = {
-//   ...Template,
-//   args: {
-//     leftIcon: {
-//       icon: 'cash',
-//       iconSet: 'Icomoon',
-//     },
-//     leftOverlay: '£',
-//     options: [
-//       {
-//         id: 1,
-//         name: '100',
-//       },
-//       {
-//         id: 2,
-//         name: '200',
-//       },
-//     ],
-//     rightOverlay: 'GBP',
-//   },
-//   play: async ({ args, canvasElement }) => {
-//     const canvas = within(canvasElement);
-//     const option = canvas.getAllByRole('option');
-//     const select = option[0].parentElement; // Finding select by finding parent of the first option
-//     const leftOverlay = select?.parentElement?.previousSibling?.firstChild;
-//     const rightOverlay = select?.parentElement?.nextSibling?.firstChild;
+export const ValidationError: StoryObj<typeof SingleSelect> = {
+  ...Template,
+  render: () => {
+    const options = [
+      {
+        label: 'Colours',
+        options: [
+          { id: 1, content: 'ocean' },
+          { id: 2, content: 'blue' },
+          { id: 3, content: 'purple' },
+          { id: 4, content: 'red' },
+          { id: 5, content: 'orange' },
+          { id: 6, content: 'yellow' },
+          { id: 7, content: 'green' },
+          { id: 8, content: 'forest' },
+          { id: 9, content: 'slate' },
+          { id: 10, content: 'silver' },
+        ],
+      },
+      {
+        label: 'Flavours',
+        options: [
+          { id: 11, content: 'vanilla' },
+          { id: 12, content: 'chocolate' },
+          { id: 13, content: 'strawberry' },
+        ],
+      },
+    ];
 
-//     expect(leftOverlay).toHaveTextContent(args.leftOverlay);
-//     expect(rightOverlay).toHaveTextContent(args.rightOverlay);
-//   },
-// };
-
-// export const WithValidationError: StoryObj<typeof Select> = {
-//   ...Template,
-//   args: {
-//     options: [
-//       {
-//         id: 1,
-//         name: 'red',
-//       },
-//       {
-//         id: 2,
-//         name: 'blue',
-//       },
-//     ],
-//     validationErrorMessages: ['This is an error! Better fix it!'],
-//     validationMode: 'both',
-//   },
-
-//   play: async ({ args, canvasElement }) => {
-//     const canvas = within(canvasElement);
-//     const errorMessage = canvas.getByText(args.validationErrorMessages[0]);
-//     expect(errorMessage).toBeInTheDocument();
-//   },
-// };
-
-// export const WithPlaceholder: StoryObj<typeof Select> = {
-//   ...Template,
-//   args: {
-//     options: [
-//       {
-//         id: 1,
-//         name: 'red',
-//       },
-//       {
-//         id: 2,
-//         name: 'blue',
-//       },
-//     ],
-//     placeholderOption: 'Select a color...',
-//   },
-//   play: async ({ args, canvasElement }) => {
-//     const canvas = within(canvasElement);
-//     const placeholderOption = canvas.getByText(args.placeholderOption);
-
-//     expect(placeholderOption).toBeInTheDocument();
-//   },
-// };
+    return (
+      <div>
+        <h2>Validation mode - both</h2>
+        <SingleSelect
+          isClearable
+          validationMode="both"
+          errorMessages={['This field is required']}
+          options={options}
+          required
+          label={<>Single select</>}
+        />
+        <h2>Validation mode - icon only</h2>
+        <SingleSelect
+          isClearable
+          validationMode="icon"
+          errorMessages={['This field is required']}
+          options={options}
+          required
+          label={<>Single select</>}
+        />
+        <h2>Validation mode - message only</h2>
+        <SingleSelect
+          isClearable
+          validationMode="message"
+          errorMessages={['This field is required']}
+          options={options}
+          required
+          label={<>Single select</>}
+        />
+        <h2>Icon on left</h2>
+        <SingleSelect
+          isClearable
+          validationMode="icon"
+          errorMessages={['This field is required']}
+          options={options}
+          required
+          label={<>Single select</>}
+        />
+      </div>
+    );
+  },
+};

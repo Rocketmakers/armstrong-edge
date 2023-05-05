@@ -1,18 +1,23 @@
 import { format } from 'date-fns';
 import * as React from 'react';
 import { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
-import { ImArrowLeft2, ImArrowRight2, ImCalendar } from 'react-icons/im';
+import { ImArrowLeft2, ImArrowRight2 } from 'react-icons/im';
 
-import { useForm } from '../../hooks/form';
+import { IArmstrongReactSelectOption } from '../../types';
 import { concat } from '../../utils';
 import { BaseCalendarInput, TBaseCalendarInputProps, TBaseDatePickerConfig } from '../baseCalendarInput';
 import { Button } from '../button';
-import { Input } from '../input';
-import { ISelectOption, Select } from '../select';
+import { SingleSelect } from '../reactSelect/singleSelect';
+
+import './calendarInput.theme.css';
+
+type DisplaySize = 'small' | 'medium' | 'large';
 
 export type TCalendarInputProps = {
   /** swipe02 is default */
   dateSelectionHeader?: 'swipe01' | 'swipe02' | 'dropdown';
+
+  displaySize?: DisplaySize;
 
   locale?: TBaseDatePickerConfig['locale'];
 
@@ -23,59 +28,54 @@ export type TCalendarInputProps = {
   };
 } & TBaseCalendarInputProps;
 
-const CustomInput = React.forwardRef<HTMLInputElement>((props, ref) => (
-  <Input leftOverlay={<ImCalendar />} {...props} ref={ref} />
-));
-CustomInput.displayName = 'Custom Input';
-
-const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMonth, changeYear }) => {
+const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMonth, changeYear, date }) => {
   const today = new Date();
-
-  const { formState, formProp } = useForm<{ month: number; year: number }>({
-    month: today.getMonth(),
-    year: today.getFullYear(),
-  });
-
-  React.useEffect(() => {
-    if (formState?.month) {
-      changeMonth(formState.month);
-    }
-    if (formState?.year) {
-      changeYear(formState.year);
-    }
-  }, [formState?.month, formState?.year, changeMonth, changeYear]);
 
   /** @todo - how to set locale? */
   const getLocaleMonth = (month: number) => {
-    const date = new Date();
+    const dateX = new Date();
 
-    date.setMonth(month);
-    return format(date, 'MMMM');
+    dateX.setMonth(month);
+    return format(dateX, 'MMMM');
   };
 
-  const monthOptions = new Array(12).fill(null).map<ISelectOption<number, unknown>>((_, index) => ({
+  const monthOptions = new Array(12).fill(null).map<IArmstrongReactSelectOption<number>>((_, index) => ({
     id: index,
-    name: getLocaleMonth(index),
+    content: getLocaleMonth(index),
   }));
 
-  const yearOptions = new Array(100).fill(null).map<ISelectOption<number, unknown>>((_, index) => {
-    const year = today.getFullYear() - 50 + index;
-    return { id: year, name: `${year}` };
+  const yearOptions = new Array(110).fill(null).map<IArmstrongReactSelectOption<number>>((_, index) => {
+    const year = today.getFullYear() + 10 - index;
+    return { id: year, content: `${year}` };
   });
 
   return (
-    <div className="arm-calendar-input-header dropdown">
-      <Select className="calendar-dropdown-select" options={monthOptions} bind={formProp('month').bind()} />
-      <Select className="calendar-dropdown-select" options={yearOptions} bind={formProp('year').bind()} />
-    </div>
+    <>
+      <div className="arm-calendar-input-header dropdown">
+        <SingleSelect
+          className="arm-calendar-dropdown-select"
+          options={monthOptions}
+          onSelectOption={newValue => changeMonth(newValue)}
+          currentValue={date.getMonth()}
+          isClearable={false}
+        />
+        <SingleSelect
+          className="arm-calendar-dropdown-select"
+          options={yearOptions}
+          onSelectOption={newValue => changeYear(newValue)}
+          currentValue={date.getFullYear()}
+          isClearable={false}
+        />
+      </div>
+    </>
   );
 };
 
 const Swipe01Header: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   return (
     <div className="arm-calendar-input-header swipe01">
-      <span className="swipe01-date">{format(props.monthDate, 'MMMM yyyy')}</span>
-      <div className="swipe01-date-navigation">
+      <span className="arm-swipe01-date">{format(props.monthDate, 'MMMM yyyy')}</span>
+      <div className="arm-swipe01-date-navigation">
         <Button
           className="arm-calendar-input-header-button swipe01-button"
           displayStyle="blank"
@@ -115,21 +115,27 @@ const renderDayContents = day => {
 };
 
 /**
- * @decision option to use native input on mobile / tablet? - leave this issue entirely up to the consuming code
+ * @decision -- option to use native input on mobile / tablet? - leave this issue entirely up to the consuming code
  * the following config is overridden: customInput, renderCustomHeader, locale
  */
-export const CalendarInput: React.FC<TCalendarInputProps> = ({ dateSelectionHeader, locale, language, ...props }) => {
+export const CalendarInput: React.FC<TCalendarInputProps> = ({
+  dateSelectionHeader,
+  locale,
+  language,
+  displaySize,
+  ...props
+}) => {
   const renderCustomHeader = React.useCallback(
-    (customerHeaderProps: ReactDatePickerCustomHeaderProps) => {
+    (customHeaderProps: ReactDatePickerCustomHeaderProps) => {
       return (
         <div className="customer-header-container">
-          {dateSelectionHeader === 'dropdown' && <DropdownHeader {...customerHeaderProps} />}
-          {dateSelectionHeader === 'swipe01' && <Swipe01Header {...customerHeaderProps} />}
-          {(!dateSelectionHeader || dateSelectionHeader === 'swipe02') && <Swipe02Header {...customerHeaderProps} />}
+          {dateSelectionHeader === 'dropdown' && <DropdownHeader {...customHeaderProps} />}
+          {dateSelectionHeader === 'swipe01' && <Swipe01Header {...customHeaderProps} />}
+          {(!dateSelectionHeader || dateSelectionHeader === 'swipe02') && <Swipe02Header {...customHeaderProps} />}
         </div>
       );
     },
-    [dateSelectionHeader]
+    [dateSelectionHeader, displaySize]
   );
 
   const config = React.useMemo<TBaseDatePickerConfig>(() => {
@@ -138,14 +144,18 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({ dateSelectionHead
 
       ...props.config,
 
-      customInput: <CustomInput />,
       renderCustomHeader: props.selectsRange ? undefined : renderCustomHeader,
       renderDayContents,
       locale,
     };
   }, [renderCustomHeader, locale, props.config, props.selectsRange]);
 
-  return <BaseCalendarInput {...props} className={concat('arm-calendar-input', props.className)} config={config} />;
+  return (
+    <BaseCalendarInput
+      {...props}
+      className={concat('arm-calendar-input', props.className)}
+      config={config}
+      displaySize={displaySize}
+    />
+  );
 };
-
-CalendarInput.displayName = 'CalendarInput';

@@ -1,1 +1,1 @@
-export * from './radioInputList.component';
+export * from './radioGroup.component';

@@ -1,14 +1,20 @@
 import { enGB } from 'date-fns/locale';
 import * as React from 'react';
 import ReactDatePicker, { ReactDatePickerProps } from 'react-datepicker';
+import { ImCalendar } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../hooks/form';
 import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';
+import { Label } from '../label';
 import { Status } from '../status';
 import { ValidationErrors } from '../validationErrors';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import './baseCalendarInput.theme.css';
+
+type DisplaySize = 'small' | 'medium' | 'large';
 
 type TDate = Date;
 type TDateRange = [Date | null, Date | null];
@@ -34,6 +40,12 @@ export type TBaseCalendarInputCommonProps = Pick<
 
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
   content?: React.ReactElement;
+
+  displaySize?: DisplaySize;
+
+  id?: string;
+
+  required?: boolean;
 };
 
 export type TBaseCalendarInputSelectsRangeProps = {
@@ -69,6 +81,16 @@ export type TBaseCalendarInputProps = TBaseCalendarInputCommonProps &
  * third-party docs: https://reactdatepicker.com
  * decided to use single component to keep as close to third party as possible */
 export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps> = props => {
+  const globals = useArmstrongConfig({
+    validationMode: props.validationMode,
+    // hideInputErrorIconOnStatus: hideIconOnStatus,
+    // disableInputOnPending: disableOnPending,
+    // requiredIndicator,
+    // scrollValidationErrorsIntoView,
+    // inputStatusPosition: statusPosition,
+    validationErrorIcon: props.errorIcon,
+  });
+
   const singleValue = !props.selectsRange ? props.value : undefined;
   const startValue = props.selectsRange ? props.startValue : undefined;
   const endValue = props.selectsRange ? props.endValue : undefined;
@@ -112,52 +134,59 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
     : bindDateConfig.validationErrorMessages;
 
   return (
-    <>
-      <div
-        className={concat('arm-input', 'arm-base-calendar-input', props.className)}
-        data-disabled={props.disabled || props.pending}
-        data-error={props.error || !!validationErrorMessages?.length}
-        // onClick={e => {
-        //   e.preventDefault();
-        //   e.stopPropagation();
-        // }}
+    <div
+      className={concat('arm-input', 'arm-base-calendar-input', props.className)}
+      data-disabled={props.disabled || props.pending}
+      data-error={props.error || !!validationErrorMessages?.length}
+      data-size={props.displaySize}
+      // onClick={e => {
+      //   e.preventDefault();
+      //   e.stopPropagation();
+      // }}
+    >
+      <Label
+        className={concat('arm-radio-group-label')}
+        required={props.required}
+        requiredIndicator={globals.requiredIndicator}
       >
-        <label>
-          {props.content}
+        {props.content}
+      </Label>
+      <div className={'arm-base-calendar-input-container'}>
+        <div className="arm-calendar-icon">
+          <ImCalendar />
+        </div>
+        <ReactDatePicker
+          {...BaseCalendarInput.defaultProps?.config}
+          {...props.config}
+          disabled={props.disabled}
+          selectsRange={props.selectsRange}
+          onChange={newValue => {
+            if (!props.selectsRange) {
+              setDate?.(newValue as TDate);
+            } else {
+              setStartDate?.(newValue?.[0]);
+              setEndDate?.(newValue?.[1]);
+            }
+          }}
+          selected={date}
+          startDate={startDate}
+          endDate={endDate}
+          id={props.id}
+        />
 
-          <ReactDatePicker
-            {...BaseCalendarInput.defaultProps?.config}
-            {...props.config}
-            disabled={props.disabled}
-            selectsRange={props.selectsRange}
-            onChange={newValue => {
-              if (!props.selectsRange) {
-                setDate?.(newValue as TDate);
-              } else {
-                setStartDate?.(newValue?.[0]);
-                setEndDate?.(newValue?.[1]);
-              }
-            }}
-            selected={date}
-            startDate={startDate}
-            endDate={endDate}
-          />
-
-          <Status
-            error={bindDateConfig.shouldShowValidationErrorIcon && (!!validationErrorMessages?.length || props.error)}
-            pending={props.pending}
-            errorIcon={bindDateConfig.validationErrorIcon}
-          />
-        </label>
+        <Status
+          error={bindDateConfig.shouldShowValidationErrorIcon && (!!validationErrorMessages?.length || props.error)}
+          pending={props.pending}
+          errorIcon={bindDateConfig.validationErrorIcon}
+        />
       </div>
-
       {!!validationErrorMessages?.length && bindDateConfig.shouldShowValidationErrorMessage && (
         <ValidationErrors
           validationErrors={validationErrorMessages}
           scrollIntoView={props.scrollValidationErrorsIntoView}
         />
-      )}
-    </>
+      )}{' '}
+    </div>
   );
 };
 

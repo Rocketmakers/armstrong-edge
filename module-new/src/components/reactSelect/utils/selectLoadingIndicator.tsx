@@ -1,26 +1,15 @@
 import React from 'react';
-import { LoadingIndicatorProps, components } from 'react-select';
+import { ImSpinner2 } from 'react-icons/im';
+import { LoadingIndicatorProps } from 'react-select';
+
 import { ArmstrongId, IArmstrongReactSelectOption } from '../../../types';
-import { IIcon, IconSet, Icon, IconUtils } from '../../icon';
 import { Spinner } from '../../spinner';
 
-const { LoadingIndicator } = components;
-
-export interface ILoadingIndicatorProps<
-  Id extends ArmstrongId,
-  isMulti extends boolean
-> extends LoadingIndicatorProps<IArmstrongReactSelectOption<Id>, isMulti> {
-  icon: IIcon<IconSet>;
+export interface ILoadingIndicatorProps<Id extends ArmstrongId, IsMulti extends boolean>
+  extends LoadingIndicatorProps<IArmstrongReactSelectOption<Id>, IsMulti> {
+  icon: JSX.Element;
 }
 
-export const CustomLoadingIndicator: React.FC<
-  ILoadingIndicatorProps<any, boolean>
-> = (props) => {
-  return (
-    <Spinner
-      className="arm-status-spinner"
-      fillContainer={false}
-      icon={IconUtils.getIconDefinition('Icomoon', 'spinner2')}
-    />
-  );
+export const CustomLoadingIndicator: React.FC<ILoadingIndicatorProps<ArmstrongId, boolean>> = () => {
+  return <Spinner className="arm-status-spinner" fillContainer={false} icon={<ImSpinner2 />} />;
 };

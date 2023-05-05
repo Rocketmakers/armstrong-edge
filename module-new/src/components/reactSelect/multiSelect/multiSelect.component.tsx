@@ -1,9 +1,10 @@
 import React from 'react';
+import { ImArrowDown2 } from 'react-icons/im';
 import Select, { GetOptionLabel, GetOptionValue, GroupBase, OnChangeValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import SelectRef from 'react-select/dist/declarations/src/Select';
 
-import { Form } from '../../../hooks';
+import { IBindingProps, useBindingState } from '../../../hooks/form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
@@ -14,7 +15,6 @@ import {
   NullOrUndefined,
 } from '../../../types';
 import { concat } from '../../../utils';
-import { getIconDefinition } from '../../icon';
 import { ValidationErrors } from '../../validationErrors';
 import { IReactSelectBaseProps } from '../singleSelect';
 import { isCreatingOption, isGroupedOptions } from '../singleSelect/singleSelect.utils';
@@ -28,7 +28,7 @@ export type ReactSelectMultiRef = React.Ref<
 export interface IReactMultiSelectProps<Id extends ArmstrongId, TBind extends NullOrUndefined<Id[]>>
   extends Omit<IReactSelectBaseProps<Id>, 'isClearable' | 'isSearchable' | 'onSelectOption' | 'bind' | 'currentValue'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: Form.IBindingProps<TBind>;
+  bind?: IBindingProps<TBind>;
 
   /** overrides the handleChange method used when the input option is changed */
   onSelectOption?: (newValue: TBind) => void;
@@ -38,7 +38,7 @@ export interface IReactMultiSelectProps<Id extends ArmstrongId, TBind extends Nu
 }
 
 const MultiSelectOnly = React.forwardRef(
-  <Id extends ArmstrongId, TBind extends NullOrUndefined<Id[]>>(
+  (
     {
       bind,
       errorMessages,
@@ -57,12 +57,12 @@ const MultiSelectOnly = React.forwardRef(
       dropdownIcon,
       position,
       closeMenuOnSelect,
-    }: IReactMultiSelectProps<Id, TBind>,
+    }: IReactMultiSelectProps<ArmstrongId, NullOrUndefined<ArmstrongId[]>>,
     ref: ReactSelectMultiRef
   ) => {
     const id = React.useId();
 
-    const [value, setValue, config] = Form.useBindingState(bind, {
+    const [value, setValue, config] = useBindingState(bind, {
       validationErrorMessages: errorMessages,
       validationErrorIcon: errorIcon,
       validationMode,
@@ -70,11 +70,11 @@ const MultiSelectOnly = React.forwardRef(
       onChange: onSelectOption,
     });
 
-    const { validationErrorMessages, validationErrorIcon } = config;
+    const { validationErrorMessages } = config;
 
     const handleChange = React.useCallback(
-      (newValue: OnChangeValue<IArmstrongReactSelectOption<Id>, true>) => {
-        setValue?.(newValue.map(opt => opt.id) as TBind);
+      (newValue: OnChangeValue<IArmstrongReactSelectOption<ArmstrongId>, true>) => {
+        setValue?.(newValue.map(opt => opt.id));
       },
       [setValue]
     );
@@ -89,16 +89,16 @@ const MultiSelectOnly = React.forwardRef(
       return options?.filter(o => value?.some(v => v === o.id));
     }, [options, value]);
 
-    const valueGetter = React.useCallback<GetOptionValue<IArmstrongReactSelectOption<Id>>>(
+    const valueGetter = React.useCallback<GetOptionValue<IArmstrongReactSelectOption<ArmstrongId>>>(
       option => {
         return getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? '';
       },
       [getOptionValue]
     );
 
-    const labelGetter = React.useCallback<GetOptionLabel<IArmstrongReactSelectOption<Id>>>(
+    const labelGetter = React.useCallback<GetOptionLabel<IArmstrongReactSelectOption<ArmstrongId>>>(
       option => {
-        return getOptionName?.(option) ?? option.name?.toString() ?? '';
+        return getOptionName?.(option) ?? option.content ?? '';
       },
       [getOptionName]
     );
@@ -128,9 +128,9 @@ const MultiSelectOnly = React.forwardRef(
           components={{
             DropdownIndicator: props =>
               CustomDropdownIndicator({
-                icon: dropdownIcon || getIconDefinition('Icomoon', 'arrow-down3'),
+                icon: dropdownIcon || ImArrowDown2,
                 ...props,
-              } as IDropdownIndicatorProps<Id, true>),
+              } as IDropdownIndicatorProps<ArmstrongId, true>),
           }}
           closeMenuOnSelect={closeMenuOnSelect}
         />
@@ -141,7 +141,6 @@ const MultiSelectOnly = React.forwardRef(
             className="arm-multi-select-validation-error-display"
             validationMode={validationMode}
             validationErrors={validationErrorMessages || []}
-            icon={validationErrorIcon || undefined}
           />
         )}
       </div>
@@ -152,8 +151,10 @@ const MultiSelectOnly = React.forwardRef(
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IReactMultiSelectProps<any, any>>;
 
+MultiSelectOnly.displayName = 'Multi Select Only';
+
 const MultiSelectCreatable = React.forwardRef(
-  <Id extends ArmstrongId, TBind extends NullOrUndefined<Id[]>>(
+  (
     {
       bind,
       errorMessages,
@@ -172,12 +173,12 @@ const MultiSelectCreatable = React.forwardRef(
       dropdownIcon,
       position,
       closeMenuOnSelect,
-    }: IReactMultiSelectProps<Id, TBind>,
+    }: IReactMultiSelectProps<ArmstrongId, NullOrUndefined<ArmstrongId[]>>,
     ref: ReactSelectMultiRef
   ) => {
     const id = React.useId();
 
-    const [value, setValue, config] = Form.useBindingState(bind, {
+    const [value, setValue, config] = useBindingState(bind, {
       validationErrorMessages: errorMessages,
       validationErrorIcon: errorIcon,
       validationMode,
@@ -185,18 +186,18 @@ const MultiSelectCreatable = React.forwardRef(
       onChange: onSelectOption,
     });
 
-    const { validationErrorMessages, validationErrorIcon } = config;
+    const { validationErrorMessages } = config;
 
     const handleChange = React.useCallback(
-      (newValue: OnChangeValue<IArmstrongReactSelectOption<Id>, true>) => {
-        setValue?.(newValue.map(opt => opt.id) as TBind);
+      (newValue: OnChangeValue<IArmstrongReactSelectOption<ArmstrongId>, true>) => {
+        setValue?.(newValue.map(opt => opt.id));
       },
       [setValue]
     );
 
-    const selectedValue = React.useMemo<IArmstrongReactSelectOption<Id>[] | undefined>(() => {
+    const selectedValue = React.useMemo<IArmstrongReactSelectOption<ArmstrongId>[] | undefined>(() => {
       return value?.map(v => {
-        let foundOption: IArmstrongReactSelectOption<Id> | undefined;
+        let foundOption: IArmstrongReactSelectOption<ArmstrongId> | undefined;
         if (isGroupedOptions(options)) {
           foundOption = options
             .map(o => o.options)
@@ -211,12 +212,12 @@ const MultiSelectCreatable = React.forwardRef(
         return {
           id: v,
           name: v,
-        } as IArmstrongReactSelectOption<Id>;
+        } as IArmstrongReactSelectOption<ArmstrongId>;
       });
     }, [options, value]);
 
     const valueGetter = React.useCallback<
-      GetOptionValue<IArmstrongReactSelectOption<Id> | IArmstrongReactSelectCreatingOption<Id>>
+      GetOptionValue<IArmstrongReactSelectOption<ArmstrongId> | IArmstrongReactSelectCreatingOption<ArmstrongId>>
     >(
       option => {
         if (isCreatingOption(option)) {
@@ -224,17 +225,17 @@ const MultiSelectCreatable = React.forwardRef(
         }
         return getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? '';
       },
-      [getOptionValue]
+      [getOptionValue, getOptionName]
     );
 
     const labelGetter = React.useCallback<
-      GetOptionLabel<IArmstrongReactSelectOption<Id> | IArmstrongReactSelectCreatingOption<Id>>
+      GetOptionLabel<IArmstrongReactSelectOption<ArmstrongId> | IArmstrongReactSelectCreatingOption<ArmstrongId>>
     >(
       option => {
         if (isCreatingOption(option)) {
           return getOptionName?.(option) ?? option.label?.toString() ?? '';
         }
-        return getOptionName?.(option) ?? option.name?.toString() ?? '';
+        return getOptionName?.(option) ?? option.content?.toString() ?? '';
       },
       [getOptionName]
     );
@@ -243,7 +244,7 @@ const MultiSelectCreatable = React.forwardRef(
 
     const handleCreate = React.useCallback(
       (newValue: string) => {
-        setValue?.([...(value ?? []), newValue] as TBind);
+        setValue?.([...(value ?? []), newValue]);
       },
       [setValue, value]
     );
@@ -272,9 +273,9 @@ const MultiSelectCreatable = React.forwardRef(
           components={{
             DropdownIndicator: props =>
               CustomDropdownIndicator({
-                icon: dropdownIcon || getIconDefinition('Icomoon', 'arrow-down3'),
+                icon: dropdownIcon || ImArrowDown2,
                 ...props,
-              } as IDropdownIndicatorProps<Id, true>),
+              } as IDropdownIndicatorProps<ArmstrongId, true>),
           }}
           closeMenuOnSelect={closeMenuOnSelect}
         />
@@ -285,7 +286,6 @@ const MultiSelectCreatable = React.forwardRef(
             className="arm-multi-select-creatable-validation-error-display"
             validationMode={validationMode}
             validationErrors={validationErrorMessages || []}
-            icon={validationErrorIcon || undefined}
           />
         )}
       </div>
@@ -295,6 +295,8 @@ const MultiSelectCreatable = React.forwardRef(
   props: ArmstrongFCProps<IReactMultiSelectProps<Id, TBind>, ReactSelectMultiRef>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IReactMultiSelectProps<any, any>>;
+
+MultiSelectCreatable.displayName = 'Multi Select Creatable';
 
 export const MultiSelect = React.forwardRef<ReactSelectMultiRef, IReactMultiSelectProps<any, any>>(
   ({ ...props }, ref) => {
@@ -306,3 +308,5 @@ export const MultiSelect = React.forwardRef<ReactSelectMultiRef, IReactMultiSele
     }
   }
 );
+
+MultiSelect.displayName = 'Multi Select';

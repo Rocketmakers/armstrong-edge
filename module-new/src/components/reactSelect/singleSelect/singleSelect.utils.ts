@@ -4,7 +4,11 @@ import {
   IArmstrongReactSelectOption,
   NullOrUndefined,
 } from '../../../types';
-import { GroupedOption } from './singleSelect.component';
+
+export interface GroupedOption<Id extends NullOrUndefined<ArmstrongId>> {
+  label: string;
+  options: IArmstrongReactSelectOption<Id>[];
+}
 
 export function isGroupedOptions<Id extends NullOrUndefined<ArmstrongId>>(
   options?: IArmstrongReactSelectOption<Id>[] | GroupedOption<Id>[]

@@ -17,7 +17,11 @@ export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
   disabled?: boolean;
 }
 
-export type IArmstrongReactSelectOption<Id extends ArmstrongId> = Omit<IArmstrongOption<Id>, 'htmlProps'>;
+export type IArmstrongReactSelectOption<Id extends ArmstrongId> = Omit<
+  IArmstrongOption<Id>,
+  'htmlProps' | 'content'
+> & { content?: string };
+
 export interface IArmstrongReactSelectCreatingOption<Id extends ArmstrongId> extends IArmstrongReactSelectOption<Id> {
   label: Id;
   value: Id;
@@ -29,3 +33,7 @@ export interface IArmstrongOptionWithInput<Id extends ArmstrongId, HtmlProps, In
   /** props to spread onto the input element */
   htmlInputProps?: InputProps & DataAttributes;
 }
+
+export const getContentFromOption = <Id extends ArmstrongId>(option: IArmstrongOption<Id>, value) => {
+  return typeof option.content === 'function' ? option.content(value) : option.content;
+};
