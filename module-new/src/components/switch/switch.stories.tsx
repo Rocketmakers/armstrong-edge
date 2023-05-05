@@ -6,6 +6,8 @@ import * as React from 'react';
 import { useForm } from '../../hooks/form/form.hooks';
 import { Switch } from './switch.component';
 
+/** A toggle-able switch component with validation */
+
 export default {
   title: 'Controls/Switch',
   component: Switch,

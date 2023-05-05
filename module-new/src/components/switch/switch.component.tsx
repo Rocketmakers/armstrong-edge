@@ -53,15 +53,6 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   /** (Optional) Classname for the switch label. */
   labelClassName?: string;
 
-  /** (Optional) Indicates if switch is required */
-  required?: boolean;
-
-  /** the icon to use for validation errors */
-  errorIcon?: JSX.Element;
-
-  /** hide the icon on the given side if there is an active status - defaults to true */
-  hideIconOnStatus?: boolean;
-
   /** (Optional) Can be a string or {key, element} key is necessary for animating in new messages   */
   validationErrorMessages?: ValidationMessage[];
 
@@ -70,9 +61,6 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
 
   /** (Optional) Classname for the validation errors */
   validationErrorsClassName?: string;
-
-  /** Symbol to use as the required indicator on the label, defaults to "*" */
-  requiredIndicator?: React.ReactNode;
 }
 
 export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUndefined<boolean>>>(
@@ -87,15 +75,11 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
       // LABEL
       labelClassName,
       label,
-      required,
-      requiredIndicator,
-      hideIconOnStatus,
       // VALIDATION
       validationErrorMessages,
       validationErrorsClassName,
       scrollValidationErrorsIntoView,
       validationMode,
-      errorIcon,
     },
     ref
   ) => {
@@ -103,11 +87,8 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
 
     const globals = useArmstrongConfig({
       validationMode,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
       disableInputOnPending: disableOnPending,
-      requiredIndicator,
       scrollValidationErrorsIntoView,
-      validationErrorIcon: errorIcon,
     });
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -126,14 +107,13 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
 
     return (
       <>
-        <div className={'arm-switch-container'} data-disabled={disabled}>
+        <div className={'arm-switch-container'} data-disabled={disabled || disableOnPending}>
           <Root
             className={'arm-switch'}
             id={id}
             ref={ref}
-            disabled={disabled}
+            disabled={disabled || disableOnPending}
             defaultChecked={defaultChecked}
-            required={required}
             onCheckedChange={onCheckedChangeInternal}
             checked={boundValue ?? undefined}
           >
