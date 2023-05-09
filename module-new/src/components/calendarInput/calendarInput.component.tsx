@@ -31,7 +31,6 @@ export type TCalendarInputProps = {
 const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMonth, changeYear, date }) => {
   const today = new Date();
 
-  /** @todo - how to set locale? */
   const getLocaleMonth = (month: number) => {
     const dateX = new Date();
 
@@ -52,19 +51,21 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMont
   return (
     <>
       <div className="arm-calendar-input-header dropdown">
-        {/** @todo -- typings */}
         <SingleSelect
           className="arm-calendar-dropdown-select"
           options={monthOptions}
-          onSelectOption={newValue => changeMonth(newValue as number)}
+          onSelectOption={newValue => {
+            if (typeof newValue === 'number') changeMonth(newValue);
+          }}
           currentValue={date.getMonth()}
           isClearable={false}
         />
-        {/** @todo -- typings */}
         <SingleSelect
           className="arm-calendar-dropdown-select"
           options={yearOptions}
-          onSelectOption={newValue => changeYear(newValue as number)}
+          onSelectOption={newValue => {
+            if (typeof newValue === 'number') changeYear(newValue);
+          }}
           currentValue={date.getFullYear()}
           isClearable={false}
         />

@@ -1,8 +1,5 @@
-/* eslint-disable react/prop-types -- library prop validation inconsistent, bug with inline disable fla */
 import React from 'react';
-import { ImArrowDown2, ImCheckmark } from 'react-icons/im';
-import Select, { components, GetOptionLabel, GetOptionValue, GroupBase, OnChangeValue } from 'react-select';
-import CreatableSelect from 'react-select/creatable';
+import Select, { GetOptionLabel, GetOptionValue, GroupBase, OnChangeValue } from 'react-select';
 import SelectRef from 'react-select/dist/declarations/src/Select';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../../hooks/form';
@@ -21,7 +18,8 @@ import { Label } from '../../label';
 import { ValidationErrors } from '../../validationErrors';
 import { CustomDropdownIndicator, IDropdownIndicatorProps } from '../utils/selectDropdownIndicator';
 import { CustomLoadingIndicator, ILoadingIndicatorProps } from '../utils/selectLoadingIndicator';
-import { GroupedOption, isCreatingOption, isGroupedOptions } from './singleSelect.utils';
+import { SelectOption } from '../utils/selectOption';
+import { GroupedOption, isGroupedOptions } from './singleSelect.utils';
 
 import './singleSelect.theme.css';
 
@@ -102,6 +100,12 @@ export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> 
 
   /** indicates wether the input must be used to submit form */
   required?: boolean;
+
+  /** will scroll the validation errors into view when the length of validationErrors changes */
+  scrollValidationErrorsIntoView?: boolean;
+
+  /** Symbol to use as the required indicator on the label, defaults to "*" */
+  requiredIndicator?: React.ReactNode;
 }
 
 /** @todo - add creatable option to this component to simplify code */
@@ -131,16 +135,15 @@ const SingleSelectOnly = React.forwardRef(
       displaySize,
       label,
       required,
+      requiredIndicator,
+      scrollValidationErrorsIntoView,
     }: IReactSelectBaseProps<ArmstrongId>,
     ref: ReactSelectRef
   ) => {
     const globals = useArmstrongConfig({
       validationMode,
-      // hideInputErrorIconOnStatus: hideIconOnStatus,
-      // disableInputOnPending: disableOnPending,
-      // requiredIndicator,
-      // scrollValidationErrorsIntoView,
-      // inputStatusPosition: statusPosition,
+      requiredIndicator,
+      scrollValidationErrorsIntoView,
       validationErrorIcon: errorIcon,
     });
 
@@ -148,8 +151,8 @@ const SingleSelectOnly = React.forwardRef(
 
     const [value, setValue, config] = useBindingState(bind, {
       validationErrorMessages: errorMessages,
-      validationErrorIcon: errorIcon,
-      validationMode,
+      validationErrorIcon: globals.validationErrorIcon,
+      validationMode: globals.validationMode,
       value: currentValue,
       onChange: onSelectOption,
     });
@@ -252,14 +255,7 @@ const SingleSelectOnly = React.forwardRef(
           isSearchable={isSearchable}
           menuPlacement={position}
           components={{
-            Option: props => (
-              <components.Option {...props}>
-                <>
-                  {props.data.content}
-                  {props.isSelected && <ImCheckmark />}
-                </>
-              </components.Option>
-            ),
+            Option: SelectOption,
             DropdownIndicator: props =>
               CustomDropdownIndicator({
                 icon: dropdownIcon,
@@ -270,12 +266,6 @@ const SingleSelectOnly = React.forwardRef(
               CustomLoadingIndicator({
                 ...props,
               } as ILoadingIndicatorProps<ArmstrongId, false>),
-            // IndicatorsContainer: icProps => (
-            //   <components.IndicatorsContainer {...icProps}>
-            //     {validationErrorMessages.length > 0 && <Status error errorIcon={config.validationErrorIcon} />}
-            //     {icProps.children}
-            //   </components.IndicatorsContainer>
-            // ),
           }}
           closeMenuOnSelect={closeMenuOnSelect}
           styles={emptyStyles()}
@@ -285,7 +275,8 @@ const SingleSelectOnly = React.forwardRef(
           <ValidationErrors
             aria-label="single-select-validation-display"
             className="arm-single-select-validation-error-display"
-            validationMode={validationMode}
+            validationMode={globals.validationMode}
+            scrollIntoView={globals.scrollValidationErrorsIntoView}
             validationErrors={validationErrorMessages || []}
           />
         )}
@@ -299,236 +290,12 @@ const SingleSelectOnly = React.forwardRef(
 
 SingleSelectOnly.displayName = 'Single Select Only';
 
-const SingleSelectCreatable = React.forwardRef(
-  (
-    {
-      className,
-      displaySize,
-      bind,
-      options,
-      placeholder,
-      validationMode,
-      errorMessages,
-      errorIcon,
-      ariaLabel,
-      currentValue,
-      onSelectOption,
-      getOptionName,
-      getOptionValue,
-      isClearable,
-      isDisabled,
-      isLoading,
-      isSearchable,
-      dropdownIcon,
-      position,
-      formatOptionLabel,
-      closeMenuOnSelect,
-      label,
-      required,
-    }: IReactSelectBaseProps<ArmstrongId>,
-    ref: ReactSelectRef
-  ) => {
-    const globals = useArmstrongConfig({
-      validationMode,
-      // hideInputErrorIconOnStatus: hideIconOnStatus,
-      // disableInputOnPending: disableOnPending,
-      // requiredIndicator,
-      // scrollValidationErrorsIntoView,
-      // inputStatusPosition: statusPosition,
-      validationErrorIcon: errorIcon,
-    });
-
-    const id = React.useId();
-
-    const [value, setValue, config] = useBindingState(bind, {
-      validationErrorMessages: errorMessages,
-      validationErrorIcon: errorIcon,
-      validationMode,
-      value: currentValue,
-      onChange: onSelectOption,
-    });
-
-    const { validationErrorMessages } = config;
-
-    const handleChange = React.useCallback(
-      (newValue: OnChangeValue<IArmstrongReactSelectOption<ArmstrongId>, false>) => {
-        setValue?.(newValue?.id);
-        onSelectOption?.(newValue?.id as ArmstrongId);
-      },
-      [setValue, onSelectOption]
-    );
-
-    const selectedValue = React.useMemo(() => {
-      let foundOption: IArmstrongReactSelectOption<ArmstrongId> | undefined;
-      if (isGroupedOptions(options)) {
-        foundOption = options
-          .map(o => o.options)
-          .flat(1)
-          .find(o => o.id === value);
-      } else {
-        foundOption = options?.find(option => option.id === value);
-      }
-
-      if (foundOption) {
-        return foundOption;
-      }
-
-      if (value) {
-        return {
-          id: value,
-          name: value,
-        } as IArmstrongReactSelectOption<ArmstrongId>;
-      }
-      return undefined;
-    }, [options, value]);
-
-    const valueGetter = React.useCallback<
-      GetOptionValue<IArmstrongReactSelectOption<ArmstrongId> | IArmstrongReactSelectCreatingOption<ArmstrongId>>
-    >(
-      option => {
-        if (isCreatingOption(option)) {
-          return getOptionName?.(option) ?? option.label?.toString() ?? '';
-        }
-        return getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? '';
-      },
-      [getOptionValue, getOptionName]
-    );
-
-    const labelGetter = React.useCallback<
-      GetOptionLabel<IArmstrongReactSelectOption<ArmstrongId> | IArmstrongReactSelectCreatingOption<ArmstrongId>>
-    >(
-      option => {
-        if (isCreatingOption(option)) {
-          return getOptionName?.(option) ?? option.label?.toString() ?? '';
-        }
-        return getOptionName?.(option) ?? option.content ?? '';
-      },
-      [getOptionName]
-    );
-
-    const handleCreate = React.useCallback(
-      (newValue: string) => {
-        setValue?.(newValue as ArmstrongId);
-      },
-      [setValue]
-    );
-
-    const showValidation = !!validationErrorMessages?.length;
-
-    const emptyStyles = () => {
-      return {
-        control: () => ({}),
-        valueContainer: () => ({}),
-        indicatorsContainer: () => ({}),
-        indicatorSeparator: () => ({}),
-        dropdownIndicator: () => ({}),
-        loadingIndicator: () => ({}),
-        input: () => ({}),
-        singleValue: () => ({}),
-        multiValue: () => ({}),
-        multiValueLabel: () => ({}),
-        multiValueRemove: () => ({}),
-        clearIndicator: () => ({}),
-        menu: () => ({}),
-        menuList: () => ({}),
-        menuPortal: () => ({}),
-        noOptionsMessage: () => ({}),
-        loadingMessage: () => ({}),
-        placeholder: () => ({}),
-        option: () => ({}),
-        group: () => ({}),
-        groupHeading: () => ({}),
-      };
-    };
-
-    return (
-      <div
-        className={concat('arm-single-select-wrapper', 'arm-single-select-wrapper-creatable', className)}
-        data-size={displaySize}
-        data-error={showValidation}
-      >
-        {label && (
-          <Label
-            className={concat('arm-single-select-label', 'arm-input-base-label')}
-            required={required}
-            requiredIndicator={globals.requiredIndicator}
-          >
-            {label}
-          </Label>
-        )}
-        <CreatableSelect
-          ref={ref}
-          id={id}
-          onCreateOption={handleCreate}
-          value={selectedValue}
-          getOptionLabel={labelGetter}
-          getOptionValue={valueGetter}
-          options={options}
-          onChange={handleChange}
-          isClearable={isClearable}
-          formatOptionLabel={formatOptionLabel}
-          className="arm-single-select-creatable-input"
-          classNamePrefix="arm-single-select"
-          placeholder={placeholder || 'Please select...'}
-          aria-invalid={showValidation}
-          aria-label={ariaLabel || 'single-select-creatable-input'}
-          isDisabled={isDisabled}
-          isOptionDisabled={o => !!o.disabled}
-          isLoading={isLoading}
-          isSearchable={isSearchable}
-          menuPlacement={position}
-          components={{
-            Option: props => (
-              <components.Option {...props}>
-                <>
-                  {props.data.content}
-                  {props.isSelected && <ImCheckmark />}
-                </>
-              </components.Option>
-            ),
-            DropdownIndicator: props =>
-              CustomDropdownIndicator({
-                icon: dropdownIcon || ImArrowDown2,
-                ...props,
-              } as IDropdownIndicatorProps<ArmstrongId, false>),
-            IndicatorsContainer: props => (
-              <components.IndicatorsContainer {...props}>
-                {validationErrorMessages.length > 0 && config.validationErrorIcon}
-              </components.IndicatorsContainer>
-            ),
-          }}
-          styles={emptyStyles()}
-          closeMenuOnSelect={closeMenuOnSelect}
-        />
-
-        {showValidation && (
-          <ValidationErrors
-            aria-label="single-select-creatable-validation-display"
-            className="arm-single-select-creatable-validation-error-display"
-            validationMode={validationMode}
-            validationErrors={validationErrorMessages || []}
-          />
-        )}
-      </div>
-    );
-  }
-) as (<Id extends ArmstrongId>(
-  props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IReactSelectBaseProps<ArmstrongId>>;
-
-SingleSelectCreatable.displayName = 'Single Select Createable';
-
-/* eslint-enable react/prop-types -- both components above use react-select */
-
 export const SingleSelect = React.forwardRef<ReactSelectRef, IReactSelectBaseProps<ArmstrongId>>(
   ({ ...props }, ref) => {
-    switch (props.allowCreate) {
-      case true:
-        return <SingleSelectCreatable ref={ref} {...props} />;
-      default:
-        return <SingleSelectOnly ref={ref} {...props} />;
+    if (props.allowCreate) {
+      throw new Error('Not implemented');
     }
+    return <SingleSelectOnly ref={ref} {...props} />;
   }
 );
 

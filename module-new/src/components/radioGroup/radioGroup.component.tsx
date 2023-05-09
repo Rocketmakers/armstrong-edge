@@ -60,6 +60,12 @@ export interface IRadioGroupProps
 
   /** wether input's value can be changed by user */
   disabled?: boolean;
+
+  /** will scroll the validation errors into view when the length of validationErrors changes */
+  scrollValidationErrorsIntoView?: boolean;
+
+  /** Symbol to use as the required indicator on the label, defaults to "*" */
+  requiredIndicator?: React.ReactNode;
 }
 
 /** Render a list of radio inputs which binds to a single string */
@@ -81,16 +87,15 @@ export const RadioGroup = React.forwardRef(
       label,
       required,
       disabled,
+      scrollValidationErrorsIntoView,
+      requiredIndicator,
     }: IRadioGroupProps,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const globals = useArmstrongConfig({
       validationMode,
-      // hideInputErrorIconOnStatus: hideIconOnStatus,
-      // disableInputOnPending: disableOnPending,
-      // requiredIndicator,
-      // scrollValidationErrorsIntoView,
-      // inputStatusPosition: statusPosition,
+      requiredIndicator,
+      scrollValidationErrorsIntoView,
       validationErrorIcon: errorIcon,
     });
 

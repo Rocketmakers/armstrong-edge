@@ -41,11 +41,18 @@ export type TBaseCalendarInputCommonProps = Pick<
   /** JSX to render as the label - replaces name, can take a function which receives the active state of the option and returns the JSX to render */
   content?: React.ReactElement;
 
+  /** display size of input */
   displaySize?: DisplaySize;
 
   id?: string;
 
   required?: boolean;
+
+  /** will scroll the validation errors into view when the length of validationErrors changes */
+  scrollValidationErrorsIntoView?: boolean;
+
+  /** Symbol to use as the required indicator on the label, defaults to "*" */
+  requiredIndicator?: React.ReactNode;
 };
 
 export type TBaseCalendarInputSelectsRangeProps = {
@@ -84,11 +91,8 @@ export type TBaseCalendarInputProps = TBaseCalendarInputCommonProps &
 export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps> = props => {
   const globals = useArmstrongConfig({
     validationMode: props.validationMode,
-    // hideInputErrorIconOnStatus: hideIconOnStatus,
-    // disableInputOnPending: disableOnPending,
-    // requiredIndicator,
-    // scrollValidationErrorsIntoView,
-    // inputStatusPosition: statusPosition,
+    requiredIndicator: props.requiredIndicator,
+    scrollValidationErrorsIntoView: props.scrollValidationErrorsIntoView,
     validationErrorIcon: props.errorIcon,
   });
 
@@ -98,7 +102,7 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
 
   const commonBindingState = {
     validationErrorIcon: props.errorIcon,
-    validationMode: props.validationMode,
+    validationMode: globals.validationMode,
   };
 
   // SINGLE DATE...
@@ -183,7 +187,7 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
       {!!validationErrorMessages?.length && bindDateConfig.shouldShowValidationErrorMessage && (
         <ValidationErrors
           validationErrors={validationErrorMessages}
-          scrollIntoView={props.scrollValidationErrorsIntoView}
+          scrollIntoView={globals.scrollValidationErrorsIntoView}
           className="arm-calendar-errors"
         />
       )}
