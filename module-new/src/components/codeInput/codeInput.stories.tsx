@@ -94,6 +94,22 @@ export const Sizes: StoryObj<typeof CodeInput> = {
   },
 };
 
+export const ValidationError: StoryObj<typeof CodeInput> = {
+  ...Template,
+  args: {
+    parts: [2, '-', 2, '-', 2],
+    validationErrorMessages: ['Input is invalid'],
+    label: 'Code input',
+    required: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const wrapper = canvas.getByTitle('Code input');
+    const value = canvas.getByText('Value:');
+    const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
+  },
+};
+
 export const DifferentLengths: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {

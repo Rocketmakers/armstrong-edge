@@ -3,8 +3,10 @@ import * as React from 'react';
 import { IBindingProps, useBindingState, useForm } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { concat, findLastIndex } from '../../utils';
+import { useArmstrongConfig } from '../config';
 import { Input, InputDisplaySize } from '../input';
 import { IInputWrapperProps } from '../inputWrapper';
+import { Label } from '../label';
 import { StatusWrapper } from '../statusWrapper';
 import { ValidationErrors } from '../validationErrors';
 import { CodeInputPartDefinition, getLengthFromPart } from './codeInput.utils';
@@ -122,6 +124,15 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
 
   /** which size variant to use */
   displaySize?: InputDisplaySize;
+
+  /** Some optional label content */
+  label?: React.ReactNode;
+
+  /** Should the label show a required indicator? */
+  required?: boolean;
+
+  /** Symbol to use as the required indicator on the label, defaults to "*" */
+  requiredIndicator?: React.ReactNode;
 }
 
 export const CodeInput = React.forwardRef(
@@ -141,9 +152,17 @@ export const CodeInput = React.forwardRef(
       rightOverlay,
       scrollValidationErrorsIntoView,
       displaySize,
+      label,
+      required,
+      requiredIndicator,
     }: ICodeInputProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
+    const globals = useArmstrongConfig({
+      inputDisplaySize: displaySize,
+      requiredIndicator,
+    });
+
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -247,6 +266,11 @@ export const CodeInput = React.forwardRef(
     return (
       <>
         <div ref={ref} title="Code input">
+          {label && (
+            <Label className="arm-code-input-label" required={required} requiredIndicator={globals.requiredIndicator}>
+              {label}
+            </Label>
+          )}
           <form className={concat('arm-code-input', className)}>
             <StatusWrapper
               error={error || !!bindConfig.validationErrorMessages.length}
