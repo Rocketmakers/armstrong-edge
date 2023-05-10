@@ -1,0 +1,175 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Dialog } from './dialog.component';
+
+<Meta title="Modals/Dialog" component={Dialog} />
+
+# Dialogs
+
+Dialog component. Used to display a full-screen modal dialog to the user.
+- Can be state controlled with `open` and `onOpenChange` props.
+- Can be async by assigning a ref and calling the utility functions (a `useDialog` helper hook is available for this.)
+- Supports dynamic data in async mode, so that a form can be built as a reusable async dialog.
+
+<Canvas withSource="closed">
+  <Story id="modals-dialog--default" />
+</Canvas>
+
+## Contents
+
+- [Simple state controlled dialog](#simple-state)
+- [Async dialog](#async)
+- [Reusable dialog component](#reusable)
+- [Reusable form dialog](#reusable-form)
+- [Full props table](#props)
+
+## <a name="simple-state">Simple state controlled dialog</a>
+
+The simplest way to use an Armstrong dialog is with a React state bool like so:
+```tsx
+export const SimpleStateDialog: React.FC = () => {
+  const [open, setOpen] = React.useState(false)
+
+  return (
+    <div>
+      <Dialog open={open} onOpenChange={setOpen} title="Simple State Dialog">
+        <div>Here is some content</div>
+      </Dialog>
+      <Button onClick={() => setOpen(true)}>Open simple state dialog</Button>
+    </div>
+  )
+}
+```
+See it in action here:
+<Canvas withSource="closed">
+  <Story id="modals-dialog--simple-state-dialog" />
+</Canvas>
+
+## <a name="async">Async dialog</a>
+
+Armstrong dialogs can also be controlled via a promise based function, allowing developers to show a dialog and capture a response with a single line of async/await.
+
+A common use case for this is a basic confirmation dialog, like so:
+```tsx
+export const ConfirmationDialog: React.FC = () => {
+  const [dialogRef, { open, ok, cancel }] = useDialog();
+
+  const openDialog = React.useCallback(async () => {
+    const { action } = await open();
+    if (action === 'ok') {
+      alert('Dialog confirmed!');
+    }
+  }, [open]);
+
+  return (
+    <div>
+      <Dialog ref={dialogRef} title="Are you sure?">
+        <div>Actions have consequences, would you like to continue anyway?</div>
+        <Button onClick={ok}>OK</Button>
+        <Button onClick={cancel}>Cancel</Button>
+      </Dialog>
+      <Button onClick={openDialog}>Open confirmation dialog</Button>
+    </div>
+  );
+}
+```
+See it in action here (this example has some simple styling added for demo purposes:)
+<Canvas withSource="closed">
+  <Story id="modals-dialog--async-dialog" />
+</Canvas>
+
+## <a name="reusable">Reusable dialog component</a>
+
+If you're building a dialog component to be used throughout your app, the `useDialog` hook has you covered. Simply write your component with a `forwardRef` and pass the ref into the `useDialog` hook.
+
+**NOTE:** Reusable dialogs can still use the utility function returned from the `useDialog` hook just like the earlier example.
+```tsx
+export const ReusableDialog = React.forwardRef<DialogElement>((props, ref) => {
+  const [dialogRef, { cancel }] = useDialog(ref);
+
+  return (
+    <Dialog ref={dialogRef} title="Reusable dialog">
+      <div>This custom dialog can be used throughout the app just like an Armstrong dialog!</div>
+      <Button onClick={cancel}>Cancel</Button>
+    </Dialog>
+  );
+});
+
+export const ConsumingComponent: React.FC = () => {
+  const [customDialogRef, { open }] = useDialog();
+
+  return (
+    <div>
+      <ReusableDialog ref={customDialogRef} />
+      <Button onClick={open}>Open reusable dialog</Button>
+    </div>
+  )
+}
+```
+See it in action here:
+<Canvas withSource="closed">
+  <Story id="modals-dialog--reusable-dialog" />
+</Canvas>
+
+## <a name="reusable-form">Reusable form dialog</a>
+
+If you're wondering whether a reusable dialog can contain a form, the answer is yes! Any internal state or form data can be passed into the `data` prop of the Armstrong dialog. This data will then be available to consuming components through the promise result!
+
+A good example use case here is a login dialog, observe:
+
+```tsx
+
+interface ILoginData {
+  username: string;
+  password: string;
+}
+
+export const LoginDialog = React.forwardRef<DialogElement<ILoginData>>((props, ref) => {
+  const [dialogRef, { ok }] = useDialog(ref);
+  const { formProp, formState } = useForm<ILoginData>();
+
+  const onSubmit = React.useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    ok();
+  }, [ok]);
+
+  return (
+    <Dialog ref={dialogRef} title="Login" data={formState}>
+      <form onSubmit={onSubmit}>
+        <Input type="text" bind={formProp('username').bind()} placeholder="Username" />
+        <Input type="password" bind={formProp('password').bind()} placeholder="Password" />
+        <Button type="submit" disabled={!formState?.username || !formState?.password}>Login</Button>
+      </form>
+    </Dialog>
+  );
+});
+
+export const ConsumingComponent: StoryObj<typeof Dialog> = {
+  render: () => {
+    const [customDialogRef, { open }] = useDialog<ILoginData>();
+
+    const openDialog = React.useCallback(async () => {
+      const { action, data } = await open();
+      if (action === 'ok') {
+        alert(`Logging in as "${data?.username}" with password: ${data?.password}`);
+      }
+    }, [open]);
+
+    return (
+      <div>
+        <LoginDialog ref={customDialogRef} />
+        <Button onClick={openDialog}>Open login dialog</Button>
+      </div>
+    );
+  },
+};
+```
+See it in action here:
+
+P.S. Notice how the first form element within a dialog is automatically focussed, and the keyboard focus is automatically trapped within the dialog! 👌
+<Canvas withSource="closed">
+  <Story id="modals-dialog--reusable-form-dialog" />
+</Canvas>
+
+## <a name="props">Full props table</a>
+
+<ArgsTable of={Dialog} />

@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { ImSpinner2 } from 'react-icons/im';
+import { FaCheck } from 'react-icons/fa';
+import { ImMinus, ImSpinner2 } from 'react-icons/im';
 import { IoIosWarning } from 'react-icons/io';
+import { RiCloseLine } from 'react-icons/ri';
 
 import { stripNullOrUndefined } from '../../utils/objects';
 import type { ButtonDisplaySize, ButtonDisplayStyle } from '../button';
 import type { InputDisplaySize } from '../input';
+import type { ToastPosition } from '../toast';
 
 /**
  * Armstrong global config type
@@ -45,6 +48,27 @@ export interface IArmstrongConfigContext {
 
   /** the icon to use for the spinner */
   spinnerIcon?: JSX.Element;
+
+  /** the element to portal global overlays to (like toast and modal), defaults to the body element */
+  globalPortalTo?: Element | DocumentFragment;
+
+  /** the icon to use for the dialog close button */
+  dialogCloseButtonIcon?: JSX.Element | false;
+
+  /** how long ot show toast messages for in ms, defaults to 5000 */
+  toastDuration?: number;
+
+  /** where to position the toast, defaults to "bottom-right" */
+  toastPosition?: ToastPosition;
+
+  /** the icon to use for the dialog close button */
+  toastCloseButtonIcon?: JSX.Element | false;
+
+  /** A custom JSX.Element for the checked indicator. (Optional) */
+  checkboxCustomIndicator?: JSX.Element;
+
+  /** A custom JSX.Element for the indeterminate state indicator. (Optional) */
+  checkboxCustomIndeterminateIndicator?: JSX.Element;
 }
 
 /**
@@ -63,6 +87,13 @@ const systemDefaults: Required<IArmstrongConfigContext> = {
   requiredIndicator: '*',
   validationErrorIcon: <IoIosWarning size={24} />,
   spinnerIcon: <ImSpinner2 />,
+  dialogCloseButtonIcon: <RiCloseLine size={24} />,
+  globalPortalTo: document.body,
+  toastDuration: 5000,
+  toastPosition: 'bottom-right',
+  toastCloseButtonIcon: <RiCloseLine size={18} />,
+  checkboxCustomIndicator: <FaCheck />,
+  checkboxCustomIndeterminateIndicator: <ImMinus />,
 };
 
 const ArmstrongConfigContext = React.createContext<Required<IArmstrongConfigContext>>(systemDefaults);

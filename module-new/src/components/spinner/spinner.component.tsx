@@ -21,7 +21,13 @@ export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
   ({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => {
     const { spinnerIcon } = useArmstrongConfig({ spinnerIcon: icon });
     return (
-      <div ref={ref} className={concat('arm-spinner', className)} {...HTMLProps} data-fill-container={fillContainer}>
+      <div
+        ref={ref}
+        className={concat('arm-spinner', className)}
+        {...HTMLProps}
+        data-fill-container={fillContainer}
+        data-testid={'spinner'}
+      >
         <div className="arm-spinner-inner">{children || spinnerIcon}</div>
         {label && (
           <div className="arm-spinner-label">

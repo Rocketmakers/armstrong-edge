@@ -1,4 +1,6 @@
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
+import { within } from '@storybook/testing-library';
 import * as React from 'react';
 import { BiMinusCircle } from 'react-icons/bi';
 
@@ -22,6 +24,12 @@ const Template: StoryObj<typeof Spinner> = {
 
 export const Default: StoryObj<typeof Spinner> = {
   ...Template,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const spinner = canvas.getByTestId('spinner');
+
+    expect(spinner).toBeInTheDocument();
+  },
 };
 
 export const CustomIcon: StoryObj<typeof Spinner> = {
@@ -29,11 +37,26 @@ export const CustomIcon: StoryObj<typeof Spinner> = {
   args: {
     icon: <BiMinusCircle />,
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const spinner = canvas.getByTestId('spinner');
+
+    expect(spinner).toBeInTheDocument();
+  },
 };
 
 export const Labelled: StoryObj<typeof Spinner> = {
   ...Template,
   args: {
     label: 'Loading...',
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const spinner = canvas.getByTestId('spinner');
+
+    expect(spinner).toBeInTheDocument();
+
+    const label = canvas.getByText(args.label as string);
+    expect(label).toBeVisible();
   },
 };
