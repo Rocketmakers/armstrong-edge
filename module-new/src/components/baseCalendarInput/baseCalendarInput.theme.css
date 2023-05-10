@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 /* stylelint-disable selector-class-pattern -- react datepicker internals */
 .arm-base-calendar-input {
   position: relative;
@@ -5,6 +6,11 @@
   left: 0;
   display: inline-block;
   font-size: var(--arm-font-size-small);
+}
+
+/* override inline library styles */
+.react-datepicker-popper .react-datepicker__triangle {
+left: calc(-1 * var(--arm-spacing-medium)) !important;
 }
 
 .arm-base-calendar-input-container {
@@ -42,24 +48,24 @@
   background-color: var(--arm-color-grey-100);
 }
 
+/** FOCUS **/
+
+.arm-base-calendar-input-container input:focus {
+  outline: 0;
+  }
+  
+  .arm-base-calendar-input-container:focus-within {
+    box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-grey-1000);
+  }
+  
+  .arm-base-calendar-input[data-error="true"] .arm-base-calendar-input-container:focus-within {
+    box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-negative);
+  }  
+
 /* ERROR */
 
 .arm-base-calendar-input[data-error="true"] .arm-base-calendar-input-container {
   border-color: var(--arm-color-negative);
-}
-
-/** FOCUS **/
-
-.arm-base-calendar-input-container input:focus {
-outline: 0;
-}
-
-.arm-base-calendar-input-container:focus-within {
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-grey-1000);
-}
-
-.arm-base-calendar-input[data-error="true"] .arm-base-calendar-input-container:focus-within {
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-negative);
 }
 
 .arm-base-calendar-input[data-size="small"] {

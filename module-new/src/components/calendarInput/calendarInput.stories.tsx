@@ -81,7 +81,7 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
         <h2>Small</h2>
         <CalendarInput
           config={{ locale: enGB }}
-          dateSelectionHeader="dropdown"
+          variant="dropdown"
           displaySize="small"
           bind={formProp('date').bind()}
           content={<>Small calendar input</>}
@@ -90,7 +90,7 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
         <h2>Medium</h2>
         <CalendarInput
           config={{ locale: enGB }}
-          dateSelectionHeader="dropdown"
+          variant="dropdown"
           displaySize="medium"
           bind={formProp('date2').bind()}
           content={<>Medium calendar input</>}
@@ -99,7 +99,7 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
         <h2>Large</h2>
         <CalendarInput
           config={{ locale: enGB }}
-          dateSelectionHeader="dropdown"
+          variant="dropdown"
           displaySize="large"
           bind={formProp('date3').bind()}
           content={<>Large calendar input</>}
@@ -171,13 +171,12 @@ export const Disabled: StoryObj<typeof CalendarInput> = {
   },
 };
 
-/** @todo -- remove input border and icon when calendar only */
-export const CalendarOnly: StoryObj<typeof CalendarInput> = {
+export const TimeOnly: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
     const { formProp } = useForm<{ date?: Date }>({ date: undefined });
-    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB, inline: true }} key="calendar-only" />;
+    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="time" />;
   },
 };
 
@@ -186,7 +185,7 @@ export const Swipe01: StoryObj<typeof CalendarInput> = {
 
   render: () => {
     const { formProp } = useForm<{ date?: Date }>({ date: undefined });
-    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} dateSelectionHeader="swipe01" />;
+    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="swipe01" />;
   },
 };
 
@@ -197,7 +196,7 @@ export const Dropdown: StoryObj<typeof CalendarInput> = {
 
   render: () => {
     const { formProp } = useForm<{ date?: Date }>({ date: undefined });
-    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} dateSelectionHeader="dropdown" />;
+    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="dropdown" />;
   },
 };
 
@@ -215,7 +214,7 @@ export const Range: StoryObj<typeof CalendarInput> = {
         startBind={formProp('startDate').bind()}
         endBind={formProp('endDate').bind()}
         config={{ locale: enGB }}
-        dateSelectionHeader="swipe01"
+        variant="swipe01"
       />
     );
   },
@@ -233,7 +232,7 @@ export const MinMaxDays: StoryObj<typeof CalendarInput> = {
       <CalendarInput
         bind={formProp('date').bind()}
         config={{ locale: enGB, minDate: new Date(), maxDate: addDays(new Date(), 5) }}
-        dateSelectionHeader="swipe01"
+        variant="swipe01"
       />
     );
   },
@@ -274,7 +273,7 @@ export const RangeValidation: StoryObj<typeof CalendarInput> = {
         startBind={formProp('startDate').bind()}
         endBind={formProp('endDate').bind()}
         config={{ locale: enGB }}
-        dateSelectionHeader="swipe01"
+        variant="swipe01"
       />
     );
   },

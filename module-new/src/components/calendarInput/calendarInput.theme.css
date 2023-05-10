@@ -23,21 +23,17 @@
   justify-content: flex-end;
 }
 
-.arm-calendar-dropdown-select {
+.arm-calendar-dropdown-select[data-size="small"] {
   width: unset;
 }
 
-.arm-calendar-dropdown-select .arm-single-select__control {
-  margin: 0;
+.arm-calendar-dropdown-select[data-size="small"] .arm-select__control {
+  margin: var(--arm-spacing-xxxsmall);
   border: none;
 }
 
-.arm-calendar-dropdown-select .arm-single-select__indicators {
-  padding-right: var(--arm-spacing-xsmall);
-}
-
-.arm-calendar-dropdown-select .arm-single-select__indicator-separator {
-  background-color: transparent;
+.arm-calendar-dropdown-select[data-size="small"] .arm-select__indicator-separator {
+  display: none;
 }
 
 .arm-swipe01-date {
@@ -127,6 +123,7 @@
   background-color: transparent;
 }
 
+/* override internal library styles */
 .arm-calendar-input .react-datepicker__day:empty {
   background-color: transparent !important;
   padding: 10.65px;

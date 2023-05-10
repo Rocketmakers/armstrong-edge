@@ -11,6 +11,6 @@ export interface IDropdownIndicatorProps<Id extends ArmstrongId, isMulti extends
   icon: JSX.Element;
 }
 
-export const CustomDropdownIndicator: React.FC<IDropdownIndicatorProps<any, boolean>> = props => {
+export const CustomDropdownIndicator: React.FC<IDropdownIndicatorProps<ArmstrongId, boolean>> = props => {
   return <DropdownIndicator {...props}>{props.icon}</DropdownIndicator>;
 };

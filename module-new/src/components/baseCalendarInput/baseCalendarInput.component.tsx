@@ -4,6 +4,7 @@ import ReactDatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { ImCalendar } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../hooks/form';
+import { flatten } from '../../utils';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';
@@ -53,6 +54,9 @@ export type TBaseCalendarInputCommonProps = Pick<
 
   /** Symbol to use as the required indicator on the label, defaults to "*" */
   requiredIndicator?: React.ReactNode;
+
+  /** icon to render within the input */
+  inputIcon?: JSX.Element;
 };
 
 export type TBaseCalendarInputSelectsRangeProps = {
@@ -97,6 +101,7 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
   });
 
   const singleValue = !props.selectsRange ? props.value : undefined;
+
   const startValue = props.selectsRange ? props.startValue : undefined;
   const endValue = props.selectsRange ? props.endValue : undefined;
 
@@ -138,16 +143,15 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
     ? [...bindStartDateConfig.validationErrorMessages, ...bindEndDateConfig.validationErrorMessages]
     : bindDateConfig.validationErrorMessages;
 
+  const error = !!validationErrorMessages?.length || props.error;
+  const shouldShowErrorIcon = (globals.validationMode === 'both' || globals.validationMode === 'icon') && !!error;
+
   return (
     <div
       className={concat('arm-input', 'arm-base-calendar-input', props.className)}
       data-disabled={props.disabled || props.pending}
-      data-error={props.error || !!validationErrorMessages?.length}
+      data-error={error}
       data-size={props.displaySize}
-      // onClick={e => {
-      //   e.preventDefault();
-      //   e.stopPropagation();
-      // }}
     >
       <Label
         className={concat('arm-radio-group-label')}
@@ -157,9 +161,7 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
         {props.content}
       </Label>
       <div className={'arm-base-calendar-input-container'}>
-        <div className="arm-calendar-icon">
-          <ImCalendar />
-        </div>
+        <div className="arm-calendar-icon">{props.inputIcon}</div>
         <ReactDatePicker
           {...BaseCalendarInput.defaultProps?.config}
           {...props.config}
@@ -178,13 +180,9 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
           endDate={endDate}
         />
 
-        <Status
-          error={bindDateConfig.shouldShowValidationErrorIcon && (!!validationErrorMessages?.length || props.error)}
-          pending={props.pending}
-          errorIcon={bindDateConfig.validationErrorIcon}
-        />
+        <Status error={shouldShowErrorIcon} pending={props.pending} errorIcon={globals.validationErrorIcon} />
       </div>
-      {!!validationErrorMessages?.length && bindDateConfig.shouldShowValidationErrorMessage && (
+      {!!validationErrorMessages?.length && (
         <ValidationErrors
           validationErrors={validationErrorMessages}
           scrollIntoView={globals.scrollValidationErrorsIntoView}
@@ -198,5 +196,6 @@ export const BaseCalendarInput: React.FunctionComponent<TBaseCalendarInputProps>
 BaseCalendarInput.defaultProps = {
   validationMode: 'both',
   selectsRange: false,
+  inputIcon: <ImCalendar />,
   config: { locale: enGB, dateFormat: 'dd/MM/yyyy' },
 };

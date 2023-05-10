@@ -21,3 +21,29 @@ export function isCreatingOption<Id extends NullOrUndefined<ArmstrongId>>(
 ): option is IArmstrongReactSelectCreatingOption<Id> {
   return !!option?.hasOwnProperty('__isNew__');
 }
+
+export const emptyStyles = () => {
+  return {
+    control: () => ({}),
+    valueContainer: () => ({}),
+    indicatorsContainer: () => ({}),
+    indicatorSeparator: () => ({}),
+    dropdownIndicator: () => ({}),
+    loadingIndicator: () => ({}),
+    input: () => ({}),
+    singleValue: () => ({}),
+    multiValue: () => ({}),
+    multiValueLabel: () => ({}),
+    multiValueRemove: () => ({}),
+    clearIndicator: () => ({}),
+    menu: () => ({}),
+    menuList: () => ({}),
+    menuPortal: () => ({}),
+    noOptionsMessage: () => ({}),
+    loadingMessage: () => ({}),
+    placeholder: () => ({}),
+    option: () => ({}),
+    group: () => ({}),
+    groupHeading: () => ({}),
+  };
+};

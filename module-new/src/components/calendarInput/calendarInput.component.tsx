@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import * as React from 'react';
 import { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
-import { ImArrowLeft2, ImArrowRight2 } from 'react-icons/im';
+import { ImArrowLeft2, ImArrowRight2, ImCalendar, ImClock } from 'react-icons/im';
 
 import { IArmstrongReactSelectOption } from '../../types';
 import { concat } from '../../utils';
@@ -15,11 +15,13 @@ type DisplaySize = 'small' | 'medium' | 'large';
 
 export type TCalendarInputProps = {
   /** swipe02 is default */
-  dateSelectionHeader?: 'swipe01' | 'swipe02' | 'dropdown';
+  variant?: 'swipe01' | 'swipe02' | 'dropdown' | 'time';
 
   displaySize?: DisplaySize;
 
   locale?: TBaseDatePickerConfig['locale'];
+
+  inputIcon?: JSX.Element;
 
   /** default to english */
   language?: {
@@ -55,19 +57,21 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMont
           className="arm-calendar-dropdown-select"
           options={monthOptions}
           onSelectOption={newValue => {
-            if (typeof newValue === 'number') changeMonth(newValue);
+            changeMonth(newValue);
           }}
           currentValue={date.getMonth()}
           isClearable={false}
+          displaySize="small"
         />
         <SingleSelect
           className="arm-calendar-dropdown-select"
           options={yearOptions}
           onSelectOption={newValue => {
-            if (typeof newValue === 'number') changeYear(newValue);
+            changeYear(newValue);
           }}
           currentValue={date.getFullYear()}
           isClearable={false}
+          displaySize="small"
         />
       </div>
     </>
@@ -122,36 +126,43 @@ const renderDayContents = day => {
  * the following config is overridden: customInput, renderCustomHeader, locale
  */
 export const CalendarInput: React.FC<TCalendarInputProps> = ({
-  dateSelectionHeader,
+  variant,
   locale,
   language,
   displaySize,
+  inputIcon,
   ...props
 }) => {
   const renderCustomHeader = React.useCallback(
     (customHeaderProps: ReactDatePickerCustomHeaderProps) => {
       return (
         <div className="customer-header-container">
-          {dateSelectionHeader === 'dropdown' && <DropdownHeader {...customHeaderProps} />}
-          {dateSelectionHeader === 'swipe01' && <Swipe01Header {...customHeaderProps} />}
-          {(!dateSelectionHeader || dateSelectionHeader === 'swipe02') && <Swipe02Header {...customHeaderProps} />}
+          {variant === 'dropdown' && <DropdownHeader {...customHeaderProps} />}
+          {variant === 'swipe01' && <Swipe01Header {...customHeaderProps} />}
+          {(!variant || variant === 'swipe02') && <Swipe02Header {...customHeaderProps} />}
         </div>
       );
     },
-    [dateSelectionHeader]
+    [variant]
   );
 
   const config = React.useMemo<TBaseDatePickerConfig>(() => {
     return {
+      // overridable with config
       monthsShown: props.selectsRange ? 2 : 1,
+      dateFormat: variant === 'time' ? 'hh:mm aa' : undefined,
 
       ...props.config,
 
       renderCustomHeader: props.selectsRange ? undefined : renderCustomHeader,
       renderDayContents,
+      showTimeSelect: variant === 'time',
+      showTimeSelectOnly: variant === 'time',
       locale,
     };
-  }, [renderCustomHeader, locale, props.config, props.selectsRange]);
+  }, [renderCustomHeader, locale, props.config, props.selectsRange, variant]);
+
+  const fallbackInputIcon = variant === 'time' ? <ImClock /> : <ImCalendar />;
 
   return (
     <BaseCalendarInput
@@ -159,6 +170,7 @@ export const CalendarInput: React.FC<TCalendarInputProps> = ({
       className={concat('arm-calendar-input', props.className)}
       config={config}
       displaySize={displaySize}
+      inputIcon={inputIcon || fallbackInputIcon}
     />
   );
 };

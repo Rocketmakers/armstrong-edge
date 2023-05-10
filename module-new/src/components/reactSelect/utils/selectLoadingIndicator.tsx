@@ -10,6 +10,6 @@ export interface ILoadingIndicatorProps<Id extends ArmstrongId, IsMulti extends 
   icon: JSX.Element;
 }
 
-export const CustomLoadingIndicator: React.FC<ILoadingIndicatorProps<ArmstrongId, boolean>> = () => {
-  return <Spinner className="arm-status-spinner" fillContainer={false} icon={<ImSpinner2 />} />;
+export const CustomLoadingIndicator: React.FC<ILoadingIndicatorProps<ArmstrongId, boolean>> = props => {
+  return <Spinner className="arm-status-spinner" fillContainer={false} icon={props.icon} />;
 };

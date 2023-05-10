@@ -100,6 +100,22 @@ export const Disabled: StoryObj<typeof SingleSelect> = {
   },
 };
 
+export const Sizes: StoryObj<typeof SingleSelect> = {
+  ...Template,
+  render: () => {
+    return (
+      <div>
+        <h2>Small</h2>
+        <SingleSelect options={options} required label={<>Single select</>} displaySize="small" />
+        <h2>Medium</h2>
+        <SingleSelect options={options} required label={<>Single select</>} displaySize="medium" />
+        <h2>Large</h2>
+        <SingleSelect options={options} required label={<>Single select</>} displaySize="large" />
+      </div>
+    );
+  },
+};
+
 export const ValidationError: StoryObj<typeof SingleSelect> = {
   ...Template,
   render: () => {
@@ -107,7 +123,6 @@ export const ValidationError: StoryObj<typeof SingleSelect> = {
       <div>
         <h2>Validation mode - both</h2>
         <SingleSelect
-          isClearable
           validationMode="both"
           errorMessages={['This field is required']}
           options={options}
@@ -116,7 +131,6 @@ export const ValidationError: StoryObj<typeof SingleSelect> = {
         />
         <h2>Validation mode - icon only</h2>
         <SingleSelect
-          isClearable
           validationMode="icon"
           errorMessages={['This field is required']}
           options={options}
@@ -125,7 +139,6 @@ export const ValidationError: StoryObj<typeof SingleSelect> = {
         />
         <h2>Validation mode - message only</h2>
         <SingleSelect
-          isClearable
           validationMode="message"
           errorMessages={['This field is required']}
           options={options}
@@ -134,7 +147,6 @@ export const ValidationError: StoryObj<typeof SingleSelect> = {
         />
         <h2>Icon on left</h2>
         <SingleSelect
-          isClearable
           validationMode="icon"
           errorMessages={['This field is required']}
           options={options}

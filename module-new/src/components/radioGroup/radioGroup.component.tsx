@@ -2,7 +2,13 @@ import * as RadixRadioGroup from '@radix-ui/react-radio-group';
 import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, IArmstrongOptionWithInput } from '../../types';
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongId,
+  ArmstrongVFCProps,
+  IArmstrongOptionWithInput,
+} from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';
@@ -11,16 +17,9 @@ import { ValidationErrors } from '../validationErrors';
 
 import './radioGroup.theme.css';
 
-type Id = string;
 type DisplaySize = 'small' | 'medium' | 'large';
 
-export type IRadioGroupOption = IArmstrongOptionWithInput<
-  Id,
-  Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange' | 'type' | 'ref'>,
-  {}
->;
-
-export interface IRadioGroupProps
+export interface IRadioGroupProps<Id extends ArmstrongId>
   extends Pick<
     IInputWrapperProps,
     'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
@@ -29,7 +28,14 @@ export interface IRadioGroupProps
   bind?: IBindingProps<Id>;
 
   /** The options to be shown in the input */
-  options: IRadioGroupOption[];
+  options: IArmstrongOptionWithInput<
+    Id,
+    Omit<
+      React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+      'onChange' | 'type' | 'ref'
+    >,
+    {}
+  >[];
 
   /** CSS className property */
   className?: string;
@@ -89,7 +95,7 @@ export const RadioGroup = React.forwardRef(
       disabled,
       scrollValidationErrorsIntoView,
       requiredIndicator,
-    }: IRadioGroupProps,
+    }: IRadioGroupProps<ArmstrongId>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
     const globals = useArmstrongConfig({
@@ -124,7 +130,7 @@ export const RadioGroup = React.forwardRef(
           data-error={error || !!validationErrorMessages?.length}
           data-disabled={disabled}
           data-size={displaySize}
-          value={boundValue}
+          value={boundValue?.toString() ?? 'undefined'}
           onValueChange={newValue => setBoundValue(newValue)}
           disabled={disabled}
         >
@@ -134,8 +140,8 @@ export const RadioGroup = React.forwardRef(
               <div className="arm-radio-group-item-container" key={option.id}>
                 <RadixRadioGroup.Item
                   className="arm-radio-group-item"
-                  value={option.id}
-                  id={option.id}
+                  value={option.id?.toString() ?? 'undefined'}
+                  id={option.id?.toString()}
                   disabled={option.disabled}
                 >
                   <RadixRadioGroup.Indicator
@@ -161,8 +167,8 @@ export const RadioGroup = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as ((props: ArmstrongVFCProps<IRadioGroupProps, HTMLDivElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IRadioGroupProps>;
+) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
 
 RadioGroup.displayName = 'Radio Group';
 
