@@ -28,12 +28,14 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
 
   /** which size variant to use */
   displaySize?: InputDisplaySize;
+
+  onPaste: (event: React.ClipboardEvent<HTMLInputElement>) => void;
 }
 
 /** an individual input from the CodeInput */
 const CodeInputPart = React.forwardRef(
   <TBind extends NullOrUndefined<string>>(
-    { part, onChange, onKeyDown, bind, displaySize }: ICodeInputPartProps<TBind>,
+    { part, onChange, onKeyDown, bind, displaySize, onPaste }: ICodeInputPartProps<TBind>,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const length = React.useMemo(() => getLengthFromPart(part), [part]);
@@ -55,6 +57,7 @@ const CodeInputPart = React.forwardRef(
           onClick={event => event.currentTarget.select()}
           maxLength={part}
           displaySize={displaySize}
+          onPaste={onPaste}
         />
       );
     }
@@ -183,6 +186,7 @@ export const CodeInput = React.forwardRef(
       [parts]
     );
 
+    /** @todo - why is focussing selecting before the final character? */
     const goPreviousPart = React.useCallback(
       (partIndex: number) => {
         const previousIndex = findLastIndex(parts.slice(0, partIndex), part => typeof part !== 'string');
@@ -195,15 +199,15 @@ export const CodeInput = React.forwardRef(
     );
 
     const getValueForPart = React.useCallback(
-      (partIndex: number) => {
+      (partIndex: number, value: NullOrUndefined<string>) => {
         const sliceStart = parts
           .slice(0, partIndex)
           .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
         const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
 
-        return boundValue?.slice(sliceStart, sliceEnd) || '';
+        return value?.slice(sliceStart, sliceEnd) || '';
       },
-      [boundValue, parts]
+      [parts]
     );
 
     const onPartValueChange = React.useCallback(
@@ -219,9 +223,35 @@ export const CodeInput = React.forwardRef(
       [parts, goNextPart]
     );
 
+    const onPaste = React.useCallback(
+      (event: React.ClipboardEvent<HTMLInputElement>) => {
+        event.preventDefault();
+
+        const pasteValue = event.clipboardData.getData('text/plain');
+        const target = event.target as HTMLInputElement;
+        const partIndex = inputRefs.current.indexOf(target);
+        const selectionIndex = target.selectionEnd;
+        const insertIndex =
+          new Array(partIndex).fill(null).reduce((memo, _, i) => {
+            const part = parts[i];
+            return memo + getLengthFromPart(part);
+          }, 0) + selectionIndex;
+
+        const startValue = boundValue?.slice(0, insertIndex) ?? '';
+        const endValue = boundValue?.slice(insertIndex) ?? '';
+
+        const newValue = startValue + pasteValue + endValue;
+
+        console.log(boundValue, insertIndex, startValue, endValue, newValue);
+
+        setBoundValue(newValue as TBind);
+      },
+      [setBoundValue, boundValue, parts]
+    );
+
     const boundValueArray = React.useMemo(() => {
-      return parts.map((_, partIndex) => getValueForPart(partIndex));
-    }, [getValueForPart, parts]);
+      return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
+    }, [getValueForPart, parts, boundValue]);
 
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
@@ -289,6 +319,7 @@ export const CodeInput = React.forwardRef(
                     key={index}
                     onChange={event => onPartValueChange(event, index)}
                     onKeyDown={event => onKeyDown(event, index, +part)}
+                    onPaste={onPaste}
                     ref={r => {
                       inputRefs.current[index] = r;
                     }}
