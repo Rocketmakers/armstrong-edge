@@ -104,9 +104,9 @@ export const ValidationError: StoryObj<typeof CodeInput> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const wrapper = canvas.getByTitle('Code input');
-    const value = canvas.getByText('Value:');
-    const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
+
+    const label = canvas.getByText('Input is invalid');
+    expect(label).toBeVisible();
   },
 };
 
@@ -154,20 +154,20 @@ export const WithTextBetween: StoryObj<typeof CodeInput> = {
   },
 };
 
-export const WithIcons: StoryObj<typeof CodeInput> = {
+export const WithOverlays: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
     parts: [
       1,
       {
         length: 1,
-        rightOverlay: <ImChrome />,
-        leftOverlay: <ImChrome />,
+        rightOverlay: '№',
+        leftOverlay: '№',
       },
       1,
     ],
-    rightOverlay: <ImChrome />,
-    leftOverlay: <ImChrome />,
+    rightOverlay: '№',
+    leftOverlay: '№',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -182,9 +182,6 @@ export const WithIcons: StoryObj<typeof CodeInput> = {
     await waitFor(() => {
       expect(value).toHaveTextContent('Value: abc');
     });
-    expect(inputs[1].nextSibling).toHaveAttribute('data-icon-set', 'Icomoon');
-    expect(inputs[1].nextSibling).toHaveAttribute('data-i', 'chrome');
-    // expect(within(wrapper).getByTitle(`${icon.icon} icon on left`)).toHaveAttribute('data-i', icon.icon);
-    // expect(within(wrapper).getByTitle(`${icon.icon} icon on right`)).toHaveAttribute('data-i', icon.icon);
+    expect(inputs[1].nextSibling).toHaveTextContent('№');
   },
 };

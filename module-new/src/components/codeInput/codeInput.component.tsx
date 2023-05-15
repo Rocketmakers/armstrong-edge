@@ -226,23 +226,26 @@ export const CodeInput = React.forwardRef(
     const onPaste = React.useCallback(
       (event: React.ClipboardEvent<HTMLInputElement>) => {
         event.preventDefault();
-
         const pasteValue = event.clipboardData.getData('text/plain');
         const target = event.target as HTMLInputElement;
+
         const partIndex = inputRefs.current.indexOf(target);
-        const selectionIndex = target.selectionEnd;
-        const insertIndex =
+
+        const selectionStart = Math.min(target.selectionStart ?? 0, target.selectionEnd ?? 0);
+        const selectionEnd = Math.max(target.selectionStart ?? 0, target.selectionEnd ?? 0);
+
+        const insertionStart =
           new Array(partIndex).fill(null).reduce((memo, _, i) => {
             const part = parts[i];
             return memo + getLengthFromPart(part);
-          }, 0) + selectionIndex;
+          }, 0) + selectionStart;
 
-        const startValue = boundValue?.slice(0, insertIndex) ?? '';
-        const endValue = boundValue?.slice(insertIndex) ?? '';
+        const insertionEnd = insertionStart + (selectionEnd - selectionStart);
 
-        const newValue = startValue + pasteValue + endValue;
+        const startSlice = boundValue?.slice(0, insertionStart) ?? '';
+        const endSlice = boundValue?.slice(insertionEnd) ?? '';
 
-        console.log(boundValue, insertIndex, startValue, endValue, newValue);
+        const newValue = startSlice + pasteValue + endSlice;
 
         setBoundValue(newValue as TBind);
       },
@@ -313,7 +316,6 @@ export const CodeInput = React.forwardRef(
                 {leftOverlay}
                 {parts?.map((part, index) => (
                   <CodeInputPart
-                    data-position={index}
                     bind={formProp('parts', index).bind()}
                     part={part}
                     key={index}
