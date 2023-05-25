@@ -19,11 +19,11 @@ export const Default: Story = {
   args: {
     label: 'Airplane mode',
   },
-  play: async ({ canvasElement }) => {
+  play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const switchInput = await canvas.getByRole('switch');
-    await switchInput.click();
-    const checked = await switchInput.getAttribute('aria-checked');
+    const switchInput = canvas.getByRole('switch');
+    switchInput.click();
+    const checked = switchInput.getAttribute('aria-checked');
     expect(checked).toBe('true');
   },
 };
@@ -33,9 +33,9 @@ export const Disabled: Story = {
     label: 'Switch is disabled',
     disabled: true,
   },
-  play: async ({ canvasElement }) => {
+  play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const checkbox = await canvas.getByRole('switch');
+    const checkbox = canvas.getByRole('switch');
     expect(checkbox.getAttribute('data-disabled'));
     userEvent.click(checkbox);
     expect(checkbox.getAttribute('aria-checked')).toBe('false');
@@ -47,9 +47,9 @@ export const ValidationError: Story = {
     label: 'Check',
     validationErrorMessages: ['An error has occurred'],
   },
-  play: async ({ canvasElement }) => {
+  play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const errorContainer = await canvas.getByText('An error has occurred');
+    const errorContainer = canvas.getByText('An error has occurred');
     expect(errorContainer).toBeVisible();
   },
 };
@@ -67,11 +67,11 @@ export const Bound: Story = {
       </>
     );
   },
-  play: async ({ canvasElement }) => {
+  play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const switchInput = canvas.getByRole('switch');
     const boundResult = canvas.getByTestId('bound-result');
-    await userEvent.click(switchInput);
+    userEvent.click(switchInput);
     expect(boundResult).toHaveTextContent('Bound value is checked');
   },
 };

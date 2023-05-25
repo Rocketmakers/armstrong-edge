@@ -1,7 +1,7 @@
 import { Root, SwitchProps, Thumb } from '@radix-ui/react-switch';
 import * as React from 'react';
 
-import { IBindingProps, useBindingState, ValidationMessage } from '../../hooks/form';
+import { IBindingProps, useBindingState } from '../../hooks/form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config/config.context';
@@ -13,18 +13,12 @@ import './switch.theme.css';
 
 export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<
-      React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+      React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
       'onChange' | 'checked'
     >,
     Pick<
       IInputWrapperProps,
-      | 'scrollValidationErrorsIntoView'
-      | 'validationMode'
-      | 'validationErrorMessages'
-      | 'error'
-      | 'pending'
-      | 'disabled'
-      | 'className'
+      'scrollValidationErrorsIntoView' | 'validationMode' | 'validationErrorMessages' | 'disabled' | 'className'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -35,31 +29,22 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   /** (Optional) A callback function (newValue: TData) => void to handle state when 'checked' is changed. */
   onCheckedChange?: (newValue: TBind) => void;
 
-  /** (Optional) called when the user updates the switch value */
-  onChange?: (newValue: TBind) => void;
-
   /** (Optional) The state of the switch when it is initially rendered. Use when you do not need to control its state. */
   defaultChecked?: boolean;
 
   /** (Optional) A boolean flag to disable the checkbox input. */
   disabled?: boolean;
 
-  /** when pending is true should also disable the input */
-  disableOnPending?: boolean;
-
   /** (Optional) A React.ReactNode to display a label for the switch input. */
   label?: React.ReactNode;
 
-  /** (Optional) Classname for the switch label. */
+  /** (Optional) Class name for the switch label. */
   labelClassName?: string;
-
-  /** (Optional) Can be a string or {key, element} key is necessary for animating in new messages   */
-  validationErrorMessages?: ValidationMessage[];
 
   /** (Optional) A boolean flag to automatically scroll validation error messages into view. */
   scrollValidationErrorsIntoView?: boolean;
 
-  /** (Optional) Classname for the validation errors */
+  /** (Optional) Class name for the validation errors */
   validationErrorsClassName?: string;
 }
 
@@ -71,7 +56,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
       onCheckedChange,
       defaultChecked,
       disabled,
-      disableOnPending,
+      className,
       // LABEL
       labelClassName,
       label,
@@ -80,14 +65,15 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
       validationErrorsClassName,
       scrollValidationErrorsIntoView,
       validationMode,
+      ...nativeProps
     },
     ref
   ) => {
-    const id = React.useId();
+    const generatedId = React.useId();
+    const id = nativeProps.id ?? generatedId;
 
     const globals = useArmstrongConfig({
       validationMode,
-      disableInputOnPending: disableOnPending,
       scrollValidationErrorsIntoView,
     });
 
@@ -107,12 +93,13 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
 
     return (
       <>
-        <div className={'arm-switch-container'} data-disabled={disabled || disableOnPending}>
+        <div className={concat('arm-switch-container', className)} data-disabled={disabled}>
           <Root
-            className={'arm-switch'}
+            {...nativeProps}
+            className="arm-switch"
             id={id}
             ref={ref}
-            disabled={disabled || disableOnPending}
+            disabled={disabled}
             defaultChecked={defaultChecked}
             onCheckedChange={onCheckedChangeInternal}
             checked={boundValue ?? undefined}
@@ -143,4 +130,4 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>;
 
-Switch.displayName = 'Input';
+Switch.displayName = 'Switch';

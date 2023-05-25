@@ -5,5 +5,6 @@
   "jest.jestCommandLine": "./module/node_modules/.bin/jest --config=./module/jest.config.ts",
   "eslint.workingDirectories": [
     "module"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

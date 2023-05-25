@@ -6,6 +6,7 @@ import { Dialog } from './dialog.component';
 # Dialogs
 
 Dialog component. Used to display a full-screen modal dialog to the user.
+
 - Can be state controlled with `open` and `onOpenChange` props.
 - Can be async by assigning a ref and calling the utility functions (a `useDialog` helper hook is available for this.)
 - Supports dynamic data in async mode, so that a form can be built as a reusable async dialog.
@@ -25,9 +26,10 @@ Dialog component. Used to display a full-screen modal dialog to the user.
 ## <a name="simple-state">Simple state controlled dialog</a>
 
 The simplest way to use an Armstrong dialog is with a React state bool like so:
+
 ```tsx
 export const SimpleStateDialog: React.FC = () => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   return (
     <div>
@@ -36,10 +38,12 @@ export const SimpleStateDialog: React.FC = () => {
       </Dialog>
       <Button onClick={() => setOpen(true)}>Open simple state dialog</Button>
     </div>
-  )
-}
+  );
+};
 ```
+
 See it in action here:
+
 <Canvas withSource="closed">
   <Story id="modals-dialog--simple-state-dialog" />
 </Canvas>
@@ -49,6 +53,7 @@ See it in action here:
 Armstrong dialogs can also be controlled via a promise based function, allowing developers to show a dialog and capture a response with a single line of async/await.
 
 A common use case for this is a basic confirmation dialog, like so:
+
 ```tsx
 export const ConfirmationDialog: React.FC = () => {
   const [dialogRef, { open, ok, cancel }] = useDialog();
@@ -70,9 +75,11 @@ export const ConfirmationDialog: React.FC = () => {
       <Button onClick={openDialog}>Open confirmation dialog</Button>
     </div>
   );
-}
+};
 ```
+
 See it in action here (this example has some simple styling added for demo purposes:)
+
 <Canvas withSource="closed">
   <Story id="modals-dialog--async-dialog" />
 </Canvas>
@@ -82,6 +89,7 @@ See it in action here (this example has some simple styling added for demo purpo
 If you're building a dialog component to be used throughout your app, the `useDialog` hook has you covered. Simply write your component with a `forwardRef` and pass the ref into the `useDialog` hook.
 
 **NOTE:** Reusable dialogs can still use the utility function returned from the `useDialog` hook just like the earlier example.
+
 ```tsx
 export const ReusableDialog = React.forwardRef<DialogElement>((props, ref) => {
   const [dialogRef, { cancel }] = useDialog(ref);
@@ -102,10 +110,12 @@ export const ConsumingComponent: React.FC = () => {
       <ReusableDialog ref={customDialogRef} />
       <Button onClick={open}>Open reusable dialog</Button>
     </div>
-  )
-}
+  );
+};
 ```
+
 See it in action here:
+
 <Canvas withSource="closed">
   <Story id="modals-dialog--reusable-dialog" />
 </Canvas>
@@ -117,7 +127,6 @@ If you're wondering whether a reusable dialog can contain a form, the answer is 
 A good example use case here is a login dialog, observe:
 
 ```tsx
-
 interface ILoginData {
   username: string;
   password: string;
@@ -127,17 +136,22 @@ export const LoginDialog = React.forwardRef<DialogElement<ILoginData>>((props, r
   const [dialogRef, { ok }] = useDialog(ref);
   const { formProp, formState } = useForm<ILoginData>();
 
-  const onSubmit = React.useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    ok();
-  }, [ok]);
+  const onSubmit = React.useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      ok();
+    },
+    [ok]
+  );
 
   return (
     <Dialog ref={dialogRef} title="Login" data={formState}>
       <form onSubmit={onSubmit}>
         <Input type="text" bind={formProp('username').bind()} placeholder="Username" />
         <Input type="password" bind={formProp('password').bind()} placeholder="Password" />
-        <Button type="submit" disabled={!formState?.username || !formState?.password}>Login</Button>
+        <Button type="submit" disabled={!formState?.username || !formState?.password}>
+          Login
+        </Button>
       </form>
     </Dialog>
   );
@@ -163,9 +177,11 @@ export const ConsumingComponent: StoryObj<typeof Dialog> = {
   },
 };
 ```
+
 See it in action here:
 
 P.S. Notice how the first form element within a dialog is automatically focussed, and the keyboard focus is automatically trapped within the dialog! 👌
+
 <Canvas withSource="closed">
   <Story id="modals-dialog--reusable-form-dialog" />
 </Canvas>
