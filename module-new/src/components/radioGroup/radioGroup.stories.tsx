@@ -1,6 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 import { ImCheckmark, ImCross } from 'react-icons/im';
 
@@ -45,14 +45,15 @@ export const Default: StoryObj<typeof RadioGroup> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const result = canvas.getByText('Bound value:');
-    const pink = canvas.getByText('pink').parentElement?.parentElement;
-    const red = canvas.getByText('red').parentElement?.parentElement;
-    userEvent.click(pink!.getElementsByTagName('input').item(0)!);
-    expect(result).toHaveTextContent('Bound value: 3');
-    userEvent.click(red!.getElementsByTagName('input').item(0)!);
-    expect(result).toHaveTextContent('Bound value: 1');
-    userEvent.click(pink!.getElementsByTagName('input').item(0)!);
-    expect(result).toHaveTextContent('Bound value: 3');
+    const [red, blue, pink, brown] = await canvas.findAllByRole('radio');
+    userEvent.click(red);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 1'));
+    userEvent.click(blue);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 2'));
+    userEvent.click(pink);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 3'));
+    userEvent.click(brown);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 4'));
   },
 };
 
@@ -86,10 +87,8 @@ export const Disabled: StoryObj<typeof RadioGroup> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const radio = await canvas.getByRole('radio');
-    expect(radio.getAttribute('data-disabled'));
-    userEvent.click(radio);
-    expect(radio.getAttribute('aria-checked')).toBe('false');
+    const radios = await canvas.findAllByRole('radio');
+    radios.forEach(r => expect(r).toHaveAttribute('data-disabled'));
   },
 };
 
@@ -156,10 +155,10 @@ export const CustomIcon: StoryObj<typeof RadioGroup> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const radioChecked = await canvas.getByRole('radio', { checked: true });
-    expect(radioChecked.getElementsByTagName('svg').length > 0);
-    const radioUnchecked = await canvas.getAllByRole('radio', { checked: false })[0];
-    expect(radioUnchecked.getElementsByTagName('svg').length === 0);
+    const radioChecked = await canvas.findByRole('radio', { checked: true });
+    expect(radioChecked.getElementsByTagName('svg').length).toBeGreaterThan(0);
+    const radiosUnchecked = await canvas.findAllByRole('radio', { checked: false });
+    radiosUnchecked.forEach(r => expect(r.getElementsByTagName('svg')).toHaveLength(0));
   },
 };
 
@@ -193,8 +192,8 @@ export const CustomIconUnchecked: StoryObj<typeof RadioGroup> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const radioUnchecked = await canvas.getAllByRole('radio', { checked: false })[0];
-    expect(radioUnchecked.getElementsByTagName('svg').length > 0);
+    const radiosUnchecked = await canvas.findAllByRole('radio', { checked: false });
+    radiosUnchecked.forEach(r => expect(r.getElementsByTagName('svg').length).toBeGreaterThan(0));
   },
 };
 
@@ -222,6 +221,7 @@ export const Sizes: StoryObj<typeof RadioGroup> = {
             { id: '3b', content: 'pink' },
             { id: '4b', content: 'brown' },
           ]}
+          displaySize="medium"
           label="Medium radio group"
           required
         />
@@ -239,5 +239,12 @@ export const Sizes: StoryObj<typeof RadioGroup> = {
         />
       </>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const [large, medium, small] = await canvas.findAllByRole('radiogroup');
+    expect(large).toHaveAttribute('data-size', 'large');
+    expect(medium).toHaveAttribute('data-size', 'medium');
+    expect(small).toHaveAttribute('data-size', 'small');
   },
 };

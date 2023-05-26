@@ -60,24 +60,23 @@
   border-color: var(--arm-color-info);
 }
 
-.arm-button[data-status="positive"][data-style="blank"] {
+.arm-button[data-status='positive'][data-style='blank'] {
   color: var(--arm-color-positive);
 }
 
-.arm-button[data-status="negative"][data-style="blank"] {
+.arm-button[data-status='negative'][data-style='blank'] {
   color: var(--arm-color-negative);
 }
 
-.arm-button[data-status="warning"][data-style="blank"] {
+.arm-button[data-status='warning'][data-style='blank'] {
   color: var(--arm-color-warning);
 }
 
-.arm-button[data-status="info"][data-style="blank"] {
+.arm-button[data-status='info'][data-style='blank'] {
   color: var(--arm-color-info);
 }
 
-
-.arm-button[data-status="positive"][data-style="secondary"] {
+.arm-button[data-status='positive'][data-style='secondary'] {
   background-color: var(--arm-color-positive-secondary);
 }
 
@@ -106,13 +105,13 @@
   color: var(--arm-button-outline-stroke-color);
 }
 
-.arm-button[data-style="blank"] {
+.arm-button[data-style='blank'] {
   background-color: transparent;
   border: none;
   color: var(--arm-button-outline-stroke-color);
 }
 
-.arm-button[data-size="small"] {
+.arm-button[data-size='small'] {
   padding: var(--arm-spacing-xxsmall) var(--arm-spacing-medium);
   font-size: var(--arm-font-size-xsmall);
 }

@@ -140,7 +140,7 @@ export const RadioGroup = React.forwardRef(
               <div className="arm-radio-group-item-container" key={option.id}>
                 <RadixRadioGroup.Item
                   className="arm-radio-group-item"
-                  value={option.id?.toString() ?? 'undefined'}
+                  value={option.id?.toString() ?? ''}
                   id={option.id?.toString()}
                   disabled={option.disabled}
                 >
@@ -171,5 +171,3 @@ export const RadioGroup = React.forwardRef(
   ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
 
 RadioGroup.displayName = 'Radio Group';
-
-RadioGroup.defaultProps = {};

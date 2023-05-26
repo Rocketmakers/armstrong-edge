@@ -1,8 +1,9 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { fireEvent, userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/testing-library';
+// eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
 import { addDays, format } from 'date-fns';
-// comment needed to prevent date-fns input lint fix bug
+// eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
 import { enGB } from 'date-fns/locale';
 import * as React from 'react';
 
@@ -266,6 +267,7 @@ export const RangeValidation: StoryObj<typeof CalendarInput> = {
     React.useEffect(() => {
       formProp('startDate').addValidationError('Invalid start date');
       formProp('endDate').addValidationError('Invalid end date');
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- effect trigger
     }, []);
     return (
       <CalendarInput
@@ -280,9 +282,7 @@ export const RangeValidation: StoryObj<typeof CalendarInput> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    await waitFor(() => {
-      expect(canvas.getByText('Invalid start date'));
-      expect(canvas.getByText('Invalid end date'));
-    });
+    await waitFor(() => expect(canvas.getByText('Invalid start date')));
+    await waitFor(() => expect(canvas.getByText('Invalid end date')));
   },
 };

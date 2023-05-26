@@ -48,6 +48,7 @@
     "@storybook/addon-essentials": "7.0.17",
     "@storybook/addon-interactions": "7.0.17",
     "@storybook/addon-links": "7.0.17",
+    "@storybook/addon-mdx-gfm": "^7.0.17",
     "@storybook/addons": "7.0.17",
     "@storybook/jest": "0.1.0",
     "@storybook/react": "7.0.17",
@@ -86,9 +87,9 @@
     "wait-on": "^7.0.1"
   },
   "dependencies": {
-    "@radix-ui/react-radio-group": "1.1.2",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.3",
+    "@radix-ui/react-radio-group": "1.1.2",
     "@radix-ui/react-switch": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.3",
     "lodash": "^4.17.21",

@@ -13,7 +13,6 @@ $color-grey-1: #333 !default;
 $color-grey-3: #848484 !default;
 $color-grey-4: #949494 !default;
 $color-grey-5: #e0e0e0 !default;
-$color-grey-6: #f2f2f2 !default;
 
 $color-positive: #00a388 !default;
 $color-warning: #f78e52 !default;
@@ -41,14 +40,6 @@ $font-size-xlarge: pxtorem(24) !default;
 $font-size-xxlarge: pxtorem(32) !default;
 $font-size-xxxlarge: pxtorem(40) !default;
 
-// shadow
-$shadow-faint: 0 $spacing-xxxsmall $spacing-xxxlarge rgba($color-black, 0.03);
-
-// transition
-$transition-quick: 0.15s !default;
-$transition-medium: 0.4s !default;
-$transition-slow: 0.8s !default;
-
 //// components
 
 // button
@@ -73,18 +64,6 @@ $arm-input-width-large: pxtorem(420) !default;
 $arm-input-height: pxtorem(36) !default;
 $arm-input-height-medium: pxtorem(48) !default;
 $arm-input-height-large: pxtorem(56) !default;
-
-// sizing
-
-$input-width: pxToRem(320) !default;
-$input-width-large: pxToRem(420) !default;
-$input-height: pxToRem(34) !default;
-$input-height-large: pxToRem(70) !default;
-
-// lines
-
-$line: 1px solid !default;
-$line-thick: 2px solid !default;
 
 // spinner
 $spinner-speed: 500ms;
@@ -151,9 +130,6 @@ $transition-slow: 0.8s !default;
   --arm-spacing-xxxlarge: #{$spacing-xxxlarge};
   --arm-spacing-xxxxlarge: #{$spacing-xxxxlarge};
 
-  // Shadow
-  --arm-shadow-faint: #{$shadow-faint};
-
   // Button
   --arm-button-border-radius: #{$button-border-radius};
   --arm-button-primary-bg-color: #{$button-primary-bg-color};
@@ -170,13 +146,8 @@ $transition-slow: 0.8s !default;
   --arm-input-height-medium: #{$arm-input-height-medium};
   --arm-input-height-large: #{$arm-input-height-large};
 
-// Spinner
+  // Spinner
   --arm-spinner-speed: #{$spinner-speed};
-
-  // Transition
-  --arm-transition-quick: #{$transition-quick};
-  --arm-transition-medium: #{$transition-medium};
-  --arm-transition-slow: #{$transition-slow};
 
   // Form - Shared
   --arm-form-border-radius: #{$form-element-border-radius};

@@ -15,15 +15,14 @@
     pointer-events: none;
     user-select: none;
   }
-  
-  
+
   .arm-input-wrapper {
     width: initial;
     flex: 1;
-    
+
     .arm-input-inner {
       width: 100%;
-      
+
       input {
         background-color: transparent;
       }

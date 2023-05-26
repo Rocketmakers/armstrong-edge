@@ -39,7 +39,7 @@ export namespace Dates {
     if (typeof date === 'string') {
       return formatString ? parse(date, formatString, new Date(), { locale }) : parseISO(date);
     }
-    if (typeof date === "number") {
+    if (typeof date === 'number') {
       return new Date(date);
     }
     return date ?? undefined;
@@ -93,13 +93,11 @@ export namespace Dates {
     locale: Dates.DateLocale = Dates.defaultLocale
   ): Dates.DateLike {
     switch (type) {
-      case "string":
-        return formatString
-          ? format(date, formatString, { locale })
-          : formatISO(date);
-      case "number":
+      case 'string':
+        return formatString ? format(date, formatString, { locale }) : formatISO(date);
+      case 'number':
         return date.getTime();
-      case "object":
+      case 'object':
         return date;
       default:
         throw new Error(`Invalid type ${type} sent to DateLike creator`);

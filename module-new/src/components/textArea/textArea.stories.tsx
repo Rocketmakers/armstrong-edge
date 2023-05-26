@@ -14,15 +14,9 @@ export default {
   },
 } as Meta<typeof TextArea>;
 
-const Template: StoryObj<typeof TextArea> = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on Input prevents storybook from spreading pure props on here without a cast
-  render: (props: any) => <TextArea {...props} />,
-};
-
 type Story = StoryObj<typeof TextArea>;
 
 export const Default: Story = {
-  ...Template,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const textArea = canvas.getByRole('textbox');
@@ -31,7 +25,6 @@ export const Default: Story = {
 };
 
 export const Labelled: Story = {
-  ...Template,
   args: {
     placeholder: 'Placeholder content 🚀',
     label: 'Please write below',
@@ -49,7 +42,6 @@ export const Labelled: Story = {
 };
 
 export const Sizes: Story = {
-  ...Template,
   args: {
     placeholder: 'Enter text here...',
   },
@@ -75,7 +67,6 @@ export const Sizes: Story = {
 };
 
 export const Pending: Story = {
-  ...Template,
   args: {
     placeholder: 'Enter text here...',
     label: 'Text Area Label',
@@ -91,7 +82,6 @@ export const Pending: Story = {
 };
 
 export const ValidationError: Story = {
-  ...Template,
   args: {
     placeholder: 'Enter text here...',
     label: 'Text Area Label',
@@ -108,7 +98,6 @@ export const ValidationError: Story = {
 };
 
 export const Disabled: Story = {
-  ...Template,
   args: {
     disabled: true,
     placeholder: 'This text area has been disabled',
@@ -122,7 +111,6 @@ export const Disabled: Story = {
 };
 
 export const Bound: Story = {
-  ...Template,
   args: {
     placeholder: 'Enter text here...',
   },

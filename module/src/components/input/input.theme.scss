@@ -15,7 +15,8 @@
   overflow: hidden;
 
   &:focus-within {
-    box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-grey-1);
+    box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+      var(--arm-color-grey-1);
   }
 
   &[data-right-icon='true'] {

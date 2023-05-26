@@ -58,6 +58,8 @@ export const RadioInputList = React.forwardRef(
       checkedIcon,
       uncheckedIcon,
       error,
+      direction,
+      hideRadio,
     }: IRadioInputListProps<Id>,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -90,6 +92,8 @@ export const RadioInputList = React.forwardRef(
               {group.items.map(option => (
                 <RadioInput
                   key={option.id}
+                  leftIcon={option.leftIcon}
+                  rightIcon={option.rightIcon}
                   id={option.id}
                   checked={boundValue === option.id}
                   onChange={() => setBoundValue?.(option.id)}

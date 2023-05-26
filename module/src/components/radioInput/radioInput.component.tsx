@@ -11,11 +11,14 @@ export interface IRadioInputProps
   /** fired when the user changes the current value */
   onChange?: (newValue: boolean) => void;
 
+  /** the name to render in a label, falls back to ID */
+  name?: string;
+
   /** icon to render on the input when checked */
-  checkedIcon?: JSX.Element;
+  checkedIcon?: IIcon<IconSet>;
 
   /** icon to render on the input when not checked */
-  uncheckedIcon?: JSX.Element;
+  uncheckedIcon?: IIcon<IconSet>;
 
   /** props to spread onto the input element */
   inputProps?: Omit<
@@ -43,7 +46,9 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
       checkedIcon,
       uncheckedIcon,
       inputProps,
+      direction,
       name,
+      hideRadio,
       ...nativeProps
     },
     ref
@@ -68,7 +73,7 @@ export const RadioInput = React.forwardRef<HTMLInputElement, IRadioInputProps>(
           id={generatedId}
         />
 
-        <label className="arm-radio-input-label" htmlFor={generatedId}>
+        <label htmlFor={generatedId}>
           {!hideRadio && (
             <div className="arm-radio-input-radio">
               {checkedIcon && (

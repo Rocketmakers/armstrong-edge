@@ -19,7 +19,7 @@ export function isGroupedOptions<Id extends NullOrUndefined<ArmstrongId>>(
 export function isCreatingOption<Id extends NullOrUndefined<ArmstrongId>>(
   option?: IArmstrongReactSelectOption<Id> | IArmstrongReactSelectCreatingOption<Id>
 ): option is IArmstrongReactSelectCreatingOption<Id> {
-  return !!option?.hasOwnProperty('__isNew__');
+  return !!(option as IArmstrongReactSelectCreatingOption<Id>)?.isNew;
 }
 
 export const emptyStyles = () => {

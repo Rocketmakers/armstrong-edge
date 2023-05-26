@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
 import { Icon, IconSet, IIcon, isIconDefinition } from '../icon';
@@ -9,8 +9,8 @@ type ButtonHTMLProps = Omit<
   'ref'
 >;
 
-type ButtonDisplayStyle = "primary" | "secondary" | "outline" | "blank";
-type ButtonDisplaySize = "small" | "medium" | "large" | "extra-large";
+type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline';
+type ButtonDisplaySize = 'small' | 'medium' | 'large' | 'extra-large';
 
 export type IButtonCoreProps<TLeftIcon extends IconSet, TRightIcon extends IconSet> = IStatusWrapperProps & {
   /** CSS className property */
@@ -113,7 +113,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
 
   return (
     <button
-      className={concat("arm-button", className)}
+      className={concat('arm-button', className)}
       data-pending={pending}
       data-disabled={disabled || pending}
       data-size={displaySize}
@@ -130,7 +130,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
 });
 
 Button.defaultProps = {
-  statusPosition: "right",
+  statusPosition: 'right',
   hideIconOnStatus: true,
 };
 

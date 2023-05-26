@@ -4,7 +4,6 @@ import ReactDatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { ImCalendar } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../hooks/form';
-import { flatten } from '../../utils';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';

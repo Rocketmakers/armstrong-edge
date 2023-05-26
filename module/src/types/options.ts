@@ -5,12 +5,15 @@ import { IconSet } from '../components/icon/icon.component';
 import { ArmstrongId, DataAttributes } from './core';
 
 /** an option in an array of options, intended for use in a component like a Select or RadioList */
-export interface IArmstrongOption<Id extends ArmstrongId> {
+export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
   /** the value to be bound */
   id: Id;
 
   /** the name to be rendered for the option */
-  content?: JSX.Element;
+  name?: string;
+
+  /** props to spread onto the root element of the option */
+  htmlProps?: HtmlProps & DataAttributes;
 
   /** is the option available - if not, will be greyed out and unable to select */
   disabled?: boolean;

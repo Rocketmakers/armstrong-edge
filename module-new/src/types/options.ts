@@ -25,7 +25,7 @@ export type IArmstrongReactSelectOption<Id extends ArmstrongId> = Omit<
 export interface IArmstrongReactSelectCreatingOption<Id extends ArmstrongId> extends IArmstrongReactSelectOption<Id> {
   label: Id;
   value: Id;
-  __isNew__: boolean;
+  isNew: boolean;
 }
 
 export interface IArmstrongOptionWithInput<Id extends ArmstrongId, HtmlProps, InputProps>

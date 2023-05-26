@@ -23,16 +23,16 @@
   justify-content: flex-end;
 }
 
-.arm-calendar-dropdown-select[data-size="small"] {
+.arm-calendar-dropdown-select[data-size='small'] {
   width: unset;
 }
 
-.arm-calendar-dropdown-select[data-size="small"] .arm-select__control {
+.arm-calendar-dropdown-select[data-size='small'] .arm-select__control {
   margin: var(--arm-spacing-xxxsmall);
   border: none;
 }
 
-.arm-calendar-dropdown-select[data-size="small"] .arm-select__indicator-separator {
+.arm-calendar-dropdown-select[data-size='small'] .arm-select__indicator-separator {
   display: none;
 }
 
@@ -73,12 +73,11 @@
   border-color: var(--arm-color-grey-1000);
 }
 
-.arm-calendar-input .react-datepicker__day--selected.react-datepicker__day--today
+.arm-calendar-input .react-datepicker__day--selected.react-datepicker__day--today .arm-calendar-input-day-contents,
+.arm-calendar-input
+  .react-datepicker__day--in-selecting-range.react-datepicker__day--today
   .arm-calendar-input-day-contents,
-.arm-calendar-input .react-datepicker__day--in-selecting-range.react-datepicker__day--today
-  .arm-calendar-input-day-contents,
-.arm-calendar-input .react-datepicker__day--in-range.react-datepicker__day--today
-  .arm-calendar-input-day-contents {
+.arm-calendar-input .react-datepicker__day--in-range.react-datepicker__day--today .arm-calendar-input-day-contents {
   border-color: var(--arm-color-white) !important;
 }
 
@@ -144,23 +143,18 @@
 
 /* TRIANGLE */
 
-.arm-calendar-input .react-datepicker-popper[data-placement^=top]
-  .react-datepicker__triangle::before   {
-    border-top-color: var(--arm-color-grey-100);
-  }
-  
-.arm-calendar-input .react-datepicker-popper[data-placement^="bottom"]
-  .react-datepicker__triangle::before
-   {
+.arm-calendar-input .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle::before {
+  border-top-color: var(--arm-color-grey-100);
+}
+
+.arm-calendar-input .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before {
   border-bottom-color: var(--arm-color-grey-100);
 }
 
-.arm-calendar-input .react-datepicker-popper[data-placement^="top"]
-  .react-datepicker__triangle::after{
-    border-top-color: var(--arm-color-white);
-  }
+.arm-calendar-input .react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle::after {
+  border-top-color: var(--arm-color-white);
+}
 
-.arm-calendar-input .react-datepicker-popper[data-placement^="bottom"]
-  .react-datepicker__triangle::after {
+.arm-calendar-input .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::after {
   border-bottom-color: var(--arm-color-white);
 }

@@ -10,7 +10,7 @@
 
 /* override inline library styles */
 .react-datepicker-popper .react-datepicker__triangle {
-left: calc(-1 * var(--arm-spacing-medium)) !important;
+  left: calc(-1 * var(--arm-spacing-medium)) !important;
 }
 
 .arm-base-calendar-input-container {
@@ -21,7 +21,6 @@ left: calc(-1 * var(--arm-spacing-medium)) !important;
   align-items: stretch;
   background-color: white;
 }
-
 
 .react-datepicker-wrapper {
   padding-right: var(--arm-spacing-medium);
@@ -43,7 +42,7 @@ left: calc(-1 * var(--arm-spacing-medium)) !important;
 
 /* DISABLED */
 
-.arm-base-calendar-input[data-disabled="true"] .arm-base-calendar-input-container {
+.arm-base-calendar-input[data-disabled='true'] .arm-base-calendar-input-container {
   border-color: var(--arm-color-grey-400);
   background-color: var(--arm-color-grey-100);
 }
@@ -52,51 +51,52 @@ left: calc(-1 * var(--arm-spacing-medium)) !important;
 
 .arm-base-calendar-input-container input:focus {
   outline: 0;
-  }
-  
-  .arm-base-calendar-input-container:focus-within {
-    box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-grey-1000);
-  }
-  
-  .arm-base-calendar-input[data-error="true"] .arm-base-calendar-input-container:focus-within {
-    box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-negative);
-  }  
+}
+
+.arm-base-calendar-input-container:focus-within {
+  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+    var(--arm-color-grey-1000);
+}
+
+.arm-base-calendar-input[data-error='true'] .arm-base-calendar-input-container:focus-within {
+  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+    var(--arm-color-negative);
+}
 
 /* ERROR */
 
-.arm-base-calendar-input[data-error="true"] .arm-base-calendar-input-container {
+.arm-base-calendar-input[data-error='true'] .arm-base-calendar-input-container {
   border-color: var(--arm-color-negative);
 }
 
-.arm-base-calendar-input[data-size="small"] {
+.arm-base-calendar-input[data-size='small'] {
   font-size: var(--arm-font-size-xsmall);
 }
 
-.arm-base-calendar-input[data-size="large"] {
+.arm-base-calendar-input[data-size='large'] {
   font-size: var(--arm-font-size-medium);
 }
 
-.arm-base-calendar-input[data-size="small"] .arm-base-calendar-input-container input {
+.arm-base-calendar-input[data-size='small'] .arm-base-calendar-input-container input {
   padding-top: var(--arm-spacing-xxsmall);
   padding-bottom: var(--arm-spacing-xxsmall);
 }
 
-.arm-base-calendar-input[data-size="large"] .arm-base-calendar-input-container input {
+.arm-base-calendar-input[data-size='large'] .arm-base-calendar-input-container input {
   padding-top: var(--arm-spacing-medium);
   padding-bottom: var(--arm-spacing-medium);
 }
 
 .arm-base-calendar-input-container .arm-status {
   padding: var(--arm-spacing-small) var(--arm-spacing-medium);
-
 }
 
 .arm-base-calendar-input-container .arm-calendar-icon {
   padding: var(--arm-spacing-small) var(--arm-spacing-medium);
   padding-right: 0;
   display: flex;
-  align-items: center;}
-
+  align-items: center;
+}
 
 .arm-base-calendar-input .react-datepicker {
   display: inline-flex;

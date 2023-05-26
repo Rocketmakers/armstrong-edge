@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import {
   ArmstrongFCExtensions,
@@ -30,20 +30,88 @@ export interface ITimeInputProps<TBind extends NullOrUndefined<string>>
   /** The binding for the input. */
   bind?: IBindingProps<TBind>;
 
-/**
- * decision - option to use native input on mobile / tablet? - leave this issue entirely up to the consuming code
- * the following config is overridden: customInput, locale, showTimeSelect, showTimeSelectOnly
- */
-export const TimeInput: React.FC<TTimeInputProps> = ({ locale, ...props }) => {
-  const config = React.useMemo<TBaseDatePickerConfig>(() => {
-    return {
-      timeIntervals: 15,
-      dateFormat: "h:mm aa",
-      timeCaption: "Time",
+  /** CSS className property */
+  className?: string;
 
-      ...props.config,
+  /** Should the picker disallow user interaction */
+  disabled?: boolean;
 
-      customInput: <CustomInput />,
+  /** Indicates the minute intervals to display */
+  minuteStep?: number;
+
+  /** Filter the available minutes - receives each minute in the array and expects a show/hide bool  */
+  minuteFilter?: (minute: ISelectOption<number>) => boolean;
+
+  /** Filter the available hours - receives each hour in the array and expects a show/hide bool */
+  hourFilter?: (hours: ISelectOption<number>) => boolean;
+
+  /** The value of the input */
+  value?: TBind;
+
+  /** Called when the value changes */
+  onValueChange?: (value: TBind) => any;
+
+  /** Set the minutes back to zero when the hour changes */
+  zeroMinutesOnHourSelected?: boolean;
+
+  /**
+   * A formatter to apply to all passed in time strings.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Without this prop, `HH:mm` format will be used.
+   */
+  formatString?: string;
+
+  /**
+   * An optional locale to apply to all date formatting.
+   * - Must be a date-fns compliant `Locale` object (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/Locale))
+   * - If no locale is passed, `en-GB` will be used as the system default for all date formatting.
+   */
+  locale?: Dates.DateLocale;
+
+  /**
+   * A formatter to apply when displaying the minute selector on the input.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Padded number by default: `mm` = (00 - 59)
+   * - Other options include: `m` = (0 - 59)
+   */
+  minuteInputDisplayFormat?: string;
+
+  /**
+   * A formatter to apply when displaying the hour selector on the input.
+   * - Must be a date-fns compliant format token (see [docs](https://date-fns.org/v2.0.0-alpha.7/docs/format))
+   * - Number by default: `HH` = (00 - 23).
+   * - Other options include: `hh` = (00 - 12).
+   */
+  hourInputDisplayFormat?: string;
+
+  /** Any additional props for the "hour" autocomplete input */
+  additionalHourInputProps?: AdditionalInputProps;
+
+  /** Any additional props for the "minute" autocomplete input */
+  additionalMinuteInputProps?: AdditionalInputProps;
+
+  /** The character to show between the inputs, defaults to ":" */
+  betweenInputs?: React.ReactNode;
+}
+
+export const TimeInput = React.forwardRef(
+  <TBind extends NullOrUndefined<string>>(
+    {
+      className,
+      error,
+      bind,
+      errorIcon,
+      validationErrorMessages,
+      validationMode,
+      statusPosition,
+      pending,
+      disabled,
+      additionalHourInputProps,
+      additionalMinuteInputProps,
+      hourFilter,
+      minuteFilter,
+      zeroMinutesOnHourSelected,
+      minuteStep,
       locale,
       formatString,
       hourInputDisplayFormat,

@@ -31,7 +31,6 @@
   overflow: hidden;
   background-color: var(--arm-color-white);
   box-shadow: 0 4px 50px rgb(0 0 0 / 3%);
-
 }
 
 .arm-select__menu-list {
@@ -91,7 +90,8 @@
 }
 
 .arm-select__control--is-focused {
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-grey-1000);
+  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+    var(--arm-color-grey-1000);
 }
 
 .arm-select__value-container {
@@ -135,36 +135,35 @@
 
 /* SIZES */
 
-.arm-select-wrapper[data-size="small"] {
+.arm-select-wrapper[data-size='small'] {
   font-size: var(--arm-font-size-xsmall);
 }
 
-.arm-select-wrapper[data-size="small"] .arm-select__value-container {
+.arm-select-wrapper[data-size='small'] .arm-select__value-container {
   padding: var(--arm-spacing-xsmall) var(--arm-spacing-small);
 }
 
-.arm-select-wrapper[data-size="small"] .arm-select__indicators {
+.arm-select-wrapper[data-size='small'] .arm-select__indicators {
   padding: var(--arm-spacing-xsmall) var(--arm-spacing-small);
 }
 
-.arm-select-wrapper[data-size="small"] .arm-select__option {
+.arm-select-wrapper[data-size='small'] .arm-select__option {
   padding: var(--arm-spacing-xxsmall);
 }
 
-
-.arm-select-wrapper[data-size="large"] {
+.arm-select-wrapper[data-size='large'] {
   font-size: var(--arm-font-size-medium);
 }
 
-.arm-select-wrapper[data-size="large"] .arm-select__value-container {
+.arm-select-wrapper[data-size='large'] .arm-select__value-container {
   padding: var(--arm-spacing-medium) var(--arm-spacing-large);
 }
 
-.arm-select-wrapper[data-size="large"] .arm-select__indicators {
+.arm-select-wrapper[data-size='large'] .arm-select__indicators {
   padding: var(--arm-spacing-medium) var(--arm-spacing-large);
 }
 
-.arm-select-wrapper[data-size="large"] .arm-select__option {
+.arm-select-wrapper[data-size='large'] .arm-select__option {
   padding: var(--arm-spacing-medium);
 }
 
@@ -175,5 +174,6 @@
 
 .arm-select-wrapper[data-error='true'] .arm-select__control--is-focused {
   border-color: var(--arm-color-negative);
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) var(--arm-color-negative);
+  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+    var(--arm-color-negative);
 }

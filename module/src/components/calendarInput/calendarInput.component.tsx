@@ -19,9 +19,7 @@ import { calendarDayToDateLike, getDaySelectOptions, validateDateSelection } fro
 
 type AdditionalInputProps = Omit<IAutoCompleteInputProps<number>, 'bind' | 'options' | 'min' | 'max'> & DataAttributes;
 
-export type TCalendarInputProps = {
-  /** swipe02 is default */
-  dateSelectionHeader?: "swipe01" | "swipe02" | "dropdown";
+export type CalendarInputPart = 'year' | 'month' | 'day';
 
 export type CalendarInputCalendarPosition = 'dropdown' | 'modal' | 'above' | 'below';
 export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLike>>
@@ -45,52 +43,45 @@ export interface ICalendarInputProps<TValue extends NullOrUndefined<Dates.DateLi
   /** CSS className property */
   className?: string;
 
-  /** default to english */
-  language?: {
-    todayLabel: string;
-    tomorrowLabel: string;
-  };
-} & TBaseCalendarInputProps;
+  /** The value of the input */
+  value?: TValue;
 
-const Input = React.forwardRef<HTMLInputElement>((props, ref) => (
-  <TextInput
-    leftIcon={IconUtils.getIconDefinition("Icomoon", "calendar")}
-    {...props}
-    ref={ref}
-  />
-));
+  /** Called when the value changes */
+  onValueChange?: (value: TValue) => any;
 
-const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
-  const today = new Date();
+  /**
+   * Should the calendar close when a date is selected from inside?
+   * - Defaults to `true`
+   */
+  closeCalendarOnDayClick?: boolean;
 
-  const { formState, formProp } = Form.use<{ month: number; year: number }>({
-    month: today.getMonth(),
-    year: today.getFullYear(),
-  });
+  /**
+   * Should the calendar close when a date is selected from the jumplist?
+   * - Defaults to `true`
+   */
+  closeCalendarOnJumplistClick?: boolean;
 
-  React.useEffect(() => {
-    if (formState?.month) {
-      props.changeMonth(formState.month);
-    }
-    if (formState?.year) {
-      props.changeYear(formState.year);
-    }
-  }, [formState?.month, formState?.year]);
+  /**
+   * The binding for the input.
+   * - Can be bound to a string, number or Date object.
+   * - WARNING: If no initial value is passed it will assume the type is string.
+   */
+  bind?: IBindingProps<TValue>;
 
-  /** @todo - how to set locale? */
-  const getLocaleMonth = (month: number) => {
-    const date = new Date();
+  /**
+   * The order of the three select inputs as an array of strings.
+   *
+   * If any are omitted, you can give them a default value using the defaultIfOmitted prop. You likely also want to set displayMode to
+   * 'inputs' as the calendar view currently does not support limiting the year or month. You might also want to update formatString to
+   * omit the missing parts as well (I.E, if you're missing the day, you might want to set it to MM-YYYY)
+   */
+  inputOrder?: CalendarInputPart[];
 
-    date.setMonth(month);
-    return format(date, "MMMM");
-  };
+  /** Used to provide default values if any parts are omitted in inputOrder - each will defaulted to 1 */
+  defaultIfOmitted?: Partial<IDateInputFormData>;
 
-  const monthOptions = new Array(12)
-    .fill(null)
-    .map<ISelectOption<number, any>>((_, index) => ({
-      id: index,
-      name: getLocaleMonth(index),
-    }));
+  /** Any additional props for the "day" autocomplete input */
+  additionalDayInputProps?: AdditionalInputProps;
 
   /** Any additional props for the "month" autocomplete input */
   additionalMonthInputProps?: AdditionalInputProps;

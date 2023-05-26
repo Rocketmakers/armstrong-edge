@@ -1,1 +1,1 @@
-export * from "./baseCalendarInput.component";
+export * from './baseCalendarInput.component';
