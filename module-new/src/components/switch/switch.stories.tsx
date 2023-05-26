@@ -1,6 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 
 import { useForm } from '../../hooks/form/form.hooks';
@@ -19,12 +19,11 @@ export const Default: Story = {
   args: {
     label: 'Airplane mode',
   },
-  play: ({ canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const switchInput = canvas.getByRole('switch');
-    switchInput.click();
-    const checked = switchInput.getAttribute('aria-checked');
-    expect(checked).toBe('true');
+    userEvent.click(switchInput);
+    await waitFor(() => expect(switchInput.getAttribute('aria-checked')).toBe('true'));
   },
 };
 
@@ -67,11 +66,10 @@ export const Bound: Story = {
       </>
     );
   },
-  play: ({ canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const switchInput = canvas.getByRole('switch');
-    const boundResult = canvas.getByTestId('bound-result');
     userEvent.click(switchInput);
-    expect(boundResult).toHaveTextContent('Bound value is checked');
+    await waitFor(() => expect(canvas.getByTestId('bound-result')).toHaveTextContent('Bound value is checked'));
   },
 };
