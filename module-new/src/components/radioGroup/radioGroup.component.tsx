@@ -170,4 +170,4 @@ export const RadioGroup = React.forwardRef(
 ) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
 
-RadioGroup.displayName = 'Radio Group';
+RadioGroup.displayName = 'RadioGroup';

@@ -259,7 +259,7 @@ export const SingleSelect = React.forwardRef(
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IReactSelectBaseProps<ArmstrongId>>;
 
-SingleSelect.displayName = 'Single Select';
+SingleSelect.displayName = 'SingleSelect';
 
 SingleSelect.defaultProps = {
   isClearable: true,
