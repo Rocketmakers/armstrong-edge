@@ -3,22 +3,22 @@
   --arm-color-black: #000;
   --arm-color-grey-1000: #333;
   --arm-color-grey-900: #474747;
-  --arm-color-grey-800: #5C5C5C;
+  --arm-color-grey-800: #5c5c5c;
   --arm-color-grey-700: #707070;
   --arm-color-grey-600: #848484;
   --arm-color-grey-500: #999;
-  --arm-color-grey-400: #ADADAD;
-  --arm-color-grey-300: #C2C2C2;
-  --arm-color-grey-200: #D6D6D6;
-  --arm-color-grey-100: #EBEBEB;
+  --arm-color-grey-400: #adadad;
+  --arm-color-grey-300: #c2c2c2;
+  --arm-color-grey-200: #d6d6d6;
+  --arm-color-grey-100: #ebebeb;
   --arm-color-white: #fff;
 
   /* Colors - status */
-  --arm-color-positive: #27AE60;
+  --arm-color-positive: #27ae60;
   --arm-color-positive-secondary: #27ae5f2b;
   --arm-color-warning: #f78e52;
   --arm-color-warning-secondary: #f78f522b;
-  --arm-color-negative: #EB5757;
+  --arm-color-negative: #eb5757;
   --arm-color-negative-secondary: #eb57572b;
   --arm-color-info: #3498d8;
   --arm-color-info-secondary: #3499d82b;

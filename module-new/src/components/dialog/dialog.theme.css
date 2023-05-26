@@ -15,7 +15,11 @@
   padding: var(--arm-spacing-medium);
   padding-bottom: 0;
   border-radius: var(--arm-dialog-border-radius, var(--arm-button-border-radius));
-  box-shadow: var(--arm-dialog-box-shadow, hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px);
+  box-shadow: var(
+    --arm-dialog-box-shadow,
+    hsl(206deg 22% 7% / 35%) 0 10px 38px -10px,
+    hsl(206deg 22% 7% / 20%) 0 10px 20px -15px
+  );
   width: var(--arm-dialog-width, 90vw);
   max-width: var(--arm-dialog-max-width, 450px);
   max-height: var(--arm-dialog-max-height, 85vh);
@@ -30,7 +34,7 @@
   right: 0;
   padding: var(--arm-spacing-medium);
   cursor: pointer;
-  border-radius: var(--arm-button-border-radius)
+  border-radius: var(--arm-button-border-radius);
 }
 
 .arm-dialog-close:focus-visible {
