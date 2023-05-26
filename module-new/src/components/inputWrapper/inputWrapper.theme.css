@@ -1,4 +1,5 @@
-.arm-input-overlay-left, .arm-input-overlay-right {
+.arm-input-overlay-left,
+.arm-input-overlay-right {
   display: flex;
   align-items: center;
 }

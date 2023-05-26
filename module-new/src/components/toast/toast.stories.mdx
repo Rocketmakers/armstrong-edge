@@ -12,22 +12,21 @@ Toasts are small message modals that can be dispatched globally
 ### Step 1 - Wrap your app in the provider
 
 In order for global toast to work, you must first wrap your app in the unified armstrong provider, like so:
+
 ```tsx
 import { ArmstrongProvider } from '@rocketmakers/armstrong-edge';
 
 export const MyApp: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return (
-    <ArmstrongProvider>
-      {children}
-    </ArmstrongProvider>
-  )
-}
+  return <ArmstrongProvider>{children}</ArmstrongProvider>;
+};
 ```
+
 NOTE: The unified provider allows you to pass global Armstrong config as well as supports toast messages. If you specifically only want the toast messages, you can use `<ToastProvider>` instead but this is not recommended.
 
 ### Step 2 - Use the toast hook to dispatch a toast message
 
 Toast messages can be dispatched from any component within the provider using the toast hook, like so:
+
 ```tsx
 import { useToast, IToast } from '@rocketmakers/armstrong-edge';
 
@@ -36,16 +35,13 @@ export const MyComponent: React.FC = () => {
 
   const toastMessage: IToast = {
     title: 'Here is a toast!',
-    description: 'Here is the description for my toast'
-  }
+    description: 'Here is the description for my toast',
+  };
 
-  return (
-    <button onClick={() => dispatchToast(toastMessage)}>
-      Send a toast
-    </button>
-  )
-}
+  return <button onClick={() => dispatchToast(toastMessage)}>Send a toast</button>;
+};
 ```
+
 See it in action here:
 
 <Canvas withSource="closed">
@@ -55,15 +51,15 @@ See it in action here:
 ### Step 3 (optional) - Configure your toast using Armstrong global config
 
 Toast messages come out of the box with a sensible set of default properties, but if you need to change the way toast behaves, you can pass config into the unified Armstrong provider like so:
+
 ```tsx
 import { ArmstrongProvider } from '@rocketmakers/armstrong-edge';
 
 export const MyApp: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <ArmstrongProvider config={{ toastDuration: 10000, toastPosition: "top-right" }}>
-      {children}
-    </ArmstrongProvider>
-  )
-}
+    <ArmstrongProvider config={{ toastDuration: 10000, toastPosition: 'top-right' }}>{children}</ArmstrongProvider>
+  );
+};
 ```
+
 NOTE: These settings can also be passed in as props to the `<ToastProvider>` if you're using that, and `duration` can also be set on a per-toast basis
