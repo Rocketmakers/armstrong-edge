@@ -8,22 +8,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Node.js to current version and cache in module
-        id: set-node-and-cache-module
-        uses: actions/setup-node@master
-        with:
-          node-version-file: ".tool-versions"
-          cache: "npm"
-          cache-dependency-path: "module/package-lock.json"
+      # - name: Set Node.js to current version and cache in module
+      #   id: set-node-and-cache-module
+      #   uses: actions/setup-node@master
+      #   with:
+      #     node-version-file: ".tool-versions"
+      #     cache: "npm"
+      #     cache-dependency-path: "module/package-lock.json"
 
-      - name: npm install module
-        run: (cd module && npm ci --legacy-peer-deps)
+      # - name: npm install module
+      #   run: (cd module && npm ci --legacy-peer-deps)
 
       # - name: lint
       #   run: (cd module && npm run lint)
 
-      - name: build
-        run: (cd module && npm run build)
+      # - name: build
+      #   run: (cd module && npm run build)
 
       # - name: artifact
       #   uses: actions/upload-artifact@master

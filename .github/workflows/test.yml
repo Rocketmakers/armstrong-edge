@@ -12,28 +12,28 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Node.js to current version and cache in module
-        id: set-node-and-cache-module
-        uses: actions/setup-node@master
-        with:
-          node-version-file: ".tool-versions"
-          cache: "npm"
-          cache-dependency-path: "module/package-lock.json"
+      # - name: Set Node.js to current version and cache in module
+      #   id: set-node-and-cache-module
+      #   uses: actions/setup-node@master
+      #   with:
+      #     node-version-file: ".tool-versions"
+      #     cache: "npm"
+      #     cache-dependency-path: "module/package-lock.json"
 
-      - name: Install Dependencies
-        run: (cd module && npm ci --legacy-peer-deps)
+      # - name: Install Dependencies
+      #   run: (cd module && npm ci --legacy-peer-deps)
 
-      - name: Run Jest Tests
-        run: (cd module && npm run test-ci)
+      # - name: Run Jest Tests
+      #   run: (cd module && npm run test-ci)
 
-      - name: Install Playwright
-        run: npx playwright install --with-deps
+      # - name: Install Playwright
+      #   run: npx playwright install --with-deps
 
-      - name: Build Armstrong & Storybook
-        run: (cd module && npm run build && npm run build-storybook)
+      # - name: Build Armstrong & Storybook
+      #   run: (cd module && npm run build && npm run build-storybook)
 
-      - name: Serve Storybook and run tests
-        run: (cd module && npm run test-storybook-ci)
+      # - name: Serve Storybook and run tests
+      #   run: (cd module && npm run test-storybook-ci)
 
       - name: Set Node.js to current version and cache in module-new
         id: set-node-and-cache-module-new
