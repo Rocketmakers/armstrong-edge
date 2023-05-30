@@ -43,7 +43,7 @@ export const Default: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ date?: Date }>({ date: undefined });
+    const { formProp } = useForm({ date: '30/05/2023' });
     return (
       <div
         style={{
@@ -53,17 +53,13 @@ export const Default: StoryObj<typeof CalendarInput> = {
           justifyContent: 'center',
         }}
       >
-        <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} />
+        <CalendarInput bind={formProp('date').bind()} />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
-    const input = canvasElement.getElementsByTagName('input')[0];
-    const dateString = format(new Date(), 'dd/MM/yyyy');
-    userEvent.type(input, dateString);
-    await waitFor(() => {
-      expect(input).toHaveValue(dateString);
-    });
+    const input = within(canvasElement).getByRole('textbox');
+    expect(input).toHaveValue('30/05/2023');
   },
 };
 
@@ -71,10 +67,10 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ date?: Date; date2?: Date; date3?: Date }>({
-      date: undefined,
-      date2: undefined,
-      date3: undefined,
+    const { formProp } = useForm({
+      date: '',
+      date2: '',
+      date3: '',
     });
 
     return (
@@ -85,7 +81,7 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
           variant="dropdown"
           displaySize="small"
           bind={formProp('date').bind()}
-          content={<>Small calendar input</>}
+          label="Small calendar input"
           required={true}
         />
         <h2>Medium</h2>
@@ -94,7 +90,7 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
           variant="dropdown"
           displaySize="medium"
           bind={formProp('date2').bind()}
-          content={<>Medium calendar input</>}
+          label="Medium calendar input"
           required={true}
         />
         <h2>Large</h2>
@@ -103,7 +99,7 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
           variant="dropdown"
           displaySize="large"
           bind={formProp('date3').bind()}
-          content={<>Large calendar input</>}
+          label="Large calendar input"
           required={true}
         />
       </div>
@@ -115,7 +111,7 @@ export const ValidationError: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ date?: Date }>({ date: undefined });
+    const { formProp } = useForm({ date: '' });
     return (
       <div
         style={{
@@ -147,7 +143,7 @@ export const Disabled: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ date?: Date }>({ date: undefined });
+    const { formProp } = useForm({ date: '' });
     return (
       <div
         style={{
@@ -176,7 +172,7 @@ export const TimeOnly: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ date?: Date }>({ date: undefined });
+    const { formProp } = useForm({ date: '' });
     return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="time" />;
   },
 };
@@ -185,7 +181,7 @@ export const Swipe01: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ date?: Date }>({ date: undefined });
+    const { formProp } = useForm({ date: '' });
     return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="swipe01" />;
   },
 };
@@ -196,7 +192,7 @@ export const Dropdown: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ date?: Date }>({ date: undefined });
+    const { formProp } = useForm({ date: '' });
     return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="dropdown" />;
   },
 };
@@ -205,9 +201,9 @@ export const Range: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ startDate?: Date; endDate?: Date }>({
-      startDate: undefined,
-      endDate: undefined,
+    const { formProp } = useForm({
+      startDate: '',
+      endDate: '',
     });
     return (
       <CalendarInput
@@ -215,7 +211,6 @@ export const Range: StoryObj<typeof CalendarInput> = {
         startBind={formProp('startDate').bind()}
         endBind={formProp('endDate').bind()}
         config={{ locale: enGB }}
-        variant="swipe01"
       />
     );
   },
@@ -225,8 +220,8 @@ export const MinMaxDays: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ date?: Date }>({
-      date: undefined,
+    const { formProp } = useForm({
+      date: '',
     });
 
     return (
@@ -260,9 +255,9 @@ export const RangeValidation: StoryObj<typeof CalendarInput> = {
   ...Template,
 
   render: () => {
-    const { formProp } = useForm<{ startDate?: Date; endDate?: Date }>({
-      startDate: undefined,
-      endDate: undefined,
+    const { formProp } = useForm({
+      startDate: '',
+      endDate: '',
     });
     React.useEffect(() => {
       formProp('startDate').addValidationError('Invalid start date');
@@ -275,7 +270,6 @@ export const RangeValidation: StoryObj<typeof CalendarInput> = {
         startBind={formProp('startDate').bind()}
         endBind={formProp('endDate').bind()}
         config={{ locale: enGB }}
-        variant="swipe01"
       />
     );
   },

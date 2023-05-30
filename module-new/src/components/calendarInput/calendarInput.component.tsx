@@ -1,34 +1,84 @@
-import { format } from 'date-fns';
+// eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
+import { format, parse } from 'date-fns';
+// eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
+import { enGB } from 'date-fns/locale';
 import * as React from 'react';
-import { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
-import { ImArrowLeft2, ImArrowRight2, ImCalendar, ImClock } from 'react-icons/im';
+import ReactDatePicker, { ReactDatePickerCustomHeaderProps, ReactDatePickerProps } from 'react-datepicker';
+import { FaChevronLeft, FaChevronRight, FaRegCalendar } from 'react-icons/fa';
+import { ImClock } from 'react-icons/im';
 
-import { IArmstrongReactSelectOption } from '../../types';
-import { concat } from '../../utils';
-import { BaseCalendarInput, TBaseCalendarInputProps, TBaseDatePickerConfig } from '../baseCalendarInput';
+import { IBindingProps, useBindingState } from '../../hooks/form';
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCProps,
+  ArmstrongFCReturn,
+  IArmstrongReactSelectOption,
+  NullOrUndefined,
+} from '../../types';
+import { stripNullOrUndefined } from '../../utils';
 import { Button } from '../button';
+import { Input, ITextInputProps } from '../input';
 import { SingleSelect } from '../reactSelect/singleSelect';
 
+import 'react-datepicker/dist/react-datepicker.css';
 import './calendarInput.theme.css';
 
-type DisplaySize = 'small' | 'medium' | 'large';
+export interface IDatePickerConfig
+  extends Omit<
+    ReactDatePickerProps,
+    'onChange' | 'value' | 'selectsRange' | 'selected' | 'startDate' | 'endDate' | 'disabled' | 'dateFormat' | 'locale'
+  > {
+  dateFormat?: string;
 
-export type TCalendarInputProps = {
+  locale?: Locale;
+}
+
+export interface ICalendarInputProps<TBind extends NullOrUndefined<string>>
+  extends Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind'> {
+  /** props to spread onto the calendar component */
+  config?: IDatePickerConfig;
+}
+
+export interface ICalendarInputRangeProps<TBind extends NullOrUndefined<string>> extends ICalendarInputProps<TBind> {
+  selectsRange: true;
+
+  /**  prop for binding start date (range) to an Armstrong form binder (see forms documentation) */
+  startBind?: IBindingProps<TBind>;
+
+  /** current start date of input */
+  startValue?: TBind;
+
+  /**  prop for binding end date (range) to an Armstrong form binder (see forms documentation) */
+  endBind?: IBindingProps<TBind>;
+
+  /** current end date of input */
+  endValue?: TBind;
+
+  /** fired when the value changes */
+  onChange?: (value: [TBind, TBind]) => void;
+}
+
+export interface ICalendarInputSingleProps<TBind extends NullOrUndefined<string>> extends ICalendarInputProps<TBind> {
   /** swipe02 is default */
   variant?: 'swipe01' | 'swipe02' | 'dropdown' | 'time';
+  selectsRange?: false;
+  bind?: IBindingProps<TBind>;
+  value?: TBind;
 
-  displaySize?: DisplaySize;
+  /** fired when the value changes */
+  onChange?: (value: TBind) => void;
+}
 
-  locale?: TBaseDatePickerConfig['locale'];
+export type CalendarInputProps<TBind extends NullOrUndefined<string>> =
+  | ICalendarInputRangeProps<TBind>
+  | ICalendarInputSingleProps<TBind>;
 
-  inputIcon?: JSX.Element;
+const defaultFormat = 'dd/MM/yyyy';
+const defaultLocale = enGB;
 
-  /** default to english */
-  language?: {
-    todayLabel: string;
-    tomorrowLabel: string;
-  };
-} & TBaseCalendarInputProps;
+const renderDayContents = (day: number) => {
+  return <div className="arm-calendar-input-day-contents">{day}</div>;
+};
 
 const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMonth, changeYear, date }) => {
   const today = new Date();
@@ -47,7 +97,7 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMont
 
   const yearOptions = new Array(110).fill(null).map<IArmstrongReactSelectOption<number>>((_, index) => {
     const year = today.getFullYear() + 10 - index;
-    return { id: year, content: `${year}` };
+    return { id: year, content: year.toString() };
   });
 
   return (
@@ -88,14 +138,14 @@ const Swipe01Header: React.FC<ReactDatePickerCustomHeaderProps> = props => {
           displayStyle="blank"
           onClick={props.decreaseMonth}
         >
-          <ImArrowLeft2 className="arm-calendar-input-header-icon" />
+          <FaChevronLeft className="arm-calendar-input-header-icon" />
         </Button>
         <Button
           className="arm-calendar-input-header-button swipe01-button"
           displayStyle="blank"
           onClick={props.increaseMonth}
         >
-          <ImArrowRight2 className="arm-calendar-input-header-icon" />
+          <FaChevronRight className="arm-calendar-input-header-icon" />
         </Button>
       </div>
     </div>
@@ -106,71 +156,187 @@ const Swipe02Header: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   return (
     <div className="arm-calendar-input-header swipe02">
       <Button className="arm-calendar-input-header-button" displayStyle="blank" onClick={props.decreaseMonth}>
-        <ImArrowLeft2 className="arm-calendar-input-header-icon" />
+        <FaChevronLeft className="arm-calendar-input-header-icon" />
       </Button>
       <span>{format(props.monthDate, 'MMMM yyyy')}</span>
 
       <Button className="arm-calendar-input-header-button" displayStyle="blank" onClick={props.increaseMonth}>
-        <ImArrowRight2 className="arm-calendar-input-header-icon" />
+        <FaChevronRight className="arm-calendar-input-header-icon" />
       </Button>
     </div>
   );
 };
 
-const renderDayContents = day => {
-  return <div className="arm-calendar-input-day-contents">{day}</div>;
+const SingleCalendarInput = React.forwardRef<HTMLInputElement, ICalendarInputSingleProps<NullOrUndefined<string>>>(
+  ({ config, selectsRange, bind, value, onChange, validationErrorMessages, variant, ...inputProps }, ref) => {
+    const [date, setDate, bindDateConfig] = useBindingState(bind, {
+      validationErrorMessages,
+      value,
+      onChange,
+    });
+
+    const renderCustomHeader = React.useCallback(
+      (customHeaderProps: ReactDatePickerCustomHeaderProps) => {
+        return (
+          <div className="customer-header-container">
+            {variant === 'dropdown' && <DropdownHeader {...customHeaderProps} />}
+            {variant === 'swipe01' && <Swipe01Header {...customHeaderProps} />}
+            {(!variant || variant === 'swipe02') && <Swipe02Header {...customHeaderProps} />}
+          </div>
+        );
+      },
+      [variant]
+    );
+
+    const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
+      return {
+        // overridable with config
+        monthsShown: 1,
+        dateFormat: variant === 'time' ? 'hh:mm aa' : undefined,
+        ...config,
+        renderCustomHeader,
+        renderDayContents,
+        showTimeSelect: variant === 'time',
+        showTimeSelectOnly: variant === 'time',
+      };
+    }, [variant, config, renderCustomHeader]);
+
+    const formatString = compiledConfig.dateFormat ?? defaultFormat;
+    const locale = compiledConfig.locale ?? defaultLocale;
+    const dateVal = date ? parse(date, formatString, new Date(), { locale }) : undefined;
+
+    const formatDate = (incomingDate: NullOrUndefined<Date>) => {
+      return incomingDate ? format(incomingDate, formatString) : undefined;
+    };
+
+    return (
+      <ReactDatePicker
+        {...stripNullOrUndefined(compiledConfig)}
+        locale={locale}
+        dateFormat={formatString}
+        disabled={inputProps.disabled}
+        customInput={
+          <Input
+            type="text"
+            ref={ref}
+            leftOverlay={variant === 'time' ? <ImClock /> : <FaRegCalendar />}
+            {...inputProps}
+            validationErrorMessages={bindDateConfig.validationErrorMessages}
+          />
+        }
+        selectsRange={false}
+        selected={dateVal}
+        onChange={newValue => setDate?.(formatDate(newValue as Date))}
+      />
+    );
+  }
+);
+
+SingleCalendarInput.displayName = 'SingleCalendarInput';
+
+const RangeCalendarInput = React.forwardRef<HTMLInputElement, ICalendarInputRangeProps<NullOrUndefined<string>>>(
+  (
+    {
+      config,
+      selectsRange,
+      startBind,
+      endBind,
+      startValue,
+      endValue,
+      onChange,
+      validationErrorMessages,
+      ...inputProps
+    },
+    ref
+  ) => {
+    const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
+      validationErrorMessages,
+      value: startValue,
+    });
+
+    const [endDate, setEndDate, bindEndDateConfig] = useBindingState(endBind, {
+      // only pass in validationErrorMessages once for date range as errors will be combined!
+      validationErrorMessages: [],
+      value: endValue,
+    });
+
+    const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
+      return {
+        // overridable with config
+        monthsShown: 2,
+        ...config,
+        renderDayContents,
+      };
+    }, [config]);
+
+    const formatString = compiledConfig.dateFormat ?? defaultFormat;
+    const locale = compiledConfig.locale ?? defaultLocale;
+    const startDateVal = startDate ? parse(startDate, formatString, new Date(), { locale }) : undefined;
+    const endDateVal = endDate ? parse(endDate, formatString, new Date(), { locale }) : undefined;
+
+    const formatDate = (incomingDate: NullOrUndefined<Date>) => {
+      return incomingDate ? format(incomingDate, formatString) : undefined;
+    };
+
+    return (
+      <ReactDatePicker
+        {...stripNullOrUndefined(compiledConfig)}
+        locale={locale}
+        dateFormat={formatString}
+        disabled={inputProps.disabled}
+        customInput={
+          <Input
+            type="text"
+            ref={ref}
+            {...inputProps}
+            validationErrorMessages={[
+              ...bindStartDateConfig.validationErrorMessages,
+              ...bindEndDateConfig.validationErrorMessages,
+            ]}
+          />
+        }
+        selectsRange={true}
+        startDate={startDateVal}
+        endDate={endDateVal}
+        onChange={newValue => {
+          setStartDate?.(formatDate(newValue?.[0]));
+          setEndDate?.(formatDate(newValue?.[1]));
+        }}
+      />
+    );
+  }
+);
+
+RangeCalendarInput.displayName = 'RangeCalendarInput';
+
+RangeCalendarInput.defaultProps = {
+  leftOverlay: <FaRegCalendar />,
 };
 
 /**
- * @decision -- option to use native input on mobile / tablet? - leave this issue entirely up to the consuming code
- * the following config is overridden: customInput, renderCustomHeader, locale
- */
-export const CalendarInput: React.FC<TCalendarInputProps> = ({
-  variant,
-  locale,
-  language,
-  displaySize,
-  inputIcon,
-  ...props
-}) => {
-  const renderCustomHeader = React.useCallback(
-    (customHeaderProps: ReactDatePickerCustomHeaderProps) => {
-      return (
-        <div className="customer-header-container">
-          {variant === 'dropdown' && <DropdownHeader {...customHeaderProps} />}
-          {variant === 'swipe01' && <Swipe01Header {...customHeaderProps} />}
-          {(!variant || variant === 'swipe02') && <Swipe02Header {...customHeaderProps} />}
-        </div>
-      );
-    },
-    [variant]
-  );
+ * third-party docs: https://reactdatepicker.com
+ * decided to use single component to keep as close to third party as possible */
+export const CalendarInput = React.forwardRef<HTMLInputElement, CalendarInputProps<NullOrUndefined<string>>>(
+  (props, ref) => {
+    return (
+      <div style={{ position: 'relative' }}>
+        {props.selectsRange ? (
+          <RangeCalendarInput ref={ref} {...props} />
+        ) : (
+          <SingleCalendarInput ref={ref} {...props} />
+        )}
+      </div>
+    );
+  }
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TValue extends NullOrUndefined<string>>(
+  props: ArmstrongFCProps<CalendarInputProps<TValue>, HTMLInputElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<CalendarInputProps<string>>;
 
-  const config = React.useMemo<TBaseDatePickerConfig>(() => {
-    return {
-      // overridable with config
-      monthsShown: props.selectsRange ? 2 : 1,
-      dateFormat: variant === 'time' ? 'hh:mm aa' : undefined,
+CalendarInput.displayName = 'CalendarInput';
 
-      ...props.config,
-
-      renderCustomHeader: props.selectsRange ? undefined : renderCustomHeader,
-      renderDayContents,
-      showTimeSelect: variant === 'time',
-      showTimeSelectOnly: variant === 'time',
-      locale,
-    };
-  }, [renderCustomHeader, locale, props.config, props.selectsRange, variant]);
-
-  const fallbackInputIcon = variant === 'time' ? <ImClock /> : <ImCalendar />;
-
-  return (
-    <BaseCalendarInput
-      {...props}
-      className={concat('arm-calendar-input', props.className)}
-      config={config}
-      displaySize={displaySize}
-      inputIcon={inputIcon || fallbackInputIcon}
-    />
-  );
+CalendarInput.defaultProps = {
+  selectsRange: false,
 };

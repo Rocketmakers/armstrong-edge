@@ -34,7 +34,7 @@ const options = [
 /** meta  */
 
 export default {
-  title: 'Form/Single Select Input',
+  title: 'Form/SingleSelect',
   component: SingleSelect,
 } as Meta<typeof SingleSelect>;
 
