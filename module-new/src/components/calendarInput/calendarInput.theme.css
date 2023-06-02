@@ -16,7 +16,9 @@
 
 /* override inline library styles */
 .react-datepicker-popper .react-datepicker__triangle {
-  left: calc(-1 * var(--arm-spacing-medium)) !important;
+  transform: unset !important;
+  left: 50% !important;
+  z-index: 1;
 }
 
 /** FROM PREV **/

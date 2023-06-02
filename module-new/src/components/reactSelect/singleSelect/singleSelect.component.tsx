@@ -1,5 +1,6 @@
 import React from 'react';
-import Select, { GetOptionLabel, GetOptionValue, GroupBase, OnChangeValue } from 'react-select';
+import { ImCheckmark } from 'react-icons/im';
+import Select, { components, GetOptionLabel, GetOptionValue, GroupBase, OnChangeValue } from 'react-select';
 import SelectRef from 'react-select/dist/declarations/src/Select';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../../hooks/form';
@@ -10,25 +11,28 @@ import {
   ArmstrongVFCProps,
   IArmstrongReactSelectCreatingOption,
   IArmstrongReactSelectOption,
-  NullOrUndefined,
 } from '../../../types';
 import { concat } from '../../../utils';
 import { useArmstrongConfig } from '../../config';
 import { Label } from '../../label';
 import { Spinner } from '../../spinner';
+import { IStatusWrapperProps, StatusWrapper } from '../../statusWrapper';
 import { ValidationErrors } from '../../validationErrors';
 import { emptyStyles, GroupedOption, isGroupedOptions } from '../utils/select.utils';
-import { CustomDropdownIndicator, IDropdownIndicatorProps } from '../utils/selectDropdownIndicator';
-import { CustomLoadingIndicator, ILoadingIndicatorProps } from '../utils/selectLoadingIndicator';
-import { SelectOption } from '../utils/selectOption';
 
 import '../select.theme.css';
 
-export type ReactSelectRef = React.Ref<
-  SelectRef<IArmstrongReactSelectOption<ArmstrongId>, false, GroupBase<IArmstrongReactSelectOption<ArmstrongId>>>
+const { DropdownIndicator, Option, ValueContainer } = components;
+
+export type ReactSelectRef<Id extends ArmstrongId> = React.Ref<
+  SelectRef<IArmstrongReactSelectOption<Id>, false, GroupBase<IArmstrongReactSelectOption<Id>>>
 >;
 
-export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> {
+type NativeProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+
+export interface IReactSelectBaseProps<Id extends ArmstrongId>
+  extends Omit<IStatusWrapperProps, 'className' | 'error'>,
+    NativeProps {
   /** CSS className property */
   className?: string;
 
@@ -44,14 +48,8 @@ export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> 
   /** overrides the placeholder string in the input when nothing is selected. This is set as default to 'Please select... */
   placeholder?: string;
 
-  /** overrides the error messaging and icon display used in the error validation display */
-  validationMode?: 'icon' | 'message' | 'both';
-
   /** overrides the error message(s) used in the validation display */
   errorMessages?: ValidationMessage[];
-
-  /** overrides the icon option used beside the validation display */
-  errorIcon?: JSX.Element;
 
   /** overrides the value of the form binder if both are provided  */
   currentValue?: Id;
@@ -71,16 +69,13 @@ export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> 
   ) => React.ReactNode;
 
   /** is the select value clearable */
-  isClearable?: boolean;
+  clearable?: boolean;
 
   /** is the select disabled */
-  isDisabled?: boolean;
-
-  /** is the select in a state of loading (async) */
-  isLoading?: boolean;
+  disabled?: boolean;
 
   /** enable user to search the option by typing in the input */
-  isSearchable?: boolean;
+  searchable?: boolean;
 
   /** how should the dropdown be positioned vertically */
   position?: 'auto' | 'bottom' | 'top';
@@ -91,12 +86,16 @@ export interface IReactSelectBaseProps<Id extends NullOrUndefined<ArmstrongId>> 
   /** overrides the loading icon in the input */
   loadingIcon?: JSX.Element;
 
+  /** overrides the selected icon in the input */
+  selectedIcon?: JSX.Element;
+
   /** close the select menu when the user selects an option. Set to true as default */
   closeMenuOnSelect?: boolean;
 
   /** enable the user to create select options by typing into the input */
   allowCreate?: boolean;
 
+  /** which size variant to use */
   displaySize?: 'small' | 'medium' | 'large';
 
   /** contents of a label to name / describe the input */
@@ -127,12 +126,12 @@ export const SingleSelect = React.forwardRef(
       onSelectOption,
       getOptionName,
       getOptionValue,
-      isClearable,
-      isDisabled,
-      isLoading,
-      isSearchable,
+      clearable,
+      disabled,
+      searchable,
       dropdownIcon,
       loadingIcon,
+      selectedIcon,
       position,
       formatOptionLabel,
       closeMenuOnSelect,
@@ -141,8 +140,11 @@ export const SingleSelect = React.forwardRef(
       required,
       requiredIndicator,
       scrollValidationErrorsIntoView,
+      statusPosition,
+      pending,
+      ...nativeProps
     }: IReactSelectBaseProps<ArmstrongId>,
-    ref: ReactSelectRef
+    ref: ReactSelectRef<ArmstrongId>
   ) => {
     const globals = useArmstrongConfig({
       validationMode,
@@ -193,9 +195,16 @@ export const SingleSelect = React.forwardRef(
     );
 
     const showValidation = !!validationErrorMessages?.length;
+    const showErrorIcon = showValidation && validationMode !== 'message';
+    const errorIconPosition = showErrorIcon ? statusPosition : undefined;
 
     return (
-      <div className={concat('arm-select-wrapper', className)} data-size={displaySize} data-error={showValidation}>
+      <div
+        className={concat('arm-select-wrapper', className)}
+        data-size={displaySize}
+        data-error={showValidation}
+        {...nativeProps}
+      >
         {label && (
           <Label
             className={concat('arm-select-label')}
@@ -218,25 +227,40 @@ export const SingleSelect = React.forwardRef(
           getOptionValue={valueGetter}
           aria-invalid={showValidation}
           aria-label={ariaLabel || 'single-select-input'}
-          isClearable={isClearable}
-          isDisabled={isDisabled}
+          isClearable={clearable}
+          isDisabled={disabled}
           isOptionDisabled={o => !!o.disabled}
-          isLoading={isLoading}
-          isSearchable={isSearchable}
+          isLoading={pending}
+          isSearchable={searchable}
           menuPlacement={position}
           components={{
-            Option: SelectOption,
-            DropdownIndicator: props =>
-              CustomDropdownIndicator({
-                icon: dropdownIcon,
-                ...props,
-              } as IDropdownIndicatorProps<ArmstrongId, false>),
-
-            LoadingIndicator: props =>
-              CustomLoadingIndicator({
-                icon: loadingIcon,
-                ...props,
-              } as ILoadingIndicatorProps<ArmstrongId, false>),
+            Option: props => (
+              <Option {...props}>
+                <>
+                  {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
+                  {props.data.content}
+                  {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
+                  {props.isSelected && selectedIcon}
+                </>
+              </Option>
+            ),
+            DropdownIndicator: props => <DropdownIndicator {...props}>{dropdownIcon}</DropdownIndicator>,
+            LoadingIndicator: () => <Spinner className="arm-select-spinner" fillContainer={false} icon={loadingIcon} />,
+            ValueContainer: props => (
+              <>
+                <div className="arm-select-inner" data-error-icon={errorIconPosition}>
+                  <StatusWrapper
+                    error={showValidation}
+                    errorIcon={errorIcon}
+                    className="arm-select-status"
+                    statusPosition={statusPosition}
+                    validationMode={globals.validationMode}
+                  >
+                    <ValueContainer {...props} />
+                  </StatusWrapper>
+                </div>
+              </>
+            ),
           }}
           closeMenuOnSelect={closeMenuOnSelect}
           styles={emptyStyles()}
@@ -244,7 +268,7 @@ export const SingleSelect = React.forwardRef(
 
         {showValidation && (
           <ValidationErrors
-            aria-label="select-validation-display"
+            aria-label="Error messages"
             className="arm-select-validation-error-display"
             validationMode={globals.validationMode}
             scrollIntoView={globals.scrollValidationErrorsIntoView}
@@ -255,13 +279,13 @@ export const SingleSelect = React.forwardRef(
     );
   }
 ) as (<Id extends ArmstrongId>(
-  props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef>
+  props: ArmstrongVFCProps<IReactSelectBaseProps<Id>, ReactSelectRef<Id>>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IReactSelectBaseProps<ArmstrongId>>;
 
 SingleSelect.displayName = 'SingleSelect';
 
 SingleSelect.defaultProps = {
-  isClearable: true,
-  loadingIcon: <Spinner />,
+  clearable: true,
+  selectedIcon: <ImCheckmark />,
 };

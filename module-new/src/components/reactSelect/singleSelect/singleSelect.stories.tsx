@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 
+import { useForm } from '../../../hooks/form';
 import { SingleSelect } from './singleSelect.component';
 
 const options = [
@@ -41,17 +42,16 @@ export default {
 /** component template */
 
 const Template: StoryObj<typeof SingleSelect> = {
-  render: args => {
+  args: { options, placeholder: 'Please select...' },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on InputWrapper prevents storybook from spreading pure props on here without a cast
+  render: (args: any) => {
+    const { formProp, formState } = useForm<{ value?: number }>();
     return (
-      <div
-        style={{
-          width: '100%',
-          height: '20rem',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <SingleSelect {...args} />
+      <div style={{ height: '20rem' }}>
+        <SingleSelect bind={formProp('value').bind()} {...args} />
+        <div data-testid="result" style={{ marginTop: '10px' }}>
+          Current value: {formState?.value}
+        </div>
       </div>
     );
   },
@@ -61,22 +61,17 @@ const Template: StoryObj<typeof SingleSelect> = {
 
 export const Default: StoryObj<typeof SingleSelect> = {
   ...Template,
-  args: {
-    options,
-  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const input = canvasElement.getElementsByTagName('input')[0];
+    const input = canvas.getByRole<HTMLInputElement>('combobox');
     userEvent.click(input);
 
     const blue = await waitFor(() => canvas.getByText('blue'));
     userEvent.click(blue);
 
-    await waitFor(() => {
-      const valueElement = canvasElement.getElementsByClassName('arm-single-select__single-value')[0];
-      expect(valueElement).toHaveTextContent('blue');
-    });
+    const result = canvas.getByTestId('result');
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: 2`));
   },
 };
 
@@ -89,30 +84,42 @@ export const Disabled: StoryObj<typeof SingleSelect> = {
           height: '20rem',
         }}
       >
-        <SingleSelect options={options} isDisabled />
+        <SingleSelect options={options} disabled />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
-    const input = canvasElement.getElementsByTagName('input')[0];
-
+    const input = within(canvasElement).getByRole<HTMLInputElement>('combobox');
     expect(input).toBeDisabled();
   },
 };
 
 export const Sizes: StoryObj<typeof SingleSelect> = {
   ...Template,
-  render: () => {
+  render: args => {
     return (
       <div>
         <h2>Small</h2>
-        <SingleSelect options={options} required label={<>Single select</>} displaySize="small" />
+        <SingleSelect options={args.options} required label="Single select" displaySize="small" data-testId="wrapper" />
         <h2>Medium</h2>
-        <SingleSelect options={options} required label={<>Single select</>} displaySize="medium" />
+        <SingleSelect
+          options={args.options}
+          required
+          label="Single select"
+          displaySize="medium"
+          data-testId="wrapper"
+        />
         <h2>Large</h2>
-        <SingleSelect options={options} required label={<>Single select</>} displaySize="large" />
+        <SingleSelect options={args.options} required label="Single select" displaySize="large" data-testId="wrapper" />
       </div>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const [small, medium, large] = canvas.getAllByTestId('wrapper');
+    expect(small).toHaveAttribute('data-size', 'small');
+    expect(medium).toHaveAttribute('data-size', 'medium');
+    expect(large).toHaveAttribute('data-size', 'large');
   },
 };
 
@@ -121,39 +128,52 @@ export const ValidationError: StoryObj<typeof SingleSelect> = {
   render: () => {
     return (
       <div>
-        <h2>Validation mode - both</h2>
-        <SingleSelect
-          validationMode="both"
-          errorMessages={['This field is required']}
-          options={options}
-          required
-          label={<>Single select</>}
-        />
-        <h2>Validation mode - icon only</h2>
-        <SingleSelect
-          validationMode="icon"
-          errorMessages={['This field is required']}
-          options={options}
-          required
-          label={<>Single select</>}
-        />
-        <h2>Validation mode - message only</h2>
-        <SingleSelect
-          validationMode="message"
-          errorMessages={['This field is required']}
-          options={options}
-          required
-          label={<>Single select</>}
-        />
-        <h2>Icon on left</h2>
-        <SingleSelect
-          validationMode="icon"
-          errorMessages={['This field is required']}
-          options={options}
-          required
-          label={<>Single select</>}
-        />
+        <div data-testid="both">
+          <h2>Validation mode - both</h2>
+          <SingleSelect validationMode="both" errorMessages={['This field is required']} options={options} required />
+        </div>
+        <div data-testid="icon">
+          <h2>Validation mode - icon only</h2>
+          <SingleSelect validationMode="icon" errorMessages={['This field is required']} options={options} required />
+        </div>
+        <div data-testid="message">
+          <h2>Validation mode - message only</h2>
+          <SingleSelect
+            validationMode="message"
+            errorMessages={['This field is required']}
+            options={options}
+            required
+          />
+        </div>
+        <div data-testid="left-icon">
+          <h2>Icon on left</h2>
+          <SingleSelect
+            validationMode="icon"
+            errorMessages={['This field is required']}
+            options={options}
+            required
+            statusPosition="left"
+          />
+        </div>
       </div>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const both = canvas.getByTestId('both');
+    expect(within(both).getByRole('status')).toBeVisible();
+    expect(within(both).getByLabelText('Error messages')).toBeVisible();
+
+    const icon = canvas.getByTestId('icon');
+    expect(within(icon).getByRole('status')).toBeVisible();
+
+    const message = canvas.getByTestId('message');
+    expect(within(message).getByLabelText('Error messages')).toBeVisible();
+
+    const iconLeft = canvas.getByTestId('left-icon');
+    const status = within(iconLeft).getByRole('status');
+    expect(status).toBeVisible();
+    expect(status).toHaveAttribute('data-position', 'left');
   },
 };

@@ -110,7 +110,7 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMont
             changeMonth(newValue);
           }}
           currentValue={date.getMonth()}
-          isClearable={false}
+          clearable={false}
           displaySize="small"
         />
         <SingleSelect
@@ -120,7 +120,7 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMont
             changeYear(newValue);
           }}
           currentValue={date.getFullYear()}
-          isClearable={false}
+          clearable={false}
           displaySize="small"
         />
       </div>

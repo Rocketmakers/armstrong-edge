@@ -49,7 +49,7 @@ DebounceInputBase.displayName = 'DebounceInput';
 
 interface IInputProps<TValue extends NullOrUndefined<string> | NullOrUndefined<number>>
   extends Omit<NativeInputProps, 'type'>,
-    Omit<IInputWrapperProps, 'onClick' | 'onValueChange'> {
+    IInputWrapperProps {
   /** A class name to apply to the input element */
   inputClassName?: string;
 

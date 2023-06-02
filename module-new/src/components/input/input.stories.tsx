@@ -6,6 +6,7 @@ import { AiFillThunderbolt } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
 
 import { useForm } from '../../hooks/form';
+import { Button } from '../button';
 import { Input } from './input.component';
 
 /** Inputs with options to track errors, pending data and so on. */
@@ -15,6 +16,7 @@ export default {
   component: Input,
   args: {
     type: 'text',
+    placeholder: 'Type here...',
   },
 } as Meta<typeof Input>;
 
@@ -31,19 +33,39 @@ export const Default: Story = {
   },
 };
 
+const MyCoolInput = React.forwardRef<HTMLInputElement>((props, forwardedRef) => {
+  return (
+    <div>
+      <label htmlFor="balls">Content</label>
+      <input ref={forwardedRef} id="balls" type="text" />
+    </div>
+  );
+});
+
+MyCoolInput.displayName = 'get fucked';
+
 export const Labelled: Story = {
   render: () => {
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const myCoolRef = React.useRef<HTMLInputElement>(null);
+
+    const onClick = React.useCallback(() => {
+      myCoolRef.current?.focus();
+    }, []);
+
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-        <Input label={'Default'} />
-        <Input label={'Required'} required={true} />
+      <div id="cocks" ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <Input label="Default" />
+        <Input label="Required" required={true} />
+        <MyCoolInput ref={myCoolRef} />
+        <Button onClick={onClick}>Focus input</Button>
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const defaultInput = canvas.getByLabelText('Default') as HTMLInputElement;
-    const requiredInput = canvas.getByLabelText('Required *') as HTMLInputElement;
+    const defaultInput = canvas.getByLabelText('Default');
+    const requiredInput = canvas.getByLabelText('Required *');
 
     expect(defaultInput).toBeInTheDocument();
     expect(requiredInput).toBeInTheDocument();
