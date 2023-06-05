@@ -15,13 +15,14 @@ import {
   IArmstrongReactSelectOption,
   NullOrUndefined,
 } from '../../types';
-import { stripNullOrUndefined } from '../../utils';
+import { assertNever, stripNullOrUndefined } from '../../utils';
 import { Button } from '../button';
 import { Input, ITextInputProps } from '../input';
 import { SingleSelect } from '../reactSelect/singleSelect';
+import { getMonths, getYears } from './dateTimeInput.utils';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import './calendarInput.theme.css';
+import './dateTimeInput.theme.css';
 
 export interface IDatePickerConfig
   extends Omit<
@@ -33,13 +34,13 @@ export interface IDatePickerConfig
   locale?: Locale;
 }
 
-export interface ICalendarInputProps<TBind extends NullOrUndefined<string>>
+export interface IDateTimeInputProps<TBind extends NullOrUndefined<string>>
   extends Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind'> {
-  /** props to spread onto the calendar component */
+  /** props to spread onto the React Datepicker component */
   config?: IDatePickerConfig;
 }
 
-export interface ICalendarInputRangeProps<TBind extends NullOrUndefined<string>> extends ICalendarInputProps<TBind> {
+export interface IDateTimeInputRangeProps<TBind extends NullOrUndefined<string>> extends IDateTimeInputProps<TBind> {
   selectsRange: true;
 
   /**  prop for binding start date (range) to an Armstrong form binder (see forms documentation) */
@@ -58,9 +59,9 @@ export interface ICalendarInputRangeProps<TBind extends NullOrUndefined<string>>
   onChange?: (value: [TBind, TBind]) => void;
 }
 
-export interface ICalendarInputSingleProps<TBind extends NullOrUndefined<string>> extends ICalendarInputProps<TBind> {
-  /** swipe02 is default */
-  variant?: 'swipe01' | 'swipe02' | 'dropdown' | 'time';
+export interface IDateTimeInputSingleProps<TBind extends NullOrUndefined<string>> extends IDateTimeInputProps<TBind> {
+  monthSelectVariant?: 'left-align' | 'centered' | 'dropdown';
+  mode?: 'date' | 'time' | 'date-time';
   selectsRange?: false;
   bind?: IBindingProps<TBind>;
   value?: TBind;
@@ -69,56 +70,52 @@ export interface ICalendarInputSingleProps<TBind extends NullOrUndefined<string>
   onChange?: (value: TBind) => void;
 }
 
-export type CalendarInputProps<TBind extends NullOrUndefined<string>> =
-  | ICalendarInputRangeProps<TBind>
-  | ICalendarInputSingleProps<TBind>;
+export type DateTimeInputProps<TBind extends NullOrUndefined<string>> =
+  | IDateTimeInputRangeProps<TBind>
+  | IDateTimeInputSingleProps<TBind>;
 
 const defaultFormat = 'dd/MM/yyyy';
 const defaultLocale = enGB;
 
 const renderDayContents = (day: number) => {
-  return <div className="arm-calendar-input-day-contents">{day}</div>;
+  return <div className="arm-date-time-input-day-contents">{day}</div>;
 };
 
-const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMonth, changeYear, date }) => {
-  const today = new Date();
+const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps & { min?: Date; max?: Date; locale?: Locale }> = ({
+  changeMonth,
+  changeYear,
+  date,
+  min,
+  max,
+  locale = defaultLocale,
+}) => {
+  const monthOptions = React.useMemo<IArmstrongReactSelectOption<number>[]>(() => {
+    return getMonths(date.getFullYear(), locale, min, max).map(({ index, name, disabled }) => ({
+      id: index,
+      content: name,
+      disabled,
+    }));
+  }, [date, locale, min, max]);
 
-  const getLocaleMonth = (month: number) => {
-    const dateX = new Date();
-
-    dateX.setMonth(month);
-    return format(dateX, 'MMMM');
-  };
-
-  const monthOptions = new Array(12).fill(null).map<IArmstrongReactSelectOption<number>>((_, index) => ({
-    id: index,
-    content: getLocaleMonth(index),
-  }));
-
-  const yearOptions = new Array(110).fill(null).map<IArmstrongReactSelectOption<number>>((_, index) => {
-    const year = today.getFullYear() + 10 - index;
-    return { id: year, content: year.toString() };
-  });
+  const yearOptions = React.useMemo<IArmstrongReactSelectOption<number>[]>(() => {
+    return getYears(min, max).map(y => ({ id: y, content: y.toString() }));
+  }, [min, max]);
 
   return (
     <>
-      <div className="arm-calendar-input-header dropdown">
+      <div className="arm-date-time-input-header dropdown">
         <SingleSelect
-          className="arm-calendar-dropdown-select"
+          className="arm-date-time-dropdown-select"
           options={monthOptions}
-          onSelectOption={newValue => {
-            changeMonth(newValue);
-          }}
+          onSelectOption={changeMonth}
           currentValue={date.getMonth()}
           clearable={false}
           displaySize="small"
         />
         <SingleSelect
-          className="arm-calendar-dropdown-select"
+          className="arm-date-time-dropdown-select"
           options={yearOptions}
-          onSelectOption={newValue => {
-            changeYear(newValue);
-          }}
+          onSelectOption={changeYear}
           currentValue={date.getFullYear()}
           clearable={false}
           displaySize="small"
@@ -128,47 +125,61 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps> = ({ changeMont
   );
 };
 
-const Swipe01Header: React.FC<ReactDatePickerCustomHeaderProps> = props => {
+const LeftAlignHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   return (
-    <div className="arm-calendar-input-header swipe01">
-      <span className="arm-swipe01-date">{format(props.monthDate, 'MMMM yyyy')}</span>
-      <div className="arm-swipe01-date-navigation">
+    <div className="arm-date-time-input-header left-align">
+      <span className="arm-left-align-date">{format(props.monthDate, 'MMMM yyyy')}</span>
+      <div className="arm-left-align-date-navigation">
         <Button
-          className="arm-calendar-input-header-button swipe01-button"
+          className="arm-date-time-input-header-button left-align-button"
           displayStyle="blank"
           onClick={props.decreaseMonth}
+          disabled={props.prevMonthButtonDisabled}
         >
-          <FaChevronLeft className="arm-calendar-input-header-icon" />
+          <FaChevronLeft className="arm-date-time-input-header-icon" />
         </Button>
         <Button
-          className="arm-calendar-input-header-button swipe01-button"
+          className="arm-date-time-input-header-button left-align-button"
           displayStyle="blank"
           onClick={props.increaseMonth}
+          disabled={props.nextMonthButtonDisabled}
         >
-          <FaChevronRight className="arm-calendar-input-header-icon" />
+          <FaChevronRight className="arm-date-time-input-header-icon" />
         </Button>
       </div>
     </div>
   );
 };
 
-const Swipe02Header: React.FC<ReactDatePickerCustomHeaderProps> = props => {
+const CenteredHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   return (
-    <div className="arm-calendar-input-header swipe02">
-      <Button className="arm-calendar-input-header-button" displayStyle="blank" onClick={props.decreaseMonth}>
-        <FaChevronLeft className="arm-calendar-input-header-icon" />
+    <div className="arm-date-time-input-header centered">
+      <Button
+        className="arm-date-time-input-header-button"
+        displayStyle="blank"
+        onClick={props.decreaseMonth}
+        disabled={props.prevMonthButtonDisabled}
+      >
+        <FaChevronLeft className="arm-date-time-input-header-icon" />
       </Button>
       <span>{format(props.monthDate, 'MMMM yyyy')}</span>
-
-      <Button className="arm-calendar-input-header-button" displayStyle="blank" onClick={props.increaseMonth}>
-        <FaChevronRight className="arm-calendar-input-header-icon" />
+      <Button
+        className="arm-date-time-input-header-button"
+        displayStyle="blank"
+        onClick={props.increaseMonth}
+        disabled={props.nextMonthButtonDisabled}
+      >
+        <FaChevronRight className="arm-date-time-input-header-icon" />
       </Button>
     </div>
   );
 };
 
-const SingleCalendarInput = React.forwardRef<HTMLInputElement, ICalendarInputSingleProps<NullOrUndefined<string>>>(
-  ({ config, selectsRange, bind, value, onChange, validationErrorMessages, variant, ...inputProps }, ref) => {
+const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputSingleProps<NullOrUndefined<string>>>(
+  (
+    { config, selectsRange, bind, value, onChange, validationErrorMessages, monthSelectVariant, mode, ...inputProps },
+    ref
+  ) => {
     const [date, setDate, bindDateConfig] = useBindingState(bind, {
       validationErrorMessages,
       value,
@@ -179,27 +190,47 @@ const SingleCalendarInput = React.forwardRef<HTMLInputElement, ICalendarInputSin
       (customHeaderProps: ReactDatePickerCustomHeaderProps) => {
         return (
           <div className="customer-header-container">
-            {variant === 'dropdown' && <DropdownHeader {...customHeaderProps} />}
-            {variant === 'swipe01' && <Swipe01Header {...customHeaderProps} />}
-            {(!variant || variant === 'swipe02') && <Swipe02Header {...customHeaderProps} />}
+            {monthSelectVariant === 'dropdown' && (
+              <DropdownHeader
+                {...customHeaderProps}
+                min={config?.minDate ?? undefined}
+                max={config?.maxDate ?? undefined}
+              />
+            )}
+            {monthSelectVariant === 'left-align' && <LeftAlignHeader {...customHeaderProps} />}
+            {(!monthSelectVariant || monthSelectVariant === 'centered') && <CenteredHeader {...customHeaderProps} />}
           </div>
         );
       },
-      [variant]
+      [monthSelectVariant, config]
     );
+
+    const compiledDefaultFormat = React.useMemo(() => {
+      switch (mode) {
+        case 'date':
+          return 'dd/MM/yyyy';
+        case 'time':
+          return 'HH:mm';
+        case 'date-time':
+          return 'dd/MM/yyyy HH:mm';
+        default:
+          assertNever(mode);
+          return '';
+      }
+    }, [mode]);
 
     const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
       return {
         // overridable with config
         monthsShown: 1,
-        dateFormat: variant === 'time' ? 'hh:mm aa' : undefined,
+        dateFormat: compiledDefaultFormat,
         ...config,
         renderCustomHeader,
         renderDayContents,
-        showTimeSelect: variant === 'time',
-        showTimeSelectOnly: variant === 'time',
+        showTimeSelect: mode === 'time' || mode === 'date-time',
+        showTimeSelectOnly: mode === 'time',
       };
-    }, [variant, config, renderCustomHeader]);
+    }, [mode, config, renderCustomHeader, compiledDefaultFormat]);
 
     const formatString = compiledConfig.dateFormat ?? defaultFormat;
     const locale = compiledConfig.locale ?? defaultLocale;
@@ -217,9 +248,8 @@ const SingleCalendarInput = React.forwardRef<HTMLInputElement, ICalendarInputSin
         disabled={inputProps.disabled}
         customInput={
           <Input
-            type="text"
             ref={ref}
-            leftOverlay={variant === 'time' ? <ImClock /> : <FaRegCalendar />}
+            leftOverlay={mode === 'time' ? <ImClock /> : <FaRegCalendar />}
             {...inputProps}
             validationErrorMessages={bindDateConfig.validationErrorMessages}
           />
@@ -232,9 +262,9 @@ const SingleCalendarInput = React.forwardRef<HTMLInputElement, ICalendarInputSin
   }
 );
 
-SingleCalendarInput.displayName = 'SingleCalendarInput';
+SingleDateTimeInput.displayName = 'SingleDateTimeInput';
 
-const RangeCalendarInput = React.forwardRef<HTMLInputElement, ICalendarInputRangeProps<NullOrUndefined<string>>>(
+const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputRangeProps<NullOrUndefined<string>>>(
   (
     {
       config,
@@ -307,23 +337,23 @@ const RangeCalendarInput = React.forwardRef<HTMLInputElement, ICalendarInputRang
   }
 );
 
-RangeCalendarInput.displayName = 'RangeCalendarInput';
+RangeDateTimeInput.displayName = 'RangeDateTimeInput';
 
-RangeCalendarInput.defaultProps = {
+RangeDateTimeInput.defaultProps = {
   leftOverlay: <FaRegCalendar />,
 };
 
 /**
  * third-party docs: https://reactdatepicker.com
  * decided to use single component to keep as close to third party as possible */
-export const CalendarInput = React.forwardRef<HTMLInputElement, CalendarInputProps<NullOrUndefined<string>>>(
+export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputProps<NullOrUndefined<string>>>(
   (props, ref) => {
     return (
       <div style={{ position: 'relative' }}>
         {props.selectsRange ? (
-          <RangeCalendarInput ref={ref} {...props} />
+          <RangeDateTimeInput ref={ref} {...props} />
         ) : (
-          <SingleCalendarInput ref={ref} {...props} />
+          <SingleDateTimeInput ref={ref} {...props} />
         )}
       </div>
     );
@@ -331,12 +361,13 @@ export const CalendarInput = React.forwardRef<HTMLInputElement, CalendarInputPro
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<TValue extends NullOrUndefined<string>>(
-  props: ArmstrongFCProps<CalendarInputProps<TValue>, HTMLInputElement>
+  props: ArmstrongFCProps<DateTimeInputProps<TValue>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<CalendarInputProps<string>>;
+  ArmstrongFCExtensions<DateTimeInputProps<string>>;
 
-CalendarInput.displayName = 'CalendarInput';
+DateTimeInput.displayName = 'DateTimeInput';
 
-CalendarInput.defaultProps = {
+DateTimeInput.defaultProps = {
   selectsRange: false,
+  mode: 'date',
 };

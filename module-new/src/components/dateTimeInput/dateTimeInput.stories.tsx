@@ -8,54 +8,31 @@ import { enGB } from 'date-fns/locale';
 import * as React from 'react';
 
 import { useForm } from '../../hooks/form';
-import { CalendarInput } from './calendarInput.component';
+import { DateTimeInput } from './dateTimeInput.component';
 
 /** metadata */
 
 export default {
-  title: 'Form/Calendar',
-  component: CalendarInput,
+  title: 'Form/DateTime Input',
+  component: DateTimeInput,
   args: {},
-} as Meta<typeof CalendarInput>;
+} as Meta<typeof DateTimeInput>;
 
 /** component template */
 
-const Template: StoryObj<typeof CalendarInput> = {
+const Template: StoryObj<typeof DateTimeInput> = {
   render: args => {
-    return (
-      <div
-        style={{
-          width: '100%',
-          height: '25rem',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <CalendarInput {...args} />
-      </div>
-    );
+    return <DateTimeInput {...args} />;
   },
 };
 
 /** stories */
 
-export const Default: StoryObj<typeof CalendarInput> = {
+export const Default: StoryObj<typeof DateTimeInput> = {
   ...Template,
-
   render: () => {
     const { formProp } = useForm({ date: '30/05/2023' });
-    return (
-      <div
-        style={{
-          width: '100%',
-          height: '25rem',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <CalendarInput bind={formProp('date').bind()} />
-      </div>
-    );
+    return <DateTimeInput bind={formProp('date').bind()} />;
   },
   play: async ({ canvasElement }) => {
     const input = within(canvasElement).getByRole('textbox');
@@ -63,7 +40,7 @@ export const Default: StoryObj<typeof CalendarInput> = {
   },
 };
 
-export const Sizes: StoryObj<typeof CalendarInput> = {
+export const Sizes: StoryObj<typeof DateTimeInput> = {
   ...Template,
 
   render: () => {
@@ -76,27 +53,27 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
     return (
       <div>
         <h2>Small</h2>
-        <CalendarInput
+        <DateTimeInput
           config={{ locale: enGB }}
-          variant="dropdown"
+          monthSelectVariant="dropdown"
           displaySize="small"
           bind={formProp('date').bind()}
           label="Small calendar input"
           required={true}
         />
         <h2>Medium</h2>
-        <CalendarInput
+        <DateTimeInput
           config={{ locale: enGB }}
-          variant="dropdown"
+          monthSelectVariant="dropdown"
           displaySize="medium"
           bind={formProp('date2').bind()}
           label="Medium calendar input"
           required={true}
         />
         <h2>Large</h2>
-        <CalendarInput
+        <DateTimeInput
           config={{ locale: enGB }}
-          variant="dropdown"
+          monthSelectVariant="dropdown"
           displaySize="large"
           bind={formProp('date3').bind()}
           label="Large calendar input"
@@ -107,97 +84,72 @@ export const Sizes: StoryObj<typeof CalendarInput> = {
   },
 };
 
-export const ValidationError: StoryObj<typeof CalendarInput> = {
+export const ValidationError: StoryObj<typeof DateTimeInput> = {
   ...Template,
 
   render: () => {
     const { formProp } = useForm({ date: '' });
     return (
-      <div
-        style={{
-          width: '100%',
-          height: '25rem',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <CalendarInput
-          bind={formProp('date').bind()}
-          config={{ locale: enGB }}
-          validationErrorMessages={['invalid date']}
-          validationMode="both"
-        />
-      </div>
+      <DateTimeInput
+        bind={formProp('date').bind()}
+        config={{ locale: enGB }}
+        validationErrorMessages={['invalid date']}
+        validationMode="both"
+      />
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-
-    await waitFor(() => {
-      expect(canvas.getByText('invalid date'));
-    });
+    await waitFor(() => expect(canvas.getByText('invalid date')).toBeVisible());
   },
 };
 
-export const Disabled: StoryObj<typeof CalendarInput> = {
+export const Disabled: StoryObj<typeof DateTimeInput> = {
   ...Template,
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return (
-      <div
-        style={{
-          width: '100%',
-          height: '25rem',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} disabled />
-      </div>
-    );
+    return <DateTimeInput bind={formProp('date').bind()} config={{ locale: enGB }} disabled />;
   },
   play: async ({ canvasElement }) => {
-    const input = await canvasElement.getElementsByTagName('input')[0];
-    const dateString = format(new Date(), 'dd/MM/yyyy');
-    userEvent.type(input, dateString);
-    userEvent.click(canvasElement);
-    await waitFor(() => {
-      expect(input).not.toHaveValue(dateString);
-    });
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('textbox');
+    expect(input).toBeDisabled();
   },
 };
 
-export const TimeOnly: StoryObj<typeof CalendarInput> = {
+export const TimeOnly: StoryObj<typeof DateTimeInput> = {
+  ...Template,
+
+  render: () => {
+    const { formProp } = useForm({ time: '10:00' });
+    return <DateTimeInput bind={formProp('time').bind()} config={{ locale: enGB }} mode="time" />;
+  },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole('textbox');
+    expect(input).toHaveValue('10:00');
+  },
+};
+
+export const LeftAlignVariant: StoryObj<typeof DateTimeInput> = {
   ...Template,
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="time" />;
+    return <DateTimeInput bind={formProp('date').bind()} config={{ locale: enGB }} monthSelectVariant="left-align" />;
   },
 };
 
-export const Swipe01: StoryObj<typeof CalendarInput> = {
+export const Dropdown: StoryObj<typeof DateTimeInput> = {
   ...Template,
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="swipe01" />;
+    return <DateTimeInput bind={formProp('date').bind()} config={{ locale: enGB }} monthSelectVariant="dropdown" />;
   },
 };
 
-export const Swipe02: StoryObj<typeof CalendarInput> = Default;
-
-export const Dropdown: StoryObj<typeof CalendarInput> = {
-  ...Template,
-
-  render: () => {
-    const { formProp } = useForm({ date: '' });
-    return <CalendarInput bind={formProp('date').bind()} config={{ locale: enGB }} variant="dropdown" />;
-  },
-};
-
-export const Range: StoryObj<typeof CalendarInput> = {
+export const Range: StoryObj<typeof DateTimeInput> = {
   ...Template,
 
   render: () => {
@@ -206,7 +158,7 @@ export const Range: StoryObj<typeof CalendarInput> = {
       endDate: '',
     });
     return (
-      <CalendarInput
+      <DateTimeInput
         selectsRange
         startBind={formProp('startDate').bind()}
         endBind={formProp('endDate').bind()}
@@ -216,7 +168,7 @@ export const Range: StoryObj<typeof CalendarInput> = {
   },
 };
 
-export const MinMaxDays: StoryObj<typeof CalendarInput> = {
+export const MinMaxDays: StoryObj<typeof DateTimeInput> = {
   ...Template,
 
   render: () => {
@@ -225,33 +177,30 @@ export const MinMaxDays: StoryObj<typeof CalendarInput> = {
     });
 
     return (
-      <CalendarInput
+      <DateTimeInput
         bind={formProp('date').bind()}
         config={{ locale: enGB, minDate: new Date(), maxDate: addDays(new Date(), 5) }}
-        variant="swipe01"
+        monthSelectVariant="left-align"
       />
     );
   },
   play: async ({ canvasElement }) => {
-    const input = await canvasElement.getElementsByTagName('input')[0];
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('textbox');
     // max
     const overDateString = format(addDays(new Date(), 6), 'dd/MM/yyyy');
     userEvent.type(input, overDateString);
     userEvent.click(canvasElement);
-    await waitFor(() => {
-      expect(input).not.toHaveValue(overDateString);
-    });
+    await waitFor(() => expect(input).not.toHaveValue(overDateString));
     // min
     const underDateString = format(addDays(new Date(), -1), 'dd/MM/yyyy');
     userEvent.type(input, underDateString);
     userEvent.click(canvasElement);
-    await waitFor(() => {
-      expect(input).not.toHaveValue(underDateString);
-    });
+    await waitFor(() => expect(input).not.toHaveValue(underDateString));
   },
 };
 
-export const RangeValidation: StoryObj<typeof CalendarInput> = {
+export const RangeValidation: StoryObj<typeof DateTimeInput> = {
   ...Template,
 
   render: () => {
@@ -262,10 +211,10 @@ export const RangeValidation: StoryObj<typeof CalendarInput> = {
     React.useEffect(() => {
       formProp('startDate').addValidationError('Invalid start date');
       formProp('endDate').addValidationError('Invalid end date');
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- effect trigger
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- test effect trigger
     }, []);
     return (
-      <CalendarInput
+      <DateTimeInput
         selectsRange
         startBind={formProp('startDate').bind()}
         endBind={formProp('endDate').bind()}
