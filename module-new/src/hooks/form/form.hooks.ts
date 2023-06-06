@@ -5,8 +5,9 @@
 import * as React from 'react';
 
 import { useMyValidationErrorMessages } from '../../components/validationErrors';
-import { contentDependency, mergeDeep } from '../../utils/objects';
+import { mergeDeep } from '../../utils/objects';
 import { assertNever } from '../../utils/typescript';
+import { useContentMemo } from '../useContentMemo';
 import { useDebounceEffect } from '../useDebounce';
 import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
 import { dataReducer, validationReducer } from './form.state';
@@ -41,18 +42,21 @@ import { validateAll, validateKeyChainProperty } from './form.validators';
  * @param formStateRef The form state object ref (this allows "instant access" to latest form data for method chaining.)
  * @param dispatch The dispatcher for sending form state modification actions.
  * @param initialData The initial data as passed to the `useForm` hook.
- * @param formConfig The configuration as passed to the `useForm` hook.
+ * @param formConfigInput The configuration as passed to the `useForm` hook.
  * @returns The form state, property accessor, and associated helper methods.
  */
 function useFormBase<TData extends object>(
   formStateLive: TData | undefined,
   formStateRef: React.MutableRefObject<TData | undefined>,
   dispatch: FormDispatcher<TData | undefined>,
-  initialData?: Partial<TData>,
-  formConfig?: IFormConfig<TData>
+  initialDataInput?: Partial<TData>,
+  formConfigInput?: IFormConfig<TData>
 ): HookReturn<TData> {
   const [clientValidationErrors, clientValidationDispatch] = React.useReducer(validationReducer, []);
   const [isValid, setIsValid] = React.useState(false);
+
+  const formConfig = useContentMemo(formConfigInput);
+  const initialData = useContentMemo(initialDataInput);
 
   /**
    * For setting a new value for a target property
@@ -187,11 +191,9 @@ function useFormBase<TData extends object>(
           clearValidationErrorsByKeyChain(keyChain, identifiers),
       };
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- content dependency pattern
     [
       set,
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- content dependency pattern
-      contentDependency(formConfig),
+      formConfig,
       dispatch,
       formStateLive,
       initialData,
@@ -354,8 +356,7 @@ function useFormBase<TData extends object>(
    */
   const resetFormData = React.useCallback(() => {
     dispatch({ type: 'set-all', data: initialData });
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- content dependency pattern
-  }, [contentDependency(initialData), dispatch]);
+  }, [initialData, dispatch]);
 
   /**
    * Sets all form data to a new object value.
@@ -382,16 +383,17 @@ function useFormBase<TData extends object>(
 
 /**
  * Turns a potentially complex nested object or array into a piece of live state and a set of helper tools designed to be used in a form.
- * @param initialData (optional) The initial value of the form data object.
+ * @param initialDataInput (optional) The initial value of the form data object.
  * Can be passed as an object or a function which receives the live state and returns new state.
  * WARNING: if passing a function, it must be a callback protected by dependencies as it will be called every time it's reference updates to receive the new data.
  * @param formConfig (optional) The settings to use with the form.
  * @returns The form state, property accessor, and associated helper methods.
  */
 export function useForm<TData extends object>(
-  initialData?: TData | InitialDataFunction<TData>,
+  initialDataInput?: TData | InitialDataFunction<TData>,
   formConfig?: IFormConfig<TData>
 ): HookReturn<TData> {
+  const initialData = useContentMemo(initialDataInput);
   const firstInitialData = React.useRef<TData | undefined>(
     initialDataIsCallback(initialData) ? initialData() : initialData
   );
@@ -400,12 +402,11 @@ export function useForm<TData extends object>(
 
   const formStateRef = React.useRef<TData | undefined>(firstInitialData.current);
 
-  const liveInitialDataDependency = initialDataIsCallback(initialData) ? initialData : contentDependency(initialData);
-
-  const liveInitialData = React.useMemo<TData | undefined>(() => {
+  const liveInitialDataResult = React.useMemo<TData | undefined>(() => {
     return initialDataIsCallback(initialData) ? initialData(formStateRef.current) : initialData;
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- turnery based dependency
-  }, [liveInitialDataDependency]);
+  }, [initialData]);
+
+  const liveInitialData = useContentMemo(liveInitialDataResult);
 
   const dispatch = React.useCallback<FormDispatcher<TData | undefined>>(
     action => {
@@ -418,7 +419,7 @@ export function useForm<TData extends object>(
 
   useDidUpdateLayoutEffect(() => {
     dispatch({ type: 'set-all', data: liveInitialData });
-  }, [contentDependency(liveInitialData)]);
+  }, [liveInitialData]);
 
   return useFormBase<TData>(formState, formStateRef, dispatch, liveInitialData, formConfig);
 }
@@ -431,9 +432,12 @@ export function useForm<TData extends object>(
  */
 export function useChildForm<TData extends object>(
   parentBinder: IBindingProps<TData>,
-  formConfig?: IFormConfig<TData>
+  formConfigInput?: IFormConfig<TData>
 ): HookReturn<TData> {
   const formStateRef = React.useRef<TData | undefined>(parentBinder.value);
+
+  const formConfig = useContentMemo(formConfigInput);
+  const parentBinderConfig = useContentMemo(parentBinder.formConfig);
 
   useDidUpdateLayoutEffect(() => {
     formStateRef.current = parentBinder.value;
@@ -441,8 +445,8 @@ export function useChildForm<TData extends object>(
 
   const combinedConfig = React.useMemo<IFormConfig<TData> | undefined>(() => {
     // format validation errors from parent
-    const parentBinderConfig: IFormConfig<TData> | undefined = parentBinder.formConfig && {
-      ...parentBinder.formConfig,
+    const parentBinderConfigCombined: IFormConfig<TData> | undefined = parentBinderConfig && {
+      ...parentBinderConfig,
       validators: undefined,
       validationErrors: parentBinder.myValidationErrors?.map(ve => ({
         ...ve,
@@ -450,10 +454,9 @@ export function useChildForm<TData extends object>(
       })),
     };
 
-    const combination: IFormConfig<TData> = mergeDeep(parentBinderConfig ?? {}, formConfig ?? {});
+    const combination: IFormConfig<TData> = mergeDeep(parentBinderConfigCombined ?? {}, formConfig ?? {});
     return Object.keys(combination).length ? combination : undefined;
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- content dependency pattern
-  }, [contentDependency(formConfig), contentDependency(parentBinder.formConfig), parentBinder.myValidationErrors]);
+  }, [parentBinderConfig, parentBinder.myValidationErrors, parentBinder.keyChain, formConfig]);
 
   const dispatch = React.useCallback<FormDispatcher<TData | undefined>>(
     action => {
