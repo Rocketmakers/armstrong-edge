@@ -4,14 +4,14 @@
   display: flex;
   align-items: center;
 
-  &[data-direction="vertical"] {
+  &[data-direction='vertical'] {
     label {
       flex-direction: column;
     }
   }
 
-  &[data-content="true"] {
-    &[data-direction="horizontal"] {
+  &[data-content='true'] {
+    &[data-direction='horizontal'] {
       .arm-checkbox-input-checkbox {
         margin-right: var(--arm-spacing-xsmall);
       }
@@ -19,7 +19,7 @@
         margin-left: var(--arm-spacing-xsmall);
       }
     }
-    &[data-direction="vertical"] {
+    &[data-direction='vertical'] {
       .arm-checkbox-input-checkbox {
         margin-bottom: var(--arm-spacing-xsmall);
       }
@@ -31,11 +31,11 @@
     align-items: center;
   }
 
-  &[data-disabled="true"] {
+  &[data-disabled='true'] {
     opacity: 0.5;
   }
 
-  &[data-checked="true"] {
+  &[data-checked='true'] {
     .arm-checkbox-input-checkbox {
       background-color: var(--arm-form-checked-bg-color);
       color: var(--arm-form-checked-fg-color);

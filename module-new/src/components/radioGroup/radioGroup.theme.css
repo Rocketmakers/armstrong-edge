@@ -1,0 +1,102 @@
+.arm-radio-group {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--arm-font-size-small);
+  gap: var(--arm-spacing-small);
+}
+
+.arm-radio-group-item-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.arm-radio-group-item {
+  all: unset;
+  background-color: white;
+  width: var(--arm-spacing-xlarge);
+  height: var(--arm-spacing-xlarge);
+  border-radius: 100%;
+  border: 1px solid var(--arm-color-grey-600);
+}
+
+.arm-radio-group-item:focus {
+  border-color: var(--arm-color-grey-1000);
+}
+
+.arm-radio-group-item-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.arm-radio-group-item-indicator[data-custom-icon='false']::after {
+  content: '';
+  display: block;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  background-color: var(--arm-color-grey-1000);
+}
+
+.arm-radio-label {
+  padding-left: var(--arm-spacing-small);
+}
+
+.arm-radio-group-label {
+  display: inline-block;
+  margin-bottom: var(--arm-spacing-xxxsmall);
+}
+
+/* DISABLED */
+
+.arm-radio-group[data-disabled='true'] .arm-radio-group-item {
+  background-color: var(--arm-color-grey-100);
+}
+
+/* ERROR */
+
+.arm-radio-group[data-error='true'] .arm-radio-group-item {
+  border-color: var(--arm-color-negative);
+}
+
+.arm-radio-group[data-error='true'] .arm-radio-group-item-indicator {
+  color: var(--arm-color-negative);
+}
+
+.arm-radio-group[data-error='true'] .arm-radio-group-item-indicator[data-custom-icon='false']::after {
+  background-color: var(--arm-color-negative);
+}
+
+/** SIZES **/
+
+.arm-radio-group[data-size='small'] {
+  font-size: var(--arm-font-size-xsmall);
+  gap: var(--arm-spacing-xxsmall);
+}
+
+.arm-radio-group[data-size='small'] .arm-radio-group-item {
+  width: var(--arm-spacing-medium);
+  height: var(--arm-spacing-medium);
+}
+
+.arm-radio-group[data-size='small'] .arm-radio-label {
+  padding-left: var(--arm-spacing-xxsmall);
+}
+
+.arm-radio-group[data-size='large'] {
+  font-size: var(--arm-font-size-medium);
+  gap: var(--arm-spacing-medium);
+}
+
+.arm-radio-group[data-size='large'] .arm-radio-group-item {
+  width: var(--arm-spacing-xxlarge);
+  height: var(--arm-spacing-xxlarge);
+}
+
+.arm-radio-group[data-size='large'] .arm-radio-label {
+  padding-left: var(--arm-spacing-medium);
+}

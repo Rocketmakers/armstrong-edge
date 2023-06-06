@@ -1,9 +1,7 @@
 $arm-switch-input-width: var(--arm-spacing-xxxxlarge);
 $arm-switch-input-height: var(--arm-spacing-xxlarge);
 $arm-switch-input-handle-padding: var(--arm-spacing-xxsmall);
-$arm-switch-input-handle: calc(
-  #{$arm-switch-input-height} - #{$arm-switch-input-handle-padding} * 2
-);
+$arm-switch-input-handle: calc(#{$arm-switch-input-height} - #{$arm-switch-input-handle-padding} * 2);
 
 .arm-switch-input {
   &[data-icon-style='on-handle'] {
@@ -28,7 +26,7 @@ $arm-switch-input-handle: calc(
 
       &::before {
         display: block;
-        content: "";
+        content: '';
       }
     }
 
@@ -53,7 +51,7 @@ $arm-switch-input-handle: calc(
 
   &::after {
     display: block;
-    content: "";
+    content: '';
     width: $arm-switch-input-handle;
     height: $arm-switch-input-handle;
     transition: transform var(--arm-transition-quick);

@@ -19,6 +19,7 @@ module.exports = {
       files: ['**/src/**/*.stories.tsx'],
       rules: {
         'react-hooks/rules-of-hooks': 0,
+        'react/prop-types': 0,
       },
     },
   ],

@@ -11,7 +11,7 @@ type ButtonHTMLProps = Omit<
   'ref'
 >;
 
-export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline';
+export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank';
 export type ButtonDisplaySize = 'small' | 'medium' | 'large';
 export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info';
 

@@ -1,9 +1,9 @@
 .arm-checkbox-input-list {
-  &[data-direction="horizontal"] {
+  &[data-direction='horizontal'] {
     display: flex;
     align-items: flex-start;
   }
-  &[data-direction="vertical"] {
+  &[data-direction='vertical'] {
     .arm-input {
       margin-bottom: var(--arm-spacing-xxsmall);
     }

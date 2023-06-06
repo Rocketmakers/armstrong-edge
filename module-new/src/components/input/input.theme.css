@@ -18,6 +18,17 @@
   font-size: inherit;
 }
 
+/** DISABLED **/
+
+.arm-input-base[data-disabled='true'] .arm-input-inner {
+  border-color: var(--arm-color-grey-300);
+  background-color: var(--arm-color-grey-100);
+}
+
+.arm-input-base-input:disabled {
+  cursor: not-allowed;
+}
+
 /** SIZES **/
 
 .arm-input-base[data-size='small'] {

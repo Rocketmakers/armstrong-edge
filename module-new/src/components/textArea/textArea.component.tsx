@@ -47,8 +47,8 @@ const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextA
 DebounceTextAreaBase.displayName = 'DebounceInput';
 
 interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefined<number>>
-  extends Omit<IInputWrapperProps, 'onClick' | 'onValueChange'>,
-    NativeTextAreaProps {
+  extends NativeTextAreaProps,
+    Omit<IInputWrapperProps, 'onClick' | 'onValueChange'> {
   /** A class name to apply to the input element */
   textAreaClassName?: string;
 
