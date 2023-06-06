@@ -2,9 +2,9 @@ import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
-import { ImChrome } from 'react-icons/im';
 
 import { useForm } from '../../hooks/form';
+import { NullOrUndefined } from '../../types';
 import { CodeInput } from './codeInput.component';
 
 /** metadata */
@@ -19,7 +19,7 @@ export default {
 const Template: StoryObj<typeof CodeInput> = {
   render: args => {
     interface IFormData {
-      code: string | null | undefined;
+      code: NullOrUndefined<string>;
     }
     const { formProp, formState } = useForm<IFormData>({ code: '' });
     return (
@@ -48,15 +48,11 @@ export const Default: StoryObj<typeof CodeInput> = {
     expect(inputs[0]).toHaveValue('1');
     expect(inputs[1]).toHaveValue('2');
     expect(inputs[2]).toHaveValue('3');
-    await waitFor(() => {
-      expect(value).toHaveTextContent('Value: 123');
-    });
+    await waitFor(() => expect(value).toHaveTextContent('Value: 123'));
     userEvent.clear(inputs[0]);
     expect(inputs[1]).toHaveValue('2');
     expect(inputs[2]).toHaveValue('3');
-    await waitFor(() => {
-      expect(value).toHaveTextContent('Value: 23');
-    });
+    await waitFor(() => expect(value).toHaveTextContent('Value: 23'));
     userEvent.clear(inputs[0]);
     userEvent.clear(inputs[1]);
     userEvent.clear(inputs[2]);
@@ -64,9 +60,7 @@ export const Default: StoryObj<typeof CodeInput> = {
     expect(inputs[0]).toHaveValue('4');
     expect(inputs[1]).toHaveValue('5');
     expect(inputs[2]).toHaveValue('6');
-    await waitFor(() => {
-      expect(value).toHaveTextContent('Value: 456');
-    });
+    await waitFor(() => expect(value).toHaveTextContent('Value: 456'));
   },
 };
 
@@ -125,9 +119,7 @@ export const DifferentLengths: StoryObj<typeof CodeInput> = {
     expect(inputs[0]).toHaveValue('abcd');
     expect(inputs[1]).toHaveValue('efg');
     expect(inputs[2]).toHaveValue('hijklmno');
-    await waitFor(() => {
-      expect(value).toHaveTextContent('Value: abcdefghijklmno');
-    });
+    await waitFor(() => expect(value).toHaveTextContent('Value: abcdefghijklmno'));
   },
 };
 
@@ -146,9 +138,7 @@ export const WithTextBetween: StoryObj<typeof CodeInput> = {
     expect(inputs[0]).toHaveValue('abcd');
     expect(inputs[1]).toHaveValue('efgh');
     expect(inputs[2]).toHaveValue('ijkl');
-    await waitFor(() => {
-      expect(value).toHaveTextContent('Value: abcdefghijkl');
-    });
+    await waitFor(() => expect(value).toHaveTextContent('Value: abcdefghijkl'));
     expect(inputs[0].parentElement?.parentElement?.nextSibling).toHaveTextContent('-');
     expect(inputs[1].parentElement?.parentElement?.nextSibling).toHaveTextContent('-');
   },
@@ -161,13 +151,13 @@ export const WithOverlays: StoryObj<typeof CodeInput> = {
       1,
       {
         length: 1,
-        rightOverlay: '№',
-        leftOverlay: '№',
+        rightOverlay: '+',
+        leftOverlay: '+',
       },
       1,
     ],
-    rightOverlay: '№',
-    leftOverlay: '№',
+    rightOverlay: '+',
+    leftOverlay: '+',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -179,9 +169,7 @@ export const WithOverlays: StoryObj<typeof CodeInput> = {
     expect(inputs[0]).toHaveValue('a');
     expect(inputs[1]).toHaveValue('b');
     expect(inputs[2]).toHaveValue('c');
-    await waitFor(() => {
-      expect(value).toHaveTextContent('Value: abc');
-    });
-    expect(inputs[1].nextSibling).toHaveTextContent('№');
+    await waitFor(() => expect(value).toHaveTextContent('Value: abc'));
+    expect(inputs[1].nextSibling).toHaveTextContent('+');
   },
 };

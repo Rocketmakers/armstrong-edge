@@ -9,7 +9,8 @@ import { IInputWrapperProps } from '../inputWrapper';
 import { Label } from '../label';
 import { StatusWrapper } from '../statusWrapper';
 import { ValidationErrors } from '../validationErrors';
-import { CodeInputPartDefinition, getLengthFromPart } from './codeInput.utils';
+import { CodeInputPartDefinition } from './codeInput.types';
+import { getLengthFromPart } from './codeInput.utils';
 
 import './codeInput.theme.css';
 
@@ -29,6 +30,7 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
   /** which size variant to use */
   displaySize?: InputDisplaySize;
 
+  /** called on paste within an input part */
   onPaste: (event: React.ClipboardEvent<HTMLInputElement>) => void;
 }
 
@@ -109,20 +111,21 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
     | 'leftOverlay'
     | 'rightOverlay'
   > {
-  /**  prop for binding to an Armstrong form binder (see forms documentation) */
+  /** Prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
 
   /** Fired when the code input changes */
   onChange?: (newValue: TBind) => void;
 
   /**
-   * the parts of the code input
+   * The parts of the code input
    * Can be a number representing the length of an input, e.g. [1,1,1]
    * Can be a string representing a piece of text in-between inputs, e.g. [1,1,'-',1,1]
    * Can be an object representing an input with some properties
    */
   parts: CodeInputPartDefinition<TBind>[];
 
+  /** Optional className for the code input */
   className?: string;
 
   /** which size variant to use */
