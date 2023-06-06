@@ -68,9 +68,6 @@ interface IInputProps<TValue extends NullOrUndefined<string> | NullOrUndefined<n
   /** which size variant to use */
   displaySize?: InputDisplaySize;
 
-  /** optional test ID for root input */
-  testId?: string;
-
   /** optional test ID to use for the input wrapper */
   wrapperTestId?: string;
 }
@@ -132,7 +129,6 @@ export const Input = React.forwardRef<
       displaySize,
       labelClassName,
       labelId,
-      testId,
       wrapperTestId,
       ...nativeProps
     },
@@ -206,7 +202,6 @@ export const Input = React.forwardRef<
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
       value: boundValue?.toString() ?? (bind && ''),
       disabled,
-      'data-testid': testId,
     };
 
     return (

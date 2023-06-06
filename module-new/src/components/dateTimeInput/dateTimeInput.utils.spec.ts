@@ -1,6 +1,6 @@
 import { enGB } from 'date-fns/locale';
 
-import { getMonths, getYears, minMaxCheckThrow } from './dateTimeInput.utils';
+import { formatDate, getMonths, getYears, minMaxCheckThrow } from './dateTimeInput.utils';
 
 /** minMaxCheckThrow */
 describe('minMaxCheckThrow', () => {
@@ -151,5 +151,40 @@ describe('getYears', () => {
     expect(years).toHaveLength(51);
     expect(years[0]).toBe(2000);
     expect(years[50]).toBe(2050);
+  });
+});
+
+/** formatDate */
+describe('formatDate', () => {
+  it('should format a valid date', () => {
+    const date = new Date('2023-06-05');
+    const formatString = 'yyyy-MM-dd';
+    const formattedDate = formatDate(date, formatString);
+
+    expect(formattedDate).toBe('2023-06-05');
+  });
+
+  it('should return undefined for a null date', () => {
+    const date = null;
+    const formatString = 'yyyy-MM-dd';
+    const formattedDate = formatDate(date, formatString);
+
+    expect(formattedDate).toBeUndefined();
+  });
+
+  it('should return undefined for an undefined date', () => {
+    const date = undefined;
+    const formatString = 'yyyy-MM-dd';
+    const formattedDate = formatDate(date, formatString);
+
+    expect(formattedDate).toBeUndefined();
+  });
+
+  it('should handle a custom format string', () => {
+    const date = new Date('2023-06-05');
+    const formatString = 'MMM d, yyyy';
+    const formattedDate = formatDate(date, formatString);
+
+    expect(formattedDate).toBe('Jun 5, 2023');
   });
 });

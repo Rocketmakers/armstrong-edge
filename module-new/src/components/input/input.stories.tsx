@@ -141,6 +141,21 @@ export const Pending: Story = {
   },
 };
 
+export const Disabled: Story = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Input label="Disabled" disabled={true} />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('textbox');
+    expect(input).toHaveAttribute('disabled');
+  },
+};
+
 export const ValidationError: Story = {
   render: () => {
     return (
@@ -206,10 +221,10 @@ export const InputTypes: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        <Input label={'Number'} type="number" testId="number-input" />
-        <Input label={'Password'} type="password" testId="password-input" />
-        <Input label={'Email'} type="email" testId="email-input" />
-        <Input label={'Telephone number'} type="tel" testId="telephone-input" />
+        <Input label={'Number'} type="number" data-testId="number-input" />
+        <Input label={'Password'} type="password" data-testId="password-input" />
+        <Input label={'Email'} type="email" data-testId="email-input" />
+        <Input label={'Telephone number'} type="tel" data-testId="telephone-input" />
       </div>
     );
   },

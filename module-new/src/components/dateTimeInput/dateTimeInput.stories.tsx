@@ -229,3 +229,13 @@ export const RangeValidation: StoryObj<typeof DateTimeInput> = {
     await waitFor(() => expect(canvas.getByText('Invalid end date')));
   },
 };
+
+export const Native: StoryObj<typeof DateTimeInput> = {
+  ...Template,
+  render: () => <DateTimeInput native={true} data-testid="native-date-test" />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByTestId('native-date-test');
+    expect(input).toHaveAttribute('type', 'date');
+  },
+};

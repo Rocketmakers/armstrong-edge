@@ -1,5 +1,6 @@
 import { addMonths, addYears, endOfMonth, format, isAfter, isBefore, startOfMonth, startOfYear } from 'date-fns';
 
+import { NullOrUndefined } from '../../types';
 import { IMonth } from './dateTimeInput.types';
 
 /**
@@ -52,4 +53,14 @@ export function getYears(min?: Date, max?: Date): number[] {
     currentYear = addYears(currentYear, 1);
   }
   return years;
+}
+
+/**
+ * Formats a date using the provided format string.
+ * @param {Date|null|undefined} incomingDate - The date to format. Can be null or undefined.
+ * @param {string} formatString - The format string to use for formatting the date.
+ * @returns {string|undefined} The formatted date as a string, or undefined if the incoming date is null or undefined.
+ */
+export function formatDate(incomingDate: NullOrUndefined<Date>, formatString: string): string | undefined {
+  return incomingDate ? format(incomingDate, formatString) : undefined;
 }
