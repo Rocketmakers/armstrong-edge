@@ -1,0 +1,41 @@
+.arm-code-input {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--arm-spacing-xxsmall);
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* LABEL */
+
+.arm-code-input-label {
+  display: inline-block;
+  margin-bottom: var(--arm-spacing-xxxsmall);
+  margin-left: var(--arm-spacing-xxxsmall);
+}
+
+/* INPUT */
+
+.arm-code-input-part-input .arm-input-inner {
+  width: auto;
+  position: relative;
+}
+
+.arm-code-input-part-input .arm-input-base-input {
+  --arm-input-size: calc(var(--arm-input-height-medium) - var(--arm-spacing-xlarge));
+
+  padding: var(--arm-spacing-small);
+  width: calc(var(--arm-input-size) + (var(--arm-code-input-length, 1) - 1) * var(--arm-spacing-medium));
+  text-align: center;
+  height: var(--arm-input-size);
+}
+
+/* SIZES */
+
+.arm-code-input-part-input[data-size='small'] .arm-input-base-input {
+  padding: var(--arm-spacing-xxsmall);
+}
+
+.arm-code-input-part-input[data-size='large'] .arm-input-base-input {
+  padding: var(--arm-spacing-medium);
+}
