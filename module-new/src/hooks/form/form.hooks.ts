@@ -9,7 +9,7 @@ import { mergeDeep } from '../../utils/objects';
 import { assertNever } from '../../utils/typescript';
 import { useContentMemo } from '../useContentMemo';
 import { useDebounceEffect } from '../useDebounce';
-import { useDidUpdateLayoutEffect } from '../useDidUpdateEffect';
+import { useDidUpdateSSRLayoutEffect } from '../useSSRLayoutEffect';
 import { dataReducer, validationReducer } from './form.state';
 import {
   BindingTools,
@@ -417,7 +417,7 @@ export function useForm<TData extends object>(
     [setFormState]
   );
 
-  useDidUpdateLayoutEffect(() => {
+  useDidUpdateSSRLayoutEffect(() => {
     dispatch({ type: 'set-all', data: liveInitialData });
   }, [liveInitialData]);
 
@@ -439,7 +439,7 @@ export function useChildForm<TData extends object>(
   const formConfig = useContentMemo(formConfigInput);
   const parentBinderConfig = useContentMemo(parentBinder.formConfig);
 
-  useDidUpdateLayoutEffect(() => {
+  useDidUpdateSSRLayoutEffect(() => {
     formStateRef.current = parentBinder.value;
   }, [parentBinder.value]);
 
