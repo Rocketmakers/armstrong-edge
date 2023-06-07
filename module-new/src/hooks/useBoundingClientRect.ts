@@ -19,36 +19,22 @@ export function useBoundingClientRect(
   onChange?: (newBoundingClientRect: DOMRect) => void,
   listenToScroll = true
 ): UseBoundingClientRectReturn {
-  const [rect, setRect] = React.useState<DOMRect>(
-    ref.current?.getBoundingClientRect() || {
-      bottom: 0,
-      height: 0,
-      left: 0,
-      right: 0,
-      top: 0,
-      width: 0,
-      x: 0,
-      y: 0,
+  const [rect, setRect] = React.useState<DOMRect>(ref.current?.getBoundingClientRect() || new DOMRect(0, 0, 0, 0));
 
-      toJSON: () => {},
-    }
-  );
-
-  function domRectToObject(domRect: DOMRect) {
+  const domRectToObject = React.useCallback((domRect: DOMRect) => {
     const { top, right, bottom, left, width, height, x, y } = domRect;
     return { top, right, bottom, left, width, height, x, y };
-  }
+  }, []);
 
   const setRectSize = React.useCallback(() => {
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
-
       if (contentDependency(domRectToObject(boundingClientRect)) !== contentDependency(domRectToObject(rect))) {
         onChange?.(boundingClientRect);
         setRect(boundingClientRect);
       }
     }
-  }, [ref, rect, onChange]);
+  }, [ref, domRectToObject, rect, onChange]);
 
   /** Run the callback to get the element's size whenever it resizes */
   useResizeObserver(setRectSize, {}, ref);

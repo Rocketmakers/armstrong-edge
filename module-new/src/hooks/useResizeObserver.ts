@@ -5,9 +5,9 @@ import { useContentMemo } from './useContentMemo';
 
 /**
  * Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
- * @param ref the html element to watch
  * @param callback the callback to be fired
- * @param options options for the mutation observer
+ * @param optionsInput options for the mutation observer
+ * @param ref the html element to watch
  *
  */
 export function useResizeObserver(
