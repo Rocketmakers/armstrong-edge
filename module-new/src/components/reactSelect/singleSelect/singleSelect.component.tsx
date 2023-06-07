@@ -3,7 +3,7 @@ import { ImCheckmark } from 'react-icons/im';
 import Select, { components, GetOptionLabel, GetOptionValue, GroupBase, OnChangeValue } from 'react-select';
 import SelectRef from 'react-select/dist/declarations/src/Select';
 
-import { IBindingProps, useBindingState, ValidationMessage } from '../../../hooks/form';
+import { IBindingProps, useBindingState, ValidationMessage } from '../../../form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,

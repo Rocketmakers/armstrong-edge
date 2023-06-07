@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { FormValidationMode } from '../../hooks/form';
+import { FormValidationMode } from '../../form';
 import { useArmstrongConfig } from '../config';
 import { Status } from '../status/status.component';
 

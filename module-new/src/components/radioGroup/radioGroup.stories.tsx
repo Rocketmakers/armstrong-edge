@@ -4,7 +4,7 @@ import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 import { ImCheckmark, ImCross } from 'react-icons/im';
 
-import { useForm } from '../../hooks/form';
+import { useForm } from '../../form';
 import { RadioGroup } from './radioGroup.component';
 
 /** metadata */

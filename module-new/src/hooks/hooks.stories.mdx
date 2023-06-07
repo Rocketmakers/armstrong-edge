@@ -1,0 +1,467 @@
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
+
+<Meta title="Hooks/Utility Hooks" />
+
+# Utility Hooks
+
+Armstrong exports a number of simple hooks that are used internally and available externally.
+
+**NOTE:** Not all hooks are documented here, for the form hook, see `Form/Form Hook`
+
+### useArrayState
+
+Store an array value in state, and access push, pull, clear methods to interact with that state - all contained within a reducer, meaning that multiple state updates can happen in a single thread without any unusual behaviors
+
+Returns the value and some callbacks for interacting with the underlying state
+
+```tsx
+const [value, { push, pull toggle, contains, clear }] = useArrayState([])
+```
+
+### useBoundingClientRect
+
+Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
+
+```tsx
+const contentRef = React.useRef<HTMLDivElement>(null);
+
+const [{ height, width, bottom, left, right, top, x, y }] = useBoundingClientRect(contentRef);
+
+return <div ref={contentRef} />;
+```
+
+The second element in the return array can be used to force `useBoundingClientRect` to recalculate the `boundingClientrect`, for example if it's an element that isn't available on first render and won't trigger a resize event when it first appears, or if you need to recalculate its position when its size hasn't changed.
+
+```tsx
+const contentRef = React.useRef<HTMLDivElement>(null);
+
+const [{ height, width, bottom, left, right, top, x, y }, forceGetBoundingClientRect] =
+  useBoundingClientRect(contentRef);
+
+const [showThing] = React.useState(false);
+
+React.useEffect(() => {
+  if (showThing) {
+    forceGetBoundingClientRect();
+  }
+}, [showThing]);
+
+return showThing ? <div ref={contentRef} /> : <p>no thing</p>;
+```
+
+An unfortunate limitation of this hook is that changes to the position don't update the position returned by the hook as there's currently no way of listening to positions in Javascript without doing a gnarly polling thing, the resize observer is only triggered on size changes.
+
+To rectify this limitation, the hook listens to resize and scroll events, and if this doesn't cover your needs you can use the `forceGetBoundingClientRect` callback if you know a position has changed... or write your own hook that uses an interval and recalculates this position every few ms.
+
+### useDebounce
+
+Like a state hook, but also exports a "throttled" value (set after x amount of inactivity through the setter method)
+
+```tsx
+const [actualValue, setActualValue, debouncedValue, setDebouncedValue] = useDebounce(
+  milliseconds,
+  value,
+  onValueChange
+);
+```
+
+### useDelayedDependentSwitch
+
+A hook which takes a piece of boolean state and, when that is set to false, returns another piece of state which is true for a given time to act as a "closing" state
+
+Returns an array with two booleans, the first is the given value with it being set to false delayed for a render while settingToFalse is set to true, the second is the value for isSettingFalse which, when value is set to false, is true for the given length of time
+
+```tsx
+const MyComponent = () => {
+  const [isOpen, setIsOpen] = React.useState();
+
+  return <InnerComponent isOpen={isOpen} />;
+};
+
+const InnerComponent = ({ isOpen }) => {
+  const [delayedIsOpen, isClosing] = useDelayedDependentSwitch(isOpen, 500);
+
+  // treat delayedIsOpen as the real isOpen, as it's still true in the render immediately when isOpen is set to false
+  // see code for Modal for an example
+};
+```
+
+This was a very hard thing to describe so if you think you need this and my description wasn't good enough, drop me (pat) a message
+
+### useDebug
+
+Fire a series of console logs alongside lifecycle events
+
+The argument it takes will be prefixed on console logs
+
+```tsx
+useDebug('my_component');
+```
+
+### useDidMountEffect
+
+A useEffect which will only run in the first effect
+
+```tsx
+useDidMountEffect(() => { do some stuff })
+```
+
+### useDidMountLayoutEffect
+
+A useLayoutEffect which will only run in the first layout effect
+
+```tsx
+useDidMountLayoutEffect(() => { do some stuff })
+```
+
+### useDidUpdateEffect
+
+A useEffect which won't run after the first render, will only run once the deps start changing
+
+```tsx
+useDidUpdateEffect(() => { do some stuff })
+```
+
+### useDidUpdateLayoutEffect
+
+A useLayoutEffect which won't run after the first render, will only run once the deps start changing
+
+```tsx
+useDidUpdateLayoutEffect(() => { do some stuff })
+```
+
+### useDrag
+
+Track the position of the cursor after a mouse down event, and fire a callback when the mouse is released
+
+Can also be used for gestures as it works with touch events
+
+```tsx
+const onDragEnd = React.useCallback(
+  ({ changePosition }: IDragReleaseCallbackArgs) => {
+      do some stuff with the new position
+  },
+  []
+);
+
+const { props, changePosition, startPosition, currentPosition, isDragging } = useDrag(onDragEnd);
+
+return <div {...props} />
+```
+
+### useElementStatus
+
+Listen to the onLoad and onError events on an element can only be used on certain HTML tags
+
+```tsx
+const ref = React.useRef<HTMLImageElement>();
+
+const { error, loaded, loading, props } = useElementStatus(ref);
+
+return <img {...props} ref={ref} />;
+```
+
+The ref is used to get the initial state, as onLoad events aren't fired on `<img />` if the image is already cached
+
+### useEventListener
+
+Hook to add an event listener, and remove it when the component unmounts
+
+```tsx
+// the callback passed into the hook must be memoised in a useCallback
+const onClick = React.useCallback(() => {}, []);
+
+useEventListener('click', onClick, document);
+```
+
+### useGeneratedId
+
+Generates a unique ID on first render using the current unix time and a randomly generated number up to 1000 - should be used for DOM elements when necessary for, for example, defining relationships between elements using aria
+
+It's been used internally for hooking up aria properties like `aria-labelledby` as they mostly work based on ID
+
+Can be overriden so that it's only used if an id isn't explicitly provided
+
+```tsx
+const MyComponent = ({ id }) => {
+  const generatedId = useGeneratedId(id);
+
+  return <div id={generatedId} />;
+};
+```
+
+### useHasTimeElapsed
+
+Returns true once a given amount of time has elapsed since the returned callback has been run
+
+```tsx
+const [hasTimeElapsed, begin, reset] = useHasTimeElapsed(time, onTimeElapse);
+```
+
+### useHasTimeElapsedSinceMount
+
+Returns true once a given amount of time has elapsed since the component mounted
+
+```tsx
+const hasTimeElapsed = useHasTimeElapsed(time, onTimeElapse);
+```
+
+### useInfinitePaging
+
+see useInfinitePaging storybook page
+
+### useIntersectionObserver
+
+Use an intersection observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
+
+```tsx
+const ref = React.useRef<HTMLDivElement>();
+
+useIntersectionObserver(onIntersect, intersectionObserverOptions, ref);
+
+return <div ref={ref} />;
+```
+
+[see here for more information on the intersection observer api](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
+
+### useInterval
+
+Set up a interval which is cleared automatically when the component unmounts
+
+```tsx
+const onInterval = React.useCallback(() => {}, []);
+
+const { set } = useInterval(onInterval, 100);
+```
+
+### useIsFocused
+
+Get, in React state, whether an element is being focused.
+
+Can be used by spreading the props returned from the second element in the returned array onto the element you want to listen to, or by passing in a ref
+
+```tsx
+const [isFocused, props] = useIsFocused();
+
+return <div {...props} />;
+```
+
+```tsx
+const ref = React.useRef<HTMLDivElement>();
+
+const [isFocused] = useIsFocused(ref);
+
+return <div ref={ref} />;
+```
+
+### useIsHovering
+
+Get, in React state, whether an element is being hovered.
+
+Can be used by spreading the props returned from the second element in the returned array onto the element you want to listen to, or by passing in a ref
+
+```tsx
+const [isHovered, props] = useIsHovered();
+
+return <div {...props} />;
+```
+
+```tsx
+const ref = React.useRef<HTMLDivElement>();
+
+const [isHovered, props] = useIsHovered(ref);
+
+return <div ref={ref} />;
+```
+
+### useIsInViewport
+
+Take a ref and return a piece of React state reflecting whether the referenced element is currently in the viewport or not
+
+```tsx
+const isInViewport = useInViewport(ref, {
+  ...intersectionObserverOptions,
+  once: true,
+});
+```
+
+### useMatchMedia
+
+Returns whether the document matches the given media query string
+
+```tsx
+// will return true while the window size is less than 1600px
+const isMatching = useMatchMedia('max-width: 1600px');
+```
+
+[see here for information on the match media api](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia)
+
+### useMutationObserver
+
+Use an mutation observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
+
+```tsx
+const ref = React.useRef<HTMLDivElement>();
+
+useIntersectionObserver(onMutation, mutationObserverOptions, ref);
+
+return <div ref={ref} />;
+```
+
+[see here for information on the mutation observer api](https://developer.mozilla.org/en-US/docs/Web/API/Mutation_Observer_API)
+
+### useOnScrolToEnd
+
+Fires a given callback when an element reaches a distance from the end defined by distanceFromEdge.
+
+Can be used by using the returned onScroll callback and adding that to the element you want to listen to.
+
+Alternatively, there's a ScrollToEndListener component which will work more reliably as it doesn't rely on a scroll event being added to an element, and instead uses an intersection observer
+
+```tsx
+const onScrollToEnd = React.useCallback(
+  () => {
+      do some stuff on scroll to end
+  },
+  []
+);
+
+const {scrolledToEnd, onScroll} = useOnScrolToEnd(onScrollToEnd)
+
+return (<div onScroll={onScroll} />)
+```
+
+or to put it on the document
+
+```tsx
+const { scrolledToEnd, onScroll } = useOnScrolToEnd(onScrollToEnd);
+
+useEventListener('scroll', onScroll, document);
+```
+
+though, again, the ScrollToEndListener is more reliable as it doesn't rely on scroll listeners, so most of the time you'll want to use that
+
+### usePerformanceObserver
+
+Use an performance observer to fire the passed callback - also cleans up on unmount.
+
+```tsx
+usePerformanceObserver(performanceObserverCallback, performanceObserverInit);
+```
+
+[see here for information on the performance observer api](https://developer.mozilla.org/en-US/docs/Web/API/Performance_Observer_API)
+
+### useResizeObserver
+
+Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
+
+```tsx
+const ref = React.useRef<HTMLDivElement>();
+
+useResizeObserver(onIntersect, ResizeObserverOptions, ref);
+
+return <div ref={ref} />;
+```
+
+[see here for more information on the resize observer api](https://developer.mozilla.org/en-US/docs/Web/API/Resize_Observer_API)
+
+### useTemporaryState
+
+useState but the state returns to initialValue after a given amount of time from whenever setState is called
+
+```tsx
+const [state, setState, cancel] = useTemporaryState(initialValue, time, onReset);
+```
+
+### useThrottle
+
+Like a state hook, but also exports a "throttled" value which changes at regular intervals
+
+```tsx
+const [actualValue, setActualValue, throttleValue, setThrottledValue] = useThrottle(milliseconds, value, onValueChange);
+```
+
+### useTimeout
+
+Set up a timeout which is cleared automatically when the component unmounts
+
+```tsx
+const { set, clear, waiting } = useTimeout(callback, time);
+```
+
+i.e.
+
+```tsx
+const { set } = useTimeout(() => console.log('DONE'), 500);
+
+set();
+```
+
+Values can also be overriden at the function call
+
+```tsx
+const { set } = useTimeout();
+
+set(() => console.log('DONE'), 500);
+```
+
+FYI - don't actually call set in your render method, you'll cause an infinite loop and everything will explode.
+
+You can also use `useTimeout` like a boolean `useTemporaryState`. In this example, on the button click, hasClickedTheThing will be true for 1000ms
+
+```tsx
+const { waiting: hasClickedTheThing, set: onClickTheThing } = useTimeout(undefined, 1000);
+
+return <Button onClick={onClickTheThing} />;
+```
+
+Finally, you can also use `set` as a promise
+
+```tsx
+const { set } = useTimeout(undefined, 1000);
+
+const run = useCallback(async () => {
+  await set();
+  // 1000 ms has passed
+}, [set]);
+```
+
+which can resolve to something
+
+```tsx
+const { set } = useTimeout(() => {
+  return 'hello';
+}, 1000);
+
+const run = useCallback(async () => {
+  const value = await set();
+
+  console.log(value);
+  // logs "hello"
+}, [set]);
+```
+
+### useWillUnmountEffect
+
+A useEffect which only runs on the cleanup of the last effect
+
+```tsx
+useWillUnmountEffect(() => { do some stuff })
+```
+
+### useWillUnmountLayoutEffect
+
+A useLayoutEffect which only runs on the cleanup of the last layout effect
+
+```tsx
+useWillUnmountLayoutEffect(() => { do some stuff })
+```
+
+### useWindowSize
+
+Returns the size of the window as a piece of live state, ensuring that any calculations happening during the React lifecycle that need the window size will have it up to date
+and window resizes can cause rerenders
+
+```tsx
+const { innerWidth, innerHeight, outerWidth, outerHeight } = useWindowSize();
+```

@@ -1,11 +1,5 @@
 import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs';
-import {
-  ConfigExample,
-  HookReturnExample,
-  FormPropExample,
-  FormPropArrayExample,
-  BindPropsExample,
-} from './form.examples';
+import { ConfigExample, HookReturnExample, FormPropExample, FormPropArrayExample, BindPropsExample } from './examples';
 
 <Meta title="Form/Form Hook" />
 
@@ -68,18 +62,20 @@ interface ILoginRequest {
 
 const { formProp, formState } = useForm<ILoginRequest>();
 
-const submitData = React.useCallback(async () => {
-  const { email, password } = formState;
-  await login(email, password);
-}, [formState]);
+const submitData = React.useCallback(
+  async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { email, password } = formState;
+    await login(email, password);
+  },
+  [formState]
+);
 
 return (
-  <form>
+  <form onSubmit={submitData}>
     <EmailInput bind={formProp('email').bind()} />
     <PasswordInput bind={formProp('password').bind()} />
-    <Button type="submit" onClick={submitData}>
-      Login
-    </Button>
+    <Button type="submit">Login</Button>
   </form>
 );
 ```
@@ -105,7 +101,7 @@ Here's an example:
 const { data } = useGetProfileData<IUser>();
 
 // Using an initial data callback here ensures that when the remote data updates, the form will
-// reflect the changes but also maintain live user edits to the uneffected areas of the form.
+// reflect the changes but also maintain live user edits to the unaffected areas of the form.
 const initialData = React.useCallback((currentFormState?: IUser) => {
   return {
     firstName: "",
@@ -134,17 +130,13 @@ return (
 );
 ```
 
-## <a name="tools">Tools returned from the hook</a>
-
-<ArgTypes of={HookReturnExample} />
-
 ## <a name="formprop">The formProp function</a>
 
 The `formProp` function returned from the `useForm` hook can be used to perform a set of tasks relating to a single form prop.
 
 ### Field targeting
 
-Targeting fields within a nested structure is acheived via passing an argument for each level of nesting. For example, take the following object shape:
+Targeting fields within a nested structure is achieved via passing an argument for each level of nesting. For example, take the following object shape:
 
 ```typescript
 {
@@ -175,18 +167,6 @@ formProp('address', 'city');
 formProp('address', 'location', 'lat');
 formProp('roles', 0, 'name'); // binding to properties within an array is done via the index
 ```
-
-### Standard property tools
-
-If the property being targeted by `formProp` is _not_ an array, the below set of tools is returned:
-
-<ArgTypes of={FormPropExample} />
-
-### Array property tools
-
-If the property being targeted by `formProp` _is_ an array, the follwing additional tools are returned:
-
-<ArgTypes of={FormPropArrayExample} />
 
 Here's an example of some common array tools in action, this example also shows how form state can be built on the fly with no initial state provided:
 
@@ -224,6 +204,8 @@ Here's a simple example of a validation error:
 }
 ```
 
+Validation errors will only display on bindable components that have registered themselves as "touched". This allows for validation to take place as a user progresses through a form if so desired, without messages appearing on fields that have not yet been interacted with.
+
 ### Hook config validation errors.
 
 The below example shows the same login form, but with validation errors being returned from an APIHooks processing hook, and passed into the form config. A standard pattern for handling server side validation.
@@ -232,9 +214,9 @@ The below example shows the same login form, but with validation errors being re
 const [
   login,
   {
-    processed: { validationErrors },
+    errors: { validationErrors },
   },
-] = apiHooks.auth.login.useMutation();
+] = useLoginEndpoint();
 
 const { formProp, formState } = useForm(
   {
@@ -263,47 +245,32 @@ return (
 );
 ```
 
-<ArgTypes of={ConfigExample} />
+### Schema validation errors.
 
-### Hook config validation schema
+The below example shows the same login form, but with validation being handled by a client side validation schema.
 
-The validation schema follows the same structure as the form state. The validator config allows you to pass a custom message and validation rule to each property. Below is an example of a validator.
-
-```tsx
-const isMandatoryValidator = (value: any) => !!value;
-
-{
-  message: 'Oops look like theres an error'.
-  validator: isMandatoryValidator
-}
-```
-
-The below example shows the same login form, but with a client side validation schema being passed into the form config. A `validate` method and an `isValid` bool is available from the hook to handle disabling buttons and dispatching validation errors.
+The `useForm` hook uses a type safe wrapper around the [zod](https://zod.dev) validation library.
 
 ```tsx
-const { formProp, formState, validate, isValid } = useForm(
+const [login] = useLoginEndpoint();
+
+const { formProp, formState, validate } = useForm(
   {
     email: '',
     password: '',
   },
   {
-    validators: {
-      email: {
-        message: "Your email is invalid"
-        validator: (value) => value && value.indexOf('@') > -1
-      },
-      password: {
-        message: "Your password is to short"
-        validator: (value) => value?.length > 10
-      }
-    }
+    validationMode: 'both',
+    validationSchema: {
+      email: z.string().email('must be a valid email'),
+      password: z.string().minLength(8, 'password too short'),
+    },
   }
 );
 
 const submitData = React.useCallback(async () => {
-  const { email, password } = formState;
-
-  if(validate()) {
+  if (validate()) {
+    const { email, password } = formState;
     await login(email, password);
   }
 }, [formState, validate]);
@@ -312,18 +279,75 @@ return (
   <form>
     <EmailInput bind={formProp('email').bind()} />
     <PasswordInput bind={formProp('password').bind()} />
-    <Button type="submit" disabled={!isValid} onClick={submitData}>
+    <Button type="submit" onClick={submitData}>
       Login
     </Button>
   </form>
 );
 ```
 
-To run validators again sub properties, you can use the validate method returned from formProp
+The `validate` method exported by `useForm` will dispatch client side validation errors to any fields that have failed the criteria. By default, the root `validate` function will set all inputs in the form as "touched" so that the form will show all errors when `validate` is called regardless of user interaction. This is usually the desired behaviour if validation is occurring on submit like in the above example, but may not be desirable for an "on the fly" approach to validation.
+
+To disable the "touch all on root validate" behaviour and allow individual form controls to decide whether to show errors, send `false` to the root validate function like so:
+
+```TypeScript
+validate(false);
+```
+
+**NOTE:** Schema validation can also be executed against a single field by using `formProp` like so:
 
 ```tsx
 formProp('email').validate();
 ```
+
+In a similar way to the root validation method, validating through `formProp` will set the targeted field control as "touched" so that the message will display immediately. This behaviour can be switched off by sending `false` to the function, just like the root validation function.
+
+#### Migrating from a zod schema to a type safe validation schema
+
+To a generated typescript client for the API, it's necessary for zod validation schemas to adhere to an existing type interface rather than creating a new one (which is the usual flow when working with zod.) To ensure proper type safety and intellisense, Armstrong forms uses a slightly different structure to a vanilla zod schema, they key differences are:
+
+- The root object (and nested objects) do **not** need to be wrapped in a `z.object` method.
+- Nested objects contain a `schema` field for child key validators, and an optional `opts` function for applying zod validators to the nested object itself.
+- Nested (and root) arrays contain an `itemSchema` field for the validator to run against each object, and an optional `opts` function for applying zod validators to the nested array itself.
+
+See these two examples of a vanilla zod schema and it's equivalent type safe version:
+
+**Vanilla zod (not compatible with Armstrong forms)**
+
+```javascript
+z.object({
+  field1: z.string(),
+  field2: z.number().max(3, 'too many options selected'),
+  field3: z.boolean(),
+  field4: z.object({
+    nestedField1: z.string(),
+    nestedField2: z.string(),
+    array: z.array(z.string()).min(4, 'not enough options selectee'),
+  }),
+});
+```
+
+**Armstrong forms compatible version**
+
+```tsx
+{
+  field1: z.string(),
+  field2: z.number().max(3, 'too many options selected'),
+  field3: z.boolean(),
+  field4: {
+    schema: {
+      nestedField1: z.string(),
+      nestedField2: z.string(),
+      array: {
+        itemSchema: z.string(),
+        opts: arr => arr.min(4, 'not enough options selectee'),
+      },
+    },
+  },
+}
+```
+
+Although slightly more verbose, the latter provides far more compatibility with TypeScript, which will provide extremely helpful compiler errors following API changes in the future.
 
 ### Dispatched validation errors
 
@@ -425,12 +449,12 @@ const UserForm: React.FC = () => {
 };
 
 interface IUserAddressFormProps {
-  bind: IBindingProps<IUserAddress>;
+  bind: Form.IBindingProps<IUserAddress>;
 }
 
 /** Reusable address form snippet component */
 const UserAddressForm: React.FC<IUserAddressFormProps> = props => {
-  const { formProp } = useChildForm(props.bind);
+  const { formProp } = useForm(props.bind);
 
   return (
     <>

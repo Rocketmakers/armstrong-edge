@@ -7,7 +7,7 @@ import { addDays, format } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import * as React from 'react';
 
-import { useForm } from '../../hooks/form';
+import { useForm } from '../../form';
 import { DateTimeInput } from './dateTimeInput.component';
 
 /** metadata */

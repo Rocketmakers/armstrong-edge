@@ -19,7 +19,13 @@
   "peerDependencies": {
     "date-fns": "2.x",
     "react": "18.x",
-    "react-dom": "18.x"
+    "react-dom": "18.x",
+    "zod": "3.*"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
   },
   "files": [
     "dist"
@@ -56,13 +62,14 @@
     "@storybook/test-runner": "0.10.0",
     "@storybook/testing-library": "0.1.0",
     "@storybook/theming": "7.0.17",
-    "@testing-library/react": "13.4.0",
+    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/react": "14.0.0",
     "@types/glob": "^8.1.0",
     "@types/jest": "29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/react": "18.0.18",
     "@types/react-datepicker": "4.8.0",
-    "@types/react-dom": "18.0.6",
+    "@types/react-dom": "18.2.4",
     "chokidar": "3.5.3",
     "concurrently": "7.4.0",
     "http-server": "14.1.1",
@@ -84,7 +91,8 @@
     "vite": "3.1.8",
     "vite-plugin-dts": "1.4.1",
     "vite-plugin-static-copy": "0.11.0",
-    "wait-on": "^7.0.1"
+    "wait-on": "^7.0.1",
+    "zod": "3.21.4"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.3",

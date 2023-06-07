@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
 import * as React from 'react';
 
-import { useForm } from '../../hooks/form/form.hooks';
+import { useForm } from '../../form';
 import { TextArea } from './textArea.component';
 
 export default {
@@ -30,13 +30,13 @@ export const Labelled: Story = {
     label: 'Please write below',
     required: true,
   },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const textArea = canvas.getByRole('textbox') as HTMLTextAreaElement;
-    const label = canvas.getByLabelText(`${args.label} *`);
+    const label = canvas.getByLabelText('Please write below *');
 
     expect(textArea).toBeInTheDocument();
-    expect(textArea).toHaveAttribute('placeholder', args.placeholder as string);
+    expect(textArea).toHaveAttribute('placeholder', 'Placeholder content 🚀');
     expect(label).toBeInTheDocument();
   },
 };

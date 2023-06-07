@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { HTMLInputTypeAttribute } from 'react';
 
-import { useBindingState } from '../../hooks/form';
-import { IBindingProps } from '../../hooks/form/form.types';
+import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';

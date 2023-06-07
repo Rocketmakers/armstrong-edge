@@ -1,10 +1,23 @@
-/** ******************************************************
- * FORM - Types file.
- * All of the types specifically associated with the form.
- * No real code in here (TypeScript's not real.)
- ******************************************************* */
+/**
+ * Types associated with form binding.
+ * --------------------------------------
+ * These functions are designed to facilitate async paging with SWR
+ */
 
-import { Merge, NeverUndefined } from '../../types';
+import type {
+  ZodArray,
+  ZodBigInt,
+  ZodBoolean,
+  ZodDate,
+  ZodLiteral,
+  ZodNullable,
+  ZodNumber,
+  ZodObject,
+  ZodOptional,
+  ZodRawShape,
+  ZodString,
+  ZodTypeAny,
+} from 'zod';
 
 /**
  * Works out whether some data is an object, and array, or another type.
@@ -16,6 +29,29 @@ import { Merge, NeverUndefined } from '../../types';
 export type KeyOrIndex<TData, TDataKey extends keyof TData> = TData extends object
   ? Extract<TDataKey, TData extends unknown[] ? number : unknown>
   : never;
+
+/**
+ * Returns a string type description for an incoming type.
+ * Used by Zod schema type system to return the correct zod type for a form state key
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- any is the correct type here, we need to handle it
+type StringType<T> = [any extends T ? 'true' : 'false'] extends ['true']
+  ? 'any'
+  : T extends boolean
+  ? 'boolean'
+  : T extends Array<unknown>
+  ? 'array'
+  : T extends string
+  ? 'string'
+  : T extends bigint
+  ? 'bigint'
+  : T extends number
+  ? 'number'
+  : T extends Date
+  ? 'date'
+  : T extends object
+  ? 'object'
+  : 'rest';
 
 /**
  * The set of tools returned from `formProp` if the property in question is NOT an array.
@@ -49,11 +85,24 @@ export interface BindingToolsStandard<TValue> {
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
    */
   clearClientValidationErrors: (...identifiers: string[]) => void;
-
   /**
-   * Runs all validators in the validators schema again the current form state for the selected field.
+   * Runs specific field validator in the validators schema again the current form state.
+   * @param setInputTouched Whether to set the targeted control to "touched" before running the validator, default: true
+   * @param silent A boolean representing whether validation errors should be dispatched to the form elements
    */
-  validate: () => boolean;
+  validate: (setInputTouched?: boolean, silent?: boolean) => boolean;
+  /**
+   * Whether the field input has been interacted with
+   */
+  isTouched: boolean;
+  /**
+   * Set the field input touched state
+   */
+  setTouched: (isTouched: boolean) => void;
+  /**
+   * Whether the field input has any validation errors
+   */
+  isValid: boolean;
 }
 
 /**
@@ -97,43 +146,36 @@ export interface BindingToolsArray<TValue> {
 export type BindingTools<TValue> = BindingToolsArray<TValue> & BindingToolsStandard<TValue>;
 
 /**
- * This abstract class is used to handle the typings for the args passed to `formProp`.
+ * This interface is used to handle the typings for the args passed to `formProp`.
  * - Allows `formProp` to receive a strictly typed set of args for targeting nested properties within a complex data object.
  * - Can also allow targeting objects within an array by requesting an index number rather than a key.
  * - The args passed to `formProp` form a "key chain" which is then used to access properties within the data object.
+ * - Supports form state nesting up to 5 levels deep
  */
-export declare abstract class FormPropFactory<TData extends object> {
+export interface IFormProp<TData extends object> {
   /**
-   * A fake initializer for the class, used to provide the type for the form data
-   * @param data provides the typing for the form data
+   * Used to access a property within the form data.
    */
-  constructor(data: TData);
-
+  (): BindingTools<Required<TData>>;
   /**
    * Used to access a property within the form data.
    * @param args The key of the property to access.
    */
-  public formProp<TDataKey extends keyof Required<TData>>(
-    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>]
-  ): BindingTools<Required<TData>[TDataKey]>;
-
+  <TDataKey extends keyof Required<TData>>(...args: [key1: KeyOrIndex<Required<TData>, TDataKey>]): BindingTools<
+    Required<TData>[TDataKey]
+  >;
   /**
    * Used to access a property within the form data.
    * @param args The keys or indexes used to access a nested property to a depth of 2.
    */
-  public formProp<
-    TDataKey extends keyof Required<TData>,
-    TData2 extends Required<TData>[TDataKey],
-    TDataKey2 extends keyof TData2
-  >(
+  <TDataKey extends keyof Required<TData>, TData2 extends Required<TData>[TDataKey], TDataKey2 extends keyof TData2>(
     ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>]
   ): BindingTools<TData2[TDataKey2]>;
-
   /**
    * Used to access a property within the form data.
    * @param args The keys or indexes used to access a nested property to a depth of 3.
    */
-  public formProp<
+  <
     TDataKey extends keyof Required<TData>,
     TData2 extends Required<TData>[TDataKey],
     TDataKey2 extends keyof TData2,
@@ -146,12 +188,11 @@ export declare abstract class FormPropFactory<TData extends object> {
       key3: KeyOrIndex<TData3, TDataKey3>
     ]
   ): BindingTools<TData3[TDataKey3]>;
-
   /**
    * Used to access a property within the form data.
    * @param args The keys or indexes used to access a nested property to a depth of 4.
    */
-  public formProp<
+  <
     TDataKey extends keyof Required<TData>,
     TData2 extends Required<TData>[TDataKey],
     TDataKey2 extends keyof TData2,
@@ -167,12 +208,11 @@ export declare abstract class FormPropFactory<TData extends object> {
       key4: KeyOrIndex<TData4, TDataKey4>
     ]
   ): BindingTools<TData4[TDataKey4]>;
-
   /**
    * Used to access a property within the form data.
    * @param args The keys or indexes used to access a nested property to a depth of 5.
    */
-  public formProp<
+  <
     TDataKey extends keyof Required<TData>,
     TData2 extends Required<TData>[TDataKey],
     TDataKey2 extends keyof TData2,
@@ -199,58 +239,6 @@ export declare abstract class FormPropFactory<TData extends object> {
  * If deeper nesting is required, you should probably be using child binders to split the form.
  */
 export type KeyChainTemplateLimitMap = [never, 0, 1, 2, 3, 4, 5];
-
-/**
- * A single client validation method
- * @param value The user inputted field value.
- * @returns `true` if the inputted value is valid, else `false`.
- */
-export type Validator<TValue> = (value: TValue) => boolean;
-
-/**
- * Builds a client validation message incorporating on an inputted value.
- * @param value The user inputted field value.
- * @returns A string to show as the validation message.
- */
-export type ValidationMessageBuilder<TValue> = (value: TValue) => ValidationMessage;
-
-/**
- * The client validation config for a single field.
- */
-export interface IClientValidatorFieldConfig<TValue> {
-  /**
-   * A validator method to run against a field value
-   */
-  validator: Validator<TValue>;
-  /**
-   * A validation message to show if validation fails.
-   * - Can be a flat string or a builder function which incorporates the user entered value.
-   */
-  message: ValidationMessage | ValidationMessageBuilder<TValue>;
-}
-
-/**
- * Maps a form state object into it's corresponding client validator schema.
- */
-export type ClientValidationObjectMap<TLimit extends number, TData extends object> = {
-  [K in keyof Merge<TData>]?: ClientValidationConfig<Merge<TData>[K], KeyChainTemplateLimitMap[TLimit]>;
-};
-
-/**
- * Root client validation schema for a form state object.
- * - Generates a nested validation schema type matching the form state structure.
- * - Unpacks arrays of objects into nested fields.
- * - Supports `5` levels of form nesting (matching the `formProp` method.)
- */
-export type ClientValidationConfig<TData, TLimit extends number = 5> = TLimit extends never
-  ? never
-  : TData extends unknown[]
-  ? TData[0] extends object
-    ? ClientValidationObjectMap<TLimit, TData[0]>
-    : NeverUndefined<TData[0], IClientValidatorFieldConfig<TData[0]>>
-  : TData extends object
-  ? ClientValidationObjectMap<TLimit, TData>
-  : NeverUndefined<TData, IClientValidatorFieldConfig<TData>>;
 
 /**
  * Either a `string` key used to index an object or a `number` index used to index an array.
@@ -310,6 +298,49 @@ export interface IBindingProps<TValue> {
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
    */
   clearClientValidationErrors: (...identifiers: string[]) => void;
+  /**
+   * Whether the field input has been interacted with
+   */
+  isTouched: boolean;
+  /**
+   * Set the field input touched state
+   */
+  setTouched: (isTouched: boolean) => void;
+  /**
+   * An array of touched states relating to the targeted property within the form data.
+   */
+  myTouchedState: TouchedState;
+  /**
+   * Provides access to the top level client validation dispatcher.
+   * Used pretty much exclusively by child forms to dispatch errors for the correct key
+   */
+  clientValidationDispatcher: ValidationDispatcher;
+  /**
+   * Provides access to the top level touched state dispatcher.
+   * Used pretty much exclusively by child forms to dispatch touched state for the correct key
+   */
+  touchedStateDispatcher: TouchedDispatcher;
+  /**
+   * Whether the parent form has been marked as touched globally
+   */
+  allTouched: boolean;
+  /**
+   * Runs specific field validator in the validators schema again the current form state.
+   * @param setInputTouched Whether to set the targeted control to "touched" before running the validator, default: true
+   * @param silent A boolean representing whether validation errors should be dispatched to the form elements
+   * NOTE: If no schema has been passed, this will always return `true`
+   */
+  validate: (setInputTouched?: boolean, silent?: boolean) => boolean;
+  /**
+   * Whether the field input has any validation errors
+   */
+  isValid: boolean;
+  /**
+   * The method to trigger validation against the validation schema
+   * @param keyChain The identifier for the form item to run the validation against
+   * @param silent A boolean representing whether validation errors should be dispatched to the form elements
+   */
+  parseValidationSchema: (keyChain?: KeyChain, silent?: boolean) => boolean;
 }
 
 /**
@@ -359,13 +390,8 @@ export interface IFormSetAllAction<TData> {
   /**
    * An optional object to set as the entire new state, can be partial, if not passed form data will be reset to empty.
    */
-  data: Partial<TData>;
+  data: Partial<TData | undefined>;
 }
-
-/**
- * A dispatch function used to send an action to the form data reducer.
- */
-export type FormDispatcher<TData> = (action: FormAction<TData, unknown>) => TData;
 
 /**
  * The validation modes supported by form inputs.
@@ -374,6 +400,11 @@ export type FormDispatcher<TData> = (action: FormAction<TData, unknown>) => TDat
  * - `both` displays both the icon and the message.
  */
 export type FormValidationMode = 'icon' | 'message' | 'both';
+
+/**
+ * A dispatch function used to send an action to the form data reducer.
+ */
+export type FormDispatcher<TData> = (action: FormAction<TData, unknown>) => TData;
 
 /**
  * The validation message
@@ -424,6 +455,66 @@ export interface IBindConfig<TValue> {
 }
 
 /**
+ * Checks a form state field type and adds the necessary zod validation extensions for optional / nullable fields
+ */
+export type ZodNullOrUndefined<TProp, TZod extends ZodTypeAny> = TProp extends undefined
+  ? ZodOptional<TZod>
+  : TProp extends null
+  ? ZodNullable<TZod>
+  : TZod;
+
+/**
+ * Defines the zod validation schema for an array
+ * NOTE: By splitting the single object properties schema from the array validation options, we can maintain type safety, flexibility and intellisense
+ */
+export interface IArrayOfZod<TProp> {
+  /** The validation for each item within the array (will be an object of key/validator pairs if it's an array of objects) */
+  itemSchema: TProp extends object ? { [TKey in keyof TProp]: ToZod<TProp[TKey]> } : ToZod<TProp>;
+  /** A function which defines the validation to apply to the array itself (e.g. `opts: arr => arr.min(1).max(5)`) */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- This can be anything, and `unknown` doesn't conform
+  opts?: (arr: ZodArray<any>) => ZodArray<any>;
+}
+
+/**
+ * Defines the zod validation schema for an object
+ * NOTE: By splitting the single object properties schema from the object validation options, we can maintain type safety, flexibility and intellisense
+ */
+export interface IObjectOfZod<TProp> {
+  /** The validation for each key within the object (will be an object of key/validator pairs) */
+  schema: TProp;
+  /** A function which defines the validation to apply to the object itself (e.g. `opts: ob => ob.required()`) */
+  opts?: (ob: ZodObject<ZodRawShape>) => ZodObject<ZodRawShape>;
+}
+
+type WithZodLiteral<T, K> = T | ZodLiteral<K>;
+
+/**
+ * Root type for applying the correct zod validation type to a prop within form state
+ * - Works by creating a type string for the form state prop and using this to index an object type containing zod requirements for each type
+ */
+export type ToZod<TProp> = {
+  any: never;
+  array: TProp extends Array<infer TInner> ? IArrayOfZod<TInner> : never;
+  string: ZodNullOrUndefined<TProp, WithZodLiteral<ZodString, string>>;
+  bigint: ZodNullOrUndefined<TProp, WithZodLiteral<ZodBigInt, number>>;
+  number: ZodNullOrUndefined<TProp, WithZodLiteral<ZodNumber, number>>;
+  boolean: ZodNullOrUndefined<TProp, WithZodLiteral<ZodBoolean, boolean>>;
+  date: ZodNullOrUndefined<TProp, WithZodLiteral<ZodDate, Date>>;
+  object: IObjectOfZod<{ [TKey in keyof TProp]: ToZod<TProp[TKey]> }>;
+  rest: never;
+}[StringType<TProp>];
+
+/**
+ * Root type for creating a zod schema type for an existing interface
+ * - Zod prefer you to generate the type from the runtime validation schema, but because we're working from a generated TS client, we need this type so we can do things the other way around
+ */
+export type IValidationSchema<TData> = TData extends Array<infer U>
+  ? IArrayOfZod<U>
+  : TData extends object
+  ? { [K in keyof TData]: ToZod<TData[K]> }
+  : never;
+
+/**
  * Optional configuration for the form hook
  */
 export interface IFormConfig<TData> {
@@ -431,6 +522,11 @@ export interface IFormConfig<TData> {
    * Any current validation errors, usually from an API request.
    */
   validationErrors?: IValidationError[];
+  /**
+   * Optional client side validation schema.
+   * - Uses a type safe wrapper around the zod framework.
+   */
+  validationSchema?: IValidationSchema<TData>;
   /**
    * How to display validation errors
    * - `icon` displays an error icon in the event of a validation error.
@@ -443,8 +539,6 @@ export interface IFormConfig<TData> {
    * @default warning
    */
   validationErrorIcon?: JSX.Element;
-
-  validators?: ClientValidationConfig<TData>;
 }
 
 /**
@@ -472,7 +566,7 @@ export interface HookReturn<TData extends object> {
    * - The args passed to `formProp` form a "key chain" which is then used to access properties within the data object.
    * @returns a set of tools for the property in question, notably `bind` and `set`.
    */
-  formProp: FormPropFactory<TData>['formProp'];
+  formProp: IFormProp<TData>;
   /**
    * Resets user inputted form data back to the most recent "initial" value passed into the hook.
    */
@@ -498,28 +592,187 @@ export interface HookReturn<TData extends object> {
    * @param validationErrors The errors to add to the current state.
    */
   addValidationError: (...validationErrors: IValidationError[]) => void;
-
   /**
    * Runs all validators in the validators schema again the current form state.
+   * @param setAllTouched Whether to set all inputs to "touched" before running the validator, default: true
+   * @param silent A boolean representing whether validation errors should be dispatched to the form elements
    */
-  validate: () => boolean;
-
+  validate: (setAllTouched?: boolean, silent?: boolean) => boolean;
   /**
    * Live boolean representing the validity of the current form based on the validation schema.
    */
   isValid: boolean;
+  /**
+   * Sets the global touch state to true for the context of this form hook
+   */
+  touchAll: () => void;
+  /**
+   * Marks all controls as "untouched" essentially resetting the form in terms of user interaction
+   */
+  resetTouchedState: () => void;
+  /**
+   * Live boolean representing whether the global touch has been set to true
+   */
+  allTouched: boolean;
 }
 
+/**
+ * Action type for adding a client validation error
+ */
 export interface IAddValidationAction {
+  /**
+   * Type discriminating property - defines the action type
+   */
   type: 'add-validation';
+  /**
+   * An array of validation errors to add
+   */
   errors: IValidationError[];
 }
+
+/**
+ * Action type for clearing a client validation error
+ */
 export interface IClearValidationAction {
+  /**
+   * Type discriminating property - defines the action type
+   */
   type: 'clear-validation';
+  /**
+   * The form property key for the validation messages to clear, will clear all if absent
+   */
   key?: string;
+  /**
+   * An optional array of specific message identifiers to clear, will clear all if absent
+   */
   identifiers?: string[];
 }
 
+/**
+ * Union type for a validation action, supports adding & clearing client validation errors
+ */
 export type ValidationAction = IAddValidationAction | IClearValidationAction;
 
+/**
+ * A dispatch function used to send an action to the form data reducer.
+ */
+export type ValidationDispatcher = (action: ValidationAction) => void;
+
+/**
+ * Type for initial data when passed to the form hook as a functional initializer rather than an object
+ */
 export type InitialDataFunction<TData extends object> = (currentState?: TData) => TData;
+
+/**
+ * Tools and elements returned as the final part of the `useBindingState` hook
+ */
+interface IUseBindingStateReturnUtils<TData> {
+  /** Take any value and use the fromData formatter on it */
+  getFormattedValueFromData: (val?: TData) => TData | undefined;
+
+  /** Take any value and use the toData formatter on it */
+  getFormattedValueToData: (val?: TData) => TData | undefined;
+
+  /** Validation errors from the binder concatenated with manually passed in errors */
+  validationErrorMessages: ValidationMessage[];
+
+  /* Has field been marked as touched */
+  isTouched: boolean;
+
+  /* Mark field as touched */
+  setTouched: (isTouched: boolean) => void;
+
+  /**
+   * Runs specific field validator in the validators schema again the current form state.
+   * @param setInputTouched Whether to set the targeted control to "touched" before running the validator, default: true
+   * @param silent A boolean representing whether validation errors should be dispatched to the form elements
+   */
+  validate: (setInputTouched?: boolean, silent?: boolean) => boolean;
+  /**
+   * Whether the field input has any validation errors
+   */
+  isValid: boolean;
+
+  /** The current validation mode for the form */
+  validationMode?: FormValidationMode;
+
+  /** The current validation mode for the form */
+  validationErrorIcon?: JSX.Element;
+
+  /** Derived from the validation mode */
+  shouldShowValidationErrorIcon?: boolean;
+
+  /** Derived from the validation mode */
+  shouldShowValidationErrorMessage?: boolean;
+}
+
+/**
+ * Tools and elements returned from the `useBindingState` hook
+ * NOTE: This is deliberately structured as a Tuple like React's `useState` ([value, setValue]), but with a 3rd exported element containing tools and elements
+ */
+export type UseBindingStateReturn<TData> = [
+  /** The current value of the form property */
+  TData | undefined,
+  /** A setter for the form property */
+  (newValue: TData | undefined) => void,
+  /** Tools and elements returned as the final part of the `useBindingState` hook */
+  IUseBindingStateReturnUtils<TData>
+];
+
+/** Used as overrides for the bind functionality, for use with component props */
+export interface IUseBindingStateOverrides<TData> {
+  /** The current value, will override the value from bind if both are provided */
+  value?: TData;
+
+  /** Called when the value is updated, is called alongside the binder's onChange */
+  onChange?: (newValue: TData) => void;
+
+  /** Component level validation errors, will be concatenated with the validation errors from the binder */
+  validationErrorMessages?: ValidationMessage[];
+
+  /** The current validation mode for the form */
+  validationMode?: FormValidationMode;
+
+  /** The current validation mode for the form */
+  validationErrorIcon?: JSX.Element;
+}
+
+/**
+ * Action type dispatched to change the touched state of a field
+ */
+export interface ISetTouchedAction {
+  /**
+   * Type discriminating property - defines the action type
+   */
+  type: 'set-touched';
+  /**
+   * The key chain that references the correct field
+   */
+  keyChain: KeyChain;
+  /**
+   * The new touched state for the field
+   */
+  touched: boolean;
+}
+
+/**
+ * Action type dispatched to reset all touch states to untouched
+ */
+export interface IResetTouchAction {
+  type: 'reset-touched';
+}
+
+/**
+ * Union type for touched state actions
+ */
+export type TouchedAction = ISetTouchedAction | IResetTouchAction;
+
+/**
+ * State object for touched state (an array of keys)
+ */
+export type TouchedState = string[];
+
+/**
+ * A dispatch function used to send an action to the interaction state reducer.
+ */
+export type TouchedDispatcher = (action: TouchedAction) => TouchedState;

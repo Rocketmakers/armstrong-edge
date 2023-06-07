@@ -7,7 +7,7 @@ import ReactDatePicker, { ReactDatePickerCustomHeaderProps, ReactDatePickerProps
 import { FaChevronLeft, FaChevronRight, FaRegCalendar } from 'react-icons/fa';
 import { ImClock } from 'react-icons/im';
 
-import { IBindingProps, useBindingState } from '../../hooks/form';
+import { IBindingProps, useBindingState } from '../../form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,

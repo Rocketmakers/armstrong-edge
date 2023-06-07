@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ValidationMessage } from '../../hooks/form';
+import { ValidationMessage } from '../../form';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Label } from '../label';

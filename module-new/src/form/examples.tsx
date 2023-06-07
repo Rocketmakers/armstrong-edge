@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { BindingToolsArray, BindingToolsStandard, HookReturn, IBindingProps, IFormConfig } from './form.types';
+import type { BindingToolsArray, BindingToolsStandard, HookReturn, IBindingProps, IFormConfig } from './types';
 
 export const ConfigExample: React.FC<IFormConfig<unknown>> = () => null;
 export const HookReturnExample: React.FC<HookReturn<{}>> = () => null;

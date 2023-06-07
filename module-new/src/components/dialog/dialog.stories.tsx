@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { findByRole, findByText, queryByRole, userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 
-import { useForm } from '../../hooks/form';
+import { useForm } from '../../form';
 import { Button } from '../button';
 import { Input } from '../input';
 import { Dialog, DialogElement } from './dialog.component';

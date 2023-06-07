@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 
-import { useForm } from '../../../hooks/form';
+import { useForm } from '../../../form';
 import { SingleSelect } from './singleSelect.component';
 
 const options = [
