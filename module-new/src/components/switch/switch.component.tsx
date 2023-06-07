@@ -1,7 +1,7 @@
 import { Root, SwitchProps, Thumb } from '@radix-ui/react-switch';
 import * as React from 'react';
 
-import { IBindingProps, useBindingState } from '../../hooks/form';
+import { IBindingProps, useBindingState } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config/config.context';

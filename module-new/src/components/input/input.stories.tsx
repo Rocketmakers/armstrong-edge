@@ -5,7 +5,7 @@ import * as React from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
 
-import { useForm } from '../../hooks/form';
+import { useForm } from '../../form';
 import { Button } from '../button';
 import { Input } from './input.component';
 

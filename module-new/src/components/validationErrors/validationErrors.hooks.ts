@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import type { IBindingProps, ValidationMessage } from '../../hooks/form';
+import type { IBindingProps, ValidationMessage } from '../../form';
 import { flatten } from '../../utils/arrays';
 
 /** For internal component use - combine validation errors from a prop with those from a bind */

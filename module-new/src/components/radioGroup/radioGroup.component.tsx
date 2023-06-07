@@ -1,7 +1,7 @@
 import * as RadixRadioGroup from '@radix-ui/react-radio-group';
 import * as React from 'react';
 
-import { IBindingProps, useBindingState } from '../../hooks/form';
+import { IBindingProps, useBindingState } from '../../form';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,

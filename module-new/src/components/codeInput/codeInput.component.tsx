@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IBindingProps, useBindingState, useForm } from '../../hooks/form';
+import { IBindingProps, useBindingState, useForm } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { concat, findLastIndex } from '../../utils';
 import { useArmstrongConfig } from '../config';

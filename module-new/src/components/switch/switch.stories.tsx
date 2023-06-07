@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 
-import { useForm } from '../../hooks/form/form.hooks';
+import { useForm } from '../../form';
 import { Switch } from './switch.component';
 
 /** A toggle-able switch component with validation */

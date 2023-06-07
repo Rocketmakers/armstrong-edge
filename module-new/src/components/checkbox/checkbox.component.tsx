@@ -1,7 +1,7 @@
 import { CheckboxProps, Indicator, Root } from '@radix-ui/react-checkbox';
 import * as React from 'react';
 
-import { IBindingProps, useBindingState, ValidationMessage } from '../../hooks/form';
+import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';

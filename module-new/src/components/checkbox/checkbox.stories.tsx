@@ -4,7 +4,7 @@ import { userEvent, within } from '@storybook/testing-library';
 import * as React from 'react';
 import { ImRocket } from 'react-icons/im';
 
-import { useForm } from '../../hooks/form/form.hooks';
+import { useForm } from '../../form';
 import { Checkbox } from './checkbox.component';
 
 export default {
