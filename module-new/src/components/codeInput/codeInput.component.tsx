@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 import { IBindingProps, useBindingState, useForm } from '../../form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, DisplaySize, NullOrUndefined } from '../../types';
 import { concat, findLastIndex } from '../../utils';
 import { useArmstrongConfig } from '../config';
-import { Input, InputDisplaySize } from '../input';
+import { Input } from '../input';
 import { IInputWrapperProps } from '../inputWrapper';
 import { Label } from '../label';
 import { StatusWrapper } from '../statusWrapper';
@@ -28,7 +28,7 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 
   /** which size variant to use */
-  displaySize?: InputDisplaySize;
+  displaySize?: DisplaySize;
 
   /** called on paste within an input part */
   onPaste: (event: React.ClipboardEvent<HTMLInputElement>) => void;
@@ -129,7 +129,7 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   className?: string;
 
   /** which size variant to use */
-  displaySize?: InputDisplaySize;
+  displaySize?: DisplaySize;
 
   /** Some optional label content */
   label?: React.ReactNode;

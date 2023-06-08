@@ -2,7 +2,7 @@ import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
-import { ImCheckmark, ImCross } from 'react-icons/im';
+import { ImCheckmark } from 'react-icons/im';
 
 import { useForm } from '../../form';
 import { RadioGroup } from './radioGroup.component';
@@ -122,7 +122,7 @@ export const ValidationError: StoryObj<typeof RadioGroup> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    expect(canvas.getByText('Invalid selection'));
+    expect(canvas.getByText('Invalid selection')).toBeVisible();
   },
 };
 
@@ -146,7 +146,7 @@ export const CustomIcon: StoryObj<typeof RadioGroup> = {
             { id: '3', content: 'pink' },
             { id: '4', content: 'brown' },
           ]}
-          checkedIcon={<ImCheckmark />}
+          customIndicator={<ImCheckmark />}
         />
         <br />
         <p>Bound value: {formState?.value}</p>
@@ -159,41 +159,6 @@ export const CustomIcon: StoryObj<typeof RadioGroup> = {
     expect(radioChecked.getElementsByTagName('svg').length).toBeGreaterThan(0);
     const radiosUnchecked = await canvas.findAllByRole('radio', { checked: false });
     radiosUnchecked.forEach(r => expect(r.getElementsByTagName('svg')).toHaveLength(0));
-  },
-};
-
-export const CustomIconUnchecked: StoryObj<typeof RadioGroup> = {
-  render: () => {
-    interface IFormData {
-      value?: string;
-    }
-
-    const data: IFormData = { value: undefined };
-
-    const { formProp, formState } = useForm(data);
-
-    return (
-      <>
-        <RadioGroup
-          bind={formProp('value').bind()}
-          options={[
-            { id: '1', content: 'red' },
-            { id: '2', content: 'blue' },
-            { id: '3', content: 'pink' },
-            { id: '4', content: 'brown' },
-          ]}
-          checkedIcon={<ImCheckmark />}
-          uncheckedIcon={<ImCross />}
-        />
-        <br />
-        <p>Bound value: {formState?.value}</p>
-      </>
-    );
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const radiosUnchecked = await canvas.findAllByRole('radio', { checked: false });
-    radiosUnchecked.forEach(r => expect(r.getElementsByTagName('svg').length).toBeGreaterThan(0));
   },
 };
 

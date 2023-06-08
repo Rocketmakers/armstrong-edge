@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner/spinner.component';
@@ -12,7 +13,6 @@ type ButtonHTMLProps = Omit<
 >;
 
 export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank';
-export type ButtonDisplaySize = 'small' | 'medium' | 'large';
 export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info';
 
 export interface IButtonProps extends ButtonHTMLProps {
@@ -35,7 +35,7 @@ export interface IButtonProps extends ButtonHTMLProps {
   displayStyle?: ButtonDisplayStyle;
 
   /** which size variant to use */
-  displaySize?: ButtonDisplaySize;
+  displaySize?: DisplaySize;
 
   /** which status variant to use */
   displayStatus?: ButtonDisplayStatus;

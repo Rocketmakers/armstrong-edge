@@ -28,12 +28,6 @@ export interface IArmstrongReactSelectCreatingOption<Id extends ArmstrongId> ext
   isNew: boolean;
 }
 
-export interface IArmstrongOptionWithInput<Id extends ArmstrongId, HtmlProps, InputProps>
-  extends IArmstrongOption<Id, HtmlProps> {
-  /** props to spread onto the input element */
-  htmlInputProps?: InputProps & DataAttributes;
-}
-
 export const getContentFromOption = <Id extends ArmstrongId>(option: IArmstrongOption<Id>, value) => {
   return typeof option.content === 'function' ? option.content(value) : option.content;
 };

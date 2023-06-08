@@ -9,6 +9,7 @@ import {
   ArmstrongFCReturn,
   ArmstrongId,
   ArmstrongVFCProps,
+  DisplaySize,
   IArmstrongReactSelectCreatingOption,
   IArmstrongReactSelectOption,
 } from '../../../types';
@@ -96,7 +97,7 @@ export interface IReactSelectBaseProps<Id extends ArmstrongId>
   allowCreate?: boolean;
 
   /** which size variant to use */
-  displaySize?: 'small' | 'medium' | 'large';
+  displaySize?: DisplaySize;
 
   /** contents of a label to name / describe the input */
   label?: React.ReactNode;
