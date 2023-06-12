@@ -23,3 +23,4 @@ export * from './components/radioGroup';
 export * from './components/reactSelect/singleSelect';
 export * from './components/checkbox';
 export * from './components/textArea';
+export * from './components/expandable';
