@@ -15,7 +15,6 @@ import { DateTimeInput } from './dateTimeInput.component';
 export default {
   title: 'Form/DateTime Input',
   component: DateTimeInput,
-  args: {},
 } as Meta<typeof DateTimeInput>;
 
 /** component template */
@@ -26,13 +25,21 @@ const Template: StoryObj<typeof DateTimeInput> = {
   },
 };
 
+const DateTimeInputContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return <div style={{ paddingBottom: '350px' }}>{children}</div>;
+};
+
 /** stories */
 
 export const Default: StoryObj<typeof DateTimeInput> = {
   ...Template,
   render: () => {
     const { formProp } = useForm({ date: '30/05/2023' });
-    return <DateTimeInput bind={formProp('date').bind()} />;
+    return (
+      <DateTimeInputContainer>
+        <DateTimeInput bind={formProp('date').bind()} />
+      </DateTimeInputContainer>
+    );
   },
   play: async ({ canvasElement }) => {
     const input = within(canvasElement).getByRole('textbox');
@@ -51,7 +58,7 @@ export const Sizes: StoryObj<typeof DateTimeInput> = {
     });
 
     return (
-      <div>
+      <DateTimeInputContainer>
         <h2>Small</h2>
         <DateTimeInput
           locale={enGB}
@@ -79,7 +86,7 @@ export const Sizes: StoryObj<typeof DateTimeInput> = {
           label="Large calendar input"
           required={true}
         />
-      </div>
+      </DateTimeInputContainer>
     );
   },
 };
@@ -90,12 +97,14 @@ export const ValidationError: StoryObj<typeof DateTimeInput> = {
   render: () => {
     const { formProp } = useForm({ date: '' });
     return (
-      <DateTimeInput
-        bind={formProp('date').bind()}
-        locale={enGB}
-        validationErrorMessages={['invalid date']}
-        validationMode="both"
-      />
+      <DateTimeInputContainer>
+        <DateTimeInput
+          bind={formProp('date').bind()}
+          locale={enGB}
+          validationErrorMessages={['invalid date']}
+          validationMode="both"
+        />
+      </DateTimeInputContainer>
     );
   },
   play: async ({ canvasElement }) => {
@@ -109,7 +118,11 @@ export const Disabled: StoryObj<typeof DateTimeInput> = {
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return <DateTimeInput bind={formProp('date').bind()} locale={enGB} disabled />;
+    return (
+      <DateTimeInputContainer>
+        <DateTimeInput bind={formProp('date').bind()} locale={enGB} disabled />
+      </DateTimeInputContainer>
+    );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -123,7 +136,11 @@ export const TimeOnly: StoryObj<typeof DateTimeInput> = {
 
   render: () => {
     const { formProp } = useForm({ time: '10:00' });
-    return <DateTimeInput bind={formProp('time').bind()} locale={enGB} mode="time" />;
+    return (
+      <DateTimeInputContainer>
+        <DateTimeInput bind={formProp('time').bind()} locale={enGB} mode="time" />
+      </DateTimeInputContainer>
+    );
   },
   play: async ({ canvasElement }) => {
     const input = within(canvasElement).getByRole('textbox');
@@ -137,13 +154,15 @@ export const DateAndTime: StoryObj<typeof DateTimeInput> = {
   render: () => {
     const { formProp } = useForm({ dateTime: '24/06/2023 10:00' });
     return (
-      <DateTimeInput
-        bind={formProp('dateTime').bind()}
-        locale={enGB}
-        mode="date-time"
-        label="Date and time"
-        required={true}
-      />
+      <DateTimeInputContainer>
+        <DateTimeInput
+          bind={formProp('dateTime').bind()}
+          locale={enGB}
+          mode="date-time"
+          label="Date and time"
+          required={true}
+        />
+      </DateTimeInputContainer>
     );
   },
   play: async ({ canvasElement }) => {
@@ -158,7 +177,11 @@ export const LeftAlignVariant: StoryObj<typeof DateTimeInput> = {
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return <DateTimeInput bind={formProp('date').bind()} locale={enGB} monthSelectVariant="left-align" />;
+    return (
+      <DateTimeInputContainer>
+        <DateTimeInput bind={formProp('date').bind()} locale={enGB} monthSelectVariant="left-align" />
+      </DateTimeInputContainer>
+    );
   },
 };
 
@@ -167,7 +190,11 @@ export const Dropdown: StoryObj<typeof DateTimeInput> = {
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return <DateTimeInput bind={formProp('date').bind()} locale={enGB} monthSelectVariant="dropdown" />;
+    return (
+      <DateTimeInputContainer>
+        <DateTimeInput bind={formProp('date').bind()} locale={enGB} monthSelectVariant="dropdown" />
+      </DateTimeInputContainer>
+    );
   },
 };
 
@@ -180,12 +207,14 @@ export const Range: StoryObj<typeof DateTimeInput> = {
       endDate: '',
     });
     return (
-      <DateTimeInput
-        selectsRange
-        startBind={formProp('startDate').bind()}
-        endBind={formProp('endDate').bind()}
-        locale={enGB}
-      />
+      <DateTimeInputContainer>
+        <DateTimeInput
+          selectsRange
+          startBind={formProp('startDate').bind()}
+          endBind={formProp('endDate').bind()}
+          locale={enGB}
+        />
+      </DateTimeInputContainer>
     );
   },
 };
@@ -199,11 +228,13 @@ export const MinMaxDays: StoryObj<typeof DateTimeInput> = {
     });
 
     return (
-      <DateTimeInput
-        bind={formProp('date').bind()}
-        config={{ minDate: new Date(), maxDate: addDays(new Date(), 5) }}
-        monthSelectVariant="left-align"
-      />
+      <DateTimeInputContainer>
+        <DateTimeInput
+          bind={formProp('date').bind()}
+          config={{ minDate: new Date(), maxDate: addDays(new Date(), 5) }}
+          monthSelectVariant="left-align"
+        />
+      </DateTimeInputContainer>
     );
   },
   play: async ({ canvasElement }) => {
@@ -236,12 +267,14 @@ export const RangeValidation: StoryObj<typeof DateTimeInput> = {
       // eslint-disable-next-line react-hooks/exhaustive-deps -- test effect trigger
     }, []);
     return (
-      <DateTimeInput
-        selectsRange
-        startBind={formProp('startDate').bind()}
-        endBind={formProp('endDate').bind()}
-        locale={enGB}
-      />
+      <DateTimeInputContainer>
+        <DateTimeInput
+          selectsRange
+          startBind={formProp('startDate').bind()}
+          endBind={formProp('endDate').bind()}
+          locale={enGB}
+        />
+      </DateTimeInputContainer>
     );
   },
   play: async ({ canvasElement }) => {

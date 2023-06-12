@@ -45,7 +45,7 @@ export interface IDateTimeInputProps {
 
 export interface IDateTimeInputRangeProps<TBind extends NullOrUndefined<string>>
   extends IDateTimeInputProps,
-    Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind'> {
+    Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind' | 'ref' | 'type'> {
   /** Whether to render a native date input (useful for mobile) */
   native?: false;
 
@@ -92,7 +92,7 @@ interface IDateOrTimeInputSinglePropsBase<TBind extends NullOrUndefined<string>>
 }
 
 export type IDateOrTimeInputSingleProps<TBind extends NullOrUndefined<string>> =
-  IDateOrTimeInputSinglePropsBase<TBind> & Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind' | 'ref'>;
+  IDateOrTimeInputSinglePropsBase<TBind> & Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind' | 'ref' | 'type'>;
 
 export interface IDateAndTimeInputSingleProps<TBind extends NullOrUndefined<string>>
   extends Omit<IDateOrTimeInputSinglePropsBase<TBind>, 'mode' | 'config'>,
@@ -255,7 +255,7 @@ const CenteredHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   );
 };
 
-const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTimeInputSingleProps<string | null>>(
+export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTimeInputSingleProps<string | null>>(
   (
     {
       config,
@@ -362,7 +362,7 @@ SingleDateTimeInput.defaultProps = {
   locale: defaultLocale,
 };
 
-const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputRangeProps<string | null>>(
+export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputRangeProps<string | null>>(
   (
     {
       config,
@@ -450,7 +450,7 @@ const NativeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputNat
 
 NativeDateTimeInput.displayName = 'NativeDateTimeInput';
 
-const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAndTimeInputSingleProps<string | null>>(
+export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAndTimeInputSingleProps<string | null>>(
   (
     {
       className,
@@ -650,4 +650,5 @@ DateTimeInput.displayName = 'DateTimeInput';
 DateTimeInput.defaultProps = {
   selectsRange: false,
   mode: 'date',
+  native: false,
 };
