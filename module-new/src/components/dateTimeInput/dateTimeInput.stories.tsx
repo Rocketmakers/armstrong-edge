@@ -54,7 +54,7 @@ export const Sizes: StoryObj<typeof DateTimeInput> = {
       <div>
         <h2>Small</h2>
         <DateTimeInput
-          config={{ locale: enGB }}
+          locale={enGB}
           monthSelectVariant="dropdown"
           displaySize="small"
           bind={formProp('date').bind()}
@@ -63,7 +63,7 @@ export const Sizes: StoryObj<typeof DateTimeInput> = {
         />
         <h2>Medium</h2>
         <DateTimeInput
-          config={{ locale: enGB }}
+          locale={enGB}
           monthSelectVariant="dropdown"
           displaySize="medium"
           bind={formProp('date2').bind()}
@@ -72,7 +72,7 @@ export const Sizes: StoryObj<typeof DateTimeInput> = {
         />
         <h2>Large</h2>
         <DateTimeInput
-          config={{ locale: enGB }}
+          locale={enGB}
           monthSelectVariant="dropdown"
           displaySize="large"
           bind={formProp('date3').bind()}
@@ -92,7 +92,7 @@ export const ValidationError: StoryObj<typeof DateTimeInput> = {
     return (
       <DateTimeInput
         bind={formProp('date').bind()}
-        config={{ locale: enGB }}
+        locale={enGB}
         validationErrorMessages={['invalid date']}
         validationMode="both"
       />
@@ -109,7 +109,7 @@ export const Disabled: StoryObj<typeof DateTimeInput> = {
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return <DateTimeInput bind={formProp('date').bind()} config={{ locale: enGB }} disabled />;
+    return <DateTimeInput bind={formProp('date').bind()} locale={enGB} disabled />;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -123,11 +123,33 @@ export const TimeOnly: StoryObj<typeof DateTimeInput> = {
 
   render: () => {
     const { formProp } = useForm({ time: '10:00' });
-    return <DateTimeInput bind={formProp('time').bind()} config={{ locale: enGB }} mode="time" />;
+    return <DateTimeInput bind={formProp('time').bind()} locale={enGB} mode="time" />;
   },
   play: async ({ canvasElement }) => {
     const input = within(canvasElement).getByRole('textbox');
     expect(input).toHaveValue('10:00');
+  },
+};
+
+export const DateAndTime: StoryObj<typeof DateTimeInput> = {
+  ...Template,
+
+  render: () => {
+    const { formProp } = useForm({ dateTime: '24/06/2023 10:00' });
+    return (
+      <DateTimeInput
+        bind={formProp('dateTime').bind()}
+        locale={enGB}
+        mode="date-time"
+        label="Date and time"
+        required={true}
+      />
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const [dateInput, timeInput] = within(canvasElement).getAllByRole('textbox');
+    expect(dateInput).toHaveValue('24/06/2023');
+    expect(timeInput).toHaveValue('10:00');
   },
 };
 
@@ -136,7 +158,7 @@ export const LeftAlignVariant: StoryObj<typeof DateTimeInput> = {
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return <DateTimeInput bind={formProp('date').bind()} config={{ locale: enGB }} monthSelectVariant="left-align" />;
+    return <DateTimeInput bind={formProp('date').bind()} locale={enGB} monthSelectVariant="left-align" />;
   },
 };
 
@@ -145,7 +167,7 @@ export const Dropdown: StoryObj<typeof DateTimeInput> = {
 
   render: () => {
     const { formProp } = useForm({ date: '' });
-    return <DateTimeInput bind={formProp('date').bind()} config={{ locale: enGB }} monthSelectVariant="dropdown" />;
+    return <DateTimeInput bind={formProp('date').bind()} locale={enGB} monthSelectVariant="dropdown" />;
   },
 };
 
@@ -162,7 +184,7 @@ export const Range: StoryObj<typeof DateTimeInput> = {
         selectsRange
         startBind={formProp('startDate').bind()}
         endBind={formProp('endDate').bind()}
-        config={{ locale: enGB }}
+        locale={enGB}
       />
     );
   },
@@ -179,7 +201,7 @@ export const MinMaxDays: StoryObj<typeof DateTimeInput> = {
     return (
       <DateTimeInput
         bind={formProp('date').bind()}
-        config={{ locale: enGB, minDate: new Date(), maxDate: addDays(new Date(), 5) }}
+        config={{ minDate: new Date(), maxDate: addDays(new Date(), 5) }}
         monthSelectVariant="left-align"
       />
     );
@@ -218,7 +240,7 @@ export const RangeValidation: StoryObj<typeof DateTimeInput> = {
         selectsRange
         startBind={formProp('startDate').bind()}
         endBind={formProp('endDate').bind()}
-        config={{ locale: enGB }}
+        locale={enGB}
       />
     );
   },
