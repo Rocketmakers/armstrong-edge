@@ -4,16 +4,6 @@
   height: 100%;
 }
 
-.react-datepicker__input-container input {
-  width: var(--arm-input-width);
-  font-size: inherit;
-  border: none;
-  padding: var(--arm-spacing-small) var(--arm-spacing-medium);
-  padding-right: 0;
-  height: 100%;
-  box-sizing: border-box;
-}
-
 /* override inline library styles */
 .react-datepicker-popper .react-datepicker__triangle {
   transform: unset !important;
@@ -179,4 +169,16 @@
 
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::after {
   border-bottom-color: var(--arm-color-white);
+}
+
+/** DATE AND TIME **/
+
+.arm-date-and-time-inputs {
+  display: flex;
+}
+
+.arm-date-and-time-input.arm-time-input {
+  --arm-input-width: 150px;
+
+  margin-left: var(--arm-spacing-medium);
 }
