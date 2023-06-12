@@ -1,6 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 import { ImRocket } from 'react-icons/im';
 
@@ -20,10 +20,9 @@ export const Default: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const checkbox = await canvas.getByRole('checkbox');
-    await checkbox.click();
-    const checked = await checkbox.getAttribute('aria-checked');
-    expect(checked).toBe('true');
+    const checkbox = canvas.getByRole('checkbox');
+    checkbox.click();
+    await waitFor(() => expect(checkbox.getAttribute('aria-checked')).toBe('true'));
   },
 };
 
@@ -33,10 +32,10 @@ export const Disabled: Story = {
     disabled: true,
     testId: 'arm-checkbox-container',
   },
-  play: async ({ canvasElement }) => {
+  play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const checkbox = await canvas.getByTestId('arm-checkbox-container');
-    const isDisabled = await checkbox.getAttribute('data-disabled');
+    const checkbox = canvas.getByTestId('arm-checkbox-container');
+    const isDisabled = checkbox.getAttribute('data-disabled');
     expect(isDisabled).toBe('true');
   },
 };
@@ -49,9 +48,9 @@ export const CustomIndicator: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const checkbox = await canvas.getByRole('checkbox');
-    await checkbox.click();
-    const indicator = await canvas.getByTestId('rocket-indicator');
+    const checkbox = canvas.getByRole('checkbox');
+    checkbox.click();
+    const indicator = await waitFor(() => canvas.getByTestId('rocket-indicator'));
     expect(indicator);
   },
 };
@@ -61,9 +60,9 @@ export const ValidationError: Story = {
     label: 'Option 1',
     validationErrorMessages: ['This field is required'],
   },
-  play: async ({ canvasElement }) => {
+  play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const label = await canvas.getAllByText('This field is required');
+    const label = canvas.getAllByText('This field is required');
     expect(label[0]).toBeVisible();
   },
 };
@@ -86,7 +85,29 @@ export const Bound: Story = {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole('checkbox');
     const boundResult = canvas.getByTestId('bound-result');
-    await userEvent.click(checkbox);
-    expect(boundResult).toHaveTextContent('Bound value is checked');
+    userEvent.click(checkbox);
+    await waitFor(() => expect(boundResult).toHaveTextContent('Bound value is checked'));
+  },
+};
+
+export const Sizes: StoryObj<typeof Checkbox> = {
+  render: () => {
+    return (
+      <>
+        <h2>Large</h2>
+        <Checkbox displaySize="large" label="Large checkbox" data-testId="cb-container" />
+        <h2>Medium</h2>
+        <Checkbox displaySize="medium" label="Medium checkbox" data-testId="cb-container" />
+        <h2>Small</h2>
+        <Checkbox displaySize="small" label="Small checkbox" data-testId="cb-container" />
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const [large, medium, small] = await canvas.findAllByTestId('cb-container');
+    expect(large).toHaveAttribute('data-size', 'large');
+    expect(medium).toHaveAttribute('data-size', 'medium');
+    expect(small).toHaveAttribute('data-size', 'small');
   },
 };

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
@@ -13,8 +13,6 @@ type NativeTextAreaProps = Omit<
   React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
   'value' | 'ref'
 >;
-
-export type TextAreaDisplaySize = 'small' | 'medium' | 'large';
 
 interface IDelayedTextAreaBaseProps<TValue> extends NativeTextAreaProps {
   /** The time in ms to delay the debounce or throttle effect. */
@@ -64,7 +62,7 @@ interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefine
   value?: TValue;
 
   /** which size variant to use */
-  displaySize?: TextAreaDisplaySize;
+  displaySize?: DisplaySize;
 
   /** A callback function to handle onChange event */
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;

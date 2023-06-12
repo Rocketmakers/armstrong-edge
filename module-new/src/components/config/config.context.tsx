@@ -4,9 +4,9 @@ import { ImMinus, ImSpinner2 } from 'react-icons/im';
 import { IoIosWarning } from 'react-icons/io';
 import { RiCloseLine } from 'react-icons/ri';
 
+import { DisplaySize } from '../../types';
 import { stripNullOrUndefined } from '../../utils/objects';
-import type { ButtonDisplaySize, ButtonDisplayStyle } from '../button';
-import type { InputDisplaySize } from '../input';
+import type { ButtonDisplayStyle } from '../button';
 import type { ToastPosition } from '../toast';
 
 /**
@@ -17,7 +17,7 @@ export interface IArmstrongConfigContext {
   validationMode?: 'icon' | 'message' | 'both';
 
   /** which size variant to use for buttons globally by default */
-  buttonDisplaySize?: ButtonDisplaySize;
+  buttonDisplaySize?: DisplaySize;
 
   /** which style variant to use for buttons globally by default */
   buttonDisplayStyle?: ButtonDisplayStyle;
@@ -29,7 +29,7 @@ export interface IArmstrongConfigContext {
   inputStatusPosition?: 'left' | 'right';
 
   /** which size variant to use for inputs globally by default */
-  inputDisplaySize?: InputDisplaySize;
+  inputDisplaySize?: DisplaySize;
 
   /** hide the icon on the given side if there is an active status - defaults to true */
   hideInputErrorIconOnStatus?: boolean;

@@ -53,22 +53,12 @@
 
 /* DISABLED */
 
-.arm-radio-group[data-disabled='true'] .arm-radio-group-item {
-  background-color: var(--arm-color-grey-100);
+.arm-radio-group[data-disabled] {
+  opacity: 0.6;
 }
 
-/* ERROR */
-
-.arm-radio-group[data-error='true'] .arm-radio-group-item {
-  border-color: var(--arm-color-negative);
-}
-
-.arm-radio-group[data-error='true'] .arm-radio-group-item-indicator {
-  color: var(--arm-color-negative);
-}
-
-.arm-radio-group[data-error='true'] .arm-radio-group-item-indicator[data-custom-icon='false']::after {
-  background-color: var(--arm-color-negative);
+.arm-radio-group[data-disabled] .arm-radio-group-item {
+  cursor: not-allowed;
 }
 
 /** SIZES **/
@@ -99,4 +89,10 @@
 
 .arm-radio-group[data-size='large'] .arm-radio-label {
   padding-left: var(--arm-spacing-medium);
+}
+
+/** HOVER */
+
+.arm-radio-group:not([data-disabled]) .arm-radio-group-item:hover {
+  filter: brightness(85%);
 }

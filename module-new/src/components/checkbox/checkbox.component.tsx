@@ -2,7 +2,7 @@ import { CheckboxProps, Indicator, Root } from '@radix-ui/react-checkbox';
 import * as React from 'react';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Label } from '../label/label.component';
@@ -21,9 +21,6 @@ export interface ICheckboxProps<TData extends BindType>
 
   /** (Optional) A TData value representing the initial checked state of the checkbox. This can be true, false, or 'indeterminate'. */
   checked?: TData;
-
-  /** (Optional) A custom className to style the checkbox container. */
-  checkboxClassName?: string;
 
   /** (Optional) A custom JSX.Element for the indeterminate state indicator. */
   customIndeterminateIndicator?: JSX.Element;
@@ -60,15 +57,18 @@ export interface ICheckboxProps<TData extends BindType>
 
   /** (Optional) A boolean flag to automatically scroll validation error messages into view. */
   scrollValidationErrorsIntoView?: boolean;
+
+  /** which size variant to use */
+  displaySize?: DisplaySize;
 }
 
 export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindType>>(
   (
     {
       bind,
-      checkboxClassName,
       checked,
       customIndicator,
+      className,
       customIndeterminateIndicator,
       disabled,
       onCheckedChange,
@@ -80,9 +80,10 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
       testId,
       validationErrorsClassName,
       validationErrorMessages,
+      displaySize,
       ...nativeProps
     },
-    ref: React.ForwardedRef<HTMLButtonElement>
+    ref
   ) => {
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
@@ -123,9 +124,10 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
         errorIcon={bindConfig.validationErrorIcon}
       >
         <div
-          className={concat('arm-checkbox-container', checkboxClassName)}
+          className={concat('arm-checkbox-container', className)}
           data-disabled={disabled}
           data-testid={testId}
+          data-size={displaySize}
           {...nativeProps}
         >
           <Root
