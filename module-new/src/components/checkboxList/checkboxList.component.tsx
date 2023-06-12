@@ -125,7 +125,9 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
         const newBoundValue = options.reduce((arr, op) => {
           const isSelectedOption = op.id === option.id;
           const isCurrentlyBound = boundValue?.includes(op.id);
-          const shouldAdd = isCurrentlyBound ? !isSelectedOption || newValue : isSelectedOption && newValue;
+          const addIfCurrentlyBound = !isSelectedOption || newValue;
+          const addIfNotCurrentlyBound = isSelectedOption && newValue;
+          const shouldAdd = isCurrentlyBound ? addIfCurrentlyBound : addIfNotCurrentlyBound;
           return [...arr, ...(shouldAdd ? [op.id] : [])];
         }, [] as ArmstrongId[]);
         setBoundValue?.(newBoundValue);
