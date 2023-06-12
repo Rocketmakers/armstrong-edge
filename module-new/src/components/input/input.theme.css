@@ -10,6 +10,7 @@
 }
 
 .arm-input-base-input {
+  width: 100%;
   flex: 1;
   padding: var(--arm-spacing-small) var(--arm-spacing-medium);
   border: none;
