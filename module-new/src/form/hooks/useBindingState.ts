@@ -58,7 +58,7 @@ export function useBindingState<TData>(
       isTouched: bind?.isTouched ?? false,
       setTouched: touched => bind?.setTouched(touched),
       validate: (setInputTouched?: boolean, silent?: boolean) => bind?.validate(setInputTouched, silent) ?? true,
-      isValid: bind?.isValid ?? true,
+      isValid: (bind?.isValid ?? true) && !validationErrorMessages.length,
       validationMode,
       validationErrorIcon,
       shouldShowValidationErrorIcon: validationMode === 'icon' || validationMode === 'both',

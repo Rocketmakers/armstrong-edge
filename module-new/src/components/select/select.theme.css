@@ -1,4 +1,3 @@
-/* stylelint-disable block-no-empty */
 /* stylelint-disable selector-class-pattern */
 
 /* INPUT WRAPPER */
@@ -15,6 +14,36 @@
   display: inline-block;
   margin-left: var(--arm-spacing-xxxsmall);
   margin-bottom: var(--arm-spacing-xxxsmall);
+}
+
+/** NATIVE SPECIFIC **/
+
+.arm-native-select {
+  display: block;
+  appearance: none;
+  border: 0;
+  outline: 0;
+  font-size: inherit;
+  line-height: 1.19em;
+  width: 100%;
+  background-color: transparent;
+  position: absolute;
+  left: 0;
+  padding: 0 var(--arm-spacing-small);
+}
+
+.arm-native-indicators {
+  display: flex;
+  height: 100%;
+}
+
+.arm-native-select-arrow {
+  font-size: inherit;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid var(--arm-color-grey-600);
+  padding-left: var(--arm-spacing-small);
+  margin-left: var(--arm-spacing-small);
 }
 
 /* MENU / OPTIONS */
@@ -36,8 +65,6 @@
 .arm-select__menu-list {
   background-color: inherit;
   overflow-y: scroll;
-
-  /* @todo -- arbitrary? */
   max-height: 250px;
 }
 
@@ -77,6 +104,11 @@
 
 /* INPUT */
 
+.arm-select-status {
+  display: flex;
+  align-items: center;
+}
+
 .arm-select__control {
   display: flex;
   border: var(--arm-form-border-thickness) solid var(--arm-color-grey-600);
@@ -85,17 +117,42 @@
   min-height: var(--arm-input-height);
 }
 
-.arm-select__control--is-focused {
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
-    var(--arm-color-grey-1000);
-}
-
 .arm-select-inner {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
+  width: 100%;
+}
+
+.arm-select-native-wrapper .arm-select-inner {
+  border: var(--arm-form-border-thickness) solid var(--arm-color-grey-600);
+  border-radius: var(--arm-form-border-radius);
+  background-color: var(--arm-color-white);
+  padding: var(--arm-spacing-small) var(--arm-spacing-medium);
+  width: auto;
+  position: relative;
+  justify-content: flex-end;
+}
+
+.arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] {
+  justify-content: space-between;
+}
+
+.arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] .arm-select-status {
+  padding-left: 0;
+}
+
+.arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] .arm-native-select {
+  left: calc(1.5em + var(--arm-spacing-small));
+  width: calc(100% - calc(1.5em + var(--arm-spacing-small)));
+}
+
+.arm-select__control--is-focused,
+.arm-select-native-wrapper .arm-select-inner:focus-within {
+  border-color: var(--arm-focus-visible-color);
+  outline: calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) solid
+    var(--arm-focus-visible-color);
 }
 
 .arm-select__value-container {
@@ -138,7 +195,8 @@
 
 /* DISABLED */
 
-.arm-select--is-disabled .arm-select__control {
+.arm-select--is-disabled .arm-select__control,
+.arm-select-native-wrapper .arm-select-inner[data-disabled='true'] {
   border-color: var(--arm-color-grey-400);
   background-color: var(--arm-color-grey-100);
 }
@@ -179,11 +237,6 @@
 
 /* ERROR */
 
-.arm-select-status {
-  display: flex;
-  align-items: center;
-}
-
 .arm-select-status[data-position='left'] {
   padding-left: var(--arm-spacing-small);
 }
@@ -196,12 +249,14 @@
   padding-right: var(--arm-spacing-small);
 }
 
-.arm-select-wrapper[data-error='true'] .arm-select__control {
+.arm-select-wrapper[data-error='true'] .arm-select__control,
+.arm-select-native-wrapper[data-error='true'] .arm-select-inner {
   border-color: var(--arm-color-negative);
 }
 
-.arm-select-wrapper[data-error='true'] .arm-select__control--is-focused {
+.arm-select-wrapper[data-error='true'] .arm-select__control--is-focused,
+.arm-select-native-wrapper[data-error='true'] .arm-select-inner:focus-within {
   border-color: var(--arm-color-negative);
-  box-shadow: 0 0 0 calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness))
+  outline: calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) solid
     var(--arm-color-negative);
 }
