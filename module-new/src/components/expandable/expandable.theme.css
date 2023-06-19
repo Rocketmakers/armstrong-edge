@@ -1,0 +1,16 @@
+.arm-expandable {
+  width: initial;
+  overflow: hidden;
+  height: var(--arm-expandable-height);
+}
+
+.arm-expandable[data-animate='true'] {
+  --arm-expandable-transition-duration: 300ms;
+
+  transition-duration: var(--arm-expandable-transition-duration);
+  transition-property: height;
+}
+
+.arm-expandable[data-is-open='false'] {
+  height: 0;
+}

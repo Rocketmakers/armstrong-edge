@@ -26,3 +26,4 @@ export * from './components/reactSelect/singleSelect';
 export * from './components/checkbox';
 export * from './components/checkboxList';
 export * from './components/textArea';
+export * from './components/expandable';
