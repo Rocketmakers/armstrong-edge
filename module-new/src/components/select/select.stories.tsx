@@ -3,10 +3,10 @@ import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 
-import { useForm } from '../../../form';
-import { SingleSelect } from './singleSelect.component';
+import { useForm } from '../../form';
+import { Select } from './select.component';
 
-const options = [
+const groupedOptions = [
   {
     label: 'Colours',
     options: [
@@ -32,23 +32,25 @@ const options = [
   },
 ];
 
+const flatOptions = groupedOptions[0].options;
+
 /** meta  */
 
 export default {
-  title: 'Form/SingleSelect',
-  component: SingleSelect,
-} as Meta<typeof SingleSelect>;
+  title: 'Form/Select',
+  component: Select,
+} as Meta<typeof Select>;
 
 /** component template */
 
-const Template: StoryObj<typeof SingleSelect> = {
-  args: { options, placeholder: 'Please select...' },
+const Template: StoryObj<typeof Select> = {
+  args: { options: groupedOptions, placeholder: 'Please select...' },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on InputWrapper prevents storybook from spreading pure props on here without a cast
   render: (args: any) => {
     const { formProp, formState } = useForm<{ value?: number }>();
     return (
       <div style={{ height: '20rem' }}>
-        <SingleSelect bind={formProp('value').bind()} {...args} />
+        <Select bind={formProp('value').bind()} {...args} />
         <div data-testid="result" style={{ marginTop: '10px' }}>
           Current value: {formState?.value}
         </div>
@@ -59,7 +61,7 @@ const Template: StoryObj<typeof SingleSelect> = {
 
 /** stories */
 
-export const Default: StoryObj<typeof SingleSelect> = {
+export const Default: StoryObj<typeof Select> = {
   ...Template,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -75,7 +77,7 @@ export const Default: StoryObj<typeof SingleSelect> = {
   },
 };
 
-export const Disabled: StoryObj<typeof SingleSelect> = {
+export const Disabled: StoryObj<typeof Select> = {
   render: () => {
     return (
       <div
@@ -84,7 +86,7 @@ export const Disabled: StoryObj<typeof SingleSelect> = {
           height: '20rem',
         }}
       >
-        <SingleSelect options={options} disabled />
+        <Select options={groupedOptions} disabled />
       </div>
     );
   },
@@ -94,23 +96,36 @@ export const Disabled: StoryObj<typeof SingleSelect> = {
   },
 };
 
-export const Sizes: StoryObj<typeof SingleSelect> = {
+export const Native: StoryObj<typeof Select> = {
+  render: () => {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '20rem',
+        }}
+      >
+        <Select native={true} options={flatOptions} />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLSelectElement>('combobox');
+    expect(input).toBeVisible();
+  },
+};
+
+export const Sizes: StoryObj<typeof Select> = {
   ...Template,
   render: args => {
     return (
       <div>
         <h2>Small</h2>
-        <SingleSelect options={args.options} required label="Single select" displaySize="small" data-testId="wrapper" />
+        <Select options={args.options} required label="Single select" displaySize="small" data-testId="wrapper" />
         <h2>Medium</h2>
-        <SingleSelect
-          options={args.options}
-          required
-          label="Single select"
-          displaySize="medium"
-          data-testId="wrapper"
-        />
+        <Select options={args.options} required label="Single select" displaySize="medium" data-testId="wrapper" />
         <h2>Large</h2>
-        <SingleSelect options={args.options} required label="Single select" displaySize="large" data-testId="wrapper" />
+        <Select options={args.options} required label="Single select" displaySize="large" data-testId="wrapper" />
       </div>
     );
   },
@@ -123,34 +138,44 @@ export const Sizes: StoryObj<typeof SingleSelect> = {
   },
 };
 
-export const ValidationError: StoryObj<typeof SingleSelect> = {
+export const ValidationError: StoryObj<typeof Select> = {
   ...Template,
   render: () => {
     return (
       <div>
         <div data-testid="both">
           <h2>Validation mode - both</h2>
-          <SingleSelect validationMode="both" errorMessages={['This field is required']} options={options} required />
+          <Select
+            validationMode="both"
+            validationErrorMessages={['This field is required']}
+            options={groupedOptions}
+            required
+          />
         </div>
         <div data-testid="icon">
           <h2>Validation mode - icon only</h2>
-          <SingleSelect validationMode="icon" errorMessages={['This field is required']} options={options} required />
+          <Select
+            validationMode="icon"
+            validationErrorMessages={['This field is required']}
+            options={groupedOptions}
+            required
+          />
         </div>
         <div data-testid="message">
           <h2>Validation mode - message only</h2>
-          <SingleSelect
+          <Select
             validationMode="message"
-            errorMessages={['This field is required']}
-            options={options}
+            validationErrorMessages={['This field is required']}
+            options={groupedOptions}
             required
           />
         </div>
         <div data-testid="left-icon">
           <h2>Icon on left</h2>
-          <SingleSelect
+          <Select
             validationMode="icon"
-            errorMessages={['This field is required']}
-            options={options}
+            validationErrorMessages={['This field is required']}
+            options={groupedOptions}
             required
             statusPosition="left"
           />

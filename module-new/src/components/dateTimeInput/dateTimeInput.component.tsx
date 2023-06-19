@@ -12,7 +12,7 @@ import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
   ArmstrongFCReturn,
-  IArmstrongReactSelectOption,
+  IArmstrongOption,
   NullOrUndefined,
 } from '../../types';
 import { assertNever, concat, stripNullOrUndefined } from '../../utils';
@@ -20,7 +20,7 @@ import { Button } from '../button';
 import { useArmstrongConfig } from '../config';
 import { Input, ITextInputProps } from '../input';
 import { Label } from '../label';
-import { SingleSelect } from '../reactSelect/singleSelect';
+import { Select } from '../select';
 import { ValidationErrors } from '../validationErrors';
 import { formatDate, getMonths, getYears } from './dateTimeInput.utils';
 
@@ -171,7 +171,7 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps & { min?: Date; 
   max,
   locale = defaultLocale,
 }) => {
-  const monthOptions = React.useMemo<IArmstrongReactSelectOption<number>[]>(() => {
+  const monthOptions = React.useMemo<IArmstrongOption<number>[]>(() => {
     return getMonths(date.getFullYear(), locale, min, max).map(({ index, name, disabled }) => ({
       id: index,
       content: name,
@@ -179,13 +179,13 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps & { min?: Date; 
     }));
   }, [date, locale, min, max]);
 
-  const yearOptions = React.useMemo<IArmstrongReactSelectOption<number>[]>(() => {
+  const yearOptions = React.useMemo<IArmstrongOption<number>[]>(() => {
     return getYears(min, max).map(y => ({ id: y, content: y.toString() }));
   }, [min, max]);
 
   return (
     <div className="arm-date-time-input-header dropdown">
-      <SingleSelect
+      <Select
         className="arm-date-time-dropdown-select"
         options={monthOptions}
         onSelectOption={changeMonth}
@@ -193,7 +193,7 @@ const DropdownHeader: React.FC<ReactDatePickerCustomHeaderProps & { min?: Date; 
         clearable={false}
         displaySize="small"
       />
-      <SingleSelect
+      <Select
         className="arm-date-time-dropdown-select"
         options={yearOptions}
         onSelectOption={changeYear}

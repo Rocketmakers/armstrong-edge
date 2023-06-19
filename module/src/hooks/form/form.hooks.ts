@@ -258,7 +258,7 @@ function useFormBase<TData extends object>(
     );
 
     return valid;
-  }, [formConfig?.validators, formStateLive, clearClientValidationErrors]);
+  }, [formConfig?.validators, clearClientValidationErrors, formStateLive, addValidationErrorFromKeyChain]);
 
   /**
    * Runs all validators against the live form state
