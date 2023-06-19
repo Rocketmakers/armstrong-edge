@@ -115,17 +115,47 @@ export const Native: StoryObj<typeof Select> = {
   },
 };
 
+export const Multi: StoryObj<typeof Select> = {
+  render: () => {
+    const { formProp, formState } = useForm<{ value: number[] }>({ value: [1, 3, 5] });
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '20rem',
+        }}
+      >
+        <Select multi={true} options={flatOptions} bind={formProp('value').bind()} />
+        <div data-testid="result" style={{ marginTop: '10px' }}>
+          Current value: {formState?.value?.join(', ')}
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLInputElement>('combobox');
+    expect(input).toBeVisible();
+
+    const result = within(canvasElement).getByTestId('result');
+    expect(result).toHaveTextContent('Current value: 1, 3, 5');
+
+    const removeButton = within(canvasElement).getByRole('button', { name: 'Remove ocean' });
+    userEvent.click(removeButton);
+    await waitFor(() => expect(result).toHaveTextContent('Current value: 3, 5'));
+  },
+};
+
 export const Sizes: StoryObj<typeof Select> = {
   ...Template,
   render: args => {
     return (
       <div>
         <h2>Small</h2>
-        <Select options={args.options} required label="Single select" displaySize="small" data-testId="wrapper" />
+        <Select options={args.options} required label="Single select" displaySize="small" data-testid="wrapper" />
         <h2>Medium</h2>
-        <Select options={args.options} required label="Single select" displaySize="medium" data-testId="wrapper" />
+        <Select options={args.options} required label="Single select" displaySize="medium" data-testid="wrapper" />
         <h2>Large</h2>
-        <Select options={args.options} required label="Single select" displaySize="large" data-testId="wrapper" />
+        <Select options={args.options} required label="Single select" displaySize="large" data-testid="wrapper" />
       </div>
     );
   },
