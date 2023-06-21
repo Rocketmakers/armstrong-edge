@@ -145,6 +145,102 @@ export const Multi: StoryObj<typeof Select> = {
   },
 };
 
+export const Create: StoryObj<typeof Select> = {
+  ...Template,
+  render: () => {
+    const { formProp, formState } = useForm<{ value?: number }>();
+    const [options, setOptions] = React.useState(flatOptions);
+
+    const onOptionCreated = (newValue: string) => {
+      const id = options.length + 1;
+      const newOptions = [...options, { id, content: newValue, wasCreated: true }];
+      setOptions(newOptions);
+      return id;
+    };
+
+    return (
+      <div style={{ height: '20rem' }}>
+        <Select
+          allowCreate={true}
+          bind={formProp('value').bind()}
+          options={options}
+          onOptionCreated={onOptionCreated}
+        />
+        <div data-testid="result" style={{ marginTop: '10px' }}>
+          Current value: {formState?.value}
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLInputElement>('combobox');
+    expect(input).toBeVisible();
+
+    userEvent.type(input, 'New item');
+    userEvent.keyboard('{Enter}');
+
+    const result = within(canvasElement).getByTestId('result');
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: ${flatOptions.length + 1}`));
+  },
+};
+
+export const CreateMulti: StoryObj<typeof Select> = {
+  ...Template,
+  render: () => {
+    const { formProp, formState } = useForm<{ value?: number[] }>();
+    const [options, setOptions] = React.useState(flatOptions);
+
+    const onOptionCreated = (newValue: string) => {
+      const id = options.length + 1;
+      const newOptions = [...options, { id, content: newValue, wasCreated: true }];
+      setOptions(newOptions);
+      return id;
+    };
+
+    return (
+      <div style={{ height: '20rem' }}>
+        <Select
+          multi={true}
+          allowCreate={true}
+          bind={formProp('value').bind()}
+          options={options}
+          onOptionCreated={onOptionCreated}
+        />
+        <div data-testid="result" style={{ marginTop: '10px' }}>
+          Current value: {formState?.value?.join(', ')}
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLInputElement>('combobox');
+    expect(input).toBeVisible();
+
+    const result = within(canvasElement).getByTestId('result');
+
+    userEvent.type(input, 'New item 1');
+    userEvent.keyboard('{Enter}');
+
+    const new1id = flatOptions.length + 1;
+
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: ${new1id}`));
+
+    userEvent.type(within(canvasElement).getByRole<HTMLInputElement>('combobox'), 'New item 2');
+    userEvent.keyboard('{Enter}');
+
+    const new2id = new1id + 1;
+
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: ${new1id}, ${new2id}`));
+
+    userEvent.type(within(canvasElement).getByRole<HTMLInputElement>('combobox'), 'New item 3');
+    userEvent.keyboard('{Enter}');
+
+    const new3id = new2id + 1;
+
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: ${new1id}, ${new2id}, ${new3id}`));
+  },
+};
+
 export const Sizes: StoryObj<typeof Select> = {
   ...Template,
   render: args => {
