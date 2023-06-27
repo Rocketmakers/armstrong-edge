@@ -1,3 +1,4 @@
+import * as RadixLabel from '@radix-ui/react-label';
 import * as React from 'react';
 import { LabelHTMLAttributes } from 'react';
 
@@ -21,10 +22,10 @@ export const Label = React.forwardRef<HTMLLabelElement, ILabelProps>(
       requiredIndicator,
     });
     return (
-      <label className={concat('arm-label', className)} ref={ref} {...nativeProps}>
+      <RadixLabel.Root className={concat('arm-label', className)} ref={ref} {...nativeProps}>
         {children}
         {required && <span className="arm-label-required-indicator">&nbsp;{globals.requiredIndicator}</span>}
-      </label>
+      </RadixLabel.Root>
     );
   }
 );
