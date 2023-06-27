@@ -1,0 +1,90 @@
+/** CONTENT */
+
+.arm-tooltip-content {
+  --arm-tooltip-bg-color: var(--arm-color-grey-800);
+  --arm-tooltip-fg-color: var(--arm-color-white);
+  --arm-tooltip-max-width: 300px;
+  --arm-tooltip-animation-duration: 400ms;
+
+  border-radius: 4px;
+  padding: var(--arm-spacing-xsmall) var(--arm-spacing-small);
+  color: var(--arm-tooltip-fg-color);
+  background-color: var(--arm-tooltip-bg-color);
+  border: 1px solid var(--arm-color-grey-500);
+  box-shadow: 0 4px 50px rgb(0 0 0 / 3%);
+  user-select: none;
+  animation-duration: var(--arm-tooltip-animation-duration);
+  max-width: var(--arm-tooltip-max-width);
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.arm-tooltip-content[data-state='delayed-open'][data-side='top'] {
+  animation-name: slideDownAndFade;
+}
+
+.arm-tooltip-content[data-state='delayed-open'][data-side='right'] {
+  animation-name: slideLeftAndFade;
+}
+
+.arm-tooltip-content[data-state='delayed-open'][data-side='bottom'] {
+  animation-name: slideUpAndFade;
+}
+
+.arm-tooltip-content[data-state='delayed-open'][data-side='left'] {
+  animation-name: slideRightAndFade;
+}
+
+.arm-tooltip-arrow {
+  fill: var(--arm-tooltip-bg-color);
+}
+
+/** ANIMATIONS **/
+
+@keyframes slideUpAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRightAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(-2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideDownAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeftAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
