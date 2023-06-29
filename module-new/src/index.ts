@@ -27,3 +27,4 @@ export * from './components/checkboxList';
 export * from './components/textArea';
 export * from './components/expandable';
 export * from './components/progressBar';
+export * from './components/tooltip';

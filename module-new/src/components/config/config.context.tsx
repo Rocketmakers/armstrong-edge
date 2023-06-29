@@ -69,6 +69,12 @@ export interface IArmstrongConfigContext {
 
   /** A custom JSX.Element for the indeterminate state indicator. (Optional) */
   checkboxCustomIndeterminateIndicator?: JSX.Element;
+
+  /** How long in ms to wait after hover before displaying the tooltip, defaults to 700 */
+  tooltipDelay?: number;
+
+  /** Show an arrow on tooltips pointing to the element, defaults to false */
+  tooltipShowArrow?: boolean;
 }
 
 /**
@@ -94,6 +100,8 @@ const systemDefaults: Required<IArmstrongConfigContext> = {
   toastCloseButtonIcon: <RiCloseLine size={18} />,
   checkboxCustomIndicator: <FaCheck />,
   checkboxCustomIndeterminateIndicator: <ImMinus />,
+  tooltipDelay: 700,
+  tooltipShowArrow: false,
 };
 
 const ArmstrongConfigContext = React.createContext<Required<IArmstrongConfigContext>>(systemDefaults);
