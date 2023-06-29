@@ -28,3 +28,4 @@ export * from './components/textArea';
 export * from './components/expandable';
 export * from './components/progressBar';
 export * from './components/tooltip';
+export * from './components/label';

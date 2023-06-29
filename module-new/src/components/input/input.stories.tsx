@@ -36,13 +36,13 @@ export const Default: Story = {
 const MyCoolInput = React.forwardRef<HTMLInputElement>((props, forwardedRef) => {
   return (
     <div>
-      <label htmlFor="balls">Content</label>
-      <input ref={forwardedRef} id="balls" type="text" />
+      <label htmlFor="id">Content</label>
+      <input ref={forwardedRef} id="id" type="text" />
     </div>
   );
 });
 
-MyCoolInput.displayName = 'get fucked';
+MyCoolInput.displayName = 'MyCoolInput';
 
 export const Labelled: Story = {
   render: () => {
@@ -54,7 +54,7 @@ export const Labelled: Story = {
     }, []);
 
     return (
-      <div id="cocks" ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <div ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         <Input label="Default" />
         <Input label="Required" required={true} />
         <MyCoolInput ref={myCoolRef} />
