@@ -81,6 +81,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
       validationErrorsClassName,
       validationErrorMessages,
       displaySize,
+      required,
       ...nativeProps
     },
     ref
@@ -144,7 +145,12 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
           </Root>
 
           {label && (
-            <Label className={concat('arm-checkbox-label', labelClassName)} data-disabled={disabled} htmlFor={id}>
+            <Label
+              className={concat('arm-checkbox-label', labelClassName)}
+              data-disabled={disabled}
+              htmlFor={id}
+              required={required}
+            >
               {label}
             </Label>
           )}

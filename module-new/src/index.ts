@@ -29,3 +29,4 @@ export * from './components/expandable';
 export * from './components/progressBar';
 export * from './components/tooltip';
 export * from './components/label';
+export * from './components/rangeInput';
