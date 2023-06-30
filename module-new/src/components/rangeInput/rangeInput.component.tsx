@@ -44,9 +44,6 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   /** (Optional) Class name to use for the status wrapper */
   statusClassName?: string;
 
-  /** (Optional) A string to set a custom data-testid attribute for the checkbox container. */
-  testId?: string;
-
   /** (Optional) Class name for the validation errors */
   validationErrorsClassName?: string;
 
@@ -81,7 +78,6 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
       labelId,
       scrollValidationErrorsIntoView,
       statusClassName,
-      testId,
       validationErrorsClassName,
       validationErrorMessages,
       displaySize,
@@ -96,11 +92,9 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
     },
     ref
   ) => {
-    const reactId = React.useId();
-    const id = nativeProps.id ?? reactId;
-
     const globals = useArmstrongConfig({
       scrollValidationErrorsIntoView,
+      validationMode,
     });
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -110,6 +104,9 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
       validationMode: globals.validationMode,
     });
 
+    const generatedLabelId = React.useId();
+    const finalLabelId = labelId ?? generatedLabelId;
+
     return (
       <StatusWrapper
         className={concat(statusClassName, 'arm-range-input-base')}
@@ -118,10 +115,9 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
       >
         {label && (
           <Label
-            id={labelId}
+            id={finalLabelId}
             className={concat('arm-range-input-label', labelClassName)}
             data-disabled={disabled}
-            htmlFor={id}
             required={required}
           >
             {label}
@@ -130,12 +126,13 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
         <RadixSlider.Root
           className={concat(className, 'arm-range-input-root')}
           {...nativeProps}
-          id={id}
           max={max}
           min={min}
           step={step}
           ref={ref}
           disabled={disabled}
+          data-size={displaySize}
+          aria-labelledby={finalLabelId}
           value={boundValue ? [boundValue] : undefined}
           onValueChange={v => setBoundValue(v?.[0])}
         >

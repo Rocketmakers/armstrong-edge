@@ -47,3 +47,15 @@
   margin-bottom: var(--arm-spacing-xxxsmall);
   margin-left: var(--arm-spacing-xxxsmall);
 }
+
+/** SIZES **/
+
+.arm-range-input-root[data-size='small'] {
+  --arm-range-input-width: 400px;
+  --arm-range-input-thumb-size: var(--arm-spacing-medium);
+}
+
+.arm-range-input-root[data-size='large'] {
+  --arm-range-input-width: 800px;
+  --arm-range-input-thumb-size: var(--arm-spacing-xxlarge);
+}
