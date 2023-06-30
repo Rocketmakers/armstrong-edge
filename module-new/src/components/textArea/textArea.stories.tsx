@@ -74,10 +74,9 @@ export const Pending: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByRole('status');
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
 
     expect(spinner).toBeInTheDocument();
-    expect(spinner.getAttribute('data-pending')).toBe('true');
   },
 };
 

@@ -58,7 +58,11 @@ export const ValidationErrors = React.forwardRef<
   return (
     <div ref={internalRef} className={concat('arm-validation-errors', className)} {...nativeProps}>
       {validationErrors.map((error, i) => (
-        <div className="arm-validation-error-message" key={getKey(error, i)}>
+        <div
+          className="arm-validation-error-message"
+          key={getKey(error, i)}
+          aria-errormessage={typeof error === 'string' ? error : ''}
+        >
           {shouldShowErrorMessage && <span>{error}</span>}
         </div>
       ))}
