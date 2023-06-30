@@ -57,6 +57,47 @@ export const Default: StoryObj<typeof RadioGroup> = {
   },
 };
 
+export const ButtonMode: StoryObj<typeof RadioGroup> = {
+  render: () => {
+    interface IFormData {
+      value?: string;
+    }
+
+    const data: IFormData = { value: undefined };
+
+    const { formProp, formState } = useForm(data);
+
+    return (
+      <>
+        <RadioGroup
+          displayMode="button"
+          bind={formProp('value').bind()}
+          options={[
+            { id: '1', content: 'red' },
+            { id: '2', content: 'blue' },
+            { id: '3', content: 'pink' },
+            { id: '4', content: 'brown' },
+          ]}
+        />
+        <p>Bound value: {formState?.value}</p>
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const result = canvas.getByText('Bound value:');
+    const [red, blue, pink, brown] = await canvas.findAllByRole('radio');
+    userEvent.click(red);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 1'));
+    userEvent.click(blue);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 2'));
+    userEvent.click(pink);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 3'));
+    userEvent.click(brown);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 4'));
+  },
+};
+
 export const Disabled: StoryObj<typeof RadioGroup> = {
   render: () => {
     interface IFormData {
