@@ -16,8 +16,7 @@ export default {
 /** component template */
 
 const Template: StoryObj<typeof Spinner> = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on Spinner prevents storybook from spreading pure props on here without a cast
-  render: (props: any) => <Spinner {...props} />,
+  render: props => <Spinner {...props} />,
 };
 
 /** stories */
@@ -26,7 +25,7 @@ export const Default: StoryObj<typeof Spinner> = {
   ...Template,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByTestId('spinner');
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
 
     expect(spinner).toBeInTheDocument();
   },
@@ -39,7 +38,7 @@ export const CustomIcon: StoryObj<typeof Spinner> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByTestId('spinner');
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
 
     expect(spinner).toBeInTheDocument();
   },
@@ -52,7 +51,7 @@ export const Labelled: StoryObj<typeof Spinner> = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByTestId('spinner');
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
 
     expect(spinner).toBeInTheDocument();
 
