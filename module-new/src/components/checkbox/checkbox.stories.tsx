@@ -95,11 +95,11 @@ export const Sizes: StoryObj<typeof Checkbox> = {
     return (
       <>
         <h2>Large</h2>
-        <Checkbox displaySize="large" label="Large checkbox" data-testId="cb-container" />
+        <Checkbox displaySize="large" label="Large checkbox" data-testid="cb-container" />
         <h2>Medium</h2>
-        <Checkbox displaySize="medium" label="Medium checkbox" data-testId="cb-container" />
+        <Checkbox displaySize="medium" label="Medium checkbox" data-testid="cb-container" />
         <h2>Small</h2>
-        <Checkbox displaySize="small" label="Small checkbox" data-testId="cb-container" />
+        <Checkbox displaySize="small" label="Small checkbox" data-testid="cb-container" />
       </>
     );
   },

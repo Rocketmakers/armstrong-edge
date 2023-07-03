@@ -1,4 +1,5 @@
 import { ArmstrongId, IArmstrongOption, NullOrUndefined } from '../../types';
+import type { IReactSelectCreateOption } from './select.component';
 
 export interface GroupedOption<Id extends NullOrUndefined<ArmstrongId>> {
   label: string;
@@ -11,11 +12,12 @@ export function isGroupedOptions<Id extends NullOrUndefined<ArmstrongId>>(
   return !!options?.some((o: GroupedOption<Id> | IArmstrongOption<Id>) => (o as GroupedOption<Id>).label);
 }
 
-// export function isCreatingOption<Id extends NullOrUndefined<ArmstrongId>>(
-//   option?: IArmstrongReactSelectOption<Id> | IArmstrongReactSelectCreatingOption<Id>
-// ): option is IArmstrongReactSelectCreatingOption<Id> {
-//   return !!(option as IArmstrongReactSelectCreatingOption<Id>)?.isNew;
-// }
+export function isCreatingOption(
+  option?: IArmstrongOption<ArmstrongId> | IReactSelectCreateOption | null
+): option is IReactSelectCreateOption {
+  const castOption = option as IReactSelectCreateOption;
+  return !!castOption?.label && !!castOption?.value;
+}
 
 export const emptyStyles = () => {
   return {

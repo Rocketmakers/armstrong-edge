@@ -15,8 +15,19 @@ export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
 
   /** is the option available - if not, will be greyed out and unable to select */
   disabled?: boolean;
+
+  /** will be true if the option was created through the input, relevant to selects and tagging inputs where allowCreate=true */
+  wasCreated?: boolean;
 }
 
-export const getContentFromOption = <Id extends ArmstrongId>(option: IArmstrongOption<Id>, value) => {
-  return typeof option.content === 'function' ? option.content(value) : option.content;
+/**
+ * Gets option content from option definition
+ * @param option The definition of the option
+ * @returns The option content
+ */
+export const getContentFromOption = <Id extends ArmstrongId>(
+  option: IArmstrongOption<Id>,
+  active = !!option.disabled
+) => {
+  return typeof option.content === 'function' ? option.content(active) : option.content;
 };

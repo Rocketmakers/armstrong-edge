@@ -1,8 +1,17 @@
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { ImCheckmark } from 'react-icons/im';
-import ReactSelect, { components, GetOptionValue, GroupBase, OnChangeValue } from 'react-select';
-import SelectRef, { FormatOptionLabelMeta } from 'react-select/dist/declarations/src/Select';
+import ReactSelect, {
+  components,
+  GetOptionValue,
+  GroupBase,
+  MultiValue,
+  OnChangeValue,
+  SingleValue,
+} from 'react-select';
+import Creatable from 'react-select/creatable';
+import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
+import SelectRef, { Props as ReactSelectProps } from 'react-select/dist/declarations/src/Select';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import {
@@ -20,7 +29,7 @@ import { Label } from '../label';
 import { Spinner } from '../spinner';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
 import { ValidationErrors } from '../validationErrors';
-import { emptyStyles, GroupedOption, isGroupedOptions } from './select.utils';
+import { emptyStyles, GroupedOption, isCreatingOption, isGroupedOptions } from './select.utils';
 
 import './select.theme.css';
 
@@ -39,11 +48,24 @@ type NativeSelectProps = Omit<
 
 type NativeProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
-export interface IReactSelectBaseProps<Id extends ArmstrongId>
+/**
+ * Internal type for created options as returned by React Select.
+ * NOTE: This type is never exposed by Armstrong and should not be imported in apps that consume Armstrong.
+ */
+export interface IReactSelectCreateOption {
+  label: string;
+  value: string;
+  __isNew__: boolean;
+}
+
+export interface ISingleSelectProps<Id extends ArmstrongId>
   extends Omit<IStatusWrapperProps, 'className' | 'error'>,
     NativeProps {
   /** Whether to render a native date input (useful for mobile) */
   native?: false;
+
+  /** Whether to to allow selection of multiple items */
+  multi?: false;
 
   /** CSS className property */
   className?: string;
@@ -73,18 +95,15 @@ export interface IReactSelectBaseProps<Id extends ArmstrongId>
   getOptionValue?: (option: IArmstrongOption<Id>) => Id;
 
   /** exposes the input option to be overridden as a React node  */
-  formatOptionLabel?: (
-    option: IArmstrongOption<ArmstrongId>,
-    formatOptionLabelMeta: FormatOptionLabelMeta<IArmstrongOption<ArmstrongId>>
-  ) => React.ReactNode;
+  formatOptionLabel?: (option: IArmstrongOption<ArmstrongId>) => React.ReactNode;
 
-  /** is the select value clearable */
+  /** is the select value clearable, defaults to true */
   clearable?: boolean;
 
   /** is the select disabled */
   disabled?: boolean;
 
-  /** enable user to search the option by typing in the input */
+  /** enable user to search the options by typing in the input, defaults to true */
   searchable?: boolean;
 
   /** how should the dropdown be positioned vertically */
@@ -119,12 +138,25 @@ export interface IReactSelectBaseProps<Id extends ArmstrongId>
 
   /** Symbol to use as the required indicator on the label, defaults to "*" */
   requiredIndicator?: React.ReactNode;
+
+  /**
+   * String to use as the prefix when creating new options - defaults to `Create:`
+   * NOTE: only used in `allowCreate` mode
+   */
+  createText?: string;
+
+  /**
+   * Called when a new option is created. Gives the option to do something with the new value like add it to the option array.
+   * @param createdValue The new value that has been typed into the input
+   * @returns The id to be set/added to the value, if this return value is falsy, the `createdValue` will be set as the Id.
+   */
+  onOptionCreated?: (createdValue: string) => Id | undefined;
 }
 
 export interface INativeSelectProps<Id extends ArmstrongId>
   extends NativeSelectProps,
     Pick<
-      IReactSelectBaseProps<Id>,
+      ISingleSelectProps<Id>,
       | 'bind'
       | 'currentValue'
       | 'onSelectOption'
@@ -142,6 +174,9 @@ export interface INativeSelectProps<Id extends ArmstrongId>
   /** Whether to render a native date input (useful for mobile) */
   native: true;
 
+  /** Whether to to allow selection of multiple items */
+  multi?: false;
+
   /** the options to be displayed in the input */
   options?: IArmstrongOption<Id>[];
 
@@ -152,9 +187,30 @@ export interface INativeSelectProps<Id extends ArmstrongId>
   placeholderOptionEnabled?: boolean;
 }
 
-export type ISelectProps<Id extends ArmstrongId> = IReactSelectBaseProps<Id> | INativeSelectProps<Id>;
+export interface IMultiSelectProps<Id extends ArmstrongId>
+  extends Omit<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'multi'> {
+  /** Whether to to allow selection of multiple items */
+  multi: true;
 
-const ReactSelectComponent = React.forwardRef<ReactSelectRef<ArmstrongId>, IReactSelectBaseProps<ArmstrongId>>(
+  /**  prop for binding to an Armstrong form binder (see forms documentation) */
+  bind?: IBindingProps<Id[]>;
+
+  /** overrides the value of the form binder if both are provided  */
+  currentValue?: Id[];
+
+  /** overrides the handleChange method used when the input option is changed */
+  onSelectOption?: (newValue: Id[]) => void;
+}
+
+export type ISelectProps<Id extends ArmstrongId> =
+  | ISingleSelectProps<Id>
+  | INativeSelectProps<Id>
+  | IMultiSelectProps<Id>;
+
+const ReactSelectComponent = React.forwardRef<
+  ReactSelectRef<ArmstrongId>,
+  ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>
+>(
   (
     {
       className,
@@ -184,6 +240,11 @@ const ReactSelectComponent = React.forwardRef<ReactSelectRef<ArmstrongId>, IReac
       scrollValidationErrorsIntoView,
       statusPosition,
       pending,
+      multi,
+      native,
+      allowCreate,
+      createText,
+      onOptionCreated,
       ...nativeProps
     },
     ref
@@ -195,7 +256,8 @@ const ReactSelectComponent = React.forwardRef<ReactSelectRef<ArmstrongId>, IReac
       validationErrorIcon: errorIcon,
     });
 
-    const [value, setValue, { validationErrorMessages, isValid }] = useBindingState(bind, {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- not an ideal use of any, but it's the only way of binding for single and multi from the same component
+    const [value, setValue, { validationErrorMessages, isValid }] = useBindingState<any>(bind, {
       validationErrorMessages: errorMessages,
       validationErrorIcon: globals.validationErrorIcon,
       validationMode: globals.validationMode,
@@ -204,45 +266,136 @@ const ReactSelectComponent = React.forwardRef<ReactSelectRef<ArmstrongId>, IReac
     });
 
     const handleChange = React.useCallback(
-      (newValue: OnChangeValue<IArmstrongOption<ArmstrongId>, false>) => {
-        setValue?.(newValue?.id);
+      (newValue: OnChangeValue<IArmstrongOption<ArmstrongId> | IReactSelectCreateOption, boolean>) => {
+        if (!multi) {
+          const singleValue = newValue as SingleValue<IArmstrongOption<ArmstrongId>> | undefined;
+          if (isCreatingOption(singleValue)) {
+            setValue?.(onOptionCreated?.(singleValue.value) ?? singleValue.value);
+            return;
+          }
+          setValue?.(singleValue?.id);
+        } else {
+          const multiValue = newValue as MultiValue<IArmstrongOption<ArmstrongId>> | undefined;
+          setValue?.(
+            multiValue?.map(v => {
+              if (isCreatingOption(v)) {
+                return onOptionCreated?.(v.value) ?? v.value;
+              }
+              return v.id;
+            })
+          );
+        }
       },
-      [setValue]
+      [multi, setValue, onOptionCreated]
     );
 
     const selectedValue = React.useMemo(() => {
+      const valueFinder = (incomingOptions?: IArmstrongOption<ArmstrongId>[]) => {
+        if (!multi) {
+          return incomingOptions?.find(o => o.id === value) ?? { id: value, content: value, wasCreated: true };
+        }
+        return value?.map(
+          (v: ArmstrongId) => incomingOptions?.find(o => o.id === v) ?? { id: v, content: v, wasCreated: true }
+        );
+      };
       if (isGroupedOptions(options)) {
-        return options
-          .map(o => o.options)
-          .flat(1)
-          .find(o => o.id === value);
+        return valueFinder(options.map(o => o.options).flat(1));
       }
-      return options?.find(option => option.id === value);
-    }, [options, value]);
+      return valueFinder(options);
+    }, [multi, options, value]);
 
     const valueGetter = React.useCallback<GetOptionValue<IArmstrongOption<ArmstrongId>>>(
       option => {
+        if (isCreatingOption(option)) {
+          return option.value;
+        }
         return getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? '';
       },
       [getOptionValue]
     );
 
     const labelGetter = React.useCallback<
-      (
-        option: IArmstrongOption<ArmstrongId>,
-        formatOptionLabelMeta: FormatOptionLabelMeta<IArmstrongOption<ArmstrongId>>
-      ) => React.ReactNode
+      (option: IArmstrongOption<ArmstrongId> | IReactSelectCreateOption) => React.ReactNode
     >(
-      (option, meta) => {
-        return formatOptionLabel?.(option, meta) ?? getContentFromOption(option, option.id) ?? '';
+      option => {
+        if (isCreatingOption(option)) {
+          return `${createText} ${option.value}`;
+        }
+        return formatOptionLabel?.(option) ?? getContentFromOption(option);
       },
-      [formatOptionLabel]
+      [createText, formatOptionLabel]
     );
+
+    const filterOption = React.useCallback<
+      (option: FilterOptionOption<IArmstrongOption<ArmstrongId, unknown>>, inputValue: string) => boolean
+    >(
+      (option, inputValue) => {
+        return !!labelGetter(option.data)?.toString().includes(inputValue);
+      },
+      [labelGetter]
+    );
+
+    const reactSelectProps: Partial<
+      ReactSelectProps<IArmstrongOption<ArmstrongId>, boolean, GroupBase<IArmstrongOption<ArmstrongId>>>
+    > = {
+      isMulti: multi,
+      className: 'arm-select-input',
+      classNamePrefix: 'arm-select',
+      onChange: handleChange,
+      filterOption,
+      options,
+      placeholder,
+      value: selectedValue,
+      getOptionValue: valueGetter,
+      formatOptionLabel: labelGetter,
+      'aria-invalid': !isValid,
+      'aria-label': ariaLabel,
+      isClearable: clearable,
+      isDisabled: disabled,
+      isOptionDisabled: o => !!o.disabled,
+      isLoading: pending,
+      isSearchable: searchable,
+      menuPlacement: position,
+      components: {
+        Option: props => {
+          return (
+            <Option {...props}>
+              <>
+                {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
+                {labelGetter(props.data)}
+                {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
+                {props.isSelected && selectedIcon}
+              </>
+            </Option>
+          );
+        },
+        DropdownIndicator: props => <DropdownIndicator {...props}>{dropdownIcon}</DropdownIndicator>,
+        LoadingIndicator: () => <Spinner className="arm-select-spinner" fillContainer={false} icon={loadingIcon} />,
+        ValueContainer: props => {
+          return (
+            <div className="arm-select-inner" data-error-icon={statusPosition}>
+              <StatusWrapper
+                error={!isValid}
+                errorIcon={errorIcon}
+                className="arm-select-status"
+                statusPosition={statusPosition}
+                validationMode={globals.validationMode}
+              >
+                <ValueContainer {...props} />
+              </StatusWrapper>
+            </div>
+          );
+        },
+      },
+      closeMenuOnSelect,
+      styles: emptyStyles(),
+    };
 
     return (
       <div
         className={concat('arm-select-wrapper', className)}
         data-size={displaySize}
+        data-multi={!!multi}
         data-error={!isValid}
         {...nativeProps}
       >
@@ -255,57 +408,7 @@ const ReactSelectComponent = React.forwardRef<ReactSelectRef<ArmstrongId>, IReac
             {label}
           </Label>
         )}
-        <ReactSelect
-          ref={ref}
-          formatOptionLabel={labelGetter}
-          className="arm-select-input"
-          classNamePrefix="arm-select"
-          onChange={handleChange}
-          options={options}
-          placeholder={placeholder}
-          value={selectedValue}
-          getOptionValue={valueGetter}
-          aria-invalid={!isValid}
-          aria-label={ariaLabel}
-          isClearable={clearable}
-          isDisabled={disabled}
-          isOptionDisabled={o => !!o.disabled}
-          isLoading={pending}
-          isSearchable={searchable}
-          menuPlacement={position}
-          components={{
-            Option: props => (
-              <Option {...props}>
-                <>
-                  {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
-                  {props.data.content}
-                  {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
-                  {props.isSelected && selectedIcon}
-                </>
-              </Option>
-            ),
-            DropdownIndicator: props => <DropdownIndicator {...props}>{dropdownIcon}</DropdownIndicator>,
-            LoadingIndicator: () => <Spinner className="arm-select-spinner" fillContainer={false} icon={loadingIcon} />,
-            ValueContainer: props => (
-              <>
-                <div className="arm-select-inner" data-error-icon={statusPosition}>
-                  <StatusWrapper
-                    error={!isValid}
-                    errorIcon={errorIcon}
-                    className="arm-select-status"
-                    statusPosition={statusPosition}
-                    validationMode={globals.validationMode}
-                  >
-                    <ValueContainer {...props} />
-                  </StatusWrapper>
-                </div>
-              </>
-            ),
-          }}
-          closeMenuOnSelect={closeMenuOnSelect}
-          styles={emptyStyles()}
-        />
-
+        {allowCreate ? <Creatable ref={ref} {...reactSelectProps} /> : <ReactSelect ref={ref} {...reactSelectProps} />}
         {!isValid && (
           <ValidationErrors
             aria-label="Error messages"
@@ -324,8 +427,10 @@ ReactSelectComponent.displayName = 'ReactSelect';
 
 ReactSelectComponent.defaultProps = {
   clearable: true,
+  searchable: true,
   selectedIcon: <ImCheckmark />,
   dropdownIcon: <FaChevronDown size={16} />,
+  createText: 'Create:',
 };
 
 const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectProps<ArmstrongId>>(
@@ -434,7 +539,7 @@ const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectP
               )}
               {options?.map(option => (
                 <option key={option.id} value={option.id ?? undefined} disabled={option.disabled} {...option.htmlProps}>
-                  {getContentFromOption(option, value)}
+                  {getContentFromOption(option)}
                 </option>
               ))}
             </select>
@@ -467,11 +572,18 @@ export const Select = React.forwardRef<HTMLDivElement | HTMLSelectElement, ISele
   if (props.native) {
     return <NativeSelectComponent {...props} ref={ref as React.ForwardedRef<HTMLSelectElement>} />;
   }
-  return <ReactSelectComponent {...props} ref={ref as React.ForwardedRef<ReactSelectRef<ArmstrongId>>} />;
+  if (!props.multi) {
+    return (
+      <ReactSelectComponent {...props} multi={false} ref={ref as React.ForwardedRef<ReactSelectRef<ArmstrongId>>} />
+    );
+  }
+  return <ReactSelectComponent {...props} multi={true} ref={ref as React.ForwardedRef<ReactSelectRef<ArmstrongId>>} />;
 }) as (<Id extends ArmstrongId, TProps extends ISelectProps<Id>>(
   props: TProps extends { native: true }
     ? ArmstrongVFCProps<TProps & INativeSelectProps<Id>, HTMLSelectElement>
-    : ArmstrongVFCProps<TProps & IReactSelectBaseProps<Id>, ReactSelectRef<Id>>
+    : TProps extends { multi: true }
+    ? ArmstrongVFCProps<TProps & IMultiSelectProps<Id>, ReactSelectRef<Id>>
+    : ArmstrongVFCProps<TProps & ISingleSelectProps<Id>, ReactSelectRef<Id>>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ISelectProps<ArmstrongId>>;
 
@@ -480,8 +592,3 @@ Select.displayName = 'Select';
 Select.defaultProps = {
   native: false,
 };
-
-// ) as (<Id extends ArmstrongId>(
-//   props: ArmstrongVFCProps<ISelectBaseProps<Id>, ReactSelectRef<Id>>
-// ) => ArmstrongFCReturn) &
-//   ArmstrongFCExtensions<ISelectBaseProps<ArmstrongId>>;

@@ -221,10 +221,10 @@ export const InputTypes: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        <Input label={'Number'} type="number" data-testId="number-input" />
-        <Input label={'Password'} type="password" data-testId="password-input" />
-        <Input label={'Email'} type="email" data-testId="email-input" />
-        <Input label={'Telephone number'} type="tel" data-testId="telephone-input" />
+        <Input label={'Number'} type="number" data-testid="number-input" />
+        <Input label={'Password'} type="password" data-testid="password-input" />
+        <Input label={'Email'} type="email" data-testid="email-input" />
+        <Input label={'Telephone number'} type="tel" data-testid="telephone-input" />
       </div>
     );
   },
