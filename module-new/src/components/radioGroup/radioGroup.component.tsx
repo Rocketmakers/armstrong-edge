@@ -25,6 +25,9 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
       'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
     >,
     React.RefAttributes<HTMLDivElement> {
+  /** Whether to show a vertical list of radio buttons or a horizontal set of adjacent buttons */
+  displayMode?: 'radio' | 'button';
+
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id>;
 
@@ -86,6 +89,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
       disabled,
       scrollValidationErrorsIntoView,
       requiredIndicator,
+      displayMode,
       ...nativeProps
     },
     ref
@@ -121,14 +125,16 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
           data-error={error || !!validationErrorMessages?.length}
           data-disabled={disabled}
           data-size={displaySize}
+          data-mode={displayMode}
           value={boundValue?.toString() ?? 'undefined'}
           onValueChange={newValue => setBoundValue(newValue)}
           disabled={disabled}
           ref={ref}
           {...nativeProps}
         >
-          {options.map(option => {
+          {options.map((option, i) => {
             const isChecked = boundValue === option.id;
+            const labelContent = getContentFromOption(option, isChecked);
             return (
               <div className="arm-radio-group-item-container" key={option.id}>
                 <RadixRadioGroup.Item
@@ -137,24 +143,32 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
                   value={option.id?.toString() ?? ''}
                   id={option.id?.toString()}
                   disabled={option.disabled}
+                  data-checked={isChecked}
+                  data-index={i}
                 >
-                  <RadixRadioGroup.Indicator
-                    className="arm-radio-group-item-indicator"
-                    data-custom-icon={!!customIndicator}
-                  >
-                    {isChecked && customIndicator}
-                  </RadixRadioGroup.Indicator>
+                  {displayMode === 'radio' ? (
+                    <RadixRadioGroup.Indicator
+                      className="arm-radio-group-item-indicator"
+                      data-custom-icon={!!customIndicator}
+                    >
+                      {isChecked && customIndicator}
+                    </RadixRadioGroup.Indicator>
+                  ) : (
+                    labelContent
+                  )}
                 </RadixRadioGroup.Item>
-                <label className="arm-radio-label" htmlFor={option.id?.toString()}>
-                  {getContentFromOption(option, isChecked)}
-                </label>
+                {displayMode === 'radio' && (
+                  <label className="arm-radio-label" htmlFor={option.id?.toString()}>
+                    {labelContent}
+                  </label>
+                )}
               </div>
             );
           })}
-          {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
-            <ValidationErrors validationErrors={bindConfig.validationErrorMessages} className="arm-radio-errors" />
-          )}
         </RadixRadioGroup.Root>
+        {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
+          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} className="arm-radio-errors" />
+        )}
       </>
     );
   }
@@ -162,5 +176,9 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
+
+RadioGroup.defaultProps = {
+  displayMode: 'radio',
+};
 
 RadioGroup.displayName = 'RadioGroup';
