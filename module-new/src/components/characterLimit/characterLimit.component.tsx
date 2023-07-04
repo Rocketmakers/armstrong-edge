@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IBindingProps, useBindingState } from '../../form';
+import { FormValidationMode, IBindingProps, useBindingState } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
@@ -26,13 +26,37 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
 
   /** the icon to use for the validation errors */
   validationErrorIcon?: JSX.Element;
+
+  /** (Optional) Class name for the validation errors */
+  validationErrorsClassName?: string;
+
+  /** (Optional) Title for the validation errors */
+  validationErrorsTitle?: string;
+
+  /** how to render the validation errors */
+  validationMode?: FormValidationMode;
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
 export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitProps<NullOrUndefined<string>>>(
-  ({ bind, limit, shouldEnforce, value, className, validationErrorIcon, ...nativeProps }, ref) => {
+  (
+    {
+      bind,
+      limit,
+      shouldEnforce,
+      value,
+      className,
+      validationErrorIcon,
+      validationErrorsClassName,
+      validationErrorsTitle,
+      validationMode,
+      ...nativeProps
+    },
+    ref
+  ) => {
     const globals = useArmstrongConfig({
       validationErrorIcon,
+      validationMode,
     });
 
     const [boundValue, setBoundValue] = useBindingState(bind, { value });
@@ -51,8 +75,11 @@ export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitPr
           {boundValue?.length}/{limit}
         </div>
         {exceeded && (
-          <div className="arm-character-limit-icon" title="Character limit exceeded">
-            {globals.validationErrorIcon}
+          <div
+            className={concat('arm-character-limit-icon', validationErrorsClassName)}
+            title={validationErrorsTitle ?? 'Character limit exceeded'}
+          >
+            {(globals.validationMode === 'both' || globals.validationMode === 'icon') && globals.validationErrorIcon}
           </div>
         )}
       </div>
