@@ -404,6 +404,7 @@ const ReactSelectComponent = React.forwardRef<
             className={concat('arm-select-label')}
             required={required}
             requiredIndicator={globals.requiredIndicator}
+            displaySize={globals.inputDisplaySize}
           >
             {label}
           </Label>
@@ -511,6 +512,7 @@ const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectP
             className={concat('arm-select-label')}
             required={required}
             requiredIndicator={globals.requiredIndicator}
+            displaySize={globals.inputDisplaySize}
           >
             {label}
           </Label>

@@ -324,6 +324,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
               id={labelId}
               required={required}
               requiredIndicator={globals.requiredIndicator}
+              displaySize={globals.inputDisplaySize}
             >
               {label}
             </Label>

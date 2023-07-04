@@ -227,6 +227,7 @@ export const Input = React.forwardRef<
         error={error}
         requiredIndicator={globals.requiredIndicator}
         data-testid={wrapperTestId}
+        displaySize={globals.inputDisplaySize}
       >
         {!!delay && (
           <DebounceInputBase

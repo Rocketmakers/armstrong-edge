@@ -105,7 +105,12 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
             <Thumb className="arm-switch-nub" />
           </Root>
 
-          <Label className={concat(labelClassName, 'arm-switch-label')} data-disabled={disabled} htmlFor={id}>
+          <Label
+            className={concat(labelClassName, 'arm-switch-label')}
+            data-disabled={disabled}
+            htmlFor={id}
+            displaySize={globals.inputDisplaySize}
+          >
             {label}
           </Label>
         </div>

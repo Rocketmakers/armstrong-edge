@@ -161,6 +161,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
               htmlFor={id}
               required={required}
               requiredIndicator={globals.requiredIndicator}
+              displaySize={globals.inputDisplaySize}
             >
               {label}
             </Label>

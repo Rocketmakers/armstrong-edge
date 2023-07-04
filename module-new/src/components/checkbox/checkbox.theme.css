@@ -80,14 +80,6 @@
   height: var(--arm-spacing-medium);
 }
 
-.arm-checkbox-container[data-size='small'] .arm-checkbox-label {
-  padding-left: var(--arm-spacing-xxsmall);
-}
-
-.arm-checkbox-container[data-size='large'] .arm-checkbox-label {
-  padding-left: var(--arm-spacing-medium);
-}
-
 .arm-checkbox-container[data-size='large'] {
   font-size: var(--arm-font-size-medium);
 }

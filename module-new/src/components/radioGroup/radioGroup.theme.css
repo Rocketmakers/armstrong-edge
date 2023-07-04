@@ -100,10 +100,6 @@
   height: var(--arm-spacing-medium);
 }
 
-.arm-radio-group[data-mode='radio'][data-size='small'] .arm-radio-label {
-  padding-left: var(--arm-spacing-xxsmall);
-}
-
 .arm-radio-group[data-mode='radio'][data-size='large'] {
   font-size: var(--arm-font-size-medium);
   gap: var(--arm-spacing-medium);
@@ -112,10 +108,6 @@
 .arm-radio-group[data-mode='radio'][data-size='large'] .arm-radio-group-item {
   width: var(--arm-spacing-xxlarge);
   height: var(--arm-spacing-xxlarge);
-}
-
-.arm-radio-group[data-mode='radio'][data-size='large'] .arm-radio-label {
-  padding-left: var(--arm-spacing-medium);
 }
 
 /** HOVER */

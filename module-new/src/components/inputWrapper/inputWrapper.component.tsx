@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { ValidationMessage } from '../../form';
+import { DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Label } from '../label';
@@ -51,6 +52,9 @@ export interface IInputWrapperProps extends IStatusWrapperProps {
 
   /** Symbol to use as the required indicator on the label, defaults to "*" */
   requiredIndicator?: React.ReactNode;
+
+  /** which size variant to use */
+  displaySize?: DisplaySize;
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
@@ -78,6 +82,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       requiredIndicator,
       labelClassName,
       labelId,
+      displaySize,
       ...nativeProps
     },
     ref
@@ -90,6 +95,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       scrollValidationErrorsIntoView,
       inputStatusPosition: statusPosition,
       validationErrorIcon: errorIcon,
+      inputDisplaySize: displaySize,
     });
 
     const shouldShowValidationErrorsList = globals.validationMode === 'both' || globals.validationMode === 'message';
@@ -134,6 +140,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
               required={required}
               requiredIndicator={globals.requiredIndicator}
               htmlFor={labelId}
+              displaySize={globals.inputDisplaySize}
             >
               {label}
             </Label>

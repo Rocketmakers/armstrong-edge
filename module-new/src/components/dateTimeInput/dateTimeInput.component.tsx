@@ -555,6 +555,7 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
             required={required}
             requiredIndicator={globals.requiredIndicator}
             htmlFor={labelId}
+            displaySize={globals.inputDisplaySize}
           >
             {label}
           </Label>

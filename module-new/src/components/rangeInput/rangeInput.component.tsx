@@ -119,6 +119,7 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
             className={concat('arm-range-input-label', labelClassName)}
             data-disabled={disabled}
             required={required}
+            displaySize={globals.inputDisplaySize}
           >
             {label}
           </Label>

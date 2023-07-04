@@ -116,6 +116,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
             className={concat('arm-radio-group-label', labelClassName)}
             required={required}
             requiredIndicator={globals.requiredIndicator}
+            displaySize={globals.inputDisplaySize}
           >
             {label}
           </Label>

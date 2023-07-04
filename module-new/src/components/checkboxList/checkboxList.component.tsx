@@ -153,6 +153,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
             className={concat('arm-checkbox-list-label', labelClassName)}
             required={required}
             requiredIndicator={globals.requiredIndicator}
+            displaySize={globals.inputDisplaySize}
           >
             {label}
           </Label>
