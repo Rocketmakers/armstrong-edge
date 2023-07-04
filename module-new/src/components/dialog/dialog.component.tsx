@@ -10,7 +10,7 @@ import { useArmstrongConfig } from '../config';
 import './dialog.theme.css';
 
 /** Dialog component props */
-export interface IDialogProps<TData = unknown> extends React.PropsWithChildren {
+export interface IDialogProps<TData = unknown> extends Omit<React.RefAttributes<HTMLDivElement>, 'ref'> {
   /** Optional title to show at the top of the dialog in an H2 tag */
   title?: React.ReactNode;
   /** Optional description to show in the body of the dialog in a P tag */
@@ -63,7 +63,7 @@ export interface DialogElement<TData = unknown> {
  * - Supports dynamic data in async mode, so that a form can be built as a reusable async dialog.
  */
 export const Dialog = React.forwardRef(
-  (props: IDialogProps<unknown>, ref: React.ForwardedRef<DialogElement<unknown>>) => {
+  (props: React.PropsWithChildren<IDialogProps<unknown>>, ref: React.ForwardedRef<DialogElement<unknown>>) => {
     const {
       children,
       title,
@@ -76,6 +76,7 @@ export const Dialog = React.forwardRef(
       data,
       overlayClassName,
       testId,
+      ...nativeProps
     } = props;
 
     /** Pull globals from context */
@@ -145,6 +146,7 @@ export const Dialog = React.forwardRef(
               className={concat('arm-dialog', className)}
               data-has-title={title ? true : undefined}
               data-testid={testId}
+              {...nativeProps}
             >
               {title && <RadixDialog.Title className="arm-dialog-title">{title}</RadixDialog.Title>}
               {description && (
