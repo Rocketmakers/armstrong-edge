@@ -4,7 +4,7 @@ import { IBindingProps, useBindingState, useForm } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, DisplaySize, NullOrUndefined } from '../../types';
 import { concat, findLastIndex } from '../../utils';
 import { useArmstrongConfig } from '../config';
-import { Input } from '../input';
+import { Input, ITextInputProps } from '../input';
 import { IInputWrapperProps } from '../inputWrapper';
 import { Label } from '../label';
 import { StatusWrapper } from '../statusWrapper';
@@ -14,32 +14,14 @@ import { getLengthFromPart } from './codeInput.utils';
 
 import './codeInput.theme.css';
 
-export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> {
+export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> extends ITextInputProps<TBind> {
   /** The given length of this part. If this is a string, the string will be rendered. */
   part: CodeInputPartDefinition<TBind>;
-
-  /** The binding for the input. */
-  bind?: IBindingProps<string>;
-
-  /** Called when the text input changes */
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-
-  /** Called when the user presses a key inside the input */
-  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-
-  /** which size variant to use */
-  displaySize?: DisplaySize;
-
-  /** called on paste within an input part */
-  onPaste: (event: React.ClipboardEvent<HTMLInputElement>) => void;
 }
 
 /** an individual input from the CodeInput */
-const CodeInputPart = React.forwardRef(
-  <TBind extends NullOrUndefined<string>>(
-    { part, onChange, onKeyDown, bind, displaySize, onPaste }: ICodeInputPartProps<TBind>,
-    ref: React.ForwardedRef<HTMLInputElement>
-  ) => {
+const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps<NullOrUndefined<string>>>(
+  ({ bind, part, ...inputProps }, ref) => {
     const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
     if (typeof part === 'string') {
@@ -49,17 +31,14 @@ const CodeInputPart = React.forwardRef(
     if (typeof part === 'number') {
       return (
         <Input
-          bind={bind}
           ref={ref}
+          bind={bind as IBindingProps<string | null>}
+          {...inputProps}
           className="arm-code-input-part-input"
-          onChange={onChange}
-          onKeyDown={onKeyDown}
           style={{ '--arm-code-input-length': length } as React.CSSProperties}
           data-length={length}
           onClick={event => event.currentTarget.select()}
           maxLength={part}
-          displaySize={displaySize}
-          onPaste={onPaste}
         />
       );
     }
@@ -69,10 +48,8 @@ const CodeInputPart = React.forwardRef(
     return (
       <Input
         ref={ref}
-        bind={bind}
+        bind={bind as IBindingProps<string | null>}
         className={concat('arm-code-input-part-input', className)}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
         style={
           {
             ...(textInputProps.style || {}),
@@ -81,6 +58,7 @@ const CodeInputPart = React.forwardRef(
         }
         data-length={length}
         onClick={event => event.currentTarget.select()}
+        {...inputProps}
         {...textInputProps}
         maxLength={part.length}
         displaySize={part.displaySize}
@@ -99,20 +77,30 @@ CodeInputPart.displayName = 'CodeInputPart';
 /** A text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits */
 export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   extends Pick<
-    IInputWrapperProps,
-    | 'scrollValidationErrorsIntoView'
-    | 'validationMode'
-    | 'errorIcon'
-    | 'disabled'
-    | 'pending'
-    | 'error'
-    | 'statusPosition'
-    | 'validationErrorMessages'
-    | 'leftOverlay'
-    | 'rightOverlay'
-  > {
+      IInputWrapperProps,
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'disabled'
+      | 'pending'
+      | 'error'
+      | 'statusPosition'
+      | 'hideIconOnStatus'
+      | 'validationErrorMessages'
+      | 'leftOverlay'
+      | 'rightOverlay'
+      | 'statusClassName'
+      | 'validationErrorsClassName'
+      | 'labelClassName'
+      | 'labelId'
+      | 'disableOnPending'
+    >,
+    Omit<React.RefAttributes<HTMLDivElement>, 'ref'> {
   /** Prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
+
+  /** The current value of the input */
+  value?: TBind;
 
   /** Fired when the code input changes */
   onChange?: (newValue: TBind) => void;
@@ -141,8 +129,8 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   requiredIndicator?: React.ReactNode;
 }
 
-export const CodeInput = React.forwardRef(
-  <TBind extends NullOrUndefined<string>>(
+export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOrUndefined<string>>>(
+  (
     {
       className,
       parts,
@@ -152,6 +140,7 @@ export const CodeInput = React.forwardRef(
       validationErrorMessages,
       errorIcon,
       error,
+      value,
       pending,
       statusPosition,
       leftOverlay,
@@ -161,12 +150,26 @@ export const CodeInput = React.forwardRef(
       label,
       required,
       requiredIndicator,
-    }: ICodeInputProps<TBind>,
-    ref: React.ForwardedRef<HTMLInputElement>
+      hideIconOnStatus,
+      statusClassName,
+      validationErrorsClassName,
+      labelClassName,
+      labelId,
+      disableOnPending,
+      disabled,
+      ...nativeProps
+    },
+    ref
   ) => {
     const globals = useArmstrongConfig({
+      validationMode,
+      inputStatusPosition: statusPosition,
       inputDisplaySize: displaySize,
       requiredIndicator,
+      hideInputErrorIconOnStatus: hideIconOnStatus,
+      disableControlOnPending: disableOnPending,
+      scrollValidationErrorsIntoView,
+      validationErrorIcon: errorIcon,
     });
 
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
@@ -174,8 +177,9 @@ export const CodeInput = React.forwardRef(
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       onChange,
       validationErrorMessages,
-      validationMode,
-      validationErrorIcon: errorIcon,
+      validationMode: globals.validationMode,
+      validationErrorIcon: globals.validationErrorIcon,
+      value,
     });
 
     const goNextPart = React.useCallback(
@@ -202,13 +206,13 @@ export const CodeInput = React.forwardRef(
     );
 
     const getValueForPart = React.useCallback(
-      (partIndex: number, value: NullOrUndefined<string>) => {
+      (partIndex: number, incomingValue: NullOrUndefined<string>) => {
         const sliceStart = parts
           .slice(0, partIndex)
           .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
         const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
 
-        return value?.slice(sliceStart, sliceEnd) || '';
+        return incomingValue?.slice(sliceStart, sliceEnd) || '';
       },
       [parts]
     );
@@ -250,7 +254,7 @@ export const CodeInput = React.forwardRef(
 
         const newValue = startSlice + pasteValue + endSlice;
 
-        setBoundValue(newValue as TBind);
+        setBoundValue(newValue);
       },
       [setBoundValue, boundValue, parts]
     );
@@ -295,15 +299,32 @@ export const CodeInput = React.forwardRef(
     const { formProp, formState } = useForm<IFormState>({ parts: boundValueArray });
 
     React.useEffect(() => {
-      setBoundValue?.(formState?.parts?.join('') as TBind);
+      setBoundValue?.(formState?.parts?.join(''));
       // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want the trigger the effect when the function is re-defined
     }, [formState]);
 
+    const showLeftOverlay =
+      leftOverlay &&
+      (globals.inputStatusPosition !== 'left' ||
+        !globals.hideInputErrorIconOnStatus ||
+        (!pending && !bindConfig.shouldShowValidationErrorIcon));
+
+    const showRightOverlay =
+      rightOverlay &&
+      (globals.inputStatusPosition !== 'right' ||
+        !globals.hideInputErrorIconOnStatus ||
+        (!pending && !bindConfig.shouldShowValidationErrorIcon));
+
     return (
       <>
-        <div ref={ref} title="Code input">
+        <div ref={ref} title="Code input" {...nativeProps}>
           {label && (
-            <Label className="arm-code-input-label" required={required} requiredIndicator={globals.requiredIndicator}>
+            <Label
+              className={concat('arm-code-input-label', labelClassName)}
+              id={labelId}
+              required={required}
+              requiredIndicator={globals.requiredIndicator}
+            >
               {label}
             </Label>
           )}
@@ -311,27 +332,30 @@ export const CodeInput = React.forwardRef(
             <StatusWrapper
               error={error || !!bindConfig.validationErrorMessages.length}
               errorIcon={bindConfig.validationErrorIcon}
-              statusPosition={statusPosition}
+              statusPosition={globals.inputStatusPosition}
               pending={pending}
               validationMode={bindConfig.validationMode}
+              className={statusClassName}
             >
               <>
-                {leftOverlay}
+                {showLeftOverlay && leftOverlay}
                 {parts?.map((part, index) => (
-                  <CodeInputPart
+                  <CodeInputPart<string>
+                    type="text"
                     bind={formProp('parts', index).bind()}
                     part={part}
                     key={index}
                     onChange={event => onPartValueChange(event, index)}
                     onKeyDown={event => onKeyDown(event, index, +part)}
                     onPaste={onPaste}
+                    disabled={disabled || (pending && globals.disableControlOnPending)}
                     ref={r => {
                       inputRefs.current[index] = r;
                     }}
-                    displaySize={displaySize}
+                    displaySize={globals.inputDisplaySize}
                   />
                 ))}
-                {rightOverlay}
+                {showRightOverlay && rightOverlay}
               </>
             </StatusWrapper>
           </div>
@@ -339,8 +363,9 @@ export const CodeInput = React.forwardRef(
 
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
           <ValidationErrors
+            className={validationErrorsClassName}
             validationErrors={bindConfig.validationErrorMessages}
-            scrollIntoView={scrollValidationErrorsIntoView}
+            scrollIntoView={globals.scrollValidationErrorsIntoView}
           />
         )}
       </>
@@ -349,7 +374,7 @@ export const CodeInput = React.forwardRef(
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLInputElement>
+  props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
 
