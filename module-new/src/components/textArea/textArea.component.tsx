@@ -97,6 +97,11 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
       labelClassName,
       labelId,
       testId,
+      errorIcon,
+      leftOverlay,
+      rightOverlay,
+      hideIconOnStatus,
+      statusPosition,
       ...nativeProps
     },
     ref
@@ -107,9 +112,12 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
     const globals = useArmstrongConfig({
       validationMode,
       disableControlOnPending: disableOnPending,
+      inputStatusPosition: statusPosition,
       inputDisplaySize: displaySize,
       requiredIndicator,
       scrollValidationErrorsIntoView,
+      validationErrorIcon: errorIcon,
+      hideInputErrorIconOnStatus: hideIconOnStatus,
     });
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -174,6 +182,8 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
         required={required}
         requiredIndicator={globals.requiredIndicator}
         data-testid={testId}
+        leftOverlay={leftOverlay}
+        rightOverlay={rightOverlay}
       >
         {!!delay && (
           <DebounceTextAreaBase
