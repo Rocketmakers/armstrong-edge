@@ -53,6 +53,28 @@ export const ValidationError: Story = {
   },
 };
 
+export const Sizes: StoryObj<typeof Switch> = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Switch label={'Small Switch'} displaySize="small" required={true} />
+        <Switch label={'Medium Switch'} required={true} />
+        <Switch label={'Large Switch'} displaySize="large" required={true} />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const smallSwitch = canvas.getByLabelText('Small Switch *');
+    const mediumSwitch = canvas.getByLabelText('Medium Switch *');
+    const largeSwitch = canvas.getByLabelText('Large Switch *');
+
+    expect(smallSwitch.getAttribute('data-size')).toEqual('small');
+    expect(mediumSwitch.getAttribute('data-size')).toEqual('medium');
+    expect(largeSwitch.getAttribute('data-size')).toEqual('large');
+  },
+};
+
 export const Bound: Story = {
   args: {
     label: 'Bound label',
