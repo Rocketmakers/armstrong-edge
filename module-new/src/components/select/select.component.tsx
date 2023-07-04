@@ -25,9 +25,10 @@ import {
 } from '../../types';
 import { concat } from '../../utils';
 import { useArmstrongConfig } from '../config';
+import { IInputWrapperProps } from '../inputWrapper';
 import { Label } from '../label';
 import { Spinner } from '../spinner';
-import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
+import { StatusWrapper } from '../statusWrapper';
 import { ValidationErrors } from '../validationErrors';
 import { emptyStyles, GroupedOption, isCreatingOption, isGroupedOptions } from './select.utils';
 
@@ -59,7 +60,20 @@ export interface IReactSelectCreateOption {
 }
 
 export interface ISingleSelectProps<Id extends ArmstrongId>
-  extends Omit<IStatusWrapperProps, 'className' | 'error'>,
+  extends Pick<
+      IInputWrapperProps,
+      | 'statusPosition'
+      | 'pending'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'labelId'
+      | 'labelClassName'
+      | 'validationErrorsClassName'
+      | 'statusClassName'
+      | 'disableOnPending'
+      | 'hideIconOnStatus'
+      | 'leftOverlay'
+    >,
     NativeProps {
   /** Whether to render a native date input (useful for mobile) */
   native?: false;
@@ -170,6 +184,12 @@ export interface INativeSelectProps<Id extends ArmstrongId>
       | 'errorIcon'
       | 'statusPosition'
       | 'dropdownIcon'
+      | 'labelId'
+      | 'labelClassName'
+      | 'validationErrorsClassName'
+      | 'statusClassName'
+      | 'hideIconOnStatus'
+      | 'leftOverlay'
     > {
   /** Whether to render a native date input (useful for mobile) */
   native: true;
@@ -245,6 +265,13 @@ const ReactSelectComponent = React.forwardRef<
       allowCreate,
       createText,
       onOptionCreated,
+      labelId,
+      labelClassName,
+      validationErrorsClassName,
+      statusClassName,
+      disableOnPending,
+      hideIconOnStatus,
+      leftOverlay,
       ...nativeProps
     },
     ref
@@ -254,16 +281,23 @@ const ReactSelectComponent = React.forwardRef<
       requiredIndicator,
       scrollValidationErrorsIntoView,
       validationErrorIcon: errorIcon,
+      inputStatusPosition: statusPosition,
+      inputDisplaySize: displaySize,
+      hideInputErrorIconOnStatus: hideIconOnStatus,
+      disableControlOnPending: disableOnPending,
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- not an ideal use of any, but it's the only way of binding for single and multi from the same component
-    const [value, setValue, { validationErrorMessages, isValid }] = useBindingState<any>(bind, {
-      validationErrorMessages: errorMessages,
-      validationErrorIcon: globals.validationErrorIcon,
-      validationMode: globals.validationMode,
-      value: currentValue,
-      onChange: onSelectOption,
-    });
+    const [value, setValue, { validationErrorMessages, isValid, shouldShowValidationErrorIcon }] = useBindingState<any>(
+      bind,
+      {
+        validationErrorMessages: errorMessages,
+        validationErrorIcon: globals.validationErrorIcon,
+        validationMode: globals.validationMode,
+        value: currentValue,
+        onChange: onSelectOption,
+      }
+    );
 
     const handleChange = React.useCallback(
       (newValue: OnChangeValue<IArmstrongOption<ArmstrongId> | IReactSelectCreateOption, boolean>) => {
@@ -335,6 +369,12 @@ const ReactSelectComponent = React.forwardRef<
       [labelGetter]
     );
 
+    const showLeftOverlay =
+      leftOverlay &&
+      (globals.inputStatusPosition !== 'left' ||
+        !globals.hideInputErrorIconOnStatus ||
+        (!pending && !shouldShowValidationErrorIcon));
+
     const reactSelectProps: Partial<
       ReactSelectProps<IArmstrongOption<ArmstrongId>, boolean, GroupBase<IArmstrongOption<ArmstrongId>>>
     > = {
@@ -351,7 +391,7 @@ const ReactSelectComponent = React.forwardRef<
       'aria-invalid': !isValid,
       'aria-label': ariaLabel,
       isClearable: clearable,
-      isDisabled: disabled,
+      isDisabled: disabled || (pending && globals.disableControlOnPending) ? true : undefined,
       isOptionDisabled: o => !!o.disabled,
       isLoading: pending,
       isSearchable: searchable,
@@ -373,14 +413,15 @@ const ReactSelectComponent = React.forwardRef<
         LoadingIndicator: () => <Spinner className="arm-select-spinner" fillContainer={false} icon={loadingIcon} />,
         ValueContainer: props => {
           return (
-            <div className="arm-select-inner" data-error-icon={statusPosition}>
+            <div className="arm-select-inner" data-error-icon={globals.inputStatusPosition}>
               <StatusWrapper
                 error={!isValid}
-                errorIcon={errorIcon}
-                className="arm-select-status"
-                statusPosition={statusPosition}
+                errorIcon={globals.validationErrorIcon}
+                className={concat('arm-select-status', statusClassName)}
+                statusPosition={globals.inputStatusPosition}
                 validationMode={globals.validationMode}
               >
+                {showLeftOverlay && <div className="arm-select-overlay arm-select-overlay-left">{leftOverlay}</div>}
                 <ValueContainer {...props} />
               </StatusWrapper>
             </div>
@@ -394,14 +435,15 @@ const ReactSelectComponent = React.forwardRef<
     return (
       <div
         className={concat('arm-select-wrapper', className)}
-        data-size={displaySize}
+        data-size={globals.inputDisplaySize}
         data-multi={!!multi}
         data-error={!isValid}
         {...nativeProps}
       >
         {label && (
           <Label
-            className={concat('arm-select-label')}
+            id={labelId}
+            className={concat('arm-select-label', labelClassName)}
             required={required}
             requiredIndicator={globals.requiredIndicator}
             displaySize={globals.inputDisplaySize}
@@ -413,7 +455,7 @@ const ReactSelectComponent = React.forwardRef<
         {!isValid && (
           <ValidationErrors
             aria-label="Error messages"
-            className="arm-select-validation-error-display"
+            className={concat('arm-select-validation-error-display', validationErrorsClassName)}
             validationMode={globals.validationMode}
             scrollIntoView={globals.scrollValidationErrorsIntoView}
             validationErrors={validationErrorMessages || []}
@@ -457,6 +499,12 @@ const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectP
       disabled,
       statusPosition,
       dropdownIcon,
+      labelId,
+      labelClassName,
+      validationErrorsClassName,
+      statusClassName,
+      hideIconOnStatus,
+      leftOverlay,
       ...nativeProps
     },
     ref
@@ -469,6 +517,9 @@ const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectP
       requiredIndicator,
       scrollValidationErrorsIntoView,
       validationErrorIcon: errorIcon,
+      inputStatusPosition: statusPosition,
+      inputDisplaySize: displaySize,
+      hideInputErrorIconOnStatus: hideIconOnStatus,
     });
 
     const [value, setValue, bindConfig] = useBindingState(bind, {
@@ -501,6 +552,13 @@ const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectP
       },
       [onChange, options, placeholderOption, placeholderOptionEnabled, setValue, onSelectOption, clearSelect]
     );
+
+    const showLeftOverlay =
+      leftOverlay &&
+      (globals.inputStatusPosition !== 'left' ||
+        !globals.hideInputErrorIconOnStatus ||
+        !bindConfig.shouldShowValidationErrorIcon);
+
     return (
       <div
         className={concat('arm-select-wrapper', 'arm-select-native-wrapper', className)}
@@ -520,11 +578,12 @@ const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectP
         <div className="arm-select-inner" data-error-icon={statusPosition} data-disabled={disabled}>
           <StatusWrapper
             error={!bindConfig.isValid}
-            errorIcon={errorIcon}
-            className="arm-select-status"
-            statusPosition={statusPosition}
+            errorIcon={globals.validationErrorIcon}
+            className={concat('arm-select-status', statusClassName)}
+            statusPosition={globals.inputStatusPosition}
             validationMode={globals.validationMode}
           >
+            {showLeftOverlay && <div className="arm-select-overlay arm-select-overlay-left">{leftOverlay}</div>}
             <select
               className="arm-native-select"
               {...nativeProps}

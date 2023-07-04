@@ -27,14 +27,13 @@
   line-height: 1.19em;
   width: 100%;
   background-color: transparent;
-  position: absolute;
-  left: 0;
-  padding: 0 var(--arm-spacing-small);
+  padding: var(--arm-spacing-small) var(--arm-spacing-medium);
 }
 
 .arm-native-indicators {
   display: flex;
   height: 100%;
+  padding-right: var(--arm-spacing-medium);
 }
 
 .arm-native-select-arrow {
@@ -186,7 +185,6 @@
   border: var(--arm-form-border-thickness) solid var(--arm-color-grey-600);
   border-radius: var(--arm-form-border-radius);
   background-color: var(--arm-color-white);
-  padding: var(--arm-spacing-small) var(--arm-spacing-medium);
   width: auto;
   position: relative;
   justify-content: flex-end;
@@ -194,10 +192,6 @@
 
 .arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] {
   justify-content: space-between;
-}
-
-.arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] .arm-select-status {
-  padding-left: 0;
 }
 
 .arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] .arm-native-select {
@@ -299,4 +293,20 @@
   border-color: var(--arm-color-negative);
   outline: calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) solid
     var(--arm-color-negative);
+}
+
+/** OVERLAYS **/
+
+.arm-select-overlay-left,
+.arm-select-overlay-right {
+  display: flex;
+  align-items: center;
+}
+
+.arm-select-overlay-left {
+  padding-left: var(--arm-spacing-small);
+}
+
+.arm-select-overlay-right {
+  padding-right: var(--arm-spacing-small);
 }
