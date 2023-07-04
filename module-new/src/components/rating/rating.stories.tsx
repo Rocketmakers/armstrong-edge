@@ -67,6 +67,47 @@ export const Disabled: StoryObj<typeof Rating> = {
   },
 };
 
+export const Labelled: StoryObj<typeof Rating> = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <Rating label="Default" />
+        <Rating label="Required" required={true} />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const defaultInput = canvas.getByLabelText('Default');
+    const requiredInput = canvas.getByLabelText('Required *');
+
+    expect(defaultInput).toBeInTheDocument();
+    expect(requiredInput).toBeInTheDocument();
+  },
+};
+
+export const Sizes: StoryObj<typeof Rating> = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Rating label={'Small Input'} displaySize="small" required={true} />
+        <Rating label={'Medium Input'} required={true} />
+        <Rating label={'Large Input'} displaySize="large" required={true} />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const smallInput = canvas.getByLabelText('Small Input *');
+    const mediumInput = canvas.getByLabelText('Medium Input *');
+    const largeInput = canvas.getByLabelText('Large Input *');
+
+    expect(smallInput.getAttribute('data-size')).toEqual('small');
+    expect(mediumInput.getAttribute('data-size')).toEqual(null);
+    expect(largeInput.getAttribute('data-size')).toEqual('large');
+  },
+};
+
 export const CustomMax: StoryObj<typeof Rating> = {
   ...Template,
   args: {
@@ -125,7 +166,7 @@ export const CustomDOMFromIndex: StoryObj<typeof Rating> = {
 export const WithIconAndStatus: StoryObj<typeof Rating> = {
   ...Template,
   args: {
-    leftIcon: <AiFillEye data-testid="left-icon" />,
+    leftOverlay: <AiFillEye data-testid="left-icon" />,
     pending: true,
   },
   play: async ({ canvasElement }) => {

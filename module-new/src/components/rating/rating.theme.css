@@ -1,10 +1,18 @@
 .arm-rating {
   --arm-rating-part-size: 1.8rem;
+}
 
+.arm-rating-input-inner {
   display: flex;
   align-items: center;
   width: max-content;
   gap: var(--arm-spacing-xsmall);
+}
+
+.arm-rating-input-label {
+  display: inline-block;
+  margin-bottom: var(--arm-spacing-xsmall);
+  margin-left: var(--arm-spacing-xxxsmall);
 }
 
 .arm-rating-part {
@@ -86,4 +94,14 @@
   background-color: transparent;
   padding: 0;
   flex-grow: 1;
+}
+
+/* SIZES */
+
+.arm-rating[data-size='small'] {
+  --arm-rating-part-size: 1.2rem;
+}
+
+.arm-rating[data-size='large'] {
+  --arm-rating-part-size: 2.4rem;
 }
