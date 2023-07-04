@@ -29,6 +29,9 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   /** Indicates if field must be used to submit form */
   required?: boolean;
 
+  /** Symbol to use as the required indicator on the label, defaults to "*" */
+  requiredIndicator?: React.ReactNode;
+
   /** (Optional) A React.ReactNode to display a label for the checkbox input. */
   label?: React.ReactNode;
 
@@ -88,6 +91,7 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
       step,
       required,
       customThumb,
+      requiredIndicator,
       ...nativeProps
     },
     ref
@@ -95,6 +99,8 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
     const globals = useArmstrongConfig({
       scrollValidationErrorsIntoView,
       validationMode,
+      inputDisplaySize: displaySize,
+      requiredIndicator,
     });
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -120,6 +126,7 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
             data-disabled={disabled}
             required={required}
             displaySize={globals.inputDisplaySize}
+            requiredIndicator={globals.requiredIndicator}
           >
             {label}
           </Label>
@@ -132,7 +139,7 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
           step={step}
           ref={ref}
           disabled={disabled}
-          data-size={displaySize}
+          data-size={globals.inputDisplaySize}
           aria-labelledby={finalLabelId}
           value={boundValue ? [boundValue] : undefined}
           onValueChange={v => setBoundValue(v?.[0])}
