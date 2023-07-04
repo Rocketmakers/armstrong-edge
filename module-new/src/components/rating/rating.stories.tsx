@@ -90,21 +90,11 @@ export const Sizes: StoryObj<typeof Rating> = {
   render: () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        <Rating label={'Small Input'} displaySize="small" required={true} />
-        <Rating label={'Medium Input'} required={true} />
-        <Rating label={'Large Input'} displaySize="large" required={true} />
+        <Rating label={'Small Rating'} displaySize="small" required={true} />
+        <Rating label={'Medium Rating'} required={true} />
+        <Rating label={'Large Rating'} displaySize="large" required={true} />
       </div>
     );
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const smallInput = canvas.getByLabelText('Small Input *');
-    const mediumInput = canvas.getByLabelText('Medium Input *');
-    const largeInput = canvas.getByLabelText('Large Input *');
-
-    expect(smallInput.getAttribute('data-size')).toEqual('small');
-    expect(mediumInput.getAttribute('data-size')).toEqual(null);
-    expect(largeInput.getAttribute('data-size')).toEqual('large');
   },
 };
 

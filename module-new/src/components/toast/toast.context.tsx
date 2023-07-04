@@ -86,10 +86,10 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
         {toasts.map((toast, i) => (
           <Toast
             key={`${toast.title}-${i}`}
-            {...toast}
             duration={globals.toastDuration}
             position={globals.toastPosition}
             closeButtonIcon={globals.toastCloseButtonIcon}
+            {...toast}
           />
         ))}
         {ReactDOM.createPortal(

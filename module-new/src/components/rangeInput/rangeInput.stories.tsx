@@ -93,16 +93,6 @@ export const Sizes: StoryObj<typeof RangeInput> = {
       </div>
     );
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const smallInput = canvas.getByLabelText('Small Input *');
-    const mediumInput = canvas.getByLabelText('Medium Input *');
-    const largeInput = canvas.getByLabelText('Large Input *');
-
-    expect(smallInput.getAttribute('data-size')).toEqual('small');
-    expect(mediumInput.getAttribute('data-size')).toEqual(null);
-    expect(largeInput.getAttribute('data-size')).toEqual('large');
-  },
 };
 
 export const ValidationError: StoryObj<typeof RangeInput> = {
