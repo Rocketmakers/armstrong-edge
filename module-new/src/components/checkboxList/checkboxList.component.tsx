@@ -22,7 +22,11 @@ import './checkboxList.theme.css';
 export interface ICheckboxListProps<Id extends ArmstrongId>
   extends Pick<
       IInputWrapperProps,
-      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'validationErrorMessages'
+      | 'validationErrorsClassName'
     >,
     React.RefAttributes<HTMLDivElement> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
@@ -68,6 +72,9 @@ export interface ICheckboxListProps<Id extends ArmstrongId>
   /** (Optional) Class name for the label component */
   labelClassName?: string;
 
+  /** (Optional) Id to use for the checkbox. Falls back to React ID if not provided */
+  labelId?: string;
+
   /** Indicates if field must be used to submit form */
   required?: boolean;
 
@@ -95,9 +102,11 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
       displaySize,
       label,
       labelClassName,
+      labelId,
       required,
       disabled,
       scrollValidationErrorsIntoView,
+      validationErrorsClassName,
       requiredIndicator,
       ...nativeProps
     },
@@ -108,6 +117,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
       requiredIndicator,
       scrollValidationErrorsIntoView,
       validationErrorIcon: errorIcon,
+      inputDisplaySize: displaySize,
     });
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -139,6 +149,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
       <>
         {label && (
           <Label
+            id={labelId}
             className={concat('arm-checkbox-list-label', labelClassName)}
             required={required}
             requiredIndicator={globals.requiredIndicator}
@@ -151,7 +162,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
           ref={ref}
           data-error={error || !!validationErrorMessages?.length}
           data-disabled={disabled}
-          data-size={displaySize}
+          data-size={globals.inputDisplaySize}
           {...nativeProps}
         >
           {options.map(option => {
@@ -163,7 +174,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
                 key={option.id}
                 className="arm-checkbox-list-item"
                 checked={isChecked}
-                displaySize={displaySize}
+                displaySize={globals.inputDisplaySize}
                 onCheckedChange={v => onCheckedChange(option, v)}
                 disabled={disabled || option.disabled}
                 label={getContentFromOption(option, isChecked)}
@@ -173,7 +184,8 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
           {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
             <ValidationErrors
               validationErrors={bindConfig.validationErrorMessages}
-              className="arm-checkbox-list-errors"
+              scrollIntoView={globals.scrollValidationErrorsIntoView}
+              className={concat('arm-checkbox-list-errors', validationErrorsClassName)}
             />
           )}
         </div>
