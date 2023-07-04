@@ -270,6 +270,7 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       native,
       format,
       locale,
+      statusClassName,
       ...inputProps
     },
     ref
