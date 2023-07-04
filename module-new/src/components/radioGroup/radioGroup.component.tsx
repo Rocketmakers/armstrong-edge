@@ -22,7 +22,11 @@ import './radioGroup.theme.css';
 export interface IRadioGroupProps<Id extends ArmstrongId>
   extends Pick<
       IInputWrapperProps,
-      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'validationErrorMessages'
+      | 'validationErrorsClassName'
     >,
     React.RefAttributes<HTMLDivElement> {
   /** Whether to show a vertical list of radio buttons or a horizontal set of adjacent buttons */
@@ -58,6 +62,9 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
   /** (Optional) Class name for the label component */
   labelClassName?: string;
 
+  /** (Optional) Id to use for the checkbox. Falls back to React ID if not provided */
+  labelId?: string;
+
   /** Indicates if field must be used to submit form */
   required?: boolean;
 
@@ -90,6 +97,8 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
       scrollValidationErrorsIntoView,
       requiredIndicator,
       displayMode,
+      validationErrorsClassName,
+      labelId,
       ...nativeProps
     },
     ref
@@ -99,6 +108,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
       requiredIndicator,
       scrollValidationErrorsIntoView,
       validationErrorIcon: errorIcon,
+      inputDisplaySize: displaySize,
     });
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -113,6 +123,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
       <>
         {label && (
           <Label
+            id={labelId}
             className={concat('arm-radio-group-label', labelClassName)}
             required={required}
             requiredIndicator={globals.requiredIndicator}
@@ -168,7 +179,10 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
           })}
         </RadixRadioGroup.Root>
         {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
-          <ValidationErrors validationErrors={bindConfig.validationErrorMessages} className="arm-radio-errors" />
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            className={concat('arm-radio-errors', validationErrorsClassName)}
+          />
         )}
       </>
     );
