@@ -53,7 +53,7 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
   displaySize?: DisplaySize;
 
   /** Label for the whole radio group itself */
-  label?: string;
+  label?: React.ReactNode;
 
   /** (Optional) Class name for the label component */
   labelClassName?: string;

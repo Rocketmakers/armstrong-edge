@@ -35,7 +35,7 @@ export interface IArmstrongConfigContext {
   hideInputErrorIconOnStatus?: boolean;
 
   /** when pending is true should also disable the input */
-  disableInputOnPending?: boolean;
+  disableControlOnPending?: boolean;
 
   /** will scroll the validation errors into view when the length of validationErrors changes */
   scrollValidationErrorsIntoView?: boolean;
@@ -88,7 +88,7 @@ const systemDefaults: Required<IArmstrongConfigContext> = {
   inputStatusPosition: 'right',
   inputDisplaySize: 'medium',
   hideInputErrorIconOnStatus: true,
-  disableInputOnPending: true,
+  disableControlOnPending: true,
   scrollValidationErrorsIntoView: false,
   requiredIndicator: '*',
   validationErrorIcon: <IoIosWarning size={24} />,

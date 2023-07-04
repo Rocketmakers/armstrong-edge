@@ -85,7 +85,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
     const globals = useArmstrongConfig({
       validationMode,
       hideInputErrorIconOnStatus: hideIconOnStatus,
-      disableInputOnPending: disableOnPending,
+      disableControlOnPending: disableOnPending,
       requiredIndicator,
       scrollValidationErrorsIntoView,
       inputStatusPosition: statusPosition,
@@ -114,7 +114,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
         <div
           ref={ref}
           className={concat('arm-input', 'arm-input-wrapper', className)}
-          data-disabled={disabled || (pending && globals.disableInputOnPending) ? true : undefined}
+          data-disabled={disabled || (pending && globals.disableControlOnPending) ? true : undefined}
           data-error={error || !!validationErrorMessages?.length ? true : undefined}
           data-left-overlay={
             showLeftOverlay || (globals.inputStatusPosition === 'left' && (shouldShowErrorIcon || pending))

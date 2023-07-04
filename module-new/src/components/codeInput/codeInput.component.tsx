@@ -307,7 +307,7 @@ export const CodeInput = React.forwardRef(
               {label}
             </Label>
           )}
-          <form className={concat('arm-code-input', className)}>
+          <div className={concat('arm-code-input', className)}>
             <StatusWrapper
               error={error || !!bindConfig.validationErrorMessages.length}
               errorIcon={bindConfig.validationErrorIcon}
@@ -334,7 +334,7 @@ export const CodeInput = React.forwardRef(
                 {rightOverlay}
               </>
             </StatusWrapper>
-          </form>
+          </div>
         </div>
 
         {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (

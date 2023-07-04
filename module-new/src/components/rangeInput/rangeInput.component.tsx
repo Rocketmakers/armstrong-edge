@@ -13,7 +13,7 @@ import './rangeInput.theme.css';
 
 export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'type' | 'checked' | 'onChange' | 'ref' | 'dir' | 'defaultValue'>,
-    Omit<IValidationErrorsProps, 'validationErrors'> {
+    Omit<IValidationErrorsProps, 'validationErrors' | 'scrollIntoView'> {
   /** (Optional) An IBindingProps<TData> object to bind the checkbox input to a form. */
   bind?: IBindingProps<TData>;
 

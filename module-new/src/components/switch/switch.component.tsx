@@ -57,10 +57,8 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
       defaultChecked,
       disabled,
       className,
-      // LABEL
       labelClassName,
       label,
-      // VALIDATION
       validationErrorMessages,
       validationErrorsClassName,
       scrollValidationErrorsIntoView,

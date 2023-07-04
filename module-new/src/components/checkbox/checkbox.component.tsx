@@ -15,7 +15,7 @@ type BindType = NullOrUndefined<boolean | 'indeterminate'>;
 
 export interface ICheckboxProps<TData extends BindType>
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type' | 'checked'>,
-    Omit<IValidationErrorsProps, 'validationErrors'> {
+    Omit<IValidationErrorsProps, 'validationErrors' | 'scrollIntoView'> {
   /** (Optional) An IBindingProps<TData> object to bind the checkbox input to a form. */
   bind?: IBindingProps<TData>;
 
@@ -49,7 +49,7 @@ export interface ICheckboxProps<TData extends BindType>
   /** (Optional) A string to set a custom data-testid attribute for the checkbox container. */
   testId?: string;
 
-  /** (Optional) Classname for the validation errors */
+  /** (Optional) Class name for the validation errors */
   validationErrorsClassName?: string;
 
   /** (Optional) Can be a string or {key, element} key is necessary for animating in new messages   */

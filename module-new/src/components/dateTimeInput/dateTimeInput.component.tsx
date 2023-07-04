@@ -428,6 +428,7 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
         onChange={newValue => {
           setStartDate?.(formatDate(newValue?.[0], format as string));
           setEndDate?.(formatDate(newValue?.[1], format as string));
+          onChange?.(newValue?.map(nv => formatDate(nv, format as string)) as [string | null, string | null]);
         }}
       />
     );
@@ -492,7 +493,7 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
   ) => {
     const globals = useArmstrongConfig({
       validationMode,
-      disableInputOnPending: disableOnPending,
+      disableControlOnPending: disableOnPending,
       hideInputErrorIconOnStatus: hideIconOnStatus,
       inputDisplaySize: displaySize,
       inputStatusPosition: statusPosition,
@@ -571,7 +572,7 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
               validationMode={bindConfig.validationMode}
               disabled={disabled}
               statusPosition={globals.inputStatusPosition}
-              disableOnPending={globals.disableInputOnPending}
+              disableOnPending={globals.disableControlOnPending}
               hideIconOnStatus={globals.hideInputErrorIconOnStatus}
               required={required}
               requiredIndicator={globals.requiredIndicator}
@@ -593,7 +594,7 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
               validationMode={bindConfig.validationMode}
               disabled={disabled}
               statusPosition={globals.inputStatusPosition}
-              disableOnPending={globals.disableInputOnPending}
+              disableOnPending={globals.disableControlOnPending}
               hideIconOnStatus={globals.hideInputErrorIconOnStatus}
               required={required}
               requiredIndicator={globals.requiredIndicator}

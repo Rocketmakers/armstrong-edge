@@ -106,7 +106,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
 
     const globals = useArmstrongConfig({
       validationMode,
-      disableInputOnPending: disableOnPending,
+      disableControlOnPending: disableOnPending,
       inputDisplaySize: displaySize,
       requiredIndicator,
       scrollValidationErrorsIntoView,
@@ -166,7 +166,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
         disabled={disabled}
         statusPosition={globals.inputStatusPosition}
         scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
-        disableOnPending={globals.disableInputOnPending}
+        disableOnPending={globals.disableControlOnPending}
         hideIconOnStatus={globals.hideInputErrorIconOnStatus}
         label={label}
         labelId={labelId ?? id}

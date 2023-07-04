@@ -119,7 +119,7 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
       IInputWrapperProps,
       'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
     >,
-    Pick<IButtonProps, 'leftIcon' | 'rightIcon'>,
+    Pick<IButtonProps, 'leftOverlay' | 'rightOverlay'>,
     IStatusWrapperProps {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -172,8 +172,8 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
       error,
       statusPosition,
       pending,
-      leftIcon,
-      rightIcon,
+      leftOverlay,
+      rightOverlay,
       mode,
       disabled,
       ...htmlProps
@@ -206,7 +206,7 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
             pending={pending}
           >
             <>
-              {leftIcon}
+              {leftOverlay}
               <div className="arm-rating-parts">
                 {repeat(maximum as number, index => (
                   <RatingPart
@@ -236,7 +236,7 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
                   />
                 )}
               </div>
-              {rightIcon}
+              {rightOverlay}
             </>
           </StatusWrapper>
         </div>
