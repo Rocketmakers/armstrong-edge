@@ -49,15 +49,24 @@ export interface ITooltipProps
 }
 
 export const Tooltip = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITooltipProps>>(
-  ({ children, content, delay, open, onOpenChange, showArrow, className, arrowClassName, ...props }, ref) => {
-    const { tooltipDelay, tooltipShowArrow } = useArmstrongConfig({ tooltipDelay: delay, tooltipShowArrow: showArrow });
+  ({ children, content, delay, open, onOpenChange, showArrow, className, arrowClassName, side, ...props }, ref) => {
+    const { tooltipDelay, tooltipShowArrow, tooltipSide } = useArmstrongConfig({
+      tooltipDelay: delay,
+      tooltipShowArrow: showArrow,
+      tooltipSide: side,
+    });
 
     return (
       <RadixTooltip.Provider delayDuration={tooltipDelay}>
         <RadixTooltip.Root open={open} onOpenChange={onOpenChange}>
           <RadixTooltip.Trigger asChild>{children}</RadixTooltip.Trigger>
           <RadixTooltip.Portal>
-            <RadixTooltip.Content ref={ref} className={concat(className, 'arm-tooltip-content')} {...props}>
+            <RadixTooltip.Content
+              ref={ref}
+              className={concat(className, 'arm-tooltip-content')}
+              side={tooltipSide}
+              {...props}
+            >
               {content}
               {tooltipShowArrow && <RadixTooltip.Arrow className={concat(arrowClassName, 'arm-tooltip-arrow')} />}
             </RadixTooltip.Content>

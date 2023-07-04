@@ -75,6 +75,9 @@ export interface IArmstrongConfigContext {
 
   /** Show an arrow on tooltips pointing to the element, defaults to false */
   tooltipShowArrow?: boolean;
+
+  /** Which side to render the tooltip, defaults to "top" */
+  tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
 }
 
 /**
@@ -102,6 +105,7 @@ const systemDefaults: Required<IArmstrongConfigContext> = {
   checkboxCustomIndeterminateIndicator: <ImMinus />,
   tooltipDelay: 700,
   tooltipShowArrow: false,
+  tooltipSide: 'top',
 };
 
 const ArmstrongConfigContext = React.createContext<Required<IArmstrongConfigContext>>(systemDefaults);
