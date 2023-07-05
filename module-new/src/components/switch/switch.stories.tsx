@@ -9,7 +9,7 @@ import { Switch } from './switch.component';
 /** A toggle-able switch component with validation */
 
 export default {
-  title: 'Controls/Switch',
+  title: 'Components/Switch',
   component: Switch,
 } as Meta<typeof Switch>;
 

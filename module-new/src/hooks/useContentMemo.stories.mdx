@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/useContentMemo" />
+
+### useContentMemo
+
+Returns a reference to the passed in item which only updates when the _content_ of the item updates rather than just the pointer reference
+
+**WARNING:** This hook was designed for config/state objects and assumes that array/object items are serializable
+
+```tsx
+const valueContent = useContentMemo(props.myArray);
+
+React.useEffect(() => {
+  // trigger something based on the fact that the content of the array has changed, not just the reference
+}, [valueContent]);
+```

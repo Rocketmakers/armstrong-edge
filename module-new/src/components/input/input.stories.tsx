@@ -11,7 +11,7 @@ import { Input } from './input.component';
 /** Inputs with options to track errors, pending data and so on. */
 
 export default {
-  title: 'Inputs/Input',
+  title: 'Components/Input',
   component: Input,
   args: {
     type: 'text',

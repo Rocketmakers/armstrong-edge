@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/usePreviousValue" />
+
+### usePreviousValue
+
+Will return the previous value for an incoming prop or potential dependency for comparison
+
+```tsx
+const previousValue = usePreviousValue(props.value);
+
+React.useEffect(() => {
+  if (previousValue != props.value) {
+    // do something
+  }
+}, [previousValue, props.value]);
+```

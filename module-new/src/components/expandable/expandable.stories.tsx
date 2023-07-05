@@ -9,7 +9,7 @@ import { Expandable } from './expandable.component';
 /** metadata */
 
 export default {
-  title: 'Layout/Expandable',
+  title: 'Components/Expandable',
   component: Expandable,
   parameters: {
     docs: {

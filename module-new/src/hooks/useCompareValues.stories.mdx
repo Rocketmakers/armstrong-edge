@@ -1,0 +1,16 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/useCompareValues" />
+
+### useCompareValues
+
+Compares an incoming prop or potential dependency to it's value on the previous render, useful for forming an effect trigger which runs when a value or reference changes
+
+```tsx
+const hasValueChanged = useCompareValues(props.value);
+
+React.useEffect(() => {
+  // trigger something based on the fact that a value has changed
+}, [hasValueChanged]);
+
+```

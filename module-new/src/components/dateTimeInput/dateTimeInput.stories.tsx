@@ -13,7 +13,7 @@ import { DateTimeInput } from './dateTimeInput.component';
 /** metadata */
 
 export default {
-  title: 'Form/DateTime Input',
+  title: 'Components/DateTime Input',
   component: DateTimeInput,
 } as Meta<typeof DateTimeInput>;
 

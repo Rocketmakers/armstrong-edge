@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/useDidUpdateEffect" />
+
+### useDidUpdateEffect
+
+A useEffect which won't run after the first render, will only run once the deps start changing
+
+```tsx
+useDidUpdateEffect(() => { do some stuff })
+```
+
+### useDidUpdateLayoutEffect
+
+A useLayoutEffect which won't run after the first render, will only run once the deps start changing
+
+```tsx
+useDidUpdateLayoutEffect(() => { do some stuff })
+```

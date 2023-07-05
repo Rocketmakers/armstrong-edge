@@ -12,7 +12,7 @@ import { Rating } from './rating.component';
 /** meta  */
 
 export default {
-  title: 'Controls/Rating',
+  title: 'Components/Rating',
   component: Rating,
 } as Meta<typeof Rating>;
 

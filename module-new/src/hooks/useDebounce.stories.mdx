@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/useDebounce" />
+
+### useDebounce
+
+Like a state hook, but also exports a "throttled" value (set after x amount of inactivity through the setter method)
+
+```tsx
+const [actualValue, setActualValue, debouncedValue, setDebouncedValue] = useDebounce(
+  milliseconds,
+  value,
+  onValueChange
+);
+```

@@ -10,7 +10,7 @@ import { RangeInput } from './rangeInput.component';
 /** metadata */
 
 export default {
-  title: 'Controls/RangeInput',
+  title: 'Components/RangeInput',
   component: RangeInput,
 } as Meta<typeof RangeInput>;
 

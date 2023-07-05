@@ -10,7 +10,7 @@ import { Button } from './button.component';
 /** metadata */
 
 export default {
-  title: 'Button/Button',
+  title: 'Components/Button',
   component: Button,
   args: {
     children: 'Click me please',
