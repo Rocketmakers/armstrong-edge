@@ -287,6 +287,9 @@ const ReactSelectComponent = React.forwardRef<
       disableControlOnPending: disableOnPending,
     });
 
+    const internalRef = React.useRef<ReactSelectRef<ArmstrongId>>(null);
+    React.useImperativeHandle(ref, () => internalRef.current as ReactSelectRef<ArmstrongId>, [internalRef]);
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- not an ideal use of any, but it's the only way of binding for single and multi from the same component
     const [value, setValue, { validationErrorMessages, isValid, shouldShowValidationErrorIcon }] = useBindingState<any>(
       bind,
@@ -318,6 +321,10 @@ const ReactSelectComponent = React.forwardRef<
               return v.id;
             })
           );
+          // updating the value on a controlled react multiselect seems to cause the input to lose focus.
+          // this is a bit of a hack but it seems to fix the issue.
+          // @todo is there a better way of solving this?
+          setTimeout(() => internalRef.current?.focus(), 1);
         }
       },
       [multi, setValue, onOptionCreated]
@@ -451,7 +458,11 @@ const ReactSelectComponent = React.forwardRef<
             {label}
           </Label>
         )}
-        {allowCreate ? <Creatable ref={ref} {...reactSelectProps} /> : <ReactSelect ref={ref} {...reactSelectProps} />}
+        {allowCreate ? (
+          <Creatable ref={internalRef} {...reactSelectProps} />
+        ) : (
+          <ReactSelect ref={internalRef} {...reactSelectProps} />
+        )}
         {!isValid && (
           <ValidationErrors
             aria-label="Error messages"
