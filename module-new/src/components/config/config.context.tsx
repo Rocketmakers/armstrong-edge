@@ -12,7 +12,7 @@ import type { ToastPosition } from '../toast';
 /**
  * Armstrong global config type
  */
-export interface IArmstrongConfigContext {
+export interface IArmstrongConfig {
   /** overrides the error messaging and icon display used in the error validation display */
   validationMode?: 'icon' | 'message' | 'both';
 
@@ -83,7 +83,7 @@ export interface IArmstrongConfigContext {
 /**
  * System level defaults for armstrong global config
  */
-const systemDefaults: Required<IArmstrongConfigContext> = {
+const systemDefaults: Required<IArmstrongConfig> = {
   validationMode: 'both',
   buttonDisplaySize: 'medium',
   buttonDisplayStyle: 'primary',
@@ -108,13 +108,13 @@ const systemDefaults: Required<IArmstrongConfigContext> = {
   tooltipSide: 'top',
 };
 
-const ArmstrongConfigContext = React.createContext<Required<IArmstrongConfigContext>>(systemDefaults);
+const ArmstrongConfigContext = React.createContext<Required<IArmstrongConfig>>(systemDefaults);
 
 /**
  * Configuration for Armstrong
  * - Allows for certain frequently repeated properties to be set at a global level
  */
-export const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<IArmstrongConfigContext>> = ({
+export const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<IArmstrongConfig>> = ({
   children,
   ...config
 }) => {
@@ -131,7 +131,7 @@ export const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<IArmstron
  * @param localOverrides Optional overrides for config properties, these will take precedence over anything set globally.
  * @returns A config dictionary with a guaranteed entry for every key in priority order: {...system, ...global, ...local}
  */
-export const useArmstrongConfig = (localOverrides?: IArmstrongConfigContext): Required<IArmstrongConfigContext> => {
+export const useArmstrongConfig = (localOverrides?: IArmstrongConfig): Required<IArmstrongConfig> => {
   const config = React.useContext(ArmstrongConfigContext);
   return { ...config, ...stripNullOrUndefined(localOverrides) };
 };
