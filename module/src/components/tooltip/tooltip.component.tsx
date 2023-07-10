@@ -7,8 +7,8 @@ import { useArmstrongConfig } from '../config';
 import './tooltip.theme.css';
 
 export interface ITooltipProps
-  extends Omit<RadixTooltip.TooltipContentProps, 'side'>,
-    React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<RadixTooltip.TooltipContentProps, 'side' | 'content'>,
+    Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
   /** The content to display in the tooltip */
   content?: React.ReactNode;
 
