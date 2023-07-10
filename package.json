@@ -1,11 +1,11 @@
 {
-  "name": "@rocketmakers/armstrong-edge",
-  "version": "0.0.1",
-  "description": "Initial stating project for the 2021 Armstrong rewrite. Will be integrated into the Armstrong repo.",
+  "name": "@rocketmakers/armstrong-root",
+  "version": "3.0.0",
+  "description": "Rocketmakers React component library",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rocketmakers/armstrong-rewrite.git"
+    "url": "https://github.com/Rocketmakers/armstrong-edge.git"
   },
   "author": "developers@rocketmakers.com",
   "license": "MIT",

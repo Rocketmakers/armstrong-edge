@@ -1,0 +1,23 @@
+name: Lint module
+on: workflow_call
+jobs:
+  lint-module:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Restore node modules cache
+        id: node-modules
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/module/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Run linting
+        run: npm run lint
+        working-directory: ./module

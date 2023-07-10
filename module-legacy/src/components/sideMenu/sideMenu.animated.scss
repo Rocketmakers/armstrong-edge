@@ -1,9 +1,0 @@
-.arm-side-menu {
-  &[data-side='left'] {
-    animation: slide-in-right-large $transition-quick;
-  }
-
-  &[data-side='right'] {
-    animation: slide-in-left-large $transition-quick;
-  }
-}

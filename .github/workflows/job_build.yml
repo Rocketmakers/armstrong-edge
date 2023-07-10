@@ -1,0 +1,35 @@
+name: Setup and cache Node for Module
+
+on: workflow_call
+
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Restore node modules cache
+        id: node-modules
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/module/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Build
+        id: build
+        run: |
+          (cd ../ && ls -la)
+          ls -la
+          npm run build
+        working-directory: ./module
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: ${{ github.workspace }}/module/dist
+          retention-days: 5

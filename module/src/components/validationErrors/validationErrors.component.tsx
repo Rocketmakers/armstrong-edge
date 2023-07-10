@@ -1,19 +1,20 @@
 import * as React from 'react';
 
-import { ValidationMessage } from '../../hooks/form';
+import type { ValidationMessage } from '../../form';
 import { concat } from '../../utils/classNames';
-import { Icon, IconSet, IIcon } from '../icon';
+import { useArmstrongConfig } from '../config';
+
+import './validationErrors.theme.css';
 
 export interface IValidationErrorsProps {
-  /** The errors to render */
-  /** Can be a string or {key, element} key is necessary for animating in new messages   */
+  /**
+   * The errors to render
+   * Can be a string or {key, element} key is necessary for animating in new messages
+   */
   validationErrors: ValidationMessage[];
 
   /** CSS className property */
   className?: string;
-
-  /** the icon to render beside the validation message */
-  icon?: IIcon<IconSet>;
 
   /** will scroll the validation errors into view when the length of validationErrors changes */
   scrollIntoView?: boolean;
@@ -23,43 +24,50 @@ export interface IValidationErrorsProps {
 }
 
 /** Render an array of validation errors as error messages */
-export const ValidationErrors = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IValidationErrorsProps>>(
-  ({ validationErrors, className, icon, scrollIntoView, validationMode }, ref) => {
-    const internalRef = React.useRef<HTMLInputElement>(null);
-    React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+export const ValidationErrors = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>>
+>(({ validationErrors, className, scrollIntoView, validationMode, ...nativeProps }, ref) => {
+  const globals = useArmstrongConfig({
+    validationMode,
+    scrollValidationErrorsIntoView: scrollIntoView,
+  });
 
-    React.useEffect(() => {
-      if (validationErrors.length > 0 && scrollIntoView) {
-        internalRef.current?.scrollIntoView({
-          block: 'center',
-          behavior: 'smooth',
-        });
-      }
-    }, [validationErrors.length]);
+  const internalRef = React.useRef<HTMLInputElement>(null);
+  React.useImperativeHandle(ref, () => internalRef.current as HTMLInputElement, [internalRef]);
 
-    /** If the error is a JSX element use the key on the element or the index */
-    const getKey = React.useCallback((error: ValidationMessage, index: number) => {
-      if (typeof error === 'string') {
-        return error + index;
-      }
-      return error?.key ?? index;
-    }, []);
+  React.useEffect(() => {
+    if (validationErrors.length > 0 && globals.scrollValidationErrorsIntoView) {
+      internalRef.current?.scrollIntoView({
+        block: 'center',
+        behavior: 'smooth',
+      });
+    }
+  }, [validationErrors.length, globals.scrollValidationErrorsIntoView]);
 
-    const shouldShowErrorIcon = validationMode === 'both' || validationMode === 'icon';
+  /** If the error is a JSX element use the key on the element or the index */
+  const getKey = React.useCallback((error: ValidationMessage, index: number) => {
+    if (typeof error === 'string') {
+      return error + index;
+    }
+    return error?.key ?? index;
+  }, []);
 
-    const shouldShowErrorMessage = validationMode === 'both' || validationMode === 'message';
+  const shouldShowErrorMessage = globals.validationMode === 'both' || globals.validationMode === 'message';
 
-    return (
-      <div ref={internalRef} className={concat('arm-validation-errors', className)}>
-        {validationErrors.map((error, i) => (
-          <div className="arm-error-message" key={getKey(error, i)}>
-            {icon && shouldShowErrorIcon && <Icon iconSet={icon.iconSet} icon={icon.icon} />}
-            {shouldShowErrorMessage && <span>{error}</span>}
-          </div>
-        ))}
-      </div>
-    );
-  }
-);
+  return (
+    <div ref={internalRef} className={concat('arm-validation-errors', className)} {...nativeProps}>
+      {validationErrors.map((error, i) => (
+        <div
+          className="arm-validation-error-message"
+          key={getKey(error, i)}
+          aria-errormessage={typeof error === 'string' ? error : ''}
+        >
+          {shouldShowErrorMessage && <span>{error}</span>}
+        </div>
+      ))}
+    </div>
+  );
+});
 
 ValidationErrors.displayName = 'ValidationErrors';

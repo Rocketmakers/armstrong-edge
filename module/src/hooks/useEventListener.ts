@@ -9,10 +9,9 @@ import { Window } from '../utils/globals';
  * @param type the name of the event to listen to
  * @param element the element to add the listener to, defaults to window
  */
-
 export function useEventListener(
   type: string,
-  eventHandler: (e: any) => any,
+  eventHandler: (e: unknown) => unknown,
   element: Pick<HTMLElement, 'addEventListener' | 'removeEventListener'> | undefined = Window,
   options: boolean | AddEventListenerOptions | undefined = { passive: true },
   enabled = true
@@ -31,5 +30,5 @@ export function useEventListener(
       };
     }
     return undefined;
-  }, [eventHandler, element, type, enabled]);
+  }, [eventHandler, element, type, enabled, options]);
 }

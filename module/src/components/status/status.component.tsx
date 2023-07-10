@@ -1,8 +1,10 @@
 import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
-import { getIconDefinition, Icon, IconSet, IIcon } from '../icon';
+import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner';
+
+import './status.theme.css';
 
 export interface IStatusProps {
   /** show a spinner */
@@ -12,10 +14,10 @@ export interface IStatusProps {
   error?: boolean;
 
   /** the icon to use for the error */
-  errorIcon?: IIcon<IconSet>;
+  errorIcon?: JSX.Element;
 
   /** the icon to use for the spinner */
-  spinnerIcon?: IIcon<IconSet>;
+  spinnerIcon?: JSX.Element;
 
   /** an optional CSS className for the rendered status */
   className?: string;
@@ -24,6 +26,11 @@ export interface IStatusProps {
 /** Render a status icon which can either be pending or errored */
 export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
   ({ pending, error, errorIcon, spinnerIcon, className, ...rest }, ref) => {
+    const globals = useArmstrongConfig({
+      validationErrorIcon: errorIcon,
+      spinnerIcon,
+    });
+
     if (!error && !pending) {
       return null;
     }
@@ -31,21 +38,17 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
       <div
         ref={ref}
         className={concat('arm-status', className)}
-        data-active={!!pending || !!error}
-        data-error={!!error && !pending}
-        data-pending={pending}
+        data-active={!!pending || !!error ? true : undefined}
+        data-error={!!error && !pending ? true : undefined}
+        data-pending={pending ? true : undefined}
         role="status"
         {...rest}
       >
-        {error && !pending && errorIcon && (
-          <Icon className="arm-status-error" iconSet={errorIcon.iconSet} icon={errorIcon.icon} title="Error icon" />
-        )}
-        {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />}
+        {error && !pending && globals.validationErrorIcon}
+        {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={globals.spinnerIcon} />}
       </div>
     );
   }
 );
 
-Status.defaultProps = {
-  errorIcon: getIconDefinition('Icomoon', 'warning'),
-};
+Status.displayName = 'Status';

@@ -17,7 +17,7 @@ export type AllKeys<TData> = TData extends object ? keyof TData : never;
  * - NOTE: Both types are required due to TS being very strict on the key type for an object.
  * The "Inner" type shouldn't be used on its own, it's only really a casting type.
  */
-type PickTypeInner<TData, K extends AllKeys<TData>> = TData extends { [k in K]?: any } ? TData[K] : undefined;
+type PickTypeInner<TData, K extends AllKeys<TData>> = TData extends { [k in K]?: unknown } ? TData[K] : undefined;
 export type PickType<T, K extends string | number | symbol> = K extends AllKeys<T> ? PickTypeInner<T, K> : never;
 
 /**
@@ -32,3 +32,8 @@ export type Merge<T extends object> = {
  * Checks a generic value and returns `never` if generic is undefined. else returns second generic value.
  */
 export type NeverUndefined<TCheck, TReturn> = TCheck extends undefined ? never : TReturn;
+
+/**
+ * Display type options for inputs
+ */
+export type DisplaySize = 'small' | 'medium' | 'large';
