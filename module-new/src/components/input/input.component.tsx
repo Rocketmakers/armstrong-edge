@@ -137,7 +137,7 @@ export const Input = React.forwardRef<
 
     const globals = useArmstrongConfig({
       validationMode,
-      disableInputOnPending: disableOnPending,
+      disableControlOnPending: disableOnPending,
       hideInputErrorIconOnStatus: hideIconOnStatus,
       inputDisplaySize: displaySize,
       inputStatusPosition: statusPosition,
@@ -218,7 +218,7 @@ export const Input = React.forwardRef<
         disabled={disabled}
         statusPosition={globals.inputStatusPosition}
         scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
-        disableOnPending={globals.disableInputOnPending}
+        disableOnPending={globals.disableControlOnPending}
         hideIconOnStatus={globals.hideInputErrorIconOnStatus}
         label={label}
         labelId={labelId ?? id}
@@ -227,6 +227,7 @@ export const Input = React.forwardRef<
         error={error}
         requiredIndicator={globals.requiredIndicator}
         data-testid={wrapperTestId}
+        displaySize={globals.inputDisplaySize}
       >
         {!!delay && (
           <DebounceInputBase

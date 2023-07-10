@@ -10,7 +10,7 @@ import { CodeInput } from './codeInput.component';
 /** metadata */
 
 export default {
-  title: 'Form/Code Input',
+  title: 'Components/Code Input',
   component: CodeInput,
 } as Meta<typeof CodeInput>;
 

@@ -9,7 +9,7 @@ import { Spinner } from './spinner.component';
 /** metadata */
 
 export default {
-  title: 'Spinners/Spinner',
+  title: 'Components/Spinner',
   component: Spinner,
 } as Meta<typeof Spinner>;
 

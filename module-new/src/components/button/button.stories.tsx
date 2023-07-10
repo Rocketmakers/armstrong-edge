@@ -10,7 +10,7 @@ import { Button } from './button.component';
 /** metadata */
 
 export default {
-  title: 'Button/Button',
+  title: 'Components/Button',
   component: Button,
   args: {
     children: 'Click me please',
@@ -126,7 +126,7 @@ export const WithIcons: StoryObj<typeof Button> = {
   ...Template,
   args: {
     onClick: action('onClick'),
-    leftIcon: <ImPencil title="left-icon-test" />,
+    leftOverlay: <ImPencil title="left-icon-test" />,
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -143,7 +143,7 @@ export const Disabled: StoryObj<typeof Button> = {
   ...Template,
   args: {
     onClick: action('onClick'),
-    leftIcon: <ImPencil title="left-icon-test" />,
+    leftOverlay: <ImPencil title="left-icon-test" />,
     disabled: true,
   },
   play: async ({ args, canvasElement }) => {
@@ -159,7 +159,7 @@ export const Pending: StoryObj<typeof Button> = {
   ...Template,
   args: {
     onClick: action('onClick'),
-    leftIcon: <ImPencil title="left-icon-test" />,
+    leftOverlay: <ImPencil title="left-icon-test" />,
     pending: true,
   },
   play: async ({ args, canvasElement }) => {
@@ -178,7 +178,7 @@ export const PendingOnLeft: StoryObj<typeof Button> = {
   ...Template,
   args: {
     onClick: action('onClick'),
-    leftIcon: <ImPencil title="left-icon-test" />,
+    leftOverlay: <ImPencil title="left-icon-test" />,
     pending: true,
     pendingPosition: 'left',
   },

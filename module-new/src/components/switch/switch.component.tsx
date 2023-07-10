@@ -18,7 +18,15 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
     >,
     Pick<
       IInputWrapperProps,
-      'scrollValidationErrorsIntoView' | 'validationMode' | 'validationErrorMessages' | 'disabled' | 'className'
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'validationErrorMessages'
+      | 'disabled'
+      | 'className'
+      | 'displaySize'
+      | 'labelId'
+      | 'required'
+      | 'requiredIndicator'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -57,14 +65,16 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
       defaultChecked,
       disabled,
       className,
-      // LABEL
       labelClassName,
       label,
-      // VALIDATION
       validationErrorMessages,
       validationErrorsClassName,
       scrollValidationErrorsIntoView,
       validationMode,
+      displaySize,
+      labelId,
+      required,
+      requiredIndicator,
       ...nativeProps
     },
     ref
@@ -75,6 +85,8 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
     const globals = useArmstrongConfig({
       validationMode,
       scrollValidationErrorsIntoView,
+      inputDisplaySize: displaySize,
+      requiredIndicator,
     });
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -103,11 +115,20 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
             defaultChecked={defaultChecked}
             onCheckedChange={onCheckedChangeInternal}
             checked={boundValue ?? undefined}
+            data-size={globals.inputDisplaySize}
           >
             <Thumb className="arm-switch-nub" />
           </Root>
 
-          <Label className={concat(labelClassName, 'arm-switch-label')} data-disabled={disabled} htmlFor={id}>
+          <Label
+            id={labelId}
+            required={required}
+            requiredIndicator={globals.requiredIndicator}
+            className={concat(labelClassName, 'arm-switch-label')}
+            data-disabled={disabled}
+            htmlFor={id}
+            displaySize={globals.inputDisplaySize}
+          >
             {label}
           </Label>
         </div>

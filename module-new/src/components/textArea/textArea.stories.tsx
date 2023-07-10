@@ -7,7 +7,7 @@ import { useForm } from '../../form';
 import { TextArea } from './textArea.component';
 
 export default {
-  title: 'Inputs/TextArea',
+  title: 'Components/TextArea',
   component: TextArea,
   args: {
     type: 'text',

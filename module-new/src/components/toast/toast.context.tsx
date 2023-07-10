@@ -23,6 +23,8 @@ export interface IToast {
   className?: string;
   /** optional test id to add to the toast element */
   testId?: string;
+  /** optional additional props to spread onto the toast component */
+  additionalProps?: React.RefAttributes<HTMLLIElement>;
 }
 
 /** Type denoting the position of a toast message */
@@ -84,9 +86,10 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
         {toasts.map((toast, i) => (
           <Toast
             key={`${toast.title}-${i}`}
-            {...toast}
+            duration={globals.toastDuration}
             position={globals.toastPosition}
             closeButtonIcon={globals.toastCloseButtonIcon}
+            {...toast}
           />
         ))}
         {ReactDOM.createPortal(

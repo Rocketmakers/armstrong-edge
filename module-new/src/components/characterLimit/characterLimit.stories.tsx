@@ -11,7 +11,7 @@ import { CharacterLimit } from './characterLimit.component';
 /** metadata */
 
 export default {
-  title: 'Form/Character Limit',
+  title: 'Components/Character Limit',
   component: CharacterLimit,
   args: {
     limit: 10,

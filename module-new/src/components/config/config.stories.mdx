@@ -1,0 +1,34 @@
+import { ArgTypes, Meta } from '@storybook/addon-docs';
+import { ArmstrongConfigProvider } from './config.context.tsx';
+
+<Meta title="Config/Global Config" />
+
+# Global Config
+
+Certain settings in Armstrong can be configured globally by sending values to a provider which wraps your app.
+
+This allows you to avoid sending the same config props into the same components over and over again.
+
+## How to use global config in your app
+
+### Step 1 - Wrap your app in the provider
+
+In order for global config to work, you must first wrap your app in the unified armstrong provider and pass in your config, like so:
+
+```tsx
+import { ArmstrongProvider, IArmstrongConfig } from '@rocketmakers/armstrong-edge';
+
+const armstrongConfig: IArmstrongConfig = {
+  validationMode: 'both',
+};
+
+export const MyApp: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return <ArmstrongProvider config={armstrongConfig}>{children}</ArmstrongProvider>;
+};
+```
+
+NOTE: The unified provider supports toast messages as well as allow you to pass global Armstrong config. If you specifically only want the toast messages, you can use `<ConfigProvider>` instead but this is not recommended.
+
+### Config options
+
+<ArgTypes of={ArmstrongConfigProvider} />

@@ -5,7 +5,7 @@ import { useArmstrongConfig } from '../config';
 
 import './spinner.theme.css';
 
-export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
+export interface ISpinnerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'label'> {
   /** icon definition for icon to spin in middle of div, can be overridden using children */
   icon?: JSX.Element;
 
@@ -13,7 +13,7 @@ export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
   fillContainer?: boolean;
 
   /** text to render below the spinner */
-  label?: string;
+  label?: React.ReactNode;
 }
 
 /** Renders a spinner centred in the div that's being wrapped */

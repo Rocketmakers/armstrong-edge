@@ -37,7 +37,7 @@ const flatOptions = groupedOptions[0].options;
 /** meta  */
 
 export default {
-  title: 'Form/Select',
+  title: 'Components/Select',
   component: Select,
 } as Meta<typeof Select>;
 

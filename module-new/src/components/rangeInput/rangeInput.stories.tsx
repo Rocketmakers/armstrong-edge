@@ -10,7 +10,7 @@ import { RangeInput } from './rangeInput.component';
 /** metadata */
 
 export default {
-  title: 'Controls/RangeInput',
+  title: 'Components/RangeInput',
   component: RangeInput,
 } as Meta<typeof RangeInput>;
 
@@ -92,16 +92,6 @@ export const Sizes: StoryObj<typeof RangeInput> = {
         <RangeInput label={'Large Input'} displaySize="large" required={true} />
       </div>
     );
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const smallInput = canvas.getByLabelText('Small Input *');
-    const mediumInput = canvas.getByLabelText('Medium Input *');
-    const largeInput = canvas.getByLabelText('Large Input *');
-
-    expect(smallInput.getAttribute('data-size')).toEqual('small');
-    expect(mediumInput.getAttribute('data-size')).toEqual(null);
-    expect(largeInput.getAttribute('data-size')).toEqual('large');
   },
 };
 

@@ -10,7 +10,7 @@ import { RadioGroup } from './radioGroup.component';
 /** metadata */
 
 export default {
-  title: 'Form/RadioGroup',
+  title: 'Components/RadioGroup',
   component: RadioGroup,
 } as Meta<typeof RadioGroup>;
 

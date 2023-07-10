@@ -8,7 +8,7 @@ import { ProgressBar } from './progressBar.component';
 /** metadata */
 
 export default {
-  title: 'Controls/ProgressBar',
+  title: 'Components/ProgressBar',
   component: ProgressBar,
 } as Meta<typeof ProgressBar>;
 

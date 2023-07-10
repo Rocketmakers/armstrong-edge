@@ -24,6 +24,7 @@ export const Toast: React.FC<IToastProps> = ({
   hideClose,
   className,
   testId,
+  additionalProps = {},
 }) => {
   return (
     <RadixToast.Root
@@ -32,6 +33,7 @@ export const Toast: React.FC<IToastProps> = ({
       data-position={position}
       data-testid={testId}
       aria-label="Notification"
+      {...additionalProps}
     >
       {title && <RadixToast.Title className="arm-toast-title">{title}</RadixToast.Title>}
       {description && <RadixToast.Description className="arm-toast-description">{description}</RadixToast.Description>}

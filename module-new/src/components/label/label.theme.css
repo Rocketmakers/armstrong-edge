@@ -5,3 +5,11 @@
 .arm-label-required-indicator {
   color: var(--arm-color-negative);
 }
+
+.arm-label[data-size='small'] {
+  font-size: var(--arm-font-size-xsmall);
+}
+
+.arm-label[data-size='large'] {
+  font-size: var(--arm-font-size-medium);
+}

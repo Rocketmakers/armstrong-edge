@@ -25,11 +25,11 @@ export interface IButtonProps extends ButtonHTMLProps {
   /** show a spinner and disable */
   pendingPosition?: 'left' | 'right';
 
+  /** when pending is true should also disable the input */
+  disableOnPending?: boolean;
+
   /** disable use */
   disabled?: boolean;
-
-  /** apply a test ID to the component for Storybook, Playwright etc */
-  testId?: string;
 
   /** which style variant to use */
   displayStyle?: ButtonDisplayStyle;
@@ -41,10 +41,10 @@ export interface IButtonProps extends ButtonHTMLProps {
   displayStatus?: ButtonDisplayStatus;
 
   /** icon definition for left icon, optionally uses custom JSX */
-  leftIcon?: JSX.Element;
+  leftOverlay?: JSX.Element;
 
   /** icon definition for right icon, optionally uses custom JSX */
-  rightIcon?: JSX.Element;
+  rightOverlay?: JSX.Element;
 }
 
 /** Renders an HTML button element with some useful additions */
@@ -57,10 +57,10 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
     displayStatus,
     pending,
     pendingPosition,
-    leftIcon,
-    rightIcon,
+    disableOnPending,
+    leftOverlay,
+    rightOverlay,
     children,
-    testId,
     ...nativeProps
   } = props;
 
@@ -68,25 +68,25 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
     buttonDisplaySize: displaySize,
     buttonDisplayStyle: displayStyle,
     buttonPendingPosition: pendingPosition,
+    disableControlOnPending: disableOnPending,
   });
 
   const spinner = (
     <Spinner className={concat('arm-button-spinner', `arm-button-${pendingPosition}-icon`)} role="status" />
   );
-  const wrappedLeftIcon = leftIcon && <span className="arm-button-left-icon">{leftIcon}</span>;
-  const wrappedRightIcon = rightIcon && <span className="arm-button-right-icon">{rightIcon}</span>;
+  const wrappedLeftIcon = leftOverlay && <span className="arm-button-left-icon">{leftOverlay}</span>;
+  const wrappedRightIcon = rightOverlay && <span className="arm-button-right-icon">{rightOverlay}</span>;
 
   return (
     <button
       className={concat('arm-button', className)}
       data-pending={pending}
-      data-disabled={disabled || pending}
+      data-disabled={disabled || (globals.disableControlOnPending && pending)}
       data-size={globals.buttonDisplaySize}
       data-style={globals.buttonDisplayStyle}
       data-status={displayStatus}
       disabled={disabled || pending}
       tabIndex={disabled ? -1 : nativeProps.tabIndex}
-      data-testid={testId}
       ref={ref}
       {...nativeProps}
     >

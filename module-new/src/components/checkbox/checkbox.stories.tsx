@@ -8,7 +8,7 @@ import { useForm } from '../../form';
 import { Checkbox } from './checkbox.component';
 
 export default {
-  title: 'Controls/Checkbox',
+  title: 'Components/Checkbox',
   component: Checkbox,
 } as Meta<typeof Checkbox>;
 

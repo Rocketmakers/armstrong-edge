@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { ArmstrongConfigProvider, IArmstrongConfigContext } from '../config';
+import { ArmstrongConfigProvider, IArmstrongConfig } from '../config';
 import { ToastProvider } from '../toast';
 
 /** Props type for the unified armstrong provider */
 export interface IArmstrongProviderProps extends React.PropsWithChildren {
   /** A dictionary of optional global config, overrides the system defaults */
-  config?: IArmstrongConfigContext;
+  config?: IArmstrongConfig;
 }
 
 export const ArmstrongProvider: React.FC<IArmstrongProviderProps> = ({ children, config = {} }) => {

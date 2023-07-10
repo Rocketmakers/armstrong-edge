@@ -11,7 +11,7 @@ import { ArmstrongId } from '../../types';
 import { CheckboxList, ICheckboxListProps } from './checkboxList.component';
 
 export default {
-  title: 'Form/CheckboxList',
+  title: 'Components/CheckboxList',
   component: CheckboxList,
 } as Meta<typeof CheckboxList>;
 

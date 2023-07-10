@@ -6,13 +6,12 @@ import { AiFillThunderbolt } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
 
 import { useForm } from '../../form';
-import { Button } from '../button';
 import { Input } from './input.component';
 
 /** Inputs with options to track errors, pending data and so on. */
 
 export default {
-  title: 'Inputs/Input',
+  title: 'Components/Input',
   component: Input,
   args: {
     type: 'text',
@@ -33,32 +32,12 @@ export const Default: Story = {
   },
 };
 
-const MyCoolInput = React.forwardRef<HTMLInputElement>((props, forwardedRef) => {
-  return (
-    <div>
-      <label htmlFor="id">Content</label>
-      <input ref={forwardedRef} id="id" type="text" />
-    </div>
-  );
-});
-
-MyCoolInput.displayName = 'MyCoolInput';
-
 export const Labelled: Story = {
   render: () => {
-    const containerRef = React.useRef<HTMLDivElement>(null);
-    const myCoolRef = React.useRef<HTMLInputElement>(null);
-
-    const onClick = React.useCallback(() => {
-      myCoolRef.current?.focus();
-    }, []);
-
     return (
-      <div ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         <Input label="Default" />
         <Input label="Required" required={true} />
-        <MyCoolInput ref={myCoolRef} />
-        <Button onClick={onClick}>Focus input</Button>
       </div>
     );
   },

@@ -5,8 +5,8 @@ import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
-import { Label } from '../label/label.component';
-import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
+import { ILabelProps, Label } from '../label/label.component';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { IValidationErrorsProps, ValidationErrors } from '../validationErrors/validationErrors.component';
 
 import './checkbox.theme.css';
@@ -15,7 +15,9 @@ type BindType = NullOrUndefined<boolean | 'indeterminate'>;
 
 export interface ICheckboxProps<TData extends BindType>
   extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'type' | 'checked'>,
-    Omit<IValidationErrorsProps, 'validationErrors'> {
+    Omit<IValidationErrorsProps, 'validationErrors' | 'scrollIntoView'>,
+    Pick<ILabelProps, 'required' | 'requiredIndicator'>,
+    Pick<IStatusWrapperProps, 'statusPosition'> {
   /** (Optional) An IBindingProps<TData> object to bind the checkbox input to a form. */
   bind?: IBindingProps<TData>;
 
@@ -49,7 +51,7 @@ export interface ICheckboxProps<TData extends BindType>
   /** (Optional) A string to set a custom data-testid attribute for the checkbox container. */
   testId?: string;
 
-  /** (Optional) Classname for the validation errors */
+  /** (Optional) Class name for the validation errors */
   validationErrorsClassName?: string;
 
   /** (Optional) Can be a string or {key, element} key is necessary for animating in new messages   */
@@ -80,8 +82,11 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
       testId,
       validationErrorsClassName,
       validationErrorMessages,
+      validationMode,
       displaySize,
       required,
+      requiredIndicator,
+      statusPosition,
       ...nativeProps
     },
     ref
@@ -93,6 +98,10 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
       scrollValidationErrorsIntoView,
       checkboxCustomIndicator: customIndicator,
       checkboxCustomIndeterminateIndicator: customIndeterminateIndicator,
+      requiredIndicator,
+      inputStatusPosition: statusPosition,
+      validationMode,
+      inputDisplaySize: displaySize,
     });
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -123,12 +132,13 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
         className={concat(statusClassName, 'arm-input-base')}
         validationMode={bindConfig.validationMode}
         errorIcon={bindConfig.validationErrorIcon}
+        statusPosition={globals.inputStatusPosition}
       >
         <div
           className={concat('arm-checkbox-container', className)}
           data-disabled={disabled}
           data-testid={testId}
-          data-size={displaySize}
+          data-size={globals.inputDisplaySize}
           {...nativeProps}
         >
           <Root
@@ -150,6 +160,8 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
               data-disabled={disabled}
               htmlFor={id}
               required={required}
+              requiredIndicator={globals.requiredIndicator}
+              displaySize={globals.inputDisplaySize}
             >
               {label}
             </Label>

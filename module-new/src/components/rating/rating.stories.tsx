@@ -12,7 +12,7 @@ import { Rating } from './rating.component';
 /** meta  */
 
 export default {
-  title: 'Controls/Rating',
+  title: 'Components/Rating',
   component: Rating,
 } as Meta<typeof Rating>;
 
@@ -64,6 +64,37 @@ export const Disabled: StoryObj<typeof Rating> = {
   play: async ({ canvasElement }) => {
     const radios = within(canvasElement).getAllByRole('radio');
     radios.forEach(r => expect(r).toBeDisabled());
+  },
+};
+
+export const Labelled: StoryObj<typeof Rating> = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <Rating label="Default" />
+        <Rating label="Required" required={true} />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const defaultInput = canvas.getByLabelText('Default');
+    const requiredInput = canvas.getByLabelText('Required *');
+
+    expect(defaultInput).toBeInTheDocument();
+    expect(requiredInput).toBeInTheDocument();
+  },
+};
+
+export const Sizes: StoryObj<typeof Rating> = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Rating label={'Small Rating'} displaySize="small" required={true} />
+        <Rating label={'Medium Rating'} required={true} />
+        <Rating label={'Large Rating'} displaySize="large" required={true} />
+      </div>
+    );
   },
 };
 
@@ -125,7 +156,7 @@ export const CustomDOMFromIndex: StoryObj<typeof Rating> = {
 export const WithIconAndStatus: StoryObj<typeof Rating> = {
   ...Template,
   args: {
-    leftIcon: <AiFillEye data-testid="left-icon" />,
+    leftOverlay: <AiFillEye data-testid="left-icon" />,
     pending: true,
   },
   play: async ({ canvasElement }) => {

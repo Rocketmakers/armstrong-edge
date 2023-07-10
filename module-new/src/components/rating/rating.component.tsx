@@ -7,7 +7,9 @@ import { repeat } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
 import { clamp } from '../../utils/maths';
 import { Button, IButtonProps } from '../button';
+import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';
+import { Label } from '../label';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
 import { ValidationErrors } from '../validationErrors';
 import { iconJsxFromDefinition } from './rating.utils';
@@ -117,9 +119,20 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
     Pick<
       IInputWrapperProps,
-      'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'validationErrorMessages'
+      | 'statusClassName'
+      | 'validationErrorsClassName'
+      | 'labelClassName'
+      | 'labelId'
+      | 'label'
+      | 'required'
+      | 'requiredIndicator'
+      | 'displaySize'
     >,
-    Pick<IButtonProps, 'leftIcon' | 'rightIcon'>,
+    Pick<IButtonProps, 'leftOverlay' | 'rightOverlay'>,
     IStatusWrapperProps {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -172,21 +185,40 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
       error,
       statusPosition,
       pending,
-      leftIcon,
-      rightIcon,
+      leftOverlay,
+      rightOverlay,
       mode,
       disabled,
+      statusClassName,
+      validationErrorsClassName,
+      labelClassName,
+      labelId,
+      label,
+      required,
+      requiredIndicator,
+      displaySize,
       ...htmlProps
     },
     ref
   ) => {
+    const globals = useArmstrongConfig({
+      validationMode,
+      inputDisplaySize: displaySize,
+      scrollValidationErrorsIntoView,
+      requiredIndicator,
+      validationErrorIcon: errorIcon,
+    });
+
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       onChange: onValueChange,
       validationErrorMessages,
-      validationMode,
-      validationErrorIcon: errorIcon,
+      validationMode: globals.validationMode,
+      validationErrorIcon: globals.validationErrorIcon,
     });
+
+    const generatedLabelId = React.useId();
+    const finalLabelId = labelId ?? generatedLabelId;
 
     return (
       <>
@@ -197,48 +229,63 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
           {...htmlProps}
           className={concat('arm-rating', className)}
           data-read-only={!setBoundValue}
+          data-size={globals.inputDisplaySize}
         >
-          <StatusWrapper
-            error={error}
-            statusPosition={statusPosition}
-            errorIcon={bindConfig.validationErrorIcon}
-            validationMode={bindConfig.validationMode}
-            pending={pending}
-          >
-            <>
-              {leftIcon}
-              <div className="arm-rating-parts">
-                {repeat(maximum as number, index => (
-                  <RatingPart
-                    key={index}
-                    index={index}
-                    filledIcon={filledIcon}
-                    emptyIcon={emptyIcon}
-                    value={boundValue || undefined}
-                    onSelectPart={proportion => setBoundValue?.(index + proportion)}
-                    step={step}
-                    mode={mode}
-                    disabled={disabled}
-                    readOnly={!setBoundValue}
-                  />
-                ))}
+          {label && (
+            <Label
+              id={finalLabelId}
+              className={concat('arm-rating-input-label', labelClassName)}
+              data-disabled={disabled}
+              required={required}
+              displaySize={globals.inputDisplaySize}
+              requiredIndicator={globals.requiredIndicator}
+            >
+              {label}
+            </Label>
+          )}
+          <div className="arm-rating-input-inner" aria-labelledby={finalLabelId}>
+            <StatusWrapper
+              error={error}
+              statusPosition={statusPosition}
+              errorIcon={bindConfig.validationErrorIcon}
+              validationMode={bindConfig.validationMode}
+              pending={pending}
+            >
+              <>
+                {leftOverlay}
+                <div className="arm-rating-parts">
+                  {repeat(maximum as number, index => (
+                    <RatingPart
+                      key={index}
+                      index={index}
+                      filledIcon={filledIcon}
+                      emptyIcon={emptyIcon}
+                      value={boundValue || undefined}
+                      onSelectPart={proportion => setBoundValue?.(index + proportion)}
+                      step={step}
+                      mode={mode}
+                      disabled={disabled}
+                      readOnly={!setBoundValue}
+                    />
+                  ))}
 
-                {mode === 'range' && (
-                  <input
-                    className="arm-rating-range"
-                    type="range"
-                    step={step}
-                    min={0}
-                    max={maximum}
-                    disabled={disabled}
-                    value={boundValue || undefined}
-                    onChange={event => setBoundValue?.(event.currentTarget.valueAsNumber)}
-                  />
-                )}
-              </div>
-              {rightIcon}
-            </>
-          </StatusWrapper>
+                  {mode === 'range' && (
+                    <input
+                      className="arm-rating-range"
+                      type="range"
+                      step={step}
+                      min={0}
+                      max={maximum}
+                      disabled={disabled}
+                      value={boundValue || undefined}
+                      onChange={event => setBoundValue?.(event.currentTarget.valueAsNumber)}
+                    />
+                  )}
+                </div>
+                {rightOverlay}
+              </>
+            </StatusWrapper>
+          </div>
         </div>
 
         {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (

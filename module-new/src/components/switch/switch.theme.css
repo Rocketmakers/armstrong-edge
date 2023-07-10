@@ -14,6 +14,7 @@
 
 .arm-switch {
   --arm-switch-width: 2.5rem;
+  --arm-switch-nub-size: 1.5rem;
 
   all: unset;
   width: var(--arm-switch-width);
@@ -40,8 +41,6 @@
 /* NUB */
 
 .arm-switch-nub {
-  --arm-switch-nub-size: 1.5rem;
-
   display: block;
   box-sizing: border-box;
   width: var(--arm-switch-nub-size);
@@ -61,14 +60,23 @@
 /* LABEL */
 
 .arm-switch-label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--arm-spacing-xsmall);
-  cursor: pointer;
   margin-left: var(--arm-switch-label-spacing, var(--arm-spacing-small));
 }
 
 .arm-switch-label[data-disabled] {
   cursor: not-allowed;
+}
+
+/** SIZES **/
+
+.arm-switch[data-size='small'] {
+  --arm-switch-width: 2rem;
+  --arm-switch-nub-size: 1.2rem;
+  --arm-switch-height: 1.2rem;
+}
+
+.arm-switch[data-size='large'] {
+  --arm-switch-width: 4rem;
+  --arm-switch-nub-size: 2rem;
+  --arm-switch-height: 2rem;
 }

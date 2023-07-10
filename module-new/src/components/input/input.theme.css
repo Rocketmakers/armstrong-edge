@@ -58,14 +58,6 @@
   margin-left: var(--arm-spacing-xxxsmall);
 }
 
-.arm-input-base[data-size='small'] .arm-input-base-label {
-  font-size: var(--arm-font-size-xsmall);
-}
-
-.arm-input-base[data-size='large'] .arm-input-base-label {
-  font-size: var(--arm-font-size-medium);
-}
-
 /** OVERLAYS **/
 
 .arm-input-base[data-left-overlay] .arm-input-base-input {
