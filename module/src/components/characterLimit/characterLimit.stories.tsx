@@ -2,16 +2,16 @@ import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
 import * as React from 'react';
+import { ImTree } from 'react-icons/im';
 
-import { TextInput } from '../..';
-import * as Form from '../../hooks/form';
-import { getIconDefinition } from '../icon';
+import { useForm } from '../../form';
+import { Input } from '../input';
 import { CharacterLimit } from './characterLimit.component';
 
 /** metadata */
 
 export default {
-  title: 'Form/Character Limit',
+  title: 'Components/Character Limit',
   component: CharacterLimit,
   args: {
     limit: 10,
@@ -28,11 +28,11 @@ export const Default: StoryObj<typeof CharacterLimit> = {
   render: args => {
     const { bind, ...props } = args;
     const formData: IFormData = { thing: '' };
-    const { formProp } = Form.use(formData);
+    const { formProp } = useForm(formData);
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} />
+        <Input bind={formProp('thing').bind()} />
         <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );
@@ -56,11 +56,11 @@ export const Enforce: StoryObj<typeof CharacterLimit> = {
   render: args => {
     const { bind, ...props } = args;
     const formData: IFormData = { thing: '' };
-    const { formProp } = Form.use(formData);
+    const { formProp } = useForm(formData);
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} />
+        <Input bind={formProp('thing').bind()} />
         <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );
@@ -88,11 +88,11 @@ export const InsideInput: StoryObj<typeof CharacterLimit> = {
   render: args => {
     const { bind, ...props } = args;
     const formData: IFormData = { thing: '' };
-    const { formProp } = Form.use(formData);
+    const { formProp } = useForm(formData);
 
     return (
       <>
-        <TextInput
+        <Input
           bind={formProp('thing').bind()}
           rightOverlay={<CharacterLimit bind={formProp('thing').bind()} {...props} />}
         />
@@ -112,17 +112,17 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
   render: args => {
     const { bind, ...props } = args;
     const formData: IFormData = { thing: '' };
-    const { formProp } = Form.use(formData);
+    const { formProp } = useForm(formData);
 
     return (
       <>
-        <TextInput bind={formProp('thing').bind()} />
+        <Input bind={formProp('thing').bind()} />
         <CharacterLimit bind={formProp('thing').bind()} {...props} />
       </>
     );
   },
   args: {
-    exceedsIcon: getIconDefinition('Icomoon', 'tree'),
+    validationErrorIcon: <ImTree />,
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -130,8 +130,7 @@ export const CustomIcon: StoryObj<typeof CharacterLimit> = {
     const limit = canvas.getByText(`0/${args.limit}`).parentElement as HTMLParagraphElement;
     expect(limit);
     userEvent.type(input, 'a'.repeat(args.limit + 1));
-    const icon = within(limit).getByTitle('Character limit exceeded icon');
-    expect(icon).toHaveAttribute('data-icon-set', args.exceedsIcon?.iconSet);
-    expect(icon).toHaveAttribute('data-i', args.exceedsIcon?.icon);
+    const icon = within(limit).getByTitle('Character limit exceeded');
+    expect(icon).toBeVisible();
   },
 };

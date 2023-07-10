@@ -1,18 +1,17 @@
 import React from 'react';
-import { ModalProvider } from '../src/components/modal/modal.context';
 import { themes } from '@storybook/theming';
 
-import '../src/stories/theme.scss';
+import '../src/theme/variables.css';
+import '../src/theme/theme.css';
+import './storybook-theme.css';
 
 export const decorators = [
   Story => {
     return (
       <div id="host">
-        <ModalProvider>
-          <div className="story-wrapper">
-            <Story />
-          </div>
-        </ModalProvider>
+        <div className="story-wrapper">
+          <Story />
+        </div>
       </div>
     );
   },

@@ -1,23 +1,59 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { within, userEvent } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
+
+import { useForm } from '../../form';
 import { Select } from './select.component';
 
-/** metadata */
+const groupedOptions = [
+  {
+    label: 'Colours',
+    options: [
+      { id: 1, content: 'ocean' },
+      { id: 2, content: 'blue' },
+      { id: 3, content: 'purple' },
+      { id: 4, content: 'red' },
+      { id: 5, content: 'orange' },
+      { id: 6, content: 'yellow' },
+      { id: 7, content: 'green' },
+      { id: 8, content: 'forest' },
+      { id: 9, content: 'slate' },
+      { id: 10, content: 'silver' },
+    ],
+  },
+  {
+    label: 'Flavours',
+    options: [
+      { id: 11, content: 'vanilla' },
+      { id: 12, content: 'chocolate' },
+      { id: 13, content: 'strawberry' },
+    ],
+  },
+];
+
+const flatOptions = groupedOptions[0].options;
+
+/** meta  */
 
 export default {
-  title: 'Form/Select Input',
+  title: 'Components/Select',
   component: Select,
 } as Meta<typeof Select>;
 
 /** component template */
 
 const Template: StoryObj<typeof Select> = {
-  render: args => {
+  args: { options: groupedOptions, placeholder: 'Please select...' },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on InputWrapper prevents storybook from spreading pure props on here without a cast
+  render: (args: any) => {
+    const { formProp, formState } = useForm<{ value?: number }>();
     return (
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Select {...args} />
+      <div style={{ height: '20rem' }}>
+        <Select bind={formProp('value').bind()} {...args} />
+        <div data-testid="result" style={{ marginTop: '10px' }}>
+          Current value: {formState?.value}
+        </div>
       </div>
     );
   },
@@ -27,148 +63,268 @@ const Template: StoryObj<typeof Select> = {
 
 export const Default: StoryObj<typeof Select> = {
   ...Template,
-  args: {
-    options: [
-      { id: 1, name: 'red' },
-      { id: 2, name: 'blue' },
-    ],
-  },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const option = canvas.getAllByRole('option');
-    const select = option[0].parentElement; // Finding select by finding parent of the first option
 
-    expect(option[0]).toHaveTextContent(args.options[0].name);
-    userEvent.click(select!); // Opens the dropdown menu
-    userEvent.click(select!.children[1]); // Select the second option
-    expect(option[1]).toHaveTextContent(args.options[1].name); // Check if the selected value is correct
+    const input = canvas.getByRole<HTMLInputElement>('combobox');
+    userEvent.click(input);
+
+    const blue = await waitFor(() => canvas.getByText('blue'));
+    userEvent.click(blue);
+
+    const result = canvas.getByTestId('result');
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: 2`));
   },
 };
 
-export const WithCustomDropDownIcon: StoryObj<typeof Select> = {
-  ...Template,
-  args: {
-    options: [
-      { id: 1, name: 'red' },
-      { id: 2, name: 'blue' },
-    ],
-    selectOverlayIcon: { iconSet: 'Icomoon', icon: 'arrow-down13' },
+export const Disabled: StoryObj<typeof Select> = {
+  render: () => {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '20rem',
+        }}
+      >
+        <Select options={groupedOptions} disabled />
+      </div>
+    );
   },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-    const option = canvas.getAllByRole('option');
-    const select = option[0].parentElement; // Finding select by finding parent of the first option
-    const customArrow = select?.nextSibling;
-
-    expect(customArrow).toHaveAttribute('data-icon-set', args.selectOverlayIcon?.iconSet);
-    expect(customArrow).toHaveAttribute('data-i', args.selectOverlayIcon?.icon);
-  },
-};
-
-export const WithIcons: StoryObj<typeof Select> = {
-  ...Template,
-  args: {
-    leftIcon: {
-      icon: 'alarm',
-      iconSet: 'Icomoon',
-    },
-    options: [
-      {
-        id: 1,
-        name: 'Noon',
-      },
-      {
-        id: 2,
-        name: 'Dawn',
-      },
-    ],
-  },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-    const option = canvas.getAllByRole('option');
-    const select = option[0].parentElement; // Finding select by finding parent of the first option
-    const customIcon = select?.parentElement?.previousSibling;
-
-    expect(customIcon).toHaveAttribute('data-icon-set', args.leftIcon?.iconSet);
-    expect(customIcon).toHaveAttribute('data-i', args.leftIcon?.icon);
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLInputElement>('combobox');
+    expect(input).toBeDisabled();
   },
 };
 
-export const WithOverlayText: StoryObj<typeof Select> = {
-  ...Template,
-  args: {
-    leftIcon: {
-      icon: 'cash',
-      iconSet: 'Icomoon',
-    },
-    leftOverlay: '£',
-    options: [
-      {
-        id: 1,
-        name: '100',
-      },
-      {
-        id: 2,
-        name: '200',
-      },
-    ],
-    rightOverlay: 'GBP',
+export const Native: StoryObj<typeof Select> = {
+  render: () => {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '20rem',
+        }}
+      >
+        <Select native={true} options={flatOptions} />
+      </div>
+    );
   },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-    const option = canvas.getAllByRole('option');
-    const select = option[0].parentElement; // Finding select by finding parent of the first option
-    const leftOverlay = select?.parentElement?.previousSibling?.firstChild;
-    const rightOverlay = select?.parentElement?.nextSibling?.firstChild;
-
-    expect(leftOverlay).toHaveTextContent(args.leftOverlay);
-    expect(rightOverlay).toHaveTextContent(args.rightOverlay);
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLSelectElement>('combobox');
+    expect(input).toBeVisible();
   },
 };
 
-export const WithValidationError: StoryObj<typeof Select> = {
-  ...Template,
-  args: {
-    options: [
-      {
-        id: 1,
-        name: 'red',
-      },
-      {
-        id: 2,
-        name: 'blue',
-      },
-    ],
-    validationErrorMessages: ['This is an error! Better fix it!'],
-    validationMode: 'both',
+export const Multi: StoryObj<typeof Select> = {
+  render: () => {
+    const { formProp, formState } = useForm<{ value: number[] }>({ value: [1, 3, 5] });
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '20rem',
+        }}
+      >
+        <Select multi={true} options={flatOptions} bind={formProp('value').bind()} />
+        <div data-testid="result" style={{ marginTop: '10px' }}>
+          Current value: {formState?.value?.join(', ')}
+        </div>
+      </div>
+    );
   },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLInputElement>('combobox');
+    expect(input).toBeVisible();
 
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-    const errorMessage = canvas.getByText(args.validationErrorMessages[0]);
-    expect(errorMessage).toBeInTheDocument();
+    const result = within(canvasElement).getByTestId('result');
+    expect(result).toHaveTextContent('Current value: 1, 3, 5');
+
+    const removeButton = within(canvasElement).getByRole('button', { name: 'Remove ocean' });
+    userEvent.click(removeButton);
+    await waitFor(() => expect(result).toHaveTextContent('Current value: 3, 5'));
   },
 };
 
-export const WithPlaceholder: StoryObj<typeof Select> = {
+export const Create: StoryObj<typeof Select> = {
   ...Template,
-  args: {
-    options: [
-      {
-        id: 1,
-        name: 'red',
-      },
-      {
-        id: 2,
-        name: 'blue',
-      },
-    ],
-    placeholderOption: 'Select a color...',
-  },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-    const placeholderOption = canvas.getByText(args.placeholderOption);
+  render: () => {
+    const { formProp, formState } = useForm<{ value?: number }>();
+    const [options, setOptions] = React.useState(flatOptions);
 
-    expect(placeholderOption).toBeInTheDocument();
+    const onOptionCreated = (newValue: string) => {
+      const id = options.length + 1;
+      const newOptions = [...options, { id, content: newValue, wasCreated: true }];
+      setOptions(newOptions);
+      return id;
+    };
+
+    return (
+      <div style={{ height: '20rem' }}>
+        <Select
+          allowCreate={true}
+          bind={formProp('value').bind()}
+          options={options}
+          onOptionCreated={onOptionCreated}
+        />
+        <div data-testid="result" style={{ marginTop: '10px' }}>
+          Current value: {formState?.value}
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLInputElement>('combobox');
+    expect(input).toBeVisible();
+
+    userEvent.type(input, 'New item');
+    userEvent.keyboard('{Enter}');
+
+    const result = within(canvasElement).getByTestId('result');
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: ${flatOptions.length + 1}`));
+  },
+};
+
+export const CreateMulti: StoryObj<typeof Select> = {
+  ...Template,
+  render: () => {
+    const { formProp, formState } = useForm<{ value?: number[] }>();
+    const [options, setOptions] = React.useState(flatOptions);
+
+    const onOptionCreated = (newValue: string) => {
+      const id = options.length + 1;
+      const newOptions = [...options, { id, content: newValue, wasCreated: true }];
+      setOptions(newOptions);
+      return id;
+    };
+
+    return (
+      <div style={{ height: '20rem' }}>
+        <Select
+          multi={true}
+          allowCreate={true}
+          bind={formProp('value').bind()}
+          options={options}
+          onOptionCreated={onOptionCreated}
+        />
+        <div data-testid="result" style={{ marginTop: '10px' }}>
+          Current value: {formState?.value?.join(', ')}
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole<HTMLInputElement>('combobox');
+    expect(input).toBeVisible();
+
+    const result = within(canvasElement).getByTestId('result');
+
+    userEvent.type(input, 'New item 1');
+    userEvent.keyboard('{Enter}');
+
+    const new1id = flatOptions.length + 1;
+
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: ${new1id}`));
+
+    userEvent.type(within(canvasElement).getByRole<HTMLInputElement>('combobox'), 'New item 2');
+    userEvent.keyboard('{Enter}');
+
+    const new2id = new1id + 1;
+
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: ${new1id}, ${new2id}`));
+
+    userEvent.type(within(canvasElement).getByRole<HTMLInputElement>('combobox'), 'New item 3');
+    userEvent.keyboard('{Enter}');
+
+    const new3id = new2id + 1;
+
+    await waitFor(() => expect(result).toHaveTextContent(`Current value: ${new1id}, ${new2id}, ${new3id}`));
+  },
+};
+
+export const Sizes: StoryObj<typeof Select> = {
+  ...Template,
+  render: args => {
+    return (
+      <div>
+        <h2>Small</h2>
+        <Select options={args.options} required label="Single select" displaySize="small" data-testid="wrapper" />
+        <h2>Medium</h2>
+        <Select options={args.options} required label="Single select" displaySize="medium" data-testid="wrapper" />
+        <h2>Large</h2>
+        <Select options={args.options} required label="Single select" displaySize="large" data-testid="wrapper" />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const [small, medium, large] = canvas.getAllByTestId('wrapper');
+    expect(small).toHaveAttribute('data-size', 'small');
+    expect(medium).toHaveAttribute('data-size', 'medium');
+    expect(large).toHaveAttribute('data-size', 'large');
+  },
+};
+
+export const ValidationError: StoryObj<typeof Select> = {
+  ...Template,
+  render: () => {
+    return (
+      <div>
+        <div data-testid="both">
+          <h2>Validation mode - both</h2>
+          <Select
+            validationMode="both"
+            validationErrorMessages={['This field is required']}
+            options={groupedOptions}
+            required
+          />
+        </div>
+        <div data-testid="icon">
+          <h2>Validation mode - icon only</h2>
+          <Select
+            validationMode="icon"
+            validationErrorMessages={['This field is required']}
+            options={groupedOptions}
+            required
+          />
+        </div>
+        <div data-testid="message">
+          <h2>Validation mode - message only</h2>
+          <Select
+            validationMode="message"
+            validationErrorMessages={['This field is required']}
+            options={groupedOptions}
+            required
+          />
+        </div>
+        <div data-testid="left-icon">
+          <h2>Icon on left</h2>
+          <Select
+            validationMode="icon"
+            validationErrorMessages={['This field is required']}
+            options={groupedOptions}
+            required
+            statusPosition="left"
+          />
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const both = canvas.getByTestId('both');
+    expect(within(both).getByRole('status')).toBeVisible();
+    expect(within(both).getByLabelText('Error messages')).toBeVisible();
+
+    const icon = canvas.getByTestId('icon');
+    expect(within(icon).getByRole('status')).toBeVisible();
+
+    const message = canvas.getByTestId('message');
+    expect(within(message).getByLabelText('Error messages')).toBeVisible();
+
+    const iconLeft = canvas.getByTestId('left-icon');
+    const status = within(iconLeft).getByRole('status');
+    expect(status).toBeVisible();
+    expect(status).toHaveAttribute('data-position', 'left');
   },
 };

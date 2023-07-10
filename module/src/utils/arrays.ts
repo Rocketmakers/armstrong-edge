@@ -8,7 +8,7 @@ export function flatten<T>(...arrays: (T[] | undefined)[]) {
 /** Turn an array into a dictionary of items in that array by a given key */
 export function arrayToDictionary<T, Keys extends string = string>(array: T[], getKey: keyof T | ((item: T) => Keys)) {
   return array.reduce<Dictionary<T, Keys>>((dictionary, currentValue) => {
-    const key = typeof getKey === 'function' ? getKey(currentValue) : (currentValue[getKey] as any as Keys);
+    const key = typeof getKey === 'function' ? getKey(currentValue) : (currentValue[getKey] as unknown as Keys);
 
     return { ...dictionary, [key]: currentValue };
   }, {} as Dictionary<T, Keys>);
@@ -25,7 +25,7 @@ export function arrayToArrayDictionary<T, Keys extends string = string>(
   return array.reduce<ArrayDictionary<T, Keys>>((dictionary, currentValue) => {
     const key = getKey(currentValue);
 
-    return { ...dictionary, [key]: [...(dictionary[key as any] || []), currentValue] };
+    return { ...dictionary, [key]: [...(dictionary[key as keyof typeof dictionary] || []), currentValue] };
   }, {} as ArrayDictionary<T, Keys>);
 }
 
