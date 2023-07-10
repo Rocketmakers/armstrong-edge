@@ -11,7 +11,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noImplicitAny": false,
-    "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
     "preserveConstEnums": false,
     "module": "ESNext",

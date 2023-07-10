@@ -3,15 +3,14 @@ import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
+import { ImPencil } from 'react-icons/im';
 
-import { IIcon } from '../icon';
-import { Icons } from '../icon/icon.icons';
 import { Button } from './button.component';
 
 /** metadata */
 
 export default {
-  title: 'Button/Button',
+  title: 'Components/Button',
   component: Button,
   args: {
     children: 'Click me please',
@@ -57,11 +56,62 @@ export const Styles: StoryObj<typeof Button> = {
   ...Template,
   render: () => {
     return (
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        <Button displayStyle="primary">Primary</Button>
-        <Button displayStyle="secondary">Secondary</Button>
-        <Button displayStyle="outline">Outline</Button>
-      </div>
+      <>
+        <h3>Status - Normal</h3>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <Button displayStyle="primary">Primary</Button>
+          <Button displayStyle="secondary">Secondary</Button>
+          <Button displayStyle="outline">Outline</Button>
+        </div>
+        <h3>Status - Positive</h3>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <Button displayStyle="primary" displayStatus="positive">
+            Primary
+          </Button>
+          <Button displayStyle="secondary" displayStatus="positive">
+            Secondary
+          </Button>
+          <Button displayStyle="outline" displayStatus="positive">
+            Outline
+          </Button>
+        </div>
+        <h3>Status - Negative</h3>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <Button displayStyle="primary" displayStatus="negative">
+            Primary
+          </Button>
+          <Button displayStyle="secondary" displayStatus="negative">
+            Secondary
+          </Button>
+          <Button displayStyle="outline" displayStatus="negative">
+            Outline
+          </Button>
+        </div>
+        <h3>Status - Warning</h3>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <Button displayStyle="primary" displayStatus="warning">
+            Primary
+          </Button>
+          <Button displayStyle="secondary" displayStatus="warning">
+            Secondary
+          </Button>
+          <Button displayStyle="outline" displayStatus="warning">
+            Outline
+          </Button>
+        </div>
+        <h3>Status - Info</h3>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <Button displayStyle="primary" displayStatus="info">
+            Primary
+          </Button>
+          <Button displayStyle="secondary" displayStatus="info">
+            Secondary
+          </Button>
+          <Button displayStyle="outline" displayStatus="info">
+            Outline
+          </Button>
+        </div>
+      </>
     );
   },
   parameters: {
@@ -76,15 +126,14 @@ export const WithIcons: StoryObj<typeof Button> = {
   ...Template,
   args: {
     onClick: action('onClick'),
-    leftIcon: { icon: 'weather-rain2', iconSet: 'Icomoon' },
+    leftOverlay: <ImPencil title="left-icon-test" />,
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
-    const displayedIcon = args.leftIcon as IIcon<keyof Icons>;
-    const icon = within(button).getByTitle(`${displayedIcon.icon} icon on left`);
+    const icon = within(button).getByTitle('left-icon-test');
     expect(button).toHaveTextContent(args.children as string);
-    expect(icon).toHaveAttribute('data-i', displayedIcon.icon);
+    expect(icon).toBeVisible();
     await userEvent.click(button);
     await waitFor(() => expect(args.onClick).toHaveBeenCalled());
   },
@@ -94,7 +143,7 @@ export const Disabled: StoryObj<typeof Button> = {
   ...Template,
   args: {
     onClick: action('onClick'),
-    leftIcon: { icon: 'cogs', iconSet: 'Icomoon' },
+    leftOverlay: <ImPencil title="left-icon-test" />,
     disabled: true,
   },
   play: async ({ args, canvasElement }) => {
@@ -110,7 +159,7 @@ export const Pending: StoryObj<typeof Button> = {
   ...Template,
   args: {
     onClick: action('onClick'),
-    leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
+    leftOverlay: <ImPencil title="left-icon-test" />,
     pending: true,
   },
   play: async ({ args, canvasElement }) => {
@@ -122,8 +171,6 @@ export const Pending: StoryObj<typeof Button> = {
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute('data-disabled', 'true');
     expect(spinner).toBeVisible();
-    expect(spinner).toHaveAttribute('data-pending', 'true');
-    expect(within(spinner).getByTitle('Active spinner icon')).toHaveAttribute('data-i', 'spinner2');
   },
 };
 
@@ -131,15 +178,14 @@ export const PendingOnLeft: StoryObj<typeof Button> = {
   ...Template,
   args: {
     onClick: action('onClick'),
-    leftIcon: { icon: 'eye-blocked2', iconSet: 'Icomoon' },
+    leftOverlay: <ImPencil title="left-icon-test" />,
     pending: true,
-    statusPosition: 'left',
+    pendingPosition: 'left',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
     const spinner = within(button).getByRole('status');
     expect(button.firstChild).toContainElement(spinner as HTMLElement);
-    expect(within(spinner).getByTitle('Active spinner icon')).toHaveAttribute('data-i', 'spinner2');
   },
 };

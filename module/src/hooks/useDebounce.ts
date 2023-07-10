@@ -29,11 +29,13 @@ export function useDebounce<T>(
 
   React.useEffect(() => {
     resetToHardValue();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- nope, legit effect trigger
   }, [hardValue]);
 
   React.useEffect(() => {
     const throttleTimer = setTimeout(setValue, throttleTime);
     return () => clearTimeout(throttleTimer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- nope, legit effect trigger
   }, [actualValue]);
 
   return [actualValue, setActualValue, throttledValue, resetToHardValue];
@@ -45,7 +47,7 @@ export function useDebounce<T>(
  * @param ms How long a period of inactivity before running the effect
  * @param deps List of dependencies to trigger rerunning the effect
  */
-export function useDebounceEffect<TFunc extends (...params: any[]) => any>(
+export function useDebounceEffect<TFunc extends (...params: unknown[]) => unknown>(
   fn: TFunc,
   ms: number,
   deps: React.DependencyList

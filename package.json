@@ -1,17 +1,17 @@
 {
-  "name": "@rocketmakers/armstrong-edge",
-  "version": "0.0.1",
-  "description": "Initial stating project for the 2021 Armstrong rewrite. Will be integrated into the Armstrong repo.",
+  "name": "@rocketmakers/armstrong-root",
+  "version": "3.0.0",
+  "description": "Rocketmakers React component library",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rocketmakers/armstrong-rewrite.git"
+    "url": "git+https://github.com/Rocketmakers/armstrong-edge.git"
   },
   "author": "developers@rocketmakers.com",
   "license": "MIT",
   "scripts": {
-    "setup": "asdf install && npm i && (cd module-new && npm i --legacy-peer-deps)",
-    "test": "(cd module-new && npm test)",
+    "setup": "asdf install && npm i && (cd module && npm i --legacy-peer-deps)",
+    "test": "(cd module && npm test)",
     "prepare": "husky install",
     "storybook": "(cd module && npm run storybook)",
     "test-storybook": "(cd module && npm run test-storybook)",

@@ -1,0 +1,34 @@
+# .github/workflows/chromatic.yml
+
+name: 'Chromatic'
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  setup:
+    uses: ./.github/workflows/job_setup.yml
+  
+  build:
+    needs: [setup]
+    uses: ./.github/workflows/job_build.yml
+
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+
+        with:
+          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          onlyChanged: true
+          buildScriptName: npm build-storybook
+          working-directory: ./module
+        env: 
+          CHROMATIC_RETRIES: 3

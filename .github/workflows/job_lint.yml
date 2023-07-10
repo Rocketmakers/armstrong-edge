@@ -1,0 +1,13 @@
+name: Lint module
+on: workflow_call
+jobs: 
+  lint-module:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: lint-module
+        run: npm run lint
+        working-directory: ./module

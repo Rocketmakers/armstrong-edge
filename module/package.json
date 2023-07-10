@@ -1,14 +1,11 @@
 {
-  "name": "@rocketmakers/armstrong-dev",
-  "version": "0.0.0-development",
+  "name": "@rocketmakers/armstrong",
+  "version": "3.0.0",
   "description": "Rocketmakers React component library",
   "scripts": {
     "start": "concurrently -n armstrong- npm:watch-*",
-    "build": "tsc && vite build --mode production && npm run build-scss",
-    "build-scss": "ts-node ./_build/scss/concat.ts",
+    "build": "tsc && vite build --mode production",
     "watch-ts": "vite build --watch",
-    "watch-tsc": "tsc -w --noEmit --preserveWatchOutput",
-    "watch-scss": "ts-node ./_build/scss/watch.ts",
     "test": "jest",
     "test-ci": "jest --ci",
     "storybook": "storybook dev -p 6006",
@@ -22,7 +19,13 @@
   "peerDependencies": {
     "date-fns": "2.x",
     "react": "18.x",
-    "react-dom": "18.x"
+    "react-dom": "18.x",
+    "zod": "3.*"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
   },
   "files": [
     "dist"
@@ -31,7 +34,6 @@
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "sideEffects": [
-    "*.scss",
     "manager.ts"
   ],
   "exports": {
@@ -47,22 +49,26 @@
     "@rocketmakers/prettier-config": "1.0.1",
     "@rocketmakers/shell-commands": "^6.1.0",
     "@rocketmakers/stylelint-config": "1.0.1",
-    "@storybook/addon-a11y": "7.0.0-beta.50",
-    "@storybook/addon-essentials": "7.0.0-beta.50",
-    "@storybook/addon-interactions": "7.0.0-beta.50",
-    "@storybook/addon-links": "7.0.0-beta.50",
-    "@storybook/addons": "7.0.0-beta.50",
-    "@storybook/jest": "0.0.11-next.0",
-    "@storybook/react": "7.0.0-beta.50",
-    "@storybook/react-vite": "7.0.0-beta.50",
-    "@storybook/test-runner": "0.10.0-next.5",
-    "@storybook/testing-library": "0.0.14-next.1",
-    "@storybook/theming": "7.0.0-beta.50",
-    "@testing-library/react": "13.4.0",
+    "@storybook/addon-a11y": "7.0.17",
+    "@storybook/addon-essentials": "7.0.17",
+    "@storybook/addon-interactions": "7.0.17",
+    "@storybook/addon-links": "7.0.17",
+    "@storybook/addon-mdx-gfm": "^7.0.17",
+    "@storybook/addons": "7.0.17",
+    "@storybook/jest": "0.1.0",
+    "@storybook/react": "7.0.17",
+    "@storybook/react-vite": "7.0.17",
+    "@storybook/test-runner": "0.10.0",
+    "@storybook/testing-library": "0.1.0",
+    "@storybook/theming": "7.0.17",
+    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/react": "14.0.0",
+    "@types/glob": "^8.1.0",
     "@types/jest": "29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/react": "18.0.18",
-    "@types/react-dom": "18.0.6",
+    "@types/react-datepicker": "4.8.0",
+    "@types/react-dom": "18.2.4",
     "chokidar": "3.5.3",
     "concurrently": "7.4.0",
     "http-server": "14.1.1",
@@ -76,7 +82,7 @@
     "react-dom": "18.2.0",
     "sass": "1.54.9",
     "scss-concat": "0.3.9",
-    "storybook": "7.0.0-beta.50",
+    "storybook": "7.0.17",
     "storybook-addon-designs": "^7.0.0-beta.2",
     "ts-jest": "29.0.5",
     "ts-node": "10.9.1",
@@ -84,11 +90,22 @@
     "vite": "3.1.8",
     "vite-plugin-dts": "1.4.1",
     "vite-plugin-static-copy": "0.11.0",
-    "wait-on": "^7.0.1"
+    "wait-on": "^7.0.1",
+    "zod": "3.21.4"
   },
   "dependencies": {
-    "@types/glob": "^8.1.0",
+    "@radix-ui/react-checkbox": "^1.0.3",
+    "@radix-ui/react-dialog": "^1.0.3",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-progress": "^1.0.3",
+    "@radix-ui/react-radio-group": "1.1.2",
+    "@radix-ui/react-slider": "^1.1.2",
+    "@radix-ui/react-switch": "^1.0.2",
+    "@radix-ui/react-toast": "^1.1.3",
+    "@radix-ui/react-tooltip": "^1.0.6",
     "lodash": "^4.17.21",
+    "react-datepicker": "4.11.0",
+    "react-icons": "^4.8.0",
     "react-select": "5.5.7"
   }
 }
