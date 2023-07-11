@@ -1,10 +1,8 @@
 [![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest) [![storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://github.com/storybookjs)
 
-![armstrong logo](https://raw.githubusercontent.com/Rocketmakers/armstrong-edge/develop/src/assets/armstrong-logo.svg)
+![armstrong logo](https://raw.githubusercontent.com/Rocketmakers/armstrong-edge/develop/docs/assets/armstrong-logo.svg)
 
 Armstrong is a React component library made by [Rocketmakers](rocketmakers.com/) written in Typescript and SCSS.
-
-By default, Armstrong doesn't pre-compile its SCSS into CSS, allowing consuming projects to make use of its various SCSS variables and mixins.
 
 [JIRA board](https://rocketmakers.atlassian.net/jira/software/projects/ARM/boards/154) (for internal use only)
 
@@ -13,10 +11,14 @@ By default, Armstrong doesn't pre-compile its SCSS into CSS, allowing consuming 
 Armstrong is installed using `npm`.
 
 ```bash
-# This repo is currently @rocketmakers/armstrong-edge, writing docs as if deployed as main armstrong package
 npm install @rocketmakers/armstrong
 # or
 yarn add @rocketmakers/armstrong
+```
+
+Import the Armstrong stylesheet at the root of your project with:
+```tsx
+import '@rocketmakers/armstrong/dist/style.css';
 ```
 
 Then to use a component in your project
@@ -35,9 +37,7 @@ const MyComponent: React.FC = () => {
 
 See [Storybook](https://rocketmakers.github.io/armstrong-edge/) for a list of all available components
 
-For details on how to import Armstrong's styling, see [SCSS](https://rocketmakers.github.io/armstrong-edge/?path=/story/setup-scss--page)
-
-For details on using Armstrong forms, see [Forms](https://rocketmakers.github.io/armstrong-edge/?path=/story/migration-guides-form-components--page)
+For details on using Armstrong forms, see [Forms](https://rocketmakers.github.io/armstrong-edge/?path=/docs/form-form-hooks--docs)
 
 ### Issues / bug reports
 
@@ -61,32 +61,9 @@ _For Storybook_, run
 
 ```sh
 npm run storybook
-
-# then in separate window run
-npm run watch-scss
 ```
 
 then go to `localhost:6006`
-
-`npm run watch-scss` will spin up a watcher which will watch all SASS files and rebuild them
-
-For more information on using SASS, see SASS Concatenation in [SCSS](STORYBOOK LINK TODO)
-
-### Legacy development
-
-In the past we have also used playground, which is just a really simple react app with no linting, which has the Armstrong module linked in using `npm link`.
-
-_For the playground_, run
-
-```sh
-cd module-legacy
-npm start
-
-# then in separate window from /module run
-npm run start-sass
-```
-
-then go to `localhost:3001`
 
 ### Linting
 
