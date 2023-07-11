@@ -13,10 +13,11 @@ jobs:
     uses: ./.github/workflows/job_setup.yml
 
   build:
-    needs: [setup]
+    needs: setup
     uses: ./.github/workflows/job_build.yml
 
   chromatic-deployment:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master

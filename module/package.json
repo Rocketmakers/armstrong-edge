@@ -27,11 +27,6 @@
     "react-dom": "18.x",
     "zod": "3.*"
   },
-  "peerDependenciesMeta": {
-    "zod": {
-      "optional": true
-    }
-  },
   "files": [
     "dist"
   ],
