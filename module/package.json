@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "concurrently -n armstrong- npm:watch-*",
-    "build": "tsc && vite build --mode production",
+    "copy-readme": "cp ../README.md ./README.md",
+    "build": "npm run copy-readme && tsc && vite build --mode production",
     "watch-ts": "vite build --watch",
     "test": "jest",
     "test-ci": "jest --ci",
@@ -38,7 +39,6 @@
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "sideEffects": [
-    "*.scss",
     "manager.ts"
   ],
   "exports": {
@@ -48,7 +48,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@rocketmakers/eslint": "1.0.1",
     "@rocketmakers/prettier-config": "1.0.1",
