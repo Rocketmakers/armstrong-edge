@@ -1,6 +1,6 @@
 {
   "name": "@rocketmakers/armstrong",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Rocketmakers React component library",
   "repository": {
     "type": "git",
@@ -26,11 +26,6 @@
     "react": "18.x",
     "react-dom": "18.x",
     "zod": "3.*"
-  },
-  "peerDependenciesMeta": {
-    "zod": {
-      "optional": true
-    }
   },
   "files": [
     "dist"

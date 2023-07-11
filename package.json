@@ -1,6 +1,6 @@
 {
   "name": "@rocketmakers/armstrong-root",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Rocketmakers React component library",
   "main": "index.js",
   "repository": {
