@@ -85,9 +85,9 @@ We recommend using the vscode plugins `jest`, `jest-runner`, and `storybook help
 
 ### Process
 
-Please work in feature branches named `feature/*` branched from `develop`
+Please work in feature branches named `feature/*` branched from `main`
 
-When your work is ready, submit a pull request into `develop` and (if you're internal to Rocketmakers) post a link to your pull request in the `#armstrong-dev` slack channel for someone to review.
+When your work is ready, submit a pull request into `main` and (if you're internal to Rocketmakers) post a link to your pull request in the `#armstrong-dev` slack channel for someone to review.
 
 Github will run an Action to test linting and to see if Storybook builds before your branch can be merged.
 
@@ -95,7 +95,7 @@ Ensure [Commitizen](https://github.com/commitizen/cz-cli) is installed for templ
 
 ### Release process
 
-When you are ready to release your work, open a pull request from `develop` into `main` named `Release`, and list all upcoming changes. Once all actions have passed, this can be merged in, where it'll be released automatically.
+When your feature branch has passed code review and been merged, a release will be triggered automatically.
 
 Armstrong uses [Semantic release](https://semantic-release.gitbook.io/semantic-release/) for automatic versioning and publishing based on Commitizen formatted messages from main.
 

@@ -2,11 +2,7 @@
 
 name: 'Chromatic'
 
-on:
-  push:
-    branches:
-      - main
-      - develop
+on: workflow_call
 
 jobs:
   setup:
