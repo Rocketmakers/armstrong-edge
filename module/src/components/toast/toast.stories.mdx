@@ -14,7 +14,7 @@ Toasts are small message modals that can be dispatched globally
 In order for global toast to work, you must first wrap your app in the unified armstrong provider, like so:
 
 ```tsx
-import { ArmstrongProvider } from '@rocketmakers/armstrong-edge';
+import { ArmstrongProvider } from '@rocketmakers/armstrong';
 
 export const MyApp: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <ArmstrongProvider>{children}</ArmstrongProvider>;
@@ -28,7 +28,7 @@ NOTE: The unified provider allows you to pass global Armstrong config as well as
 Toast messages can be dispatched from any component within the provider using the toast hook, like so:
 
 ```tsx
-import { useToast, IToast } from '@rocketmakers/armstrong-edge';
+import { useToast, IToast } from '@rocketmakers/armstrong';
 
 export const MyComponent: React.FC = () => {
   const dispatchToast = useToast();
@@ -53,7 +53,7 @@ See it in action here:
 Toast messages come out of the box with a sensible set of default properties, but if you need to change the way toast behaves, you can pass config into the unified Armstrong provider like so:
 
 ```tsx
-import { ArmstrongProvider } from '@rocketmakers/armstrong-edge';
+import { ArmstrongProvider } from '@rocketmakers/armstrong';
 
 export const MyApp: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
