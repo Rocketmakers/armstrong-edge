@@ -29,8 +29,13 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
+      - name: Install root node dependencies
+        if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
+        id: install-root-node-dependencies
+        run: npm ci
+
       - name: Install node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
         id: install-node-dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
         working-directory: ./module

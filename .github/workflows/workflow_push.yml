@@ -1,6 +1,9 @@
-name: Pull Request
+name: Push
 
-on: push
+on:
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   setup:
@@ -17,3 +20,8 @@ jobs:
   test:
     needs: [setup, build]
     uses: ./.github/workflows/job_test.yml
+
+  chromatic:
+    needs: [setup, build]
+    uses: ./.github/workflows/job_chromatic.yml
+    secrets: inherit

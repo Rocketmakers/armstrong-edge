@@ -1,15 +1,8 @@
 name: Release from main
-on:
-  push:
-    branches:
-      - main
+on: workflow_call
 
 jobs:
-  build-job:
-    uses: ./.github/workflows/job_build.yml
-
   release-main:
-    needs: build-job
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
