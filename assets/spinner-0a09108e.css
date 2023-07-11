@@ -1,0 +1,1 @@
+@keyframes spin{to{transform:rotate(360deg)}}.arm-spinner-inner{animation:spin var(--arm-spinner-speed) linear infinite;width:max-content;height:max-content;display:flex;align-items:center;justify-content:center}.arm-spinner-label{margin-top:var(--arm-spacing-small);font-size:var(--arm-font-size-xsmall)}
