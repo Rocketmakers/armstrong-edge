@@ -1,7 +1,10 @@
 import * as React from 'react';
 
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner';
+
+import './status.theme.css';
 
 export interface IStatusProps {
   /** show a spinner */
@@ -11,35 +14,41 @@ export interface IStatusProps {
   error?: boolean;
 
   /** the icon to use for the error */
-  errorIcon?: IIcon<IconSet>;
+  errorIcon?: JSX.Element;
 
   /** the icon to use for the spinner */
-  spinnerIcon?: IIcon<IconSet>;
+  spinnerIcon?: JSX.Element;
 
-  /** identifier for driving this component with Cypress */
-  cypressTag?: string;
+  /** an optional CSS className for the rendered status */
+  className?: string;
 }
 
 /** Render a status icon which can either be pending or errored */
-export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(({ pending, error, errorIcon, spinnerIcon, cypressTag }, ref) => {
-  if (!error && !pending) {
-    return null;
-  }
-  return (
-    <div
-      ref={ref}
-      className="arm-status"
-      data-active={!!pending || !!error}
-      data-error={!!error && !pending}
-      data-pending={pending}
-      data-cy={cypressTag}
-    >
-      {error && !pending && <Icon className="arm-status-error" iconSet={errorIcon!.iconSet} icon={errorIcon!.icon} />}
-      {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={spinnerIcon} />}
-    </div>
-  );
-});
+export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
+  ({ pending, error, errorIcon, spinnerIcon, className, ...rest }, ref) => {
+    const globals = useArmstrongConfig({
+      validationErrorIcon: errorIcon,
+      spinnerIcon,
+    });
 
-Status.defaultProps = {
-  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
-};
+    if (!error && !pending) {
+      return null;
+    }
+    return (
+      <div
+        ref={ref}
+        className={concat('arm-status', className)}
+        data-active={!!pending || !!error ? true : undefined}
+        data-error={!!error && !pending ? true : undefined}
+        data-pending={pending ? true : undefined}
+        role="status"
+        {...rest}
+      >
+        {error && !pending && globals.validationErrorIcon}
+        {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={globals.spinnerIcon} />}
+      </div>
+    );
+  }
+);
+
+Status.displayName = 'Status';

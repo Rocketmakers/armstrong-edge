@@ -1,26 +1,33 @@
 import * as React from 'react';
 
-import { Form } from '../..';
-import { FormValidationMode, IBindingProps, IDelayInputConfig, ValidationMessage } from '../../hooks/form/form.types';
+import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
-import { useThrottle } from '../../hooks/useThrottle';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { ClassNames } from '../../utils/classNames';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
-type NativeTextAreaProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>;
+import './textArea.theme.css';
 
-interface IDelayedTextAreaBaseProps extends NativeTextAreaProps {
-  /** Time interval in milliseconds to delay input */
+type NativeTextAreaProps = Omit<
+  React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
+  'value' | 'ref'
+>;
+
+interface IDelayedTextAreaBaseProps<TValue> extends NativeTextAreaProps {
+  /** The time in ms to delay the debounce or throttle effect. */
   milliseconds: number;
 
   /** Called when the value changes, takes into account any delay values and other effects. */
-  onValueChange: (value: string | undefined) => any;
+  onValueChange: (value: TValue | undefined) => void;
+
+  /** The current value of the input */
+  value?: TValue;
 }
 
-const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextAreaBaseProps>(
+const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextAreaBaseProps<string>>(
   ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-    const [actualValue, setActualValue] = useDebounce(milliseconds, value?.toString(), onValueChange);
+    const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
 
     const onChangeEvent = React.useCallback(
       (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -30,154 +37,182 @@ const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextA
       [setActualValue, onChange]
     );
 
-    return <textarea className="arm-text-area-textarea" ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+    return <textarea ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
   }
 );
 
-const ThrottledTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextAreaBaseProps>(
-  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-    const [actualValue, setActualValue] = useThrottle(milliseconds, value?.toString(), onValueChange);
+DebounceTextAreaBase.displayName = 'DebounceInput';
 
-    const onChangeEvent = React.useCallback(
-      (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setActualValue(e.currentTarget.value);
-        onChange?.(e);
-      },
-      [setActualValue, onChange]
-    );
+interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefined<number>>
+  extends NativeTextAreaProps,
+    Omit<IInputWrapperProps, 'onClick' | 'onValueChange'> {
+  /** A class name to apply to the input element */
+  textAreaClassName?: string;
 
-    return <textarea className="arm-text-area-textarea" ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
-  }
-);
-
-export interface ITextAreaProps<TBind extends NullOrUndefined<string>>
-  extends Omit<NativeTextAreaProps, 'value'>,
-    Omit<IInputWrapperProps, 'onClick'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<TBind>;
-
-  /** array of validation errors to render */
-  validationErrorMessages?: ValidationMessage[];
-
-  /** how to render the validation errors */
-  validationMode?: FormValidationMode;
-
-  /** Current value of the input. */
-  value?: TBind;
+  bind?: IBindingProps<TValue>;
 
   /** Called when the value changes, takes into account any delay values and other effects. */
-  onValueChange?: (value: TBind) => any;
+  onValueChange?: (value?: TValue) => void;
 
   /** The delay config, used to set throttle and debounce values. */
-  delay?: IDelayInputConfig;
+  delay?: number;
+
+  /** The current value of the input */
+  value?: TValue;
+
+  /** which size variant to use */
+  displaySize?: DisplaySize;
+
+  /** A callback function to handle onChange event */
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+
+  /** An ID for the label to use when testing  */
+  testId?: string;
 }
 
-export const TextArea = React.forwardRef(
-  <TBind extends NullOrUndefined<string>>(
+/** A component which wraps up a native text area element with some binding logic, labels and validation errors. */
+export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<string>>(
+  (
     {
       bind,
       onChange,
       value,
       className,
-      leftIcon,
-      rightIcon,
+      validationErrorMessages,
+      validationMode,
+      pending,
+      disabled,
+      disableOnPending,
+      onValueChange,
+      scrollValidationErrorsIntoView,
+      delay,
+      validationErrorsClassName,
+      statusClassName,
+      textAreaClassName,
+      label,
+      required,
+      requiredIndicator,
+      displaySize,
+      labelClassName,
+      labelId,
+      testId,
+      errorIcon,
       leftOverlay,
       rightOverlay,
-      validationErrorMessages,
-      validationMode,
-      errorIcon: validationErrorIcon,
-      disabled,
-      pending,
-      above,
-      scrollValidationErrorsIntoView,
-      below,
+      hideIconOnStatus,
       statusPosition,
-      disableOnPending,
-      delay,
-      onValueChange,
       ...nativeProps
-    }: ITextAreaProps<TBind>,
-    ref: React.ForwardedRef<HTMLTextAreaElement>
+    },
+    ref
   ) => {
-    const internalRef = React.useRef<HTMLTextAreaElement>(null);
-    React.useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+    const reactId = React.useId();
+    const id = nativeProps.id ?? reactId;
 
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
-      value: value?.toString() as TBind,
-      validationErrorMessages,
+    const globals = useArmstrongConfig({
       validationMode,
-      validationErrorIcon,
+      disableControlOnPending: disableOnPending,
+      inputStatusPosition: statusPosition,
+      inputDisplaySize: displaySize,
+      requiredIndicator,
+      scrollValidationErrorsIntoView,
+      validationErrorIcon: errorIcon,
+      hideInputErrorIconOnStatus: hideIconOnStatus,
     });
+
+    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+      value: value?.toString(),
+      validationErrorMessages,
+      validationMode: 'message',
+    });
+
+    const onBindValueChange = React.useCallback(
+      (currentValue?: string) => {
+        const formattedValue = bind?.bindConfig?.format?.toData?.(currentValue) || currentValue;
+        setBoundValue(formattedValue);
+      },
+      [setBoundValue, bind]
+    );
 
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(event);
-        const currentValue = event.currentTarget.value as TBind;
+        const currentValue = event.currentTarget.value;
+        onBindValueChange(currentValue);
         onValueChange?.(currentValue);
-        setBoundValue?.(currentValue);
       },
-      [bind, onChange, onValueChange, setBoundValue]
+      [onBindValueChange, onChange, onValueChange]
     );
 
+    /** onChange used for throttled inputs */
     const onValueChangeEvent = React.useCallback(
-      (currentValue: string | undefined) => {
-        const val = (currentValue ?? '') as TBind;
-        onValueChange?.(val);
-        setBoundValue?.(val);
+      (currentValue?: string) => {
+        onBindValueChange(currentValue);
+        onValueChange?.(currentValue);
       },
-      [onValueChange, setBoundValue]
+      [onValueChange, onBindValueChange]
     );
 
-    const inputProps: NativeTextAreaProps = {
-      value: boundValue ?? undefined,
+    const textAreaProps: NativeTextAreaProps & { value?: string } = {
+      id,
+      className: concat('arm-text-area', textAreaClassName),
+      /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
+      value: boundValue?.toString() ?? (bind && ''),
       disabled,
-      ref: internalRef,
     };
 
     return (
       <InputWrapper
-        className={ClassNames.concat('arm-text-area', className)}
-        leftIcon={leftIcon}
-        rightIcon={rightIcon}
-        leftOverlay={leftOverlay}
-        rightOverlay={rightOverlay}
+        data-size={globals.inputDisplaySize}
+        className={concat(className, 'arm-text-area-wrapper')}
+        statusClassName={concat(statusClassName, 'arm-text-area-status')}
+        validationErrorsClassName={concat(validationErrorsClassName, 'arm-text-area-validation')}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}
         validationMode={bindConfig.validationMode}
-        disabled={disabled}
         pending={pending}
-        above={above}
-        disableOnPending={disableOnPending}
-        statusPosition={statusPosition}
-        below={below}
-        onClick={() => internalRef.current?.focus()}
-        scrollValidationErrorsIntoView={scrollValidationErrorsIntoView}
+        disabled={disabled}
+        statusPosition={globals.inputStatusPosition}
+        scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
+        disableOnPending={globals.disableControlOnPending}
+        hideIconOnStatus={globals.hideInputErrorIconOnStatus}
+        label={label}
+        labelId={labelId ?? id}
+        labelClassName={concat(labelClassName, 'arm-text-area-label')}
+        required={required}
+        requiredIndicator={globals.requiredIndicator}
+        data-testid={testId}
+        leftOverlay={leftOverlay}
+        rightOverlay={rightOverlay}
       >
-        {delay?.mode === 'debounce' && !!delay.milliseconds && (
+        {!!delay && (
           <DebounceTextAreaBase
+            {...textAreaProps}
             {...nativeProps}
-            milliseconds={delay.milliseconds}
-            {...inputProps}
+            milliseconds={delay}
             onChange={onChange}
             onValueChange={onValueChangeEvent}
             ref={ref}
           />
         )}
-        {delay?.mode === 'throttle' && !!delay.milliseconds && (
-          <ThrottledTextAreaBase
+        {!delay && (
+          <textarea
+            className={'arm-text-area'}
+            {...textAreaProps}
             {...nativeProps}
-            milliseconds={delay.milliseconds}
-            {...inputProps}
-            onChange={onChange}
-            onValueChange={onValueChangeEvent}
+            onChange={onChangeEvent}
             ref={ref}
+            disabled={disabled || pending}
           />
         )}
-        {!delay?.milliseconds && <textarea className="arm-text-area-textarea" {...nativeProps} onChange={onChangeEvent} {...inputProps} />}
       </InputWrapper>
     );
   }
-) as (<TBind extends NullOrUndefined<string>>(props: ArmstrongVFCProps<ITextAreaProps<TBind>, HTMLTextAreaElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ITextAreaProps<any>>;
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TStringValue extends NullOrUndefined<string>>(
+  props: ArmstrongFCProps<ITextAreaProps<TStringValue>, HTMLTextAreaElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ITextAreaProps<string>>;
 
-TextArea.defaultProps = {};
+TextArea.displayName = 'Text Area';

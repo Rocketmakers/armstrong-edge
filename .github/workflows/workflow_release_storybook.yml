@@ -1,0 +1,30 @@
+name: Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Restore node modules cache
+        id: node-modules
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/module/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Build Storybook
+        run: (cd module && npm run build && npm run build-storybook)
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./module/storybook-static

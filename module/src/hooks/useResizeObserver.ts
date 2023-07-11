@@ -1,30 +1,30 @@
 import * as React from 'react';
 
-import { Objects } from '../utils';
-import { Globals } from '../utils/globals';
-import { useWillUnMountEffect } from './useWillUnmountEffect';
+import { isBrowser, supportsResizeObserver } from '../utils/globals';
+import { useContentMemo } from './useContentMemo';
+import { useSSRLayoutEffect } from './useSSRLayoutEffect';
 
 /**
  * Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
- * @param ref the html element to watch
  * @param callback the callback to be fired
- * @param options options for the mutation observer
+ * @param optionsInput options for the mutation observer
+ * @param ref the html element to watch
  *
  */
-
 export function useResizeObserver(
   callback: ResizeObserverCallback,
-  options?: ResizeObserverOptions,
+  optionsInput?: ResizeObserverOptions,
   ref?: React.MutableRefObject<Element | undefined | null>
 ) {
   const observer = React.useRef<ResizeObserver>();
+  const options = useContentMemo(optionsInput);
 
   const observe = React.useCallback(
     (element: Element) => {
       observer.current = new ResizeObserver(callback);
       observer.current.observe(element, options);
     },
-    [callback, Objects.contentDependency(options)]
+    [callback, options]
   );
 
   const unobserve = React.useCallback((element: Element) => {
@@ -37,19 +37,20 @@ export function useResizeObserver(
     observer.current?.disconnect();
   }, []);
 
-  React.useLayoutEffect(() => {
-    if (!!ref?.current && Globals.isBrowser && Globals.supportsResizeObserver) {
+  useSSRLayoutEffect(() => {
+    if (!!ref?.current && isBrowser && supportsResizeObserver) {
       observe(ref.current);
 
       return () => {
         if (ref.current) {
-          unobserve(ref.current!);
+          unobserve(ref.current);
         }
       };
     }
-  }, [observe, unobserve]);
+    return undefined;
+  }, [observe, unobserve, ref]);
 
-  useWillUnMountEffect(disconnect);
+  React.useEffect(() => disconnect, [disconnect]);
 
   return {
     observer,

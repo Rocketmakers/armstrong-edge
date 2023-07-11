@@ -1,16 +1,23 @@
 import * as React from 'react';
+import { ImStarEmpty, ImStarFull } from 'react-icons/im';
 
-import { Form, IconWrapper, IIconWrapperProps, IStatusWrapperProps, StatusWrapper, ValidationErrors } from '../..';
-import { useGeneratedId } from '../../hooks';
-import { IBindingProps } from '../../hooks/form';
+import { IBindingProps, useBindingState } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { Arrays, Maths } from '../../utils';
-import { ClassNames } from '../../utils/classNames';
-import { Button } from '../button';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { repeat } from '../../utils/arrays';
+import { concat } from '../../utils/classNames';
+import { clamp } from '../../utils/maths';
+import { Button, IButtonProps } from '../button';
+import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';
+import { Label } from '../label';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
+import { ValidationErrors } from '../validationErrors';
+import { iconJsxFromDefinition } from './rating.utils';
 
-export interface IRatingPartProps extends Pick<IRatingProps<any>, 'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'name'> {
+import './rating.theme.css';
+
+export interface IRatingPartProps
+  extends Pick<IRatingProps<NullOrUndefined<number>>, 'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'disabled'> {
   /** the index of this rating part */
   index: number;
 
@@ -24,58 +31,55 @@ export interface IRatingPartProps extends Pick<IRatingProps<any>, 'filledIcon' |
   readOnly?: boolean;
 }
 
-export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
-  ({ index, value, onSelectPart, filledIcon, emptyIcon, step, mode, readOnly, name }, ref) => {
+const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
+  ({ index, value, onSelectPart, filledIcon, emptyIcon, step, mode, readOnly, disabled }, ref) => {
     const steps = Math.floor(1 / (step || 1));
 
-    const filledIconJsx = React.useMemo(() => {
-      const calculated = typeof filledIcon === 'function' ? filledIcon(index) : filledIcon;
-      if (calculated) {
-        return IconUtils.isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
-      }
-    }, [filledIcon, index]);
-
-    const emptyIconJsx = React.useMemo(() => {
-      const calculated = typeof emptyIcon === 'function' ? emptyIcon(index) : emptyIcon;
-      if (calculated) {
-        return IconUtils.isIconDefinition(calculated) ? <Icon {...calculated} /> : calculated;
-      }
-    }, [emptyIcon, index]);
+    const isFilled = value && value >= index + 1;
+    const isPart = value && value < index + 1 && value > index;
 
     return (
       <div
         ref={ref}
         className="arm-rating-part"
-        style={value ? ({ '--rating-amount': `${Maths.clamp((value - index) * 100, 0, 100)}%` } as React.CSSProperties) : undefined}
-        data-filled={value && value >= index + 1}
-        data-part={value && value < index + 1 && value > index}
+        style={
+          value
+            ? ({
+                '--rating-amount': `${clamp((value - index) * 100, 0, 100)}%`,
+              } as React.CSSProperties)
+            : undefined
+        }
+        data-filled={isFilled}
+        data-part={isPart}
       >
         <div className="arm-rating-part-icon-wrapper">
           {filledIcon && (
             <div className="arm-rating-part-icon arm-rating-part-filled">
-              <div className="arm-rating-part-icon-inner">{filledIconJsx}</div>
+              <div className="arm-rating-part-icon-inner">{iconJsxFromDefinition(filledIcon, index)}</div>
             </div>
           )}
 
           {emptyIcon && (
             <div className="arm-rating-part-icon arm-rating-part-empty">
-              <div className="arm-rating-part-icon-inner">{emptyIconJsx}</div>
+              <div className="arm-rating-part-icon-inner">{iconJsxFromDefinition(emptyIcon, index)}</div>
             </div>
           )}
         </div>
 
         {!readOnly && mode === 'buttons' && (
           <div className="arm-rating-part-buttons">
-            {Arrays.repeat(steps, (buttonIndex) => {
-              const inputValue = index + steps * (buttonIndex + 1);
-
+            {repeat(steps, buttonIndex => {
+              const inputValue = index + (steps === 2 ? 0.5 : 1) + (buttonIndex ? 0.5 : 0);
               return (
                 <Button
+                  role="radio"
+                  aria-checked={inputValue === value}
                   type="button"
+                  className="arm-rating-button"
                   key={buttonIndex}
-                  minimalStyle
                   onClick={() => onSelectPart((step || 1) * (buttonIndex + 1))}
-                  aria-label={`${inputValue}`}
+                  aria-label={inputValue.toString()}
+                  disabled={disabled}
                 />
               );
             })}
@@ -84,19 +88,18 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
 
         {!readOnly && mode === 'radio' && (
           <div className="arm-rating-part-radios">
-            {Arrays.repeat(steps, (buttonIndex) => {
-              const inputValue = index + steps * (buttonIndex + 1);
-
+            {repeat(steps, buttonIndex => {
+              const inputValue = index + (steps === 2 ? 0.5 : 1) + (buttonIndex ? 0.5 : 0);
               return (
                 <div className="arm-rating-part-radio-wrapper" key={buttonIndex}>
                   <input
                     className="arm-rating-part-radio"
                     type="radio"
                     onChange={() => onSelectPart((step || 1) * (buttonIndex + 1))}
-                    aria-label={`${inputValue}`}
+                    aria-label={inputValue.toString()}
                     value={inputValue}
                     checked={inputValue === value}
-                    name={name}
+                    disabled={disabled}
                   />
                 </div>
               );
@@ -108,12 +111,28 @@ export const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
   }
 );
 
-export type RatingIcon = IIcon<IconSet> | JSX.Element | ((index: number) => IIcon<IconSet> | JSX.Element);
+RatingPart.displayName = 'RatingPart';
+
+export type RatingIconDefinition = JSX.Element | ((index: number) => JSX.Element);
 
 export interface IRatingProps<TBind extends NullOrUndefined<number>>
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
-    Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'>,
-    IIconWrapperProps<IconSet, IconSet>,
+    Pick<
+      IInputWrapperProps,
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'errorIcon'
+      | 'validationErrorMessages'
+      | 'statusClassName'
+      | 'validationErrorsClassName'
+      | 'labelClassName'
+      | 'labelId'
+      | 'label'
+      | 'required'
+      | 'requiredIndicator'
+      | 'displaySize'
+    >,
+    Pick<IButtonProps, 'leftOverlay' | 'rightOverlay'>,
     IStatusWrapperProps {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -124,31 +143,32 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
   /** called when the value of the input changes */
   onValueChange?: (newValue: TBind) => void;
 
-  /** the icon to use for a filled star - can take an icon definition, some JSX, or a function which returns the former options from an index */
-  filledIcon?: RatingIcon;
+  /** the icon to use for a filled star */
+  filledIcon?: RatingIconDefinition;
 
-  /** the icon to use for an empty star - can take an icon definition, some JSX, or a function which returns the former options from an index */
-  emptyIcon?: RatingIcon;
+  /** the icon to use for an empty star */
+  emptyIcon?: RatingIconDefinition;
 
   /** the maximum possible value of the rating */
   maximum?: number;
 
   /** the size of each possible step - defaults to 1, set to 0.5 to allow half stars */
-  step?: number;
+  step?: 1 | 0.5;
 
   /**
    * the kind of elements used to handle the interaction
    *
    * range will use an input with type='range' to handle the interaction, buttons will render a series of buttons, radio will render radio inputs
+   * @default 'buttons'
    */
   mode?: 'range' | 'buttons' | 'radio';
 
-  /** used for accessibility labelling and (with mode="radio") grouping inputs - for the latter use this must be unique */
-  name?: string;
+  /** Whether to disable the input */
+  disabled?: boolean;
 }
 
-export const Rating = React.forwardRef(
-  <TBind extends NullOrUndefined<number>>(
+export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefined<number>>>(
+  (
     {
       bind,
       value,
@@ -165,72 +185,113 @@ export const Rating = React.forwardRef(
       error,
       statusPosition,
       pending,
-      leftIcon,
-      rightIcon,
+      leftOverlay,
+      rightOverlay,
       mode,
-      name,
+      disabled,
+      statusClassName,
+      validationErrorsClassName,
+      labelClassName,
+      labelId,
+      label,
+      required,
+      requiredIndicator,
+      displaySize,
       ...htmlProps
-    }: IRatingProps<TBind>,
-    ref: React.ForwardedRef<HTMLDivElement>
+    },
+    ref
   ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
-      value,
-      onChange: onValueChange,
-      validationErrorMessages,
+    const globals = useArmstrongConfig({
       validationMode,
+      inputDisplaySize: displaySize,
+      scrollValidationErrorsIntoView,
+      requiredIndicator,
       validationErrorIcon: errorIcon,
     });
 
-    const generatedName = useGeneratedId('radio', name);
+    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+      value,
+      onChange: onValueChange,
+      validationErrorMessages,
+      validationMode: globals.validationMode,
+      validationErrorIcon: globals.validationErrorIcon,
+    });
+
+    const generatedLabelId = React.useId();
+    const finalLabelId = labelId ?? generatedLabelId;
 
     return (
       <>
-        <div ref={ref} className={ClassNames.concat('arm-rating', className)} {...htmlProps} data-read-only={!setBoundValue}>
-          <StatusWrapper
-            error={error}
-            statusPosition={statusPosition}
-            errorIcon={bindConfig.validationErrorIcon}
-            validationErrorMessages={bindConfig.validationErrorMessages}
-            validationMode={bindConfig.validationMode}
-            pending={pending}
-          >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-              <div className="arm-rating-parts">
-                {Arrays.repeat(maximum!, (index) => (
-                  <RatingPart
-                    key={index}
-                    index={index}
-                    filledIcon={filledIcon}
-                    emptyIcon={emptyIcon}
-                    value={boundValue || undefined}
-                    onSelectPart={(proportion) => setBoundValue?.((index + proportion) as TBind)}
-                    step={step}
-                    mode={mode}
-                    readOnly={!setBoundValue}
-                    name={generatedName}
-                  />
-                ))}
+        <div
+          ref={ref}
+          role="radiogroup"
+          aria-label={boundValue !== undefined ? `Rating: ${boundValue}/${maximum}` : undefined}
+          {...htmlProps}
+          className={concat('arm-rating', className)}
+          data-read-only={!setBoundValue}
+          data-size={globals.inputDisplaySize}
+        >
+          {label && (
+            <Label
+              id={finalLabelId}
+              className={concat('arm-rating-input-label', labelClassName)}
+              data-disabled={disabled}
+              required={required}
+              displaySize={globals.inputDisplaySize}
+              requiredIndicator={globals.requiredIndicator}
+            >
+              {label}
+            </Label>
+          )}
+          <div className="arm-rating-input-inner" aria-labelledby={finalLabelId}>
+            <StatusWrapper
+              error={error}
+              statusPosition={statusPosition}
+              errorIcon={bindConfig.validationErrorIcon}
+              validationMode={bindConfig.validationMode}
+              pending={pending}
+            >
+              <>
+                {leftOverlay}
+                <div className="arm-rating-parts">
+                  {repeat(maximum as number, index => (
+                    <RatingPart
+                      key={index}
+                      index={index}
+                      filledIcon={filledIcon}
+                      emptyIcon={emptyIcon}
+                      value={boundValue || undefined}
+                      onSelectPart={proportion => setBoundValue?.(index + proportion)}
+                      step={step}
+                      mode={mode}
+                      disabled={disabled}
+                      readOnly={!setBoundValue}
+                    />
+                  ))}
 
-                {setBoundValue && mode === 'range' && (
-                  <input
-                    className="arm-rating-range"
-                    type="range"
-                    step={step}
-                    min={0}
-                    max={maximum}
-                    value={boundValue || undefined}
-                    onChange={(event) => setBoundValue?.(event.currentTarget.valueAsNumber as TBind)}
-                  />
-                )}
-              </div>
-            </IconWrapper>
-          </StatusWrapper>
+                  {mode === 'range' && (
+                    <input
+                      className="arm-rating-range"
+                      type="range"
+                      step={step}
+                      min={0}
+                      max={maximum}
+                      disabled={disabled}
+                      value={boundValue || undefined}
+                      onChange={event => setBoundValue?.(event.currentTarget.valueAsNumber)}
+                    />
+                  )}
+                </div>
+                {rightOverlay}
+              </>
+            </StatusWrapper>
+          </div>
         </div>
 
         {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
           <ValidationErrors
             validationErrors={validationErrorMessages}
-            icon={bindConfig.validationErrorIcon}
+            validationMode={bindConfig.validationMode}
             scrollIntoView={scrollValidationErrorsIntoView}
           />
         )}
@@ -239,13 +300,17 @@ export const Rating = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<number>>(props: ArmstrongVFCProps<IRatingProps<TBind>, HTMLDivElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IRatingProps<any>>;
+) as (<TBind extends NullOrUndefined<number>>(
+  props: ArmstrongVFCProps<IRatingProps<TBind>, HTMLDivElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IRatingProps<NullOrUndefined<number>>>;
 
 Rating.defaultProps = {
   maximum: 5,
-  filledIcon: { iconSet: 'Icomoon', icon: 'star-full' },
-  emptyIcon: { iconSet: 'Icomoon', icon: 'star-empty' },
+  filledIcon: <ImStarFull />,
+  emptyIcon: <ImStarEmpty />,
   step: 1,
   mode: 'buttons',
 };
+
+Rating.displayName = 'Rating';

@@ -1,0 +1,3 @@
+.arm-status[data-error] {
+  color: var(--arm-color-negative);
+}

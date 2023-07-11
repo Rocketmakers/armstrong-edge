@@ -1,13 +1,12 @@
 import * as React from 'react';
 
-import { Objects } from '../utils';
-import { DOM } from '../utils/dom';
-import { Globals } from '../utils/globals';
+import { contentDependency } from '../utils';
+import { Document } from '../utils/globals';
 import { useDidUpdateEffect } from './useDidUpdateEffect';
 import { useEventListener } from './useEventListener';
 import { useResizeObserver } from './useResizeObserver';
 
-export type useBoundingClientRectReturn = [DOMRect, () => void];
+export type UseBoundingClientRectReturn = [DOMRect, () => void];
 
 /**
  * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
@@ -19,32 +18,23 @@ export function useBoundingClientRect(
   ref: React.MutableRefObject<Element | undefined | null>,
   onChange?: (newBoundingClientRect: DOMRect) => void,
   listenToScroll = true
-): useBoundingClientRectReturn {
-  const [rect, setRect] = React.useState<DOMRect>(
-    ref.current?.getBoundingClientRect() || {
-      bottom: 0,
-      height: 0,
-      left: 0,
-      right: 0,
-      top: 0,
-      width: 0,
-      x: 0,
-      y: 0,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      toJSON: () => {},
-    }
-  );
+): UseBoundingClientRectReturn {
+  const [rect, setRect] = React.useState<DOMRect>(ref.current?.getBoundingClientRect() || new DOMRect(0, 0, 0, 0));
+
+  const domRectToObject = React.useCallback((domRect: DOMRect) => {
+    const { top, right, bottom, left, width, height, x, y } = domRect;
+    return { top, right, bottom, left, width, height, x, y };
+  }, []);
 
   const setRectSize = React.useCallback(() => {
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
-
-      if (Objects.contentDependency(DOM.domRectToObject(boundingClientRect)) !== Objects.contentDependency(DOM.domRectToObject(rect))) {
+      if (contentDependency(domRectToObject(boundingClientRect)) !== contentDependency(domRectToObject(rect))) {
         onChange?.(boundingClientRect);
         setRect(boundingClientRect);
       }
     }
-  }, [ref.current, rect]);
+  }, [ref, domRectToObject, rect, onChange]);
 
   /** Run the callback to get the element's size whenever it resizes */
   useResizeObserver(setRectSize, {}, ref);
@@ -61,10 +51,13 @@ export function useBoundingClientRect(
     }
   }, [listenToScroll, setRectSize]);
 
-  useEventListener('resize', setRectSize, Globals.Document);
-  useEventListener('scroll', onScroll, Globals.Document, { capture: true });
+  useEventListener('resize', setRectSize, Document);
+  useEventListener('scroll', onScroll, Document, { capture: true });
 
-  React.useEffect(() => setRectSize(), []);
+  React.useEffect(() => {
+    setRectSize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want to re-trigger when the function is redefined
+  }, []);
 
   return [rect, setRectSize];
 }

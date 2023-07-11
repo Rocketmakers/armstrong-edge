@@ -1,0 +1,44 @@
+# .github/workflows/chromatic.yml
+
+name: 'Chromatic'
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  setup:
+    uses: ./.github/workflows/job_setup.yml
+
+  build:
+    needs: [setup]
+    uses: ./.github/workflows/job_build.yml
+
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Restore node modules cache
+        id: node-modules
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/module/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          onlyChanged: true
+          buildScriptName: build-storybook
+          workingDir: ./module
+          exitOnceUploaded: true
+        env:
+          CHROMATIC_RETRIES: 3

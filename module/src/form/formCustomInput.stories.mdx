@@ -1,0 +1,36 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs';
+import { ConfigExample, HookReturnExample, FormPropExample, FormPropArrayExample, BindPropsExample } from './examples';
+
+<Meta title="Form/Form Custom Inputs" />
+
+## <a name="custom-inputs">Custom Inputs</a>
+
+Creating an input that can be bound to a form property is as simple as creating a component with a bind prop that supplies the expected type as a generic.
+
+The Armstrong form library also supplies a hook that helps convert the complex binding tools into a simple value/setter.
+
+At it's simplest, this is a text input component expecting a `string` as it's bound property:
+
+```tsx
+interface ICustomTextInputProps {
+  bind: IBindingProps<string>; // the "string" here can be any type, and should match the type expected in the form data.
+}
+
+const CustomTextInput: React.FC<ICustomTextInputProps> = props => {
+  const [boundValue, boundOnChange, { myValidationErrorMessages }] = useBindingState(props.bind);
+
+  return (
+    <>
+      <input type="text" value={boundValue} onChange={boundOnChange} />
+
+      <ValidationErrors validationErrors={myValidationErrorMessages} />
+    </>
+  );
+};
+```
+
+There are plenty of advanced tools within the bind prop, and the use of the `useBindingState` prop is entirely optional, as long as you're careful to implement the features of the form binder within your custom input then you're good to go!
+
+Here's the full list of tools contained within a `bind` that your custom inputs can interface with:
+
+<ArgTypes of={BindPropsExample} />

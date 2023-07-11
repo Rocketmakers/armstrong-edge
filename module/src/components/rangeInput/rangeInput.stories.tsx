@@ -1,54 +1,120 @@
+import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { within } from '@storybook/testing-library';
 import * as React from 'react';
+import { BsFillEmojiSunglassesFill } from 'react-icons/bs';
 
-import { Form } from '../..';
-import { StoryUtils } from '../../stories/storyUtils';
-import { IconUtils } from '../icon';
+import { useForm } from '../../form';
 import { RangeInput } from './rangeInput.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(RangeInput as any, 'Form', 'Range Input', {});
+export default {
+  title: 'Components/RangeInput',
+  component: RangeInput,
+} as Meta<typeof RangeInput>;
 
 /** component template */
 
-// const Template = StoryUtils.createTemplate(RangeInput);
+const Template: StoryObj<typeof RangeInput> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- necessary because of the unknown bind generic
+  render: (props: any) => {
+    const { formProp, formState } = useForm({ value: 50 });
+
+    return (
+      <>
+        <RangeInput bind={formProp('value').bind()} {...props} />
+        <div style={{ marginTop: '10px' }} data-testid="result">
+          Value: {formState?.value}
+        </div>
+      </>
+    );
+  },
+};
 
 /** stories */
 
-export const Default = () => {
-  const { formProp } = Form.use({ value: 0 });
-
-  return <RangeInput bind={formProp('value').bind()} minimum={0} maximum={100} />;
+export const Default: StoryObj<typeof RangeInput> = {
+  ...Template,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const slider = canvas.getByRole('slider');
+    expect(slider).toHaveAttribute('aria-valuenow', '50');
+  },
 };
-export const HandleIcon = () => {
-  const { formProp } = Form.use({ value: 0 });
 
-  return <RangeInput bind={formProp('value').bind()} minimum={0} maximum={100} handleIcon={IconUtils.getIconDefinition('Icomoon', 'sun')} />;
+export const CustomMinAndMax: StoryObj<typeof RangeInput> = {
+  ...Template,
+  args: {
+    min: 40,
+    max: 60,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const slider = canvas.getByRole('slider');
+    expect(slider).toHaveAttribute('aria-valuemin', '40');
+    expect(slider).toHaveAttribute('aria-valuemax', '60');
+    expect(slider).toHaveAttribute('aria-valuenow', '50');
+  },
 };
-export const Pending = () => {
-  const { formProp } = Form.use({ value: 0 });
 
-  return <RangeInput bind={formProp('value').bind()} minimum={0} maximum={100} pending />;
+export const CustomStep: StoryObj<typeof RangeInput> = {
+  ...Template,
+  args: {
+    step: 10,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const slider = canvas.getByRole('slider');
+    expect(slider).toHaveAttribute('aria-valuenow', '50');
+  },
 };
-export const WithIcons = () => {
-  const { formProp } = Form.use({ value: 0 });
 
-  return <RangeInput bind={formProp('value').bind()} minimum={0} maximum={100} leftIcon={IconUtils.getIconDefinition('Icomoon', 'trophy3')} />;
+export const Labelled: StoryObj<typeof RangeInput> = {
+  ...Template,
+  args: {
+    label: 'Label',
+    required: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const label = canvas.getByText('Label');
+    expect(label).toBeVisible();
+  },
 };
-export const WithSteps = () => {
-  const { formProp } = Form.use({ value: 0 });
 
-  return <RangeInput bind={formProp('value').bind()} minimum={0} maximum={100} step={25} />;
+export const Sizes: StoryObj<typeof RangeInput> = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <RangeInput label={'Small Input'} displaySize="small" required={true} />
+        <RangeInput label={'Medium Input'} required={true} />
+        <RangeInput label={'Large Input'} displaySize="large" required={true} />
+      </div>
+    );
+  },
 };
-export const WithValidationErrors = () => {
-  const { formProp, formState } = Form.use({ value: 0 });
 
-  return (
-    <RangeInput
-      bind={formProp('value').bind()}
-      minimum={0}
-      maximum={100}
-      validationErrorMessages={formState?.value < 20 && ['value must be more than 20']}
-    />
-  );
+export const ValidationError: StoryObj<typeof RangeInput> = {
+  ...Template,
+  args: {
+    validationMode: 'both',
+    validationErrorMessages: ['Invalid selection'],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const error = canvas.getByText('Invalid selection');
+    expect(error).toBeVisible();
+  },
+};
+
+export const CustomThumb: StoryObj<typeof RangeInput> = {
+  ...Template,
+  args: { customThumb: <BsFillEmojiSunglassesFill /> },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const slider = canvas.getByRole('slider');
+    const elements = slider.getElementsByTagName('svg');
+    expect(elements).toHaveLength(1);
+  },
 };

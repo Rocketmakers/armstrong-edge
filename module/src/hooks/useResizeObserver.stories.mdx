@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/useResizeObserver" />
+
+### useResizeObserver
+
+Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect
+
+```tsx
+const ref = React.useRef<HTMLDivElement>();
+
+useResizeObserver(onIntersect, ResizeObserverOptions, ref);
+
+return <div ref={ref} />;
+```

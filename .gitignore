@@ -1,3 +1,4 @@
+.DS_Store
 node_modules
 dist
 www
@@ -10,3 +11,4 @@ module/README.md
 **/.cypress/screenshots
 **/.cypress/snapshots/__diff_output__
 **/.cypress/videos
+test-results

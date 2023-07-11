@@ -1,0 +1,26 @@
+name: Release from main
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  build-job:
+    uses: ./.github/workflows/job_build.yml
+  
+  release-main:
+    runs-on: ubuntu-latest
+    steps:  
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: ${{ github.workspace }}/module/dist
+
+      - name: Release
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
+        working-directory: ./module

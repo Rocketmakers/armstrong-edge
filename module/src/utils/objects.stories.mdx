@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Utilities/Objects" />
 
@@ -17,76 +17,39 @@ function contentDependency<TObject extends object>(object?: TObject): string;
 ```
 
 ```ts
-import { Objects } from '@rocketmakers/armstrong';
+import { contentDependency } from '@rocketmakers/armstrong';
 
 const thing = { a: 'hello', b: 'hiya' };
 
 React.useEffect(() => {
   // will only rerun when the actual value of thing changes
-}, [Objects.contentDependency(thing)]);
+}, [contentDependency(thing)]);
 ```
 
-### isObject
+### mergeDeep
 
-Check if an object is an object and is not an array
-
-```ts
-function isObject<TItem>(item?: TItem): boolean;
-```
+Deep merges any two or more given objects.
 
 ```ts
-import { Objects } from '@rocketmakers/armstrong';
-
-Objects.isObject({});
-// true
-
-Objects.isObject([]);
-// false
-
-Objects.isObject('hiya');
-// false
-```
-
-### mapKeys
-
-Perform an operation on the keys of an object and return an array of the results
-
-```ts
-const mapKeys = <T, TKey extends keyof T, TValue extends T[TKey], TReturn>(
-    object: T,
-    callback: (key: TKey, value: TValue, index: number) => TReturn
-  ): TReturn[]
+function deepMerge<TObject extends object>(target: TObject, ...sources: Partial<TObject>[]): TObject;
 ```
 
 ```ts
-import { Objects } from '@rocketmakers/armstrong';
+import { mergeDeep } from '@rocketmakers/armstrong';
 
-const object = { a: 'hello', b: 'hiya', c: 'howdy' };
+const thing1 = { a: 'hello', b: 'hiya' };
+const thing2 = { a: 'goodbye', c: { d: 'hola' } };
+const thing3 = { a: 'adios', c: { d: 'ciao' } };
 
-Objects.mapKeys(object, (key, value) => `${key}:${value}`);
-/// [ 'a:hello', 'b:hiya', 'c:howdy' ]
-```
+result = mergeDeep(thing1, thing2, thing3);
 
-### forEachKeys
+// result
+{
+  a: 'adios',
+  b: 'hiya',
+  c: {
+    d: 'ciao'
+  }
+}
 
-Perform an operation on the keys of an object
-
-```ts
-forEachKeys = <T, TKey extends keyof T, TValue extends T[TKey]>(
-    object: T,
-    callback: (key: TKey, value: TValue, index: number) => void
-  )
-```
-
-```ts
-import { Objects } from '@rocketmakers/armstrong';
-
-const object = { a: 'hello', b: 'hiya', c: 'howdy' };
-
-Objects.forEachKeys(object, (key, value) => console.log(key, value));
-
-// console
-a, hello;
-b, hiya;
-c, howdy;
 ```

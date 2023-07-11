@@ -1,34 +1,48 @@
 import * as React from 'react';
 
-import { ClassNames } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 
-export interface ISpinnerProps extends React.HTMLProps<HTMLDivElement> {
-  /** icon definition for icon to spin in middle of div, can be overriden using children */
-  icon?: IIcon<IconSet>;
+import './spinner.theme.css';
+
+export interface ISpinnerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'label'> {
+  /** icon definition for icon to spin in middle of div, can be overridden using children */
+  icon?: JSX.Element;
 
   /** should the spinner wrapper fill the container, meaning the icon is centred */
   fillContainer?: boolean;
 
   /** text to render below the spinner */
-  label?: string;
+  label?: React.ReactNode;
 }
 
 /** Renders a spinner centred in the div that's being wrapped */
 export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ISpinnerProps>>(
-  ({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => (
-    <div ref={ref} className={ClassNames.concat('arm-spinner', className)} {...HTMLProps} data-fill-container={fillContainer}>
-      <div className="arm-spinner-inner">{children || (icon && <Icon iconSet={icon.iconSet} icon={icon.icon} cypressTag="spinner" />)}</div>
-      {label && (
-        <div className="arm-spinner-label">
-          <span>{label}</span>
-        </div>
-      )}
-    </div>
-  )
+  ({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => {
+    const { spinnerIcon } = useArmstrongConfig({ spinnerIcon: icon });
+    return (
+      <div
+        ref={ref}
+        className={concat('arm-spinner', className)}
+        data-fill-container={fillContainer}
+        role="status"
+        aria-busy={true}
+        aria-label="Loading..."
+        {...HTMLProps}
+      >
+        <div className="arm-spinner-inner">{children || spinnerIcon}</div>
+        {label && (
+          <div className="arm-spinner-label">
+            <span>{label}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
 );
 
+Spinner.displayName = 'Spinner';
+
 Spinner.defaultProps = {
-  icon: IconUtils.getIconDefinition('Icomoon', 'spinner2'),
   fillContainer: true,
 };
