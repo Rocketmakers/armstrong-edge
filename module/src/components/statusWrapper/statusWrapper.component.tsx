@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { FormValidationMode, ValidationMessage } from '../../hooks/form';
-import { IconSet, IIcon } from '../icon';
+import { FormValidationMode } from '../../form';
+import { useArmstrongConfig } from '../config';
 import { Status } from '../status/status.component';
 
 export interface IStatusWrapperProps {
@@ -14,14 +14,14 @@ export interface IStatusWrapperProps {
   /** show a spinner and disable */
   pending?: boolean;
 
-  /** array of validation errors used to calculate if there is an error in wrapping component */
-  validationErrorMessages?: ValidationMessage[];
-
   /** how to render the validation errors */
   validationMode?: FormValidationMode;
 
   /** the icon to use for validation errors */
-  errorIcon?: IIcon<IconSet>;
+  errorIcon?: JSX.Element;
+
+  /** an optional CSS className for the rendered status */
+  className?: string;
 }
 
 export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps>> = ({
@@ -29,21 +29,39 @@ export const StatusWrapper: React.FC<React.PropsWithChildren<IStatusWrapperProps
   error,
   pending,
   errorIcon,
-  validationErrorMessages,
   validationMode,
   children,
+  className,
 }) => {
-  const shouldShowErrorIcon = (!!validationErrorMessages?.length && (validationMode === 'both' || validationMode === 'icon')) || error;
+  const globals = useArmstrongConfig({
+    validationErrorIcon: errorIcon,
+    validationMode,
+    inputStatusPosition: statusPosition,
+  });
+
+  const shouldShowErrorIcon = (globals.validationMode === 'both' || globals.validationMode === 'icon') && !!error;
 
   return (
     <>
-      {statusPosition === 'left' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} cypressTag="status-left" />}
+      {globals.inputStatusPosition === 'left' && (
+        <Status
+          className={className}
+          error={shouldShowErrorIcon}
+          pending={pending}
+          errorIcon={globals.validationErrorIcon}
+          data-position="left"
+        />
+      )}
       {children}
-      {statusPosition === 'right' && <Status error={shouldShowErrorIcon} pending={pending} errorIcon={errorIcon} cypressTag="status-right" />}
+      {globals.inputStatusPosition === 'right' && (
+        <Status
+          className={className}
+          error={shouldShowErrorIcon}
+          pending={pending}
+          errorIcon={globals.validationErrorIcon}
+          data-position="right"
+        />
+      )}
     </>
   );
-};
-
-StatusWrapper.defaultProps = {
-  statusPosition: 'right',
 };

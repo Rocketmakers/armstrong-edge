@@ -1,11 +1,14 @@
 import * as React from 'react';
 
-import { IBindingProps, useBindingState } from '../../hooks/form';
+import { FormValidationMode, IBindingProps, useBindingState } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
-import { ClassNames } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 
-export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
+import './characterLimit.theme.css';
+
+export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
+  extends Omit<React.RefAttributes<HTMLDivElement>, 'ref'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind: IBindingProps<TBind>;
 
@@ -21,40 +24,72 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>> {
   /** CSS className property */
   className?: string;
 
-  /** icon to render if error */
-  exceedsIcon?: IIcon<IconSet>;
+  /** the icon to use for the validation errors */
+  validationErrorIcon?: JSX.Element;
+
+  /** (Optional) Class name for the validation errors */
+  validationErrorsClassName?: string;
+
+  /** (Optional) Title for the validation errors */
+  validationErrorsTitle?: string;
+
+  /** how to render the validation errors */
+  validationMode?: FormValidationMode;
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
-export const CharacterLimit = React.forwardRef(
-  <TBind extends NullOrUndefined<string>>(
-    { bind, limit, shouldEnforce, value, className, exceedsIcon }: ICharacterLimitProps<TBind>,
-    ref: React.ForwardedRef<HTMLDivElement>
+export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitProps<NullOrUndefined<string>>>(
+  (
+    {
+      bind,
+      limit,
+      shouldEnforce,
+      value,
+      className,
+      validationErrorIcon,
+      validationErrorsClassName,
+      validationErrorsTitle,
+      validationMode,
+      ...nativeProps
+    },
+    ref
   ) => {
+    const globals = useArmstrongConfig({
+      validationErrorIcon,
+      validationMode,
+    });
+
     const [boundValue, setBoundValue] = useBindingState(bind, { value });
 
     const exceeded = boundValue && boundValue.length > limit;
 
     React.useLayoutEffect(() => {
       if (shouldEnforce && exceeded) {
-        setBoundValue?.(boundValue!.slice(0, limit) as TBind);
+        setBoundValue?.(boundValue?.slice(0, limit));
       }
-    }, [boundValue]);
+    }, [boundValue, exceeded, limit, setBoundValue, shouldEnforce]);
 
     return (
-      <div ref={ref} className={ClassNames.concat('arm-character-limit', className)} data-exceeded={exceeded}>
-        <p>
+      <div ref={ref} className={concat('arm-character-limit', className)} data-exceeded={exceeded} {...nativeProps}>
+        <div className="arm-character-limit-text">
           {boundValue?.length}/{limit}
-        </p>
-        {exceedsIcon && exceeded && <Icon iconSet={exceedsIcon.iconSet} icon={exceedsIcon.icon} />}
+        </div>
+        {exceeded && (
+          <div
+            className={concat('arm-character-limit-icon', validationErrorsClassName)}
+            title={validationErrorsTitle ?? 'Character limit exceeded'}
+          >
+            {(globals.validationMode === 'both' || globals.validationMode === 'icon') && globals.validationErrorIcon}
+          </div>
+        )}
       </div>
     );
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(props: ArmstrongFCProps<ICharacterLimitProps<TBind>, HTMLDivElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICharacterLimitProps<any>>;
+) as (<TBind extends NullOrUndefined<string>>(
+  props: ArmstrongFCProps<ICharacterLimitProps<TBind>, HTMLDivElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>;
 
-CharacterLimit.defaultProps = {
-  exceedsIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
-};
+CharacterLimit.displayName = 'CharacterLimit';

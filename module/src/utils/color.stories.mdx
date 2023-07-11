@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title="Utilities/Color" />
 
@@ -17,15 +17,25 @@ function hexToRGB(hex: string): IRGBColor;
 ```
 
 ```ts
-import { Colors } from '@rocketmakers/armstrong';
+import { hexToRGB } from '@rocketmakers/armstrong';
 
-const result = Colors.hexToRGB("#FFFFFF");
+const result = hexToRGB("#FFFFFF");
 
 // result
 {
-    red: 0,
-    blue: 0,
-    green: 0
+    red: 255,
+    blue: 255,
+    green: 255
+}
+
+const result = hexToRGB("#FFFFFF00");
+
+// result
+{
+    red: 255,
+    blue: 255,
+    green: 255,
+    alpha: 0
 }
 ```
 
@@ -40,18 +50,18 @@ function colorToRGB(color: Color): IRGBColor;
 ```
 
 ```ts
-import { Colors } from '@rocketmakers/armstrong';
+import { colorToRGB } from '@rocketmakers/armstrong';
 
-const result = Colors.colorToRGB("#FFFFFF");
+const result = colorToRGB("#FFFFFF");
 
 // result
 {
-    red: 0,
-    blue: 0,
-    green: 0
+    red: 255,
+    blue: 255,
+    green: 255
 }
 
-const result = Colors.colorToRGB({ r: 0, g: 0, b: 0 });
+const result = colorToRGB({ red: 0, green: 0, blue: 0 });
 
 // result
 {
@@ -70,12 +80,17 @@ function RGBToHex({ red, green, blue, alpha }: IRGBColor): string;
 ```
 
 ```ts
-import { Colors } from '@rocketmakers/armstrong';
+import { RGBToHex } from '@rocketmakers/armstrong';
 
-const result = Colors.RGBToHex({ r: 0, g: 0, b: 0 });
+const result = RGBToHex({ red: 255, green: 255, blue: 255 });
 
 // result
 ('#FFFFFF');
+
+const result = RGBToHex({ red: 255, green: 255, blue: 255, alpha: 0.01 });
+
+// result
+('#FFFFFF03');
 ```
 
 ### lerpRGB
@@ -87,18 +102,18 @@ function lerpRGB(startColor: IRGBColor, endColor: IRGBColor, /** out of 100 */ p
 ```
 
 ```ts
-import { Colors } from '@rocketmakers/armstrong';
+import { lerpRGB } from '@rocketmakers/armstrong';
 
-const startColor = { r: 0, g: 255, b: 0 };
-const endColor = { r: 255, g: 0, b: 0 };
+const startColor = { red: 0, green: 255, blue: 0 };
+const endColor = { red: 255, green: 0, blue: 0 };
 
-const result = Colors.lerpRGB(startColor, endColor, 50)
+const result = lerpRGB(startColor, endColor, 50)
 
 // result
 {
-    r: 127,
-    g: 127,
-    b: 0
+    red: 127,
+    green: 128,
+    blue: 0
 }
 ```
 
@@ -111,28 +126,28 @@ function multiLerpRGB(colors: IRGBColor[], /** out of 100 */ progress: number): 
 ```
 
 ```ts
-import { Colors } from '@rocketmakers/armstrong';
+import { multiLerpRGB } from '@rocketmakers/armstrong';
 
-const startColor = { r: 0, g: 255, b: 0 };
-const midColor = { r: 255, g: 0, b: 0 };
-const endColor = { r: 0, g: 0, b: 255 };
+const startColor = { red: 0, green: 255, blue: 0 };
+const midColor = { red: 255, green: 0, blue: 0 };
+const endColor = { red: 0, green: 0, blue: 255 };
 
-const result = Colors.multiLerpRGB([startColor, midColor, endColor], 25)
+const result = multiLerpRGB([startColor, midColor, endColor], 25)
 
 // result
 {
-    r: 127,
-    g: 127,
-    b: 0
+    red: 127,
+    green: 127,
+    blue: 0
 }
 
-const result = Colors.multiLerpRGB([startColor, midColor, endColor], 50)
+const result = multiLerpRGB([startColor, midColor, endColor], 50)
 
 // result
 {
-    r: 255,
-    g: 0,
-    b: 0
+    red: 255,
+    green: 0,
+    blue: 0
 }
 ```
 
@@ -145,12 +160,12 @@ function lerpHex(startColor: string, endColor: string, /** out of 100 */ progres
 ```
 
 ```ts
-import { Colors } from '@rocketmakers/armstrong';
+import { lerpHex } from '@rocketmakers/armstrong';
 
 const startColor = '#00FF00';
 const endColor = '#FF0000';
 
-const result = Colors.lerpHex(startColor, endColor, 50);
+const result = lerpHex(startColor, endColor, 50);
 
 // result
 ('#7F7F00');
@@ -165,31 +180,36 @@ function multiLerpHex(colors: string[], /** out of 100 */ progress: number): str
 ```
 
 ```ts
-import { Colors } from '@rocketmakers/armstrong';
+import { multiLerpHex } from '@rocketmakers/armstrong';
 
 const startColor = '#00FF00';
 const midColor = '#FF0000';
 const endColor = '#0000FF';
 
-const result = Colors.multiLerpHex([startColor, midColor, endColor], 50);
+const result = multiLerpHex([startColor, midColor, endColor], 50);
 
 // result
 ('#FF0000');
 ```
 
-### colorToCSString
+### colorToRGBCSString
 
 Turn an rgb object into a css string, i.e. rgb(100, 100, 90)
 
 ```ts
-function colorToCSString(color: IRGBColor);
+function colorToRGBCSString(color: IRGBColor);
 ```
 
 ```ts
-import { Colors } from '@rocketmakers/armstrong';
+import { colorToRGBCSString } from '@rocketmakers/armstrong';
 
-const result = colorToRGBCSString({ r: 0, g: 100, b: 200 });
+const result = colorToRGBCSString({ red: 0, green: 100, blue: 200 });
 
 // result
 ('rgb(0, 100, 200)');
+
+const result = colorToRGBCSString({ red: 0, green: 100, blue: 200, alpha: 1 });
+
+// result
+('rgba(0, 100, 200, 1)');
 ```

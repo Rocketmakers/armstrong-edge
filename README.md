@@ -1,4 +1,6 @@
-# Armstrong
+[![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest) [![storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://github.com/storybookjs)
+
+![armstrong logo](https://raw.githubusercontent.com/Rocketmakers/armstrong-edge/develop/src/assets/armstrong-logo.svg)
 
 Armstrong is a React component library made by [Rocketmakers](rocketmakers.com/) written in Typescript and SCSS.
 
@@ -50,18 +52,34 @@ Otherwise, raise an issue in Github and follow the issue template
 First cd into the root of the repo and run
 
 ```sh
-asdf install
-npm install
+npm run setup
 ```
 
-There are two options for working on Armstrong.
+We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx` or `*.stroies.mdx`
 
-- We have a playground, which is just a really simple react app with no linting, which has the Armstrong module linked in using `npm link`
-- We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx`
+_For Storybook_, run
+
+```sh
+npm run storybook
+
+# then in separate window run
+npm run watch-scss
+```
+
+then go to `localhost:6006`
+
+`npm run watch-scss` will spin up a watcher which will watch all SASS files and rebuild them
+
+For more information on using SASS, see SASS Concatenation in [SCSS](STORYBOOK LINK TODO)
+
+### Legacy development
+
+In the past we have also used playground, which is just a really simple react app with no linting, which has the Armstrong module linked in using `npm link`.
 
 _For the playground_, run
 
 ```sh
+cd module-legacy
 npm start
 
 # then in separate window from /module run
@@ -69,21 +87,6 @@ npm run start-sass
 ```
 
 then go to `localhost:3001`
-
-_For Storybook_, run
-
-```sh
-npm run storybook
-
-# then in separate window from /module run
-npm run start-sass
-```
-
-then go to `localhost:6006`
-
-`npm run start-sass` will spin up a watcher which will watch all SASS files and rebuild them
-
-For more information on using SASS, see SASS Concatenation in [SCSS](STORYBOOK LINK TODO)
 
 ### Linting
 
@@ -95,13 +98,13 @@ We recommend using the vscode plugins `stylelint`, `eslint`, and `prettier` to m
 
 ### Testing
 
-Armstrong uses [Jest](https://jestjs.io/docs/using-matchers) for unit testing, [@testing-library/react-hooks](https://github.com/testing-library/react-hooks-testing-library) for hook testing, and [Cypress](https://docs.cypress.io/guides/getting-started/writing-your-first-test) via Storybook for component testing.
+Armstrong uses [Jest](https://jestjs.io/docs/using-matchers) for unit testing, [@testing-library/react-hooks](https://github.com/testing-library/react-hooks-testing-library) for hook testing, and [Storybook](https://github.com/storybookjs) for component testing.
 
-Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.cypress` respectively.
+Packages for these are managed as dev dependencies in NPM, and configuration files can be found in `module/` and in `module/.jest` and `module/.storybook` respectively.
 
-Tests can be run using `npm test` for all tests, or `npm test-jest` and `npm test-cypress` respectively.
+Tests can be run using `npm test` for all tests, or `npm test-jest` and `npm test-storybook` respectively.
 
-Due to the nature of the codebase it is not currently possible to use custom commands in Cypress.
+We recommend using the vscode plugins `jest`, `jest-runner`, and `storybook helper` to manage test runs.
 
 ### Process
 

@@ -1,0 +1,468 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs';
+import { ConfigExample, HookReturnExample, FormPropExample, FormPropArrayExample, BindPropsExample } from './examples';
+
+<Meta title="Form/Form Hooks" />
+
+# useForm()
+
+The Armstrong `useForm()` hook takes either an object or array and returns a simple set of tools which allows data to be edited by the user in a way that's designed to plug directly into your existing React hook dependency and React component structure.
+
+## Contents
+
+- [A simple form](#simple-form)
+- [Tools returned from the hook](#tools)
+- [The formProp function](#formprop)
+- [Validation](#validation)
+- [Child forms](#child-forms)
+
+## <a name="simple-form">A simple form</a>
+
+Below is an example of a really simple login form:
+
+```tsx
+const { formProp, formState } = useForm({
+  email: '',
+  password: '',
+});
+
+const submitData = React.useCallback(async () => {
+  const { email, password } = formState;
+  await login(email, password);
+}, [formState]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Login
+    </Button>
+  </form>
+);
+```
+
+### Initial data vs typings vs both
+
+In the above example, the initial data is supplied as the first argument to the form hook, in this example, the types for `formProp` and `formState` will be derived from the shape of the object passed. In this case:
+
+```
+{
+  email: '',
+  password: '',
+}
+```
+
+The form hook can also received it's type via a generic, with this approach the initial data object becomes optional as the form hook can build the state on the fly, so the above example could have looked like this:
+
+```tsx
+interface ILoginRequest {
+  email: string;
+  password: string;
+}
+
+const { formProp, formState } = useForm<ILoginRequest>();
+
+const submitData = React.useCallback(
+  async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { email, password } = formState;
+    await login(email, password);
+  },
+  [formState]
+);
+
+return (
+  <form onSubmit={submitData}>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <Button type="submit">Login</Button>
+  </form>
+);
+```
+
+With a type supplied, the initial state can either be complete, partial or missing entirely.
+**NOTE:** Bear in mind that with a type based approach, the `formState` object will only contain properties passed in as initial state alongside data added by the user, so you'll need to fill in the gaps and use null checks accordingly.
+
+### Initial data as a callback
+
+Initial state can also be passed as a React callback. The callback will be executed:
+
+1. Once initially with no parameters passed to it, it will be expected to return the initial state for the form binder.
+2. Again each time it's dependencies update, in this case it will receive the current form state as a param and be expected to return updated form state.
+
+This is extremely useful when a form relies on remote data that could update at any time, it allows the form to update with the latest changes from the server without losing the user's current edits by completely replacing the form data with the remote update.
+
+**NOTE:** When using an initial data function, be aware that it will be executed to provide initial data whenever its reference updates. It's essential therefore that any initial data function is a callback with a carefully selected set of dependencies, rather than an anonymous function or constant function.
+
+Here's an example:
+
+```tsx
+// this is data from the server that can be updated at any time.
+const { data } = useGetProfileData<IUser>();
+
+// Using an initial data callback here ensures that when the remote data updates, the form will
+// reflect the changes but also maintain live user edits to the unaffected areas of the form.
+const initialData = React.useCallback((currentFormState?: IUser) => {
+  return {
+    firstName: "",
+    lastName: "",
+    email: ""
+    ...(currentFormState ?? {}),
+    ...(data ?? {})
+  }
+}, [data]);
+
+const { formProp, formState } = useForm(initialData);
+
+const submitData = React.useCallback(async () => {
+  await updateProfile(formState);
+}, [formState]);
+
+return (
+  <form>
+    <TextInput bind={formProp('firstName').bind()} />
+    <TextInput bind={formProp('lastName').bind()} />
+    <EmailInput bind={formProp('email').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Update
+    </Button>
+  </form>
+);
+```
+
+## <a name="formprop">The formProp function</a>
+
+The `formProp` function returned from the `useForm` hook can be used to perform a set of tasks relating to a single form prop.
+
+### Field targeting
+
+Targeting fields within a nested structure is achieved via passing an argument for each level of nesting. For example, take the following object shape:
+
+```typescript
+{
+  firstName: 'Joe',
+  lastName: 'Bloggs',
+  address: {
+    line1: '45 Road Street',
+    line2: '',
+    city: 'Bath',
+    postcode: 'BA7 4FG',
+    location: {
+      lat: 51.378582,
+      long: -2.3568462
+    }
+  },
+  roles: [
+    { id: 1, name: 'admin' },
+    { id: 2, name: 'tester' }
+  ]
+}
+```
+
+This is how some of these properties are targeted using the `formProp` method:
+
+```typescript
+formProp('firstName');
+formProp('address', 'city');
+formProp('address', 'location', 'lat');
+formProp('roles', 0, 'name'); // binding to properties within an array is done via the index
+```
+
+Here's an example of some common array tools in action, this example also shows how form state can be built on the fly with no initial state provided:
+
+```tsx
+const { formProp, formState } = useForm<{ roles: Array<{ name: string }> }>();
+
+return (
+  <form>
+    {formState?.roles?.map((item, index) => (
+      <div key={index}>
+        <TextInput bind={formProp('roles', index, 'name').bind()} />
+        <Button onClick={() => formProp('roles').remove(index)}>Delete Role</Button>
+      </div>
+    ))}
+    <Button onClick={() => formProp('roles').add({ name: '' })}>Add Role</Button>
+  </form>
+);
+```
+
+## <a name="validation">Validation</a>
+
+Validation can be handled in a few different ways. These methods can also be used together, allowing support for server and client side validation together.
+
+- **Hook config validation errors** refers to passing errors into the form via the hook config, this is ideal for errors that are returned from an existing piece of state or API library.
+- **Hook config validation schema** refers to passing a validation schema into the form via the hook config, this is ideal for on the fly client side validation.
+- **Dispatched validation errors** refers to dispatching errors via the functions provided by the form hook, this is ideal for handling client side validation
+
+Regardless of which of these methods you use, validation errors will automatically display underneath the relevant components by matching the `key` attribute of the error to the bound property.
+Here's a simple example of a validation error:
+
+```javascript
+{
+  key: 'email',
+  message: 'Please enter a valid email address'
+}
+```
+
+Validation errors will only display on bindable components that have registered themselves as "touched". This allows for validation to take place as a user progresses through a form if so desired, without messages appearing on fields that have not yet been interacted with.
+
+### Hook config validation errors.
+
+The below example shows the same login form, but with validation errors being returned from an APIHooks processing hook, and passed into the form config. A standard pattern for handling server side validation.
+
+```tsx
+const [
+  login,
+  {
+    errors: { validationErrors },
+  },
+] = useLoginEndpoint();
+
+const { formProp, formState } = useForm(
+  {
+    email: '',
+    password: '',
+  },
+  {
+    validationErrors,
+    validationMode: 'both',
+  }
+);
+
+const submitData = React.useCallback(async () => {
+  const { email, password } = formState;
+  await login(email, password);
+}, [formState]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Login
+    </Button>
+  </form>
+);
+```
+
+### Schema validation errors.
+
+The below example shows the same login form, but with validation being handled by a client side validation schema.
+
+The `useForm` hook uses a type safe wrapper around the [zod](https://zod.dev) validation library.
+
+```tsx
+const [login] = useLoginEndpoint();
+
+const { formProp, formState, validate } = useForm(
+  {
+    email: '',
+    password: '',
+  },
+  {
+    validationMode: 'both',
+    validationSchema: {
+      email: z.string().email('must be a valid email'),
+      password: z.string().minLength(8, 'password too short'),
+    },
+  }
+);
+
+const submitData = React.useCallback(async () => {
+  if (validate()) {
+    const { email, password } = formState;
+    await login(email, password);
+  }
+}, [formState, validate]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Login
+    </Button>
+  </form>
+);
+```
+
+The `validate` method exported by `useForm` will dispatch client side validation errors to any fields that have failed the criteria. By default, the root `validate` function will set all inputs in the form as "touched" so that the form will show all errors when `validate` is called regardless of user interaction. This is usually the desired behaviour if validation is occurring on submit like in the above example, but may not be desirable for an "on the fly" approach to validation.
+
+To disable the "touch all on root validate" behaviour and allow individual form controls to decide whether to show errors, send `false` to the root validate function like so:
+
+```TypeScript
+validate(false);
+```
+
+**NOTE:** Schema validation can also be executed against a single field by using `formProp` like so:
+
+```tsx
+formProp('email').validate();
+```
+
+In a similar way to the root validation method, validating through `formProp` will set the targeted field control as "touched" so that the message will display immediately. This behaviour can be switched off by sending `false` to the function, just like the root validation function.
+
+#### Migrating from a zod schema to a type safe validation schema
+
+To a generated typescript client for the API, it's necessary for zod validation schemas to adhere to an existing type interface rather than creating a new one (which is the usual flow when working with zod.) To ensure proper type safety and intellisense, Armstrong forms uses a slightly different structure to a vanilla zod schema, they key differences are:
+
+- The root object (and nested objects) do **not** need to be wrapped in a `z.object` method.
+- Nested objects contain a `schema` field for child key validators, and an optional `opts` function for applying zod validators to the nested object itself.
+- Nested (and root) arrays contain an `itemSchema` field for the validator to run against each object, and an optional `opts` function for applying zod validators to the nested array itself.
+
+See these two examples of a vanilla zod schema and it's equivalent type safe version:
+
+**Vanilla zod (not compatible with Armstrong forms)**
+
+```javascript
+z.object({
+  field1: z.string(),
+  field2: z.number().max(3, 'too many options selected'),
+  field3: z.boolean(),
+  field4: z.object({
+    nestedField1: z.string(),
+    nestedField2: z.string(),
+    array: z.array(z.string()).min(4, 'not enough options selectee'),
+  }),
+});
+```
+
+**Armstrong forms compatible version**
+
+```tsx
+{
+  field1: z.string(),
+  field2: z.number().max(3, 'too many options selected'),
+  field3: z.boolean(),
+  field4: {
+    schema: {
+      nestedField1: z.string(),
+      nestedField2: z.string(),
+      array: {
+        itemSchema: z.string(),
+        opts: arr => arr.min(4, 'not enough options selectee'),
+      },
+    },
+  },
+}
+```
+
+Although slightly more verbose, the latter provides far more compatibility with TypeScript, which will provide extremely helpful compiler errors following API changes in the future.
+
+### Dispatched validation errors
+
+The below example shows our login form again, but with a password confirmation input and some client side validation:
+
+```tsx
+const { formProp, formState } = useForm({
+  email: '',
+  password: '',
+  passwordConfirmation: '',
+});
+
+const submitData = React.useCallback(async () => {
+  const { email, password, passwordConfirmation } = formState;
+  if (password !== passwordConfirmation) {
+    formProp('passwordConfirmation').addValidationError("Passwords don't match");
+    return;
+  }
+  await login(email, password);
+}, [formState, formProp]);
+
+return (
+  <form>
+    <EmailInput bind={formProp('email').bind()} />
+    <PasswordInput bind={formProp('password').bind()} />
+    <PasswordInput bind={formProp('passwordConfirmation').bind()} />
+    <Button type="submit" onClick={submitData}>
+      Login
+    </Button>
+  </form>
+);
+```
+
+## <a name="child-forms">Child forms</a>
+
+The `useChildForm` hook can be used with a binding prop from a parent form. This allows a single form state to exist across multiple downstream components, let's look at a simple example:
+
+### Without a child form
+
+```tsx
+interface IUserAddress {
+  line1: string;
+  line2: string;
+  city: string;
+  postcode: string;
+}
+
+interface IUser {
+  firstName: string;
+  lastName: string;
+  address: IUserAddress;
+}
+
+const UserForm: React.FunctionComponent = () => {
+  const { formProp } = useForm<IUser>();
+
+  return (
+    <form>
+      <TextInput bind={formProp('firstName').bind()} />
+      <TextInput bind={formProp('lastName').bind()} />
+      <TextInput bind={formProp('address', 'line1').bind()} />
+      <TextInput bind={formProp('address', 'line2').bind()} />
+      <TextInput bind={formProp('address', 'city').bind()} />
+      <TextInput bind={formProp('address', 'postcode').bind()} />
+    </form>
+  );
+};
+```
+
+This example is fine and will work, but lets imagine we wanted to create a separate component for the user's address form snipped so that it could be reused elsewhere, this can be achieved with a child form:
+
+### With a child form
+
+```tsx
+interface IUserAddress {
+  line1: string;
+  line2: string;
+  city: string;
+  postcode: string;
+}
+
+interface IUser {
+  firstName: string;
+  lastName: string;
+  address: IUserAddress;
+}
+
+/** Parent form component */
+const UserForm: React.FC = () => {
+  const { formProp } = useForm<IUser>();
+
+  return (
+    <form>
+      <TextInput bind={formProp('firstName').bind()} />
+      <TextInput bind={formProp('lastName').bind()} />
+      <UserAddressForm bind={formProp('address').bind()} />
+    </form>
+  );
+};
+
+interface IUserAddressFormProps {
+  bind: Form.IBindingProps<IUserAddress>;
+}
+
+/** Reusable address form snippet component */
+const UserAddressForm: React.FC<IUserAddressFormProps> = props => {
+  const { formProp } = useForm(props.bind);
+
+  return (
+    <>
+      <TextInput bind={formProp('line1').bind()} />
+      <TextInput bind={formProp('line2').bind()} />
+      <TextInput bind={formProp('city').bind()} />
+      <TextInput bind={formProp('postcode').bind()} />
+    </>
+  );
+};
+```

@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/useBoundingClientRect" />
+
+### useBoundingClientRect
+
+Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
+
+```tsx
+const contentRef = React.useRef<HTMLDivElement>(null);
+
+const [{ height, width, bottom, left, right, top, x, y }] = useBoundingClientRect(contentRef);
+
+return <div ref={contentRef} />;
+```

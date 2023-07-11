@@ -1,140 +1,173 @@
+import * as RadixSlider from '@radix-ui/react-slider';
 import * as React from 'react';
 
-import { Form, IInputWrapperProps, ValidationErrors } from '../..';
-import { IBindingProps } from '../../hooks/form';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { ClassNames } from '../../utils/classNames';
-import { Maths } from '../../utils/maths';
-import { Icon, IconSet, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
-import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
+import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
+import { Label } from '../label/label.component';
+import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
+import { IValidationErrorsProps, ValidationErrors } from '../validationErrors/validationErrors.component';
 
-export interface IRangeInputProps<TBind extends NullOrUndefined<number>>
-  extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'min' | 'max' | 'value'>,
-    IIconWrapperProps<IconSet, IconSet>,
-    IStatusWrapperProps,
-    Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages'> {
-  /**  prop for binding to an Armstrong form binder (see forms documentation) */
-  bind?: IBindingProps<TBind>;
+import './rangeInput.theme.css';
 
-  /** called when the value is updated after an on change event */
-  onValueChange?: (newValue: TBind) => void;
+export interface IRangeInputProps<TData extends NullOrUndefined<number>>
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'type' | 'checked' | 'onChange' | 'ref' | 'dir' | 'defaultValue'>,
+    Omit<IValidationErrorsProps, 'validationErrors' | 'scrollIntoView'> {
+  /** (Optional) An IBindingProps<TData> object to bind the checkbox input to a form. */
+  bind?: IBindingProps<TData>;
 
-  /** the current value of the range input */
-  value?: TBind;
+  /** (Optional) A TData value representing the value of the input. */
+  value?: TData;
 
-  /** the minimum bindable value */
-  minimum: number;
+  /** (Optional) A custom JSX.Element for the thumb of the slider. */
+  customThumb?: JSX.Element;
 
-  /** the minimum bindable value */
-  maximum: number;
+  /** (Optional) A boolean flag to disable the checkbox input. */
+  disabled?: boolean;
 
-  /** the icon the render on the handle */
-  handleIcon?: IIcon<IconSet>;
+  /** Indicates if field must be used to submit form */
+  required?: boolean;
+
+  /** Symbol to use as the required indicator on the label, defaults to "*" */
+  requiredIndicator?: React.ReactNode;
+
+  /** (Optional) A React.ReactNode to display a label for the checkbox input. */
+  label?: React.ReactNode;
+
+  /** (Optional) Class name for the label component */
+  labelClassName?: string;
+
+  /** (Optional) Id to use for the checkbox. Falls back to React ID if not provided */
+  labelId?: string;
+
+  /** (Optional) A callback function (newValue: TData) => void to handle state when value is changed. */
+  onChange?: (newValue: TData) => void;
+
+  /** (Optional) Class name to use for the status wrapper */
+  statusClassName?: string;
+
+  /** (Optional) Class name for the validation errors */
+  validationErrorsClassName?: string;
+
+  /** (Optional) Can be a string or {key, element} key is necessary for animating in new messages   */
+  validationErrorMessages?: ValidationMessage[];
+
+  /** (Optional) A boolean flag to automatically scroll validation error messages into view. */
+  scrollValidationErrorsIntoView?: boolean;
+
+  /** which size variant to use */
+  displaySize?: DisplaySize;
+
+  /** The minimum value, defaults to `0` */
+  min?: number;
+
+  /** The maximum value, defaults to `100` */
+  max?: number;
+
+  /** How big should the increments be on the slider. defaults to `1` */
+  step?: number;
 }
 
-/** Render a range input where the visuals are recreated using DOM */
-export const RangeInput = React.forwardRef(
-  <TBind extends NullOrUndefined<number>>(
+export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<NullOrUndefined<number>>>(
+  (
     {
-      onValueChange,
-      value,
-      validationErrorMessages,
-      validationMode,
-      errorIcon,
-      scrollValidationErrorsIntoView,
-      className,
-      minimum,
-      onChange,
-      maximum,
-      step,
       bind,
-      leftIcon,
-      rightIcon,
-      handleIcon,
-      pending,
-      statusPosition,
-      error,
+      className,
       disabled,
-      ...nativeProps
-    }: IRangeInputProps<TBind>,
-    ref: React.ForwardedRef<HTMLInputElement>
-  ) => {
-    const [boundValue, setBoundValue, bindConfig] = Form.useBindingState(bind, {
-      value,
-      onChange: onValueChange,
+      onChange,
+      label,
+      labelClassName,
+      labelId,
+      scrollValidationErrorsIntoView,
+      statusClassName,
+      validationErrorsClassName,
       validationErrorMessages,
+      displaySize,
+      min,
+      max,
+      value,
       validationMode,
-      validationErrorIcon: errorIcon,
+      step,
+      required,
+      customThumb,
+      requiredIndicator,
+      ...nativeProps
+    },
+    ref
+  ) => {
+    const globals = useArmstrongConfig({
+      scrollValidationErrorsIntoView,
+      validationMode,
+      inputDisplaySize: displaySize,
+      requiredIndicator,
     });
 
-    const currentPercent = React.useMemo(() => Maths.getPercent((boundValue ?? 0) - minimum, maximum - minimum), [boundValue, minimum, maximum]);
+    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+      value,
+      onChange,
+      validationErrorMessages,
+      validationMode: globals.validationMode,
+    });
 
-    const onChangeEvent = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        onChange?.(event);
-        const newValue = event.currentTarget.valueAsNumber;
-        setBoundValue?.(newValue as TBind);
-      },
-      [onChange]
-    );
+    const generatedLabelId = React.useId();
+    const finalLabelId = labelId ?? generatedLabelId;
 
     return (
-      <>
-        <div
-          className={ClassNames.concat('arm-range-input', className)}
-          style={
-            {
-              '--arm-range-input-percent': `${currentPercent}%`,
-              '--arm-range-input-value': boundValue,
-              '--arm-range-input-minimum': minimum,
-              '--arm-range-input-maximum': maximum,
-            } as React.CSSProperties
-          }
-          data-disabled={disabled}
-          data-pending={pending}
-        >
-          <StatusWrapper
-            error={error}
-            statusPosition={statusPosition}
-            errorIcon={bindConfig.validationErrorIcon}
-            validationErrorMessages={bindConfig.validationErrorMessages}
-            validationMode={bindConfig.validationMode}
-            pending={pending}
+      <StatusWrapper
+        className={concat(statusClassName, 'arm-range-input-base')}
+        validationMode={bindConfig.validationMode}
+        errorIcon={bindConfig.validationErrorIcon}
+      >
+        {label && (
+          <Label
+            id={finalLabelId}
+            className={concat('arm-range-input-label', labelClassName)}
+            data-disabled={disabled}
+            required={required}
+            displaySize={globals.inputDisplaySize}
+            requiredIndicator={globals.requiredIndicator}
           >
-            <IconWrapper leftIcon={leftIcon} rightIcon={rightIcon}>
-              <div className="arm-range-input-track">
-                <input
-                  className="arm-range-input-input"
-                  {...nativeProps}
-                  ref={ref}
-                  type="range"
-                  min={minimum}
-                  max={maximum}
-                  step={step}
-                  value={boundValue || (bind && minimum)}
-                  onChange={onChangeEvent}
-                  disabled={disabled || pending}
-                />
-
-                <div className="arm-range-input-track-inner" />
-                <div className="arm-range-input-handle">{handleIcon && <Icon iconSet={handleIcon.iconSet} icon={handleIcon.icon} />}</div>
-              </div>
-            </IconWrapper>
-          </StatusWrapper>
-        </div>
-
-        {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+            {label}
+          </Label>
+        )}
+        <RadixSlider.Root
+          className={concat(className, 'arm-range-input-root')}
+          {...nativeProps}
+          max={max}
+          min={min}
+          step={step}
+          ref={ref}
+          disabled={disabled}
+          data-size={globals.inputDisplaySize}
+          aria-labelledby={finalLabelId}
+          value={boundValue ? [boundValue] : undefined}
+          onValueChange={v => setBoundValue(v?.[0])}
+        >
+          <RadixSlider.Track className="arm-range-input-track">
+            <RadixSlider.Range className="arm-range-input-range" />
+          </RadixSlider.Track>
+          <RadixSlider.Thumb
+            className="arm-range-input-thumb"
+            aria-label={typeof label === 'string' ? label : undefined}
+          >
+            {customThumb}
+          </RadixSlider.Thumb>
+        </RadixSlider.Root>
+        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
           <ValidationErrors
-            validationErrors={validationErrorMessages}
-            icon={bindConfig.validationErrorIcon}
-            scrollIntoView={scrollValidationErrorsIntoView}
+            className={validationErrorsClassName}
+            validationMode={globals.validationMode}
+            validationErrors={bindConfig.validationErrorMessages}
+            scrollIntoView={globals.scrollValidationErrorsIntoView}
           />
         )}
-      </>
+      </StatusWrapper>
     );
   }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<number>>(props: ArmstrongVFCProps<IRangeInputProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IRangeInputProps<any>>;
+) as (<TBind extends NullOrUndefined<number>>(
+  props: ArmstrongFCProps<IRangeInputProps<TBind>, HTMLInputElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IRangeInputProps<NullOrUndefined<number>>>;
+
+RangeInput.displayName = 'RangeInput';

@@ -1,22 +1,32 @@
-import { Arrays } from './arrays';
+import {
+  arrayToArrayDictionary,
+  arrayToArraysByKey,
+  arrayToDictionary,
+  findLastIndex,
+  flatten,
+  getAtOverallIndex,
+  getOverallIndex,
+  reIndex,
+  repeat,
+} from './arrays';
 
 describe('Array utils', () => {
-  it('flatten - Convert an array of arrays into a single array', () => {
+  it('converts an array of arrays into a single array using flatten', () => {
     const array1 = ['a', 'b'];
     const array2 = ['c', 'd'];
 
-    const result = Arrays.flatten(array1, array2);
+    const result = flatten(array1, array2);
 
     expect(result).toEqual(['a', 'b', 'c', 'd']);
   });
 
-  it('arrayToDictionary - Turn an array into a dictionary of items in that array by a given key', () => {
+  it('turns an array into a dictionary of items in that array by a given key using arrayToDictionary', () => {
     const things = [
       { id: 'a', name: 'thing' },
       { id: 'b', name: 'otherThing' },
     ];
 
-    const result = Arrays.arrayToDictionary(things, 'id');
+    const result = arrayToDictionary(things, 'id');
 
     expect(result).toEqual({
       a: { id: 'a', name: 'thing' },
@@ -24,14 +34,14 @@ describe('Array utils', () => {
     });
   });
 
-  it('arrayToArrayDictionary - Sort an array into a dictionary of arrays keyed by a value to sort on', () => {
+  it('sorts an array into a dictionary of arrays keyed by a value to sort on using arrayToDictionary', () => {
     const things = [
       { type: 'plant', name: 'rose' },
       { type: 'plant', name: 'tree' },
       { type: 'animal', name: 'cat' },
     ];
 
-    const result = Arrays.arrayToArrayDictionary(things, (item) => item.type);
+    const result = arrayToArrayDictionary(things, item => item.type);
 
     expect(result).toEqual({
       plant: [
@@ -42,14 +52,14 @@ describe('Array utils', () => {
     });
   });
 
-  it('arrayToArraysByKey - converts an array of objects to a set of nested arrays', () => {
+  it('converts an array of objects to a set of nested arrays usign arrayToArraysByKey', () => {
     const things = [
       { type: 'plant', name: 'rose' },
       { type: 'plant', name: 'tree' },
       { type: 'animal', name: 'cat' },
     ];
 
-    const result = Arrays.arrayToArraysByKey(things, (item) => item.type);
+    const result = arrayToArraysByKey(things, item => item.type);
 
     expect(result).toEqual([
       {
@@ -66,24 +76,24 @@ describe('Array utils', () => {
     ]);
   });
 
-  it('findLastIndex - Returns the index of the last item in the array where the callback returns true', () => {
+  it('returns the index of the last item in the array where the callback returns true using findLastIndex', () => {
     const array = ['a', 'a', 'b'];
 
-    const result = Arrays.findLastIndex(array, (item) => item === 'a');
+    const result = findLastIndex(array, item => item === 'a');
 
-    expect(result).toEqual(1);
+    expect(result).toBe(1);
   });
 
-  it('reIndex - Re-indexes an array from a specific index point', () => {
+  it('re-indexes an array from a specific index point using reIndex', () => {
     const array = ['a', 'b', 'c'];
 
-    const result = Arrays.reIndex(array, 1);
+    const result = reIndex(array, 1);
 
     expect(result).toEqual(['b', 'c', 'a']);
   });
 
-  it('repeat - maps the result of an index function the specified number of times', () => {
-    const result = Arrays.repeat(5, (index) => index * 2);
+  it('maps the result of an index function the specified number of times using repeat', () => {
+    const result = repeat(5, index => index * 2);
 
     // result
     expect(result).toEqual([0, 2, 4, 6, 8]);
@@ -91,19 +101,19 @@ describe('Array utils', () => {
 });
 
 describe('Nested array utils', () => {
-  it('getArrayIndex - find an overall index for an item in a nested set of array objects', () => {
+  it('finds an overall index for an item in a nested set of array objects using getArrayIndex', () => {
     const arrays = [{ items: ['a', 'b', 'c'] }, { items: ['d', 'e', 'f'] }, { items: ['g', 'h', 'i'] }];
 
-    const result = Arrays.NestedArrays.getOverallIndex(1, 1, arrays);
+    const result = getOverallIndex(1, 1, arrays);
 
-    expect(result).toEqual(4);
+    expect(result).toBe(4);
   });
 
-  it('getAtIndex - get the item at a specified overall index in a nested set of arrays', () => {
+  it('gets the item at a specified overall index in a nested set of arrays using getAtIndex', () => {
     const arrays = [{ items: ['a', 'b', 'c'] }, { items: ['d', 'e', 'f'] }, { items: ['g', 'h', 'i'] }];
 
-    const result = Arrays.NestedArrays.getAtOverallIndex(5, arrays);
+    const result = getAtOverallIndex(5, arrays);
 
-    expect(result).toEqual('f');
+    expect(result).toBe('f');
   });
 });

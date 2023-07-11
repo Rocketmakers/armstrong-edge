@@ -1,20 +1,61 @@
+import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { within } from '@storybook/testing-library';
 import * as React from 'react';
+import { BiMinusCircle } from 'react-icons/bi';
 
-import { StoryUtils } from '../../stories/storyUtils';
-import { IconUtils } from '../icon';
 import { Spinner } from './spinner.component';
 
 /** metadata */
 
-export default StoryUtils.createMeta(Spinner, 'Display', 'Spinner', {});
+export default {
+  title: 'Components/Spinner',
+  component: Spinner,
+} as Meta<typeof Spinner>;
 
 /** component template */
 
-const Template = StoryUtils.createTemplate(Spinner);
+const Template: StoryObj<typeof Spinner> = {
+  render: props => <Spinner {...props} />,
+};
 
 /** stories */
 
-export const Default = StoryUtils.cloneTemplate(Template, {});
-export const CustomIcon = StoryUtils.cloneTemplate(Template, { icon: IconUtils.getIconDefinition('Icomoon', 'spinner9') });
-export const CustomJSX = StoryUtils.cloneTemplate(Template, { children: <p>I'm a loader</p> });
-export const Label = StoryUtils.cloneTemplate(Template, { label: 'Loading the goods...' });
+export const Default: StoryObj<typeof Spinner> = {
+  ...Template,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
+
+    expect(spinner).toBeInTheDocument();
+  },
+};
+
+export const CustomIcon: StoryObj<typeof Spinner> = {
+  ...Template,
+  args: {
+    icon: <BiMinusCircle />,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
+
+    expect(spinner).toBeInTheDocument();
+  },
+};
+
+export const Labelled: StoryObj<typeof Spinner> = {
+  ...Template,
+  args: {
+    label: 'Loading...',
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
+
+    expect(spinner).toBeInTheDocument();
+
+    const label = canvas.getByText(args.label as string);
+    expect(label).toBeVisible();
+  },
+};

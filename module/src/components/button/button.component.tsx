@@ -1,119 +1,104 @@
 import * as React from 'react';
 
-import { ValidationMessage } from '../../hooks/form';
-import { ClassNames } from '../../utils/classNames';
-import { IconSet, IconUtils, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
-import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
-import { ValidationErrors } from '../validationErrors';
+import { DisplaySize } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
+import { Spinner } from '../spinner/spinner.component';
 
-type ButtonHTMLProps = Omit<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'ref'>;
+import './button.theme.css';
 
-export type IButtonCoreProps = IIconWrapperProps<IconSet, IconSet> &
-  IStatusWrapperProps & {
-    /** CSS className property */
-    className?: string;
+type ButtonHTMLProps = Omit<
+  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
+  'ref'
+>;
 
-    /** array of validation errors to render */
-    validationErrorMessages?: ValidationMessage[];
+export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank';
+export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info';
 
-    /** the icon to use for validation errors */
-    errorIcon?: IIcon<IconSet>;
+export interface IButtonProps extends ButtonHTMLProps {
+  /** CSS className property */
+  className?: string;
 
-    /** show a spinner and disable */
-    pending?: boolean;
+  /** show a spinner and disable */
+  pending?: boolean;
 
-    /** hide the icon on the same side as the status if there is an active status - defaults to true */
-    hideIconOnStatus?: boolean;
+  /** show a spinner and disable */
+  pendingPosition?: 'left' | 'right';
 
-    /** disable use */
-    disabled?: boolean;
+  /** when pending is true should also disable the input */
+  disableOnPending?: boolean;
 
-    /** don't style beyond removing the default css styling */
-    minimalStyle?: boolean;
+  /** disable use */
+  disabled?: boolean;
 
-    /** identifier for driving this component with Cypress */
-    cypressTag?: string;
-  };
+  /** which style variant to use */
+  displayStyle?: ButtonDisplayStyle;
 
-export type IButtonProps = IButtonCoreProps & ButtonHTMLProps;
+  /** which size variant to use */
+  displaySize?: DisplaySize;
 
-/** Renders the inside of a button, for use in altering the tag used for the wrapper */
-export const ButtonInner: React.FC<React.PropsWithChildren<IButtonCoreProps>> = ({
-  validationErrorMessages,
-  errorIcon,
-  pending,
-  error,
-  leftIcon,
-  rightIcon,
-  children,
-  statusPosition,
-  hideIconOnStatus,
-}) => {
-  const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
+  /** which status variant to use */
+  displayStatus?: ButtonDisplayStatus;
 
-  const showLeftIcon = statusPosition !== 'left' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
-  const showRightIcon = statusPosition !== 'right' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+  /** icon definition for left icon, optionally uses custom JSX */
+  leftOverlay?: JSX.Element;
 
-  return (
-    <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
-      <StatusWrapper
-        pending={pending}
-        errorIcon={errorIcon}
-        statusPosition={statusPosition}
-        error={error}
-        validationErrorMessages={validationErrorMessages}
-      >
-        {typeof children === 'string' || typeof children === 'number' ? <span>{children}</span> : children}
-      </StatusWrapper>
-    </IconWrapper>
-  );
-};
+  /** icon definition for right icon, optionally uses custom JSX */
+  rightOverlay?: JSX.Element;
+}
 
 /** Renders an HTML button element with some useful additions */
 export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IButtonProps>>((props, ref) => {
   const {
     className,
     disabled,
-    minimalStyle,
-    validationErrorMessages,
-    error,
-    errorIcon,
+    displayStyle,
+    displaySize,
+    displayStatus,
     pending,
-    leftIcon,
-    rightIcon,
+    pendingPosition,
+    disableOnPending,
+    leftOverlay,
+    rightOverlay,
     children,
-    statusPosition,
-    hideIconOnStatus,
-    cypressTag,
     ...nativeProps
   } = props;
 
-  const shouldShowErrorIcon = !!validationErrorMessages?.length || error;
+  const globals = useArmstrongConfig({
+    buttonDisplaySize: displaySize,
+    buttonDisplayStyle: displayStyle,
+    buttonPendingPosition: pendingPosition,
+    disableControlOnPending: disableOnPending,
+  });
+
+  const spinner = (
+    <Spinner className={concat('arm-button-spinner', `arm-button-${pendingPosition}-icon`)} role="status" />
+  );
+  const wrappedLeftIcon = leftOverlay && <span className="arm-button-left-icon">{leftOverlay}</span>;
+  const wrappedRightIcon = rightOverlay && <span className="arm-button-right-icon">{rightOverlay}</span>;
 
   return (
-    <>
-      <button
-        className={ClassNames.concat(minimalStyle ? 'arm-button-minimal' : 'arm-button', className)}
-        data-pending={pending}
-        data-disabled={disabled || pending}
-        data-error={shouldShowErrorIcon}
-        disabled={disabled || pending}
-        tabIndex={disabled ? -1 : nativeProps.tabIndex}
-        ref={ref}
-        data-cy={cypressTag}
-        {...nativeProps}
-      >
-        <ButtonInner {...props} />
-      </button>
-
-      {!!validationErrorMessages?.length && <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} />}
-    </>
+    <button
+      className={concat('arm-button', className)}
+      data-pending={pending}
+      data-disabled={disabled || (globals.disableControlOnPending && pending)}
+      data-size={globals.buttonDisplaySize}
+      data-style={globals.buttonDisplayStyle}
+      data-status={displayStatus}
+      disabled={disabled || pending}
+      tabIndex={disabled ? -1 : nativeProps.tabIndex}
+      ref={ref}
+      {...nativeProps}
+    >
+      {pending && globals.buttonPendingPosition === 'left' ? spinner : wrappedLeftIcon}
+      <span className="arm-button-contents">{children}</span>
+      {pending && globals.buttonPendingPosition === 'right' ? spinner : wrappedRightIcon}
+    </button>
   );
 });
 
 Button.defaultProps = {
-  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
-  statusPosition: 'right',
-  hideIconOnStatus: true,
+  pendingPosition: 'right',
 };
+
+Button.displayName = 'Button';

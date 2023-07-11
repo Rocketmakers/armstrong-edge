@@ -1,31 +1,18 @@
 import * as React from 'react';
 
-import { FormValidationMode, ValidationMessage } from '../../hooks/form';
-import { ClassNames } from '../../utils/classNames';
-import { AutoResizer } from '../autoResizer';
-import { IconSet, IconUtils, IIcon } from '../icon';
-import { IconWrapper, IIconWrapperProps } from '../iconWrapper';
+import { ValidationMessage } from '../../form';
+import { DisplaySize } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
+import { Label } from '../label';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
 
-export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet>, IStatusWrapperProps {
-  /** CSS className property */
-  className?: string;
+import './inputWrapper.theme.css';
 
-  /** text to overlay to the left of the input */
-  leftOverlay?: React.ReactNode;
-
-  /** text to overlay to the right of the input */
-  rightOverlay?: React.ReactNode;
-
+export interface IInputWrapperProps extends IStatusWrapperProps {
   /** array of validation errors to render */
   validationErrorMessages?: ValidationMessage[];
-
-  /** how to render the validation errors */
-  validationMode?: FormValidationMode;
-
-  /** the icon to use for validation errors */
-  errorIcon?: IIcon<IconSet>;
 
   /** disable use */
   disabled?: boolean;
@@ -33,20 +20,41 @@ export interface IInputWrapperProps extends IIconWrapperProps<IconSet, IconSet>,
   /** hide the icon on the given side if there is an active status - defaults to true */
   hideIconOnStatus?: boolean;
 
-  /** content to render above the actual input */
-  above?: JSX.Element;
-
-  /** content to render below the actual input */
-  below?: JSX.Element;
-
-  /** fired when the user clicks on the div */
-  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
-
   /** when pending is true should also disable the input */
   disableOnPending?: boolean;
 
   /** will scroll the validation errors into view when the length of validationErrors changes */
   scrollValidationErrorsIntoView?: boolean;
+
+  /** Content to show on the left of the input */
+  leftOverlay?: React.ReactNode;
+
+  /** Content to show on the right of the input */
+  rightOverlay?: React.ReactNode;
+
+  /** Class name for the status component */
+  statusClassName?: string;
+
+  /** Class name for the validation errors component */
+  validationErrorsClassName?: string;
+
+  /** Class name for the label component */
+  labelClassName?: string;
+
+  /** Optional ID for the label element */
+  labelId?: string;
+
+  /** Some optional label content */
+  label?: React.ReactNode;
+
+  /** Should the label show a required indicator? */
+  required?: boolean;
+
+  /** Symbol to use as the required indicator on the label, defaults to "*" */
+  requiredIndicator?: React.ReactNode;
+
+  /** which size variant to use */
+  displaySize?: DisplaySize;
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
@@ -55,8 +63,6 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
     {
       className,
       children,
-      leftIcon,
-      rightIcon,
       leftOverlay,
       rightOverlay,
       validationMode,
@@ -67,81 +73,106 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChil
       error,
       statusPosition,
       hideIconOnStatus,
-      above,
-      below,
-      onClick,
       disableOnPending,
       scrollValidationErrorsIntoView,
+      statusClassName,
+      validationErrorsClassName,
+      label,
+      required,
+      requiredIndicator,
+      labelClassName,
+      labelId,
+      displaySize,
       ...nativeProps
     },
     ref
   ) => {
-    const shouldShowValidationErrorsList = validationMode === 'both' || validationMode === 'message';
-    const shouldShowErrorIcon = (!!validationErrorMessages?.length && (validationMode === 'both' || validationMode === 'icon')) || error;
+    const globals = useArmstrongConfig({
+      validationMode,
+      hideInputErrorIconOnStatus: hideIconOnStatus,
+      disableControlOnPending: disableOnPending,
+      requiredIndicator,
+      scrollValidationErrorsIntoView,
+      inputStatusPosition: statusPosition,
+      validationErrorIcon: errorIcon,
+      inputDisplaySize: displaySize,
+    });
 
-    const showLeftIcon = statusPosition !== 'left' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
-    const showRightIcon = statusPosition !== 'right' || !hideIconOnStatus || (!pending && !shouldShowErrorIcon);
+    const shouldShowValidationErrorsList = globals.validationMode === 'both' || globals.validationMode === 'message';
+    const shouldShowErrorIcon =
+      (!!validationErrorMessages?.length && (globals.validationMode === 'both' || globals.validationMode === 'icon')) ||
+      error;
+
+    const showLeftOverlay =
+      leftOverlay &&
+      (globals.inputStatusPosition !== 'left' ||
+        !globals.hideInputErrorIconOnStatus ||
+        (!pending && !shouldShowErrorIcon));
+
+    const showRightOverlay =
+      rightOverlay &&
+      (globals.inputStatusPosition !== 'right' ||
+        !globals.hideInputErrorIconOnStatus ||
+        (!pending && !shouldShowErrorIcon));
 
     return (
       <>
         <div
           ref={ref}
-          className={ClassNames.concat('arm-input', 'arm-input-wrapper', className)}
-          data-disabled={disabled || (pending && disableOnPending)}
-          data-error={error || !!validationErrorMessages?.length}
-          onClick={onClick}
+          className={concat('arm-input', 'arm-input-wrapper', className)}
+          data-disabled={disabled || (pending && globals.disableControlOnPending) ? true : undefined}
+          data-error={error || !!validationErrorMessages?.length ? true : undefined}
+          data-left-overlay={
+            showLeftOverlay || (globals.inputStatusPosition === 'left' && (shouldShowErrorIcon || pending))
+              ? true
+              : undefined
+          }
+          data-right-overlay={
+            showRightOverlay || (globals.inputStatusPosition === 'right' && (shouldShowErrorIcon || pending))
+              ? true
+              : undefined
+          }
           {...nativeProps}
         >
-          {above && (
-            <AutoResizer className="arm-input-wrapper-above" resizeHorizontal={false}>
-              {above}
-            </AutoResizer>
+          {label && (
+            <Label
+              className={concat('arm-input-base-label', labelClassName)}
+              required={required}
+              requiredIndicator={globals.requiredIndicator}
+              htmlFor={labelId}
+              displaySize={globals.inputDisplaySize}
+            >
+              {label}
+            </Label>
           )}
-
           <div className="arm-input-inner">
             <StatusWrapper
-              error={error}
+              error={error || !!validationErrorMessages?.length}
               pending={pending}
-              statusPosition={statusPosition}
-              errorIcon={errorIcon}
-              validationErrorMessages={validationErrorMessages}
-              validationMode={validationMode}
+              statusPosition={globals.inputStatusPosition}
+              errorIcon={globals.validationErrorIcon}
+              validationMode={globals.validationMode}
+              className={statusClassName}
             >
-              <IconWrapper leftIcon={showLeftIcon ? leftIcon : undefined} rightIcon={showRightIcon ? rightIcon : undefined}>
-                {leftOverlay && (
-                  <div className="arm-input-overlay arm-input-overlay-left">
-                    {typeof leftOverlay === 'string' ? <p className="arm-input-overlay-text">{leftOverlay}</p> : leftOverlay}
-                  </div>
-                )}
+              <>
+                {showLeftOverlay && <div className="arm-input-overlay arm-input-overlay-left">{leftOverlay}</div>}
                 {children}
-                {rightOverlay && (
-                  <div className="arm-input-overlay arm-input-overlay-right">
-                    {typeof rightOverlay === 'string' ? <p className="arm-input-overlay-text">{rightOverlay}</p> : rightOverlay}
-                  </div>
-                )}
-              </IconWrapper>
+                {showRightOverlay && <div className="arm-input-overlay arm-input-overlay-right">{rightOverlay}</div>}
+              </>
             </StatusWrapper>
           </div>
-
-          {below && (
-            <AutoResizer className="arm-input-wrapper-below" resizeHorizontal={false}>
-              {below}
-            </AutoResizer>
+          {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (
+            <ValidationErrors
+              className={validationErrorsClassName}
+              validationMode={globals.validationMode}
+              validationErrors={validationErrorMessages}
+              scrollIntoView={globals.scrollValidationErrorsIntoView}
+            />
           )}
         </div>
-
-        {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (
-          <ValidationErrors validationErrors={validationErrorMessages} icon={errorIcon} scrollIntoView={scrollValidationErrorsIntoView} />
-        )}
       </>
     );
   }
 );
 
-InputWrapper.defaultProps = {
-  validationMode: 'both',
-  errorIcon: IconUtils.getIconDefinition('Icomoon', 'warning'),
-  statusPosition: 'right',
-  hideIconOnStatus: true,
-  disableOnPending: true,
-};
+InputWrapper.displayName = 'InputWrapper';

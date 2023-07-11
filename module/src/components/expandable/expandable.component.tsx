@@ -1,33 +1,48 @@
 import * as React from 'react';
 
-import { ClassNames } from '../../utils/classNames';
-import { AutoResizer } from '../autoResizer/autoResizer.component';
+import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
+import { concat } from '../../utils/classNames';
+
+import './expandable.theme.css';
 
 export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
   /** is the expandable region open, if false will take up no space */
   isOpen?: boolean;
 
-  /** which direction should the children open */
-  direction?: 'vertical' | 'horizontal';
+  /** Should animate the height expansion */
+  animate?: boolean;
 }
 
-/** A div which expands to fit its children when isOpen is true, otherwise it takes up no space - can work horizontally or vertically */
+/** A div which will automatically resize depending on the size of its children */
 export const Expandable = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IExpandableProps>>(
-  ({ isOpen, className, direction, ...nativeProps }, forwardedRef) => {
+  ({ className, children, style, animate, isOpen, ...nativeProps }, ref) => {
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    const [{ height }] = useBoundingClientRect(contentRef);
+
     return (
-      <AutoResizer
+      <div
         {...nativeProps}
-        ref={forwardedRef}
-        tabIndex={isOpen ? undefined : -1}
-        aria-hidden={!isOpen}
-        className={ClassNames.concat('arm-expandable', className)}
-        data-direction={direction}
+        className={concat('arm-expandable', className)}
+        style={
+          {
+            ...(animate ? { '--arm-expandable-height': `${height}px` } : {}),
+            ...(style || {}),
+          } as React.CSSProperties
+        }
+        data-animate={!!animate}
         data-is-open={!!isOpen}
-      />
+        ref={ref}
+      >
+        <div ref={contentRef} className="arm-expandable-content">
+          {children}
+        </div>
+      </div>
     );
   }
 );
 
+Expandable.displayName = 'Expandable';
+
 Expandable.defaultProps = {
-  direction: 'vertical',
+  animate: true,
 };

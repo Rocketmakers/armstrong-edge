@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/useSSRLayoutEffect" />
+
+### useSSRLayoutEffect
+
+A version of React's `useLayoutEffect` that falls back to a `useEffect` on the server. The code in the effect won't run on the server so watch out for that, but it will at least supress the warning.
+
+```tsx
+useSSRLayoutEffect(() => {
+  // do something that needs a layout effect on the client but doesn't need to run on the server.
+}, []);
+```
+
+### useDidUpdateSSRLayoutEffect
+
+A "did update" version of React's `useLayoutEffect` that falls back to a `useEffect` on the server. The code in the effect won't run on the server so watch out for that, but it will at least supress the warning. This won't run on first render on the client.
+
+```tsx
+useDidUpdateSSRLayoutEffect(() => {
+  // do something that needs a layout effect on the client, doesn't need to run on the server, and shouldn't run first render.
+}, []);
+```

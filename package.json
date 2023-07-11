@@ -1,45 +1,27 @@
 {
-  "name": "@rocketmakers/armstrong-edge",
-  "version": "0.0.1",
-  "description": "Initial stating project for the 2021 Armstrong rewrite. Will be integrated into the Armstrong repo.",
+  "name": "@rocketmakers/armstrong-root",
+  "version": "3.0.0",
+  "description": "Rocketmakers React component library",
   "main": "index.js",
-  "directories": {
-    "example": "examples"
-  },
-  "scripts": {
-    "start-playground": "(cd playground && npm start)",
-    "start": "npm-run-all start-playground watch-build-module",
-    "test": "(cd module && npm run test)",
-    "jest-vscode-runner": "(cd module && npm run jest-vscode-runner)",
-    "postinstall": "(cd module && npm i) && (cd playground && npm i) && npm run link-module",
-    "build-module": "(cd module && npm run build)",
-    "link-module": "npm run build-module && (cd module && npm run link) && (cd playground && npm run link-module)",
-    "watch-build-module": "watch 'npm run build-module' ./module/src",
-    "check-versions": "ncu && (cd module && ncu) && (cd playground && ncu)",
-    "upgrade-all": "ncu -u && (cd module && ncu -u) && (cd playground && ncu -u) && npm i",
-    "storybook": "(cd module && npm run storybook)",
-    "build-storybook": "(cd module && npm run build-storybook)",
-    "lint": "(cd module && npm run lint && npm run lint-scss)"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rocketmakers/armstrong-rewrite.git"
+    "url": "https://github.com/Rocketmakers/armstrong-edge.git"
   },
   "author": "developers@rocketmakers.com",
   "license": "MIT",
-  "devDependencies": {
-    "commitizen": "^4.2.4",
-    "cz-customizable": "^6.3.0",
-    "husky": "^4.3.8",
-    "npm-check-updates": "^11.5.13",
-    "npm-run-all": "^4.1.5",
-    "standard-version": "^9.3.0",
-    "watch": "^1.0.2"
+  "scripts": {
+    "setup": "asdf install && npm i && (cd module-new && npm i --legacy-peer-deps)",
+    "test": "(cd module-new && npm test)",
+    "prepare": "husky install",
+    "storybook": "(cd module && npm run storybook)",
+    "test-storybook": "(cd module && npm run test-storybook)",
+    "watch-scss": "(cd module && ts-node ./_build/scss/watch.ts)"
   },
-  "husky": {
-    "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
-    }
+  "devDependencies": {
+    "commitizen": "4.3.0",
+    "cz-customizable": "7.0.0",
+    "husky": "8.0.3",
+    "watch": "1.0.2"
   },
   "config": {
     "cz-customizable": {

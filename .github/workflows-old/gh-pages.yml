@@ -1,0 +1,33 @@
+name: Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Set Node.js version and cache Storybook modules
+        uses: actions/setup-node@master
+        id: cache-storybook-node-modules
+        with:
+          node-version-file: ".tool-versions"
+          cache: "npm"
+          cache-dependency-path: "module/package-lock.json"
+
+      - name: npm install
+        if: steps.cache-storybook-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Build Storybook
+        run: (cd module && npm run build && npm run build-storybook)
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./module/storybook-static

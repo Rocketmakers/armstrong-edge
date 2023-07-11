@@ -1,149 +1,152 @@
+import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { findAllByText, findByRole, findByText, userEvent, waitFor, within } from '@storybook/testing-library';
 import * as React from 'react';
 
-import { StoryUtils } from '../../stories/storyUtils';
-import { Dates } from '../../utils/dates';
 import { Button } from '../button';
-import { Group } from '../group';
-import { useDispatchToast } from '.';
-import { ToastNotification } from './toast.component';
-import { ToastProvider, useToasts } from './toast.context';
+import { ArmstrongProvider } from '../provider';
+import { Toast } from './toast.component';
+import { useToast } from './toast.hooks';
 
 /** metadata */
 
-export default StoryUtils.createMeta(ToastProvider, 'Layout', 'Toast Notification', {});
+export default {
+  title: 'Modals/Toast',
+  component: Toast,
+} as Meta<typeof Toast>;
 
 /** component template */
+const Template: StoryObj<typeof Toast> = {
+  args: {
+    title: 'Here is a toast!',
+    description: 'Here is the description for my toast',
+  },
+  decorators: [
+    Story => (
+      <ArmstrongProvider>
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  render: args => {
+    const dispatch = useToast();
 
-// const Template = StoryUtils.createTemplate(Tooltip);
+    return <Button onClick={() => dispatch(args)}>Send a toast</Button>;
+  },
+};
 
 /** stories */
 
-const ToastInner = () => {
-  const dispatch = useDispatchToast();
+export const Default: StoryObj<typeof Toast> = {
+  ...Template,
+  play: async ({ canvasElement, args }) => {
+    // launch toast
+    const button = within(canvasElement).getByText('Send a toast');
+    userEvent.click(button);
 
-  return <Button onClick={() => dispatch("I'm some toast")}>Click here to open the toast</Button>;
-};
-export const Default = () => {
-  return (
-    <ToastProvider>
-      <ToastInner />
-    </ToastProvider>
-  );
-};
+    // check title and description
+    const title = await findByText(document.body, args.title ?? '');
+    const description = await findByText(document.body, args.description ?? '');
+    expect(title).toBeVisible();
+    expect(description).toBeVisible();
 
-const ToastPositionsInner = () => {
-  const dispatch = useDispatchToast();
+    // check close
+    const close = await findByRole(document.body, 'button', { name: 'Close' });
+    await waitFor(() => userEvent.click(close));
+    await waitFor(() => Promise.all([expect(title).not.toBeVisible(), expect(description).not.toBeVisible()]));
 
-  return (
-    <div className="buttons-wrapper">
-      <Button onClick={() => dispatch({ title: "I'm some toast", position: 'top-left' })}>Click here to open the toast to the top left</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", position: 'bottom-left' })}>Click here to open the toast to the bottom left</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", position: 'top-right' })}>Click here to open the toast to the top right</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", position: 'bottom-right' })}>
-        Click here to open the toast to the bottom right
-      </Button>
-    </div>
-  );
-};
-export const ToastPositions = () => {
-  return (
-    <ToastProvider>
-      <ToastPositionsInner />
-    </ToastProvider>
-  );
+    // check multiple toasts
+    userEvent.click(button);
+    userEvent.click(button);
+    const titles = await findAllByText(document.body, args.title ?? '');
+    expect(titles).toHaveLength(2);
+  },
 };
 
-const ToastTypesInner = () => {
-  const dispatch = useDispatchToast();
+export const CustomDuration: StoryObj<typeof Toast> = {
+  ...Template,
+  args: {
+    ...Template.args,
+    duration: 100,
+  },
+  play: async ({ canvasElement, args }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    userEvent.click(button);
 
-  return (
-    <Group>
-      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'error' })}>Dispatch error</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'info' })}>Dispatch info</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'warning' })}>Dispatch warning</Button>
-      <Button onClick={() => dispatch({ title: "I'm some toast", type: 'success' })}>Dispatch success</Button>
-    </Group>
-  );
-};
-export const ToastTypes = () => {
-  return (
-    <ToastProvider>
-      <ToastTypesInner />
-    </ToastProvider>
-  );
+    const title = await findByText(document.body, args.title ?? '');
+    expect(title).toBeVisible();
+    // check auto-dismiss after custom dismiss time of 100ms + 300ms for animation
+    await waitFor(() => expect(title).not.toBeVisible(), { timeout: 400 });
+  },
 };
 
-const CustomContentInner = () => {
-  const dispatch = useDispatchToast();
+export const TopLeft: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider config={{ toastPosition: 'top-left' }}>
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    userEvent.click(button);
+    const toast = await findByRole(document.body, 'status', { name: 'Notification' });
 
-  return (
-    <Button
-      onClick={() =>
-        dispatch({
-          title: "I'm some toast",
-          content: ({ dismiss, toast }) => (
-            <>
-              <p>I'm in the toast</p>
-              <p>{Dates.dateToString(toast.timestamp)}</p>
-              <Button onClick={dismiss}>dismiss me</Button>
-            </>
-          ),
-        })
-      }
-    >
-      Click here to open the toast
-    </Button>
-  );
-};
-export const CustomContent = () => {
-  return (
-    <ToastProvider>
-      <CustomContentInner />
-    </ToastProvider>
-  );
+    expect(toast).toBeVisible();
+    expect(toast).toHaveAttribute('data-position', 'top-left');
+  },
 };
 
-const CustomToastsInner = () => {
-  const dispatch = useDispatchToast();
-  const { toasts } = useToasts();
+export const TopRight: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider config={{ toastPosition: 'top-right' }}>
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    userEvent.click(button);
+    const toast = await findByRole(document.body, 'status', { name: 'Notification' });
 
-  return (
-    <>
-      <Button onClick={() => dispatch("I'm some toast")}>Click here to open the toast</Button>
-
-      <div
-        className="custom-toasts"
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', position: 'absolute', top: '50px' }}
-      >
-        {(toasts || []).map((toast, index) => (
-          <p style={{ padding: '2px', boxShadow: '1px 1px 3px rgba(0,0,0,0.3)' }} key={index}>
-            {toast.title}
-          </p>
-        ))}
-      </div>
-    </>
-  );
-};
-export const CustomToasts = () => {
-  return (
-    <ToastProvider renderToastContainer={false}>
-      <CustomToastsInner />
-    </ToastProvider>
-  );
-};
-export const LooseToast = () => {
-  return <ToastNotification timestamp={new Date()} title="I'm a toast" />;
+    expect(toast).toBeVisible();
+    expect(toast).toHaveAttribute('data-position', 'top-right');
+  },
 };
 
-const PortaledToastsInner = () => {
-  const dispatch = useDispatchToast();
+export const BottomLeft: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider config={{ toastPosition: 'bottom-left' }}>
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    userEvent.click(button);
+    const toast = await findByRole(document.body, 'status', { name: 'Notification' });
 
-  return <Button onClick={() => dispatch("I'm some toast")}>Click here to open the toast</Button>;
+    expect(toast).toBeVisible();
+    expect(toast).toHaveAttribute('data-position', 'bottom-left');
+  },
 };
-export const PortaledToasts = () => {
-  return (
-    <ToastProvider portalToSelector="body">
-      <PortaledToastsInner />
-    </ToastProvider>
-  );
+
+export const CustomContent: StoryObj<typeof Toast> = {
+  ...Template,
+  args: {
+    ...Template.args,
+    content: <Button>Custom button</Button>,
+  },
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    userEvent.click(button);
+    const customButton = await findByText(document.body, 'Custom button');
+    expect(customButton).toBeVisible();
+  },
 };

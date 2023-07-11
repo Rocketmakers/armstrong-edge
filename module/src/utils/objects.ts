@@ -1,99 +1,72 @@
-export namespace Objects {
-  /**
-   * Creates a unique string based on contents of an object.
-   * Can be used as a dependency for hooks which take non-memoized objects as a parameter.
-   * @param object The object to create a content dependency for
-   */
-  export function contentDependency<TObject extends object>(object?: TObject): string {
-    if (!object) {
-      return '';
-    }
-    if (Array.isArray(object)) {
-      return JSON.stringify([...object].sort());
-    }
+/** A dictionary of T */
+export type Dictionary<T, Keys extends string> = Record<Keys, T>;
+
+/**
+ * Creates a unique string based on contents of an object.
+ * Can be used as a dependency for hooks which take non-memoized objects as a parameter.
+ * @param item The item to create a content dependency for
+ */
+export function contentDependency<T>(item?: T): T | string | undefined {
+  // falsy item or function, all we can do is return the reference like a normal memo
+  if (!item || typeof item === 'function') {
+    return item;
+  }
+  // sort array and serialize it for primitive comparison
+  if (Array.isArray(item)) {
+    return JSON.stringify([...item].sort());
+  }
+  // sort object keys and serialize it for primitive comparison
+  if (typeof item === 'object') {
     return JSON.stringify(
-      Object.keys(object)
+      Object.keys(item)
         .sort()
-        .reduce((memo, key) => ({ ...memo, [key]: object[key] }), {})
+        .reduce((memo, key) => ({ ...memo, [key]: item[key] }), {})
     );
   }
+  // stringify primitive for comparison
+  return `${item}`;
+}
 
-  /** Check if an object is an object and is not an array */
-  export function isObject<TItem>(item?: TItem): boolean {
-    return !!item && typeof item === 'object' && !Array.isArray(item);
+/**
+ * Deep merge two objects.
+ * @param target The target object to merge into
+ * @param source The new source objects
+ */
+export function mergeDeep<TObject>(target: TObject, ...sources: Partial<TObject>[]) {
+  if (!target || typeof target !== 'object') {
+    return target;
   }
-
-  export function mergeDeepFromKeyChain<TObject extends object, TValue>(target: TObject, keyChain: Array<string | number>, value: TValue): TObject {
-    const output = (Array.isArray(target) || Number.isInteger(keyChain?.[0]) ? [...((target || []) as any[])] : { ...(target || {}) }) as TObject;
-    let bookmarkRef: any = output;
-    for (let i = 0; i < keyChain.length; i += 1) {
-      const key = keyChain[i];
-      if (i === keyChain.length - 1) {
-        if (Array.isArray(value)) {
-          bookmarkRef[key] = [...value];
-        } else if (typeof value === 'object') {
-          bookmarkRef[key] = { ...value };
+  const newTarget = { ...target };
+  for (const source of sources) {
+    if (typeof source === 'object') {
+      Object.keys(source).forEach(key => {
+        const targetValue = newTarget[key];
+        const sourceValue = source[key];
+        if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
+          newTarget[key] = [...targetValue, ...sourceValue];
+        } else if (typeof targetValue === 'object' && typeof sourceValue === 'object') {
+          newTarget[key] = mergeDeep(targetValue, sourceValue);
         } else {
-          bookmarkRef[key] = value;
+          newTarget[key] = sourceValue;
         }
-      } else if (Array.isArray(bookmarkRef[key])) {
-        bookmarkRef[key] = [...bookmarkRef[key]];
-        bookmarkRef = bookmarkRef[key];
-      } else if (typeof bookmarkRef[key] === 'object') {
-        bookmarkRef[key] = { ...bookmarkRef[key] };
-        bookmarkRef = bookmarkRef[key];
-      } else if (Number.isInteger(key)) {
-        bookmarkRef[key] = [...bookmarkRef[key]];
-        bookmarkRef = bookmarkRef[key];
-      } else {
-        bookmarkRef[key] = { ...bookmarkRef[key] };
-        bookmarkRef = bookmarkRef[key];
-      }
+      });
     }
-    return output;
   }
 
-  /** A dictionary of T */
-  export type Dictionary<T, Keys extends string> = Record<Keys, T>;
+  return newTarget;
+}
 
-  /** Perform an operation on the keys of an object and return an array of the results */
-  export const mapKeys = <T, TKey extends keyof T, TValue extends T[TKey], TReturn>(
-    object: T,
-    callback: (key: TKey, value: TValue, index: number) => TReturn
-  ): TReturn[] => Object.keys(object).map((key, index) => callback(key as TKey, object[key], index));
-
-  /** Perform an operation on the keys of an object */
-  export const forEachKeys = <T, TKey extends keyof T, TValue extends T[TKey]>(
-    object: T,
-    callback: (key: TKey, value: TValue, index: number) => void
-  ) => Object.keys(object).forEach((key, index) => callback(key as TKey, object[key], index));
-
-  /**
-   * Deep merge two objects.
-   * @param target The target object to merge into
-   * @param source The new source objects
-   */
-  export function mergeDeep<TObject>(target: TObject, ...sources: Partial<TObject>[]) {
-    if (!isObject(target)) {
-      return target;
-    }
-    const newTarget = { ...target };
-    for (const source of sources) {
-      if (isObject(source)) {
-        Object.keys(source).forEach((key) => {
-          const targetValue = newTarget[key];
-          const sourceValue = source[key];
-          if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
-            newTarget[key] = [...targetValue, ...sourceValue];
-          } else if (isObject(targetValue) && isObject(sourceValue)) {
-            newTarget[key] = mergeDeep(targetValue, sourceValue);
-          } else {
-            newTarget[key] = sourceValue;
-          }
-        });
-      }
-    }
-
-    return newTarget;
+/**
+ * Removes key/value pairs from dictionary objects where the value is null or undefined
+ * @param object The object to check
+ * @returns A new object with the relevant key/value pairs removed
+ */
+export function stripNullOrUndefined<TObject extends object | undefined>(object: TObject): TObject {
+  if (!object) {
+    return object;
   }
+  return Object.entries(object).reduce(
+    (finalObject, [key, val]) => ({ ...finalObject, ...(val !== null && val !== undefined ? { [key]: val } : {}) }),
+    {} as TObject
+  );
 }

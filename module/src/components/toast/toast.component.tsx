@@ -1,124 +1,50 @@
+import * as RadixToast from '@radix-ui/react-toast';
 import * as React from 'react';
 
-import { Arrays } from '../..';
-import { useGeneratedId, useTemporaryState, useTimeout } from '../../hooks';
-import { ClassNames } from '../../utils/classNames';
-import { Dates } from '../../utils/dates';
-import { Objects } from '../../utils/objects';
-import { IconUtils } from '../icon';
-import { IconButton } from '../iconButton';
-import { useToasts } from './toast.context';
-import { IToastNotification } from './toast.types';
+import { concat } from '../../utils';
+import type { IToast, ToastPosition } from './toast.context';
 
-export interface IToastNotificationProps extends Omit<IToastNotification, 'timestamp'>, Required<Pick<IToastNotification, 'timestamp'>> {}
+import './toast.theme.css';
 
-/** Render a single toast notification with a title and some given information */
-export const ToastNotification = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IToastNotificationProps>>(
-  ({ onDismiss, ...toast }, ref) => {
-    const { autoDismissTime, children, content, htmlProps, timestamp, title, type, allowManualDismiss } = toast;
+export interface IToastProps extends IToast {
+  /** where to position the toast, defaults to "bottom-right" */
+  position: ToastPosition;
 
-    const [dismissing, setDismissing] = useTemporaryState(false, 500, onDismiss);
-    const beginDismiss = React.useCallback(() => setDismissing(true), []);
-
-    const { set: setAutoDismissTimeout, clear: clearAutoDismissTimeout } = useTimeout(beginDismiss, autoDismissTime);
-
-    React.useEffect(() => {
-      void setAutoDismissTimeout();
-    }, []);
-
-    const id = useGeneratedId('arm-tst_', htmlProps?.id);
-
-    const contentNode = React.useMemo<React.ReactNode>(
-      () => (typeof content === 'function' ? content({ dismiss: beginDismiss, toast }) : content),
-      [content, beginDismiss, toast]
-    );
-
-    const {
-      config: { timestampFormatString },
-    } = useToasts();
-
-    const timestampString = React.useMemo(() => timestampFormatString && Dates.dateToString(timestamp!, timestampFormatString), [timestamp]);
-
-    return (
-      <div
-        {...htmlProps}
-        className={ClassNames.concat('arm-toast-notification', htmlProps?.className)}
-        data-type={type}
-        data-dismissing={dismissing}
-        onMouseEnter={clearAutoDismissTimeout}
-        onMouseLeave={() => setAutoDismissTimeout()}
-        ref={ref}
-      >
-        <div className="arm-toast-notification-inner" role="status" aria-labelledby={`${id}_title`}>
-          <div className="arm-toast-notification-top">
-            <p className="arm-toast-notification-title" id={`${id}_title`}>
-              {title}
-            </p>
-
-            {allowManualDismiss && (
-              <IconButton
-                type="button"
-                className="arm-toast-notification-close-button"
-                minimalStyle
-                icon={IconUtils.getIconDefinition('Icomoon', 'cross2')}
-                onClick={beginDismiss}
-              />
-            )}
-          </div>
-
-          {timestampString && <p>{timestampString}</p>}
-
-          {typeof contentNode === 'string' || typeof contentNode === 'number' ? <p>{contentNode}</p> : contentNode}
-
-          {children}
-        </div>
-      </div>
-    );
-  }
-);
-
-ToastNotification.defaultProps = {
-  allowManualDismiss: true,
-};
-
-export interface IToastNotificationContainerProps {
-  /** the toasts to render inside this component */
-  toasts?: IToastNotificationProps[];
+  /** the icon to use for the dialog close button */
+  closeButtonIcon: JSX.Element | false;
 }
 
-/** A container which will render toasts passed in through props or toasts available from the ToastContext dispatched from useToastDispatch */
-export const ToastNotificationContainer = React.forwardRef<HTMLDivElement, IToastNotificationContainerProps>(({ toasts }, ref) => {
-  const { toasts: contextToasts } = useToasts();
-  const combinedToasts = React.useMemo(() => [...(contextToasts || []), ...(toasts || [])], [contextToasts, toasts]);
-
-  const splitToasts = React.useMemo(() => Arrays.arrayToArrayDictionary(combinedToasts, (toast) => toast.position!), [combinedToasts]);
-
-  if (!combinedToasts.length) {
-    return null;
-  }
-
+export const Toast: React.FC<IToastProps> = ({
+  title,
+  description,
+  content,
+  duration,
+  position,
+  closeButtonIcon,
+  hideClose,
+  className,
+  testId,
+  additionalProps = {},
+}) => {
   return (
-    <div className="arm-toast-notification-container" ref={ref}>
-      <div className="arm-toast-notification-container-left">
-        <div className="arm-toast-notification-toasts arm-toast-notification-toasts-top">
-          {!!splitToasts['top-left']?.length &&
-            splitToasts['top-left'].map((toast) => <ToastNotification {...toast} key={Objects.contentDependency(toast)} />)}
-        </div>
-        <div className="arm-toast-notification-toasts arm-toast-notification-toasts-bottom">
-          {!!splitToasts['bottom-left']?.length &&
-            splitToasts['bottom-left'].map((toast) => <ToastNotification {...toast} key={Objects.contentDependency(toast)} />)}
-        </div>
-      </div>
-      <div className="arm-toast-notification-container-right">
-        <div className="arm-toast-notification-toasts arm-toast-notification-toasts-top">
-          {!!splitToasts['top-right']?.length &&
-            splitToasts['top-right'].map((toast) => <ToastNotification {...toast} key={Objects.contentDependency(toast)} />)}
-        </div>
-        <div className="arm-toast-notification-toasts arm-toast-notification-toasts-bottom">
-          {!!splitToasts['bottom-right']?.length &&
-            splitToasts['bottom-right'].map((toast) => <ToastNotification {...toast} key={Objects.contentDependency(toast)} />)}
-        </div>
-      </div>
-    </div>
+    <RadixToast.Root
+      className={concat('arm-toast', className)}
+      duration={duration}
+      data-position={position}
+      data-testid={testId}
+      aria-label="Notification"
+      {...additionalProps}
+    >
+      {title && <RadixToast.Title className="arm-toast-title">{title}</RadixToast.Title>}
+      {description && <RadixToast.Description className="arm-toast-description">{description}</RadixToast.Description>}
+      {closeButtonIcon !== false && !hideClose && (
+        <RadixToast.Close className="arm-toast-close" aria-label="Close">
+          {closeButtonIcon}
+        </RadixToast.Close>
+      )}
+      {content}
+    </RadixToast.Root>
   );
-});
+};
+
+Toast.displayName = 'Toast';

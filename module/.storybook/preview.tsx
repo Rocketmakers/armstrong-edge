@@ -1,25 +1,30 @@
-import * as React from 'react';
+import React from 'react';
+import { themes } from '@storybook/theming';
 
-import './showCode';
-
-import { ModalProvider } from '../src/components/modal/modal.context';
-// import { addParameters } from '@storybook/react';
+import '../src/theme/variables.css';
+import '../src/theme/theme.css';
+import './storybook-theme.css';
 
 export const decorators = [
-  (Story) => {
+  Story => {
     return (
       <div id="host">
-        <ModalProvider>
-          <div className="story-wrapper">
-            <Story />
-          </div>
-        </ModalProvider>
+        <div className="story-wrapper">
+          <Story />
+        </div>
       </div>
     );
   },
 ];
 
 export const parameters = {
+  actions: { argTypesRegex: '^on[A-Z].*' },
+  controls: {
+    matchers: {
+      color: /(background|color)$/i,
+      date: /Date$/,
+    },
+  },
   options: {
     storySort: {
       order: [
@@ -37,36 +42,10 @@ export const parameters = {
       ],
     },
   },
-  a11y: {
-    options: {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag2a'],
-      },
-    },
+  docs: {
+    theme: themes.light,
+  },
+  backgrounds: {
+    default: 'light',
   },
 };
-
-// haven't been able to get this working, but should be revisited - should add a toggle between stylesheets
-
-// addParameters({
-//   stylesheetToggle: {
-//     stylesheets: [
-//       {
-//         id: 'test',
-//         title: 'Test',
-//         url: '../src/stories/test.css',
-//       },
-//       {
-//         id: 'basic',
-//         title: 'Basic',
-//         url: '../src/stories/basic-theme.scss',
-//       },
-//       {
-//         id: 'prototyping',
-//         title: 'Prototyping',
-//         url: '../src/stories/prototyping-theme.scss',
-//       },
-//     ],
-//   },
-// });

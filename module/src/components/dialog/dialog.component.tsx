@@ -1,76 +1,173 @@
+import * as RadixDialog from '@radix-ui/react-dialog';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-import { useGeneratedId } from '../../hooks';
-import { ClassNames } from '../../utils/classNames';
-import { Icon, IconSet, IconUtils, IIcon } from '../icon';
-import { IconButton } from '../iconButton';
-import { IModalProps, Modal } from '../modal';
-import { ModalUtils } from '../modal/modal.utils';
+import { useCompareValues } from '../../hooks/useCompareValues';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 
-export interface IDialogProps extends Omit<IModalProps, 'darkenBackground'> {
-  /** the value to render as the title, will have necessary aria tag added */
-  title?: string;
+import './dialog.theme.css';
 
-  /** the icon to render by the title */
-  titleIcon?: IIcon<IconSet>;
+/** Dialog component props */
+export interface IDialogProps<TData = unknown> extends Omit<React.RefAttributes<HTMLDivElement>, 'ref'> {
+  /** Optional title to show at the top of the dialog in an H2 tag */
+  title?: React.ReactNode;
+  /** Optional description to show in the body of the dialog in a P tag */
+  description?: React.ReactNode;
+  /** Icon to use as the close button. Send `false` to hide the close button entirely */
+  closeButtonIcon?: JSX.Element | false;
+  /** Bool denoting whether the dialog is open or closed - for state controlled dialogs */
+  open?: boolean;
+  /** Function called when the dialog is opened/closed - for state controlled dialogs */
+  onOpenChange?: (open: boolean) => void;
+  /** Optional CSS class for the dialog component */
+  className?: string;
+  /** Optional CSS class for the dialog overlay */
+  overlayClassName?: string;
+  /** Optional Data to pass into the dialog. Data will be returned from the async dialog functions allowing for reusable form based dialogs */
+  data?: TData;
+  /** Function called when the dialog is closed. Don't use for state control, only for side effects. `onOpenChange` should be used for state control */
+  onClose?: () => void;
+  /** Optional test ID for the dialog */
+  testId?: string;
+}
 
-  /** the icon to render as the close button */
-  closeButtonIcon?: IIcon<IconSet>;
+/** String union describing the various actions that can be used to close a dialog */
+export type DialogFinishAction = keyof Omit<DialogElement<unknown>, 'open'>;
+
+/** The response type of the promise returned by the dialog `open` function  */
+export interface IDialogOpenResponse<TData = unknown> {
+  /** The action that caused the dialog to close */
+  action: DialogFinishAction;
+  /** Any data sent into the dialog `data` prop */
+  data?: TData;
+}
+
+/** Dialog element toolkit - these functions are assigned to the ref passed into the dialog */
+export interface DialogElement<TData = unknown> {
+  /** Opens the dialog and returns a promise which resolves when the dialog closes */
+  open: () => Promise<IDialogOpenResponse<TData>>;
+  /** Closes the dialog with a "close" finish action */
+  close: () => void;
+  /** Closes the dialog with an "ok" finish action */
+  ok: () => void;
+  /** Closes the dialog with a "cancel" finish action */
+  cancel: () => void;
 }
 
 /**
- * Extends the Modal component (see docs for modal) with some extra features and styling for simple dialog popups
- *
- * To improve accessibility, you should manage the users focus yourself. Ensure that when a dialog is open, everything else has aria-hidden="true", that
- * focus is moved to the first element in the modal, and that focus is moved back when the modal closes
- *
- * see: https://www.w3.org/WAI/GL/wiki/Using_ARIA_role%3Ddialog_to_implement_a_modal_dialog_box
+ * Dialog component. Used to display a full-screen modal dialog to the user.
+ * - Can be state controlled with `open` and `onOpenChange` props.
+ * - Can be async by assigning a ref and calling the utility functions (a `useDialog` helper hook is available for this.)
+ * - Supports dynamic data in async mode, so that a form can be built as a reusable async dialog.
  */
-export const Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IDialogProps>>(
-  (
-    { children, className, wrapperClassName, id: htmlId, title, onOpenChange, closeButtonIcon, titleIcon, onClose, disableClose, ...modalProps },
-    ref
-  ) => {
-    const id = useGeneratedId(htmlId);
+export const Dialog = React.forwardRef(
+  (props: React.PropsWithChildren<IDialogProps<unknown>>, ref: React.ForwardedRef<DialogElement<unknown>>) => {
+    const {
+      children,
+      title,
+      description,
+      closeButtonIcon,
+      open,
+      onOpenChange,
+      onClose,
+      className,
+      data,
+      overlayClassName,
+      testId,
+      ...nativeProps
+    } = props;
 
-    const titleId = title && `${id}_label`;
+    /** Pull globals from context */
+    const globals = useArmstrongConfig({ dialogCloseButtonIcon: closeButtonIcon });
 
-    const close = React.useCallback(() => ModalUtils.closeModal({ disableClose, onClose, onOpenChange }), [onOpenChange, disableClose, onClose]);
+    /** Finish action state is set when the dialog is closed */
+    const [finishAction, setFinishAction] = React.useState<DialogFinishAction | undefined>(open ? undefined : 'close');
+
+    /** Stores a reference to the promise resolver function */
+    const resolverRef =
+      React.useRef<(value: IDialogOpenResponse<unknown> | PromiseLike<IDialogOpenResponse<unknown>>) => void>();
+
+    /** Used to create prop comparisons to use as effect triggers */
+    const finishActionChanged = useCompareValues(finishAction);
+    const openHasChanged = useCompareValues(open);
+
+    /** Called when the internal open/close state of the dialog changes */
+    const onInnerOpenChange = React.useCallback(
+      (val: boolean) => {
+        setFinishAction(val ? undefined : 'close');
+      },
+      [setFinishAction]
+    );
+
+    /** Exposes the DialogElement utility functions to the ref */
+    React.useImperativeHandle(
+      ref,
+      () => ({
+        open: () =>
+          new Promise(res => {
+            onInnerOpenChange(true);
+            resolverRef.current = res;
+          }),
+        close: () => setFinishAction('close'),
+        ok: () => setFinishAction('ok'),
+        cancel: () => setFinishAction('cancel'),
+      }),
+      [onInnerOpenChange, setFinishAction]
+    );
+
+    /** Listens to the `finishAction` state and runs the appropriate functions */
+    React.useEffect(() => {
+      if (finishAction && resolverRef.current) {
+        resolverRef.current({ action: finishAction, data });
+        resolverRef.current = undefined;
+      }
+      if (finishActionChanged) {
+        onOpenChange?.(!finishAction);
+        if (finishAction) {
+          onClose?.();
+        }
+      }
+    }, [finishActionChanged, finishAction, data, onOpenChange, onClose]);
+
+    /** Listens to changes on the incoming `open` prop for controlled dialogs, and runs the appropriate functions  */
+    React.useEffect(() => {
+      if (openHasChanged && open !== undefined) {
+        onInnerOpenChange(open);
+      }
+    }, [open, onInnerOpenChange, openHasChanged]);
 
     return (
-      <Modal
-        {...modalProps}
-        className={ClassNames.concat('arm-dialog', className)}
-        wrapperClassName={ClassNames.concat('arm-dialog-wrapper', wrapperClassName)}
-        darkenBackground
-        id={id}
-        aria-labelledby={title && titleId}
-        onOpenChange={onOpenChange}
-        ref={ref}
-        onClose={onClose}
-        disableClose={disableClose}
-      >
-        {!!title || !!titleIcon ? (
-          <div className="arm-dialog-top">
-            {titleIcon && <Icon iconSet={titleIcon.iconSet} icon={titleIcon.icon} />}
-
-            {title && (
-              <p className="arm-dialog-title" id={titleId}>
-                {title}
-              </p>
-            )}
-
-            <IconButton type="button" className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={close} />
-          </div>
-        ) : (
-          <IconButton type="button" className="arm-dialog-close-button" icon={closeButtonIcon!} minimalStyle onClick={close} />
+      <RadixDialog.Root open={!finishAction} onOpenChange={onInnerOpenChange}>
+        {ReactDOM.createPortal(
+          <RadixDialog.Overlay className={concat('arm-dialog-overlay', overlayClassName)}>
+            <RadixDialog.Content
+              className={concat('arm-dialog', className)}
+              data-has-title={title ? true : undefined}
+              data-testid={testId}
+              {...nativeProps}
+            >
+              {title && <RadixDialog.Title className="arm-dialog-title">{title}</RadixDialog.Title>}
+              {description && (
+                <RadixDialog.Description className="arm-dialog-description">{description}</RadixDialog.Description>
+              )}
+              {children && <div className="arm-dialog-content">{children}</div>}
+              {globals.dialogCloseButtonIcon !== false && (
+                <RadixDialog.Close className="arm-dialog-close" aria-label="Close">
+                  {globals.dialogCloseButtonIcon}
+                </RadixDialog.Close>
+              )}
+            </RadixDialog.Content>
+          </RadixDialog.Overlay>,
+          globals.globalPortalTo
         )}
-        <div className="arm-dialog-inner">{children}</div>
-      </Modal>
+      </RadixDialog.Root>
     );
   }
-);
+  // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+) as (<TData>(props: ArmstrongFCProps<IDialogProps<TData>, DialogElement<TData>>) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IDialogProps<unknown>>;
 
-Dialog.defaultProps = {
-  closeButtonIcon: IconUtils.getIconDefinition('Icomoon', 'cross2'),
-};
+Dialog.displayName = 'Dialog';
