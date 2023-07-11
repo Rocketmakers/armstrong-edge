@@ -9,8 +9,13 @@ jobs:
     uses: ./.github/workflows/job_build.yml
 
   release-main:
+    needs: build-job
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
       - name: Restore node modules cache
         id: node-modules
         uses: actions/cache/restore@v3
