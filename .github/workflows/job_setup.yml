@@ -2,7 +2,7 @@ name: Setup and cache Node for Module
 
 on: workflow_call
 
-jobs: 
+jobs:
   setup-and-cache-node-module:
     runs-on: ubuntu-latest
     steps:
@@ -12,7 +12,7 @@ jobs:
 
       - name: Set Node.js to current version and cache in module
         id: setup-node
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v3
         with:
           node-version-file: '.tool-versions'
 
@@ -34,4 +34,3 @@ jobs:
         id: install-node-dependencies
         run: npm ci --legacy-peer-deps
         working-directory: ./module
- 

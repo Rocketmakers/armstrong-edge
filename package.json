@@ -13,6 +13,7 @@
     "setup": "asdf install && npm i && (cd module-new && npm i --legacy-peer-deps)",
     "test": "(cd module-new && npm test)",
     "prepare": "husky install",
+    "build-storybook": "(cd module && npm run build-storybook)",
     "storybook": "(cd module && npm run storybook)",
     "test-storybook": "(cd module && npm run test-storybook)",
     "watch-scss": "(cd module && ts-node ./_build/scss/watch.ts)"
