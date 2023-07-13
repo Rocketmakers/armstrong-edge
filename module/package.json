@@ -39,7 +39,8 @@
   "exports": {
     ".": {
       "import": "./dist/index.es.js"
-    }
+    },
+    "./css": "./dist/style.css"
   },
   "keywords": [],
   "author": "",

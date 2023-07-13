@@ -18,7 +18,7 @@ yarn add @rocketmakers/armstrong
 
 Import the Armstrong stylesheet at the root of your project with:
 ```tsx
-import '@rocketmakers/armstrong/dist/style.css';
+import '@rocketmakers/armstrong/css';
 ```
 
 Then to use a component in your project
