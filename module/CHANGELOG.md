@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.2...v3.0.3) (2023-07-13)
+
+
+### Bug Fixes
+
+* - Added missing css export to package file ([8153b3e](https://github.com/Rocketmakers/armstrong-edge/commit/8153b3e785b5fc926d71ea171062860ecd2f98d5))
+
 ## [3.0.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.1...v3.0.2) (2023-07-11)
 
 
