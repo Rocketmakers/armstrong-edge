@@ -1,3 +1,10 @@
+## [3.0.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.3...v3.0.4) (2023-07-14)
+
+
+### Bug Fixes
+
+* - Added missing provider export ([cc026ec](https://github.com/Rocketmakers/armstrong-edge/commit/cc026ec115025417e272afb2e8693267844a0313))
+
 ## [3.0.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.2...v3.0.3) (2023-07-13)
 
 
