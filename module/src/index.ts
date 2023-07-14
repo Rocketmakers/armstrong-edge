@@ -31,3 +31,4 @@ export * from './components/tooltip';
 export * from './components/label';
 export * from './components/rating';
 export * from './components/rangeInput';
+export * from './components/provider';

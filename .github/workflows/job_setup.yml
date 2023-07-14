@@ -32,10 +32,10 @@ jobs:
       - name: Install root node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
         id: install-root-node-dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Install node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
         id: install-node-dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: ./module
