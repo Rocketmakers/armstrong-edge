@@ -97,7 +97,7 @@ const systemDefaults: Required<IArmstrongConfig> = {
   validationErrorIcon: <IoIosWarning size={24} />,
   spinnerIcon: <ImSpinner2 />,
   dialogCloseButtonIcon: <RiCloseLine size={24} />,
-  globalPortalTo: document.body,
+  globalPortalTo: document && document.body || undefined,
   toastDuration: 5000,
   toastPosition: 'bottom-right',
   toastCloseButtonIcon: <RiCloseLine size={18} />,
