@@ -95,7 +95,7 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
   /** overrides the aria-label of the input. This is set as default to 'single-select-input' */
   ariaLabel?: string;
 
-  /** overrides the placeholder string in the input when nothing is selected. This is set as default to 'Please select... */
+  /** overrides the placeholder string in the input when nothing is selected. This is set as default to 'Select... */
   placeholder?: string;
 
   /** overrides the error message(s) used in the validation display */
@@ -335,7 +335,11 @@ const ReactSelectComponent = React.forwardRef<
     const selectedValue = React.useMemo(() => {
       const valueFinder = (incomingOptions?: IArmstrongOption<ArmstrongId>[]) => {
         if (!multi) {
-          return incomingOptions?.find(o => o.id === value) ?? { id: value, content: value, wasCreated: true };
+          let singleVal = incomingOptions?.find(o => o.id === value);
+          if (!singleVal && allowCreate) {
+            singleVal = { id: value, content: value, wasCreated: true };
+          }
+          return singleVal;
         }
         return value?.map(
           (v: ArmstrongId) => incomingOptions?.find(o => o.id === v) ?? { id: v, content: v, wasCreated: true }
@@ -345,7 +349,7 @@ const ReactSelectComponent = React.forwardRef<
         return valueFinder(options.map(o => o.options).flat(1));
       }
       return valueFinder(options);
-    }, [multi, options, value]);
+    }, [allowCreate, multi, options, value]);
 
     const valueGetter = React.useCallback<GetOptionValue<IArmstrongOption<ArmstrongId>>>(
       option => {

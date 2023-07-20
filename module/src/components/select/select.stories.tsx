@@ -44,7 +44,7 @@ export default {
 /** component template */
 
 const Template: StoryObj<typeof Select> = {
-  args: { options: groupedOptions, placeholder: 'Please select...' },
+  args: { options: groupedOptions },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on InputWrapper prevents storybook from spreading pure props on here without a cast
   render: (args: any) => {
     const { formProp, formState } = useForm<{ value?: number }>();
