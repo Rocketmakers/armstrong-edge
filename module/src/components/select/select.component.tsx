@@ -77,9 +77,6 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
       | 'leftOverlay'
     >,
     NativeProps {
-  /** Whether to render a native date input (useful for mobile) */
-  native?: false;
-
   /** Whether to to allow selection of multiple items */
   multi?: false;
 
@@ -95,7 +92,7 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
   /** overrides the aria-label of the input. This is set as default to 'single-select-input' */
   ariaLabel?: string;
 
-  /** overrides the placeholder string in the input when nothing is selected. This is set as default to 'Please select... */
+  /** overrides the placeholder string in the input when nothing is selected. This is set as default to 'Select... */
   placeholder?: string;
 
   /** overrides the error message(s) used in the validation display */
@@ -193,12 +190,6 @@ export interface INativeSelectProps<Id extends ArmstrongId>
       | 'hideIconOnStatus'
       | 'leftOverlay'
     > {
-  /** Whether to render a native date input (useful for mobile) */
-  native: true;
-
-  /** Whether to to allow selection of multiple items */
-  multi?: false;
-
   /** the options to be displayed in the input */
   options?: IArmstrongOption<Id>[];
 
@@ -211,9 +202,6 @@ export interface INativeSelectProps<Id extends ArmstrongId>
 
 export interface IMultiSelectProps<Id extends ArmstrongId>
   extends Omit<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'multi'> {
-  /** Whether to to allow selection of multiple items */
-  multi: true;
-
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<Id[]>;
 
@@ -224,14 +212,15 @@ export interface IMultiSelectProps<Id extends ArmstrongId>
   onSelectOption?: (newValue: Id[]) => void;
 }
 
-export type ISelectProps<Id extends ArmstrongId> =
-  | ISingleSelectProps<Id>
-  | INativeSelectProps<Id>
-  | IMultiSelectProps<Id>;
+/**
+ * Base react select component
+ * - Handles both single and multi
+ * - Not exported because single and multi are exported separately
+ */
 
 const ReactSelectComponent = React.forwardRef<
   ReactSelectRef<ArmstrongId>,
-  ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>
+  (ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>) & { multi: boolean }
 >(
   (
     {
@@ -263,7 +252,6 @@ const ReactSelectComponent = React.forwardRef<
       statusPosition,
       pending,
       multi,
-      native,
       allowCreate,
       createText,
       onOptionCreated,
@@ -335,7 +323,11 @@ const ReactSelectComponent = React.forwardRef<
     const selectedValue = React.useMemo(() => {
       const valueFinder = (incomingOptions?: IArmstrongOption<ArmstrongId>[]) => {
         if (!multi) {
-          return incomingOptions?.find(o => o.id === value) ?? { id: value, content: value, wasCreated: true };
+          let singleVal = incomingOptions?.find(o => o.id === value);
+          if (!singleVal && allowCreate) {
+            singleVal = { id: value, content: value, wasCreated: true };
+          }
+          return singleVal;
         }
         return value?.map(
           (v: ArmstrongId) => incomingOptions?.find(o => o.id === v) ?? { id: v, content: v, wasCreated: true }
@@ -345,7 +337,7 @@ const ReactSelectComponent = React.forwardRef<
         return valueFinder(options.map(o => o.options).flat(1));
       }
       return valueFinder(options);
-    }, [multi, options, value]);
+    }, [allowCreate, multi, options, value]);
 
     const valueGetter = React.useCallback<GetOptionValue<IArmstrongOption<ArmstrongId>>>(
       option => {
@@ -489,7 +481,11 @@ ReactSelectComponent.defaultProps = {
   createText: 'Create:',
 };
 
-const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectProps<ArmstrongId>>(
+/**
+ * Native select export
+ */
+
+export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectProps<ArmstrongId>>(
   (
     {
       validationMode,
@@ -504,7 +500,6 @@ const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectP
       displaySize,
       label,
       required,
-      native,
       options,
       onChange,
       placeholderOption,
@@ -634,35 +629,41 @@ const NativeSelectComponent = React.forwardRef<HTMLSelectElement, INativeSelectP
       </div>
     );
   }
-);
+) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<INativeSelectProps<Id>, HTMLSelectElement>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<INativeSelectProps<ArmstrongId>>;
 
-NativeSelectComponent.displayName = 'NativeSelect';
+NativeSelect.displayName = 'NativeSelect';
 
-NativeSelectComponent.defaultProps = {
+NativeSelect.defaultProps = {
   dropdownIcon: <FaChevronDown size={16} />,
 };
 
-export const Select = React.forwardRef<HTMLDivElement | HTMLSelectElement, ISelectProps<ArmstrongId>>((props, ref) => {
-  if (props.native) {
-    return <NativeSelectComponent {...props} ref={ref as React.ForwardedRef<HTMLSelectElement>} />;
-  }
-  if (!props.multi) {
-    return (
-      <ReactSelectComponent {...props} multi={false} ref={ref as React.ForwardedRef<ReactSelectRef<ArmstrongId>>} />
-    );
-  }
-  return <ReactSelectComponent {...props} multi={true} ref={ref as React.ForwardedRef<ReactSelectRef<ArmstrongId>>} />;
-}) as (<Id extends ArmstrongId, TProps extends ISelectProps<Id>>(
-  props: TProps extends { native: true }
-    ? ArmstrongVFCProps<TProps & INativeSelectProps<Id>, HTMLSelectElement>
-    : TProps extends { multi: true }
-    ? ArmstrongVFCProps<TProps & IMultiSelectProps<Id>, ReactSelectRef<Id>>
-    : ArmstrongVFCProps<TProps & ISingleSelectProps<Id>, ReactSelectRef<Id>>
+/**
+ * Single select export
+ */
+
+export const Select = React.forwardRef<ReactSelectRef<ArmstrongId>, ISingleSelectProps<ArmstrongId>>((props, ref) => {
+  return <ReactSelectComponent {...props} multi={false} ref={ref} />;
+}) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<ISingleSelectProps<Id>, ReactSelectRef<Id>>
 ) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ISelectProps<ArmstrongId>>;
+  ArmstrongFCExtensions<ISingleSelectProps<ArmstrongId>>;
 
 Select.displayName = 'Select';
 
-Select.defaultProps = {
-  native: false,
-};
+/**
+ * Multi select export
+ */
+
+export const MultiSelect = React.forwardRef<ReactSelectRef<ArmstrongId>, IMultiSelectProps<ArmstrongId>>(
+  (props, ref) => {
+    return <ReactSelectComponent {...props} multi={true} ref={ref} />;
+  }
+) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<IMultiSelectProps<Id>, ReactSelectRef<Id>>
+) => ArmstrongFCReturn) &
+  ArmstrongFCExtensions<IMultiSelectProps<ArmstrongId>>;
+
+MultiSelect.displayName = 'MultiSelect';

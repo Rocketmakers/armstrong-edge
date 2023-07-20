@@ -4,7 +4,7 @@ import { userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 
 import { useForm } from '../../form';
-import { Select } from './select.component';
+import { MultiSelect, NativeSelect, Select } from './select.component';
 
 const groupedOptions = [
   {
@@ -44,7 +44,7 @@ export default {
 /** component template */
 
 const Template: StoryObj<typeof Select> = {
-  args: { options: groupedOptions, placeholder: 'Please select...' },
+  args: { options: groupedOptions },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type discriminator on InputWrapper prevents storybook from spreading pure props on here without a cast
   render: (args: any) => {
     const { formProp, formState } = useForm<{ value?: number }>();
@@ -105,7 +105,7 @@ export const Native: StoryObj<typeof Select> = {
           height: '20rem',
         }}
       >
-        <Select native={true} options={flatOptions} />
+        <NativeSelect options={flatOptions} />
       </div>
     );
   },
@@ -125,7 +125,7 @@ export const Multi: StoryObj<typeof Select> = {
           height: '20rem',
         }}
       >
-        <Select multi={true} options={flatOptions} bind={formProp('value').bind()} />
+        <MultiSelect options={flatOptions} bind={formProp('value').bind()} />
         <div data-testid="result" style={{ marginTop: '10px' }}>
           Current value: {formState?.value?.join(', ')}
         </div>
@@ -199,8 +199,7 @@ export const CreateMulti: StoryObj<typeof Select> = {
 
     return (
       <div style={{ height: '20rem' }}>
-        <Select
-          multi={true}
+        <MultiSelect
           allowCreate={true}
           bind={formProp('value').bind()}
           options={options}
