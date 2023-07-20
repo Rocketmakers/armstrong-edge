@@ -1,3 +1,11 @@
+## [3.0.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.4...v3.0.5) (2023-07-20)
+
+
+### Bug Fixes
+
+* - Fixed bug causing select placeholder not to work ([19bae25](https://github.com/Rocketmakers/armstrong-edge/commit/19bae25a04a79cf6a986631224d04443c4123fdd))
+* - Type discrimination on select was complex and broken, now exporting separate components ([caecc8b](https://github.com/Rocketmakers/armstrong-edge/commit/caecc8b1c9a1c84342e50e092588a07071261a36))
+
 ## [3.0.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.3...v3.0.4) (2023-07-14)
 
 ### Bug Fixes
