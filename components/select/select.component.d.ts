@@ -18,8 +18,6 @@ export interface IReactSelectCreateOption {
     __isNew__: boolean;
 }
 export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputWrapperProps, 'statusPosition' | 'pending' | 'validationMode' | 'errorIcon' | 'labelId' | 'labelClassName' | 'validationErrorsClassName' | 'statusClassName' | 'disableOnPending' | 'hideIconOnStatus' | 'leftOverlay'>, NativeProps {
-    /** Whether to render a native date input (useful for mobile) */
-    native?: false;
     /** Whether to to allow selection of multiple items */
     multi?: false;
     /** CSS className property */
@@ -30,7 +28,7 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
     options?: IArmstrongOption<Id>[] | GroupedOption<Id>[];
     /** overrides the aria-label of the input. This is set as default to 'single-select-input' */
     ariaLabel?: string;
-    /** overrides the placeholder string in the input when nothing is selected. This is set as default to 'Please select... */
+    /** overrides the placeholder string in the input when nothing is selected. This is set as default to 'Select... */
     placeholder?: string;
     /** overrides the error message(s) used in the validation display */
     validationErrorMessages?: ValidationMessage[];
@@ -83,10 +81,6 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
     onOptionCreated?: (createdValue: string) => Id | undefined;
 }
 export interface INativeSelectProps<Id extends ArmstrongId> extends NativeSelectProps, Pick<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'displaySize' | 'label' | 'required' | 'scrollValidationErrorsIntoView' | 'requiredIndicator' | 'validationMode' | 'validationErrorMessages' | 'errorIcon' | 'statusPosition' | 'dropdownIcon' | 'labelId' | 'labelClassName' | 'validationErrorsClassName' | 'statusClassName' | 'hideIconOnStatus' | 'leftOverlay'> {
-    /** Whether to render a native date input (useful for mobile) */
-    native: true;
-    /** Whether to to allow selection of multiple items */
-    multi?: false;
     /** the options to be displayed in the input */
     options?: IArmstrongOption<Id>[];
     /** Text to show as a placeholder when nothing is selected */
@@ -95,8 +89,6 @@ export interface INativeSelectProps<Id extends ArmstrongId> extends NativeSelect
     placeholderOptionEnabled?: boolean;
 }
 export interface IMultiSelectProps<Id extends ArmstrongId> extends Omit<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'multi'> {
-    /** Whether to to allow selection of multiple items */
-    multi: true;
     /**  prop for binding to an Armstrong form binder (see forms documentation) */
     bind?: IBindingProps<Id[]>;
     /** overrides the value of the form binder if both are provided  */
@@ -104,10 +96,16 @@ export interface IMultiSelectProps<Id extends ArmstrongId> extends Omit<ISingleS
     /** overrides the handleChange method used when the input option is changed */
     onSelectOption?: (newValue: Id[]) => void;
 }
-export type ISelectProps<Id extends ArmstrongId> = ISingleSelectProps<Id> | INativeSelectProps<Id> | IMultiSelectProps<Id>;
-export declare const Select: (<Id extends ArmstrongId, TProps extends ISelectProps<Id>>(props: TProps extends {
-    native: true;
-} ? ArmstrongVFCProps<TProps & INativeSelectProps<Id>, HTMLSelectElement> : TProps extends {
-    multi: true;
-} ? ArmstrongVFCProps<TProps & IMultiSelectProps<Id>, ReactSelectRef<Id>> : ArmstrongVFCProps<TProps & ISingleSelectProps<Id>, ReactSelectRef<Id>>) => ArmstrongFCReturn) & ArmstrongFCExtensions<ISelectProps<ArmstrongId>>;
+/**
+ * Native select export
+ */
+export declare const NativeSelect: (<Id extends ArmstrongId>(props: ArmstrongVFCProps<INativeSelectProps<Id>, HTMLSelectElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<INativeSelectProps<ArmstrongId>>;
+/**
+ * Single select export
+ */
+export declare const Select: (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ISingleSelectProps<Id>, ReactSelectRef<Id>>) => ArmstrongFCReturn) & ArmstrongFCExtensions<ISingleSelectProps<ArmstrongId>>;
+/**
+ * Multi select export
+ */
+export declare const MultiSelect: (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IMultiSelectProps<Id>, ReactSelectRef<Id>>) => ArmstrongFCReturn) & ArmstrongFCExtensions<IMultiSelectProps<ArmstrongId>>;
 export {};
