@@ -1,3 +1,10 @@
+## [3.0.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.5...v3.0.6) (2023-07-24)
+
+
+### Bug Fixes
+
+* - Added missing toast export ([f203bd2](https://github.com/Rocketmakers/armstrong-edge/commit/f203bd2d9315412244fa17e57b22b809a4039105))
+
 ## [3.0.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.4...v3.0.5) (2023-07-20)
 
 
