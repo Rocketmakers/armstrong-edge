@@ -61,6 +61,9 @@ export interface IArmstrongConfig {
   /** where to position the toast, defaults to "bottom-right" */
   toastPosition?: ToastPosition;
 
+  /** by default, toast swipe directions are horizontal (left or right depending on position.) If true, this will invert swipes to be vertical (up or down depending on position.) */
+  toastSwipeVertical?: boolean;
+
   /** the icon to use for the dialog close button */
   toastCloseButtonIcon?: JSX.Element | false;
 
@@ -100,6 +103,7 @@ const systemDefaults: Required<IArmstrongConfig> = {
   globalPortalTo: document.body,
   toastDuration: 5000,
   toastPosition: 'bottom-right',
+  toastSwipeVertical: false,
   toastCloseButtonIcon: <RiCloseLine size={18} />,
   checkboxCustomIndicator: <FaCheck />,
   checkboxCustomIndeterminateIndicator: <ImMinus />,

@@ -2,6 +2,7 @@ import * as RadixToast from '@radix-ui/react-toast';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import { assertNever } from '../../utils';
 import { useArmstrongConfig } from '../config';
 import { Toast } from './toast.component';
 
@@ -56,6 +57,9 @@ interface IToastProviderProps {
   /** where to position the toast, defaults to "bottom-right" */
   position?: ToastPosition;
 
+  /** by default, swipe directions are horizontal (left or right depending on position.) If true, this will invert swipes to be vertical (up or down depending on position.) */
+  swipeVertical?: boolean;
+
   /** the icon to use for the dialog close button */
   closeButtonIcon?: JSX.Element | false;
 }
@@ -64,6 +68,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
   children,
   duration,
   position,
+  swipeVertical,
   closeButtonIcon,
 }) => {
   const [toasts, addToast] = React.useReducer<React.Reducer<IToast[], IToast>>(
@@ -74,10 +79,24 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
     toastDuration: duration,
     toastPosition: position,
     toastCloseButtonIcon: closeButtonIcon,
+    toastSwipeVertical: swipeVertical,
   });
 
-  const swipeDirection =
-    globals.toastPosition === 'bottom-left' || globals.toastPosition === 'top-left' ? 'left' : 'right';
+  const swipeDirection = React.useMemo(() => {
+    switch (globals.toastPosition) {
+      case 'bottom-left':
+        return globals.toastSwipeVertical ? 'down' : 'left';
+      case 'bottom-right':
+        return globals.toastSwipeVertical ? 'down' : 'right';
+      case 'top-left':
+        return globals.toastSwipeVertical ? 'up' : 'left';
+      case 'top-right':
+        return globals.toastSwipeVertical ? 'up' : 'right';
+      default:
+        assertNever(globals.toastPosition);
+        return 'right';
+    }
+  }, [globals.toastPosition, globals.toastSwipeVertical]);
 
   return (
     <ToastContext.Provider value={{ addToast }}>
