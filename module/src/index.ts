@@ -28,6 +28,7 @@ export * from './components/textArea';
 export * from './components/expandable';
 export * from './components/progressBar';
 export * from './components/tooltip';
+export * from './components/toast';
 export * from './components/label';
 export * from './components/rating';
 export * from './components/rangeInput';
