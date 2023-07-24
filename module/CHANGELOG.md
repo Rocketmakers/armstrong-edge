@@ -1,3 +1,10 @@
+## [3.0.7](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.6...v3.0.7) (2023-07-24)
+
+
+### Bug Fixes
+
+* - Switched focus outline to box shadow for Safari bug ([6035ad0](https://github.com/Rocketmakers/armstrong-edge/commit/6035ad065c09884ef2e7594c8d87b9b82fa8e86d))
+
 ## [3.0.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.5...v3.0.6) (2023-07-24)
 
 
