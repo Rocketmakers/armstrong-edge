@@ -72,8 +72,7 @@
 
 .arm-input-base .arm-input-inner:focus-within {
   border-color: var(--arm-focus-visible-color);
-  outline: calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) solid
-    var(--arm-focus-visible-color);
+  box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-focus-visible-color);
 }
 
 /** STATUS **/
@@ -98,5 +97,5 @@
 }
 
 .arm-input-base[data-error] .arm-input-inner:focus-within {
-  outline-color: var(--arm-color-negative);
+  box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-color-negative);
 }

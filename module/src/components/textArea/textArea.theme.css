@@ -13,8 +13,8 @@
 
 .arm-text-area:focus-within {
   border-color: var(--arm-focus-visible-color);
-  outline: calc(var(--arm-form-border-thickness-highlight) - var(--arm-form-border-thickness)) solid
-    var(--arm-focus-visible-color);
+  outline: none;
+  box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-focus-visible-color);
 }
 
 .arm-text-area-wrapper[data-disabled] .arm-text-area {

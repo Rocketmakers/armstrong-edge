@@ -38,7 +38,8 @@
 }
 
 .arm-dialog-close:focus-visible {
-  outline: var(--arm-form-border-thickness-highlight) solid var(--arm-focus-visible-color);
+  outline: none;
+  box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-focus-visible-color);
 }
 
 .arm-dialog-title {
