@@ -21,7 +21,8 @@
 }
 
 .arm-button:focus-visible {
-  outline: var(--arm-form-border-thickness-highlight) inset var(--arm-focus-visible-color);
+  outline: none;
+  box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-focus-visible-color);
 }
 
 .arm-button[data-status='positive'] {

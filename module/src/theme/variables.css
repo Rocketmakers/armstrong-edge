@@ -77,7 +77,7 @@
   /* Form - shared */
   --arm-form-border-radius: 5px;
   --arm-form-border-thickness: 1px;
-  --arm-form-border-thickness-highlight: 2px;
+  --arm-form-border-thickness-highlight: 1px;
   --arm-form-border-color: var(--arm-color-grey-600);
   --arm-form-square-size: 25px;
   --arm-form-checked-bg-color: var(--arm-color-grey-600);

@@ -31,7 +31,8 @@
 }
 
 .arm-switch:focus-visible {
-  outline: solid var(--arm-focus-visible-size, 0.125rem) var(--arm-focus-visible-color);
+  box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-focus-visible-color);
+  outline: none;
 }
 
 .arm-switch[data-state='checked'] {

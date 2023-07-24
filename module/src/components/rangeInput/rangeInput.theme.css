@@ -39,7 +39,8 @@
 }
 
 .arm-range-input-thumb:focus {
-  outline: 1px solid var(--arm-color-black);
+  outline: none;
+  box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-focus-visible-color);
 }
 
 .arm-range-input-label {

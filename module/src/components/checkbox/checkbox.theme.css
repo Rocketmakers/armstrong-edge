@@ -30,7 +30,8 @@
 }
 
 .arm-checkbox:focus-visible {
-  outline: 2px solid var(--arm-color-grey-1000);
+  outline: none;
+  box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-focus-visible-color);
 }
 
 .arm-checkbox[data-state='unchecked'] {
