@@ -41,3 +41,5 @@ export * as GlobalUtils from './utils/globals';
 export * as MathsUtils from './utils/maths';
 export * as ObjectUtils from './utils/objects';
 export * as TypeScriptUtils from './utils/typescript';
+
+export * from './types';
