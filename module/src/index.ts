@@ -33,3 +33,11 @@ export * from './components/label';
 export * from './components/rating';
 export * from './components/rangeInput';
 export * from './components/provider';
+
+export * as ClassNameUtils from './utils/classNames';
+export * as ArrayUtils from './utils/arrays';
+export * as ColorUtils from './utils/color';
+export * as GlobalUtils from './utils/globals';
+export * as MathsUtils from './utils/maths';
+export * as ObjectUtils from './utils/objects';
+export * as TypeScriptUtils from './utils/typescript';
