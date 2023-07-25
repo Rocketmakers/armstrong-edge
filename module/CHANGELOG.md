@@ -1,3 +1,10 @@
+## [3.0.10](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.9...v3.0.10) (2023-07-25)
+
+
+### Bug Fixes
+
+* - Added types export to barrel file ([ba8e4e0](https://github.com/Rocketmakers/armstrong-edge/commit/ba8e4e0d06983bb268557e45a8b98d544f203503))
+
 ## [3.0.9](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.8...v3.0.9) (2023-07-25)
 
 
