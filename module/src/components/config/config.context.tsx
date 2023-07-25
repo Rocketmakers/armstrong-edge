@@ -50,7 +50,7 @@ export interface IArmstrongConfig {
   spinnerIcon?: JSX.Element;
 
   /** the element to portal global overlays to (like toast and modal), defaults to the body element */
-  globalPortalTo?: Element | DocumentFragment;
+  globalPortalTo?: Element;
 
   /** the icon to use for the dialog close button */
   dialogCloseButtonIcon?: JSX.Element | false;
@@ -80,10 +80,12 @@ export interface IArmstrongConfig {
   tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
 }
 
+type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo'>> & Pick<IArmstrongConfig, 'globalPortalTo'>
+
 /**
  * System level defaults for armstrong global config
  */
-const systemDefaults: Required<IArmstrongConfig> = {
+const systemDefaults: ArmstrongConfigDefaults = {
   validationMode: 'both',
   buttonDisplaySize: 'medium',
   buttonDisplayStyle: 'primary',
@@ -97,7 +99,7 @@ const systemDefaults: Required<IArmstrongConfig> = {
   validationErrorIcon: <IoIosWarning size={24} />,
   spinnerIcon: <ImSpinner2 />,
   dialogCloseButtonIcon: <RiCloseLine size={24} />,
-  globalPortalTo: document.body,
+  globalPortalTo: typeof document !== 'undefined' ? document.body : undefined,
   toastDuration: 5000,
   toastPosition: 'bottom-right',
   toastCloseButtonIcon: <RiCloseLine size={18} />,
@@ -108,7 +110,7 @@ const systemDefaults: Required<IArmstrongConfig> = {
   tooltipSide: 'top',
 };
 
-const ArmstrongConfigContext = React.createContext<Required<IArmstrongConfig>>(systemDefaults);
+const ArmstrongConfigContext = React.createContext<ArmstrongConfigDefaults>(systemDefaults);
 
 /**
  * Configuration for Armstrong
@@ -131,7 +133,7 @@ export const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<IArmstron
  * @param localOverrides Optional overrides for config properties, these will take precedence over anything set globally.
  * @returns A config dictionary with a guaranteed entry for every key in priority order: {...system, ...global, ...local}
  */
-export const useArmstrongConfig = (localOverrides?: IArmstrongConfig): Required<IArmstrongConfig> => {
+export const useArmstrongConfig = (localOverrides?: IArmstrongConfig): ArmstrongConfigDefaults => {
   const config = React.useContext(ArmstrongConfigContext);
   return { ...config, ...stripNullOrUndefined(localOverrides) };
 };

@@ -92,7 +92,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
             {...toast}
           />
         ))}
-        {ReactDOM.createPortal(
+        {globals.globalPortalTo && ReactDOM.createPortal(
           <RadixToast.Viewport className="arm-toast-viewport" data-position={globals.toastPosition} />,
           globals.globalPortalTo
         )}
