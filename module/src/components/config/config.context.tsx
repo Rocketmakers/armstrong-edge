@@ -50,7 +50,7 @@ export interface IArmstrongConfig {
   spinnerIcon?: JSX.Element;
 
   /** the element to portal global overlays to (like toast and modal), defaults to the body element */
-  globalPortalTo?: Element | DocumentFragment;
+  globalPortalTo?: Element;
 
   /** the icon to use for the dialog close button */
   dialogCloseButtonIcon?: JSX.Element | false;
