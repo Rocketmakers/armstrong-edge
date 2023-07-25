@@ -31,7 +31,7 @@ export interface IArmstrongConfig {
     /** the icon to use for the spinner */
     spinnerIcon?: JSX.Element;
     /** the element to portal global overlays to (like toast and modal), defaults to the body element */
-    globalPortalTo?: Element | DocumentFragment;
+    globalPortalTo?: Element;
     /** the icon to use for the dialog close button */
     dialogCloseButtonIcon?: JSX.Element | false;
     /** how long ot show toast messages for in ms, defaults to 5000 */
@@ -51,6 +51,7 @@ export interface IArmstrongConfig {
     /** Which side to render the tooltip, defaults to "top" */
     tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
 }
+type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo'>> & Pick<IArmstrongConfig, 'globalPortalTo'>;
 /**
  * Configuration for Armstrong
  * - Allows for certain frequently repeated properties to be set at a global level
@@ -62,4 +63,5 @@ export declare const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<I
  * @param localOverrides Optional overrides for config properties, these will take precedence over anything set globally.
  * @returns A config dictionary with a guaranteed entry for every key in priority order: {...system, ...global, ...local}
  */
-export declare const useArmstrongConfig: (localOverrides?: IArmstrongConfig) => Required<IArmstrongConfig>;
+export declare const useArmstrongConfig: (localOverrides?: IArmstrongConfig) => ArmstrongConfigDefaults;
+export {};
