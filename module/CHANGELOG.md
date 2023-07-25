@@ -1,3 +1,11 @@
+## [3.0.9](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.8...v3.0.9) (2023-07-25)
+
+
+### Bug Fixes
+
+* add a document check for toast ([856b305](https://github.com/Rocketmakers/armstrong-edge/commit/856b305e184e4a43d6f40b9153c2fad36e6f5486))
+* remove document fragment from portal type ([1eefcb9](https://github.com/Rocketmakers/armstrong-edge/commit/1eefcb93cbd3ef926832a8f69d8fe0dff2b6101b))
+
 ## [3.0.8](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.7...v3.0.8) (2023-07-25)
 
 
