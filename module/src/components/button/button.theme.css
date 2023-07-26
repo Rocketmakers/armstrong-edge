@@ -1,4 +1,5 @@
 .arm-button {
+  cursor: pointer;
   display: inline-flex;
   padding: var(--arm-spacing-small) var(--arm-spacing-xlarge);
   border: var(--arm-button-outline-stroke-thickness) solid transparent;
