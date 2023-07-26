@@ -1,3 +1,10 @@
+## [3.0.11](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.10...v3.0.11) (2023-07-26)
+
+
+### Bug Fixes
+
+* add cursor pointer to button element ([4bf7030](https://github.com/Rocketmakers/armstrong-edge/commit/4bf7030097511011820f87ceaa81270ec3b1cbd8))
+
 ## [3.0.10](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.9...v3.0.10) (2023-07-25)
 
 
