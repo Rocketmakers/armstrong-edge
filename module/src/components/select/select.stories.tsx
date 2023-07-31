@@ -98,6 +98,7 @@ export const Disabled: StoryObj<typeof Select> = {
 
 export const Native: StoryObj<typeof Select> = {
   render: () => {
+    const { formProp } = useForm<{ value?: number }>();
     return (
       <div
         style={{
@@ -105,7 +106,7 @@ export const Native: StoryObj<typeof Select> = {
           height: '20rem',
         }}
       >
-        <NativeSelect options={flatOptions} />
+        <NativeSelect options={flatOptions} bind={formProp('value').bind()} />
       </div>
     );
   },

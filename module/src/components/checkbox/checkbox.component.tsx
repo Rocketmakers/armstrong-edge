@@ -2,6 +2,7 @@ import { CheckboxProps, Indicator, Root } from '@radix-ui/react-checkbox';
 import * as React from 'react';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
@@ -62,6 +63,9 @@ export interface ICheckboxProps<TData extends BindType>
 
   /** which size variant to use */
   displaySize?: DisplaySize;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindType>>(
@@ -87,6 +91,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
       required,
       requiredIndicator,
       statusPosition,
+      autoValidate,
       ...nativeProps
     },
     ref
@@ -94,21 +99,23 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 
+    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+      value: checked,
+      onChange: onCheckedChange,
+      validationErrorMessages,
+      validationMode,
+      autoValidate,
+    });
+
     const globals = useArmstrongConfig({
       scrollValidationErrorsIntoView,
       checkboxCustomIndicator: customIndicator,
       checkboxCustomIndeterminateIndicator: customIndeterminateIndicator,
       requiredIndicator,
       inputStatusPosition: statusPosition,
-      validationMode,
+      validationMode: bindConfig.validationMode,
+      autoValidate: bindConfig.autoValidate,
       inputDisplaySize: displaySize,
-    });
-
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value: checked,
-      onChange: onCheckedChange,
-      validationErrorMessages,
-      validationMode: globals.validationMode,
     });
 
     const onCheckedChangeInternal = React.useCallback<Required<CheckboxProps>['onCheckedChange']>(
@@ -117,6 +124,13 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
       },
       [setBoundValue]
     );
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [boundValue]);
 
     const indicator = React.useMemo(() => {
       switch (boundValue) {

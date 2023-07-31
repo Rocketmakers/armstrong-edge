@@ -2,6 +2,7 @@ import * as RadixSlider from '@radix-ui/react-slider';
 import * as React from 'react';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
@@ -67,6 +68,9 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
 
   /** How big should the increments be on the slider. defaults to `1` */
   step?: number;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<NullOrUndefined<number>>>(
@@ -92,26 +96,43 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
       required,
       customThumb,
       requiredIndicator,
+      autoValidate,
       ...nativeProps
     },
     ref
   ) => {
-    const globals = useArmstrongConfig({
-      scrollValidationErrorsIntoView,
-      validationMode,
-      inputDisplaySize: displaySize,
-      requiredIndicator,
-    });
-
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       onChange,
       validationErrorMessages,
-      validationMode: globals.validationMode,
+      validationMode,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      scrollValidationErrorsIntoView,
+      validationMode: bindConfig.validationMode,
+      inputDisplaySize: displaySize,
+      requiredIndicator,
+      autoValidate: bindConfig.autoValidate,
+      validationErrorIcon: bindConfig.validationErrorIcon,
     });
 
     const generatedLabelId = React.useId();
     const finalLabelId = labelId ?? generatedLabelId;
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate && bindConfig.isTouched) {
+        bindConfig.validate();
+      }
+    }, [boundValue]);
+
+    const onBlurEvent = React.useCallback(() => {
+      if (globals.autoValidate && !bindConfig.isTouched) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [bindConfig, globals.autoValidate]);
 
     return (
       <StatusWrapper
@@ -150,6 +171,7 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
           <RadixSlider.Thumb
             className="arm-range-input-thumb"
             aria-label={typeof label === 'string' ? label : undefined}
+            onBlur={onBlurEvent}
           >
             {customThumb}
           </RadixSlider.Thumb>

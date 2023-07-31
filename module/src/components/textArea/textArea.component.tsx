@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
@@ -69,6 +70,9 @@ interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefine
 
   /** An ID for the label to use when testing  */
   testId?: string;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 /** A component which wraps up a native text area element with some binding logic, labels and validation errors. */
@@ -102,6 +106,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
       rightOverlay,
       hideIconOnStatus,
       statusPosition,
+      autoValidate,
       ...nativeProps
     },
     ref
@@ -109,21 +114,24 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 
-    const globals = useArmstrongConfig({
+    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+      value: value?.toString(),
+      validationErrorMessages,
+      validationErrorIcon: errorIcon,
       validationMode,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
       disableControlOnPending: disableOnPending,
       inputStatusPosition: statusPosition,
       inputDisplaySize: displaySize,
       requiredIndicator,
       scrollValidationErrorsIntoView,
-      validationErrorIcon: errorIcon,
+      validationErrorIcon: bindConfig.validationErrorIcon,
       hideInputErrorIconOnStatus: hideIconOnStatus,
-    });
-
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value: value?.toString(),
-      validationErrorMessages,
-      validationMode: 'message',
+      autoValidate: bindConfig.autoValidate,
     });
 
     const onBindValueChange = React.useCallback(
@@ -153,12 +161,30 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
       [onValueChange, onBindValueChange]
     );
 
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate && bindConfig.isTouched) {
+        bindConfig.validate();
+      }
+    }, [boundValue]);
+
+    const onBlurEvent = React.useCallback(
+      (event: React.FocusEvent<HTMLTextAreaElement, HTMLElement>) => {
+        if (globals.autoValidate && !bindConfig.isTouched) {
+          bindConfig.validate();
+        }
+        bindConfig.setTouched(true);
+        return nativeProps.onBlur?.(event);
+      },
+      [bindConfig, globals.autoValidate, nativeProps]
+    );
+
     const textAreaProps: NativeTextAreaProps & { value?: string } = {
       id,
       className: concat('arm-text-area', textAreaClassName),
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
       value: boundValue?.toString() ?? (bind && ''),
       disabled,
+      onBlur: onBlurEvent,
     };
 
     return (
@@ -187,8 +213,8 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
       >
         {!!delay && (
           <DebounceTextAreaBase
-            {...textAreaProps}
             {...nativeProps}
+            {...textAreaProps}
             milliseconds={delay}
             onChange={onChange}
             onValueChange={onValueChangeEvent}
@@ -198,8 +224,8 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
         {!delay && (
           <textarea
             className={'arm-text-area'}
-            {...textAreaProps}
             {...nativeProps}
+            {...textAreaProps}
             onChange={onChangeEvent}
             ref={ref}
             disabled={disabled || pending}

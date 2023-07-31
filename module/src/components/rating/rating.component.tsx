@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ImStarEmpty, ImStarFull } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { repeat } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
@@ -165,6 +166,9 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
 
   /** Whether to disable the input */
   disabled?: boolean;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefined<number>>>(
@@ -197,28 +201,38 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
       required,
       requiredIndicator,
       displaySize,
+      autoValidate,
       ...htmlProps
     },
     ref
   ) => {
-    const globals = useArmstrongConfig({
-      validationMode,
-      inputDisplaySize: displaySize,
-      scrollValidationErrorsIntoView,
-      requiredIndicator,
-      validationErrorIcon: errorIcon,
-    });
-
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       onChange: onValueChange,
       validationErrorMessages,
-      validationMode: globals.validationMode,
-      validationErrorIcon: globals.validationErrorIcon,
+      validationMode,
+      autoValidate,
+      validationErrorIcon: errorIcon,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
+      inputDisplaySize: displaySize,
+      scrollValidationErrorsIntoView,
+      requiredIndicator,
+      validationErrorIcon: bindConfig.validationErrorIcon,
+      autoValidate: bindConfig.autoValidate,
     });
 
     const generatedLabelId = React.useId();
     const finalLabelId = labelId ?? generatedLabelId;
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [boundValue]);
 
     return (
       <>

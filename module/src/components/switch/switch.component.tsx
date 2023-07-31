@@ -2,6 +2,7 @@ import { Root, SwitchProps, Thumb } from '@radix-ui/react-switch';
 import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config/config.context';
@@ -54,6 +55,9 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
 
   /** (Optional) Class name for the validation errors */
   validationErrorsClassName?: string;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUndefined<boolean>>>(
@@ -75,6 +79,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
       labelId,
       required,
       requiredIndicator,
+      autoValidate,
       ...nativeProps
     },
     ref
@@ -82,18 +87,20 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
     const generatedId = React.useId();
     const id = nativeProps.id ?? generatedId;
 
-    const globals = useArmstrongConfig({
-      validationMode,
-      scrollValidationErrorsIntoView,
-      inputDisplaySize: displaySize,
-      requiredIndicator,
-    });
-
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value: checked,
       onChange: onCheckedChange,
       validationErrorMessages,
-      validationMode: globals.validationMode,
+      validationMode,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
+      scrollValidationErrorsIntoView,
+      inputDisplaySize: displaySize,
+      requiredIndicator,
+      autoValidate: bindConfig.autoValidate,
     });
 
     const onCheckedChangeInternal = React.useCallback<Required<SwitchProps>['onCheckedChange']>(
@@ -102,6 +109,13 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
       },
       [setBoundValue]
     );
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [boundValue]);
 
     return (
       <>

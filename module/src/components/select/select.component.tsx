@@ -16,6 +16,8 @@ import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 import SelectRef, { Props as ReactSelectProps } from 'react-select/dist/declarations/src/Select';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
+import { useContentMemo } from '../../hooks/useContentMemo';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
@@ -164,6 +166,9 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
    * @returns The id to be set/added to the value, if this return value is falsy, the `createdValue` will be set as the Id.
    */
   onOptionCreated?: (createdValue: string) => Id | undefined;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 export interface INativeSelectProps<Id extends ArmstrongId>
@@ -198,6 +203,9 @@ export interface INativeSelectProps<Id extends ArmstrongId>
 
   /** Should the placeholder option be re-selectable? effectively allows the select to be cleared by the user. */
   placeholderOptionEnabled?: boolean;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 export interface IMultiSelectProps<Id extends ArmstrongId>
@@ -262,35 +270,35 @@ const ReactSelectComponent = React.forwardRef<
       disableOnPending,
       hideIconOnStatus,
       leftOverlay,
+      autoValidate,
       ...nativeProps
     },
     ref
   ) => {
-    const globals = useArmstrongConfig({
-      validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: errorIcon,
-      inputStatusPosition: statusPosition,
-      inputDisplaySize: displaySize,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
-      disableControlOnPending: disableOnPending,
-    });
-
     const internalRef = React.useRef<ReactSelectRef<ArmstrongId>>(null);
     React.useImperativeHandle(ref, () => internalRef.current as ReactSelectRef<ArmstrongId>, [internalRef]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- not an ideal use of any, but it's the only way of binding for single and multi from the same component
-    const [value, setValue, { validationErrorMessages, isValid, shouldShowValidationErrorIcon }] = useBindingState<any>(
-      bind,
-      {
-        validationErrorMessages: errorMessages,
-        validationErrorIcon: globals.validationErrorIcon,
-        validationMode: globals.validationMode,
-        value: currentValue,
-        onChange: onSelectOption,
-      }
-    );
+    const [value, setValue, bindConfig] = useBindingState<any>(bind, {
+      validationErrorMessages: errorMessages,
+      validationMode,
+      value: currentValue,
+      onChange: onSelectOption,
+      autoValidate,
+      validationErrorIcon: errorIcon,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
+      requiredIndicator,
+      scrollValidationErrorsIntoView,
+      validationErrorIcon: bindConfig.validationErrorIcon,
+      inputStatusPosition: statusPosition,
+      inputDisplaySize: displaySize,
+      hideInputErrorIconOnStatus: hideIconOnStatus,
+      disableControlOnPending: disableOnPending,
+      autoValidate: bindConfig.autoValidate,
+    });
 
     const handleChange = React.useCallback(
       (newValue: OnChangeValue<IArmstrongOption<ArmstrongId> | IReactSelectCreateOption, boolean>) => {
@@ -370,11 +378,20 @@ const ReactSelectComponent = React.forwardRef<
       [labelGetter]
     );
 
+    const valueContent = useContentMemo(value);
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [valueContent]);
+
     const showLeftOverlay =
       leftOverlay &&
       (globals.inputStatusPosition !== 'left' ||
         !globals.hideInputErrorIconOnStatus ||
-        (!pending && !shouldShowValidationErrorIcon));
+        (!pending && !bindConfig.shouldShowValidationErrorIcon));
 
     const reactSelectProps: Partial<
       ReactSelectProps<IArmstrongOption<ArmstrongId>, boolean, GroupBase<IArmstrongOption<ArmstrongId>>>
@@ -389,7 +406,7 @@ const ReactSelectComponent = React.forwardRef<
       value: selectedValue,
       getOptionValue: valueGetter,
       formatOptionLabel: labelGetter,
-      'aria-invalid': !isValid,
+      'aria-invalid': !bindConfig.isValid,
       'aria-label': ariaLabel,
       isClearable: clearable,
       isDisabled: disabled || (pending && globals.disableControlOnPending) ? true : undefined,
@@ -416,7 +433,7 @@ const ReactSelectComponent = React.forwardRef<
           return (
             <div className="arm-select-inner" data-error-icon={globals.inputStatusPosition}>
               <StatusWrapper
-                error={!isValid}
+                error={!bindConfig.isValid}
                 errorIcon={globals.validationErrorIcon}
                 className={concat('arm-select-status', statusClassName)}
                 statusPosition={globals.inputStatusPosition}
@@ -438,7 +455,7 @@ const ReactSelectComponent = React.forwardRef<
         className={concat('arm-select-wrapper', className)}
         data-size={globals.inputDisplaySize}
         data-multi={!!multi}
-        data-error={!isValid}
+        data-error={!bindConfig.isValid}
         {...nativeProps}
       >
         {label && (
@@ -457,13 +474,13 @@ const ReactSelectComponent = React.forwardRef<
         ) : (
           <ReactSelect ref={internalRef} {...reactSelectProps} />
         )}
-        {!isValid && (
+        {!bindConfig.isValid && (
           <ValidationErrors
             aria-label="Error messages"
             className={concat('arm-select-validation-error-display', validationErrorsClassName)}
             validationMode={globals.validationMode}
             scrollIntoView={globals.scrollValidationErrorsIntoView}
-            validationErrors={validationErrorMessages || []}
+            validationErrors={bindConfig.validationErrorMessages || []}
           />
         )}
       </div>
@@ -513,6 +530,7 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
       statusClassName,
       hideIconOnStatus,
       leftOverlay,
+      autoValidate,
       ...nativeProps
     },
     ref
@@ -520,22 +538,24 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
     const internalRef = React.useRef<HTMLSelectElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current as HTMLSelectElement, [internalRef]);
 
-    const globals = useArmstrongConfig({
+    const [value, setValue, bindConfig] = useBindingState(bind, {
+      validationErrorMessages,
       validationMode,
+      value: currentValue,
+      onChange: onSelectOption,
+      validationErrorIcon: errorIcon,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
       requiredIndicator,
       scrollValidationErrorsIntoView,
-      validationErrorIcon: errorIcon,
+      validationErrorIcon: bindConfig.validationErrorIcon,
       inputStatusPosition: statusPosition,
       inputDisplaySize: displaySize,
       hideInputErrorIconOnStatus: hideIconOnStatus,
-    });
-
-    const [value, setValue, bindConfig] = useBindingState(bind, {
-      validationErrorMessages,
-      validationErrorIcon: globals.validationErrorIcon,
-      validationMode: globals.validationMode,
-      value: currentValue,
-      onChange: onSelectOption,
+      autoValidate: bindConfig.autoValidate,
     });
 
     const clearSelect = React.useCallback(() => {
@@ -560,6 +580,13 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
       },
       [onChange, options, placeholderOption, placeholderOptionEnabled, setValue, onSelectOption, clearSelect]
     );
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [value]);
 
     const showLeftOverlay =
       leftOverlay &&

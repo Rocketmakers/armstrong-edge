@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
@@ -83,6 +84,9 @@ export interface ICheckboxListProps<Id extends ArmstrongId>
 
   /** Symbol to use as the required indicator on the label, defaults to "*" */
   requiredIndicator?: React.ReactNode;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 /** Render a list of radio inputs which binds to a single string */
@@ -108,24 +112,27 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
       scrollValidationErrorsIntoView,
       validationErrorsClassName,
       requiredIndicator,
+      autoValidate,
       ...nativeProps
     },
     ref
   ) => {
-    const globals = useArmstrongConfig({
-      validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: errorIcon,
-      inputDisplaySize: displaySize,
-    });
-
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       validationErrorMessages,
       validationErrorIcon: errorIcon,
       validationMode,
       onChange,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
+      requiredIndicator,
+      scrollValidationErrorsIntoView,
+      validationErrorIcon: bindConfig.validationErrorIcon,
+      inputDisplaySize: displaySize,
+      autoValidate: bindConfig.autoValidate,
     });
 
     const onCheckedChange = React.useCallback(
@@ -144,6 +151,13 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
       },
       [setBoundValue, boundValue, options]
     );
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [boundValue]);
 
     return (
       <>

@@ -2,6 +2,7 @@ import * as RadixRadioGroup from '@radix-ui/react-radio-group';
 import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
@@ -73,6 +74,9 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
 
   /** Symbol to use as the required indicator on the label, defaults to "*" */
   requiredIndicator?: React.ReactNode;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 /** Render a list of radio inputs which binds to a single string */
@@ -99,25 +103,35 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
       displayMode,
       validationErrorsClassName,
       labelId,
+      autoValidate,
       ...nativeProps
     },
     ref
   ) => {
-    const globals = useArmstrongConfig({
-      validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: errorIcon,
-      inputDisplaySize: displaySize,
-    });
-
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       validationErrorMessages,
       validationErrorIcon: errorIcon,
       validationMode,
       onChange,
+      autoValidate,
     });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
+      requiredIndicator,
+      scrollValidationErrorsIntoView,
+      validationErrorIcon: bindConfig.validationErrorIcon,
+      inputDisplaySize: displaySize,
+      autoValidate: bindConfig.autoValidate,
+    });
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [boundValue]);
 
     return (
       <>

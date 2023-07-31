@@ -3,6 +3,7 @@ import { HTMLInputTypeAttribute } from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
@@ -67,6 +68,9 @@ interface IInputProps<TValue extends NullOrUndefined<string> | NullOrUndefined<n
 
   /** optional test ID to use for the input wrapper */
   wrapperTestId?: string;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 type SupportedStringInputTypes =
@@ -128,6 +132,7 @@ export const Input = React.forwardRef<
       labelId,
       wrapperTestId,
       error,
+      autoValidate,
       ...nativeProps
     },
     ref
@@ -135,22 +140,24 @@ export const Input = React.forwardRef<
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 
-    const globals = useArmstrongConfig({
+    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+      value: value?.toString(),
+      validationErrorMessages,
       validationMode,
+      validationErrorIcon,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
       disableControlOnPending: disableOnPending,
       hideInputErrorIconOnStatus: hideIconOnStatus,
       inputDisplaySize: displaySize,
       inputStatusPosition: statusPosition,
       requiredIndicator,
-      validationErrorIcon,
+      validationErrorIcon: bindConfig.validationErrorIcon,
       scrollValidationErrorsIntoView,
-    });
-
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value: value?.toString(),
-      validationErrorMessages,
-      validationMode: globals.validationMode,
-      validationErrorIcon: globals.validationErrorIcon,
+      autoValidate: bindConfig.autoValidate,
     });
 
     const parseValue = React.useCallback(
@@ -194,6 +201,23 @@ export const Input = React.forwardRef<
       [onValueChange, onBindValueChange, parseValue]
     );
 
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate && bindConfig.isTouched) {
+        bindConfig.validate();
+      }
+    }, [boundValue]);
+
+    const onBlurEvent = React.useCallback(
+      (event: React.FocusEvent<HTMLInputElement, HTMLElement>) => {
+        if (globals.autoValidate && !bindConfig.isTouched) {
+          bindConfig.validate();
+        }
+        bindConfig.setTouched(true);
+        return nativeProps.onBlur?.(event);
+      },
+      [bindConfig, globals.autoValidate, nativeProps]
+    );
+
     const inputProps: NativeInputProps & { value?: string; 'data-testid'?: string } = {
       id,
       className: concat('arm-input-base-input', inputClassName),
@@ -201,6 +225,7 @@ export const Input = React.forwardRef<
       value: boundValue?.toString() ?? (bind && ''),
       disabled,
       ...nativeProps,
+      onBlur: onBlurEvent,
     };
 
     return (
