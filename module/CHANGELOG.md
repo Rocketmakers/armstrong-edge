@@ -1,3 +1,10 @@
+## [3.0.12](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.11...v3.0.12) (2023-07-31)
+
+
+### Bug Fixes
+
+* - Added missing validation component export ([617b72d](https://github.com/Rocketmakers/armstrong-edge/commit/617b72d519531e1a19a50a891e9b6eaf8919d903))
+
 ## [3.0.11](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.10...v3.0.11) (2023-07-26)
 
 
