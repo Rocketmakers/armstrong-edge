@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { IBindingProps, useBindingState, useForm } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, DisplaySize, NullOrUndefined } from '../../types';
 import { concat, findLastIndex } from '../../utils';
 import { useArmstrongConfig } from '../config';
@@ -127,6 +128,9 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
 
   /** Symbol to use as the required indicator on the label, defaults to "*" */
   requiredIndicator?: React.ReactNode;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOrUndefined<string>>>(
@@ -157,12 +161,23 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       labelId,
       disableOnPending,
       disabled,
+      autoValidate,
       ...nativeProps
     },
     ref
   ) => {
-    const globals = useArmstrongConfig({
+    const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
+
+    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+      onChange,
+      validationErrorMessages,
       validationMode,
+      value,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
       inputStatusPosition: statusPosition,
       inputDisplaySize: displaySize,
       requiredIndicator,
@@ -170,16 +185,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       disableControlOnPending: disableOnPending,
       scrollValidationErrorsIntoView,
       validationErrorIcon: errorIcon,
-    });
-
-    const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
-
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      onChange,
-      validationErrorMessages,
-      validationMode: globals.validationMode,
-      validationErrorIcon: globals.validationErrorIcon,
-      value,
+      autoValidate: bindConfig.autoValidate,
     });
 
     const goNextPart = React.useCallback(
@@ -303,6 +309,19 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want the trigger the effect when the function is re-defined
     }, [formState]);
 
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate && bindConfig.isTouched) {
+        bindConfig.validate();
+      }
+    }, [boundValue]);
+
+    const onBlur = React.useCallback(() => {
+      if (formState?.parts.every(p => p) && globals.autoValidate && !bindConfig.isTouched) {
+        bindConfig.validate();
+        bindConfig.setTouched(true);
+      }
+    }, [bindConfig, formState?.parts, globals.autoValidate]);
+
     const showLeftOverlay =
       leftOverlay &&
       (globals.inputStatusPosition !== 'left' ||
@@ -349,6 +368,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
                     onChange={event => onPartValueChange(event, index)}
                     onKeyDown={event => onKeyDown(event, index, +part)}
                     onPaste={onPaste}
+                    onBlur={onBlur}
                     disabled={disabled || (pending && globals.disableControlOnPending)}
                     ref={r => {
                       inputRefs.current[index] = r;

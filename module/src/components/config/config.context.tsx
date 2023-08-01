@@ -78,9 +78,13 @@ export interface IArmstrongConfig {
 
   /** Which side to render the tooltip, defaults to "top" */
   tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
+
+  /** should the inputs validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
-type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo'>> & Pick<IArmstrongConfig, 'globalPortalTo'>
+type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo'>> &
+  Pick<IArmstrongConfig, 'globalPortalTo'>;
 
 /**
  * System level defaults for armstrong global config
@@ -108,6 +112,7 @@ const systemDefaults: ArmstrongConfigDefaults = {
   tooltipDelay: 700,
   tooltipShowArrow: false,
   tooltipSide: 'top',
+  autoValidate: true,
 };
 
 const ArmstrongConfigContext = React.createContext<ArmstrongConfigDefaults>(systemDefaults);

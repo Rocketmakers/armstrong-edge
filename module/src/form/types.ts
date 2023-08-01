@@ -539,6 +539,9 @@ export interface IFormConfig<TData> {
    * @default warning
    */
   validationErrorIcon?: JSX.Element;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 /**
@@ -704,6 +707,9 @@ interface IUseBindingStateReturnUtils<TData> {
 
   /** Derived from the validation mode */
   shouldShowValidationErrorMessage?: boolean;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 /**
@@ -735,6 +741,9 @@ export interface IUseBindingStateOverrides<TData> {
 
   /** The current validation mode for the form */
   validationErrorIcon?: JSX.Element;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 /**

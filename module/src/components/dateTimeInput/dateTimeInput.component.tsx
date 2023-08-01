@@ -8,6 +8,7 @@ import { FaChevronLeft, FaChevronRight, FaRegCalendar } from 'react-icons/fa';
 import { ImClock } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import {
   ArmstrongFCExtensions,
   ArmstrongFCProps,
@@ -41,6 +42,9 @@ export interface IDateTimeInputProps {
 
   /** The locale to use (default `enGB`) */
   locale?: Locale;
+
+  /** should the input validate automatically against the provided schema? Default: `true` */
+  autoValidate?: boolean;
 }
 
 export interface IDateTimeInputRangeProps<TBind extends NullOrUndefined<string>>
@@ -271,6 +275,7 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       format,
       locale,
       statusClassName,
+      autoValidate,
       ...inputProps
     },
     ref
@@ -279,7 +284,10 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       validationErrorMessages,
       value,
       onChange,
+      autoValidate,
     });
+
+    const globals = useArmstrongConfig({ autoValidate: bindDateConfig.autoValidate });
 
     const renderCustomHeader = React.useCallback(
       (customHeaderProps: ReactDatePickerCustomHeaderProps) => {
@@ -333,6 +341,13 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       [date, compiledFormat, locale]
     );
 
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindDateConfig.validate();
+      }
+      bindDateConfig.setTouched(true);
+    }, [dateVal]);
+
     return (
       <ReactDatePicker
         {...stripNullOrUndefined(compiledConfig)}
@@ -378,6 +393,7 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
       native,
       format,
       locale,
+      autoValidate,
       ...inputProps
     },
     ref
@@ -385,12 +401,18 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
     const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
       validationErrorMessages,
       value: startValue,
+      autoValidate,
     });
 
     const [endDate, setEndDate, bindEndDateConfig] = useBindingState(endBind, {
       // only pass in validationErrorMessages once for date range as errors will be combined!
       validationErrorMessages: [],
       value: endValue,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      autoValidate: bindEndDateConfig.autoValidate ?? bindStartDateConfig.autoValidate,
     });
 
     const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
@@ -404,6 +426,22 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
 
     const startDateVal = startDate ? parse(startDate, format as string, new Date(), { locale }) : undefined;
     const endDateVal = endDate ? parse(endDate, format as string, new Date(), { locale }) : undefined;
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindEndDateConfig.validate();
+        bindStartDateConfig.validate();
+      }
+      bindStartDateConfig.setTouched(true);
+      bindEndDateConfig.setTouched(true);
+    }, [endDate]);
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate && bindStartDateConfig.isTouched && bindEndDateConfig.isTouched) {
+        bindEndDateConfig.validate();
+        bindStartDateConfig.validate();
+      }
+    }, [startDate]);
 
     return (
       <ReactDatePicker
@@ -427,9 +465,18 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
         startDate={startDateVal}
         endDate={endDateVal}
         onChange={newValue => {
-          setStartDate?.(formatDate(newValue?.[0], format as string));
-          setEndDate?.(formatDate(newValue?.[1], format as string));
-          onChange?.(newValue?.map(nv => formatDate(nv, format as string)) as [string | null, string | null]);
+          let hasChanged = false;
+          if (newValue?.[0]) {
+            setStartDate?.(formatDate(newValue?.[0], format as string));
+            hasChanged = true;
+          }
+          if (newValue?.[1]) {
+            setEndDate?.(formatDate(newValue?.[1], format as string));
+            hasChanged = true;
+          }
+          if (hasChanged) {
+            onChange?.(newValue?.map(nv => formatDate(nv, format as string)) as [string | null, string | null]);
+          }
         }}
       />
     );
@@ -488,27 +535,29 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
       label,
       labelId,
       labelClassName,
+      autoValidate,
       ...nativeProps
     },
     ref
   ) => {
-    const globals = useArmstrongConfig({
+    const [dateTime, setDateTime, bindConfig] = useBindingState(bind, {
+      validationErrorMessages,
+      value,
+      onChange,
       validationMode,
+      autoValidate,
+    });
+
+    const globals = useArmstrongConfig({
+      validationMode: bindConfig.validationMode,
       disableControlOnPending: disableOnPending,
       hideInputErrorIconOnStatus: hideIconOnStatus,
       inputDisplaySize: displaySize,
       inputStatusPosition: statusPosition,
       requiredIndicator,
-      validationErrorIcon: errorIcon,
+      validationErrorIcon: bindConfig.validationErrorIcon,
       scrollValidationErrorsIntoView,
-    });
-
-    const [dateTime, setDateTime, bindConfig] = useBindingState(bind, {
-      validationErrorMessages,
-      value,
-      onChange,
-      validationMode: globals.validationMode,
-      validationErrorIcon: globals.validationErrorIcon,
+      autoValidate: bindConfig.autoValidate,
     });
 
     const incomingDateValue = React.useMemo(() => {
@@ -546,6 +595,13 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps -- Don't want to trigger effect when setter changes
     }, [dateInputDisplayFormat, dateValue, format, locale, timeInputDisplayFormat, timeValue]);
+
+    useDidUpdateEffect(() => {
+      if (globals.autoValidate) {
+        bindConfig.validate();
+      }
+      bindConfig.setTouched(true);
+    }, [dateTime]);
 
     return (
       <div className={concat('arm-date-and-time-input-container', className)} {...nativeProps}>

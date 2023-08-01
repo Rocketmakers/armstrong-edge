@@ -140,28 +140,29 @@ export const Dialog = React.forwardRef(
 
     return (
       <RadixDialog.Root open={!finishAction} onOpenChange={onInnerOpenChange}>
-        {globals.globalPortalTo && ReactDOM.createPortal(
-          <RadixDialog.Overlay className={concat('arm-dialog-overlay', overlayClassName)}>
-            <RadixDialog.Content
-              className={concat('arm-dialog', className)}
-              data-has-title={title ? true : undefined}
-              data-testid={testId}
-              {...nativeProps}
-            >
-              {title && <RadixDialog.Title className="arm-dialog-title">{title}</RadixDialog.Title>}
-              {description && (
-                <RadixDialog.Description className="arm-dialog-description">{description}</RadixDialog.Description>
-              )}
-              {children && <div className="arm-dialog-content">{children}</div>}
-              {globals.dialogCloseButtonIcon !== false && (
-                <RadixDialog.Close className="arm-dialog-close" aria-label="Close">
-                  {globals.dialogCloseButtonIcon}
-                </RadixDialog.Close>
-              )}
-            </RadixDialog.Content>
-          </RadixDialog.Overlay>,
-          globals.globalPortalTo
-        )}
+        {globals.globalPortalTo &&
+          ReactDOM.createPortal(
+            <RadixDialog.Overlay className={concat('arm-dialog-overlay', overlayClassName)}>
+              <RadixDialog.Content
+                className={concat('arm-dialog', className)}
+                data-has-title={title ? true : undefined}
+                data-testid={testId}
+                {...nativeProps}
+              >
+                {title && <RadixDialog.Title className="arm-dialog-title">{title}</RadixDialog.Title>}
+                {description && (
+                  <RadixDialog.Description className="arm-dialog-description">{description}</RadixDialog.Description>
+                )}
+                {children && <div className="arm-dialog-content">{children}</div>}
+                {globals.dialogCloseButtonIcon !== false && (
+                  <RadixDialog.Close className="arm-dialog-close" aria-label="Close">
+                    {globals.dialogCloseButtonIcon}
+                  </RadixDialog.Close>
+                )}
+              </RadixDialog.Content>
+            </RadixDialog.Overlay>,
+            globals.globalPortalTo
+          )}
       </RadixDialog.Root>
     );
   }

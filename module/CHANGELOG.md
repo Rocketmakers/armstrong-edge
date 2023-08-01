@@ -1,52 +1,45 @@
 ## [3.0.12](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.11...v3.0.12) (2023-07-31)
 
-
 ### Bug Fixes
 
-* - Added missing validation component export ([617b72d](https://github.com/Rocketmakers/armstrong-edge/commit/617b72d519531e1a19a50a891e9b6eaf8919d903))
+- - Added missing validation component export ([617b72d](https://github.com/Rocketmakers/armstrong-edge/commit/617b72d519531e1a19a50a891e9b6eaf8919d903))
 
 ## [3.0.11](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.10...v3.0.11) (2023-07-26)
 
-
 ### Bug Fixes
 
-* add cursor pointer to button element ([4bf7030](https://github.com/Rocketmakers/armstrong-edge/commit/4bf7030097511011820f87ceaa81270ec3b1cbd8))
+- add cursor pointer to button element ([4bf7030](https://github.com/Rocketmakers/armstrong-edge/commit/4bf7030097511011820f87ceaa81270ec3b1cbd8))
 
 ## [3.0.10](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.9...v3.0.10) (2023-07-25)
 
-
 ### Bug Fixes
 
-* - Added types export to barrel file ([ba8e4e0](https://github.com/Rocketmakers/armstrong-edge/commit/ba8e4e0d06983bb268557e45a8b98d544f203503))
+- - Added types export to barrel file ([ba8e4e0](https://github.com/Rocketmakers/armstrong-edge/commit/ba8e4e0d06983bb268557e45a8b98d544f203503))
 
 ## [3.0.9](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.8...v3.0.9) (2023-07-25)
 
-
 ### Bug Fixes
 
-* add a document check for toast ([856b305](https://github.com/Rocketmakers/armstrong-edge/commit/856b305e184e4a43d6f40b9153c2fad36e6f5486))
-* remove document fragment from portal type ([1eefcb9](https://github.com/Rocketmakers/armstrong-edge/commit/1eefcb93cbd3ef926832a8f69d8fe0dff2b6101b))
+- add a document check for toast ([856b305](https://github.com/Rocketmakers/armstrong-edge/commit/856b305e184e4a43d6f40b9153c2fad36e6f5486))
+- remove document fragment from portal type ([1eefcb9](https://github.com/Rocketmakers/armstrong-edge/commit/1eefcb93cbd3ef926832a8f69d8fe0dff2b6101b))
 
 ## [3.0.8](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.7...v3.0.8) (2023-07-25)
 
-
 ### Bug Fixes
 
-* - Added util exports ([35b46c7](https://github.com/Rocketmakers/armstrong-edge/commit/35b46c741754d897bfcbd74f01670125e79deda2))
+- - Added util exports ([35b46c7](https://github.com/Rocketmakers/armstrong-edge/commit/35b46c741754d897bfcbd74f01670125e79deda2))
 
 ## [3.0.7](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.6...v3.0.7) (2023-07-24)
 
-
 ### Bug Fixes
 
-* - Switched focus outline to box shadow for Safari bug ([6035ad0](https://github.com/Rocketmakers/armstrong-edge/commit/6035ad065c09884ef2e7594c8d87b9b82fa8e86d))
+- - Switched focus outline to box shadow for Safari bug ([6035ad0](https://github.com/Rocketmakers/armstrong-edge/commit/6035ad065c09884ef2e7594c8d87b9b82fa8e86d))
 
 ## [3.0.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.5...v3.0.6) (2023-07-24)
 
-
 ### Bug Fixes
 
-* - Added missing toast export ([f203bd2](https://github.com/Rocketmakers/armstrong-edge/commit/f203bd2d9315412244fa17e57b22b809a4039105))
+- - Added missing toast export ([f203bd2](https://github.com/Rocketmakers/armstrong-edge/commit/f203bd2d9315412244fa17e57b22b809a4039105))
 
 ## [3.0.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.4...v3.0.5) (2023-07-20)
 
