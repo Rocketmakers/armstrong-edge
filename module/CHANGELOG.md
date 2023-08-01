@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.0...v3.1.1) (2023-08-01)
+
+
+### Bug Fixes
+
+* - Minor type fix in Zod schema ([61f2e1d](https://github.com/Rocketmakers/armstrong-edge/commit/61f2e1d384e6d3a2b0faf26b5b224a1d2a3d2dba))
+
 # [3.1.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.12...v3.1.0) (2023-08-01)
 
 ### Features
