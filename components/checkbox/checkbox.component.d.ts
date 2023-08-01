@@ -36,6 +36,8 @@ export interface ICheckboxProps<TData extends BindType> extends Omit<React.Detai
     scrollValidationErrorsIntoView?: boolean;
     /** which size variant to use */
     displaySize?: DisplaySize;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 export declare const Checkbox: (<TBind extends NullOrUndefined<boolean>>(props: ArmstrongFCProps<ICheckboxProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<ICheckboxProps<NullOrUndefined<boolean>>>;
 export {};

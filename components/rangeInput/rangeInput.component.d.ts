@@ -39,5 +39,7 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>> extends
     max?: number;
     /** How big should the increments be on the slider. defaults to `1` */
     step?: number;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 export declare const RangeInput: (<TBind extends NullOrUndefined<number>>(props: ArmstrongFCProps<IRangeInputProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<IRangeInputProps<NullOrUndefined<number>>>;

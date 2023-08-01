@@ -50,6 +50,8 @@ export interface IArmstrongConfig {
     tooltipShowArrow?: boolean;
     /** Which side to render the tooltip, defaults to "top" */
     tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
+    /** should the inputs validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo'>> & Pick<IArmstrongConfig, 'globalPortalTo'>;
 /**

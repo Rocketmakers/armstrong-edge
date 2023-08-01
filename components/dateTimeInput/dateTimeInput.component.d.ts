@@ -11,6 +11,8 @@ export interface IDateTimeInputProps {
     format?: string;
     /** The locale to use (default `enGB`) */
     locale?: Locale;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 export interface IDateTimeInputRangeProps<TBind extends NullOrUndefined<string>> extends IDateTimeInputProps, Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind' | 'ref' | 'type'> {
     /** Whether to render a native date input (useful for mobile) */

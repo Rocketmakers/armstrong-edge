@@ -19,6 +19,8 @@ interface IInputProps<TValue extends NullOrUndefined<string> | NullOrUndefined<n
     displaySize?: DisplaySize;
     /** optional test ID to use for the input wrapper */
     wrapperTestId?: string;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 type SupportedStringInputTypes = 'color' | 'date' | 'datetime-local' | 'email' | 'month' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week';
 export interface ITextInputProps<TValue extends NullOrUndefined<string>> extends IInputProps<TValue> {

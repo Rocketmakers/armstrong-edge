@@ -33,5 +33,7 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>> extends 
     required?: boolean;
     /** Symbol to use as the required indicator on the label, defaults to "*" */
     requiredIndicator?: React.ReactNode;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 export declare const CodeInput: (<TBind extends NullOrUndefined<string>>(props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;

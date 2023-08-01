@@ -32,6 +32,8 @@ export interface ICheckboxListProps<Id extends ArmstrongId> extends Pick<IInputW
     disabled?: boolean;
     /** Symbol to use as the required indicator on the label, defaults to "*" */
     requiredIndicator?: React.ReactNode;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 /** Render a list of radio inputs which binds to a single string */
 export declare const CheckboxList: (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<ICheckboxListProps<ArmstrongId>>;

@@ -79,6 +79,8 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
      * @returns The id to be set/added to the value, if this return value is falsy, the `createdValue` will be set as the Id.
      */
     onOptionCreated?: (createdValue: string) => Id | undefined;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 export interface INativeSelectProps<Id extends ArmstrongId> extends NativeSelectProps, Pick<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'displaySize' | 'label' | 'required' | 'scrollValidationErrorsIntoView' | 'requiredIndicator' | 'validationMode' | 'validationErrorMessages' | 'errorIcon' | 'statusPosition' | 'dropdownIcon' | 'labelId' | 'labelClassName' | 'validationErrorsClassName' | 'statusClassName' | 'hideIconOnStatus' | 'leftOverlay'> {
     /** the options to be displayed in the input */
@@ -87,6 +89,8 @@ export interface INativeSelectProps<Id extends ArmstrongId> extends NativeSelect
     placeholderOption?: string;
     /** Should the placeholder option be re-selectable? effectively allows the select to be cleared by the user. */
     placeholderOptionEnabled?: boolean;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 export interface IMultiSelectProps<Id extends ArmstrongId> extends Omit<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'multi'> {
     /**  prop for binding to an Armstrong form binder (see forms documentation) */

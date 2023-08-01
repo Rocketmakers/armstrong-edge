@@ -20,6 +20,8 @@ interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefine
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     /** An ID for the label to use when testing  */
     testId?: string;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 /** A component which wraps up a native text area element with some binding logic, labels and validation errors. */
 export declare const TextArea: (<TStringValue extends NullOrUndefined<string>>(props: ArmstrongFCProps<ITextAreaProps<TStringValue>, HTMLTextAreaElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<ITextAreaProps<string>>;

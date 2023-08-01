@@ -34,6 +34,8 @@ export interface IRadioGroupProps<Id extends ArmstrongId> extends Pick<IInputWra
     disabled?: boolean;
     /** Symbol to use as the required indicator on the label, defaults to "*" */
     requiredIndicator?: React.ReactNode;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 /** Render a list of radio inputs which binds to a single string */
 export declare const RadioGroup: (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;

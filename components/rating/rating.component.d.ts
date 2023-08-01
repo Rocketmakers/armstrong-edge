@@ -39,5 +39,7 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>> extends Omi
     mode?: 'range' | 'buttons' | 'radio';
     /** Whether to disable the input */
     disabled?: boolean;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 export declare const Rating: (<TBind extends NullOrUndefined<number>>(props: ArmstrongVFCProps<IRatingProps<TBind>, HTMLDivElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<IRatingProps<NullOrUndefined<number>>>;

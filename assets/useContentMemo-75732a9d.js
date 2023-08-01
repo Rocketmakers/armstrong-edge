@@ -1,2 +1,0 @@
-import{r as e}from"./index-c4905b50.js";import{c as o}from"./config.context-240cf8e4.js";const r=typeof window<"u"?e.useLayoutEffect:e.useEffect,f=(t,n)=>{const s=e.useRef(!0);return e.useEffect(()=>{s.current=!1},[]),r(()=>{if(!s.current)return t()},n)},a=t=>{const n=e.useMemo(()=>o(t),[t]);return e.useMemo(()=>t,[n])};export{r as a,f as b,a as u};
-//# sourceMappingURL=useContentMemo-75732a9d.js.map

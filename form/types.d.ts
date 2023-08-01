@@ -445,6 +445,8 @@ export interface IFormConfig<TData> {
      * @default warning
      */
     validationErrorIcon?: JSX.Element;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 /**
  * The root type for a form action to be dispatched to the reducer.
@@ -588,6 +590,8 @@ interface IUseBindingStateReturnUtils<TData> {
     shouldShowValidationErrorIcon?: boolean;
     /** Derived from the validation mode */
     shouldShowValidationErrorMessage?: boolean;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 /**
  * Tools and elements returned from the `useBindingState` hook
@@ -613,6 +617,8 @@ export interface IUseBindingStateOverrides<TData> {
     validationMode?: FormValidationMode;
     /** The current validation mode for the form */
     validationErrorIcon?: JSX.Element;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 /**
  * Action type dispatched to change the touched state of a field

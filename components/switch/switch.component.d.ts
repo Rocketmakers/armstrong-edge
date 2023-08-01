@@ -21,5 +21,7 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>> extends Om
     scrollValidationErrorsIntoView?: boolean;
     /** (Optional) Class name for the validation errors */
     validationErrorsClassName?: string;
+    /** should the input validate automatically against the provided schema? Default: `true` */
+    autoValidate?: boolean;
 }
 export declare const Switch: (<TBind extends NullOrUndefined<boolean>>(props: ArmstrongFCProps<ISwitchProps<TBind>, HTMLInputElement>) => ArmstrongFCReturn) & ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>;
