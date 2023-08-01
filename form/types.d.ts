@@ -1,12 +1,11 @@
 /**
  * Types associated with form binding.
  * --------------------------------------
- * These functions are designed to facilitate async paging with SWR
  */
 /// <reference types="react" />
-import type { ZodArray, ZodBigInt, ZodBoolean, ZodDate, ZodLiteral, ZodNullable, ZodNumber, ZodObject, ZodOptional, ZodRawShape, ZodString, ZodTypeAny } from 'zod';
+import { type ZodArray, type ZodBigInt, type ZodBoolean, type ZodDate, type ZodLiteral, type ZodNullable, type ZodNumber, type ZodObject, type ZodOptional, type ZodRawShape, type ZodString, type ZodTypeAny } from 'zod';
 /**
- * Works out whether some data is an object, and array, or another type.
+ * Works out whether some data is an object, and array, or another type.ß
  * Used by `formProp` to type the next argument in the array.
  * If it's an object, this type becomes a key of that object.
  * If it's an array, this type becomes `number` to support indexing the array.
@@ -383,7 +382,7 @@ export interface IArrayOfZod<TProp> {
         [TKey in keyof TProp]: ToZod<TProp[TKey]>;
     } : ToZod<TProp>;
     /** A function which defines the validation to apply to the array itself (e.g. `opts: arr => arr.min(1).max(5)`) */
-    opts?: (arr: ZodArray<any>) => ZodArray<any>;
+    opts?: (arr: ZodArray<any>) => ZodArray<any> | ZodNullable<ZodTypeAny> | ZodOptional<ZodTypeAny> | ZodOptional<ZodNullable<ZodTypeAny>>;
 }
 /**
  * Defines the zod validation schema for an object
@@ -393,9 +392,9 @@ export interface IObjectOfZod<TProp> {
     /** The validation for each key within the object (will be an object of key/validator pairs) */
     schema: TProp;
     /** A function which defines the validation to apply to the object itself (e.g. `opts: ob => ob.required()`) */
-    opts?: (ob: ZodObject<ZodRawShape>) => ZodObject<ZodRawShape>;
+    opts?: (ob: ZodObject<ZodRawShape>) => ZodObject<ZodRawShape> | ZodNullable<ZodTypeAny> | ZodOptional<ZodTypeAny> | ZodOptional<ZodNullable<ZodTypeAny>>;
 }
-type WithZodLiteral<T, K> = T | ZodLiteral<K>;
+type WithZodAdditions<T extends ZodTypeAny, K> = T | ZodLiteral<K> | ZodOptional<T> | ZodNullable<T> | ZodOptional<ZodNullable<T>>;
 /**
  * Root type for applying the correct zod validation type to a prop within form state
  * - Works by creating a type string for the form state prop and using this to index an object type containing zod requirements for each type
@@ -403,11 +402,11 @@ type WithZodLiteral<T, K> = T | ZodLiteral<K>;
 export type ToZod<TProp> = {
     any: never;
     array: TProp extends Array<infer TInner> ? IArrayOfZod<TInner> : never;
-    string: ZodNullOrUndefined<TProp, WithZodLiteral<ZodString, string>>;
-    bigint: ZodNullOrUndefined<TProp, WithZodLiteral<ZodBigInt, number>>;
-    number: ZodNullOrUndefined<TProp, WithZodLiteral<ZodNumber, number>>;
-    boolean: ZodNullOrUndefined<TProp, WithZodLiteral<ZodBoolean, boolean>>;
-    date: ZodNullOrUndefined<TProp, WithZodLiteral<ZodDate, Date>>;
+    string: ZodNullOrUndefined<TProp, WithZodAdditions<ZodString, string>>;
+    bigint: ZodNullOrUndefined<TProp, WithZodAdditions<ZodBigInt, number>>;
+    number: ZodNullOrUndefined<TProp, WithZodAdditions<ZodNumber, number>>;
+    boolean: ZodNullOrUndefined<TProp, WithZodAdditions<ZodBoolean, boolean>>;
+    date: ZodNullOrUndefined<TProp, WithZodAdditions<ZodDate, Date>>;
     object: IObjectOfZod<{
         [TKey in keyof TProp]: ToZod<TProp[TKey]>;
     }>;
