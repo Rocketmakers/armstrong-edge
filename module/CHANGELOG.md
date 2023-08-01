@@ -1,9 +1,8 @@
 # [3.1.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.12...v3.1.0) (2023-08-01)
 
-
 ### Features
 
-* - Added auto validate + touch support and fixed globals override order ([6567341](https://github.com/Rocketmakers/armstrong-edge/commit/65673413b6d2c5bf42018b51764f3399f582055a))
+- - Added auto validate + touch support and fixed globals override order ([6567341](https://github.com/Rocketmakers/armstrong-edge/commit/65673413b6d2c5bf42018b51764f3399f582055a))
 
 ## [3.0.12](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.11...v3.0.12) (2023-07-31)
 
