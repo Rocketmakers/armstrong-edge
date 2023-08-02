@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.1...v3.1.2) (2023-08-02)
+
+
+### Bug Fixes
+
+* Fixed bind type issue with radio group ([443e906](https://github.com/Rocketmakers/armstrong-edge/commit/443e9060c0c784a7d86deb58b31dafbac91b009f))
+
 ## [3.1.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.0...v3.1.1) (2023-08-01)
 
 
