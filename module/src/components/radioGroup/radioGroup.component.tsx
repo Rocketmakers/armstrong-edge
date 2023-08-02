@@ -20,6 +20,11 @@ import { ValidationErrors } from '../validationErrors';
 
 import './radioGroup.theme.css';
 
+export type RadioGroupOption<Id extends ArmstrongId> = IArmstrongOption<
+  Id,
+  Omit<RadixRadioGroup.RadioGroupItemProps, 'value'>
+>;
+
 export interface IRadioGroupProps<Id extends ArmstrongId>
   extends Pick<
       IInputWrapperProps,
@@ -37,7 +42,7 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
   bind?: IBindingProps<Id>;
 
   /** The options to be shown in the input */
-  options: IArmstrongOption<Id, Omit<RadixRadioGroup.RadioGroupItemProps, 'value'>>[];
+  options: RadioGroupOption<Id>[];
 
   /** CSS className property */
   className?: string;
@@ -153,7 +158,11 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
           data-size={displaySize}
           data-mode={displayMode}
           value={boundValue?.toString() ?? 'undefined'}
-          onValueChange={newValue => setBoundValue(newValue)}
+          onValueChange={newValue =>
+            setBoundValue(
+              typeof boundValue === 'number' && newValue !== null && newValue !== undefined ? +newValue : newValue
+            )
+          }
           disabled={disabled}
           ref={ref}
           {...nativeProps}
