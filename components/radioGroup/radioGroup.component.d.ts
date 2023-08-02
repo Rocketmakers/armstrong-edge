@@ -3,13 +3,14 @@ import * as React from 'react';
 import { IBindingProps } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongId, ArmstrongVFCProps, DisplaySize, IArmstrongOption } from '../../types';
 import { IInputWrapperProps } from '../inputWrapper';
+export type RadioGroupOption<Id extends ArmstrongId> = IArmstrongOption<Id, Omit<RadixRadioGroup.RadioGroupItemProps, 'value'>>;
 export interface IRadioGroupProps<Id extends ArmstrongId> extends Pick<IInputWrapperProps, 'scrollValidationErrorsIntoView' | 'validationMode' | 'errorIcon' | 'validationErrorMessages' | 'validationErrorsClassName'>, React.RefAttributes<HTMLDivElement> {
     /** Whether to show a vertical list of radio buttons or a horizontal set of adjacent buttons */
     displayMode?: 'radio' | 'button';
     /**  prop for binding to an Armstrong form binder (see forms documentation) */
     bind?: IBindingProps<Id>;
     /** The options to be shown in the input */
-    options: IArmstrongOption<Id, Omit<RadixRadioGroup.RadioGroupItemProps, 'value'>>[];
+    options: RadioGroupOption<Id>[];
     /** CSS className property */
     className?: string;
     /** the current value of the radioInput */
