@@ -31,6 +31,8 @@ export interface IDialogProps<TData = unknown> extends Omit<React.RefAttributes<
   onClose?: () => void;
   /** Optional test ID for the dialog */
   testId?: string;
+  /** Optional time to delay closing for in MS (allows for CSS animations to complete, animate using the [data-visible] attribute) */
+  delayCloseFor?: number;
 }
 
 /** String union describing the various actions that can be used to close a dialog */
@@ -76,6 +78,7 @@ export const Dialog = React.forwardRef(
       data,
       overlayClassName,
       testId,
+      delayCloseFor,
       ...nativeProps
     } = props;
 
@@ -84,6 +87,9 @@ export const Dialog = React.forwardRef(
 
     /** Finish action state is set when the dialog is closed */
     const [finishAction, setFinishAction] = React.useState<DialogFinishAction | undefined>(open ? undefined : 'close');
+
+    /** Store state for whether the dialog is visible */
+    const [visible, setVisible] = React.useState(open);
 
     /** Stores a reference to the promise resolver function */
     const resolverRef =
@@ -97,8 +103,15 @@ export const Dialog = React.forwardRef(
     const onInnerOpenChange = React.useCallback(
       (val: boolean) => {
         setFinishAction(val ? undefined : 'close');
+        if (!val && delayCloseFor) {
+          setTimeout(() => {
+            setVisible(false);
+          }, delayCloseFor);
+          return;
+        }
+        setVisible(val);
       },
-      [setFinishAction]
+      [delayCloseFor]
     );
 
     /** Exposes the DialogElement utility functions to the ref */
@@ -127,9 +140,16 @@ export const Dialog = React.forwardRef(
         onOpenChange?.(!finishAction);
         if (finishAction) {
           onClose?.();
+          if (delayCloseFor) {
+            setTimeout(() => {
+              setVisible(false);
+            }, delayCloseFor);
+          } else {
+            setVisible(false);
+          }
         }
       }
-    }, [finishActionChanged, finishAction, data, onOpenChange, onClose]);
+    }, [finishActionChanged, finishAction, data, onOpenChange, onClose, delayCloseFor]);
 
     /** Listens to changes on the incoming `open` prop for controlled dialogs, and runs the appropriate functions  */
     React.useEffect(() => {
@@ -139,14 +159,18 @@ export const Dialog = React.forwardRef(
     }, [open, onInnerOpenChange, openHasChanged]);
 
     return (
-      <RadixDialog.Root open={!finishAction} onOpenChange={onInnerOpenChange}>
+      <RadixDialog.Root open={visible} onOpenChange={onInnerOpenChange}>
         {globals.globalPortalTo &&
           ReactDOM.createPortal(
-            <RadixDialog.Overlay className={concat('arm-dialog-overlay', overlayClassName)}>
+            <RadixDialog.Overlay
+              className={concat('arm-dialog-overlay', overlayClassName)}
+              data-visible={!finishAction}
+            >
               <RadixDialog.Content
                 className={concat('arm-dialog', className)}
                 data-has-title={title ? true : undefined}
                 data-testid={testId}
+                data-visible={!finishAction}
                 {...nativeProps}
               >
                 {title && <RadixDialog.Title className="arm-dialog-title">{title}</RadixDialog.Title>}
