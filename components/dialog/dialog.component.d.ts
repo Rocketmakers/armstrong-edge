@@ -22,6 +22,8 @@ export interface IDialogProps<TData = unknown> extends Omit<React.RefAttributes<
     onClose?: () => void;
     /** Optional test ID for the dialog */
     testId?: string;
+    /** Optional time to delay closing for in MS (allows for CSS animations to complete, animate using the [data-visible] attribute) */
+    delayCloseFor?: number;
 }
 /** String union describing the various actions that can be used to close a dialog */
 export type DialogFinishAction = keyof Omit<DialogElement<unknown>, 'open'>;
