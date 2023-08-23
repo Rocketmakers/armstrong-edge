@@ -1,3 +1,10 @@
+## [3.1.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.2...v3.1.3) (2023-08-23)
+
+
+### Bug Fixes
+
+* - Added missing close delay prop for styling dialogs ([30335b5](https://github.com/Rocketmakers/armstrong-edge/commit/30335b5dc67b9d1f9ac0d160973b2f535ae6d9e6))
+
 ## [3.1.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.1...v3.1.2) (2023-08-02)
 
 ### Bug Fixes
