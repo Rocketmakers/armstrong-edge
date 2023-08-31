@@ -1,3 +1,12 @@
+## [3.1.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.3...v3.1.4) (2023-08-31)
+
+
+### Bug Fixes
+
+* - Correct wrong validation errors being sent to native select ([2c9b804](https://github.com/Rocketmakers/armstrong-edge/commit/2c9b804ffc64169a1e6c2e178a96aa95bbcaa9f5))
+* - Fixed deepscan issue ([19b68f5](https://github.com/Rocketmakers/armstrong-edge/commit/19b68f561ca05bc019b19fb309aa14be99319499))
+* - Fixed dialog props extension type ([37ae8db](https://github.com/Rocketmakers/armstrong-edge/commit/37ae8db0e5652a9c74d5d85e2a67827d63c8aa09))
+
 ## [3.1.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.2...v3.1.3) (2023-08-23)
 
 ### Bug Fixes
