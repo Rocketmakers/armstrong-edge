@@ -480,7 +480,7 @@ const ReactSelectComponent = React.forwardRef<
             className={concat('arm-select-validation-error-display', validationErrorsClassName)}
             validationMode={globals.validationMode}
             scrollIntoView={globals.scrollValidationErrorsIntoView}
-            validationErrors={bindConfig?.validationErrorMessages || []}
+            validationErrors={bindConfig.validationErrorMessages || []}
           />
         )}
       </div>
@@ -650,7 +650,7 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
             className="arm-select-validation-error-display"
             validationMode={globals.validationMode}
             scrollIntoView={globals.scrollValidationErrorsIntoView}
-            validationErrors={bindConfig?.validationErrorMessages || []}
+            validationErrors={bindConfig.validationErrorMessages || []}
           />
         )}
       </div>
