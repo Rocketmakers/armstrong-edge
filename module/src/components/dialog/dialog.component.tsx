@@ -10,7 +10,8 @@ import { useArmstrongConfig } from '../config';
 import './dialog.theme.css';
 
 /** Dialog component props */
-export interface IDialogProps<TData = unknown> extends Omit<React.RefAttributes<HTMLDivElement>, 'ref'> {
+export interface IDialogProps<TData = unknown>
+  extends Omit<RadixDialog.DialogContentProps & React.RefAttributes<HTMLDivElement>, 'ref' | 'title'> {
   /** Optional title to show at the top of the dialog in an H2 tag */
   title?: React.ReactNode;
   /** Optional description to show in the body of the dialog in a P tag */
