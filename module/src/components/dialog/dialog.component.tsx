@@ -115,20 +115,29 @@ export const Dialog = React.forwardRef(
       [delayCloseFor]
     );
 
+    /** This might seem odd, but these functions are often used as dependencies so we want to memoize them as much as possible */
+    const onOpen = React.useCallback<DialogElement<unknown>['open']>(
+      () =>
+        new Promise(res => {
+          onInnerOpenChange(true);
+          resolverRef.current = res;
+        }),
+      [onInnerOpenChange]
+    );
+    const setOk = React.useCallback(() => setFinishAction('ok'), []);
+    const setClose = React.useCallback(() => setFinishAction('close'), []);
+    const setCancel = React.useCallback(() => setFinishAction('cancel'), []);
+
     /** Exposes the DialogElement utility functions to the ref */
     React.useImperativeHandle(
       ref,
       () => ({
-        open: () =>
-          new Promise(res => {
-            onInnerOpenChange(true);
-            resolverRef.current = res;
-          }),
-        close: () => setFinishAction('close'),
-        ok: () => setFinishAction('ok'),
-        cancel: () => setFinishAction('cancel'),
+        open: onOpen,
+        close: setClose,
+        ok: setOk,
+        cancel: setCancel,
       }),
-      [onInnerOpenChange, setFinishAction]
+      [onOpen, setCancel, setClose, setOk]
     );
 
     /** Listens to the `finishAction` state and runs the appropriate functions */
