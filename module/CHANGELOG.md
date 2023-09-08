@@ -1,9 +1,8 @@
 ## [3.1.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.4...v3.1.5) (2023-09-05)
 
-
 ### Bug Fixes
 
-* - Fixed issue with useDialog action dependency management ([9f77524](https://github.com/Rocketmakers/armstrong-edge/commit/9f775241e5353adea26a5c0f393b03a4cc62fd5f))
+- - Fixed issue with useDialog action dependency management ([9f77524](https://github.com/Rocketmakers/armstrong-edge/commit/9f775241e5353adea26a5c0f393b03a4cc62fd5f))
 
 ## [3.1.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.3...v3.1.4) (2023-08-31)
 

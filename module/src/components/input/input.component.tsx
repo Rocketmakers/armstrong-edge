@@ -85,7 +85,8 @@ type SupportedStringInputTypes =
   | 'text'
   | 'time'
   | 'url'
-  | 'week';
+  | 'week'
+  | 'hidden';
 
 export interface ITextInputProps<TValue extends NullOrUndefined<string>> extends IInputProps<TValue> {
   /** The type of input, used to discriminate the bind/value type */
