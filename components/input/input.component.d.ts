@@ -22,7 +22,7 @@ interface IInputProps<TValue extends NullOrUndefined<string> | NullOrUndefined<n
     /** should the input validate automatically against the provided schema? Default: `true` */
     autoValidate?: boolean;
 }
-type SupportedStringInputTypes = 'color' | 'date' | 'datetime-local' | 'email' | 'month' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week';
+type SupportedStringInputTypes = 'color' | 'date' | 'datetime-local' | 'email' | 'month' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week' | 'hidden';
 export interface ITextInputProps<TValue extends NullOrUndefined<string>> extends IInputProps<TValue> {
     /** The type of input, used to discriminate the bind/value type */
     type?: Extract<HTMLInputTypeAttribute, SupportedStringInputTypes>;
