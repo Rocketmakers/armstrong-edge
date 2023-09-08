@@ -1,3 +1,10 @@
+## [3.1.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.5...v3.1.6) (2023-09-08)
+
+
+### Bug Fixes
+
+* - Added \"hidden\" to the supported types on input ([732797e](https://github.com/Rocketmakers/armstrong-edge/commit/732797ed4fee3627acc6d5d61a0bfd1059025638))
+
 ## [3.1.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.4...v3.1.5) (2023-09-05)
 
 ### Bug Fixes
