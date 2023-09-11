@@ -29,6 +29,7 @@ export * from './components/rating';
 export * from './components/rangeInput';
 export * from './components/provider';
 export * from './components/validationErrors';
+export * from './components/switch';
 export * as ClassNameUtils from './utils/classNames';
 export * as ArrayUtils from './utils/arrays';
 export * as ColorUtils from './utils/color';
