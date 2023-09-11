@@ -1,3 +1,10 @@
+## [3.1.7](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.6...v3.1.7) (2023-09-11)
+
+
+### Bug Fixes
+
+* exported switch as it wasn't getting exporterd ([6250602](https://github.com/Rocketmakers/armstrong-edge/commit/625060291ba3b7db740352b84f6fad370c3345c5))
+
 ## [3.1.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.5...v3.1.6) (2023-09-08)
 
 
