@@ -620,6 +620,8 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
           >
             {showLeftOverlay && <div className="arm-select-overlay arm-select-overlay-left">{leftOverlay}</div>}
             <select
+              data-left-overlay={!!showLeftOverlay}
+              data-right-overlay={!bindConfig.isValid}
               className="arm-native-select"
               {...nativeProps}
               ref={internalRef}

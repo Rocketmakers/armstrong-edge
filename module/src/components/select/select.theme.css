@@ -19,15 +19,26 @@
 /** NATIVE SPECIFIC **/
 
 .arm-native-select {
+  position: absolute;
+  inset: 0;
   display: block;
   appearance: none;
   border: 0;
   outline: 0;
   font-size: inherit;
-  line-height: 1.19em;
+  line-height: 1.3em;
   width: 100%;
   background-color: transparent;
   padding: var(--arm-spacing-small) var(--arm-spacing-medium);
+  padding-right: 3.5rem;
+}
+
+.arm-native-select[data-left-overlay='true'] {
+  padding-left: 2.5rem;
+}
+
+.arm-native-select[data-right-overlay='true'] {
+  padding-right: 5.5rem;
 }
 
 .arm-native-indicators {
@@ -211,6 +222,8 @@
   width: auto;
   position: relative;
   justify-content: flex-end;
+  padding: var(--arm-spacing-small) 0;
+  height: 1.19em;
 }
 
 .arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] {
@@ -331,4 +344,11 @@
 
 .arm-select-overlay-right {
   padding-right: var(--arm-spacing-small);
+}
+
+.arm-select-native-wrapper .arm-select-overlay-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
