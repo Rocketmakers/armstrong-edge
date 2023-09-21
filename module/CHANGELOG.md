@@ -1,3 +1,10 @@
+## [3.1.9](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.8...v3.1.9) (2023-09-21)
+
+
+### Bug Fixes
+
+* - Fixed issue with native select and box sizing ([6885907](https://github.com/Rocketmakers/armstrong-edge/commit/6885907493e2805604e4c01290d580a88bf04eb8))
+
 ## [3.1.8](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.7...v3.1.8) (2023-09-20)
 
 ### Bug Fixes
