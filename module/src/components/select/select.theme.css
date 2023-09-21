@@ -223,7 +223,8 @@
   position: relative;
   justify-content: flex-end;
   padding: var(--arm-spacing-small) 0;
-  height: 1.19em;
+  height: 1.5em;
+  box-sizing: content-box;
 }
 
 .arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] {

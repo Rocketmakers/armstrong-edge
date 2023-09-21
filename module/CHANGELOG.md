@@ -1,9 +1,8 @@
 ## [3.1.8](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.7...v3.1.8) (2023-09-20)
 
-
 ### Bug Fixes
 
-* - Fixed issue in which native select was not opening on arrow click ([b0a2b6c](https://github.com/Rocketmakers/armstrong-edge/commit/b0a2b6ce98cec8a84ceab0f405c8f0c0cd977047))
+- - Fixed issue in which native select was not opening on arrow click ([b0a2b6c](https://github.com/Rocketmakers/armstrong-edge/commit/b0a2b6ce98cec8a84ceab0f405c8f0c0cd977047))
 
 ## [3.1.7](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.6...v3.1.7) (2023-09-11)
 
