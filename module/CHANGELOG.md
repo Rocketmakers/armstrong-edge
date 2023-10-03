@@ -1,3 +1,10 @@
+## [3.1.10](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.9...v3.1.10) (2023-10-03)
+
+
+### Bug Fixes
+
+* - Fixed issues with date input ([722fa36](https://github.com/Rocketmakers/armstrong-edge/commit/722fa36d663ce99d35ff7ffe7fc621b1d3a749cb))
+
 ## [3.1.9](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.8...v3.1.9) (2023-09-21)
 
 ### Bug Fixes
