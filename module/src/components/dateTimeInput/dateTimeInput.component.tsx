@@ -95,8 +95,11 @@ interface IDateOrTimeInputSinglePropsBase<TBind extends NullOrUndefined<string>>
   onChange?: (value: TBind) => void;
 }
 
-export type IDateOrTimeInputSingleProps<TBind extends NullOrUndefined<string>> =
-  IDateOrTimeInputSinglePropsBase<TBind> & Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind' | 'ref' | 'type'>;
+export interface IDateOrTimeInputSingleProps<TBind extends NullOrUndefined<string>>
+  extends IDateOrTimeInputSinglePropsBase<TBind>,
+    Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind' | 'ref' | 'type' | 'leftOverlay'> {
+  leftOverlay?: React.ReactNode | false;
+}
 
 export interface IDateAndTimeInputSingleProps<TBind extends NullOrUndefined<string>>
   extends Omit<IDateOrTimeInputSinglePropsBase<TBind>, 'mode' | 'config'>,
@@ -215,6 +218,7 @@ const LeftAlignHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
       <span className="arm-left-align-date">{formatDate(props.monthDate, 'MMMM yyyy')}</span>
       <div className="arm-left-align-date-navigation">
         <Button
+          type="button"
           className="arm-date-time-input-header-button left-align-button"
           displayStyle="blank"
           onClick={props.decreaseMonth}
@@ -223,6 +227,7 @@ const LeftAlignHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
           <FaChevronLeft className="arm-date-time-input-header-icon" />
         </Button>
         <Button
+          type="button"
           className="arm-date-time-input-header-button left-align-button"
           displayStyle="blank"
           onClick={props.increaseMonth}
@@ -239,6 +244,7 @@ const CenteredHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   return (
     <div className="arm-date-time-input-header centered">
       <Button
+        type="button"
         className="arm-date-time-input-header-button"
         displayStyle="blank"
         onClick={props.decreaseMonth}
@@ -248,6 +254,7 @@ const CenteredHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
       </Button>
       <span>{formatDate(props.monthDate, 'MMMM yyyy')}</span>
       <Button
+        type="button"
         className="arm-date-time-input-header-button"
         displayStyle="blank"
         onClick={props.increaseMonth}
@@ -348,6 +355,13 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       bindDateConfig.setTouched(true);
     }, [dateVal]);
 
+    const leftOverlay = React.useMemo(() => {
+      if (inputProps.leftOverlay === false) return undefined;
+      if (inputProps.leftOverlay) return inputProps.leftOverlay;
+      if (mode === 'time') return <ImClock />;
+      return <FaRegCalendar />;
+    }, [inputProps.leftOverlay, mode]);
+
     return (
       <ReactDatePicker
         {...stripNullOrUndefined(compiledConfig)}
@@ -355,11 +369,12 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
         locale={locale}
         dateFormat={compiledFormat}
         disabled={inputProps.disabled}
+        required={inputProps.required}
         customInput={
           <Input
             ref={ref}
-            leftOverlay={mode === 'time' ? <ImClock /> : <FaRegCalendar />}
             {...inputProps}
+            leftOverlay={leftOverlay}
             className={concat(inputProps.inputClassName, 'arm-date-time-input')}
             validationErrorMessages={bindDateConfig.validationErrorMessages}
           />
