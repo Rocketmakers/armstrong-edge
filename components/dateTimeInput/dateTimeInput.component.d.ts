@@ -46,7 +46,9 @@ interface IDateOrTimeInputSinglePropsBase<TBind extends NullOrUndefined<string>>
     /** Fired when the value changes */
     onChange?: (value: TBind) => void;
 }
-export type IDateOrTimeInputSingleProps<TBind extends NullOrUndefined<string>> = IDateOrTimeInputSinglePropsBase<TBind> & Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind' | 'ref' | 'type'>;
+export interface IDateOrTimeInputSingleProps<TBind extends NullOrUndefined<string>> extends IDateOrTimeInputSinglePropsBase<TBind>, Omit<ITextInputProps<TBind>, 'value' | 'onChange' | 'bind' | 'ref' | 'type' | 'leftOverlay'> {
+    leftOverlay?: React.ReactNode | false;
+}
 export interface IDateAndTimeInputSingleProps<TBind extends NullOrUndefined<string>> extends Omit<IDateOrTimeInputSinglePropsBase<TBind>, 'mode' | 'config'>, Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'ref' | 'value' | 'onChange'>, Pick<ITextInputProps<TBind>, 'validationErrorMessages' | 'validationMode' | 'displaySize' | 'disabled' | 'hideIconOnStatus' | 'disableOnPending' | 'scrollValidationErrorsIntoView' | 'validationErrorsClassName' | 'labelClassName' | 'labelId' | 'label' | 'required' | 'requiredIndicator' | 'statusPosition' | 'error' | 'validationMode' | 'errorIcon'> {
     /** Whether to pick date, time or both. Defaults to `date` */
     mode: 'date-time';
@@ -71,7 +73,7 @@ export interface IDateTimeInputNativeProps<TBind extends NullOrUndefined<string>
     native: true;
 }
 export type DateTimeInputProps<TBind extends NullOrUndefined<string>> = IDateTimeInputRangeProps<TBind> | IDateTimeInputSingleProps<TBind> | IDateTimeInputNativeProps<TBind>;
-export declare const SingleDateTimeInput: React.ForwardRefExoticComponent<IDateOrTimeInputSinglePropsBase<string | null> & Omit<ITextInputProps<string | null>, "type" | "value" | "onChange" | "bind" | "ref"> & React.RefAttributes<HTMLInputElement>>;
+export declare const SingleDateTimeInput: React.ForwardRefExoticComponent<IDateOrTimeInputSingleProps<string | null> & React.RefAttributes<HTMLInputElement>>;
 export declare const RangeDateTimeInput: React.ForwardRefExoticComponent<IDateTimeInputRangeProps<string | null> & React.RefAttributes<HTMLInputElement>>;
 export declare const SingleDateAndTimeInput: React.ForwardRefExoticComponent<IDateAndTimeInputSingleProps<string | null> & React.RefAttributes<HTMLInputElement>>;
 /** third-party docs: https://reactdatepicker.com */
