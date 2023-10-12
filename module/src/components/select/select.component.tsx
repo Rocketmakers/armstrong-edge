@@ -155,6 +155,12 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
   requiredIndicator?: React.ReactNode;
 
   /**
+   * Called when the input value changes.
+   * @param value The current value of the input
+   */
+  onInputChange?: (value: string) => void;
+
+  /**
    * String to use as the prefix when creating new options - defaults to `Create:`
    * NOTE: only used in `allowCreate` mode
    */
@@ -271,6 +277,7 @@ const ReactSelectComponent = React.forwardRef<
       hideIconOnStatus,
       leftOverlay,
       autoValidate,
+      onInputChange,
       ...nativeProps
     },
     ref
@@ -414,6 +421,7 @@ const ReactSelectComponent = React.forwardRef<
       isLoading: pending,
       isSearchable: searchable,
       menuPlacement: position,
+      onInputChange,
       components: {
         Option: props => {
           return (
