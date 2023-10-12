@@ -161,6 +161,11 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
   onInputChange?: (value: string) => void;
 
   /**
+   * The current value of the input if state controlled
+   */
+  inputValue?: string;
+
+  /**
    * String to use as the prefix when creating new options - defaults to `Create:`
    * NOTE: only used in `allowCreate` mode
    */
@@ -278,6 +283,7 @@ const ReactSelectComponent = React.forwardRef<
       leftOverlay,
       autoValidate,
       onInputChange,
+      inputValue,
       ...nativeProps
     },
     ref
@@ -377,10 +383,10 @@ const ReactSelectComponent = React.forwardRef<
     );
 
     const filterOption = React.useCallback<
-      (option: FilterOptionOption<IArmstrongOption<ArmstrongId, unknown>>, inputValue: string) => boolean
+      (option: FilterOptionOption<IArmstrongOption<ArmstrongId, unknown>>, incomingInputValue: string) => boolean
     >(
-      (option, inputValue) => {
-        return !!labelGetter(option.data)?.toString().includes(inputValue);
+      (option, incomingInputValue) => {
+        return !!labelGetter(option.data)?.toString().includes(incomingInputValue);
       },
       [labelGetter]
     );
@@ -422,6 +428,7 @@ const ReactSelectComponent = React.forwardRef<
       isSearchable: searchable,
       menuPlacement: position,
       onInputChange,
+      inputValue,
       components: {
         Option: props => {
           return (
