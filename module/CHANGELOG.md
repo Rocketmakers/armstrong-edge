@@ -7,10 +7,9 @@
 
 ## [3.1.11](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.10...v3.1.11) (2023-10-12)
 
-
 ### Bug Fixes
 
-* - onInputChange now supported in select components ([a8fa9f1](https://github.com/Rocketmakers/armstrong-edge/commit/a8fa9f12624a8c06f3baf17fb086f687e8e69934))
+- - onInputChange now supported in select components ([a8fa9f1](https://github.com/Rocketmakers/armstrong-edge/commit/a8fa9f12624a8c06f3baf17fb086f687e8e69934))
 
 ## [3.1.10](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.9...v3.1.10) (2023-10-03)
 

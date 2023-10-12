@@ -8,6 +8,7 @@ import ReactSelect, {
   MultiValue,
   OnChangeValue,
   SingleValue,
+  ValueContainerProps,
 } from 'react-select';
 import Creatable from 'react-select/creatable';
 // eslint-disable-next-line import/no-unresolved -- file exists
@@ -406,6 +407,40 @@ const ReactSelectComponent = React.forwardRef<
         !globals.hideInputErrorIconOnStatus ||
         (!pending && !bindConfig.shouldShowValidationErrorIcon));
 
+    const valueContainer = React.useCallback(
+      (
+        props: ValueContainerProps<
+          IArmstrongOption<ArmstrongId, unknown>,
+          boolean,
+          GroupBase<IArmstrongOption<ArmstrongId, unknown>>
+        >
+      ) => {
+        return (
+          <div className="arm-select-inner" data-error-icon={globals.inputStatusPosition}>
+            <StatusWrapper
+              error={!bindConfig.isValid}
+              errorIcon={globals.validationErrorIcon}
+              className={concat('arm-select-status', statusClassName)}
+              statusPosition={globals.inputStatusPosition}
+              validationMode={globals.validationMode}
+            >
+              {showLeftOverlay && <div className="arm-select-overlay arm-select-overlay-left">{leftOverlay}</div>}
+              <ValueContainer {...props} />
+            </StatusWrapper>
+          </div>
+        );
+      },
+      [
+        bindConfig.isValid,
+        globals.inputStatusPosition,
+        globals.validationErrorIcon,
+        globals.validationMode,
+        leftOverlay,
+        showLeftOverlay,
+        statusClassName,
+      ]
+    );
+
     const reactSelectProps: Partial<
       ReactSelectProps<IArmstrongOption<ArmstrongId>, boolean, GroupBase<IArmstrongOption<ArmstrongId>>>
     > = {
@@ -444,22 +479,7 @@ const ReactSelectComponent = React.forwardRef<
         },
         DropdownIndicator: props => <DropdownIndicator {...props}>{dropdownIcon}</DropdownIndicator>,
         LoadingIndicator: () => <Spinner className="arm-select-spinner" fillContainer={false} icon={loadingIcon} />,
-        ValueContainer: props => {
-          return (
-            <div className="arm-select-inner" data-error-icon={globals.inputStatusPosition}>
-              <StatusWrapper
-                error={!bindConfig.isValid}
-                errorIcon={globals.validationErrorIcon}
-                className={concat('arm-select-status', statusClassName)}
-                statusPosition={globals.inputStatusPosition}
-                validationMode={globals.validationMode}
-              >
-                {showLeftOverlay && <div className="arm-select-overlay arm-select-overlay-left">{leftOverlay}</div>}
-                <ValueContainer {...props} />
-              </StatusWrapper>
-            </div>
-          );
-        },
+        ValueContainer: valueContainer,
       },
       closeMenuOnSelect,
       styles: emptyStyles(),
