@@ -1,3 +1,10 @@
+## [3.1.12](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.11...v3.1.12) (2023-10-12)
+
+
+### Bug Fixes
+
+* - Added input value to react select props ([53ac113](https://github.com/Rocketmakers/armstrong-edge/commit/53ac1137b0bdf98cbe42c612cf98fd14554e1ff7))
+
 ## [3.1.11](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.10...v3.1.11) (2023-10-12)
 
 
