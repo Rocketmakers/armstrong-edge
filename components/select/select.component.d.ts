@@ -69,6 +69,11 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
     /** Symbol to use as the required indicator on the label, defaults to "*" */
     requiredIndicator?: React.ReactNode;
     /**
+     * Called when the input value changes.
+     * @param value The current value of the input
+     */
+    onInputChange?: (value: string) => void;
+    /**
      * String to use as the prefix when creating new options - defaults to `Create:`
      * NOTE: only used in `allowCreate` mode
      */
