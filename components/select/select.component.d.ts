@@ -74,6 +74,10 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
      */
     onInputChange?: (value: string) => void;
     /**
+     * The current value of the input if state controlled
+     */
+    inputValue?: string;
+    /**
      * String to use as the prefix when creating new options - defaults to `Create:`
      * NOTE: only used in `allowCreate` mode
      */
