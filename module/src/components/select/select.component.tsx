@@ -345,14 +345,16 @@ const ReactSelectComponent = React.forwardRef<
     const selectedValue = React.useMemo(() => {
       const valueFinder = (incomingOptions?: IArmstrongOption<ArmstrongId>[]) => {
         if (!multi) {
-          let singleVal = incomingOptions?.find(o => o.id === value);
+          let singleVal = incomingOptions?.find(o => o.id === value) ?? null;
           if (!singleVal && allowCreate) {
             singleVal = { id: value, content: value, wasCreated: true };
           }
           return singleVal;
         }
-        return value?.map(
-          (v: ArmstrongId) => incomingOptions?.find(o => o.id === v) ?? { id: v, content: v, wasCreated: true }
+        return (
+          value?.map(
+            (v: ArmstrongId) => incomingOptions?.find(o => o.id === v) ?? { id: v, content: v, wasCreated: true }
+          ) ?? null
         );
       };
       if (isGroupedOptions(options)) {
