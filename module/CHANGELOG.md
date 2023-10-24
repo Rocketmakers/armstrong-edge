@@ -1,3 +1,10 @@
+## [3.1.14](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.13...v3.1.14) (2023-10-24)
+
+
+### Bug Fixes
+
+* - Fixed a bug causing react select inputs no to deselect when the value is cleared ([ecbca81](https://github.com/Rocketmakers/armstrong-edge/commit/ecbca81006dbdb26913b3578d08fc7f5d7277d39))
+
 ## [3.1.13](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.12...v3.1.13) (2023-10-12)
 
 
