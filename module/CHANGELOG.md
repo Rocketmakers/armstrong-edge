@@ -1,3 +1,10 @@
+## [3.1.15](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.14...v3.1.15) (2023-11-17)
+
+
+### Bug Fixes
+
+* - Fixed the annonying console warning when interacting with the Checkbox input. ([6cfcbcf](https://github.com/Rocketmakers/armstrong-edge/commit/6cfcbcfa620356821a0590bf1fcdbc4c37bd3f22))
+
 ## [3.1.14](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.13...v3.1.14) (2023-10-24)
 
 ### Bug Fixes
