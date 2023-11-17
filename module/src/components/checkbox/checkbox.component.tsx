@@ -163,9 +163,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
             onCheckedChange={onCheckedChangeInternal}
             ref={ref}
           >
-            <Indicator className="arm-checkbox-indicator" asChild>
-              {indicator}
-            </Indicator>
+            <Indicator className="arm-checkbox-indicator">{indicator}</Indicator>
           </Root>
 
           {label && (
