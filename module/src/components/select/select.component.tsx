@@ -636,6 +636,8 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
         className={concat('arm-select-wrapper', 'arm-select-native-wrapper', className)}
         data-size={displaySize}
         data-error={!bindConfig.isValid}
+        data-disabled={!!disabled}
+        data-empty={!!value}
       >
         {label && (
           <Label
