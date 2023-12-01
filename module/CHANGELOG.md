@@ -1,9 +1,8 @@
 ## [3.1.16](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.15...v3.1.16) (2023-11-30)
 
-
 ### Bug Fixes
 
-* adds data attribute to native select so styleable when empty ([8b59571](https://github.com/Rocketmakers/armstrong-edge/commit/8b595714ff9ef772b1d4ddccde12aff79639712a))
+- adds data attribute to native select so styleable when empty ([8b59571](https://github.com/Rocketmakers/armstrong-edge/commit/8b595714ff9ef772b1d4ddccde12aff79639712a))
 
 ## [3.1.15](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.14...v3.1.15) (2023-11-17)
 
