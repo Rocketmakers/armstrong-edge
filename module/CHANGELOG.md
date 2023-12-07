@@ -1,9 +1,8 @@
 ## [3.1.17](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.16...v3.1.17) (2023-12-01)
 
-
 ### Bug Fixes
 
-* ARM-- Extended zod validation schema to allow refine ([223bcb8](https://github.com/Rocketmakers/armstrong-edge/commit/223bcb884edfc42f5693cf531d30c1970062c196))
+- ARM-- Extended zod validation schema to allow refine ([223bcb8](https://github.com/Rocketmakers/armstrong-edge/commit/223bcb884edfc42f5693cf531d30c1970062c196))
 
 ## [3.1.16](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.15...v3.1.16) (2023-11-30)
 
