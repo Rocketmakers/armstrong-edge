@@ -284,6 +284,10 @@ export const useFormBase = <TData extends object>(
           set(keyChain, newValue);
           return formProp(...keyChain) as BindingTools<unknown>;
         },
+        clear: () => {
+          set(keyChain, undefined);
+          return formProp(...keyChain) as BindingTools<unknown>;
+        },
         get: () => value,
         add: (newItem: unknown) => {
           add(keyChain, value as unknown[], newItem);
