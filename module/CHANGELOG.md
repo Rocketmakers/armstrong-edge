@@ -1,3 +1,10 @@
+## [3.1.19](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.18...v3.1.19) (2023-12-07)
+
+
+### Bug Fixes
+
+* fixed broken logo link in documentation ([87de788](https://github.com/Rocketmakers/armstrong-edge/commit/87de7888057f755598e9e567cb32298846868ffe))
+
 ## [3.1.18](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.17...v3.1.18) (2023-12-07)
 
 ### Bug Fixes
