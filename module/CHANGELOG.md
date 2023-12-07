@@ -1,3 +1,10 @@
+## [3.1.18](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.17...v3.1.18) (2023-12-07)
+
+
+### Bug Fixes
+
+* - Adds a clear method because formProp can't receive undefined ([8b1ad92](https://github.com/Rocketmakers/armstrong-edge/commit/8b1ad92967ff8f1a0fc3cca5fb44367829608f87))
+
 ## [3.1.17](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.16...v3.1.17) (2023-12-01)
 
 ### Bug Fixes
