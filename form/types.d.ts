@@ -34,6 +34,11 @@ export interface BindingToolsStandard<TValue> {
      */
     set: (newValue: TValue) => BindingTools<TValue>;
     /**
+     * Clears the value of a field in the form state, setting it to undefined
+     * @returns Binding props for chaining.
+     */
+    clear: () => BindingTools<TValue>;
+    /**
      * Gets the current value for a field within the form state.
      * @returns the value if set, or undefined.
      */
