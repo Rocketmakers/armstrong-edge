@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.2.0...v3.2.1) (2023-12-13)
+
+
+### Bug Fixes
+
+* fixed issue with validation types ([d07e726](https://github.com/Rocketmakers/armstrong-edge/commit/d07e726491edae5608db0626bcdbea680af34d9e))
+
 # [3.2.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.19...v3.2.0) (2023-12-13)
 
 ### Features
