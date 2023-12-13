@@ -53,7 +53,7 @@ export const useFormBase = <TData extends object>(
   formConfigObject?: IFormConfig<TData>,
   globalTouchOverride?: boolean
 ): HookReturn<TData> => {
-  const formConfig = useContentMemo(formConfigObject);
+  const formConfig = useContentMemo(formConfigObject) as IFormConfig<unknown> | undefined;
   const initialData = useContentMemo(initialDataObject);
 
   const [isGlobalTouched, setGlobalTouched] = React.useState(globalTouchOverride ?? false);
@@ -221,12 +221,12 @@ export const useFormBase = <TData extends object>(
         clientValidationDispatcher,
         touchedStateDispatcher,
         allTouched: isGlobalTouched,
-        validate: (andSetInputToTouched = true, silent = false) => {
+        validate: (andSetInputToTouched = true, silent = false, validateAll = false) => {
           if (andSetInputToTouched) {
             setTouched(keyChain, true);
           }
 
-          return parseValidationSchema(keyChain, silent);
+          return parseValidationSchema(validateAll ? undefined : keyChain, silent);
         },
         isValid: !myValidationErrors.length,
         parseValidationSchema,

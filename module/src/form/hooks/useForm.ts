@@ -83,11 +83,13 @@ export function useForm<TData extends object>(
    * Transform incoming validation schema into zod compatible schema and memoize
    */
   const zodValidationSchema = React.useMemo(() => {
-    if (formConfig?.validationSchema) {
-      return zodFromValidationSchema(formConfig.validationSchema);
+    const initialSchema = formConfig?.validationSchema;
+    if (initialSchema) {
+      const finalSchema = typeof initialSchema === 'function' ? initialSchema(formState) : initialSchema;
+      return zodFromValidationSchema(finalSchema);
     }
     return undefined;
-  }, [formConfig?.validationSchema]);
+  }, [formConfig?.validationSchema, formState]);
 
   /**
    * Runs the Zod validation for the whole form, or optionally for a specific key chain
