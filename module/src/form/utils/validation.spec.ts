@@ -1,7 +1,12 @@
 import { z } from 'zod';
 
-import type { IValidationError, IValidationSchema } from '../types';
-import { clientValidationReducer, validationErrorsByKeyChain, zodFromValidationSchema } from './validation';
+import type { IRootValidationSchema, IValidationError, IValidationSchema } from '../types';
+import {
+  clientValidationReducer,
+  rootValidationSchemaIsFunction,
+  validationErrorsByKeyChain,
+  zodFromValidationSchema,
+} from './validation';
 
 /* validationErrorsByKeyChain */
 describe('validationErrorsByKeyChain', () => {
@@ -257,5 +262,39 @@ describe('zodFromValidationSchema', () => {
     const fail1 = zodFromValidationSchema<ISchema>(schema).safeParse(failShape);
     const fail2 = expectedSchema.safeParse(failShape);
     expect(fail1).toEqual(fail2);
+  });
+
+  describe('rootValidationSchemaIsFunction', () => {
+    it('should return true if the schema is a function', () => {
+      // Arrange
+      const functionSchema = () => ({ test: z.string() });
+
+      // Act
+      const result = rootValidationSchemaIsFunction<{ test: string }>(functionSchema);
+
+      // Assert
+      expect(result).toBe(true);
+    });
+
+    it('should return false if the schema is not a function', () => {
+      // Arrange
+      const objectSchema: IRootValidationSchema<{ test: number }> = {
+        test: z.number(),
+      };
+
+      // Act
+      const result = rootValidationSchemaIsFunction<{ test: number }>(objectSchema);
+
+      // Assert
+      expect(result).toBe(false);
+    });
+
+    it('should return false if no schema is provided', () => {
+      // Act
+      const result = rootValidationSchemaIsFunction();
+
+      // Assert
+      expect(result).toBe(false);
+    });
   });
 });

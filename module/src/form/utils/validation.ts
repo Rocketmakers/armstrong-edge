@@ -7,9 +7,11 @@ import { z, ZodIssue } from 'zod';
 
 import type {
   IArrayOfZod,
+  IFormConfig,
+  IFunctionValidationSchema,
   IObjectOfZod,
+  IRootValidationSchema,
   IValidationError,
-  IValidationSchema,
   KeyChain,
   ValidationAction,
 } from '../types';
@@ -61,7 +63,7 @@ export function clientValidationReducer(state: IValidationError[], action: Valid
  * @param schema The type safe validation schema (usually interfaced from a generated TS object type)
  * @returns A zod schema ready for parsing
  */
-export function zodFromValidationSchema<TData>(schema: IValidationSchema<TData>) {
+export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TData>) {
   // type checker utility - is TS validation field an array type
   const isArrayOfZod = (arrayItem: unknown): arrayItem is IArrayOfZod<unknown> => {
     return !!(arrayItem as IArrayOfZod<unknown>)?.itemSchema;
@@ -121,4 +123,17 @@ export const getMyZodErrors = (errors: ZodIssue[], keyChainString?: string) => {
       key: keyStringFromKeyChain(e.path, 'dots'),
       message: e.message,
     }));
+};
+
+/**
+ * Checks if the provided validation schema is a function.
+ * @template TData - The type of data that the validation schema operates on.
+ * @param schema - The validation schema to be checked.
+ *   It can be either an instance of a root validation schema or a function-based validation schema.
+ * @returns {boolean} - Returns `true` if the provided schema is a function-based validation, otherwise `false`.
+ */
+export const rootValidationSchemaIsFunction = <TData>(
+  schema?: IFormConfig<TData>['validationSchema']
+): schema is IFunctionValidationSchema<TData> => {
+  return typeof schema === 'function';
 };

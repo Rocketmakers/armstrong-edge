@@ -536,9 +536,20 @@ export type ToZod<TProp> = {
 }[StringType<TProp>];
 
 /**
- * Flat, object based validation schema for a form state object.
+ * Type for creating a zod schema type for an existing interface
+ * - Zod prefer you to generate the type from the runtime validation schema, but because we're working from a generated TS client, we need this type so we can do things the other way around
  */
-export type IObjectValidationSchema<TData> = TData extends Array<infer U>
+export type IValidationSchema<TData> = TData extends Array<infer U>
+  ? IArrayOfZod<U>
+  : TData extends object
+  ? { [K in keyof TData]: ToZod<TData[K]> }
+  : never;
+
+/**
+ * Type for creating a the root zod schema type for an existing interface
+ * - Zod prefer you to generate the type from the runtime validation schema, but because we're working from a generated TS client, we need this type so we can do things the other way around
+ */
+export type IRootValidationSchema<TData> = TData extends Array<infer U>
   ? IArrayOfZod<U>
   : TData extends object
   ? { [K in keyof TData]: ToZod<TData[K]> } | IObjectOfZod<{ [K in keyof TData]: ToZod<TData[K]> }>
@@ -548,13 +559,7 @@ export type IObjectValidationSchema<TData> = TData extends Array<infer U>
  * Allows the validation schema to be a function that returns a schema.
  * The function receives the live form state as an argument so it can be used to create dynamic validation schemas.
  */
-export type IFunctionValidationSchema<TData> = (data: TData | undefined) => IObjectValidationSchema<TData>;
-
-/**
- * Root type for creating a zod schema type for an existing interface
- * - Zod prefer you to generate the type from the runtime validation schema, but because we're working from a generated TS client, we need this type so we can do things the other way around
- */
-export type IValidationSchema<TData> = IObjectValidationSchema<TData> | IFunctionValidationSchema<TData>;
+export type IFunctionValidationSchema<TData> = (data: TData | undefined) => IRootValidationSchema<TData>;
 
 /**
  * Optional configuration for the form hook
@@ -568,7 +573,7 @@ export interface IFormConfig<TData> {
    * Optional client side validation schema.
    * - Uses a type safe wrapper around the zod framework.
    */
-  validationSchema?: IValidationSchema<TData>;
+  validationSchema?: IRootValidationSchema<TData> | IFunctionValidationSchema<TData>;
   /**
    * How to display validation errors
    * - `icon` displays an error icon in the event of a validation error.
