@@ -99,9 +99,9 @@ export function zodFromValidationSchema<TData>(schema: IValidationSchema<TData>)
     return incomingToZod;
   };
 
-  // if root schema is an array, return a zod object containing the unpacked TS schema
-  if (isArrayOfZod(schema)) {
-    return unpackValueToZod(schema) as z.ZodArray<z.ZodAny>;
+  // if root schema is a custom array or custom object, return a zod object containing the unpacked TS schema
+  if (isArrayOfZod(schema) || isObjectOfZod(schema)) {
+    return unpackValueToZod(schema) as z.ZodArray<z.ZodAny> | z.ZodObject<z.ZodRawShape>;
   }
 
   // if root schema is an object, return a zod object containing the unpacked TS schema

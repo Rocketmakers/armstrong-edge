@@ -108,10 +108,10 @@ describe('useBindingState', () => {
     act(() => {
       validate(true, false);
     });
-    expect(bindingPropsMock.validate).toHaveBeenCalledWith(true, false);
+    expect(bindingPropsMock.validate).toHaveBeenCalledWith(true, false, undefined);
     act(() => {
       validate(false, false);
     });
-    expect(bindingPropsMock.validate).toHaveBeenCalledWith(false, false);
+    expect(bindingPropsMock.validate).toHaveBeenCalledWith(false, false, undefined);
   });
 });
