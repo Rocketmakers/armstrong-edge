@@ -20,7 +20,12 @@ import {
 import { dataReducer, initialDataIsCallback } from '../utils/data';
 import { keyStringFromKeyChain } from '../utils/keyChain';
 import { touchedStateReducer } from '../utils/touchedState';
-import { clientValidationReducer, getMyZodErrors, zodFromValidationSchema } from '../utils/validation';
+import {
+  clientValidationReducer,
+  getMyZodErrors,
+  rootValidationSchemaIsFunction,
+  zodFromValidationSchema,
+} from '../utils/validation';
 import { useFormBase } from './useFormBase';
 
 /**
@@ -85,7 +90,7 @@ export function useForm<TData extends object>(
   const zodValidationSchema = React.useMemo(() => {
     const initialSchema = formConfig?.validationSchema;
     if (initialSchema) {
-      const finalSchema = typeof initialSchema === 'function' ? initialSchema(formState) : initialSchema;
+      const finalSchema = rootValidationSchemaIsFunction(initialSchema) ? initialSchema(formState) : initialSchema;
       return zodFromValidationSchema(finalSchema);
     }
     return undefined;
