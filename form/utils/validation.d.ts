@@ -19,7 +19,11 @@ export declare function clientValidationReducer(state: IValidationError[], actio
  * @param schema The type safe validation schema (usually interfaced from a generated TS object type)
  * @returns A zod schema ready for parsing
  */
-export declare function zodFromValidationSchema<TData>(schema: IValidationSchema<TData>): z.ZodArray<z.ZodAny, "many"> | z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>;
+export declare function zodFromValidationSchema<TData>(schema: IValidationSchema<TData>): z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny, {
+    [x: string]: any;
+}, {
+    [x: string]: any;
+}> | z.ZodArray<z.ZodAny, "many"> | z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>;
 /**
  * A method to get specific zod errors from a key chain and map them to our standard error shape
  * @param errors An array of errors returned from zod.parse

@@ -58,8 +58,9 @@ export interface BindingToolsStandard<TValue> {
      * Runs specific field validator in the validators schema again the current form state.
      * @param setInputTouched Whether to set the targeted control to "touched" before running the validator, default: true
      * @param silent A boolean representing whether validation errors should be dispatched to the form elements
+     * @param validateAll If true, the validator will run against the entire schema, not just the current field
      */
-    validate: (setInputTouched?: boolean, silent?: boolean) => boolean;
+    validate: (setInputTouched?: boolean, silent?: boolean, validateAll?: boolean) => boolean;
     /**
      * Whether the field input has been interacted with
      */
@@ -256,9 +257,10 @@ export interface IBindingProps<TValue> {
      * Runs specific field validator in the validators schema again the current form state.
      * @param setInputTouched Whether to set the targeted control to "touched" before running the validator, default: true
      * @param silent A boolean representing whether validation errors should be dispatched to the form elements
+     * @param validateAll If true, the validator will run against the entire schema, not just the current field
      * NOTE: If no schema has been passed, this will always return `true`
      */
-    validate: (setInputTouched?: boolean, silent?: boolean) => boolean;
+    validate: (setInputTouched?: boolean, silent?: boolean, validateAll?: boolean) => boolean;
     /**
      * Whether the field input has any validation errors
      */
@@ -372,6 +374,11 @@ export interface IBindConfig<TValue> {
          */
         toData?: (value?: TValue) => TValue;
     };
+    /**
+     * If auto validation is enabled and a schema is passed, this toggle will run validate against the entire schema when this control validates.
+     * This is useful if you have a complex schema with a top level `refine` that you want to run against the entire form state when this control is validated.
+     */
+    autoValidateAll?: boolean;
 }
 /**
  * Checks a form state field type and adds the necessary zod validation extensions for optional / nullable fields
@@ -387,7 +394,7 @@ export interface IArrayOfZod<TProp> {
         [TKey in keyof TProp]: ToZod<TProp[TKey]>;
     } : ToZod<TProp>;
     /** A function which defines the validation to apply to the array itself (e.g. `opts: arr => arr.min(1).max(5)`) */
-    opts?: (arr: ZodArray<any>) => ZodArray<any> | ZodNullable<ZodTypeAny> | ZodOptional<ZodTypeAny> | ZodOptional<ZodNullable<ZodTypeAny>>;
+    opts?: (arr: ZodArray<TProp & ZodTypeAny>) => ZodArray<TProp & ZodTypeAny> | ZodNullable<ZodTypeAny> | ZodOptional<ZodTypeAny> | ZodOptional<ZodNullable<ZodTypeAny>> | ZodEffects<ZodTypeAny>;
 }
 /**
  * Defines the zod validation schema for an object
@@ -397,7 +404,7 @@ export interface IObjectOfZod<TProp> {
     /** The validation for each key within the object (will be an object of key/validator pairs) */
     schema: TProp;
     /** A function which defines the validation to apply to the object itself (e.g. `opts: ob => ob.required()`) */
-    opts?: (ob: ZodObject<ZodRawShape>) => ZodObject<ZodRawShape> | ZodNullable<ZodTypeAny> | ZodOptional<ZodTypeAny> | ZodOptional<ZodNullable<ZodTypeAny>>;
+    opts?: (ob: ZodObject<TProp & ZodRawShape>) => ZodObject<TProp & ZodRawShape> | ZodNullable<ZodTypeAny> | ZodOptional<ZodTypeAny> | ZodOptional<ZodNullable<ZodTypeAny>> | ZodEffects<ZodTypeAny>;
 }
 type WithZodAdditions<T extends ZodTypeAny, K> = T | ZodLiteral<K> | ZodOptional<T> | ZodNullable<T> | ZodOptional<ZodNullable<T>> | ZodEffects<T, K, K>;
 /**
@@ -418,12 +425,23 @@ export type ToZod<TProp> = {
     rest: never;
 }[StringType<TProp>];
 /**
+ * Flat, object based validation schema for a form state object.
+ */
+export type IObjectValidationSchema<TData> = TData extends Array<infer U> ? IArrayOfZod<U> : TData extends object ? {
+    [K in keyof TData]: ToZod<TData[K]>;
+} | IObjectOfZod<{
+    [K in keyof TData]: ToZod<TData[K]>;
+}> : never;
+/**
+ * Allows the validation schema to be a function that returns a schema.
+ * The function receives the live form state as an argument so it can be used to create dynamic validation schemas.
+ */
+export type IFunctionValidationSchema<TData> = (data: TData | undefined) => IObjectValidationSchema<TData>;
+/**
  * Root type for creating a zod schema type for an existing interface
  * - Zod prefer you to generate the type from the runtime validation schema, but because we're working from a generated TS client, we need this type so we can do things the other way around
  */
-export type IValidationSchema<TData> = TData extends Array<infer U> ? IArrayOfZod<U> : TData extends object ? {
-    [K in keyof TData]: ToZod<TData[K]>;
-} : never;
+export type IValidationSchema<TData> = IObjectValidationSchema<TData> | IFunctionValidationSchema<TData>;
 /**
  * Optional configuration for the form hook
  */
