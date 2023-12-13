@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.19...v3.2.0) (2023-12-13)
+
+
+### Features
+
+* extended validation to allow root zod object + validate all + dynamic schema ([f29f0b0](https://github.com/Rocketmakers/armstrong-edge/commit/f29f0b0b9874d36350e021eab4a4a92d2abb4564))
+
 ## [3.1.19](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.18...v3.1.19) (2023-12-07)
 
 ### Bug Fixes
