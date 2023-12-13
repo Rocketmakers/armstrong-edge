@@ -1,5 +1,5 @@
 import { z, ZodIssue } from 'zod';
-import type { IValidationError, IValidationSchema, KeyChain, ValidationAction } from '../types';
+import type { IFormConfig, IFunctionValidationSchema, IRootValidationSchema, IValidationError, KeyChain, ValidationAction } from '../types';
 /**
  * Filters a set of validation errors based on the `keyChain` of the property.
  * @param rootErrors The root set of validation errors for the entire form.
@@ -19,7 +19,7 @@ export declare function clientValidationReducer(state: IValidationError[], actio
  * @param schema The type safe validation schema (usually interfaced from a generated TS object type)
  * @returns A zod schema ready for parsing
  */
-export declare function zodFromValidationSchema<TData>(schema: IValidationSchema<TData>): z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny, {
+export declare function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TData>): z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny, {
     [x: string]: any;
 }, {
     [x: string]: any;
@@ -34,3 +34,11 @@ export declare const getMyZodErrors: (errors: ZodIssue[], keyChainString?: strin
     key: string;
     message: string;
 }[];
+/**
+ * Checks if the provided validation schema is a function.
+ * @template TData - The type of data that the validation schema operates on.
+ * @param schema - The validation schema to be checked.
+ *   It can be either an instance of a root validation schema or a function-based validation schema.
+ * @returns {boolean} - Returns `true` if the provided schema is a function-based validation, otherwise `false`.
+ */
+export declare const rootValidationSchemaIsFunction: <TData>(schema?: IRootValidationSchema<TData> | IFunctionValidationSchema<TData> | undefined) => schema is IFunctionValidationSchema<TData>;
