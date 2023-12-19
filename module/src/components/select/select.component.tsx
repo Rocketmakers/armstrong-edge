@@ -182,7 +182,7 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
   /** should the input validate automatically against the provided schema? Default: `true` */
   autoValidate?: boolean;
 
-  /** should the search be case sensitive */
+  /** should the search within the select be case sensitive */
   caseSensitive?: boolean;
 }
 
