@@ -90,6 +90,8 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
     onOptionCreated?: (createdValue: string) => Id | undefined;
     /** should the input validate automatically against the provided schema? Default: `true` */
     autoValidate?: boolean;
+    /** should the search within the select be case sensitive */
+    caseSensitive?: boolean;
 }
 export interface INativeSelectProps<Id extends ArmstrongId> extends NativeSelectProps, Pick<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'displaySize' | 'label' | 'required' | 'scrollValidationErrorsIntoView' | 'requiredIndicator' | 'validationMode' | 'validationErrorMessages' | 'errorIcon' | 'statusPosition' | 'dropdownIcon' | 'labelId' | 'labelClassName' | 'validationErrorsClassName' | 'statusClassName' | 'hideIconOnStatus' | 'leftOverlay'> {
     /** the options to be displayed in the input */
