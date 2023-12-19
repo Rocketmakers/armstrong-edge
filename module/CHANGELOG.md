@@ -1,3 +1,10 @@
+## [3.2.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.2.1...v3.2.2) (2023-12-19)
+
+
+### Bug Fixes
+
+* fix docs on select ([454705c](https://github.com/Rocketmakers/armstrong-edge/commit/454705cce56d4f9ea19acb263f4792eeca5036a4))
+
 ## [3.2.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.2.0...v3.2.1) (2023-12-13)
 
 
