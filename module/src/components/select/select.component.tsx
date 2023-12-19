@@ -181,6 +181,9 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
 
   /** should the input validate automatically against the provided schema? Default: `true` */
   autoValidate?: boolean;
+
+  /** should the search be case sensitive */
+  caseSensitive?: boolean;
 }
 
 export interface INativeSelectProps<Id extends ArmstrongId>
@@ -285,6 +288,7 @@ const ReactSelectComponent = React.forwardRef<
       autoValidate,
       onInputChange,
       inputValue,
+      caseSensitive,
       ...nativeProps
     },
     ref
@@ -389,8 +393,12 @@ const ReactSelectComponent = React.forwardRef<
       (option: FilterOptionOption<IArmstrongOption<ArmstrongId, unknown>>, incomingInputValue: string) => boolean
     >(
       (option, incomingInputValue) => {
-        return !!labelGetter(option.data)?.toString().includes(incomingInputValue);
+        if (caseSensitive) {
+          return !!labelGetter(option.data)?.toString().includes(incomingInputValue);
+        }
+        return !!labelGetter(option.data)?.toString().toLowerCase().includes(incomingInputValue.toLowerCase());
       },
+
       [labelGetter]
     );
 
