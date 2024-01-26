@@ -1,3 +1,10 @@
+# [3.3.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.2.2...v3.3.0) (2024-01-26)
+
+
+### Features
+
+* - useDialog hook now returns isOpen state ([d9c2a21](https://github.com/Rocketmakers/armstrong-edge/commit/d9c2a2152ce473c82f5dea82a5bf567e79aed081))
+
 ## [3.2.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.2.1...v3.2.2) (2023-12-19)
 
 ### Bug Fixes
