@@ -47,6 +47,9 @@ export interface IDialogOpenResponse<TData = unknown> {
   data?: TData;
 }
 
+/** Type denoting an open change listener */
+export type OpenChangeListener = (isOpen: boolean) => void;
+
 /** Dialog element toolkit - these functions are assigned to the ref passed into the dialog */
 export interface DialogElement<TData = unknown> {
   /** Opens the dialog and returns a promise which resolves when the dialog closes */
@@ -57,6 +60,10 @@ export interface DialogElement<TData = unknown> {
   ok: () => void;
   /** Closes the dialog with a "cancel" finish action */
   cancel: () => void;
+  /** `true` if the dialog is open, else false */
+  isOpen: boolean;
+  /** Adds an open change listener to the dialog, to be called when the open state changes. Returns a listener remover */
+  addOpenChangeListener: (listener: OpenChangeListener) => () => void;
 }
 
 /**
@@ -100,6 +107,9 @@ export const Dialog = React.forwardRef(
     const finishActionChanged = useCompareValues(finishAction);
     const openHasChanged = useCompareValues(open);
 
+    /** Store for open change listeners */
+    const openChangeListeners = React.useRef<OpenChangeListener[]>([]);
+
     /** Called when the internal open/close state of the dialog changes */
     const onInnerOpenChange = React.useCallback(
       (val: boolean) => {
@@ -136,8 +146,15 @@ export const Dialog = React.forwardRef(
         close: setClose,
         ok: setOk,
         cancel: setCancel,
+        isOpen: !!visible,
+        addOpenChangeListener: (listener: OpenChangeListener) => {
+          openChangeListeners.current.push(listener);
+          return () => {
+            openChangeListeners.current = openChangeListeners.current.filter(l => l !== listener);
+          };
+        },
       }),
-      [onOpen, setCancel, setClose, setOk]
+      [onOpen, setCancel, setClose, setOk, visible]
     );
 
     /** Listens to the `finishAction` state and runs the appropriate functions */
@@ -167,6 +184,11 @@ export const Dialog = React.forwardRef(
         onInnerOpenChange(open);
       }
     }, [open, onInnerOpenChange, openHasChanged]);
+
+    /** Listens to any change in visibility and calls any open change listeners */
+    React.useEffect(() => {
+      openChangeListeners.current.forEach(listener => listener(!!visible));
+    }, [visible]);
 
     return (
       <RadixDialog.Root open={visible} onOpenChange={onInnerOpenChange}>

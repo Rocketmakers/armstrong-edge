@@ -162,7 +162,7 @@ export const SimpleStateDialog: StoryObj<typeof Dialog> = {
 
 export const AsyncDialog: StoryObj<typeof Dialog> = {
   render: () => {
-    const [dialogRef, { open, ok, cancel }] = useDialog();
+    const [dialogRef, { open, ok, cancel, isOpen }] = useDialog();
     const [result, setResult] = React.useState('idle');
 
     const openDialog = React.useCallback(async () => {
@@ -188,10 +188,15 @@ export const AsyncDialog: StoryObj<typeof Dialog> = {
         </Dialog>
         <Button onClick={openDialog}>Open confirmation dialog</Button>
         <div data-testid="dialog-result">{result}</div>
+        <div data-testid="dialog-is-open">{isOpen ? 'open' : 'closed'}</div>
       </div>
     );
   },
   play: async ({ canvasElement }) => {
+    // expect open state closed
+    const openState = within(canvasElement).getByTestId('dialog-is-open');
+    expect(openState).toHaveTextContent('closed');
+
     // open dialog
     const canvas = within(canvasElement);
     const openButton = canvas.getByText('Open confirmation dialog');
@@ -200,6 +205,9 @@ export const AsyncDialog: StoryObj<typeof Dialog> = {
     // wait for visibility
     let dialog = await findByRole(document.body, 'dialog');
     await waitFor(() => expect(dialog).toBeVisible());
+
+    // expect open state open
+    expect(openState).toHaveTextContent('open');
 
     // idle result check
     const result = within(canvasElement).getByTestId('dialog-result');
