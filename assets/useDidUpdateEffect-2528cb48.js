@@ -1,2 +1,0 @@
-import{r as e}from"./index-c4905b50.js";import{d as u}from"./config.context-03ebf2cb.js";const s=typeof window<"u"?e.useLayoutEffect:e.useEffect,c=(t,n)=>{const r=e.useRef(!0);return e.useEffect(()=>{r.current=!1},[]),s(()=>{if(!r.current)return t()},n)},a=t=>{const n=e.useMemo(()=>u(t),[t]);return e.useMemo(()=>t,[n])};function d(t,n){const r=e.useRef(!1);return e.useEffect(()=>{if(!r.current){r.current=!0;return}return t()},n)}export{a,s as b,c,d as u};
-//# sourceMappingURL=useDidUpdateEffect-2528cb48.js.map

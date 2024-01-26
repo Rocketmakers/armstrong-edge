@@ -10,4 +10,4 @@ export type UseDialogReturn<TData> = [React.RefObject<DialogElement<TData>>, Dia
  * @typedef {[UseDialogReturn1, UseDialogReturn2]} UseDialogReturn
  * @returns {UseDialogReturn}
  */
-export declare const useDialog: <TData>(forwardRef?: React.ForwardedRef<DialogElement<TData>> | undefined) => [React.RefObject<DialogElement<TData>>, DialogElement<TData>];
+export declare const useDialog: <TData>(forwardRef?: React.ForwardedRef<DialogElement<TData>> | undefined) => [React.RefObject<DialogElement<TData>>, Omit<DialogElement<TData>, "addOpenChangeListener">];

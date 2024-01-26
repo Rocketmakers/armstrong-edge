@@ -35,6 +35,8 @@ export interface IDialogOpenResponse<TData = unknown> {
     /** Any data sent into the dialog `data` prop */
     data?: TData;
 }
+/** Type denoting an open change listener */
+export type OpenChangeListener = (isOpen: boolean) => void;
 /** Dialog element toolkit - these functions are assigned to the ref passed into the dialog */
 export interface DialogElement<TData = unknown> {
     /** Opens the dialog and returns a promise which resolves when the dialog closes */
@@ -45,6 +47,10 @@ export interface DialogElement<TData = unknown> {
     ok: () => void;
     /** Closes the dialog with a "cancel" finish action */
     cancel: () => void;
+    /** `true` if the dialog is open, else false */
+    isOpen: boolean;
+    /** Adds an open change listener to the dialog, to be called when the open state changes. Returns a listener remover */
+    addOpenChangeListener: (listener: OpenChangeListener) => () => void;
 }
 /**
  * Dialog component. Used to display a full-screen modal dialog to the user.
