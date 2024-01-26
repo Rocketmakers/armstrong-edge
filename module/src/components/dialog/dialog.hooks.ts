@@ -20,8 +20,9 @@ export type UseDialogReturn<TData> = [React.RefObject<DialogElement<TData>>, Dia
  */
 export const useDialog = <TData>(
   forwardRef?: React.ForwardedRef<DialogElement<TData>>
-): [React.RefObject<DialogElement<TData>>, DialogElement<TData>] => {
+): [React.RefObject<DialogElement<TData>>, Omit<DialogElement<TData>, 'addOpenChangeListener'>] => {
   const dialogRef = React.useRef<DialogElement<TData>>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
   React.useImperativeHandle(forwardRef, () => dialogRef.current as DialogElement<TData>);
 
   /** These dialog actions are locked down to independent callbacks to avoid unwanted dependency mutation */
@@ -53,5 +54,12 @@ export const useDialog = <TData>(
     return dialogRef.current.ok();
   }, []);
 
-  return [dialogRef, { open, cancel, close, ok }];
+  React.useEffect(() => {
+    if (dialogRef.current) {
+      return dialogRef.current.addOpenChangeListener(setIsOpen);
+    }
+    return undefined;
+  }, []);
+
+  return [dialogRef, { open, cancel, close, ok, isOpen }];
 };
