@@ -472,6 +472,8 @@ export interface IFormConfig<TData> {
     validationErrorIcon?: JSX.Element;
     /** should the input validate automatically against the provided schema? Default: `true` */
     autoValidate?: boolean;
+    /** Will log validation schema errors to the console for debugging */
+    logSchemaErrors?: boolean;
 }
 /**
  * The root type for a form action to be dispatched to the reducer.
