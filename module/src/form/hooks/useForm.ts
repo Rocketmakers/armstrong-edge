@@ -122,9 +122,23 @@ export function useForm<TData extends object>(
         }
       }
 
-      return !errors.length;
+      const valid = !errors.length;
+
+      if (formConfig?.logSchemaErrors) {
+        // eslint-disable-next-line no-console -- log requested by config
+        console.log(`Armstrong validation log`, {
+          zodResults: results,
+          errors,
+          valid,
+          keyChainString,
+          silent,
+          keyChain,
+        });
+      }
+
+      return valid;
     },
-    [zodValidationSchema, clientValidationDispatcher, formStateRef]
+    [zodValidationSchema, clientValidationDispatcher, formStateRef, formConfig?.logSchemaErrors]
   );
 
   /**

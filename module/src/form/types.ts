@@ -589,6 +589,9 @@ export interface IFormConfig<TData> {
 
   /** should the input validate automatically against the provided schema? Default: `true` */
   autoValidate?: boolean;
+
+  /** Will log validation schema errors to the console for debugging */
+  logSchemaErrors?: boolean;
 }
 
 /**
