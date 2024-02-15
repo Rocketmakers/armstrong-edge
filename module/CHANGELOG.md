@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.3.1...v3.4.0) (2024-02-15)
+
+
+### Features
+
+* bind now returns the full keychain back to the root, not just to the root of the child binder ([3a9adfa](https://github.com/Rocketmakers/armstrong-edge/commit/3a9adfabb1dcc3a648b154e2749b04fd12ec930c))
+
 ## [3.3.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.3.0...v3.3.1) (2024-02-13)
 
 ### Bug Fixes
