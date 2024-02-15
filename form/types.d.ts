@@ -197,8 +197,14 @@ export interface IBindingProps<TValue> {
     dispatch: FormDispatcher<TValue>;
     /**
      * The chain of nesting keys used to access this property from the root of the form data object.
+     * NOTE: This will only go as deep as the nearest `useChildForm`, to return to the parent root, use `fullKeyChain`.
      */
     keyChain: KeyChain;
+    /**
+     * The chain of nesting keys used to access this property from the root of the form data object.
+     * NOTE: This will always go to the root of the form data object, regardless of how many `useChildForm` hooks are in the chain.
+     */
+    fullKeyChain: KeyChain;
     /**
      * An array of current validation errors relating to the targeted property within the form data.
      */

@@ -13,6 +13,8 @@ import type { FormDispatcher, HookReturn, IFormConfig, IValidationError, KeyChai
  * @param parseValidationSchema The method to trigger validation against the validation schema
  * @param initialDataObject The initial data as passed to the `useForm` hook.
  * @param formConfigObject The configuration as passed to the `useForm` hook.
+ * @param globalTouchOverride Touch state if inherited from a child binder.
+ * @param parentKeyChain The keyChain of the parent binder (passed from `useChildForm`.)
  * @returns The form state, property accessor, and associated helper methods.
  */
-export declare const useFormBase: <TData extends object>(formStateLive: TData | undefined, formStateRef: React.MutableRefObject<TData | undefined>, dispatch: FormDispatcher<TData | undefined>, clientValidationErrors: IValidationError[], clientValidationDispatcher: ValidationDispatcher, touchedState: TouchedState, touchedStateRef: React.MutableRefObject<TouchedState>, touchedStateDispatcher: TouchedDispatcher, parseValidationSchema: (keyChain?: KeyChain, silent?: boolean) => boolean, initialDataObject?: Partial<TData> | undefined, formConfigObject?: IFormConfig<TData> | undefined, globalTouchOverride?: boolean) => HookReturn<TData>;
+export declare const useFormBase: <TData extends object>(formStateLive: TData | undefined, formStateRef: React.MutableRefObject<TData | undefined>, dispatch: FormDispatcher<TData | undefined>, clientValidationErrors: IValidationError[], clientValidationDispatcher: ValidationDispatcher, touchedState: TouchedState, touchedStateRef: React.MutableRefObject<TouchedState>, touchedStateDispatcher: TouchedDispatcher, parseValidationSchema: (keyChain?: KeyChain, silent?: boolean) => boolean, initialDataObject?: Partial<TData> | undefined, formConfigObject?: IFormConfig<TData> | undefined, globalTouchOverride?: boolean, parentKeyChain?: KeyChain) => HookReturn<TData>;
