@@ -25,6 +25,7 @@ describe('useMyValidationErrorMessages', () => {
     allTouched: false,
     validate: jest.fn(),
     isValid: true,
+    fullKeyChain: ['mock', 'key', 'chain'],
   };
 
   it('should return an empty array when no bind or validation error messages are provided', () => {

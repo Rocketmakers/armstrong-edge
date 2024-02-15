@@ -25,6 +25,7 @@ describe('useBindingState', () => {
     allTouched: false,
     validate: jest.fn(),
     isValid: true,
+    fullKeyChain: ['mock', 'key', 'chain'],
   };
 
   it('should return an array with the correct number of elements', () => {

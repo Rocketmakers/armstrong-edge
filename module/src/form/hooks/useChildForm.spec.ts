@@ -74,4 +74,18 @@ describe('useChildForm', () => {
     expect(result.current.childFormProp('childField2').bind().isTouched).toBe(false);
     expect(result.current.childFormProp('childField3').bind().isTouched).toBe(false);
   });
+
+  it('should return a keyChain property that conforms to the key chain back to the root of the child binder', () => {
+    const { result } = renderHook(() => useTestHook());
+    expect(result.current.childFormProp('childField1').bind().keyChain).toEqual(['childField1']);
+    expect(result.current.childFormProp('childField2').bind().keyChain).toEqual(['childField2']);
+    expect(result.current.childFormProp('childField3').bind().keyChain).toEqual(['childField3']);
+  });
+
+  it('should return a fullKeyChain property that conforms to the full key chain', () => {
+    const { result } = renderHook(() => useTestHook());
+    expect(result.current.childFormProp('childField1').bind().fullKeyChain).toEqual(['childTest', 'childField1']);
+    expect(result.current.childFormProp('childField2').bind().fullKeyChain).toEqual(['childTest', 'childField2']);
+    expect(result.current.childFormProp('childField3').bind().fullKeyChain).toEqual(['childTest', 'childField3']);
+  });
 });

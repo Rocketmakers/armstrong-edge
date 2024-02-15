@@ -1,9 +1,8 @@
 ## [3.3.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.3.0...v3.3.1) (2024-02-13)
 
-
 ### Bug Fixes
 
-* optional logging added for schema validation ([a284c00](https://github.com/Rocketmakers/armstrong-edge/commit/a284c003d65882f449c348c5d6296966c471c423))
+- optional logging added for schema validation ([a284c00](https://github.com/Rocketmakers/armstrong-edge/commit/a284c003d65882f449c348c5d6296966c471c423))
 
 # [3.3.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.2.2...v3.3.0) (2024-01-26)
 
