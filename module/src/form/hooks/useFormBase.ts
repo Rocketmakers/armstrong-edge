@@ -37,6 +37,8 @@ import { validationErrorsByKeyChain } from '../utils/validation';
  * @param parseValidationSchema The method to trigger validation against the validation schema
  * @param initialDataObject The initial data as passed to the `useForm` hook.
  * @param formConfigObject The configuration as passed to the `useForm` hook.
+ * @param globalTouchOverride Touch state if inherited from a child binder.
+ * @param parentKeyChain The keyChain of the parent binder (passed from `useChildForm`.)
  * @returns The form state, property accessor, and associated helper methods.
  */
 export const useFormBase = <TData extends object>(
@@ -51,7 +53,8 @@ export const useFormBase = <TData extends object>(
   parseValidationSchema: (keyChain?: KeyChain, silent?: boolean) => boolean,
   initialDataObject?: Partial<TData>,
   formConfigObject?: IFormConfig<TData>,
-  globalTouchOverride?: boolean
+  globalTouchOverride?: boolean,
+  parentKeyChain?: KeyChain
 ): HookReturn<TData> => {
   const formConfig = useContentMemo(formConfigObject) as IFormConfig<unknown> | undefined;
   const initialData = useContentMemo(initialDataObject);
@@ -210,6 +213,7 @@ export const useFormBase = <TData extends object>(
         myValidationErrors,
         dispatch,
         keyChain,
+        fullKeyChain: parentKeyChain ? [...parentKeyChain, ...keyChain] : keyChain,
         initialValue: valueByKeyChain(initialData, keyChain),
         addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) =>
           addValidationErrorFromKeyChain(keyChain, messages, identifier),
@@ -234,20 +238,21 @@ export const useFormBase = <TData extends object>(
     },
     [
       touchedState,
+      combinedValidationErrors,
       formStateLive,
       formConfig,
-      combinedValidationErrors,
       dispatch,
+      parentKeyChain,
       initialData,
       isGlobalTouched,
       globalTouchOverride,
       clientValidationDispatcher,
       touchedStateDispatcher,
+      parseValidationSchema,
       set,
       addValidationErrorFromKeyChain,
       clearValidationErrorsByKeyChain,
       setTouched,
-      parseValidationSchema,
     ]
   );
 

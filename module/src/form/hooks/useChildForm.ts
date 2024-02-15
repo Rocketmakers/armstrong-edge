@@ -174,6 +174,7 @@ export function useChildForm<TData extends object>(parentBinder?: IBindingProps<
     parseValidationSchema,
     parentBinder?.initialValue,
     parentBinder?.formConfig,
-    parentBinder?.allTouched
+    parentBinder?.allTouched,
+    parentBinder?.fullKeyChain
   );
 }
