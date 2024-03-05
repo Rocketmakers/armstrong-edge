@@ -4,6 +4,7 @@ import { HTMLInputTypeAttribute } from 'react';
 import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
+import { useSSRLayoutEffect } from '../../hooks/useSSRLayoutEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
@@ -149,6 +150,14 @@ export const Input = React.forwardRef<
       autoValidate,
     });
 
+    const [internalValue, setInternalValue] = React.useState(boundValue?.toString());
+
+    useSSRLayoutEffect(() => {
+      if (boundValue?.toString() !== internalValue?.toString()) {
+        setInternalValue(boundValue?.toString());
+      }
+    }, [boundValue]);
+
     const globals = useArmstrongConfig({
       validationMode: bindConfig.validationMode,
       disableControlOnPending: disableOnPending,
@@ -166,40 +175,54 @@ export const Input = React.forwardRef<
         if (nativeProps.type !== 'number') {
           return unparsedValue;
         }
-        if (unparsedValue !== null && unparsedValue !== undefined && unparsedValue !== '') {
+        if (!unparsedValue) {
+          return undefined;
+        }
+        if (!Number.isNaN(parseFloat(unparsedValue))) {
           return parseFloat(unparsedValue);
         }
-        return undefined;
+        return null;
       },
       [nativeProps.type]
     );
 
     const onBindValueChange = React.useCallback(
-      (currentValue?: string) => {
-        const parsedValue = parseValue(currentValue);
+      (parsedValue?: string | number | undefined) => {
         const formattedValue = bind?.bindConfig?.format?.toData?.(parsedValue) || parsedValue;
         setBoundValue(formattedValue);
       },
-      [setBoundValue, bind, parseValue]
+      [setBoundValue, bind]
     );
 
-    const onChangeEvent = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        onChange?.(event);
-        const currentValue = event.currentTarget.value;
-        onBindValueChange(currentValue);
-        onValueChange?.(parseValue(currentValue));
+    const updateValue = React.useCallback(
+      (newValue: string | undefined) => {
+        const parsedValue = parseValue(newValue);
+        if (parsedValue !== null) {
+          onBindValueChange(parsedValue);
+          onValueChange?.(parsedValue);
+        }
       },
-      [onBindValueChange, onChange, onValueChange, parseValue]
+      [parseValue, onBindValueChange, onValueChange]
     );
 
     /** onChange used for throttled inputs */
     const onValueChangeEvent = React.useCallback(
       (currentValue?: string) => {
-        onBindValueChange(currentValue);
-        onValueChange?.(parseValue(currentValue));
+        setInternalValue(currentValue);
+        updateValue(currentValue);
       },
-      [onValueChange, onBindValueChange, parseValue]
+      [updateValue]
+    );
+
+    /** onChange used for standard inputs */
+    const onValueChangeRaw = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange?.(event);
+        const newValue = event.currentTarget.value;
+        setInternalValue(newValue);
+        updateValue(newValue);
+      },
+      [onChange, updateValue]
     );
 
     useDidUpdateEffect(() => {
@@ -223,7 +246,7 @@ export const Input = React.forwardRef<
       id,
       className: concat('arm-input-base-input', inputClassName),
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
-      value: boundValue?.toString() ?? (bind && ''),
+      value: internalValue?.toString() ?? (bind && ''),
       disabled,
       ...nativeProps,
       onBlur: onBlurEvent,
@@ -267,7 +290,7 @@ export const Input = React.forwardRef<
           />
         )}
         {!delay && (
-          <input {...nativeProps} {...inputProps} onChange={onChangeEvent} ref={ref} data-size={displaySize} />
+          <input {...nativeProps} {...inputProps} onChange={onValueChangeRaw} ref={ref} data-size={displaySize} />
         )}
       </InputWrapper>
     );
