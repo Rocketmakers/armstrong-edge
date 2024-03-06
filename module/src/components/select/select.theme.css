@@ -203,7 +203,8 @@
   display: flex;
   border: var(--arm-form-border-thickness) solid var(--arm-color-grey-600);
   border-radius: var(--arm-form-border-radius);
-  background-color: var(--arm-color-white);
+  background-color: var(--arm-input-bg-color);
+  color: var(--arm-input-fg-color);
   min-height: var(--arm-input-height);
 }
 
@@ -218,13 +219,17 @@
 .arm-select-native-wrapper .arm-select-inner {
   border: var(--arm-form-border-thickness) solid var(--arm-color-grey-600);
   border-radius: var(--arm-form-border-radius);
-  background-color: var(--arm-color-white);
+  background-color: var(--arm-input-bg-color);
   width: auto;
   position: relative;
   justify-content: flex-end;
   padding: var(--arm-spacing-small) 0;
   height: 1.5em;
   box-sizing: content-box;
+}
+
+.arm-select-native-wrapper .arm-select-inner select {
+  color: var(--arm-input-fg-color);
 }
 
 .arm-select-native-wrapper .arm-select-inner[data-error-icon='left'] {

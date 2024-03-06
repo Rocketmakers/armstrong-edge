@@ -4,7 +4,8 @@
   width: var(--arm-input-width);
   min-height: var(--arm-text-area-height, 8rem);
   padding: 1em;
-  background-color: var(--arm-color-white);
+  background-color: var(--arm-input-bg-color);
+  color: var(--arm-input-fg-color);
   border-radius: 6px;
   font-family: inherit;
   font-size: inherit;

@@ -35,7 +35,7 @@
 }
 
 .arm-checkbox[data-state='unchecked'] {
-  background-color: var(--arm-color-white);
+  background-color: var(--arm-checkbox-bg-color);
 }
 
 .arm-checkbox[data-state='checked'] {

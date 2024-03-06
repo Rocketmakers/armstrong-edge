@@ -3,7 +3,7 @@
   min-height: var(--arm-input-height);
   display: flex;
   align-items: center;
-  background-color: var(--arm-color-white);
+  background-color: var(--arm-input-bg-color);
   border: var(--arm-form-border-thickness) solid var(--arm-color-grey-600);
   border-radius: var(--arm-form-border-radius);
   overflow: hidden;
@@ -13,6 +13,7 @@
   width: 100%;
   flex: 1;
   padding: var(--arm-spacing-small) var(--arm-spacing-medium);
+  color: var(--arm-input-fg-color);
   border: none;
   background-color: transparent;
   outline: none;

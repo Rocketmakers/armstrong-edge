@@ -22,7 +22,7 @@
 
 .arm-radio-group[data-mode='radio'] .arm-radio-group-item {
   all: unset;
-  background-color: white;
+  background-color: var(--arm-radio-bg-color);
   width: var(--arm-spacing-xlarge);
   height: var(--arm-spacing-xlarge);
   border-radius: 100%;
