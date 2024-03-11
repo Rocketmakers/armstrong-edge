@@ -3,20 +3,21 @@
  * --------------------------------------
  */
 
-import type {
-  ZodArray,
-  ZodBigInt,
-  ZodBoolean,
-  ZodDate,
-  ZodEffects,
-  ZodLiteral,
-  ZodNullable,
-  ZodNumber,
-  ZodObject,
-  ZodOptional,
-  ZodRawShape,
-  ZodString,
-  ZodTypeAny,
+import {
+  type ZodArray,
+  type ZodBigInt,
+  type ZodBoolean,
+  type ZodDate,
+  type ZodEffects,
+  type ZodLiteral,
+  type ZodNullable,
+  type ZodNumber,
+  type ZodObject,
+  type ZodOptional,
+  type ZodRawShape,
+  type ZodString,
+  type ZodTypeAny,
+  type ZodUnion,
 } from 'zod';
 
 /**
@@ -523,7 +524,8 @@ type WithZodAdditions<T extends ZodTypeAny, K> =
   | ZodOptional<T>
   | ZodNullable<T>
   | ZodOptional<ZodNullable<T>>
-  | ZodEffects<T, K, K>;
+  | ZodEffects<T, K, K>
+  | ZodUnion<[WithZodAdditions<T, K>, ...ZodTypeAny[]]>;
 
 /**
  * Root type for applying the correct zod validation type to a prop within form state
