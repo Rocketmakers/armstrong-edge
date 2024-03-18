@@ -9,7 +9,9 @@ import {
   type ZodBoolean,
   type ZodDate,
   type ZodEffects,
+  type ZodEnum,
   type ZodLiteral,
+  type ZodNativeEnum,
   type ZodNullable,
   type ZodNumber,
   type ZodObject,
@@ -525,7 +527,11 @@ type WithZodAdditions<T extends ZodTypeAny, K> =
   | ZodNullable<T>
   | ZodOptional<ZodNullable<T>>
   | ZodEffects<T, K, K>
-  | ZodUnion<[WithZodAdditions<T, K>, ...ZodTypeAny[]]>;
+  | ZodUnion<[WithZodAdditions<T, K>, ...ZodTypeAny[]]>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any required for zod native enum
+  | ZodNativeEnum<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any required for zod enum
+  | ZodEnum<any>;
 
 /**
  * Root type for applying the correct zod validation type to a prop within form state

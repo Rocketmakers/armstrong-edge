@@ -1,9 +1,8 @@
 ## [3.4.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.0...v3.4.1) (2024-03-11)
 
-
 ### Bug Fixes
 
-* - Added types to support zod union ([517e37e](https://github.com/Rocketmakers/armstrong-edge/commit/517e37e28516e2df54382b0b72d2e90ee82a2b9b))
+- - Added types to support zod union ([517e37e](https://github.com/Rocketmakers/armstrong-edge/commit/517e37e28516e2df54382b0b72d2e90ee82a2b9b))
 
 # [3.4.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.3.1...v3.4.0) (2024-02-15)
 
