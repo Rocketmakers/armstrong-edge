@@ -182,3 +182,9 @@
 
   margin-left: var(--arm-spacing-medium);
 }
+
+.arm-date-time-overlay-button {
+  all: unset;
+  display: flex;
+  align-items: center;
+}
