@@ -1,3 +1,10 @@
+## [3.4.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.1...v3.4.2) (2024-03-18)
+
+
+### Bug Fixes
+
+* - ZOD types now supporting enums ([3550008](https://github.com/Rocketmakers/armstrong-edge/commit/3550008417fcb9bab0dfa4b77e3724d0b5746379))
+
 ## [3.4.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.0...v3.4.1) (2024-03-11)
 
 ### Bug Fixes
