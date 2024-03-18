@@ -3,7 +3,7 @@
  * --------------------------------------
  */
 /// <reference types="react" />
-import { type ZodArray, type ZodBigInt, type ZodBoolean, type ZodDate, type ZodEffects, type ZodLiteral, type ZodNullable, type ZodNumber, type ZodObject, type ZodOptional, type ZodRawShape, type ZodString, type ZodTypeAny, type ZodUnion } from 'zod';
+import { type ZodArray, type ZodBigInt, type ZodBoolean, type ZodDate, type ZodEffects, type ZodEnum, type ZodLiteral, type ZodNativeEnum, type ZodNullable, type ZodNumber, type ZodObject, type ZodOptional, type ZodRawShape, type ZodString, type ZodTypeAny, type ZodUnion } from 'zod';
 /**
  * Works out whether some data is an object, and array, or another type.ß
  * Used by `formProp` to type the next argument in the array.
@@ -412,7 +412,7 @@ export interface IObjectOfZod<TProp> {
     /** A function which defines the validation to apply to the object itself (e.g. `opts: ob => ob.required()`) */
     opts?: (ob: ZodObject<TProp & ZodRawShape>) => ZodObject<TProp & ZodRawShape> | ZodNullable<ZodTypeAny> | ZodOptional<ZodTypeAny> | ZodOptional<ZodNullable<ZodTypeAny>> | ZodEffects<ZodTypeAny>;
 }
-type WithZodAdditions<T extends ZodTypeAny, K> = T | ZodLiteral<K> | ZodOptional<T> | ZodNullable<T> | ZodOptional<ZodNullable<T>> | ZodEffects<T, K, K> | ZodUnion<[WithZodAdditions<T, K>, ...ZodTypeAny[]]>;
+type WithZodAdditions<T extends ZodTypeAny, K> = T | ZodLiteral<K> | ZodOptional<T> | ZodNullable<T> | ZodOptional<ZodNullable<T>> | ZodEffects<T, K, K> | ZodUnion<[WithZodAdditions<T, K>, ...ZodTypeAny[]]> | ZodNativeEnum<any> | ZodEnum<any>;
 /**
  * Root type for applying the correct zod validation type to a prop within form state
  * - Works by creating a type string for the form state prop and using this to index an object type containing zod requirements for each type
