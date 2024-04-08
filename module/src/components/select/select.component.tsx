@@ -184,6 +184,9 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
 
   /** should the search within the select be case sensitive */
   caseSensitive?: boolean;
+
+  /** filter option override - allows the default client side option filter to be customized */
+  filterOption?: (option: IArmstrongOption<ArmstrongId, unknown>, incomingInputValue: string) => boolean;
 }
 
 export interface INativeSelectProps<Id extends ArmstrongId>
@@ -289,6 +292,7 @@ const ReactSelectComponent = React.forwardRef<
       onInputChange,
       inputValue,
       caseSensitive,
+      filterOption,
       ...nativeProps
     },
     ref
@@ -389,17 +393,20 @@ const ReactSelectComponent = React.forwardRef<
       [createText, formatOptionLabel]
     );
 
-    const filterOption = React.useCallback<
+    const filterOptionInner = React.useCallback<
       (option: FilterOptionOption<IArmstrongOption<ArmstrongId, unknown>>, incomingInputValue: string) => boolean
     >(
       (option, incomingInputValue) => {
+        if (filterOption) {
+          return filterOption(option.data, incomingInputValue);
+        }
         if (caseSensitive) {
           return !!labelGetter(option.data)?.toString().includes(incomingInputValue);
         }
         return !!labelGetter(option.data)?.toString().toLowerCase().includes(incomingInputValue.toLowerCase());
       },
 
-      [labelGetter]
+      [caseSensitive, filterOption, labelGetter]
     );
 
     const valueContent = useContentMemo(value);
@@ -458,7 +465,7 @@ const ReactSelectComponent = React.forwardRef<
       className: 'arm-select-input',
       classNamePrefix: 'arm-select',
       onChange: handleChange,
-      filterOption,
+      filterOption: filterOptionInner,
       options,
       placeholder,
       value: selectedValue,
