@@ -1,9 +1,8 @@
 ## [3.4.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.2...v3.4.3) (2024-03-18)
 
-
 ### Bug Fixes
 
-* ARM-[#221](https://github.com/Rocketmakers/armstrong-edge/issues/221) - Fixed number input to allow all valid numbers to be entered ([d9dbcbb](https://github.com/Rocketmakers/armstrong-edge/commit/d9dbcbbd3193e3847cb6f6facb52139ddd37ec11))
+- ARM-[#221](https://github.com/Rocketmakers/armstrong-edge/issues/221) - Fixed number input to allow all valid numbers to be entered ([d9dbcbb](https://github.com/Rocketmakers/armstrong-edge/commit/d9dbcbbd3193e3847cb6f6facb52139ddd37ec11))
 
 ## [3.4.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.1...v3.4.2) (2024-03-18)
 
