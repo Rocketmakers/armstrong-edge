@@ -92,6 +92,8 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
     autoValidate?: boolean;
     /** should the search within the select be case sensitive */
     caseSensitive?: boolean;
+    /** filter option override - allows the default client side option filter to be customized */
+    filterOption?: (option: IArmstrongOption<ArmstrongId, unknown>, incomingInputValue: string) => boolean;
 }
 export interface INativeSelectProps<Id extends ArmstrongId> extends NativeSelectProps, Pick<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'displaySize' | 'label' | 'required' | 'scrollValidationErrorsIntoView' | 'requiredIndicator' | 'validationMode' | 'validationErrorMessages' | 'errorIcon' | 'statusPosition' | 'dropdownIcon' | 'labelId' | 'labelClassName' | 'validationErrorsClassName' | 'statusClassName' | 'hideIconOnStatus' | 'leftOverlay'> {
     /** the options to be displayed in the input */
