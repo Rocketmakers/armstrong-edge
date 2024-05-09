@@ -1,0 +1,1 @@
+import{r as d}from"./index-c4905b50.js";import{a as r}from"./index-10b0f2c6.js";function f(t,e=globalThis==null?void 0:globalThis.document){const o=r(t);d.useEffect(()=>{const a=s=>{s.key==="Escape"&&o(s)};return e.addEventListener("keydown",a),()=>e.removeEventListener("keydown",a)},[o,e])}export{f as $};
