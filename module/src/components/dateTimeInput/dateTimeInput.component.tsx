@@ -45,6 +45,9 @@ export interface IDateTimeInputProps {
 
   /** should the input validate automatically against the provided schema? Default: `true` */
   autoValidate?: boolean;
+
+  /** whether to show the calendar when the left overlay icon is clicked (by default, this is the calendar icon.) This property is true by default. */
+  showCalendarOnLeftOverlayClick?: boolean;
 }
 
 export interface IDateTimeInputRangeProps<TBind extends NullOrUndefined<string>>
@@ -283,10 +286,13 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       locale,
       statusClassName,
       autoValidate,
+      showCalendarOnLeftOverlayClick,
       ...inputProps
     },
     ref
   ) => {
+    const datePickerRef = React.useRef<ReactDatePicker>(null);
+
     const [date, setDate, bindDateConfig] = useBindingState(bind, {
       validationErrorMessages,
       value,
@@ -365,6 +371,7 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
     return (
       <ReactDatePicker
         {...stripNullOrUndefined(compiledConfig)}
+        ref={datePickerRef}
         className={className}
         locale={locale}
         dateFormat={compiledFormat}
@@ -374,7 +381,20 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
           <Input
             ref={ref}
             {...inputProps}
-            leftOverlay={leftOverlay}
+            leftOverlay={
+              showCalendarOnLeftOverlayClick && leftOverlay ? (
+                <button
+                  type="button"
+                  className="arm-date-time-overlay-button"
+                  disabled={inputProps.disabled}
+                  onClick={() => datePickerRef.current?.setOpen(true)}
+                >
+                  {leftOverlay}
+                </button>
+              ) : (
+                leftOverlay
+              )
+            }
             className={concat(inputProps.inputClassName, 'arm-date-time-input')}
             validationErrorMessages={bindDateConfig.validationErrorMessages}
           />
@@ -391,6 +411,7 @@ SingleDateTimeInput.displayName = 'SingleDateTimeInput';
 
 SingleDateTimeInput.defaultProps = {
   locale: defaultLocale,
+  showCalendarOnLeftOverlayClick: true,
 };
 
 export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputRangeProps<string | null>>(
@@ -409,10 +430,13 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
       format,
       locale,
       autoValidate,
+      showCalendarOnLeftOverlayClick,
       ...inputProps
     },
     ref
   ) => {
+    const datePickerRef = React.useRef<ReactDatePicker<never, true>>(null);
+
     const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
       validationErrorMessages,
       value: startValue,
@@ -461,6 +485,7 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
     return (
       <ReactDatePicker
         {...stripNullOrUndefined(compiledConfig)}
+        ref={datePickerRef}
         locale={locale}
         className={concat('arm-date-time-input', className)}
         dateFormat={format}
@@ -470,6 +495,20 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
             type="text"
             ref={ref}
             {...inputProps}
+            leftOverlay={
+              showCalendarOnLeftOverlayClick && inputProps.leftOverlay ? (
+                <button
+                  type="button"
+                  className="arm-date-time-overlay-button"
+                  disabled={inputProps.disabled}
+                  onClick={() => datePickerRef.current?.setOpen(true)}
+                >
+                  {inputProps.leftOverlay}
+                </button>
+              ) : (
+                inputProps.leftOverlay
+              )
+            }
             validationErrorMessages={[
               ...bindStartDateConfig.validationErrorMessages,
               ...bindEndDateConfig.validationErrorMessages,
@@ -504,6 +543,7 @@ RangeDateTimeInput.defaultProps = {
   leftOverlay: <FaRegCalendar />,
   format: defaultDateFormat,
   locale: defaultLocale,
+  showCalendarOnLeftOverlayClick: true,
 };
 
 const NativeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputNativeProps<string | null>>(
