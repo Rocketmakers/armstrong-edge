@@ -1,9 +1,8 @@
 ## [3.4.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.3...v3.4.4) (2024-04-08)
 
-
 ### Bug Fixes
 
-* fixed issue in which client side filter can not be overridden ([5414ddc](https://github.com/Rocketmakers/armstrong-edge/commit/5414ddc193d51d758ab08476d622eff106a77fd7))
+- fixed issue in which client side filter can not be overridden ([5414ddc](https://github.com/Rocketmakers/armstrong-edge/commit/5414ddc193d51d758ab08476d622eff106a77fd7))
 
 ## [3.4.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.2...v3.4.3) (2024-03-18)
 
