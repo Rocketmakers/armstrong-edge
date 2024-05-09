@@ -20,71 +20,21 @@
 }
 
 .arm-tooltip-content[data-state='delayed-open'][data-side='top'] {
-  animation-name: slideDownAndFade;
+  animation-name: armSlideDownAndFade;
 }
 
 .arm-tooltip-content[data-state='delayed-open'][data-side='right'] {
-  animation-name: slideLeftAndFade;
+  animation-name: armSlideLeftAndFade;
 }
 
 .arm-tooltip-content[data-state='delayed-open'][data-side='bottom'] {
-  animation-name: slideUpAndFade;
+  animation-name: armSlideUpAndFade;
 }
 
 .arm-tooltip-content[data-state='delayed-open'][data-side='left'] {
-  animation-name: slideRightAndFade;
+  animation-name: armSlideRightAndFade;
 }
 
 .arm-tooltip-arrow {
   fill: var(--arm-tooltip-bg-color);
-}
-
-/** ANIMATIONS **/
-
-@keyframes slideUpAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideRightAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(-2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideDownAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(-2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideLeftAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }

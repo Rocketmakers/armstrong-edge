@@ -2,6 +2,7 @@ import React from 'react';
 import { themes } from '@storybook/theming';
 
 import '../src/theme/variables.css';
+import '../src/theme/animations.css';
 import '../src/theme/theme.css';
 import './storybook-theme.css';
 
