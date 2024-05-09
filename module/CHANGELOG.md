@@ -1,3 +1,10 @@
+# [3.5.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.4...v3.5.0) (2024-05-09)
+
+
+### Features
+
+* implemented a dropdown menu component ([b777e9d](https://github.com/Rocketmakers/armstrong-edge/commit/b777e9d1722a55bcf1fe38f53dea0d03986a3783))
+
 ## [3.4.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.3...v3.4.4) (2024-04-08)
 
 ### Bug Fixes
