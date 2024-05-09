@@ -1,3 +1,10 @@
+## [3.5.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.0...v3.5.1) (2024-05-09)
+
+
+### Bug Fixes
+
+* ARM-231 - Allows the calendar to open on icon click with additional prop to disable ([e3e52b8](https://github.com/Rocketmakers/armstrong-edge/commit/e3e52b8bc12f347bfa65c4fac1bfb0b08fea0f96))
+
 # [3.5.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.4...v3.5.0) (2024-05-09)
 
 
