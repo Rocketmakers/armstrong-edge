@@ -596,10 +596,10 @@
           "moduleName": "./src/components/textArea/textArea.component.tsx"
         },
         {
-          "moduleName": "./src/components/characterLimit/characterLimit.stories.tsx"
+          "moduleName": "./src/components/checkbox/checkbox.stories.tsx"
         },
         {
-          "moduleName": "./src/components/checkbox/checkbox.stories.tsx"
+          "moduleName": "./src/components/characterLimit/characterLimit.stories.tsx"
         },
         {
           "moduleName": "./src/components/checkboxList/checkboxList.stories.tsx"
@@ -611,16 +611,19 @@
           "moduleName": "./src/components/dateTimeInput/dateTimeInput.stories.tsx"
         },
         {
-          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
+          "moduleName": "./src/components/checkbox/checkbox.component.tsx"
         },
         {
-          "moduleName": "./src/components/checkbox/checkbox.component.tsx"
+          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         },
         {
           "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
         },
         {
           "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/rating/rating.stories.tsx"
         },
         {
           "moduleName": "./src/components/input/input.component.tsx"
@@ -639,9 +642,6 @@
         },
         {
           "moduleName": "./src/components/input/input.stories.tsx"
-        },
-        {
-          "moduleName": "./src/components/rating/rating.stories.tsx"
         },
         {
           "moduleName": "./src/components/rangeInput/rangeInput.stories.tsx"
@@ -671,13 +671,13 @@
           "moduleName": "./src/components/toast/toast.stories.tsx"
         },
         {
+          "moduleName": "./src/components/tooltip/tooltip.stories.tsx"
+        },
+        {
           "moduleName": "./src/components/dialog/dialog.stories.tsx"
         },
         {
           "moduleName": "./src/components/expandable/expandable.stories.tsx"
-        },
-        {
-          "moduleName": "./src/components/tooltip/tooltip.stories.tsx"
         },
         {
           "moduleName": "./src/components/dropdownMenu/dropdownMenu.stories.tsx"
@@ -786,6 +786,15 @@
       "reasons": [
         {
           "moduleName": "./src/components/provider/index.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/tooltip/tooltip.component.tsx",
+      "name": "./src/components/tooltip/tooltip.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/tooltip/tooltip.stories.tsx"
         }
       ]
     },
@@ -917,10 +926,10 @@
           "moduleName": "./src/components/button/button.component.tsx"
         },
         {
-          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
+          "moduleName": "./src/components/checkbox/checkbox.component.tsx"
         },
         {
-          "moduleName": "./src/components/checkbox/checkbox.component.tsx"
+          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         },
         {
           "moduleName": "./src/components/expandable/expandable.component.tsx"
@@ -974,10 +983,10 @@
           "moduleName": "./src/components/button/button.component.tsx"
         },
         {
-          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
+          "moduleName": "./src/components/checkbox/checkbox.component.tsx"
         },
         {
-          "moduleName": "./src/components/checkbox/checkbox.component.tsx"
+          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         },
         {
           "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
@@ -1051,15 +1060,6 @@
       ]
     },
     {
-      "id": "./src/components/tooltip/tooltip.component.tsx",
-      "name": "./src/components/tooltip/tooltip.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/tooltip/tooltip.stories.tsx"
-        }
-      ]
-    },
-    {
       "id": "./src/components/toast/toast.context.tsx",
       "name": "./src/components/toast/toast.context.tsx",
       "reasons": [
@@ -1090,15 +1090,6 @@
       ]
     },
     {
-      "id": "./src/components/characterLimit/characterLimit.component.tsx",
-      "name": "./src/components/characterLimit/characterLimit.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/characterLimit/characterLimit.stories.tsx"
-        }
-      ]
-    },
-    {
       "id": "./src/components/checkbox/checkbox.component.tsx",
       "name": "./src/components/checkbox/checkbox.component.tsx",
       "reasons": [
@@ -1107,6 +1098,15 @@
         },
         {
           "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/characterLimit/characterLimit.component.tsx",
+      "name": "./src/components/characterLimit/characterLimit.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/characterLimit/characterLimit.stories.tsx"
         }
       ]
     },
@@ -1183,15 +1183,6 @@
       ]
     },
     {
-      "id": "./src/components/characterLimit/characterLimit.theme.css",
-      "name": "./src/components/characterLimit/characterLimit.theme.css",
-      "reasons": [
-        {
-          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
-        }
-      ]
-    },
-    {
       "id": "./src/components/label/label.component.tsx",
       "name": "./src/components/label/label.component.tsx",
       "reasons": [
@@ -1233,6 +1224,15 @@
       "reasons": [
         {
           "moduleName": "./src/components/checkbox/checkbox.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/characterLimit/characterLimit.theme.css",
+      "name": "./src/components/characterLimit/characterLimit.theme.css",
+      "reasons": [
+        {
+          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         }
       ]
     },
@@ -1375,6 +1375,15 @@
       ]
     },
     {
+      "id": "./src/components/rating/rating.component.tsx",
+      "name": "./src/components/rating/rating.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/rating/rating.stories.tsx"
+        }
+      ]
+    },
+    {
       "id": "./src/components/progressBar/progressBar.theme.css",
       "name": "./src/components/progressBar/progressBar.theme.css",
       "reasons": [
@@ -1477,15 +1486,6 @@
       ]
     },
     {
-      "id": "./src/hooks/usePreviousValue.ts",
-      "name": "./src/hooks/usePreviousValue.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/hooks/useCompareValues.ts"
-        }
-      ]
-    },
-    {
       "id": "./src/components/spinner/spinner.theme.css",
       "name": "./src/components/spinner/spinner.theme.css",
       "reasons": [
@@ -1504,15 +1504,6 @@
       ]
     },
     {
-      "id": "./src/components/rating/rating.component.tsx",
-      "name": "./src/components/rating/rating.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/rating/rating.stories.tsx"
-        }
-      ]
-    },
-    {
       "id": "./src/utils/objects.ts",
       "name": "./src/utils/objects.ts",
       "reasons": [
@@ -1521,15 +1512,6 @@
         },
         {
           "moduleName": "./src/utils/index.ts"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/rangeInput/rangeInput.component.tsx",
-      "name": "./src/components/rangeInput/rangeInput.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/rangeInput/rangeInput.stories.tsx"
         }
       ]
     },
@@ -1566,6 +1548,24 @@
       "reasons": [
         {
           "moduleName": "./src/utils/index.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/rangeInput/rangeInput.component.tsx",
+      "name": "./src/components/rangeInput/rangeInput.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/rangeInput/rangeInput.stories.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/hooks/usePreviousValue.ts",
+      "name": "./src/hooks/usePreviousValue.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/hooks/useCompareValues.ts"
         }
       ]
     },
@@ -1624,6 +1624,15 @@
       ]
     },
     {
+      "id": "./src/components/label/label.theme.css",
+      "name": "./src/components/label/label.theme.css",
+      "reasons": [
+        {
+          "moduleName": "./src/components/label/label.component.tsx"
+        }
+      ]
+    },
+    {
       "id": "./src/types/core.ts",
       "name": "./src/types/core.ts",
       "reasons": [
@@ -1647,15 +1656,6 @@
       "reasons": [
         {
           "moduleName": "./src/types/index.ts"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/label/label.theme.css",
-      "name": "./src/components/label/label.theme.css",
-      "reasons": [
-        {
-          "moduleName": "./src/components/label/label.component.tsx"
         }
       ]
     },
