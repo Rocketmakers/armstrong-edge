@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixToast from '@radix-ui/react-toast';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
