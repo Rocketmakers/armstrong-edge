@@ -1,3 +1,10 @@
+## [3.5.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.1...v3.5.2) (2024-05-16)
+
+
+### Bug Fixes
+
+* - Added use client directives for SSR support on context ([b4393d3](https://github.com/Rocketmakers/armstrong-edge/commit/b4393d3439736136bdd2456c7ff98e8e8c660645))
+
 ## [3.5.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.0...v3.5.1) (2024-05-09)
 
 ### Bug Fixes
