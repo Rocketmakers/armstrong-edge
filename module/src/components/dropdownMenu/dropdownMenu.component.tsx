@@ -76,10 +76,9 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
       if (Array.isArray(items)) {
         return items.map((item, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               <RadixDropdownMenu.Item
                 className={concat(item.className, 'arm-dropdown-menu-item')}
-                key={index}
                 disabled={item.disabled}
                 onSelect={() => item.onClick?.(index)}
               >
@@ -88,7 +87,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
                 {item.rightOverlay && <div className="arm-dropdown-menu-item-right-overlay">{item.rightOverlay}</div>}
               </RadixDropdownMenu.Item>
               {item.addSeparatorUnder && <RadixDropdownMenu.Separator className="arm-dropdown-menu-separator" />}
-            </>
+            </React.Fragment>
           );
         });
       }
