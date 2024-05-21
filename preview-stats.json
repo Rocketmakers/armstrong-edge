@@ -434,10 +434,10 @@
           "moduleName": "./src/components/config/config.stories.mdx"
         },
         {
-          "moduleName": "./src/components/switch/switch.component.tsx"
+          "moduleName": "./src/components/config/index.ts"
         },
         {
-          "moduleName": "./src/components/config/index.ts"
+          "moduleName": "./src/components/switch/switch.component.tsx"
         }
       ]
     },
@@ -623,28 +623,28 @@
           "moduleName": "./src/components/codeInput/codeInput.component.tsx"
         },
         {
-          "moduleName": "./src/components/rating/rating.stories.tsx"
-        },
-        {
           "moduleName": "./src/components/input/input.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
         },
         {
           "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
         },
         {
+          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+        },
+        {
           "moduleName": "./src/components/rating/rating.component.tsx"
         },
         {
-          "moduleName": "./src/components/switch/switch.component.tsx"
+          "moduleName": "./src/components/rating/rating.stories.tsx"
         },
         {
           "moduleName": "./src/components/input/input.stories.tsx"
         },
         {
           "moduleName": "./src/components/rangeInput/rangeInput.stories.tsx"
+        },
+        {
+          "moduleName": "./src/components/switch/switch.component.tsx"
         },
         {
           "moduleName": "./src/components/dateTimeInput/dateTimeInput.component.tsx"
@@ -887,10 +887,10 @@
           "moduleName": "./src/components/input/input.component.tsx"
         },
         {
-          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
         },
         {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
         },
         {
           "moduleName": "./src/components/rating/rating.component.tsx"
@@ -923,10 +923,10 @@
           "moduleName": "./src/components/validationErrors/validationErrors.component.tsx"
         },
         {
-          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
+          "moduleName": "./src/components/button/button.component.tsx"
         },
         {
-          "moduleName": "./src/components/button/button.component.tsx"
+          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         },
         {
           "moduleName": "./src/components/checkbox/checkbox.component.tsx"
@@ -938,10 +938,10 @@
           "moduleName": "./src/components/input/input.component.tsx"
         },
         {
-          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
         },
         {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
         },
         {
           "moduleName": "./src/components/rating/rating.component.tsx"
@@ -950,10 +950,10 @@
           "moduleName": "./src/components/spinner/spinner.component.tsx"
         },
         {
-          "moduleName": "./src/components/switch/switch.component.tsx"
+          "moduleName": "./src/utils/index.ts"
         },
         {
-          "moduleName": "./src/utils/index.ts"
+          "moduleName": "./src/components/switch/switch.component.tsx"
         },
         {
           "moduleName": "./src/components/inputWrapper/inputWrapper.component.tsx"
@@ -980,10 +980,10 @@
           "moduleName": "./src/components/validationErrors/validationErrors.component.tsx"
         },
         {
-          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
+          "moduleName": "./src/components/button/button.component.tsx"
         },
         {
-          "moduleName": "./src/components/button/button.component.tsx"
+          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         },
         {
           "moduleName": "./src/components/checkbox/checkbox.component.tsx"
@@ -998,10 +998,10 @@
           "moduleName": "./src/components/input/input.component.tsx"
         },
         {
-          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
         },
         {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
         },
         {
           "moduleName": "./src/components/rating/rating.component.tsx"
@@ -1159,15 +1159,6 @@
       ]
     },
     {
-      "id": "./src/components/characterLimit/characterLimit.theme.css",
-      "name": "./src/components/characterLimit/characterLimit.theme.css",
-      "reasons": [
-        {
-          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
-        }
-      ]
-    },
-    {
       "id": "./src/components/spinner/spinner.component.tsx",
       "name": "./src/components/spinner/spinner.component.tsx",
       "reasons": [
@@ -1188,6 +1179,15 @@
       "reasons": [
         {
           "moduleName": "./src/components/button/button.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/characterLimit/characterLimit.theme.css",
+      "name": "./src/components/characterLimit/characterLimit.theme.css",
+      "reasons": [
+        {
+          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         }
       ]
     },
@@ -1357,15 +1357,6 @@
       ]
     },
     {
-      "id": "./src/components/rating/rating.component.tsx",
-      "name": "./src/components/rating/rating.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/rating/rating.stories.tsx"
-        }
-      ]
-    },
-    {
       "id": "./src/hooks/useBoundingClientRect.ts",
       "name": "./src/hooks/useBoundingClientRect.ts",
       "reasons": [
@@ -1380,15 +1371,6 @@
       "reasons": [
         {
           "moduleName": "./src/components/expandable/expandable.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/progressBar/progressBar.theme.css",
-      "name": "./src/components/progressBar/progressBar.theme.css",
-      "reasons": [
-        {
-          "moduleName": "./src/components/progressBar/progressBar.component.tsx"
         }
       ]
     },
@@ -1420,11 +1402,11 @@
       ]
     },
     {
-      "id": "./src/components/rangeInput/rangeInput.theme.css",
-      "name": "./src/components/rangeInput/rangeInput.theme.css",
+      "id": "./src/components/progressBar/progressBar.theme.css",
+      "name": "./src/components/progressBar/progressBar.theme.css",
       "reasons": [
         {
-          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+          "moduleName": "./src/components/progressBar/progressBar.component.tsx"
         }
       ]
     },
@@ -1434,6 +1416,15 @@
       "reasons": [
         {
           "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/rangeInput/rangeInput.theme.css",
+      "name": "./src/components/rangeInput/rangeInput.theme.css",
+      "reasons": [
+        {
+          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
         }
       ]
     },
@@ -1486,15 +1477,6 @@
       ]
     },
     {
-      "id": "./src/components/spinner/spinner.theme.css",
-      "name": "./src/components/spinner/spinner.theme.css",
-      "reasons": [
-        {
-          "moduleName": "./src/components/spinner/spinner.component.tsx"
-        }
-      ]
-    },
-    {
       "id": "./src/hooks/usePreviousValue.ts",
       "name": "./src/hooks/usePreviousValue.ts",
       "reasons": [
@@ -1504,11 +1486,20 @@
       ]
     },
     {
-      "id": "./src/components/switch/switch.theme.css",
-      "name": "./src/components/switch/switch.theme.css",
+      "id": "./src/components/spinner/spinner.theme.css",
+      "name": "./src/components/spinner/spinner.theme.css",
       "reasons": [
         {
-          "moduleName": "./src/components/switch/switch.component.tsx"
+          "moduleName": "./src/components/spinner/spinner.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/rating/rating.component.tsx",
+      "name": "./src/components/rating/rating.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/rating/rating.stories.tsx"
         }
       ]
     },
@@ -1570,6 +1561,15 @@
       ]
     },
     {
+      "id": "./src/components/switch/switch.theme.css",
+      "name": "./src/components/switch/switch.theme.css",
+      "reasons": [
+        {
+          "moduleName": "./src/components/switch/switch.component.tsx"
+        }
+      ]
+    },
+    {
       "id": "./src/form/hooks/useBindingState.ts",
       "name": "./src/form/hooks/useBindingState.ts",
       "reasons": [
@@ -1624,47 +1624,11 @@
       ]
     },
     {
-      "id": "./src/types/core.ts",
-      "name": "./src/types/core.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/types/index.ts"
-        }
-      ]
-    },
-    {
-      "id": "./src/types/options.ts",
-      "name": "./src/types/options.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/types/index.ts"
-        }
-      ]
-    },
-    {
-      "id": "./src/types/reactExtensions.ts",
-      "name": "./src/types/reactExtensions.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/types/index.ts"
-        }
-      ]
-    },
-    {
       "id": "./src/components/label/label.theme.css",
       "name": "./src/components/label/label.theme.css",
       "reasons": [
         {
           "moduleName": "./src/components/label/label.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/validationErrors/validationErrors.hooks.ts",
-      "name": "./src/components/validationErrors/validationErrors.hooks.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/components/validationErrors/index.ts"
         }
       ]
     },
@@ -1692,6 +1656,42 @@
       "reasons": [
         {
           "moduleName": "./src/components/dateTimeInput/dateTimeInput.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/types/core.ts",
+      "name": "./src/types/core.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/types/index.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/types/options.ts",
+      "name": "./src/types/options.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/types/index.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/types/reactExtensions.ts",
+      "name": "./src/types/reactExtensions.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/types/index.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/validationErrors/validationErrors.hooks.ts",
+      "name": "./src/components/validationErrors/validationErrors.hooks.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/components/validationErrors/index.ts"
         }
       ]
     },
