@@ -1,3 +1,10 @@
+## [3.5.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.2...v3.5.3) (2024-05-21)
+
+
+### Bug Fixes
+
+* fixed dropdown menu keying bug ([de014ed](https://github.com/Rocketmakers/armstrong-edge/commit/de014edb0eaf29b013f9f7d5dbf20b9c5b4e8dd4))
+
 ## [3.5.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.1...v3.5.2) (2024-05-16)
 
 ### Bug Fixes
