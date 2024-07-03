@@ -5,7 +5,7 @@
   align-items: center;
 }
 
-.arm-checkbox-container[data-disabled] {
+.arm-checkbox-container[data-disabled='true'] {
   opacity: 0.6;
 }
 
@@ -25,7 +25,7 @@
   cursor: pointer;
 }
 
-.arm-checkbox[data-disabled] {
+.arm-checkbox:disabled {
   cursor: not-allowed;
 }
 
@@ -46,7 +46,7 @@
   background-color: var(--arm-grey-4);
 }
 
-.arm-checkbox:hover:not([data-disabled]) {
+.arm-checkbox:hover:not(:disabled) {
   filter: brightness(85%);
 }
 
@@ -66,7 +66,7 @@
   cursor: pointer;
 }
 
-.arm-checkbox-label[data-disabled] {
+.arm-checkbox-label[data-disabled='true'] {
   cursor: not-allowed;
 }
 
