@@ -150,7 +150,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
       >
         <div
           className={concat('arm-checkbox-container', className)}
-          data-disabled={disabled}
+          data-disabled={!!disabled}
           data-testid={testId}
           data-size={globals.inputDisplaySize}
           {...nativeProps}
@@ -169,7 +169,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
           {label && (
             <Label
               className={concat('arm-checkbox-label', labelClassName)}
-              data-disabled={disabled}
+              data-disabled={!!disabled}
               htmlFor={id}
               required={required}
               requiredIndicator={globals.requiredIndicator}
