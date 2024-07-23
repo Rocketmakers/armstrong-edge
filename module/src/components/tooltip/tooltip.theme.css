@@ -1,11 +1,6 @@
 /** CONTENT */
 
 .arm-tooltip-content {
-  --arm-tooltip-bg-color: var(--arm-color-grey-800);
-  --arm-tooltip-fg-color: var(--arm-color-white);
-  --arm-tooltip-max-width: 300px;
-  --arm-tooltip-animation-duration: 400ms;
-
   border-radius: 4px;
   padding: var(--arm-spacing-xsmall) var(--arm-spacing-small);
   color: var(--arm-tooltip-fg-color);
@@ -20,19 +15,19 @@
 }
 
 .arm-tooltip-content[data-state='delayed-open'][data-side='top'] {
-  animation-name: armSlideDownAndFade;
+  animation-name: arm-slide-down-and-fade;
 }
 
 .arm-tooltip-content[data-state='delayed-open'][data-side='right'] {
-  animation-name: armSlideLeftAndFade;
+  animation-name: arm-slide-left-and-fade;
 }
 
 .arm-tooltip-content[data-state='delayed-open'][data-side='bottom'] {
-  animation-name: armSlideUpAndFade;
+  animation-name: arm-slide-up-and-fade;
 }
 
 .arm-tooltip-content[data-state='delayed-open'][data-side='left'] {
-  animation-name: armSlideRightAndFade;
+  animation-name: arm-slide-right-and-fade;
 }
 
 .arm-tooltip-arrow {

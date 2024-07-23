@@ -1,9 +1,4 @@
 .arm-progress-bar {
-  --arm-progress-bar-height: 12px;
-  --arm-progress-bar-bg-color: var(--arm-color-grey-100);
-  --arm-progress-bar-fg-color: var(--arm-color-grey-1000);
-  --arm-progress-bar-animation-duration: 200ms;
-
   position: relative;
   overflow: hidden;
   background: var(--arm-progress-bar-bg-color);

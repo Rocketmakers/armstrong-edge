@@ -1,8 +1,4 @@
 .arm-dropdown-menu-content {
-  --arm-dropdown-menu-bg-color: var(--arm-color-white);
-  --arm-dropdown-menu-border-color: var(--arm-color-grey-200);
-  --arm-dropdown-menu-arrow-size: 12px;
-
   min-width: var(--arm-dropdown-menu-min-width, 220px);
   border-radius: 6px;
   padding: var(--arm-spacing-xxsmall) 0;
@@ -24,7 +20,7 @@
 }
 
 .arm-dropdown-menu-content[data-side='top'] {
-  animation-name: var(--arm-dropdown-menu-animation-top, armSlideDownAndFade);
+  animation-name: var(--arm-dropdown-menu-animation-top, arm-slide-down-and-fade);
   margin-bottom: var(--arm-spacing-xxsmall);
 }
 
@@ -39,7 +35,7 @@
 }
 
 .arm-dropdown-menu-content[data-side='right'] {
-  animation-name: var(--arm-dropdown-menu-animation-right, armSlideLeftAndFade);
+  animation-name: var(--arm-dropdown-menu-animation-right, arm-slide-left-and-fade);
   margin-left: var(--arm-spacing-xxsmall);
 }
 
@@ -54,7 +50,7 @@
 }
 
 .arm-dropdown-menu-content[data-side='bottom'] {
-  animation-name: var(--arm-dropdown-menu-animation-bottom, armSlideUpAndFade);
+  animation-name: var(--arm-dropdown-menu-animation-bottom, arm-slide-up-and-fade);
   margin-top: var(--arm-spacing-xxsmall);
 }
 
@@ -69,7 +65,7 @@
 }
 
 .arm-dropdown-menu-content[data-side='left'] {
-  animation-name: var(--arm-dropdown-menu-animation-left, armSlideRightAndFade);
+  animation-name: var(--arm-dropdown-menu-animation-left, arm-slide-right-and-fade);
   margin-right: var(--arm-spacing-xxsmall);
 }
 

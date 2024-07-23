@@ -13,9 +13,6 @@
 /* SWITCH */
 
 .arm-switch {
-  --arm-switch-width: 2.5rem;
-  --arm-switch-nub-size: 1.5rem;
-
   all: unset;
   width: var(--arm-switch-width);
   height: var(--arm-switch-height, 1.5rem);
@@ -71,13 +68,13 @@
 /** SIZES **/
 
 .arm-switch[data-size='small'] {
-  --arm-switch-width: 2rem;
-  --arm-switch-nub-size: 1.2rem;
-  --arm-switch-height: 1.2rem;
+  --arm-switch-width: var(--arm-switch-width-small);
+  --arm-switch-nub-size: var(--arm-switch-nub-size-small);
+  --arm-switch-height: var(--arm-switch-height-small);
 }
 
 .arm-switch[data-size='large'] {
-  --arm-switch-width: 4rem;
-  --arm-switch-nub-size: 2rem;
-  --arm-switch-height: 2rem;
+  --arm-switch-width: var(--arm-switch-width-large);
+  --arm-switch-nub-size: var(--arm-switch-nub-size-large);
+  --arm-switch-height: var(--arm-switch-height-large);
 }

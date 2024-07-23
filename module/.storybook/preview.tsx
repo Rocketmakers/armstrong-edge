@@ -28,19 +28,7 @@ export const parameters = {
   },
   options: {
     storySort: {
-      order: [
-        'Setup',
-        'Migration Guides',
-        'Form',
-        'FormUtils',
-        'Button',
-        'Layout',
-        'Display',
-        'Hooks',
-        'SCSS Utilities',
-        'Utilities',
-        'Armstrong Development',
-      ],
+      order: ['Introduction', 'Config', 'Form', 'Components', 'Hooks', 'Modals', 'Utilities'],
     },
   },
   docs: {

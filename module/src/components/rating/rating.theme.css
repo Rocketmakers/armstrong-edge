@@ -1,7 +1,3 @@
-.arm-rating {
-  --arm-rating-part-size: 1.8rem;
-}
-
 .arm-rating-input-inner {
   display: flex;
   align-items: center;
@@ -99,9 +95,9 @@
 /* SIZES */
 
 .arm-rating[data-size='small'] {
-  --arm-rating-part-size: 1.2rem;
+  --arm-rating-part-size: var(--arm-rating-part-size-small);
 }
 
 .arm-rating[data-size='large'] {
-  --arm-rating-part-size: 2.4rem;
+  --arm-rating-part-size: var(--arm-rating-part-size-large);
 }

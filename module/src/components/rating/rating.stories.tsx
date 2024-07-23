@@ -69,10 +69,14 @@ export const Disabled: StoryObj<typeof Rating> = {
 
 export const Labelled: StoryObj<typeof Rating> = {
   render: () => {
+    const { formProp } = useForm<{ default: NullOrUndefined<number>; required: NullOrUndefined<number> }>({
+      default: 0,
+      required: 0,
+    });
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-        <Rating label="Default" />
-        <Rating label="Required" required={true} />
+        <Rating label="Default" bind={formProp('default').bind()} />
+        <Rating label="Required" bind={formProp('required').bind()} required={true} />
       </div>
     );
   },
@@ -88,11 +92,20 @@ export const Labelled: StoryObj<typeof Rating> = {
 
 export const Sizes: StoryObj<typeof Rating> = {
   render: () => {
+    const { formProp } = useForm<{
+      small: NullOrUndefined<number>;
+      medium: NullOrUndefined<number>;
+      large: NullOrUndefined<number>;
+    }>({
+      small: 0,
+      medium: 0,
+      large: 0,
+    });
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        <Rating label={'Small Rating'} displaySize="small" required={true} />
-        <Rating label={'Medium Rating'} required={true} />
-        <Rating label={'Large Rating'} displaySize="large" required={true} />
+        <Rating label={'Small Rating'} displaySize="small" required={true} bind={formProp('small').bind()} />
+        <Rating label={'Medium Rating'} required={true} bind={formProp('medium').bind()} />
+        <Rating label={'Large Rating'} displaySize="large" required={true} bind={formProp('large').bind()} />
       </div>
     );
   },

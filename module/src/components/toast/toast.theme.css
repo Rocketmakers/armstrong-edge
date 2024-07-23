@@ -1,8 +1,6 @@
 /** OVERLAY **/
 
 .arm-toast-viewport {
-  --arm-toast-viewport-padding: var(--arm-spacing-xlarge);
-
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -76,16 +74,16 @@
 
 .arm-toast[data-state='open'][data-position='top-right'],
 .arm-toast[data-state='open'][data-position='bottom-right'] {
-  animation: slideInRight var(--arm-toast-slide-speed, 150ms) cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slide-in-right var(--arm-toast-slide-speed) cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .arm-toast[data-state='open'][data-position='top-left'],
 .arm-toast[data-state='open'][data-position='bottom-left'] {
-  animation: slideInLeft var(--arm-toast-slide-speed, 150ms) cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slide-in-left var(--arm-toast-slide-speed) cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .arm-toast[data-state='closed'] {
-  animation: hide var(--arm-toast-swipe-speed, 100ms) ease-in;
+  animation: hide var(--arm-toast-swipe-speed) ease-in;
 }
 
 .arm-toast[data-swipe='move'] {
@@ -94,65 +92,15 @@
 
 .arm-toast[data-swipe='cancel'] {
   transform: translateX(0);
-  transition: transform var(--arm-toast-hide-speed, 200ms) ease-out;
+  transition: transform var(--arm-toast-hide-speed) ease-out;
 }
 
 .arm-toast[data-swipe='end'][data-position='top-right'],
 .arm-toast[data-swipe='end'][data-position='bottom-right'] {
-  animation: swipeOutRight var(--arm-toast-swipe-speed, 100ms) ease-out;
+  animation: swipe-out-right var(--arm-toast-swipe-speed) ease-out;
 }
 
 .arm-toast[data-swipe='end'][data-position='top-left'],
 .arm-toast[data-swipe='end'][data-position='bottom-left'] {
-  animation: swipeOutLeft var(--arm-toast-swipe-speed, 100ms) ease-out;
-}
-
-@keyframes hide {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(calc(100% + var(--arm-toast-viewport-padding)));
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    transform: translateX(calc(-100% + var(--arm-toast-viewport-padding)));
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes swipeOutRight {
-  from {
-    transform: translateX(var(--radix-toast-swipe-end-x));
-  }
-
-  to {
-    transform: translateX(calc(100% + var(--arm-toast-viewport-padding)));
-  }
-}
-
-@keyframes swipeOutLeft {
-  from {
-    transform: translateX(var(--radix-toast-swipe-end-x));
-  }
-
-  to {
-    transform: translateX(calc(-100% + var(--arm-toast-viewport-padding)));
-  }
+  animation: swipe-out-left var(--arm-toast-swipe-speed) ease-out;
 }

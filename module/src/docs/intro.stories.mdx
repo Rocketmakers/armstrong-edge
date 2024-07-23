@@ -1,0 +1,99 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Introduction/Getting Started" />
+
+# Getting Started
+
+There are three steps to getting a project set up to use Armstrong:
+
+1. Install the package.
+2. Import the stylesheet.
+3. Render your first component.
+
+Optionally, you can also:
+
+4. Wrap your app in the `ArmstrongProvider` to enable global settings and toast notifications.
+5. Override the default global variables.
+
+## 1. Install the package
+
+Install the pacakge using your package manager of choice. For example, with npm:
+
+```bash
+npm install @rocketmakers/armstrong
+```
+
+pnpm:
+
+```bash
+pnpm add @rocketmakers/armstrong
+```
+
+or yarn:
+
+```bash
+yarn add @rocketmakers/armstrong
+```
+
+## 2. Import the stylesheet
+
+We recommend importing the Armstrong stylesheet directly into the `head` element of your HTML file. This gives you full control over the styling import order. Importing the Armstrong styles first will ensure that Armstrong classes can be easily overridden without the need for added speceficity. This can be done like this:
+
+```html
+<link rel="stylesheet" href="/node_modules/@rocketmakers/armstrong/dist/style.css" />
+```
+
+_NOTE: When importing this way, the path to the stylesheet may vary depending on your project setup. Usually, importing from `node_modules` like this will only work if done through a bundler. We recommend [Vite](https://vitejs.dev)._
+
+Aternatively, the import can be done in your main stylesheet like this:
+
+```css
+@import '@rocketmakers/armstrong/css';
+```
+
+## 3. Render your first component
+
+Now you can render your first Armstrong component. For example, a button being rendered in a TypeScript React app:
+
+```tsx
+import React from 'react';
+import { Button } from '@rocketmakers/armstrong';
+
+const App: React.FC = () => {
+  return <Button>Click me</Button>;
+};
+```
+
+## 4. Wrap your app in the `ArmstrongProvider` (optional)
+
+To enable global settings and toast notifications, wrap your app in the `ArmstrongProvider` like this:
+
+```tsx
+import React from 'react';
+import { ArmstrongProvider, Button } from '@rocketmakers/armstrong';
+
+const App: React.FC = () => {
+  return (
+    <ArmstrongProvider>
+      <Button>Click me</Button>
+    </ArmstrongProvider>
+  );
+};
+```
+
+More information on the `ArmstrongProvider` can be found in the [global config documentation](/docs/config-global-config--docs).
+
+## 5. Override the default variables (optional)
+
+To override the default global variables, we recommend creating a new CSS/SCSS file and importing it after the Armstrong styles, then overriding variables inside a `:root` selector. For example:
+
+```css
+:root {
+  --arm-color-brand-primary: #2287c8;
+  --arm-color-brand-secondary: #fdb53f;
+  --arm-font-weight-bold: 600;
+  --arm-color-grey-100: #ebebeb;
+}
+```
+
+A full list of all global CSS variables can be fond in the [CSS variables documentation](/docs/introduction-css-variables--docs).

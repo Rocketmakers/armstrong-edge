@@ -1,9 +1,8 @@
 ## [3.5.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.3...v3.5.4) (2024-07-03)
 
-
 ### Bug Fixes
 
-* - Fixed bug causing checkbox to appear disabled when disabled attribute is present regardless of value ([9836885](https://github.com/Rocketmakers/armstrong-edge/commit/983688557a1b1047c26ea229d700a512917456f9))
+- - Fixed bug causing checkbox to appear disabled when disabled attribute is present regardless of value ([9836885](https://github.com/Rocketmakers/armstrong-edge/commit/983688557a1b1047c26ea229d700a512917456f9))
 
 ## [3.5.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.2...v3.5.3) (2024-05-21)
 

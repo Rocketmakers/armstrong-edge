@@ -1,8 +1,4 @@
 .arm-range-input-root {
-  --arm-range-input-width: 600px;
-  --arm-range-input-thumb-size: var(--arm-spacing-xlarge);
-  --arm-range-input-track-height: calc(var(--arm-range-input-thumb-size) / 2);
-
   position: relative;
   display: flex;
   align-items: center;
@@ -52,11 +48,11 @@
 /** SIZES **/
 
 .arm-range-input-root[data-size='small'] {
-  --arm-range-input-width: 400px;
-  --arm-range-input-thumb-size: var(--arm-spacing-medium);
+  --arm-range-input-width: var(--arm-range-input-width-small);
+  --arm-range-input-thumb-size: var(--arm-range-input-thumb-size-small);
 }
 
 .arm-range-input-root[data-size='large'] {
-  --arm-range-input-width: 800px;
-  --arm-range-input-thumb-size: var(--arm-spacing-xxlarge);
+  --arm-range-input-width: var(--arm-range-input-width-large);
+  --arm-range-input-thumb-size: var(--arm-range-input-thumb-size-large);
 }
