@@ -235,6 +235,24 @@
       ]
     },
     {
+      "id": "./src/docs/intro.stories.mdx",
+      "name": "./src/docs/intro.stories.mdx",
+      "reasons": [
+        {
+          "moduleName": "/virtual:/@storybook/builder-vite/storybook-stories.js"
+        }
+      ]
+    },
+    {
+      "id": "./src/docs/variables.stories.mdx",
+      "name": "./src/docs/variables.stories.mdx",
+      "reasons": [
+        {
+          "moduleName": "/virtual:/@storybook/builder-vite/storybook-stories.js"
+        }
+      ]
+    },
+    {
       "id": "./src/form/form.stories.mdx",
       "name": "./src/form/form.stories.mdx",
       "reasons": [
@@ -530,6 +548,9 @@
           "moduleName": "./src/components/tooltip/tooltip.component.tsx"
         },
         {
+          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+        },
+        {
           "moduleName": "./src/components/codeInput/codeInput.component.tsx"
         },
         {
@@ -537,9 +558,6 @@
         },
         {
           "moduleName": "./src/components/progressBar/progressBar.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
         },
         {
           "moduleName": "./src/components/dateTimeInput/dateTimeInput.component.tsx"
@@ -596,9 +614,6 @@
           "moduleName": "./src/components/textArea/textArea.component.tsx"
         },
         {
-          "moduleName": "./src/components/dateTimeInput/dateTimeInput.stories.tsx"
-        },
-        {
           "moduleName": "./src/components/characterLimit/characterLimit.stories.tsx"
         },
         {
@@ -611,40 +626,43 @@
           "moduleName": "./src/components/radioGroup/radioGroup.stories.tsx"
         },
         {
-          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
+          "moduleName": "./src/components/dateTimeInput/dateTimeInput.stories.tsx"
         },
         {
-          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+          "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         },
         {
           "moduleName": "./src/components/checkbox/checkbox.component.tsx"
         },
         {
-          "moduleName": "./src/components/rating/rating.stories.tsx"
+          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
         },
         {
           "moduleName": "./src/components/input/input.component.tsx"
         },
         {
-          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
         },
         {
           "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
         },
         {
-          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+          "moduleName": "./src/components/input/input.stories.tsx"
+        },
+        {
+          "moduleName": "./src/components/rating/rating.stories.tsx"
+        },
+        {
+          "moduleName": "./src/components/rangeInput/rangeInput.stories.tsx"
         },
         {
           "moduleName": "./src/components/rating/rating.component.tsx"
         },
         {
           "moduleName": "./src/components/switch/switch.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/input/input.stories.tsx"
-        },
-        {
-          "moduleName": "./src/components/rangeInput/rangeInput.stories.tsx"
         },
         {
           "moduleName": "./src/components/dateTimeInput/dateTimeInput.component.tsx"
@@ -875,22 +893,22 @@
           "moduleName": "./src/components/textArea/textArea.component.tsx"
         },
         {
-          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
-        },
-        {
           "moduleName": "./src/components/checkbox/checkbox.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/input/input.component.tsx"
         },
         {
           "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
         },
         {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/input/input.component.tsx"
         },
         {
           "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
         },
         {
           "moduleName": "./src/components/rating/rating.component.tsx"
@@ -938,19 +956,19 @@
           "moduleName": "./src/components/input/input.component.tsx"
         },
         {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
         },
         {
-          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
         },
         {
           "moduleName": "./src/components/rating/rating.component.tsx"
         },
         {
-          "moduleName": "./src/components/spinner/spinner.component.tsx"
+          "moduleName": "./src/components/switch/switch.component.tsx"
         },
         {
-          "moduleName": "./src/components/switch/switch.component.tsx"
+          "moduleName": "./src/components/spinner/spinner.component.tsx"
         },
         {
           "moduleName": "./src/utils/index.ts"
@@ -986,22 +1004,22 @@
           "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
         },
         {
-          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
-        },
-        {
           "moduleName": "./src/components/checkbox/checkbox.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/input/input.component.tsx"
         },
         {
           "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
         },
         {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/input/input.component.tsx"
         },
         {
           "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
         },
         {
           "moduleName": "./src/components/rating/rating.component.tsx"
@@ -1060,6 +1078,54 @@
       ]
     },
     {
+      "id": "./src/components/characterLimit/characterLimit.component.tsx",
+      "name": "./src/components/characterLimit/characterLimit.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/characterLimit/characterLimit.stories.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/checkbox/checkbox.component.tsx",
+      "name": "./src/components/checkbox/checkbox.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/checkbox/checkbox.stories.tsx"
+        },
+        {
+          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/checkboxList/checkboxList.component.tsx",
+      "name": "./src/components/checkboxList/checkboxList.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/checkboxList/checkboxList.stories.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/dropdownMenu/dropdownMenu.component.tsx",
+      "name": "./src/components/dropdownMenu/dropdownMenu.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/dropdownMenu/dropdownMenu.stories.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/radioGroup/radioGroup.component.tsx",
+      "name": "./src/components/radioGroup/radioGroup.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/radioGroup/radioGroup.stories.tsx"
+        }
+      ]
+    },
+    {
       "id": "./src/components/toast/toast.context.tsx",
       "name": "./src/components/toast/toast.context.tsx",
       "reasons": [
@@ -1099,50 +1165,17 @@
       ]
     },
     {
-      "id": "./src/components/characterLimit/characterLimit.component.tsx",
-      "name": "./src/components/characterLimit/characterLimit.component.tsx",
+      "id": "./src/components/spinner/spinner.component.tsx",
+      "name": "./src/components/spinner/spinner.component.tsx",
       "reasons": [
         {
-          "moduleName": "./src/components/characterLimit/characterLimit.stories.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/checkbox/checkbox.component.tsx",
-      "name": "./src/components/checkbox/checkbox.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/checkbox/checkbox.stories.tsx"
+          "moduleName": "./src/components/spinner/spinner.stories.tsx"
         },
         {
-          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/dropdownMenu/dropdownMenu.component.tsx",
-      "name": "./src/components/dropdownMenu/dropdownMenu.component.tsx",
-      "reasons": [
+          "moduleName": "./src/components/button/button.component.tsx"
+        },
         {
-          "moduleName": "./src/components/dropdownMenu/dropdownMenu.stories.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/checkboxList/checkboxList.component.tsx",
-      "name": "./src/components/checkboxList/checkboxList.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/checkboxList/checkboxList.stories.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/radioGroup/radioGroup.component.tsx",
-      "name": "./src/components/radioGroup/radioGroup.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/radioGroup/radioGroup.stories.tsx"
+          "moduleName": "./src/components/spinner/index.ts"
         }
       ]
     },
@@ -1155,21 +1188,6 @@
         },
         {
           "moduleName": "./src/components/input/input.stories.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/spinner/spinner.component.tsx",
-      "name": "./src/components/spinner/spinner.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/button/button.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/spinner/spinner.stories.tsx"
-        },
-        {
-          "moduleName": "./src/components/spinner/index.ts"
         }
       ]
     },
@@ -1188,93 +1206,6 @@
       "reasons": [
         {
           "moduleName": "./src/components/characterLimit/characterLimit.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/label/index.ts",
-      "name": "./src/components/label/index.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/rating/rating.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/inputWrapper/inputWrapper.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/dateTimeInput/dateTimeInput.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/select/select.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/statusWrapper/index.ts",
-      "name": "./src/components/statusWrapper/index.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/rating/rating.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/select/select.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/validationErrors/index.ts",
-      "name": "./src/components/validationErrors/index.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/rating/rating.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/inputWrapper/inputWrapper.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/dateTimeInput/dateTimeInput.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/select/select.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/codeInput/codeInput.utils.ts",
-      "name": "./src/components/codeInput/codeInput.utils.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/codeInput/codeInput.theme.css",
-      "name": "./src/components/codeInput/codeInput.theme.css",
-      "reasons": [
-        {
-          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
         }
       ]
     },
@@ -1324,6 +1255,117 @@
       ]
     },
     {
+      "id": "./src/types/index.ts",
+      "name": "./src/types/index.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/select/select.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/label/index.ts",
+      "name": "./src/components/label/index.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/rating/rating.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/inputWrapper/inputWrapper.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/dateTimeInput/dateTimeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/select/select.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/validationErrors/index.ts",
+      "name": "./src/components/validationErrors/index.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/rating/rating.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/inputWrapper/inputWrapper.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/dateTimeInput/dateTimeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/select/select.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/checkboxList/checkboxList.theme.css",
+      "name": "./src/components/checkboxList/checkboxList.theme.css",
+      "reasons": [
+        {
+          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/statusWrapper/index.ts",
+      "name": "./src/components/statusWrapper/index.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/rating/rating.component.tsx"
+        },
+        {
+          "moduleName": "./src/components/select/select.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/codeInput/codeInput.utils.ts",
+      "name": "./src/components/codeInput/codeInput.utils.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/codeInput/codeInput.theme.css",
+      "name": "./src/components/codeInput/codeInput.theme.css",
+      "reasons": [
+        {
+          "moduleName": "./src/components/codeInput/codeInput.component.tsx"
+        }
+      ]
+    },
+    {
       "id": "./src/components/dropdownMenu/dropdownMenu.theme.css",
       "name": "./src/components/dropdownMenu/dropdownMenu.theme.css",
       "reasons": [
@@ -1347,24 +1389,6 @@
       "reasons": [
         {
           "moduleName": "./src/components/expandable/expandable.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/rating/rating.component.tsx",
-      "name": "./src/components/rating/rating.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/rating/rating.stories.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/progressBar/progressBar.theme.css",
-      "name": "./src/components/progressBar/progressBar.theme.css",
-      "reasons": [
-        {
-          "moduleName": "./src/components/progressBar/progressBar.component.tsx"
         }
       ]
     },
@@ -1396,26 +1420,20 @@
       ]
     },
     {
-      "id": "./src/types/index.ts",
-      "name": "./src/types/index.ts",
+      "id": "./src/components/progressBar/progressBar.theme.css",
+      "name": "./src/components/progressBar/progressBar.theme.css",
       "reasons": [
         {
-          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/radioGroup/radioGroup.component.tsx"
-        },
-        {
-          "moduleName": "./src/components/select/select.component.tsx"
+          "moduleName": "./src/components/progressBar/progressBar.component.tsx"
         }
       ]
     },
     {
-      "id": "./src/components/checkboxList/checkboxList.theme.css",
-      "name": "./src/components/checkboxList/checkboxList.theme.css",
+      "id": "./src/components/rangeInput/rangeInput.theme.css",
+      "name": "./src/components/rangeInput/rangeInput.theme.css",
       "reasons": [
         {
-          "moduleName": "./src/components/checkboxList/checkboxList.component.tsx"
+          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
         }
       ]
     },
@@ -1429,11 +1447,20 @@
       ]
     },
     {
-      "id": "./src/components/rangeInput/rangeInput.theme.css",
-      "name": "./src/components/rangeInput/rangeInput.theme.css",
+      "id": "./src/components/rating/rating.component.tsx",
+      "name": "./src/components/rating/rating.component.tsx",
       "reasons": [
         {
-          "moduleName": "./src/components/rangeInput/rangeInput.component.tsx"
+          "moduleName": "./src/components/rating/rating.stories.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/rangeInput/rangeInput.component.tsx",
+      "name": "./src/components/rangeInput/rangeInput.component.tsx",
+      "reasons": [
+        {
+          "moduleName": "./src/components/rangeInput/rangeInput.stories.tsx"
         }
       ]
     },
@@ -1486,11 +1513,11 @@
       ]
     },
     {
-      "id": "./src/hooks/usePreviousValue.ts",
-      "name": "./src/hooks/usePreviousValue.ts",
+      "id": "./src/components/switch/switch.theme.css",
+      "name": "./src/components/switch/switch.theme.css",
       "reasons": [
         {
-          "moduleName": "./src/hooks/useCompareValues.ts"
+          "moduleName": "./src/components/switch/switch.component.tsx"
         }
       ]
     },
@@ -1504,32 +1531,11 @@
       ]
     },
     {
-      "id": "./src/components/switch/switch.theme.css",
-      "name": "./src/components/switch/switch.theme.css",
+      "id": "./src/hooks/usePreviousValue.ts",
+      "name": "./src/hooks/usePreviousValue.ts",
       "reasons": [
         {
-          "moduleName": "./src/components/switch/switch.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/utils/objects.ts",
-      "name": "./src/utils/objects.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/components/config/config.context.tsx"
-        },
-        {
-          "moduleName": "./src/utils/index.ts"
-        }
-      ]
-    },
-    {
-      "id": "./src/components/rangeInput/rangeInput.component.tsx",
-      "name": "./src/components/rangeInput/rangeInput.component.tsx",
-      "reasons": [
-        {
-          "moduleName": "./src/components/rangeInput/rangeInput.stories.tsx"
+          "moduleName": "./src/hooks/useCompareValues.ts"
         }
       ]
     },
@@ -1557,6 +1563,18 @@
         },
         {
           "moduleName": "./src/hooks/useResizeObserver.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/utils/objects.ts",
+      "name": "./src/utils/objects.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/utils/index.ts"
+        },
+        {
+          "moduleName": "./src/components/config/config.context.tsx"
         }
       ]
     },
@@ -1615,15 +1633,6 @@
       ]
     },
     {
-      "id": "./src/components/validationErrors/validationErrors.hooks.ts",
-      "name": "./src/components/validationErrors/validationErrors.hooks.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/components/validationErrors/index.ts"
-        }
-      ]
-    },
-    {
       "id": "./src/components/select/index.ts",
       "name": "./src/components/select/index.ts",
       "reasons": [
@@ -1660,33 +1669,6 @@
       ]
     },
     {
-      "id": "./src/components/label/label.theme.css",
-      "name": "./src/components/label/label.theme.css",
-      "reasons": [
-        {
-          "moduleName": "./src/components/label/label.component.tsx"
-        }
-      ]
-    },
-    {
-      "id": "./src/hooks/useEventListener.ts",
-      "name": "./src/hooks/useEventListener.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/hooks/useBoundingClientRect.ts"
-        }
-      ]
-    },
-    {
-      "id": "./src/hooks/useResizeObserver.ts",
-      "name": "./src/hooks/useResizeObserver.ts",
-      "reasons": [
-        {
-          "moduleName": "./src/hooks/useBoundingClientRect.ts"
-        }
-      ]
-    },
-    {
       "id": "./src/types/core.ts",
       "name": "./src/types/core.ts",
       "reasons": [
@@ -1710,6 +1692,42 @@
       "reasons": [
         {
           "moduleName": "./src/types/index.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/validationErrors/validationErrors.hooks.ts",
+      "name": "./src/components/validationErrors/validationErrors.hooks.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/components/validationErrors/index.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/components/label/label.theme.css",
+      "name": "./src/components/label/label.theme.css",
+      "reasons": [
+        {
+          "moduleName": "./src/components/label/label.component.tsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/hooks/useEventListener.ts",
+      "name": "./src/hooks/useEventListener.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/hooks/useBoundingClientRect.ts"
+        }
+      ]
+    },
+    {
+      "id": "./src/hooks/useResizeObserver.ts",
+      "name": "./src/hooks/useResizeObserver.ts",
+      "reasons": [
+        {
+          "moduleName": "./src/hooks/useBoundingClientRect.ts"
         }
       ]
     },
