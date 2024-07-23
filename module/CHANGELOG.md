@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.4...v3.6.0) (2024-07-23)
+
+
+### Features
+
+* added intro docs and centralised variables + animations ([c00cf12](https://github.com/Rocketmakers/armstrong-edge/commit/c00cf12c74e020c1c2d365985f25583b549f34b9))
+
 ## [3.5.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.3...v3.5.4) (2024-07-03)
 
 ### Bug Fixes
