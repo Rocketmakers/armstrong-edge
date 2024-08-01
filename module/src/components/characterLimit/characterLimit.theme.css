@@ -6,7 +6,7 @@
 }
 
 .arm-character-limit-icon {
-  margin-left: var(--arm-spacing-xxxsmall);
+  margin-inline-start: var(--arm-spacing-xxxsmall);
   display: flex;
   align-items: center;
 }

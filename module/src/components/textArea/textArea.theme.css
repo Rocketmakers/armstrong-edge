@@ -41,7 +41,7 @@
 .arm-text-area-label {
   display: inline-block;
   margin-bottom: var(--arm-spacing-xxxsmall);
-  margin-left: var(--arm-spacing-xxxsmall);
+  margin-inline-start: var(--arm-spacing-xxxsmall);
 }
 
 .arm-text-area-wrapper[data-size='small'] .arm-text-area-label {

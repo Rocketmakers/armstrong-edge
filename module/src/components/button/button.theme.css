@@ -126,9 +126,9 @@
 /* ICONS */
 
 .arm-button-left-icon {
-  margin-right: var(--arm-spacing-xsmall);
+  margin-inline-end: var(--arm-spacing-xsmall);
 }
 
 .arm-button-right-icon {
-  margin-left: var(--arm-spacing-xsmall);
+  margin-inline-start: var(--arm-spacing-xsmall);
 }
