@@ -70,7 +70,7 @@
 }
 
 .arm-radio-label {
-  padding-left: var(--arm-spacing-small);
+  padding-inline-start: var(--arm-spacing-small);
 }
 
 .arm-radio-group-label {

@@ -55,17 +55,17 @@
 .arm-input-base-label {
   display: inline-block;
   margin-bottom: var(--arm-spacing-xxxsmall);
-  margin-left: var(--arm-spacing-xxxsmall);
+  margin-inline-start: var(--arm-spacing-xxxsmall);
 }
 
 /** OVERLAYS **/
 
 .arm-input-base[data-left-overlay] .arm-input-base-input {
-  padding-left: var(--arm-spacing-small);
+  padding-inline-start: var(--arm-spacing-small);
 }
 
 .arm-input-base[data-right-overlay] .arm-input-base-input {
-  padding-right: var(--arm-spacing-small);
+  padding-inline-end: var(--arm-spacing-small);
 }
 
 /** FOCUS **/
@@ -83,11 +83,11 @@
 }
 
 .arm-input-base-status[data-position='right'] {
-  padding-right: var(--arm-spacing-small);
+  padding-inline-end: var(--arm-spacing-small);
 }
 
 .arm-input-base-status[data-position='left'] {
-  padding-left: var(--arm-spacing-small);
+  padding-inline-start: var(--arm-spacing-small);
 }
 
 /** ERROR **/

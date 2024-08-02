@@ -90,10 +90,15 @@
   transform: translateX(var(--radix-toast-swipe-move-x));
 }
 
+[dir='rtl'] .arm-toast[data-swipe='move'] {
+  transform: translateX(calc(-1 * var(--radix-toast-swipe-move-x)));
+}
+
 .arm-toast[data-swipe='cancel'] {
   transform: translateX(0);
   transition: transform var(--arm-toast-hide-speed) ease-out;
 }
+
 
 .arm-toast[data-swipe='end'][data-position='top-right'],
 .arm-toast[data-swipe='end'][data-position='bottom-right'] {

@@ -5,9 +5,9 @@
 }
 
 .arm-input-overlay-left {
-  padding-left: var(--arm-spacing-small);
+  padding-inline-start: var(--arm-spacing-small);
 }
 
 .arm-input-overlay-right {
-  padding-right: var(--arm-spacing-small);
+  padding-inline-end: var(--arm-spacing-small);
 }

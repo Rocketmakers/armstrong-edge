@@ -8,7 +8,7 @@
 .arm-rating-input-label {
   display: inline-block;
   margin-bottom: var(--arm-spacing-xsmall);
-  margin-left: var(--arm-spacing-xxxsmall);
+  margin-inline-start: var(--arm-spacing-xxxsmall);
 }
 
 .arm-rating-part {

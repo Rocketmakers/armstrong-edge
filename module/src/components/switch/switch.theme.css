@@ -55,10 +55,14 @@
   transform: translateX(calc(var(--arm-switch-width) - var(--arm-switch-nub-size)));
 }
 
+[dir="rtl"] .arm-switch-nub[data-state='checked'] {
+  transform: translateX(calc(-1 * (var(--arm-switch-width) - var(--arm-switch-nub-size))));
+}
+
 /* LABEL */
 
 .arm-switch-label {
-  margin-left: var(--arm-switch-label-spacing, var(--arm-spacing-small));
+  margin-inline-start: var(--arm-switch-label-spacing, var(--arm-spacing-small));
 }
 
 .arm-switch-label[data-disabled] {

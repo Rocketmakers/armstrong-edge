@@ -16,3 +16,7 @@
   transition: transform var(--arm-progress-bar-animation-duration) cubic-bezier(0.65, 0, 0.35, 1);
   transform: translateX(calc(-1 * calc(100% - var(--arm-progress-bar-value))));
 }
+
+[dir='rtl'] .arm-progress-bar-indicator {
+  transform: translateX(calc(100% - var(--arm-progress-bar-value)));
+}

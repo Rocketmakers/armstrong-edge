@@ -22,11 +22,11 @@
 }
 
 .arm-date-time-input-header-button:first-of-type {
-  padding-left: var(--arm-spacing-xsmall);
+  padding-inline-start: var(--arm-spacing-xsmall);
 }
 
 .arm-date-time-input-header-button:last-of-type {
-  padding-right: var(--arm-spacing-xsmall);
+  padding-inline-end: var(--arm-spacing-xsmall);
 }
 
 .arm-date-time-input-header-icon {
@@ -103,8 +103,8 @@
 .react-datepicker__header {
   background-color: transparent;
   border: none;
-  padding-left: 0.4rem;
-  padding-right: 0.4rem;
+  padding-inline-start: 0.4rem;
+  padding-inline-end: 0.4rem;
 }
 
 .react-datepicker__day--outside-month {
@@ -180,7 +180,7 @@
 .arm-date-and-time-input.arm-time-input {
   --arm-input-width: 150px;
 
-  margin-left: var(--arm-spacing-medium);
+  margin-inline-start: var(--arm-spacing-medium);
 }
 
 .arm-date-time-overlay-button {

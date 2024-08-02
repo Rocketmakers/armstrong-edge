@@ -55,7 +55,7 @@ First cd into the root of the repo and run
 npm run setup
 ```
 
-We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx` or `*.stroies.mdx`
+We have a Storybook implementation which will pick up any files with the pattern `*.stories.tsx` or `*.stories.mdx`
 
 _For Storybook_, run
 
