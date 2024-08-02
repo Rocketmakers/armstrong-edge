@@ -1,0 +1,1 @@
+.arm-character-limit{display:flex;align-items:center;margin:var(--arm-spacing-xsmall) 0;min-height:1.5rem}.arm-character-limit-icon{margin-inline-start:var(--arm-spacing-xxxsmall);display:flex;align-items:center}.arm-character-limit[data-exceeded=true] .arm-character-limit-text,.arm-character-limit[data-exceeded=true] .arm-character-limit-icon{color:var(--arm-color-negative)}
