@@ -1,3 +1,10 @@
+## [3.6.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.0...v3.6.1) (2024-08-02)
+
+
+### Bug Fixes
+
+* update css properties to support right to left ([2d27fda](https://github.com/Rocketmakers/armstrong-edge/commit/2d27fdabef1a42e40b6e64ba6149005c2ae18374))
+
 # [3.6.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.4...v3.6.0) (2024-07-23)
 
 
