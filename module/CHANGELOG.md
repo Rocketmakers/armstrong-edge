@@ -1,3 +1,10 @@
+## [3.6.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.1...v3.6.2) (2024-09-09)
+
+
+### Bug Fixes
+
+* export textarea props ([94cfbd4](https://github.com/Rocketmakers/armstrong-edge/commit/94cfbd426f47809d061c428c9be72186af436100))
+
 ## [3.6.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.0...v3.6.1) (2024-08-02)
 
 
