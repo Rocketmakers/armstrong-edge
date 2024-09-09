@@ -3,7 +3,7 @@ import { IBindingProps } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { IInputWrapperProps } from '../inputWrapper/inputWrapper.component';
 type NativeTextAreaProps = Omit<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'value' | 'ref'>;
-interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefined<number>> extends NativeTextAreaProps, Omit<IInputWrapperProps, 'onClick' | 'onValueChange'> {
+export interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefined<number>> extends NativeTextAreaProps, Omit<IInputWrapperProps, 'onClick' | 'onValueChange'> {
     /** A class name to apply to the input element */
     textAreaClassName?: string;
     /**  prop for binding to an Armstrong form binder (see forms documentation) */
