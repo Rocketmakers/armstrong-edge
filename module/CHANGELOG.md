@@ -1,3 +1,10 @@
+## [3.6.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.2...v3.6.3) (2024-11-11)
+
+
+### Bug Fixes
+
+* - Fixed date time input exports ([0cd2c22](https://github.com/Rocketmakers/armstrong-edge/commit/0cd2c2277dabd10ebe328b75e355cd331dd39dc7))
+
 ## [3.6.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.1...v3.6.2) (2024-09-09)
 
 
