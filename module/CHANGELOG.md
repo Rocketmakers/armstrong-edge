@@ -1,3 +1,10 @@
+## [3.6.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.3...v3.6.4) (2024-11-15)
+
+
+### Bug Fixes
+
+* - Temporary fix for annoying radix dialog focus bug ([668c957](https://github.com/Rocketmakers/armstrong-edge/commit/668c957974c511dd5115977f28ac292a0006b21a))
+
 ## [3.6.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.2...v3.6.3) (2024-11-11)
 
 ### Bug Fixes
