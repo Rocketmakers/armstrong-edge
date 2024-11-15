@@ -29,6 +29,7 @@ import {
   IArmstrongOption,
 } from '../../types';
 import { concat } from '../../utils';
+import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';
 import { Label } from '../label';
@@ -479,6 +480,7 @@ const ReactSelectComponent = React.forwardRef<
       isLoading: pending,
       isSearchable: searchable,
       menuPlacement: position,
+      onBlur: onBlurWorkaround,
       onInputChange,
       inputValue,
       components: {
