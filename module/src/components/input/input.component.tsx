@@ -7,6 +7,7 @@ import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { useSSRLayoutEffect } from '../../hooks/useSSRLayoutEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
+import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
@@ -237,6 +238,7 @@ export const Input = React.forwardRef<
           bindConfig.validate();
         }
         bindConfig.setTouched(true);
+        onBlurWorkaround(event);
         return nativeProps.onBlur?.(event);
       },
       [bindConfig, globals.autoValidate, nativeProps]

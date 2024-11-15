@@ -55,7 +55,7 @@
   transform: translateX(calc(var(--arm-switch-width) - var(--arm-switch-nub-size)));
 }
 
-[dir="rtl"] .arm-switch-nub[data-state='checked'] {
+[dir='rtl'] .arm-switch-nub[data-state='checked'] {
   transform: translateX(calc(-1 * (var(--arm-switch-width) - var(--arm-switch-nub-size))));
 }
 

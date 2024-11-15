@@ -5,6 +5,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
+import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
@@ -173,6 +174,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
           bindConfig.validate();
         }
         bindConfig.setTouched(true);
+        onBlurWorkaround(event);
         return nativeProps.onBlur?.(event);
       },
       [bindConfig, globals.autoValidate, nativeProps]

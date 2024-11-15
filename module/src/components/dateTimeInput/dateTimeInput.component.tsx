@@ -17,6 +17,7 @@ import {
   NullOrUndefined,
 } from '../../types';
 import { assertNever, concat, stripNullOrUndefined } from '../../utils';
+import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { Button } from '../button';
 import { useArmstrongConfig } from '../config';
 import { Input, ITextInputProps } from '../input';
@@ -287,6 +288,7 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       statusClassName,
       autoValidate,
       showCalendarOnLeftOverlayClick,
+      onBlur,
       ...inputProps
     },
     ref
@@ -368,6 +370,14 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       return <FaRegCalendar />;
     }, [inputProps.leftOverlay, mode]);
 
+    const onBlurEvent = React.useCallback(
+      (event: React.FocusEvent<HTMLInputElement>) => {
+        onBlurWorkaround(event);
+        return onBlur?.(event);
+      },
+      [onBlur]
+    );
+
     return (
       <ReactDatePicker
         {...stripNullOrUndefined(compiledConfig)}
@@ -377,6 +387,7 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
         dateFormat={compiledFormat}
         disabled={inputProps.disabled}
         required={inputProps.required}
+        onBlur={onBlurEvent}
         customInput={
           <Input
             ref={ref}

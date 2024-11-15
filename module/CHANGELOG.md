@@ -1,30 +1,26 @@
 ## [3.6.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.2...v3.6.3) (2024-11-11)
 
-
 ### Bug Fixes
 
-* - Fixed date time input exports ([0cd2c22](https://github.com/Rocketmakers/armstrong-edge/commit/0cd2c2277dabd10ebe328b75e355cd331dd39dc7))
+- - Fixed date time input exports ([0cd2c22](https://github.com/Rocketmakers/armstrong-edge/commit/0cd2c2277dabd10ebe328b75e355cd331dd39dc7))
 
 ## [3.6.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.1...v3.6.2) (2024-09-09)
 
-
 ### Bug Fixes
 
-* export textarea props ([94cfbd4](https://github.com/Rocketmakers/armstrong-edge/commit/94cfbd426f47809d061c428c9be72186af436100))
+- export textarea props ([94cfbd4](https://github.com/Rocketmakers/armstrong-edge/commit/94cfbd426f47809d061c428c9be72186af436100))
 
 ## [3.6.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.0...v3.6.1) (2024-08-02)
 
-
 ### Bug Fixes
 
-* update css properties to support right to left ([2d27fda](https://github.com/Rocketmakers/armstrong-edge/commit/2d27fdabef1a42e40b6e64ba6149005c2ae18374))
+- update css properties to support right to left ([2d27fda](https://github.com/Rocketmakers/armstrong-edge/commit/2d27fdabef1a42e40b6e64ba6149005c2ae18374))
 
 # [3.6.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.4...v3.6.0) (2024-07-23)
 
-
 ### Features
 
-* added intro docs and centralised variables + animations ([c00cf12](https://github.com/Rocketmakers/armstrong-edge/commit/c00cf12c74e020c1c2d365985f25583b549f34b9))
+- added intro docs and centralised variables + animations ([c00cf12](https://github.com/Rocketmakers/armstrong-edge/commit/c00cf12c74e020c1c2d365985f25583b549f34b9))
 
 ## [3.5.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.3...v3.5.4) (2024-07-03)
 

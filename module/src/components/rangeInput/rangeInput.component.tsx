@@ -5,6 +5,7 @@ import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
+import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
 import { Label } from '../label/label.component';
 import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
@@ -127,12 +128,16 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
       }
     }, [boundValue]);
 
-    const onBlurEvent = React.useCallback(() => {
-      if (globals.autoValidate && !bindConfig.isTouched) {
-        bindConfig.validate();
-      }
-      bindConfig.setTouched(true);
-    }, [bindConfig, globals.autoValidate]);
+    const onBlurEvent = React.useCallback(
+      (event: React.FocusEvent<HTMLSpanElement>) => {
+        if (globals.autoValidate && !bindConfig.isTouched) {
+          bindConfig.validate();
+        }
+        onBlurWorkaround(event);
+        bindConfig.setTouched(true);
+      },
+      [bindConfig, globals.autoValidate]
+    );
 
     return (
       <StatusWrapper

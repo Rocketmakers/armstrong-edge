@@ -99,7 +99,6 @@
   transition: transform var(--arm-toast-hide-speed) ease-out;
 }
 
-
 .arm-toast[data-swipe='end'][data-position='top-right'],
 .arm-toast[data-swipe='end'][data-position='bottom-right'] {
   animation: swipe-out-right var(--arm-toast-swipe-speed) ease-out;
