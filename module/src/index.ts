@@ -15,6 +15,7 @@ export * from './hooks/useResizeObserver';
 export * from './hooks/useSSRLayoutEffect';
 
 export * from './components/characterLimit';
+export * from './components/codeInput';
 export * from './components/input';
 export * from './components/dialog';
 export * from './components/dropdownMenu';
