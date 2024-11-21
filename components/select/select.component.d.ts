@@ -94,6 +94,12 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
     caseSensitive?: boolean;
     /** filter option override - allows the default client side option filter to be customized */
     filterOption?: (option: IArmstrongOption<ArmstrongId, unknown>, incomingInputValue: string) => boolean;
+    /** set to true if dialog is in modal, fixes position and overflow issues */
+    isInModal?: boolean;
+    /** z-index to use for options list when dialog is in modal and portaled to body, default: 9999 */
+    inModalZIndex?: number;
+    /** portal target to use when in modal, defaults to: document.body */
+    inModalPortalTarget?: HTMLElement;
 }
 export interface INativeSelectProps<Id extends ArmstrongId> extends NativeSelectProps, Pick<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'displaySize' | 'label' | 'required' | 'scrollValidationErrorsIntoView' | 'requiredIndicator' | 'validationMode' | 'validationErrorMessages' | 'errorIcon' | 'statusPosition' | 'dropdownIcon' | 'labelId' | 'labelClassName' | 'validationErrorsClassName' | 'statusClassName' | 'hideIconOnStatus' | 'leftOverlay'> {
     /** the options to be displayed in the input */
