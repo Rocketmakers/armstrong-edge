@@ -188,6 +188,15 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
 
   /** filter option override - allows the default client side option filter to be customized */
   filterOption?: (option: IArmstrongOption<ArmstrongId, unknown>, incomingInputValue: string) => boolean;
+
+  /** set to true if dialog is in modal, fixes position and overflow issues */
+  isInModal?: boolean;
+
+  /** z-index to use for options list when dialog is in modal and portaled to body, default: 9999 */
+  inModalZIndex?: number;
+
+  /** portal target to use when in modal, defaults to: document.body */
+  inModalPortalTarget?: HTMLElement;
 }
 
 export interface INativeSelectProps<Id extends ArmstrongId>
@@ -294,6 +303,9 @@ const ReactSelectComponent = React.forwardRef<
       inputValue,
       caseSensitive,
       filterOption,
+      isInModal,
+      inModalZIndex,
+      inModalPortalTarget,
       ...nativeProps
     },
     ref
@@ -480,6 +492,13 @@ const ReactSelectComponent = React.forwardRef<
       isLoading: pending,
       isSearchable: searchable,
       menuPlacement: position,
+      menuPortalTarget: isInModal ? inModalPortalTarget ?? document.body : undefined,
+      styles: {
+        ...emptyStyles(),
+        ...(isInModal
+          ? { menuPortal: base => ({ ...base, zIndex: inModalZIndex ?? 9999, pointerEvents: 'all' }) }
+          : {}),
+      },
       onBlur: onBlurWorkaround,
       onInputChange,
       inputValue,
@@ -501,7 +520,6 @@ const ReactSelectComponent = React.forwardRef<
         ValueContainer: valueContainer,
       },
       closeMenuOnSelect,
-      styles: emptyStyles(),
     };
 
     return (
