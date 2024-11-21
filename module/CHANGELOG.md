@@ -1,3 +1,10 @@
+## [3.6.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.5...v3.6.6) (2024-11-21)
+
+
+### Bug Fixes
+
+* - Fixes overflow bugs with react select inside radix modal ([7120377](https://github.com/Rocketmakers/armstrong-edge/commit/712037702425fe7254d5be97ddaab5d582f73209))
+
 ## [3.6.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.4...v3.6.5) (2024-11-20)
 
 ### Bug Fixes
