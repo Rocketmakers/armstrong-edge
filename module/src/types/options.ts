@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ArmstrongId, DataAttributes } from './core';
 
 /** an option in an array of options, intended for use in a component like a Select or RadioList */
-export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
+export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown, TData = unknown> {
   /** the value to be bound */
   id: Id;
 
@@ -18,6 +18,9 @@ export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown> {
 
   /** will be true if the option was created through the input, relevant to selects and tagging inputs where allowCreate=true */
   wasCreated?: boolean;
+
+  /** optional data to be added to option and read by rendering/filtering functions */
+  data?: TData;
 }
 
 /**
