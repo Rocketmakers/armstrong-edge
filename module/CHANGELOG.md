@@ -1,3 +1,10 @@
+## [3.6.7](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.6...v3.6.7) (2024-11-28)
+
+
+### Bug Fixes
+
+* - Ability to set no options message on select ([24e2ffc](https://github.com/Rocketmakers/armstrong-edge/commit/24e2ffc3794617459dee2cd085a32a143e6c65ba))
+
 ## [3.6.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.5...v3.6.6) (2024-11-21)
 
 ### Bug Fixes
