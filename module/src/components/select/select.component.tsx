@@ -197,6 +197,9 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
 
   /** portal target to use when in modal, defaults to: document.body */
   inModalPortalTarget?: HTMLElement;
+
+  /** Text to show as a placeholder when nothing is selected */
+  noOptionsMessage?: (value: string) => React.ReactNode;
 }
 
 export interface INativeSelectProps<Id extends ArmstrongId>
@@ -306,6 +309,7 @@ const ReactSelectComponent = React.forwardRef<
       isInModal,
       inModalZIndex,
       inModalPortalTarget,
+      noOptionsMessage,
       ...nativeProps
     },
     ref
@@ -490,6 +494,7 @@ const ReactSelectComponent = React.forwardRef<
       isDisabled: disabled || (pending && globals.disableControlOnPending) ? true : undefined,
       isOptionDisabled: o => !!o.disabled,
       isLoading: pending,
+      noOptionsMessage: noOp => noOptionsMessage?.(noOp.inputValue) ?? 'No options',
       isSearchable: searchable,
       menuPlacement: position,
       menuPortalTarget: isInModal ? inModalPortalTarget ?? document.body : undefined,
