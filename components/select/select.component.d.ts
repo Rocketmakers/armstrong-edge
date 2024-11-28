@@ -100,6 +100,8 @@ export interface ISingleSelectProps<Id extends ArmstrongId> extends Pick<IInputW
     inModalZIndex?: number;
     /** portal target to use when in modal, defaults to: document.body */
     inModalPortalTarget?: HTMLElement;
+    /** Text to show as a placeholder when nothing is selected */
+    noOptionsMessage?: (value: string) => React.ReactNode;
 }
 export interface INativeSelectProps<Id extends ArmstrongId> extends NativeSelectProps, Pick<ISingleSelectProps<Id>, 'bind' | 'currentValue' | 'onSelectOption' | 'displaySize' | 'label' | 'required' | 'scrollValidationErrorsIntoView' | 'requiredIndicator' | 'validationMode' | 'validationErrorMessages' | 'errorIcon' | 'statusPosition' | 'dropdownIcon' | 'labelId' | 'labelClassName' | 'validationErrorsClassName' | 'statusClassName' | 'hideIconOnStatus' | 'leftOverlay'> {
     /** the options to be displayed in the input */
