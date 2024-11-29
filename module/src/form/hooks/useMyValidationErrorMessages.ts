@@ -3,10 +3,12 @@
  * --------------------------------------
  * React hook for rendering validation messages
  */
-import { uniq } from 'lodash';
 import * as React from 'react';
 
 import type { IBindingProps, ValidationMessage } from '../types';
+import { uniq } from '../../utils/arrays';
+
+
 
 /**
  * Small utility hook to return the combined validation messages from a custom component

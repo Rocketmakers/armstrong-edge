@@ -1,24 +1,27 @@
-import { resolve } from 'path';
+import { sync } from 'glob';
+import path from 'path';
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
+import sdk from 'vite-plugin-sdk';
 
 export default defineConfig({
-  plugins: [dts()],
-  build: {
-    emptyOutDir: true,
-    lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: '@rocketmakers/armstrong-dev',
-      formats: ['es', 'cjs'],
-      fileName: format => `[name]${format === 'cjs' ? '' : `.${format}`}.js`,
+  plugins: [sdk()],
+  css: {
+    modules: {
+      localsConvention: 'dashesOnly',
     },
-    cssCodeSplit: false,
+  },
+  build: {
+    emptyOutDir: false,
     rollupOptions: {
-      external: ['react', 'react-dom', 'date-fns', 'zod'],
-      treeshake: true,
+      input: sync(path.resolve(__dirname, 'src/**/*.ts')),
       output: {
-        dir: 'dist',
+        preserveModules: true,
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        }
       },
+      external: ['react', 'react-dom'],
     },
   },
 });

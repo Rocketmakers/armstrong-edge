@@ -98,3 +98,14 @@ export function getAtOverallIndex<T>(index: number, arrays: { items: T[] }[]) {
   }
   return undefined;
 }
+
+/** Creates a duplicate-free version of an array, using strict equality for comparisons */
+export function uniq<T>(array: T[]): T[] {
+  const result: T[] = [];
+  for (const item of array) {
+    if (!result.includes(item)) {
+      result.push(item);
+    }
+  }
+  return result;
+}
