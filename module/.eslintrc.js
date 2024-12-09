@@ -9,10 +9,12 @@ const config = createEslintConfig({
 
 module.exports = {
   ...config,
+
   parserOptions: {
     ...config.parserOptions,
     tsconfigRootDir: path.resolve(__dirname, '../'),
   },
+
   overrides: [
     ...config.overrides,
     {
@@ -23,4 +25,6 @@ module.exports = {
       },
     },
   ],
+
+  extends: ['plugin:storybook/recommended']
 };

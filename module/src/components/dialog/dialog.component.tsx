@@ -1,17 +1,24 @@
-import * as RadixDialog from '@radix-ui/react-dialog';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as RadixDialog from "@radix-ui/react-dialog";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
-import { useCompareValues } from '../../hooks/useCompareValues';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
-import { concat } from '../../utils/classNames';
-import { useArmstrongConfig } from '../config';
+import { useCompareValues } from "../../hooks/useCompareValues";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCProps,
+  ArmstrongFCReturn,
+} from "../../types";
+import { concat } from "../../utils/classNames";
+import { useArmstrongConfig } from "../config";
 
-import './dialog.theme.css';
+import "./dialog.theme.css";
 
 /** Dialog component props */
 export interface IDialogProps<TData = unknown>
-  extends Omit<RadixDialog.DialogContentProps & React.RefAttributes<HTMLDivElement>, 'ref' | 'title'> {
+  extends Omit<
+    RadixDialog.DialogContentProps & React.RefAttributes<HTMLDivElement>,
+    "ref" | "title"
+  > {
   /** Optional title to show at the top of the dialog in an H2 tag */
   title?: React.ReactNode;
   /** Optional description to show in the body of the dialog in a P tag */
@@ -37,7 +44,7 @@ export interface IDialogProps<TData = unknown>
 }
 
 /** String union describing the various actions that can be used to close a dialog */
-export type DialogFinishAction = keyof Omit<DialogElement<unknown>, 'open'>;
+export type DialogFinishAction = keyof Omit<DialogElement<unknown>, "open">;
 
 /** The response type of the promise returned by the dialog `open` function  */
 export interface IDialogOpenResponse<TData = unknown> {
@@ -73,7 +80,10 @@ export interface DialogElement<TData = unknown> {
  * - Supports dynamic data in async mode, so that a form can be built as a reusable async dialog.
  */
 export const Dialog = React.forwardRef(
-  (props: React.PropsWithChildren<IDialogProps<unknown>>, ref: React.ForwardedRef<DialogElement<unknown>>) => {
+  (
+    props: React.PropsWithChildren<IDialogProps<unknown>>,
+    ref: React.ForwardedRef<DialogElement<unknown>>
+  ) => {
     const {
       children,
       title,
@@ -91,17 +101,27 @@ export const Dialog = React.forwardRef(
     } = props;
 
     /** Pull globals from context */
-    const globals = useArmstrongConfig({ dialogCloseButtonIcon: closeButtonIcon });
+    const globals = useArmstrongConfig({
+      dialogCloseButtonIcon: closeButtonIcon,
+    });
 
     /** Finish action state is set when the dialog is closed */
-    const [finishAction, setFinishAction] = React.useState<DialogFinishAction | undefined>(open ? undefined : 'close');
+    const [finishAction, setFinishAction] = React.useState<
+      DialogFinishAction | undefined
+    >(open ? undefined : "close");
 
     /** Store state for whether the dialog is visible */
     const [visible, setVisible] = React.useState(open);
 
     /** Stores a reference to the promise resolver function */
     const resolverRef =
-      React.useRef<(value: IDialogOpenResponse<unknown> | PromiseLike<IDialogOpenResponse<unknown>>) => void>();
+      React.useRef<
+        (
+          value:
+            | IDialogOpenResponse<unknown>
+            | PromiseLike<IDialogOpenResponse<unknown>>
+        ) => void
+      >();
 
     /** Used to create prop comparisons to use as effect triggers */
     const finishActionChanged = useCompareValues(finishAction);
@@ -113,7 +133,7 @@ export const Dialog = React.forwardRef(
     /** Called when the internal open/close state of the dialog changes */
     const onInnerOpenChange = React.useCallback(
       (val: boolean) => {
-        setFinishAction(val ? undefined : 'close');
+        setFinishAction(val ? undefined : "close");
         if (!val && delayCloseFor) {
           setTimeout(() => {
             setVisible(false);
@@ -126,17 +146,17 @@ export const Dialog = React.forwardRef(
     );
 
     /** This might seem odd, but these functions are often used as dependencies so we want to memoize them as much as possible */
-    const onOpen = React.useCallback<DialogElement<unknown>['open']>(
+    const onOpen = React.useCallback<DialogElement<unknown>["open"]>(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           onInnerOpenChange(true);
           resolverRef.current = res;
         }),
       [onInnerOpenChange]
     );
-    const setOk = React.useCallback(() => setFinishAction('ok'), []);
-    const setClose = React.useCallback(() => setFinishAction('close'), []);
-    const setCancel = React.useCallback(() => setFinishAction('cancel'), []);
+    const setOk = React.useCallback(() => setFinishAction("ok"), []);
+    const setClose = React.useCallback(() => setFinishAction("close"), []);
+    const setCancel = React.useCallback(() => setFinishAction("cancel"), []);
 
     /** Exposes the DialogElement utility functions to the ref */
     React.useImperativeHandle(
@@ -150,7 +170,9 @@ export const Dialog = React.forwardRef(
         addOpenChangeListener: (listener: OpenChangeListener) => {
           openChangeListeners.current.push(listener);
           return () => {
-            openChangeListeners.current = openChangeListeners.current.filter(l => l !== listener);
+            openChangeListeners.current = openChangeListeners.current.filter(
+              (l) => l !== listener
+            );
           };
         },
       }),
@@ -176,7 +198,14 @@ export const Dialog = React.forwardRef(
           }
         }
       }
-    }, [finishActionChanged, finishAction, data, onOpenChange, onClose, delayCloseFor]);
+    }, [
+      finishActionChanged,
+      finishAction,
+      data,
+      onOpenChange,
+      onClose,
+      delayCloseFor,
+    ]);
 
     /** Listens to changes on the incoming `open` prop for controlled dialogs, and runs the appropriate functions  */
     React.useEffect(() => {
@@ -187,7 +216,7 @@ export const Dialog = React.forwardRef(
 
     /** Listens to any change in visibility and calls any open change listeners */
     React.useEffect(() => {
-      openChangeListeners.current.forEach(listener => listener(!!visible));
+      openChangeListeners.current.forEach((listener) => listener(!!visible));
     }, [visible]);
 
     return (
@@ -195,23 +224,34 @@ export const Dialog = React.forwardRef(
         {globals.globalPortalTo &&
           ReactDOM.createPortal(
             <RadixDialog.Overlay
-              className={concat('arm-dialog-overlay', overlayClassName)}
+              className={concat("arm-dialog-overlay", overlayClassName)}
               data-visible={!finishAction}
             >
               <RadixDialog.Content
-                className={concat('arm-dialog', className)}
+                className={concat("arm-dialog", className)}
                 data-has-title={title ? true : undefined}
                 data-testid={testId}
                 data-visible={!finishAction}
                 {...nativeProps}
               >
-                {title && <RadixDialog.Title className="arm-dialog-title">{title}</RadixDialog.Title>}
-                {description && (
-                  <RadixDialog.Description className="arm-dialog-description">{description}</RadixDialog.Description>
+                {title && (
+                  <RadixDialog.Title className="arm-dialog-title">
+                    {title}
+                  </RadixDialog.Title>
                 )}
-                {children && <div className="arm-dialog-content">{children}</div>}
+                {description && (
+                  <RadixDialog.Description className="arm-dialog-description">
+                    {description}
+                  </RadixDialog.Description>
+                )}
+                {children && (
+                  <div className="arm-dialog-content">{children}</div>
+                )}
                 {globals.dialogCloseButtonIcon !== false && (
-                  <RadixDialog.Close className="arm-dialog-close" aria-label="Close">
+                  <RadixDialog.Close
+                    className="arm-dialog-close"
+                    aria-label="Close"
+                  >
                     {globals.dialogCloseButtonIcon}
                   </RadixDialog.Close>
                 )}
@@ -224,7 +264,9 @@ export const Dialog = React.forwardRef(
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TData>(props: ArmstrongFCProps<IDialogProps<TData>, DialogElement<TData>>) => ArmstrongFCReturn) &
+) as (<TData>(
+  props: ArmstrongFCProps<IDialogProps<TData>, DialogElement<TData>>
+) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IDialogProps<unknown>>;
 
-Dialog.displayName = 'Dialog';
+Dialog.displayName = "Dialog";

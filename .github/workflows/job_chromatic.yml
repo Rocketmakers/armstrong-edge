@@ -35,7 +35,7 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true
           buildScriptName: build-storybook
-          workingDir: ./module
+          workingDir: ./storybook
           exitOnceUploaded: true
         env:
           CHROMATIC_RETRIES: 3

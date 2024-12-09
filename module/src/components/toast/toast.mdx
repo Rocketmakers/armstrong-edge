@@ -1,6 +1,8 @@
 import { ArgTypes, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Toast } from './toast.component';
 
+import * as ToastStories from './toast.stories';
+
 <Meta title="Modals/Toast" component={Toast} />
 
 # Toast
@@ -44,9 +46,8 @@ export const MyComponent: React.FC = () => {
 
 See it in action here:
 
-<Canvas withSource="closed">
-  <Story id="modals-toast--default" />
-</Canvas>
+<Canvas withSource="closed" of={ToastStories.Default}/>
+
 
 ### Step 3 (optional) - Configure your toast using Armstrong global config
 
