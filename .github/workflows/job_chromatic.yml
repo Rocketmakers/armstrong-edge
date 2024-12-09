@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/job_setup.yml
 
   chromatic-deployment:
-    needs: build
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
