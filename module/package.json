@@ -66,6 +66,7 @@
     "@semantic-release/github": "9.0.3",
     "@semantic-release/npm": "10.0.4",
     "@semantic-release/release-notes-generator": "11.0.4",
+    "@storybook/addon-docs": "^8.4.7",
     "@storybook/react": "8.4.7",
     "@storybook/test": "8.4.7",
     "@testing-library/jest-dom": "5.16.5",
