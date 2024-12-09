@@ -1,6 +1,6 @@
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within, fn } from '@storybook/test';
 import React from 'react';
 
 import { useForm } from '../../form';
@@ -37,6 +37,7 @@ export const Default: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
     parts: [1, 1, 1],
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -44,19 +45,20 @@ export const Default: StoryObj<typeof CodeInput> = {
     const value = canvas.getByText('Value:');
     const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], '123');
+    await userEvent.type(inputs[0], '123');
     expect(inputs[0]).toHaveValue('1');
     expect(inputs[1]).toHaveValue('2');
     expect(inputs[2]).toHaveValue('3');
+    
     await waitFor(() => expect(value).toHaveTextContent('Value: 123'));
-    userEvent.clear(inputs[0]);
-    expect(inputs[1]).toHaveValue('2');
-    expect(inputs[2]).toHaveValue('3');
+    await userEvent.clear(inputs[0]);
+    expect(inputs[0]).toHaveValue('2');
+    expect(inputs[1]).toHaveValue('3');
     await waitFor(() => expect(value).toHaveTextContent('Value: 23'));
-    userEvent.clear(inputs[0]);
-    userEvent.clear(inputs[1]);
-    userEvent.clear(inputs[2]);
-    userEvent.type(inputs[0], '4567');
+    await userEvent.clear(inputs[0]);
+    await userEvent.clear(inputs[0]);
+    await userEvent.clear(inputs[0]);
+    await userEvent.type(inputs[0], '4567');
     expect(inputs[0]).toHaveValue('4');
     expect(inputs[1]).toHaveValue('5');
     expect(inputs[2]).toHaveValue('6');
@@ -95,6 +97,7 @@ export const ValidationError: StoryObj<typeof CodeInput> = {
     validationErrorMessages: ['Input is invalid'],
     label: 'Code input',
     required: true,
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -108,6 +111,7 @@ export const DifferentLengths: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
     parts: [4, 3, 8],
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -115,7 +119,7 @@ export const DifferentLengths: StoryObj<typeof CodeInput> = {
     const value = canvas.getByText('Value:');
     const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], 'abcdefghijklmnop');
+    await userEvent.type(inputs[0], 'abcdefghijklmnop');
     expect(inputs[0]).toHaveValue('abcd');
     expect(inputs[1]).toHaveValue('efg');
     expect(inputs[2]).toHaveValue('hijklmno');
@@ -127,6 +131,7 @@ export const WithTextBetween: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
     parts: [4, '-', 4, '-', 4],
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -134,7 +139,7 @@ export const WithTextBetween: StoryObj<typeof CodeInput> = {
     const value = canvas.getByText('Value:');
     const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], 'abcdefghijklmnop');
+    await userEvent.type(inputs[0], 'abcdefghijklmnop');
     expect(inputs[0]).toHaveValue('abcd');
     expect(inputs[1]).toHaveValue('efgh');
     expect(inputs[2]).toHaveValue('ijkl');
@@ -147,6 +152,7 @@ export const WithTextBetween: StoryObj<typeof CodeInput> = {
 export const WithOverlays: StoryObj<typeof CodeInput> = {
   ...Template,
   args: {
+    onChange: fn(),
     parts: [
       1,
       {
@@ -165,7 +171,7 @@ export const WithOverlays: StoryObj<typeof CodeInput> = {
     const value = canvas.getByText('Value:');
     const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
-    userEvent.type(inputs[0], 'abc');
+    await userEvent.type(inputs[0], 'abc');
     expect(inputs[0]).toHaveValue('a');
     expect(inputs[1]).toHaveValue('b');
     expect(inputs[2]).toHaveValue('c');

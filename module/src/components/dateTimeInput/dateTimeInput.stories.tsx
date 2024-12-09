@@ -1,6 +1,6 @@
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/test';
 // eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
 import { addDays, format } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
@@ -242,12 +242,12 @@ export const MinMaxDays: StoryObj<typeof DateTimeInput> = {
     const input = canvas.getByRole('textbox');
     // max
     const overDateString = format(addDays(new Date(), 6), 'dd/MM/yyyy');
-    userEvent.type(input, overDateString);
+    await userEvent.type(input, overDateString);
     userEvent.click(canvasElement);
     await waitFor(() => expect(input).not.toHaveValue(overDateString));
     // min
     const underDateString = format(addDays(new Date(), -1), 'dd/MM/yyyy');
-    userEvent.type(input, underDateString);
+    await userEvent.type(input, underDateString);
     userEvent.click(canvasElement);
     await waitFor(() => expect(input).not.toHaveValue(underDateString));
   },

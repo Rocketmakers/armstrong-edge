@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { expect, userEvent, waitFor, within, fn } from '@storybook/test';
 import * as React from 'react';
 import { AiFillEye } from 'react-icons/ai';
 import { TiStarburst, TiStarburstOutline } from 'react-icons/ti';
@@ -20,7 +19,9 @@ export default {
 
 const Template: StoryObj<typeof Rating> = {
   render: args => {
-    const { formProp, formState } = useForm<{ rating: NullOrUndefined<number> }>({ rating: 0 });
+    const { formProp, formState } = useForm<{
+      rating: NullOrUndefined<number>;
+    }>({ rating: 0 });
 
     return (
       <div>
@@ -35,6 +36,9 @@ const Template: StoryObj<typeof Rating> = {
 
 export const Default: StoryObj<typeof Rating> = {
   ...Template,
+  args: {
+    onValueChange: fn(),
+  },
   play: async ({ canvasElement }) => {
     const radios = within(canvasElement).getAllByRole('radio');
     userEvent.click(radios[2]);
@@ -47,12 +51,16 @@ export const Half: StoryObj<typeof Rating> = {
   ...Template,
   args: {
     step: 0.5,
+    onValueChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const radios = within(canvasElement).getAllByRole('radio');
     userEvent.click(radios[4]);
     const result = within(canvasElement).getByTestId('result');
-    await waitFor(() => expect(result).toHaveTextContent('Bound value: 2.5'));
+
+    await waitFor(() => {
+      expect(result).toHaveTextContent('Bound value: 2.5');
+    });
   },
 };
 
@@ -60,6 +68,7 @@ export const Disabled: StoryObj<typeof Rating> = {
   ...Template,
   args: {
     disabled: true,
+    onValueChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const radios = within(canvasElement).getAllByRole('radio');
@@ -69,7 +78,10 @@ export const Disabled: StoryObj<typeof Rating> = {
 
 export const Labelled: StoryObj<typeof Rating> = {
   render: () => {
-    const { formProp } = useForm<{ default: NullOrUndefined<number>; required: NullOrUndefined<number> }>({
+    const { formProp } = useForm<{
+      default: NullOrUndefined<number>;
+      required: NullOrUndefined<number>;
+    }>({
       default: 0,
       required: 0,
     });
@@ -115,6 +127,7 @@ export const CustomMax: StoryObj<typeof Rating> = {
   ...Template,
   args: {
     maximum: 10,
+    onValueChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const radios = within(canvasElement).getAllByRole('radio');
@@ -161,7 +174,7 @@ export const CustomDOMFromIndex: StoryObj<typeof Rating> = {
     expect(customs).toHaveLength(5);
     customs.forEach((c, i) => {
       expect(c).toBeVisible();
-      expect(c).toHaveTextContent(i + 1);
+      expect(c).toHaveTextContent((i + 1).toString());
     });
   },
 };
@@ -175,7 +188,9 @@ export const WithIconAndStatus: StoryObj<typeof Rating> = {
   play: async ({ canvasElement }) => {
     const leftIcon = within(canvasElement).getByTestId('left-icon');
     expect(leftIcon).toBeVisible();
-    const spinner = within(canvasElement).getByRole('status', { name: 'Loading...' });
+    const spinner = within(canvasElement).getByRole('status', {
+      name: 'Loading...',
+    });
     expect(spinner).toBeVisible();
   },
 };
@@ -193,7 +208,7 @@ export const WithError: StoryObj<typeof Rating> = {
 
 export const Radio: StoryObj<typeof Rating> = {
   ...Template,
-  args: { mode: 'radio' },
+  args: { mode: 'radio', onValueChange: fn() },
   play: async ({ canvasElement }) => {
     const radios = within(canvasElement).getAllByRole('radio');
     userEvent.click(radios[2]);

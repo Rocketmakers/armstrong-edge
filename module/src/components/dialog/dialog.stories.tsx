@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { findByRole, findByText, queryByRole, userEvent, waitFor, within } from '@storybook/testing-library';
+import { findByRole, findByText, queryByRole, userEvent, waitFor, within, expect, fn } from '@storybook/test';
 import * as React from 'react';
 
 import { useForm } from '../../form';
@@ -22,6 +21,7 @@ const Template: StoryObj<typeof Dialog> = {
   args: {
     title: 'Test Dialog',
     description: 'Hello, I am a test dialog',
+    onClose: fn(),
   },
   render: args => {
     const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -51,7 +51,9 @@ export const Default: StoryObj<typeof Dialog> = {
 
     // close button check
     const dialog = await findByRole(document.body, 'dialog');
-    const closeButton = await within(dialog).findByRole('button', { name: 'Close' });
+    const closeButton = await within(dialog).findByRole('button', {
+      name: 'Close',
+    });
     expect(closeButton).toBeVisible();
     userEvent.click(closeButton);
     await waitFor(() => expect(dialog).not.toBeVisible());
@@ -108,6 +110,7 @@ export const CustomContent: StoryObj<typeof Dialog> = {
         <p>Some custom content</p>
       </div>
     ),
+    onClose: fn(),
   },
   play: async ({ canvasElement }) => {
     // open dialog
@@ -153,7 +156,9 @@ export const SimpleStateDialog: StoryObj<typeof Dialog> = {
     expect(customParagraph).toBeVisible();
 
     // close button check
-    const closeButton = await within(dialog).findByRole('button', { name: 'Close' });
+    const closeButton = await within(dialog).findByRole('button', {
+      name: 'Close',
+    });
     expect(closeButton).toBeVisible();
     userEvent.click(closeButton);
     await waitFor(() => expect(dialog).not.toBeVisible());
@@ -177,7 +182,13 @@ export const AsyncDialog: StoryObj<typeof Dialog> = {
           title="Are you sure?"
           description="Actions have consequences, would you like to continue anyway?"
         >
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '16px',
+            }}
+          >
             <Button aria-label="OK" onClick={ok} displayStatus="positive">
               OK
             </Button>
@@ -356,9 +367,9 @@ export const ReusableFormDialog: StoryObj<typeof Dialog> = {
 
     // fill inputs
     const username = within(dialog).getByPlaceholderText<HTMLInputElement>('Username');
-    userEvent.type(username, testUsername);
+    await userEvent.type(username, testUsername);
     const password = within(dialog).getByPlaceholderText<HTMLInputElement>('Password');
-    userEvent.type(password, testPassword);
+    await userEvent.type(password, testPassword);
 
     // click login
     const login = within(dialog).getByRole('button', { name: 'Login' });

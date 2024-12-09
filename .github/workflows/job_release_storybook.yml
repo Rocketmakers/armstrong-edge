@@ -17,10 +17,10 @@ jobs:
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Build Storybook
-        run: (cd module && npm run build && npm run build-storybook)
+        run: (cd module && npm run build && cd ../storybook && npm run build-storybook)
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./module/storybook-static
+          publish_dir: ./storybook/storybook-static

@@ -25,7 +25,10 @@ export function arrayToArrayDictionary<T, Keys extends string = string>(
   return array.reduce<ArrayDictionary<T, Keys>>((dictionary, currentValue) => {
     const key = getKey(currentValue);
 
-    return { ...dictionary, [key]: [...(dictionary[key as keyof typeof dictionary] || []), currentValue] };
+    return {
+      ...dictionary,
+      [key]: [...(dictionary[key as keyof typeof dictionary] || []), currentValue],
+    };
   }, {} as ArrayDictionary<T, Keys>);
 }
 
@@ -37,7 +40,10 @@ interface IArrayWithKey<T, Keys extends string> {
 /** Sort an array into an array of objects with a key and an array of items on it */
 export function arrayToArraysByKey<T, Keys extends string = string>(array: T[], getKey: (item: T) => Keys) {
   const dictionary = arrayToArrayDictionary(array, getKey);
-  return Object.keys(dictionary).map<IArrayWithKey<T, Keys>>(key => ({ key: key as Keys, items: dictionary[key] }));
+  return Object.keys(dictionary).map<IArrayWithKey<T, Keys>>(key => ({
+    key: key as Keys,
+    items: dictionary[key],
+  }));
 }
 
 /** A variant of findIndex that returns the index of the last item in the array where the callback returns true */
@@ -97,4 +103,15 @@ export function getAtOverallIndex<T>(index: number, arrays: { items: T[] }[]) {
     totalIndex = newIndex;
   }
   return undefined;
+}
+
+/** Creates a duplicate-free version of an array, using strict equality for comparisons */
+export function uniq<T>(array: T[]): T[] {
+  const result: T[] = [];
+  for (const item of array) {
+    if (!result.includes(item)) {
+      result.push(item);
+    }
+  }
+  return result;
 }

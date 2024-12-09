@@ -24,7 +24,7 @@ export const Spinner = ({
   children,
   className,
   icon,
-  fillContainer,
+  fillContainer = true,
   label,
   ...HTMLProps
 }: React.PropsWithChildren<ISpinnerProps> & {
@@ -53,6 +53,3 @@ export const Spinner = ({
 
 Spinner.displayName = 'Spinner';
 
-Spinner.defaultProps = {
-  fillContainer: true,
-};

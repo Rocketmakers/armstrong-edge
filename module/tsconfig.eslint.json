@@ -4,7 +4,6 @@
     "src",
     "_build",
     "_test",
-    "_storybook",
     ".eslintrc.js",
     "prettier.config.js",
     "stylelint.config.js",

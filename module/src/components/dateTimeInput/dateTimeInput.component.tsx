@@ -280,13 +280,13 @@ export const SingleDateTimeInput = ({
   onChange,
   validationErrorMessages,
   monthSelectVariant,
-  mode,
+  mode = 'date',
   native,
   format,
-  locale,
+  locale = defaultLocale,
   statusClassName,
   autoValidate,
-  showCalendarOnLeftOverlayClick,
+  showCalendarOnLeftOverlayClick = true,
   onBlur,
   ...inputProps
 }: IDateOrTimeInputSingleProps<string | null> & {
@@ -418,10 +418,6 @@ export const SingleDateTimeInput = ({
 
 SingleDateTimeInput.displayName = 'SingleDateTimeInput';
 
-SingleDateTimeInput.defaultProps = {
-  locale: defaultLocale,
-  showCalendarOnLeftOverlayClick: true,
-};
 
 export const RangeDateTimeInput = ({
   ref,
@@ -435,10 +431,11 @@ export const RangeDateTimeInput = ({
   onChange,
   validationErrorMessages,
   native,
-  format,
-  locale,
+  format = defaultDateFormat,
+  locale = defaultLocale,
   autoValidate,
-  showCalendarOnLeftOverlayClick,
+  showCalendarOnLeftOverlayClick = true,
+  leftOverlay =  <FaRegCalendar />,
   ...inputProps
 }: IDateTimeInputRangeProps<string | null> & {
   ref?: React.RefObject<HTMLInputElement>;
@@ -504,17 +501,17 @@ export const RangeDateTimeInput = ({
           ref={ref}
           {...inputProps}
           leftOverlay={
-            showCalendarOnLeftOverlayClick && inputProps.leftOverlay ? (
+            showCalendarOnLeftOverlayClick && leftOverlay ? (
               <button
                 type="button"
                 className="arm-date-time-overlay-button"
                 disabled={inputProps.disabled}
                 onClick={() => datePickerRef.current?.setOpen(true)}
               >
-                {inputProps.leftOverlay}
+                {leftOverlay}
               </button>
             ) : (
-              inputProps.leftOverlay
+              leftOverlay
             )
           }
           validationErrorMessages={[
@@ -546,16 +543,9 @@ export const RangeDateTimeInput = ({
 
 RangeDateTimeInput.displayName = 'RangeDateTimeInput';
 
-RangeDateTimeInput.defaultProps = {
-  leftOverlay: <FaRegCalendar />,
-  format: defaultDateFormat,
-  locale: defaultLocale,
-  showCalendarOnLeftOverlayClick: true,
-};
-
 const NativeDateTimeInput = ({
   ref,
-  mode,
+  mode = 'date',
   selectsRange,
   native,
   ...props
@@ -586,14 +576,14 @@ export const SingleDateAndTimeInput = ({
   onChange,
   dateInputConfig,
   timeInputConfig,
-  format,
-  locale,
+  format = defaultDateAndTimeFormat,
+  locale = defaultLocale,
   disabled,
   required,
   dateInputProps = {},
   timeInputProps = {},
-  timeInputDisplayFormat,
-  dateInputDisplayFormat,
+  timeInputDisplayFormat = defaultTimeFormat,
+  dateInputDisplayFormat = defaultDateFormat,
   timeInputRef,
   selectsRange,
   native,
@@ -742,17 +732,12 @@ export const SingleDateAndTimeInput = ({
 
 SingleDateAndTimeInput.displayName = 'SingleDateAndTimeInput';
 
-SingleDateAndTimeInput.defaultProps = {
-  format: defaultDateAndTimeFormat,
-  locale: defaultLocale,
-  timeInputDisplayFormat: defaultTimeFormat,
-  dateInputDisplayFormat: defaultDateFormat,
-};
+
 
 /** third-party docs: https://reactdatepicker.com */
 export const DateTimeInput = // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-  (({ ref, ...props }: DateTimeInputProps<string | null> & { ref?: React.RefObject<HTMLInputElement> }) => {
+  (({ ref,  ...props }: DateTimeInputProps<string | null> & { ref?: React.RefObject<HTMLInputElement> }) => {
     // (({ ref, selectsRange = false, native = false, mode = 'date', ...props }) => {
     if (props.selectsRange) {
       return <RangeDateTimeInput ref={ref} {...props} />;
@@ -761,7 +746,7 @@ export const DateTimeInput = // type assertion to ensure generic works with RefF
       return <NativeDateTimeInput ref={ref} {...props} />;
     }
     if (props.mode === 'date-time') {
-      return <SingleDateAndTimeInput ref={ref} {...props} />;
+      return <SingleDateAndTimeInput ref={ref} {...props} mode='date-time' />;
     }
 
     return <SingleDateTimeInput ref={ref} {...props} />;
@@ -769,5 +754,6 @@ export const DateTimeInput = // type assertion to ensure generic works with RefF
     props: ArmstrongFCProps<DateTimeInputProps<TValue>, HTMLInputElement>
   ) => ArmstrongFCReturn) &
     ArmstrongFCExtensions<DateTimeInputProps<string>>;
+
 
 DateTimeInput.displayName = 'DateTimeInput';

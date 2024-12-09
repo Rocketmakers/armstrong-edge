@@ -37,7 +37,7 @@ const DebounceInputBase = ({
   onChange,
   ...nativeProps
 }: IDelayedInputBaseProps<string> & {
-  ref?: React.RefObject<HTMLInputElement>;
+  ref?: React.Ref<HTMLInputElement>;
 }) => {
   const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
 
@@ -142,7 +142,7 @@ export const Input = // type assertion to ensure generic works with RefForwarded
     error,
     autoValidate,
     ...nativeProps
-  }: IInputProps<string | number> & { type?: HTMLInputTypeAttribute; ref?: React.RefObject<HTMLInputElement> }) => {
+  }: IInputProps<string | number> & { type?: HTMLInputTypeAttribute; ref?: React.Ref<HTMLInputElement> }) => {
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 
@@ -247,7 +247,10 @@ export const Input = // type assertion to ensure generic works with RefForwarded
       [bindConfig, globals.autoValidate, nativeProps]
     );
 
-    const inputProps: NativeInputProps & { value?: string; 'data-testid'?: string } = {
+    const inputProps: NativeInputProps & {
+      value?: string;
+      'data-testid'?: string;
+    } = {
       id,
       className: concat('arm-input-base-input', inputClassName),
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */

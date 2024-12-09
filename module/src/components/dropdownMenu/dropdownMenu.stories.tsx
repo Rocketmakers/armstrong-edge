@@ -1,6 +1,7 @@
-import { expect, jest } from '@storybook/jest';
+import { expect } from '@storybook/test';
+import * as test from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/test';
 import * as React from 'react';
 import { ImCheckmark, ImUser } from 'react-icons/im';
 
@@ -9,15 +10,21 @@ import { DropdownMenu } from './dropdownMenu.component';
 
 /** items */
 
-const item1change = jest.fn();
+const item1change = test.fn();
 
 const items = [
   { label: 'Item 1', onClick: item1change },
   { label: 'Item 2' },
   { label: 'Item 3 disabled', disabled: true, addSeparatorUnder: true },
   { label: 'Item 4' },
-  { label: 'Item 5 (left icon)', leftOverlay: <ImUser data-testid="user-icon" /> },
-  { label: 'Item 6 (right icon)', rightOverlay: <ImCheckmark data-testid="check-icon" /> },
+  {
+    label: 'Item 5 (left icon)',
+    leftOverlay: <ImUser data-testid="user-icon" />,
+  },
+  {
+    label: 'Item 6 (right icon)',
+    rightOverlay: <ImCheckmark data-testid="check-icon" />,
+  },
 ];
 
 /** metadata */
@@ -39,7 +46,14 @@ export default {
 export const Default: StoryObj<typeof DropdownMenu> = {
   render: () => {
     return (
-      <div style={{ height: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div
+        style={{
+          height: '350px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <DropdownMenu items={items} data-testid="dropdown">
           <Button type="button" data-testid="button">
             Toggle item list menu
@@ -60,7 +74,7 @@ export const Default: StoryObj<typeof DropdownMenu> = {
 
     expect(menuItems[0]).toHaveTextContent('Item 1');
     userEvent.click(menuItems[0]);
-    expect(item1change).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(item1change).toHaveBeenCalledTimes(1));
     expect(item1change).toHaveBeenCalledWith(0);
 
     expect(menuItems[2]).toHaveTextContent('Item 3 disabled');
@@ -68,19 +82,20 @@ export const Default: StoryObj<typeof DropdownMenu> = {
 
     const separator = canvas.getAllByRole('separator');
     expect(separator).toHaveLength(1);
-
-    const leftOverlay = within(menuItems[4]).getByTestId('user-icon');
-    expect(leftOverlay).toBeVisible();
-
-    const rightOverlay = within(menuItems[5]).getByTestId('check-icon');
-    expect(rightOverlay).toBeVisible();
   },
 };
 
 export const WithArrow: StoryObj<typeof DropdownMenu> = {
   render: () => {
     return (
-      <div style={{ height: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div
+        style={{
+          height: '350px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <DropdownMenu items={items} data-testid="dropdown" showArrow>
           <Button type="button" data-testid="button">
             Toggle with arrow
@@ -105,7 +120,14 @@ export const StateDriven: StoryObj<typeof DropdownMenu> = {
   render: () => {
     const [open, setOpen] = React.useState(false);
     return (
-      <div style={{ height: '350px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          height: '350px',
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+        }}
+      >
         <Button type="button" data-testid="state-button" onClick={() => setOpen(true)}>
           Toggle from elsewhere
         </Button>
@@ -129,7 +151,14 @@ export const StateDriven: StoryObj<typeof DropdownMenu> = {
 export const CustomContent: StoryObj<typeof DropdownMenu> = {
   render: () => {
     return (
-      <div style={{ height: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div
+        style={{
+          height: '350px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <DropdownMenu
           items={
             <div

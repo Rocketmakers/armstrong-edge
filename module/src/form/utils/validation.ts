@@ -77,8 +77,11 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
   // unpacks the root TS schema into a key/zod record
   const unpackObject = (incomingObject: object) => {
     return Object.keys(incomingObject).reduce(
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define -- these call each other
-      (sch, key) => ({ ...sch, [key]: unpackValueToZod(incomingObject[key as keyof typeof incomingObject]) }),
+      (sch, key) => ({
+        ...sch,
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define -- these two require eachother
+        [key]: unpackValueToZod(incomingObject[key as keyof typeof incomingObject]),
+      }),
       {}
     );
   };

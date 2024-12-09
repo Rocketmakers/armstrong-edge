@@ -2,10 +2,10 @@ import * as React from 'react';
 
 /** Used for exporting `forwardRef` components that use generics */
 export type ArmstrongFCProps<TProps, TRef> = React.PropsWithoutRef<React.PropsWithChildren<TProps>> & {
-  ref?: React.RefObject<TRef>;
+  ref?: React.Ref<TRef>;
 };
 export type ArmstrongVFCProps<TProps, TRef> = React.PropsWithoutRef<TProps> & {
-  ref?: React.RefObject<TRef>;
+  ref?: React.Ref<TRef>;
 };
 
 export type ArmstrongFCReturn = ReturnType<React.FC>;

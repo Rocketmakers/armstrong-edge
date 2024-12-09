@@ -1,7 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import { expect } from '@storybook/jest';
+import { expect, fn } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/test';
 import * as React from 'react';
 import { ImPencil } from 'react-icons/im';
 
@@ -25,10 +24,10 @@ const Template: StoryObj<typeof Button> = {
 
 /** stories */
 
-export const Default: StoryObj<typeof Button> = {
+export const Primary: StoryObj<typeof Button> = {
   ...Template,
   args: {
-    onClick: action('onClick'),
+    onClick: fn(),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -125,7 +124,7 @@ export const Styles: StoryObj<typeof Button> = {
 export const WithIcons: StoryObj<typeof Button> = {
   ...Template,
   args: {
-    onClick: action('onClick'),
+    onClick: fn(),
     leftOverlay: <ImPencil title="left-icon-test" />,
   },
   play: async ({ args, canvasElement }) => {
@@ -142,7 +141,7 @@ export const WithIcons: StoryObj<typeof Button> = {
 export const Disabled: StoryObj<typeof Button> = {
   ...Template,
   args: {
-    onClick: action('onClick'),
+    onClick: fn(),
     leftOverlay: <ImPencil title="left-icon-test" />,
     disabled: true,
   },
@@ -158,7 +157,7 @@ export const Disabled: StoryObj<typeof Button> = {
 export const Pending: StoryObj<typeof Button> = {
   ...Template,
   args: {
-    onClick: action('onClick'),
+    onClick: fn(),
     leftOverlay: <ImPencil title="left-icon-test" />,
     pending: true,
   },
@@ -177,7 +176,7 @@ export const Pending: StoryObj<typeof Button> = {
 export const PendingOnLeft: StoryObj<typeof Button> = {
   ...Template,
   args: {
-    onClick: action('onClick'),
+    onClick: fn(),
     leftOverlay: <ImPencil title="left-icon-test" />,
     pending: true,
     pendingPosition: 'left',

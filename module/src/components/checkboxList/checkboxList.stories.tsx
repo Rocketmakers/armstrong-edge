@@ -1,8 +1,6 @@
-/** metadata */
-
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within, fn } from '@storybook/test';
 import * as React from 'react';
 import { ImPlus } from 'react-icons/im';
 
@@ -22,6 +20,9 @@ interface IFormData {
 /** stories */
 
 const Template: StoryObj<typeof CheckboxList> = {
+  args: {
+    onChange: fn(),
+  },
   render: (args: Partial<ICheckboxListProps<ArmstrongId>>) => {
     const { formProp, formState } = useForm<IFormData>();
 
@@ -91,6 +92,7 @@ export const CustomIcon: StoryObj<typeof CheckboxList> = {
   ...Template,
   args: {
     customIndicator: <ImPlus />,
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

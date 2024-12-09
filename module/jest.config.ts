@@ -13,7 +13,13 @@ const jestConfig: JestConfigWithTsJest = {
   },
   reporters: [
     'default',
-    ['jest-junit', { outputDirectory: '<rootDir>/_test/jest/test-results', outputName: 'jest.xml' }],
+    [
+      'jest-junit',
+      {
+        outputDirectory: '<rootDir>/_test/jest/test-results',
+        outputName: 'jest.xml',
+      },
+    ],
   ],
 };
 export default jestConfig;

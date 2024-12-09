@@ -29,7 +29,7 @@ const CodeInputPart = // type assertion to ensure generic works with RefForwarde
     part,
     ...inputProps
   }: ICodeInputPartProps<NullOrUndefined<string>> & {
-    ref?: React.RefObject<HTMLInputElement>;
+    ref?: React.Ref<HTMLInputElement>;
   }) => {
     const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
@@ -308,7 +308,9 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
       parts: string[];
     }
 
-    const { formProp, formState } = useForm<IFormState>({ parts: boundValueArray });
+    const { formProp, formState } = useForm<IFormState>({
+      parts: boundValueArray,
+    });
 
     React.useEffect(() => {
       setBoundValue?.(formState?.parts?.join(''));
@@ -376,8 +378,6 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
                     onPaste={onPaste}
                     onBlur={onBlur}
                     disabled={disabled || (pending && globals.disableControlOnPending)}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- wow
-                    // @ts-ignore -- we know this is a ref
                     ref={r => {
                       inputRefs.current[index] = r;
                     }}

@@ -12,3 +12,5 @@ module/README.md
 **/.cypress/snapshots/__diff_output__
 **/.cypress/videos
 test-results
+*storybook.log
+playground

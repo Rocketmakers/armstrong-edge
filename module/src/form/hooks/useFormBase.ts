@@ -67,7 +67,11 @@ export const useFormBase = <TData extends object>(
   const set = React.useCallback(
     (keyChain: KeyChain, newValue: unknown) => {
       if (keyChain.length === 1) {
-        dispatch({ type: 'set-one', propertyKey: keyChain[0], value: newValue });
+        dispatch({
+          type: 'set-one',
+          propertyKey: keyChain[0],
+          value: newValue,
+        });
       } else {
         dispatch({ type: 'set-path', keyChain, value: newValue });
       }
@@ -121,8 +125,16 @@ export const useFormBase = <TData extends object>(
     (keyChain: KeyChain, identifiers?: string[]) => {
       const dotKey = keyStringFromKeyChain(keyChain, 'dots');
       const bracketKey = keyStringFromKeyChain(keyChain, 'brackets');
-      clientValidationDispatcher({ type: 'clear-validation', key: dotKey, identifiers });
-      clientValidationDispatcher({ type: 'clear-validation', key: bracketKey, identifiers });
+      clientValidationDispatcher({
+        type: 'clear-validation',
+        key: dotKey,
+        identifiers,
+      });
+      clientValidationDispatcher({
+        type: 'clear-validation',
+        key: bracketKey,
+        identifiers,
+      });
     },
     [clientValidationDispatcher]
   );

@@ -80,7 +80,11 @@ describe('dataReducer', () => {
         type: 'set-all',
         data: { test1: 'newValue1', test2: 'newValue2', test3: 'value3' },
       });
-      expect(result).toEqual({ test1: 'newValue1', test2: 'newValue2', test3: 'value3' });
+      expect(result).toEqual({
+        test1: 'newValue1',
+        test2: 'newValue2',
+        test3: 'value3',
+      });
     });
   });
 });

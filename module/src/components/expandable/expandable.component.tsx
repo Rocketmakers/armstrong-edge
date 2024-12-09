@@ -19,7 +19,7 @@ export const Expandable = ({
   className,
   children,
   style,
-  animate,
+  animate = true,
   isOpen,
   ...nativeProps
 }: React.PropsWithChildren<IExpandableProps> & {
@@ -50,7 +50,3 @@ export const Expandable = ({
 };
 
 Expandable.displayName = 'Expandable';
-
-Expandable.defaultProps = {
-  animate: true,
-};

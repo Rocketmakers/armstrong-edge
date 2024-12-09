@@ -63,7 +63,7 @@ export const Button = ({
     displaySize,
     displayStatus,
     pending,
-    pendingPosition,
+    pendingPosition = 'right',
     disableOnPending,
     leftOverlay,
     rightOverlay,
@@ -102,10 +102,6 @@ export const Button = ({
       {pending && globals.buttonPendingPosition === 'right' ? spinner : wrappedRightIcon}
     </button>
   );
-};
-
-Button.defaultProps = {
-  pendingPosition: 'right',
 };
 
 Button.displayName = 'Button';

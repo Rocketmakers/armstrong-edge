@@ -13,8 +13,10 @@ import ReactSelect, {
 import Creatable from 'react-select/creatable';
 // eslint-disable-next-line import/no-unresolved -- file exists
 import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
-// eslint-disable-next-line import/no-unresolved -- file exists
-import SelectRef, { Props as ReactSelectProps } from 'react-select/dist/declarations/src/Select';
+import SelectRef, {
+  Props as ReactSelectProps,
+  // eslint-disable-next-line import/no-unresolved -- file exists
+} from 'react-select/dist/declarations/src/Select';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useContentMemo } from '../../hooks/useContentMemo';
@@ -256,7 +258,6 @@ export interface IMultiSelectProps<Id extends ArmstrongId>
  * - Handles both single and multi
  * - Not exported because single and multi are exported separately
  */
-
 const ReactSelectComponent = ({
   ref,
   className,
@@ -270,12 +271,12 @@ const ReactSelectComponent = ({
   currentValue,
   onSelectOption,
   getOptionValue,
-  clearable,
+  clearable = true,
   disabled,
-  searchable,
-  dropdownIcon,
+  searchable = true,
+  dropdownIcon = <FaChevronDown size={16} />,
   loadingIcon,
-  selectedIcon,
+  selectedIcon = <ImCheckmark />,
   position,
   formatOptionLabel,
   closeMenuOnSelect,
@@ -288,7 +289,7 @@ const ReactSelectComponent = ({
   pending,
   multi,
   allowCreate,
-  createText,
+  createText = 'Create:',
   onOptionCreated,
   labelId,
   labelClassName,
@@ -560,14 +561,6 @@ const ReactSelectComponent = ({
 };
 
 ReactSelectComponent.displayName = 'ReactSelect';
-
-ReactSelectComponent.defaultProps = {
-  clearable: true,
-  searchable: true,
-  selectedIcon: <ImCheckmark />,
-  dropdownIcon: <FaChevronDown size={16} />,
-  createText: 'Create:',
-};
 
 /**
  * Native select export

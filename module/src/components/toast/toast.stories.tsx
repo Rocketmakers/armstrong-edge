@@ -1,6 +1,6 @@
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { findAllByText, findByRole, findByText, userEvent, waitFor, within } from '@storybook/testing-library';
+import { findAllByText, findByRole, findByText, userEvent, waitFor, within } from '@storybook/test';
 import * as React from 'react';
 
 import { Button } from '../button';
@@ -56,10 +56,10 @@ export const Default: StoryObj<typeof Toast> = {
     await waitFor(() => Promise.all([expect(title).not.toBeVisible(), expect(description).not.toBeVisible()]));
 
     // check multiple toasts
-    userEvent.click(button);
-    userEvent.click(button);
+    await userEvent.click(button);
+    await userEvent.click(button);
     const titles = await findAllByText(document.body, args.title ?? '');
-    expect(titles).toHaveLength(2);
+    await waitFor(() => expect(titles).toHaveLength(2));
   },
 };
 
@@ -92,7 +92,9 @@ export const TopLeft: StoryObj<typeof Toast> = {
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
     userEvent.click(button);
-    const toast = await findByRole(document.body, 'status', { name: 'Notification' });
+    const toast = await findByRole(document.body, 'status', {
+      name: 'Notification',
+    });
 
     expect(toast).toBeVisible();
     expect(toast).toHaveAttribute('data-position', 'top-left');
@@ -111,7 +113,9 @@ export const TopRight: StoryObj<typeof Toast> = {
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
     userEvent.click(button);
-    const toast = await findByRole(document.body, 'status', { name: 'Notification' });
+    const toast = await findByRole(document.body, 'status', {
+      name: 'Notification',
+    });
 
     expect(toast).toBeVisible();
     expect(toast).toHaveAttribute('data-position', 'top-right');
@@ -130,7 +134,9 @@ export const BottomLeft: StoryObj<typeof Toast> = {
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
     userEvent.click(button);
-    const toast = await findByRole(document.body, 'status', { name: 'Notification' });
+    const toast = await findByRole(document.body, 'status', {
+      name: 'Notification',
+    });
 
     expect(toast).toBeVisible();
     expect(toast).toHaveAttribute('data-position', 'bottom-left');
