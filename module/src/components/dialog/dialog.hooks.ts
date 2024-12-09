@@ -8,7 +8,7 @@ const emptyRefError = new Error(
 );
 
 /** Hook return tuple */
-export type UseDialogReturn<TData> = [React.RefObject<DialogElement<TData>>, DialogElement<TData>];
+export type UseDialogReturn<TData> = [React.RefObject<DialogElement<TData> | null>, DialogElement<TData>];
 
 /**
  * A hook providing quick access to the utilities of an Armstrong Dialog component
@@ -20,7 +20,7 @@ export type UseDialogReturn<TData> = [React.RefObject<DialogElement<TData>>, Dia
  */
 export const useDialog = <TData>(
   forwardRef?: React.ForwardedRef<DialogElement<TData>>
-): [React.RefObject<DialogElement<TData>>, Omit<DialogElement<TData>, 'addOpenChangeListener'>] => {
+): [React.RefObject<DialogElement<TData> | null>, Omit<DialogElement<TData>, 'addOpenChangeListener'>] => {
   const dialogRef = React.useRef<DialogElement<TData>>(null);
   const [isOpen, setIsOpen] = React.useState(false);
   React.useImperativeHandle(forwardRef, () => dialogRef.current as DialogElement<TData>);

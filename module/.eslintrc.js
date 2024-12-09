@@ -9,7 +9,6 @@ const config = createEslintConfig({
 
 module.exports = {
   ...config,
-
   parserOptions: {
     ...config.parserOptions,
     tsconfigRootDir: path.resolve(__dirname, '../'),

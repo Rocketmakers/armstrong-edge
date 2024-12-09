@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IBindingProps, useBindingState, useForm } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, DisplaySize, NullOrUndefined } from '../../types';
-import { concat, findLastIndex } from '../../utils';
+import { concat, contentDependency, findLastIndex } from '../../utils';
 import { useArmstrongConfig } from '../config';
 import { Input, ITextInputProps } from '../input';
 import { IInputWrapperProps } from '../inputWrapper';
@@ -21,8 +21,14 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> exte
 }
 
 /** an individual input from the CodeInput */
-const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps<NullOrUndefined<string>>>(
-  ({ bind, part, ...inputProps }, ref) => {
+const CodeInputPart = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    bind,
+    part,
+    ...inputProps
+  }: ArmstrongVFCProps<ICodeInputPartProps<NullOrUndefined<string>>, HTMLInputElement>) => {
     const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
     if (typeof part === 'string') {
@@ -65,13 +71,10 @@ const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps<Nul
         displaySize={part.displaySize}
       />
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
+  }) as (<TBind extends NullOrUndefined<string>>(
+    props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
 
 CodeInputPart.displayName = 'CodeInputPart';
 
@@ -133,39 +136,42 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   autoValidate?: boolean;
 }
 
-export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOrUndefined<string>>>(
-  (
-    {
-      className,
-      parts,
-      bind,
-      onChange,
-      validationMode,
-      validationErrorMessages,
-      errorIcon,
-      error,
-      value,
-      pending,
-      statusPosition,
-      leftOverlay,
-      rightOverlay,
-      scrollValidationErrorsIntoView,
-      displaySize,
-      label,
-      required,
-      requiredIndicator,
-      hideIconOnStatus,
-      statusClassName,
-      validationErrorsClassName,
-      labelClassName,
-      labelId,
-      disableOnPending,
-      disabled,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+interface IInternalFormState {
+  parts: string[];
+}
+
+export const CodeInput = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    className,
+    parts,
+    bind,
+    onChange,
+    validationMode,
+    validationErrorMessages,
+    errorIcon,
+    error,
+    value,
+    pending,
+    statusPosition,
+    leftOverlay,
+    rightOverlay,
+    scrollValidationErrorsIntoView,
+    displaySize,
+    label,
+    required,
+    requiredIndicator,
+    hideIconOnStatus,
+    statusClassName,
+    validationErrorsClassName,
+    labelClassName,
+    labelId,
+    disableOnPending,
+    disabled,
+    autoValidate,
+    ...nativeProps
+  }: ArmstrongVFCProps<ICodeInputProps<NullOrUndefined<string>>, HTMLDivElement>) => {
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -174,6 +180,26 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       validationMode,
       value,
       autoValidate,
+    });
+
+    const getValueForPart = React.useCallback(
+      (partIndex: number, incomingValue: NullOrUndefined<string>) => {
+        const sliceStart = parts
+          .slice(0, partIndex)
+          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
+        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
+
+        return incomingValue?.slice(sliceStart, sliceEnd) || '';
+      },
+      [parts]
+    );
+
+    const boundValueArray = React.useMemo(() => {
+      return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
+    }, [getValueForPart, parts, boundValue]);
+
+    const { formProp, formState } = useForm<IInternalFormState>({
+      parts: boundValueArray,
     });
 
     const globals = useArmstrongConfig({
@@ -211,20 +237,10 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       [parts]
     );
 
-    const getValueForPart = React.useCallback(
-      (partIndex: number, incomingValue: NullOrUndefined<string>) => {
-        const sliceStart = parts
-          .slice(0, partIndex)
-          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
-        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
-
-        return incomingValue?.slice(sliceStart, sliceEnd) || '';
-      },
-      [parts]
-    );
-
     const onPartValueChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
+        formProp('parts', partIndex).set(event.currentTarget.value);
+
         const currentPartLength = getLengthFromPart(parts[partIndex]);
 
         const currentPartValue = event.currentTarget.value || '';
@@ -261,13 +277,10 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
         const newValue = startSlice + pasteValue + endSlice;
 
         setBoundValue(newValue);
+        inputRefs.current[inputRefs.current.length - 1]?.focus();
       },
       [setBoundValue, boundValue, parts]
     );
-
-    const boundValueArray = React.useMemo(() => {
-      return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
-    }, [getValueForPart, parts, boundValue]);
 
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
@@ -298,18 +311,10 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       [goPreviousPart, goNextPart, parts]
     );
 
-    interface IFormState {
-      parts: string[];
-    }
-
-    const { formProp, formState } = useForm<IFormState>({
-      parts: boundValueArray,
-    });
-
     React.useEffect(() => {
       setBoundValue?.(formState?.parts?.join(''));
       // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want the trigger the effect when the function is re-defined
-    }, [formState]);
+    }, [contentDependency(formState?.parts)]);
 
     useDidUpdateEffect(() => {
       if (globals.autoValidate && bindConfig.isTouched) {
@@ -393,12 +398,9 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
+  }) as (<TBind extends NullOrUndefined<string>>(
+    props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
 
 CodeInput.displayName = 'Code Input';

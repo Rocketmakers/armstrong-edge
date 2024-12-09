@@ -4,6 +4,8 @@ import { FormValidationMode } from '../../form';
 import { useArmstrongConfig } from '../config';
 import { Status } from '../status/status.component';
 
+import type { JSX } from 'react';
+
 export interface IStatusWrapperProps {
   /** which side of the button to show the spinner on - defaults to 'right' */
   statusPosition?: 'left' | 'right';

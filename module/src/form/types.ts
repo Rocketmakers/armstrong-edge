@@ -22,6 +22,8 @@ import {
   type ZodUnion,
 } from 'zod';
 
+import type { JSX } from 'react';
+
 /**
  * Works out whether some data is an object, and array, or another type.ß
  * Used by `formProp` to type the next argument in the array.

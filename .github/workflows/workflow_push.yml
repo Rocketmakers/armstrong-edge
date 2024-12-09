@@ -22,6 +22,6 @@ jobs:
     uses: ./.github/workflows/job_test.yml
 
   chromatic:
-    needs: [setup, build]
+    needs: [setup, build, lint, test]
     uses: ./.github/workflows/job_chromatic.yml
     secrets: inherit
