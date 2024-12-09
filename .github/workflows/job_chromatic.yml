@@ -9,6 +9,7 @@ jobs:
     uses: ./.github/workflows/job_setup.yml
 
   build:
+    runs-on: ubuntu-latest
     needs: setup
     steps:  
       - name: Restore node modules cache
