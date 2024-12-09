@@ -12,13 +12,13 @@ jobs:
 
       - name: Set Node.js to current version and cache in module
         id: setup-node
-        uses: actions/setup-node@latest
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.tool-versions'
 
       - name: Cache node modules
         id: node-modules
-        uses: actions/cache@latest
+        uses: actions/cache@v4
         with:
           path: |
             ${{ github.workspace }}/node_modules

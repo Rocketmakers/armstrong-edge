@@ -12,7 +12,7 @@ jobs:
 
       - name: Restore node modules cache
         id: node-modules
-        uses: actions/cache/restore@latest
+        uses: actions/cache/restore@v4
         with:
           path: |
             ${{ github.workspace }}/node_modules
