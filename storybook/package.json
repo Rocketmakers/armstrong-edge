@@ -10,8 +10,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test-storybook": "test-storybook --url http://127.0.0.1:6006",
-    "test-storybook-ci": "pnpm exec concurrently -k -s first -n 'SB,TEST' -c 'magenta,blue' 'pnpm exec http-server storybook-static --port 6006 --silent' 'pnpm exec wait-on http://127.0.0.1:6006 && pnpm test-storybook'"
+    "test-storybook": "test-storybook --testTimeout=30000",
+    "test-storybook-ci": "pnpm exec concurrently -k -s first -n 'SB,TEST' -c 'magenta,blue' 'pnpm exec http-server storybook-static --port 6006 --silent' 'pnpm exec wait-on tcp:127.0.0.1:6006 && npm run test-storybook'"
   },
   "dependencies": {
     "react": "19.0.0",
@@ -24,12 +24,12 @@
     "@storybook/addon-interactions": "8.4.7",
     "@storybook/addon-onboarding": "8.4.7",
     "@storybook/blocks": "8.4.7",
+    "@storybook/manager-api": "8.4.7",
     "@storybook/react": "8.4.7",
     "@storybook/react-vite": "8.4.7",
     "@storybook/test": "8.4.7",
     "@storybook/test-runner": "0.20.1",
     "@storybook/theming": "8.4.7",
-    "@storybook/manager-api": "8.4.7",
     "@types/react": "19.0.1",
     "@types/react-dom": "19.0.1",
     "@vitejs/plugin-react": "4.3.4",

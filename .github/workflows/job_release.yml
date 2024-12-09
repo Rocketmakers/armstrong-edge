@@ -5,21 +5,14 @@ jobs:
   release-main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@master
         with:
           fetch-depth: 0
 
-      - name: Restore node modules cache
-        id: node-modules
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            ${{ github.workspace }}/node_modules
-            ${{ github.workspace }}/module/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - uses: ./.github/actions/install-node-and-pnpm
 
       - name: Download build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: ${{ github.workspace }}/module/dist
@@ -29,5 +22,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
+        run: pnpm dlx semantic-release
         working-directory: ./module

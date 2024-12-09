@@ -135,9 +135,6 @@ importers:
       concurrently:
         specifier: 8.2.0
         version: 8.2.0
-      http-server:
-        specifier: 14.1.1
-        version: 14.1.1
       identity-obj-proxy:
         specifier: 3.0.0
         version: 3.0.0
@@ -195,9 +192,6 @@ importers:
       vite-plugin-turbosnap:
         specifier: 1.0.3
         version: 1.0.3
-      wait-on:
-        specifier: 7.0.1
-        version: 7.0.1
       zod:
         specifier: 3.21.4
         version: 3.21.4

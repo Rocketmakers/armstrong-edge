@@ -13,9 +13,9 @@
     "setup": "asdf install && pnpm i",
     "test": "(cd module && pnpm test)",
     "prepare": "husky install",
-    "build-storybook": "(cd module && pnpm build-storybook)",
-    "storybook": "(cd module && pnpm storybook)",
-    "test-storybook": "(cd module && pnpm test-storybook)"
+    "build-storybook": "(cd storybook && pnpm build-storybook)",
+    "storybook": "(cd storybook && pnpm storybook)",
+    "test-storybook": "(cd storybook && pnpm test-storybook)"
   },
   "devDependencies": {
     "commitizen": "4.3.0",

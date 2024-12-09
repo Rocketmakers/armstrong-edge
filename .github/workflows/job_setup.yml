@@ -7,35 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-        with:
-          fetch-depth: 0
-
-      - name: Set Node.js to current version and cache in module
-        id: setup-node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.tool-versions'
-
-      - name: Cache node modules
-        id: node-modules
-        uses: actions/cache@v3
-        with:
-          path: |
-            ${{ github.workspace }}/node_modules
-            ${{ github.workspace }}/module/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Install root node dependencies
-        if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
-        id: install-root-node-dependencies
-        run: npm ci --legacy-peer-deps
-
-      - name: Install node dependencies
-        if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
-        id: install-node-dependencies
-        run: npm ci --legacy-peer-deps
-        working-directory: ./module
+      - uses: ./.github/actions/install-node-and-pnpm

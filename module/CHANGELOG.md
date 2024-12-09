@@ -1,3 +1,32 @@
+# [3.7.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.7...v3.7.0) (2024-12-09)
+
+
+### Bug Fixes
+
+* add missing dep ([2451f2e](https://github.com/Rocketmakers/armstrong-edge/commit/2451f2e9178af6af5e539415e1ad8b6bb0208f08))
+* another workflow version fix ([9e7332a](https://github.com/Rocketmakers/armstrong-edge/commit/9e7332ae6a85895ec077925735b8cf82e7a2edf4))
+* don't upload artifact on chromatic build ([e1fb637](https://github.com/Rocketmakers/armstrong-edge/commit/e1fb637597433114cae9c864e1155fe469b845d8))
+* fixed chromatic ([ee0a501](https://github.com/Rocketmakers/armstrong-edge/commit/ee0a5016b69bdc6391586a0242525d6a0b89236e))
+* fixed chromatic deployment and test timeout ([5c8e82e](https://github.com/Rocketmakers/armstrong-edge/commit/5c8e82eb0bee6a99f3bb18cfce373dfb43f74541))
+* fixed core package.json scripts ([0837dd5](https://github.com/Rocketmakers/armstrong-edge/commit/0837dd51da31760fc2d8661554a491eacdac3615))
+* improved caching ([d9592ff](https://github.com/Rocketmakers/armstrong-edge/commit/d9592ff41ae49873e6e076cd33742d2daf03c83f))
+* lint fixes ([7ecd9ca](https://github.com/Rocketmakers/armstrong-edge/commit/7ecd9ca76376f3e47598ca6f49ee837c92bd1bf2))
+* more workflow stuff ([b6ffa44](https://github.com/Rocketmakers/armstrong-edge/commit/b6ffa44b637edfe25fa85123365961b2405dc0e8))
+* renamed node install ([dea5b47](https://github.com/Rocketmakers/armstrong-edge/commit/dea5b47685531eeee40209bf4af4308e9006c6e9))
+* renamed prettier config file ([c289975](https://github.com/Rocketmakers/armstrong-edge/commit/c289975cf8d0b6792b4ebe825edabbeb231b5216))
+* try forcing node module install ([3e895ed](https://github.com/Rocketmakers/armstrong-edge/commit/3e895edfce4638ceadc9046fd658f077adacc766))
+* unbreak linting ([0957622](https://github.com/Rocketmakers/armstrong-edge/commit/09576223ae5a356c858d5e3721ea4e2e8b0c7060))
+* update dependson ([36c3f62](https://github.com/Rocketmakers/armstrong-edge/commit/36c3f62cf100bca4d3a08b2e43ae92d59ae01089))
+* updated workflows ([3410dd2](https://github.com/Rocketmakers/armstrong-edge/commit/3410dd2a82dfbc6f141fb238bf53ab37c95e2d7c))
+* workflow fix ([75f08e7](https://github.com/Rocketmakers/armstrong-edge/commit/75f08e7bfa086c14d69cbccd711a8c3893a627d8))
+
+
+### Features
+
+* added tree shaking, move to vite-sdk, remove lodash dependency ([a508817](https://github.com/Rocketmakers/armstrong-edge/commit/a508817f9b0669a61581b81aa10dc10aef0200c5))
+* fix deepscan issue ([efd574a](https://github.com/Rocketmakers/armstrong-edge/commit/efd574aa028d207670fb83e5eb1ce531420690bc))
+* upgrade storybook, fix and move to own directory ([fbfe844](https://github.com/Rocketmakers/armstrong-edge/commit/fbfe844e3d7c74ed6e22d1ed20fb749247dd86ce))
+
 ## [3.6.7](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.6...v3.6.7) (2024-11-28)
 
 ### Bug Fixes

@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Set Node.js version and cache Storybook modules
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v4
         id: cache-storybook-node-modules
         with:
           node-version-file: ".tool-versions"
