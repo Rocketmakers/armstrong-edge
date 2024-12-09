@@ -13,6 +13,8 @@ import { IValidationErrorsProps, ValidationErrors } from '../validationErrors/va
 
 import './rangeInput.theme.css';
 
+import type { JSX } from 'react';
+
 export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'type' | 'checked' | 'onChange' | 'ref' | 'dir' | 'defaultValue'>,
     Omit<IValidationErrorsProps, 'validationErrors' | 'scrollIntoView'> {
@@ -74,125 +76,123 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   autoValidate?: boolean;
 }
 
-export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<NullOrUndefined<number>>>(
-  (
-    {
-      bind,
-      className,
-      disabled,
-      onChange,
-      label,
-      labelClassName,
-      labelId,
-      scrollValidationErrorsIntoView,
-      statusClassName,
-      validationErrorsClassName,
-      validationErrorMessages,
-      displaySize,
-      min,
-      max,
-      value,
-      validationMode,
-      step,
-      required,
-      customThumb,
-      requiredIndicator,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value,
-      onChange,
-      validationErrorMessages,
-      validationMode,
-      autoValidate,
-    });
+export const RangeInput = (({
+  ref,
+  bind,
+  className,
+  disabled,
+  onChange,
+  label,
+  labelClassName,
+  labelId,
+  scrollValidationErrorsIntoView,
+  statusClassName,
+  validationErrorsClassName,
+  validationErrorMessages,
+  displaySize,
+  min,
+  max,
+  value,
+  validationMode,
+  step,
+  required,
+  customThumb,
+  requiredIndicator,
+  autoValidate,
+  ...nativeProps
+}: IRangeInputProps<NullOrUndefined<number>> & {
+  ref?: React.RefObject<HTMLSpanElement>;
+}) => {
+  const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+    value,
+    onChange,
+    validationErrorMessages,
+    validationMode,
+    autoValidate,
+  });
 
-    const globals = useArmstrongConfig({
-      scrollValidationErrorsIntoView,
-      validationMode: bindConfig.validationMode,
-      inputDisplaySize: displaySize,
-      requiredIndicator,
-      autoValidate: bindConfig.autoValidate,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-    });
+  const globals = useArmstrongConfig({
+    scrollValidationErrorsIntoView,
+    validationMode: bindConfig.validationMode,
+    inputDisplaySize: displaySize,
+    requiredIndicator,
+    autoValidate: bindConfig.autoValidate,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+  });
 
-    const generatedLabelId = React.useId();
-    const finalLabelId = labelId ?? generatedLabelId;
+  const generatedLabelId = React.useId();
+  const finalLabelId = labelId ?? generatedLabelId;
 
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate && bindConfig.isTouched) {
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate && bindConfig.isTouched) {
+      bindConfig.validate();
+    }
+  }, [boundValue]);
+
+  const onBlurEvent = React.useCallback(
+    (event: React.FocusEvent<HTMLSpanElement>) => {
+      if (globals.autoValidate && !bindConfig.isTouched) {
         bindConfig.validate();
       }
-    }, [boundValue]);
+      onBlurWorkaround(event);
+      bindConfig.setTouched(true);
+    },
+    [bindConfig, globals.autoValidate]
+  );
 
-    const onBlurEvent = React.useCallback(
-      (event: React.FocusEvent<HTMLSpanElement>) => {
-        if (globals.autoValidate && !bindConfig.isTouched) {
-          bindConfig.validate();
-        }
-        onBlurWorkaround(event);
-        bindConfig.setTouched(true);
-      },
-      [bindConfig, globals.autoValidate]
-    );
-
-    return (
-      <StatusWrapper
-        className={concat(statusClassName, 'arm-range-input-base')}
-        validationMode={bindConfig.validationMode}
-        errorIcon={bindConfig.validationErrorIcon}
-      >
-        {label && (
-          <Label
-            id={finalLabelId}
-            className={concat('arm-range-input-label', labelClassName)}
-            data-disabled={disabled}
-            required={required}
-            displaySize={globals.inputDisplaySize}
-            requiredIndicator={globals.requiredIndicator}
-          >
-            {label}
-          </Label>
-        )}
-        <RadixSlider.Root
-          className={concat(className, 'arm-range-input-root')}
-          {...nativeProps}
-          max={max}
-          min={min}
-          step={step}
-          ref={ref}
-          disabled={disabled}
-          data-size={globals.inputDisplaySize}
-          aria-labelledby={finalLabelId}
-          value={boundValue ? [boundValue] : undefined}
-          onValueChange={v => setBoundValue(v?.[0])}
+  return (
+    <StatusWrapper
+      className={concat(statusClassName, 'arm-range-input-base')}
+      validationMode={bindConfig.validationMode}
+      errorIcon={bindConfig.validationErrorIcon}
+    >
+      {label && (
+        <Label
+          id={finalLabelId}
+          className={concat('arm-range-input-label', labelClassName)}
+          data-disabled={disabled}
+          required={required}
+          displaySize={globals.inputDisplaySize}
+          requiredIndicator={globals.requiredIndicator}
         >
-          <RadixSlider.Track className="arm-range-input-track">
-            <RadixSlider.Range className="arm-range-input-range" />
-          </RadixSlider.Track>
-          <RadixSlider.Thumb
-            className="arm-range-input-thumb"
-            aria-label={typeof label === 'string' ? label : undefined}
-            onBlur={onBlurEvent}
-          >
-            {customThumb}
-          </RadixSlider.Thumb>
-        </RadixSlider.Root>
-        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            className={validationErrorsClassName}
-            validationMode={globals.validationMode}
-            validationErrors={bindConfig.validationErrorMessages}
-            scrollIntoView={globals.scrollValidationErrorsIntoView}
-          />
-        )}
-      </StatusWrapper>
-    );
-  }
-) as (<TBind extends NullOrUndefined<number>>(
+          {label}
+        </Label>
+      )}
+      <RadixSlider.Root
+        className={concat(className, 'arm-range-input-root')}
+        {...nativeProps}
+        max={max}
+        min={min}
+        step={step}
+        ref={ref}
+        disabled={disabled}
+        data-size={globals.inputDisplaySize}
+        aria-labelledby={finalLabelId}
+        value={boundValue ? [boundValue] : undefined}
+        onValueChange={v => setBoundValue(v?.[0])}
+      >
+        <RadixSlider.Track className="arm-range-input-track">
+          <RadixSlider.Range className="arm-range-input-range" />
+        </RadixSlider.Track>
+        <RadixSlider.Thumb
+          className="arm-range-input-thumb"
+          aria-label={typeof label === 'string' ? label : undefined}
+          onBlur={onBlurEvent}
+        >
+          {customThumb}
+        </RadixSlider.Thumb>
+      </RadixSlider.Root>
+      {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+        <ValidationErrors
+          className={validationErrorsClassName}
+          validationMode={globals.validationMode}
+          validationErrors={bindConfig.validationErrorMessages}
+          scrollIntoView={globals.scrollValidationErrorsIntoView}
+        />
+      )}
+    </StatusWrapper>
+  );
+}) as (<TBind extends NullOrUndefined<number>>(
   props: ArmstrongFCProps<IRangeInputProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRangeInputProps<NullOrUndefined<number>>>;

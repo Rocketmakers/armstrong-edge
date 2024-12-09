@@ -6,6 +6,8 @@ import type { IToast, ToastPosition } from './toast.context';
 
 import './toast.theme.css';
 
+import type { JSX } from 'react';
+
 export interface IToastProps extends IToast {
   /** where to position the toast, defaults to "bottom-right" */
   position: ToastPosition;

@@ -9,6 +9,8 @@ import { useArmstrongConfig } from '../config';
 
 import './dialog.theme.css';
 
+import type { JSX } from 'react';
+
 /** Dialog component props */
 export interface IDialogProps<TData = unknown>
   extends Omit<RadixDialog.DialogContentProps & React.RefAttributes<HTMLDivElement>, 'ref' | 'title'> {
@@ -72,8 +74,14 @@ export interface DialogElement<TData = unknown> {
  * - Can be async by assigning a ref and calling the utility functions (a `useDialog` helper hook is available for this.)
  * - Supports dynamic data in async mode, so that a form can be built as a reusable async dialog.
  */
-export const Dialog = React.forwardRef(
-  (props: React.PropsWithChildren<IDialogProps<unknown>>, ref: React.ForwardedRef<DialogElement<unknown>>) => {
+export const Dialog = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    ...props
+  }: React.PropsWithChildren<IDialogProps<unknown>> & {
+    ref?: React.RefObject<DialogElement<unknown>>;
+  }) => {
     const {
       children,
       title,
@@ -101,7 +109,9 @@ export const Dialog = React.forwardRef(
 
     /** Stores a reference to the promise resolver function */
     const resolverRef =
-      React.useRef<(value: IDialogOpenResponse<unknown> | PromiseLike<IDialogOpenResponse<unknown>>) => void>();
+      React.useRef<(value: IDialogOpenResponse<unknown> | PromiseLike<IDialogOpenResponse<unknown>>) => void>(
+        undefined
+      );
 
     /** Used to create prop comparisons to use as effect triggers */
     const finishActionChanged = useCompareValues(finishAction);
@@ -221,10 +231,7 @@ export const Dialog = React.forwardRef(
           )}
       </RadixDialog.Root>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TData>(props: ArmstrongFCProps<IDialogProps<TData>, DialogElement<TData>>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IDialogProps<unknown>>;
+  }) as (<TData>(props: ArmstrongFCProps<IDialogProps<TData>, DialogElement<TData>>) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<IDialogProps<unknown>>;
 
 Dialog.displayName = 'Dialog';

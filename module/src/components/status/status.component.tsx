@@ -6,6 +6,8 @@ import { Spinner } from '../spinner';
 
 import './status.theme.css';
 
+import type { JSX } from 'react';
+
 export interface IStatusProps {
   /** show a spinner */
   pending?: boolean;
@@ -24,31 +26,39 @@ export interface IStatusProps {
 }
 
 /** Render a status icon which can either be pending or errored */
-export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
-  ({ pending, error, errorIcon, spinnerIcon, className, ...rest }, ref) => {
-    const globals = useArmstrongConfig({
-      validationErrorIcon: errorIcon,
-      spinnerIcon,
-    });
+export const Status = ({
+  ref,
+  pending,
+  error,
+  errorIcon,
+  spinnerIcon,
+  className,
+  ...rest
+}: IStatusProps & {
+  ref?: React.RefObject<HTMLDivElement>;
+}) => {
+  const globals = useArmstrongConfig({
+    validationErrorIcon: errorIcon,
+    spinnerIcon,
+  });
 
-    if (!error && !pending) {
-      return null;
-    }
-    return (
-      <div
-        ref={ref}
-        className={concat('arm-status', className)}
-        data-active={!!pending || !!error ? true : undefined}
-        data-error={!!error && !pending ? true : undefined}
-        data-pending={pending ? true : undefined}
-        role="status"
-        {...rest}
-      >
-        {error && !pending && globals.validationErrorIcon}
-        {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={globals.spinnerIcon} />}
-      </div>
-    );
+  if (!error && !pending) {
+    return null;
   }
-);
+  return (
+    <div
+      ref={ref}
+      className={concat('arm-status', className)}
+      data-active={!!pending || !!error ? true : undefined}
+      data-error={!!error && !pending ? true : undefined}
+      data-pending={pending ? true : undefined}
+      role="status"
+      {...rest}
+    >
+      {error && !pending && globals.validationErrorIcon}
+      {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={globals.spinnerIcon} />}
+    </div>
+  );
+};
 
 Status.displayName = 'Status';

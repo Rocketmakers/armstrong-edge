@@ -67,48 +67,58 @@ export interface IDropdownMenuProps
   showArrow?: boolean;
 }
 
-export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IDropdownMenuProps>>(
-  ({ items, children, className, showArrow, open, defaultOpen, onOpenChange, ...nativeProps }, ref) => {
-    const parsedContent = React.useMemo(() => {
-      if (React.isValidElement(items)) {
-        return items;
-      }
-      if (Array.isArray(items)) {
-        return items.map((item, index) => {
-          return (
-            <React.Fragment key={index}>
-              <RadixDropdownMenu.Item
-                className={concat(item.className, 'arm-dropdown-menu-item')}
-                disabled={item.disabled}
-                onSelect={() => item.onClick?.(index)}
-              >
-                {item.leftOverlay && <div className="arm-dropdown-menu-item-left-overlay">{item.leftOverlay}</div>}
-                {item.label && <div className="arm-dropdown-menu-item-label">{item.label}</div>}
-                {item.rightOverlay && <div className="arm-dropdown-menu-item-right-overlay">{item.rightOverlay}</div>}
-              </RadixDropdownMenu.Item>
-              {item.addSeparatorUnder && <RadixDropdownMenu.Separator className="arm-dropdown-menu-separator" />}
-            </React.Fragment>
-          );
-        });
-      }
-      throw new Error('Invalid content passed to DropdownMenu. Must be an array of items or a single React element.');
-    }, [items]);
+export const DropdownMenu = ({
+  ref,
+  items,
+  children,
+  className,
+  showArrow,
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...nativeProps
+}: React.PropsWithChildren<IDropdownMenuProps> & {
+  ref?: React.RefObject<HTMLDivElement>;
+}) => {
+  const parsedContent = React.useMemo(() => {
+    if (React.isValidElement(items)) {
+      return items;
+    }
+    if (Array.isArray(items)) {
+      return items.map((item, index) => {
+        return (
+          <React.Fragment key={index}>
+            <RadixDropdownMenu.Item
+              className={concat(item.className, 'arm-dropdown-menu-item')}
+              disabled={item.disabled}
+              onSelect={() => item.onClick?.(index)}
+            >
+              {item.leftOverlay && <div className="arm-dropdown-menu-item-left-overlay">{item.leftOverlay}</div>}
+              {item.label && <div className="arm-dropdown-menu-item-label">{item.label}</div>}
+              {item.rightOverlay && <div className="arm-dropdown-menu-item-right-overlay">{item.rightOverlay}</div>}
+            </RadixDropdownMenu.Item>
+            {item.addSeparatorUnder && <RadixDropdownMenu.Separator className="arm-dropdown-menu-separator" />}
+          </React.Fragment>
+        );
+      });
+    }
+    throw new Error('Invalid content passed to DropdownMenu. Must be an array of items or a single React element.');
+  }, [items]);
 
-    return (
-      <RadixDropdownMenu.Root open={open} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
-        {children && <RadixDropdownMenu.Trigger asChild>{children}</RadixDropdownMenu.Trigger>}
-        <RadixDropdownMenu.Content
-          {...nativeProps}
-          data-has-arrow={!!showArrow}
-          className={concat(className, 'arm-dropdown-menu-content')}
-          ref={ref}
-        >
-          {parsedContent}
-          {showArrow && <div className="arm-dropdown-menu-arrow" data-testid="arm-dropdown-arrow" />}
-        </RadixDropdownMenu.Content>
-      </RadixDropdownMenu.Root>
-    );
-  }
-);
+  return (
+    <RadixDropdownMenu.Root open={open} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
+      {children && <RadixDropdownMenu.Trigger asChild>{children}</RadixDropdownMenu.Trigger>}
+      <RadixDropdownMenu.Content
+        {...nativeProps}
+        data-has-arrow={!!showArrow}
+        className={concat(className, 'arm-dropdown-menu-content')}
+        ref={ref}
+      >
+        {parsedContent}
+        {showArrow && <div className="arm-dropdown-menu-arrow" data-testid="arm-dropdown-arrow" />}
+      </RadixDropdownMenu.Content>
+    </RadixDropdownMenu.Root>
+  );
+};
 
 DropdownMenu.displayName = 'DropdownMenu';

@@ -21,8 +21,16 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> exte
 }
 
 /** an individual input from the CodeInput */
-const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps<NullOrUndefined<string>>>(
-  ({ bind, part, ...inputProps }, ref) => {
+const CodeInputPart = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    bind,
+    part,
+    ...inputProps
+  }: ICodeInputPartProps<NullOrUndefined<string>> & {
+    ref?: React.RefObject<HTMLInputElement>;
+  }) => {
     const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
     if (typeof part === 'string') {
@@ -65,13 +73,10 @@ const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps<Nul
         displaySize={part.displaySize}
       />
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
+  }) as (<TBind extends NullOrUndefined<string>>(
+    props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
 
 CodeInputPart.displayName = 'CodeInputPart';
 
@@ -133,39 +138,40 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   autoValidate?: boolean;
 }
 
-export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOrUndefined<string>>>(
-  (
-    {
-      className,
-      parts,
-      bind,
-      onChange,
-      validationMode,
-      validationErrorMessages,
-      errorIcon,
-      error,
-      value,
-      pending,
-      statusPosition,
-      leftOverlay,
-      rightOverlay,
-      scrollValidationErrorsIntoView,
-      displaySize,
-      label,
-      required,
-      requiredIndicator,
-      hideIconOnStatus,
-      statusClassName,
-      validationErrorsClassName,
-      labelClassName,
-      labelId,
-      disableOnPending,
-      disabled,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const CodeInput = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    className,
+    parts,
+    bind,
+    onChange,
+    validationMode,
+    validationErrorMessages,
+    errorIcon,
+    error,
+    value,
+    pending,
+    statusPosition,
+    leftOverlay,
+    rightOverlay,
+    scrollValidationErrorsIntoView,
+    displaySize,
+    label,
+    required,
+    requiredIndicator,
+    hideIconOnStatus,
+    statusClassName,
+    validationErrorsClassName,
+    labelClassName,
+    labelId,
+    disableOnPending,
+    disabled,
+    autoValidate,
+    ...nativeProps
+  }: ICodeInputProps<NullOrUndefined<string>> & {
+    ref?: React.RefObject<HTMLDivElement>;
+  }) => {
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -370,6 +376,8 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
                     onPaste={onPaste}
                     onBlur={onBlur}
                     disabled={disabled || (pending && globals.disableControlOnPending)}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- wow
+                    // @ts-ignore -- we know this is a ref
                     ref={r => {
                       inputRefs.current[index] = r;
                     }}
@@ -391,12 +399,9 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
+  }) as (<TBind extends NullOrUndefined<string>>(
+    props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
 
 CodeInput.displayName = 'Code Input';

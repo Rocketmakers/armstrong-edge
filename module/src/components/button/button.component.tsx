@@ -7,6 +7,8 @@ import { Spinner } from '../spinner/spinner.component';
 
 import './button.theme.css';
 
+import type { JSX } from 'react';
+
 type ButtonHTMLProps = Omit<
   React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
   'ref'
@@ -48,7 +50,12 @@ export interface IButtonProps extends ButtonHTMLProps {
 }
 
 /** Renders an HTML button element with some useful additions */
-export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IButtonProps>>((props, ref) => {
+export const Button = ({
+  ref,
+  ...props
+}: React.PropsWithChildren<IButtonProps> & {
+  ref?: React.RefObject<HTMLButtonElement>;
+}) => {
   const {
     className,
     disabled,
@@ -95,7 +102,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
       {pending && globals.buttonPendingPosition === 'right' ? spinner : wrappedRightIcon}
     </button>
   );
-});
+};
 
 Button.defaultProps = {
   pendingPosition: 'right',

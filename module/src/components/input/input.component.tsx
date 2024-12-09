@@ -29,21 +29,28 @@ interface IDelayedInputBaseProps<TValue> extends NativeInputProps {
   value?: TValue;
 }
 
-const DebounceInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseProps<string>>(
-  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-    const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
+const DebounceInputBase = ({
+  ref,
+  milliseconds,
+  value,
+  onValueChange,
+  onChange,
+  ...nativeProps
+}: IDelayedInputBaseProps<string> & {
+  ref?: React.RefObject<HTMLInputElement>;
+}) => {
+  const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
 
-    const onChangeEvent = React.useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setActualValue(e.currentTarget.value);
-        onChange?.(e);
-      },
-      [setActualValue, onChange]
-    );
+  const onChangeEvent = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setActualValue(e.currentTarget.value);
+      onChange?.(e);
+    },
+    [setActualValue, onChange]
+  );
 
-    return <input ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
-  }
-);
+  return <input ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+};
 
 DebounceInputBase.displayName = 'DebounceInput';
 
@@ -101,45 +108,41 @@ export interface INumberInputProps<TValue extends NullOrUndefined<number>> exten
 }
 
 /** A component which wraps up a native input element with some binding logic and some repeated elements (icons and stuff) for components which only contain a single input element. */
-export const Input = React.forwardRef<
-  HTMLInputElement,
-  IInputProps<string | number> & { type?: HTMLInputTypeAttribute }
->(
-  (
-    {
-      bind,
-      onChange,
-      value,
-      className,
-      leftOverlay,
-      rightOverlay,
-      validationErrorMessages,
-      validationMode,
-      errorIcon: validationErrorIcon,
-      pending,
-      disabled,
-      disableOnPending,
-      statusPosition,
-      hideIconOnStatus,
-      onValueChange,
-      scrollValidationErrorsIntoView,
-      delay,
-      validationErrorsClassName,
-      statusClassName,
-      inputClassName,
-      label,
-      required,
-      requiredIndicator,
-      displaySize,
-      labelClassName,
-      labelId,
-      wrapperTestId,
-      error,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const Input = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    bind,
+    onChange,
+    value,
+    className,
+    leftOverlay,
+    rightOverlay,
+    validationErrorMessages,
+    validationMode,
+    errorIcon: validationErrorIcon,
+    pending,
+    disabled,
+    disableOnPending,
+    statusPosition,
+    hideIconOnStatus,
+    onValueChange,
+    scrollValidationErrorsIntoView,
+    delay,
+    validationErrorsClassName,
+    statusClassName,
+    inputClassName,
+    label,
+    required,
+    requiredIndicator,
+    displaySize,
+    labelClassName,
+    labelId,
+    wrapperTestId,
+    error,
+    autoValidate,
+    ...nativeProps
+  }: IInputProps<string | number> & { type?: HTMLInputTypeAttribute; ref?: React.RefObject<HTMLInputElement> }) => {
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 
@@ -296,12 +299,9 @@ export const Input = React.forwardRef<
         )}
       </InputWrapper>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TStringValue extends NullOrUndefined<string>, TNumberValue extends NullOrUndefined<number>>(
-  props: ArmstrongFCProps<ITextInputProps<TStringValue> | INumberInputProps<TNumberValue>, HTMLInputElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ITextInputProps<string> | INumberInputProps<number>>;
+  }) as (<TStringValue extends NullOrUndefined<string>, TNumberValue extends NullOrUndefined<number>>(
+    props: ArmstrongFCProps<ITextInputProps<TStringValue> | INumberInputProps<TNumberValue>, HTMLInputElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ITextInputProps<string> | INumberInputProps<number>>;
 
 Input.displayName = 'Input';

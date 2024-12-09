@@ -27,21 +27,28 @@ interface IDelayedTextAreaBaseProps<TValue> extends NativeTextAreaProps {
   value?: TValue;
 }
 
-const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextAreaBaseProps<string>>(
-  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-    const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
+const DebounceTextAreaBase = ({
+  ref,
+  milliseconds,
+  value,
+  onValueChange,
+  onChange,
+  ...nativeProps
+}: IDelayedTextAreaBaseProps<string> & {
+  ref?: React.RefObject<HTMLTextAreaElement>;
+}) => {
+  const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
 
-    const onChangeEvent = React.useCallback(
-      (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setActualValue(e.currentTarget.value);
-        onChange?.(e);
-      },
-      [setActualValue, onChange]
-    );
+  const onChangeEvent = React.useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setActualValue(e.currentTarget.value);
+      onChange?.(e);
+    },
+    [setActualValue, onChange]
+  );
 
-    return <textarea ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
-  }
-);
+  return <textarea ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+};
 
 DebounceTextAreaBase.displayName = 'DebounceInput';
 
@@ -77,41 +84,42 @@ export interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrU
 }
 
 /** A component which wraps up a native text area element with some binding logic, labels and validation errors. */
-export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<string>>(
-  (
-    {
-      bind,
-      onChange,
-      value,
-      className,
-      validationErrorMessages,
-      validationMode,
-      pending,
-      disabled,
-      disableOnPending,
-      onValueChange,
-      scrollValidationErrorsIntoView,
-      delay,
-      validationErrorsClassName,
-      statusClassName,
-      textAreaClassName,
-      label,
-      required,
-      requiredIndicator,
-      displaySize,
-      labelClassName,
-      labelId,
-      testId,
-      errorIcon,
-      leftOverlay,
-      rightOverlay,
-      hideIconOnStatus,
-      statusPosition,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const TextArea = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    bind,
+    onChange,
+    value,
+    className,
+    validationErrorMessages,
+    validationMode,
+    pending,
+    disabled,
+    disableOnPending,
+    onValueChange,
+    scrollValidationErrorsIntoView,
+    delay,
+    validationErrorsClassName,
+    statusClassName,
+    textAreaClassName,
+    label,
+    required,
+    requiredIndicator,
+    displaySize,
+    labelClassName,
+    labelId,
+    testId,
+    errorIcon,
+    leftOverlay,
+    rightOverlay,
+    hideIconOnStatus,
+    statusPosition,
+    autoValidate,
+    ...nativeProps
+  }: ITextAreaProps<string> & {
+    ref?: React.RefObject<HTMLTextAreaElement>;
+  }) => {
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 
@@ -235,12 +243,9 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
         )}
       </InputWrapper>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TStringValue extends NullOrUndefined<string>>(
-  props: ArmstrongFCProps<ITextAreaProps<TStringValue>, HTMLTextAreaElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ITextAreaProps<string>>;
+  }) as (<TStringValue extends NullOrUndefined<string>>(
+    props: ArmstrongFCProps<ITextAreaProps<TStringValue>, HTMLTextAreaElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ITextAreaProps<string>>;
 
 TextArea.displayName = 'Text Area';

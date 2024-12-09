@@ -11,6 +11,8 @@ import { stripNullOrUndefined } from '../../utils/objects';
 import type { ButtonDisplayStyle } from '../button';
 import type { ToastPosition } from '../toast';
 
+import type { JSX } from 'react';
+
 /**
  * Armstrong global config type
  */

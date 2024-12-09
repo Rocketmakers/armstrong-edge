@@ -20,6 +20,8 @@ import { ValidationErrors } from '../validationErrors';
 
 import './checkboxList.theme.css';
 
+import type { JSX } from 'react';
+
 export interface ICheckboxListProps<Id extends ArmstrongId>
   extends Pick<
       IInputWrapperProps,
@@ -90,33 +92,34 @@ export interface ICheckboxListProps<Id extends ArmstrongId>
 }
 
 /** Render a list of radio inputs which binds to a single string */
-export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<ArmstrongId>>(
-  (
-    {
-      bind,
-      options,
-      className,
-      value,
-      errorIcon,
-      validationMode,
-      validationErrorMessages,
-      onChange,
-      customIndicator,
-      error,
-      displaySize,
-      label,
-      labelClassName,
-      labelId,
-      required,
-      disabled,
-      scrollValidationErrorsIntoView,
-      validationErrorsClassName,
-      requiredIndicator,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const CheckboxList = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    bind,
+    options,
+    className,
+    value,
+    errorIcon,
+    validationMode,
+    validationErrorMessages,
+    onChange,
+    customIndicator,
+    error,
+    displaySize,
+    label,
+    labelClassName,
+    labelId,
+    required,
+    disabled,
+    scrollValidationErrorsIntoView,
+    validationErrorsClassName,
+    requiredIndicator,
+    autoValidate,
+    ...nativeProps
+  }: ICheckboxListProps<ArmstrongId> & {
+    ref?: React.RefObject<HTMLDivElement>;
+  }) => {
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       validationErrorMessages,
@@ -206,10 +209,9 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
         </div>
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICheckboxListProps<ArmstrongId>>;
+  }) as (<Id extends ArmstrongId>(
+    props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ICheckboxListProps<ArmstrongId>>;
 
 CheckboxList.displayName = 'CheckboxList';

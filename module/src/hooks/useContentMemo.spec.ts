@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import * as React from 'react';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 
 import { useContentMemo } from './useContentMemo';
 

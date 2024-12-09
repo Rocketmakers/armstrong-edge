@@ -1,4 +1,5 @@
 import * as RadixRadioGroup from '@radix-ui/react-radio-group';
+import type { JSX } from 'react';
 import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
@@ -85,34 +86,35 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
 }
 
 /** Render a list of radio inputs which binds to a single string */
-export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<ArmstrongId>>(
-  (
-    {
-      bind,
-      options,
-      className,
-      value,
-      errorIcon,
-      validationMode,
-      validationErrorMessages,
-      onChange,
-      customIndicator,
-      error,
-      displaySize,
-      label,
-      labelClassName,
-      required,
-      disabled,
-      scrollValidationErrorsIntoView,
-      requiredIndicator,
-      displayMode,
-      validationErrorsClassName,
-      labelId,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const RadioGroup = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    bind,
+    options,
+    className,
+    value,
+    errorIcon,
+    validationMode,
+    validationErrorMessages,
+    onChange,
+    customIndicator,
+    error,
+    displaySize,
+    label,
+    labelClassName,
+    required,
+    disabled,
+    scrollValidationErrorsIntoView,
+    requiredIndicator,
+    displayMode = 'radio',
+    validationErrorsClassName,
+    labelId,
+    autoValidate,
+    ...nativeProps
+  }: IRadioGroupProps<ArmstrongId> & {
+    ref?: React.RefObject<HTMLDivElement>;
+  }) => {
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       validationErrorMessages,
@@ -209,14 +211,9 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
-
-RadioGroup.defaultProps = {
-  displayMode: 'radio',
-};
+  }) as (<Id extends ArmstrongId>(
+    props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
 
 RadioGroup.displayName = 'RadioGroup';

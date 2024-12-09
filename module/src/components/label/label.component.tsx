@@ -20,24 +20,32 @@ export interface ILabelProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>,
 }
 
 /** Render a status icon which can either be pending or errored */
-export const Label = React.forwardRef<HTMLLabelElement, ILabelProps>(
-  ({ required, className, requiredIndicator, children, displaySize, ...nativeProps }, ref) => {
-    const globals = useArmstrongConfig({
-      inputDisplaySize: displaySize,
-      requiredIndicator,
-    });
-    return (
-      <RadixLabel.Root
-        className={concat('arm-label', className)}
-        ref={ref}
-        data-size={globals.inputDisplaySize}
-        {...nativeProps}
-      >
-        {children}
-        {required && <span className="arm-label-required-indicator">&nbsp;{globals.requiredIndicator}</span>}
-      </RadixLabel.Root>
-    );
-  }
-);
+export const Label = ({
+  ref,
+  required,
+  className,
+  requiredIndicator,
+  children,
+  displaySize,
+  ...nativeProps
+}: ILabelProps & {
+  ref?: React.RefObject<HTMLLabelElement>;
+}) => {
+  const globals = useArmstrongConfig({
+    inputDisplaySize: displaySize,
+    requiredIndicator,
+  });
+  return (
+    <RadixLabel.Root
+      className={concat('arm-label', className)}
+      ref={ref}
+      data-size={globals.inputDisplaySize}
+      {...nativeProps}
+    >
+      {children}
+      {required && <span className="arm-label-required-indicator">&nbsp;{globals.requiredIndicator}</span>}
+    </RadixLabel.Root>
+  );
+};
 
 Label.displayName = 'Label';

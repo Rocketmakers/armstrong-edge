@@ -7,6 +7,8 @@ import { useArmstrongConfig } from '../config';
 
 import './characterLimit.theme.css';
 
+import type { JSX } from 'react';
+
 export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
   extends Omit<React.RefAttributes<HTMLDivElement>, 'ref'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
@@ -38,22 +40,23 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
-export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitProps<NullOrUndefined<string>>>(
-  (
-    {
-      bind,
-      limit,
-      shouldEnforce,
-      value,
-      className,
-      validationErrorIcon,
-      validationErrorsClassName,
-      validationErrorsTitle,
-      validationMode,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const CharacterLimit = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    bind,
+    limit,
+    shouldEnforce,
+    value,
+    className,
+    validationErrorIcon,
+    validationErrorsClassName,
+    validationErrorsTitle,
+    validationMode,
+    ...nativeProps
+  }: ICharacterLimitProps<NullOrUndefined<string>> & {
+    ref?: React.RefObject<HTMLDivElement>;
+  }) => {
     const globals = useArmstrongConfig({
       validationErrorIcon,
       validationMode,
@@ -84,12 +87,9 @@ export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitPr
         )}
       </div>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongFCProps<ICharacterLimitProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>;
+  }) as (<TBind extends NullOrUndefined<string>>(
+    props: ArmstrongFCProps<ICharacterLimitProps<TBind>, HTMLDivElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>;
 
 CharacterLimit.displayName = 'CharacterLimit';
