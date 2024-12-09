@@ -10,7 +10,20 @@ jobs:
 
   build:
     needs: setup
-    uses: ./.github/workflows/job_build.yml
+    steps:  
+      - name: Restore node modules cache
+        id: node-modules
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/module/node_modules
+            ${{ github.workspace }}/storybook/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Build
+        id: build
+        run: npm run build
+        working-directory: ./module
 
   chromatic-deployment:
     needs: build
