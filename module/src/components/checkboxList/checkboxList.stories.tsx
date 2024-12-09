@@ -1,6 +1,3 @@
-import { expect } from "@storybook/jest";
-/** metadata */
-
 import { expect } from "@storybook/test";
 import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, waitFor, within, fn } from "@storybook/test";
