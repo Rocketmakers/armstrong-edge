@@ -10,12 +10,12 @@
   "author": "developers@rocketmakers.com",
   "license": "MIT",
   "scripts": {
-    "setup": "asdf install && npm i && (cd module && npm i)",
+    "setup": "asdf install && npm i && (cd module && npm i) && (cd storybook && npm i)",
     "test": "(cd module && npm test)",
     "prepare": "husky install",
-    "build-storybook": "(cd module && npm run build-storybook)",
-    "storybook": "(cd module && npm run storybook)",
-    "test-storybook": "(cd module && npm run test-storybook)"
+    "build-storybook": "(cd storybook && npm run build-storybook)",
+    "storybook": "(cd storybook && npm run storybook)",
+    "test-storybook": "(cd storybook && npm run test-storybook)"
   },
   "devDependencies": {
     "commitizen": "4.3.0",
