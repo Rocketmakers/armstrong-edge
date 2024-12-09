@@ -37,12 +37,12 @@ jobs:
 
       - name: Install module node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
-        id: install-node-dependencies
+        id: install-module-node-dependencies
         run: npm ci --legacy-peer-deps
         working-directory: ./module
 
       - name: Install storybook node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
-        id: install-node-dependencies
+        id: install-storybook-node-dependencies
         run: npm ci --legacy-peer-deps
         working-directory: ./storybook
