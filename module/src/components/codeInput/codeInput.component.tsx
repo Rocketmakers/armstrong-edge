@@ -136,6 +136,10 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   autoValidate?: boolean;
 }
 
+interface IInternalFormState {
+  parts: string[];
+}
+
 export const CodeInput = // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
   (({
@@ -178,6 +182,26 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
       autoValidate,
     });
 
+    const getValueForPart = React.useCallback(
+      (partIndex: number, incomingValue: NullOrUndefined<string>) => {
+        const sliceStart = parts
+          .slice(0, partIndex)
+          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
+        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
+
+        return incomingValue?.slice(sliceStart, sliceEnd) || '';
+      },
+      [parts]
+    );
+
+    const boundValueArray = React.useMemo(() => {
+      return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
+    }, [getValueForPart, parts, boundValue]);
+
+    const { formProp, formState } = useForm<IInternalFormState>({
+      parts: boundValueArray,
+    });
+
     const globals = useArmstrongConfig({
       validationMode: bindConfig.validationMode,
       inputStatusPosition: statusPosition,
@@ -209,18 +233,6 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
         if (previousIndex !== -1) {
           inputRefs.current[previousIndex]?.focus();
         }
-      },
-      [parts]
-    );
-
-    const getValueForPart = React.useCallback(
-      (partIndex: number, incomingValue: NullOrUndefined<string>) => {
-        const sliceStart = parts
-          .slice(0, partIndex)
-          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
-        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
-
-        return incomingValue?.slice(sliceStart, sliceEnd) || '';
       },
       [parts]
     );
@@ -270,10 +282,6 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
       [setBoundValue, boundValue, parts]
     );
 
-    const boundValueArray = React.useMemo(() => {
-      return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
-    }, [getValueForPart, parts, boundValue]);
-
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
         switch (event.key) {
@@ -302,14 +310,6 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
       },
       [goPreviousPart, goNextPart, parts]
     );
-
-    interface IFormState {
-      parts: string[];
-    }
-
-    const { formProp, formState } = useForm<IFormState>({
-      parts: boundValueArray,
-    });
 
     React.useEffect(() => {
       setBoundValue?.(formState?.parts?.join(''));

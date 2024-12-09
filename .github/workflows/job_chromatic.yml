@@ -18,11 +18,6 @@ jobs:
 
       - uses: ./.github/actions/install-node-and-pnpm
 
-      - name: Install storybook node modules
-        id: storybook-node-modules
-        run: npm install
-        working-directory: ./storybook
-
       - name: Publish to Chromatic
         uses: chromaui/action@latest
         with:
