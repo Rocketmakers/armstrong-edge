@@ -22,10 +22,7 @@ jobs:
 
       - name: Build
         id: build
-        run: |
-          (cd ../ && ls -la)
-          ls -la
-          npm run build
+        run: npm run build
         working-directory: ./module
 
       - name: Upload Build Artifact
