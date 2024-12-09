@@ -30,13 +30,12 @@ jobs:
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Publish to Chromatic
-        uses: chromaui/action@v1
+        uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true
-          buildScriptName: build-storybook
+          buildScriptName: npm i && build-storybook
           workingDir: ./storybook
           exitOnceUploaded: true
-        working-directory: ./storybook
         env:
           CHROMATIC_RETRIES: 3
