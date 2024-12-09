@@ -1,10 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { concat } from '../../utils/classNames';
-import { useArmstrongConfig } from '../config';
-import { Spinner } from '../spinner';
+import { concat } from "../../utils/classNames";
+import { useArmstrongConfig } from "../config";
+import { Spinner } from "../spinner";
 
-import './status.theme.css';
+import "./status.theme.css";
 
 export interface IStatusProps {
   /** show a spinner */
@@ -37,7 +37,7 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
     return (
       <div
         ref={ref}
-        className={concat('arm-status', className)}
+        className={concat("arm-status", className)}
         data-active={!!pending || !!error ? true : undefined}
         data-error={!!error && !pending ? true : undefined}
         data-pending={pending ? true : undefined}
@@ -45,10 +45,16 @@ export const Status = React.forwardRef<HTMLDivElement, IStatusProps>(
         {...rest}
       >
         {error && !pending && globals.validationErrorIcon}
-        {pending && <Spinner className="arm-status-spinner" fillContainer={false} icon={globals.spinnerIcon} />}
+        {pending && (
+          <Spinner
+            className="arm-status-spinner"
+            fillContainer={false}
+            icon={globals.spinnerIcon}
+          />
+        )}
       </div>
     );
   }
 );
 
-Status.displayName = 'Status';
+Status.displayName = "Status";

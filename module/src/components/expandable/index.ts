@@ -1,1 +1,1 @@
-export * from './expandable.component';
+export * from "./expandable.component";

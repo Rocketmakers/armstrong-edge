@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { ToastContext } from './toast.context';
+import { ToastContext } from "./toast.context";
 
 /**
  * Simple hook allowing global toast messages to be dispatched.

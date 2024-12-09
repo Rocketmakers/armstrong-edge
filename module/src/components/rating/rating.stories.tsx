@@ -1,3 +1,4 @@
+import { expect } from "@storybook/jest";
 import { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within, fn } from "@storybook/test";
 import * as React from "react";

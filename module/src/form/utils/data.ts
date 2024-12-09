@@ -3,8 +3,8 @@
  * --------------------------------------
  * Useful functions relating to the form state data object
  */
-import type { FormAction, InitialDataFunction } from '../types';
-import { mergeDeepFromKeyChain } from './keyChain';
+import type { FormAction, InitialDataFunction } from "../types";
+import { mergeDeepFromKeyChain } from "./keyChain";
 
 /**
  * Detects whether the incoming initial form data is a callback or an object and casts appropriately.
@@ -14,7 +14,7 @@ import { mergeDeepFromKeyChain } from './keyChain';
 export function initialDataIsCallback<TData extends object>(
   initialData?: TData | InitialDataFunction<TData>
 ): initialData is InitialDataFunction<TData> {
-  return typeof initialData === 'function';
+  return typeof initialData === "function";
 }
 
 /**
@@ -23,9 +23,12 @@ export function initialDataIsCallback<TData extends object>(
  * @param action The action to respond to.
  * @returns The updated state.
  */
-export function dataReducer<TData extends object>(state: TData, action: FormAction<TData, unknown>): TData {
+export function dataReducer<TData extends object>(
+  state: TData,
+  action: FormAction<TData, unknown>
+): TData {
   switch (action.type) {
-    case 'set-one':
+    case "set-one":
       return (
         Array.isArray(state) || Number.isInteger(action.propertyKey)
           ? ((state as unknown[]) || []).map((_, i) =>
@@ -33,10 +36,12 @@ export function dataReducer<TData extends object>(state: TData, action: FormActi
             )
           : { ...(state || {}), [action.propertyKey]: action.value }
       ) as TData;
-    case 'set-path':
+    case "set-path":
       return mergeDeepFromKeyChain(state, action.keyChain, action.value);
-    case 'set-all':
-      return (Array.isArray(action.data) ? [...action.data] : { ...action.data }) as TData;
+    case "set-all":
+      return (
+        Array.isArray(action.data) ? [...action.data] : { ...action.data }
+      ) as TData;
     default:
       return state;
   }
@@ -54,7 +59,7 @@ export const hasTruthyProperty = <T>(obj?: T): boolean => {
     return false;
   }
   for (const key of Object.keys(obj)) {
-    if (typeof obj[key] === 'object' && obj[key] !== null) {
+    if (typeof obj[key] === "object" && obj[key] !== null) {
       if (hasTruthyProperty(obj[key])) return true;
     } else if (obj[key]) {
       return true;

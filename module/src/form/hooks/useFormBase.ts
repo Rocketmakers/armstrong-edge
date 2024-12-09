@@ -4,9 +4,9 @@
  * Base React hook for form binding
  * NOTE: This hook shouldn't be used by consuming apps, it's used by `useForm` and `useChildForm`
  */
-import * as React from 'react';
+import * as React from "react";
 
-import { useContentMemo } from '../../hooks/useContentMemo';
+import { useContentMemo } from "../../hooks/useContentMemo";
 import type {
   BindingTools,
   FormDispatcher,
@@ -19,10 +19,14 @@ import type {
   TouchedState,
   ValidationDispatcher,
   ValidationMessage,
-} from '../types';
-import { isArrayValue, keyStringFromKeyChain, valueByKeyChain } from '../utils/keyChain';
-import { touchedStateForKeyChain } from '../utils/touchedState';
-import { validationErrorsByKeyChain } from '../utils/validation';
+} from "../types";
+import {
+  isArrayValue,
+  keyStringFromKeyChain,
+  valueByKeyChain,
+} from "../utils/keyChain";
+import { touchedStateForKeyChain } from "../utils/touchedState";
+import { validationErrorsByKeyChain } from "../utils/validation";
 
 /**
  * The base hook used by both of the `useForm` hooks.
@@ -56,10 +60,14 @@ export const useFormBase = <TData extends object>(
   globalTouchOverride?: boolean,
   parentKeyChain?: KeyChain
 ): HookReturn<TData> => {
-  const formConfig = useContentMemo(formConfigObject) as IFormConfig<unknown> | undefined;
+  const formConfig = useContentMemo(formConfigObject) as
+    | IFormConfig<unknown>
+    | undefined;
   const initialData = useContentMemo(initialDataObject);
 
-  const [isGlobalTouched, setGlobalTouched] = React.useState(globalTouchOverride ?? false);
+  const [isGlobalTouched, setGlobalTouched] = React.useState(
+    globalTouchOverride ?? false
+  );
 
   /**
    * For setting a new value for a target property
@@ -67,9 +75,13 @@ export const useFormBase = <TData extends object>(
   const set = React.useCallback(
     (keyChain: KeyChain, newValue: unknown) => {
       if (keyChain.length === 1) {
-        dispatch({ type: 'set-one', propertyKey: keyChain[0], value: newValue });
+        dispatch({
+          type: "set-one",
+          propertyKey: keyChain[0],
+          value: newValue,
+        });
       } else {
-        dispatch({ type: 'set-path', keyChain, value: newValue });
+        dispatch({ type: "set-path", keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -84,7 +96,7 @@ export const useFormBase = <TData extends object>(
    */
   const addValidationError = React.useCallback(
     (...errors: IValidationError[]) => {
-      clientValidationDispatcher({ type: 'add-validation', errors });
+      clientValidationDispatcher({ type: "add-validation", errors });
     },
     [clientValidationDispatcher]
   );
@@ -93,10 +105,16 @@ export const useFormBase = <TData extends object>(
    * For adding a validation error against a specific property from a keyChain.
    */
   const addValidationErrorFromKeyChain = React.useCallback(
-    (keyChain: KeyChain, messages: ValidationMessage | ValidationMessage[], identifier?: string) => {
+    (
+      keyChain: KeyChain,
+      messages: ValidationMessage | ValidationMessage[],
+      identifier?: string
+    ) => {
       const messageArray = Array.isArray(messages) ? messages : [messages];
-      const key = keyStringFromKeyChain(keyChain, 'dots');
-      addValidationError(...messageArray.map(message => ({ key, message, identifier })));
+      const key = keyStringFromKeyChain(keyChain, "dots");
+      addValidationError(
+        ...messageArray.map((message) => ({ key, message, identifier }))
+      );
     },
     [addValidationError]
   );
@@ -107,7 +125,7 @@ export const useFormBase = <TData extends object>(
   const clearClientValidationErrors = React.useCallback(
     (...identifiers: string[]) => {
       clientValidationDispatcher({
-        type: 'clear-validation',
+        type: "clear-validation",
         identifiers: identifiers.length ? identifiers : undefined,
       });
     },
@@ -119,10 +137,18 @@ export const useFormBase = <TData extends object>(
    */
   const clearValidationErrorsByKeyChain = React.useCallback(
     (keyChain: KeyChain, identifiers?: string[]) => {
-      const dotKey = keyStringFromKeyChain(keyChain, 'dots');
-      const bracketKey = keyStringFromKeyChain(keyChain, 'brackets');
-      clientValidationDispatcher({ type: 'clear-validation', key: dotKey, identifiers });
-      clientValidationDispatcher({ type: 'clear-validation', key: bracketKey, identifiers });
+      const dotKey = keyStringFromKeyChain(keyChain, "dots");
+      const bracketKey = keyStringFromKeyChain(keyChain, "brackets");
+      clientValidationDispatcher({
+        type: "clear-validation",
+        key: dotKey,
+        identifiers,
+      });
+      clientValidationDispatcher({
+        type: "clear-validation",
+        key: bracketKey,
+        identifiers,
+      });
     },
     [clientValidationDispatcher]
   );
@@ -132,10 +158,10 @@ export const useFormBase = <TData extends object>(
    */
   const add = React.useCallback(
     (keyChain: KeyChain, currentValue: unknown, newItem: unknown) => {
-      if (isArrayValue(currentValue, 'formProp.add')) {
+      if (isArrayValue(currentValue, "formProp.add")) {
         const newValue = [...(currentValue ?? [])];
         newValue.push(newItem);
-        dispatch({ type: 'set-path', keyChain, value: newValue });
+        dispatch({ type: "set-path", keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -146,10 +172,10 @@ export const useFormBase = <TData extends object>(
    */
   const remove = React.useCallback(
     (keyChain: KeyChain, currentValue: unknown[], index: number) => {
-      if (isArrayValue(currentValue, 'formProp.remove')) {
+      if (isArrayValue(currentValue, "formProp.remove")) {
         const newValue = [...(currentValue ?? [])];
         newValue.splice(index, 1);
-        dispatch({ type: 'set-path', keyChain, value: newValue });
+        dispatch({ type: "set-path", keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -159,11 +185,16 @@ export const useFormBase = <TData extends object>(
    * For inserting an item into a target array property at a specific index (will be available to array properties only.)
    */
   const insert = React.useCallback(
-    (keyChain: KeyChain, currentValue: unknown[], index: number, newItem: unknown) => {
-      if (isArrayValue(currentValue, 'formProp.insert')) {
+    (
+      keyChain: KeyChain,
+      currentValue: unknown[],
+      index: number,
+      newItem: unknown
+    ) => {
+      if (isArrayValue(currentValue, "formProp.insert")) {
         const newValue = [...(currentValue ?? [])];
         newValue.splice(index, 0, newItem);
-        dispatch({ type: 'set-path', keyChain, value: newValue });
+        dispatch({ type: "set-path", keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -174,10 +205,10 @@ export const useFormBase = <TData extends object>(
    */
   const pop = React.useCallback(
     (keyChain: KeyChain, currentValue: unknown[]) => {
-      if (isArrayValue(currentValue, 'formProp.pop')) {
+      if (isArrayValue(currentValue, "formProp.pop")) {
         const newValue = [...(currentValue ?? [])];
         newValue.pop();
-        dispatch({ type: 'set-path', keyChain, value: newValue });
+        dispatch({ type: "set-path", keyChain, value: newValue });
       }
     },
     [dispatch]
@@ -188,7 +219,7 @@ export const useFormBase = <TData extends object>(
    */
   const setTouched = React.useCallback(
     (keyChain: KeyChain, touched: boolean) => {
-      touchedStateDispatcher({ type: 'set-touched', keyChain, touched });
+      touchedStateDispatcher({ type: "set-touched", keyChain, touched });
     },
     [touchedStateDispatcher]
   );
@@ -204,7 +235,10 @@ export const useFormBase = <TData extends object>(
   const bind = React.useCallback(
     (keyChain: KeyChain, bindConfig?: IBindConfig<unknown>) => {
       const myTouchedState = touchedStateForKeyChain(touchedState, keyChain);
-      const myValidationErrors = validationErrorsByKeyChain(combinedValidationErrors, keyChain);
+      const myValidationErrors = validationErrorsByKeyChain(
+        combinedValidationErrors,
+        keyChain
+      );
       return {
         value: valueByKeyChain(formStateLive, keyChain),
         setValue: (newValue: unknown) => set(keyChain, newValue),
@@ -213,24 +247,36 @@ export const useFormBase = <TData extends object>(
         myValidationErrors,
         dispatch,
         keyChain,
-        fullKeyChain: parentKeyChain ? [...parentKeyChain, ...keyChain] : keyChain,
+        fullKeyChain: parentKeyChain
+          ? [...parentKeyChain, ...keyChain]
+          : keyChain,
         initialValue: valueByKeyChain(initialData, keyChain),
-        addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) =>
-          addValidationErrorFromKeyChain(keyChain, messages, identifier),
+        addValidationError: (
+          messages: ValidationMessage | ValidationMessage[],
+          identifier?: string
+        ) => addValidationErrorFromKeyChain(keyChain, messages, identifier),
         clearClientValidationErrors: (...identifiers: string[]) =>
           clearValidationErrorsByKeyChain(keyChain, identifiers),
         setTouched: (isTouched: boolean) => setTouched(keyChain, isTouched),
-        isTouched: !!myTouchedState.length || isGlobalTouched || !!globalTouchOverride,
+        isTouched:
+          !!myTouchedState.length || isGlobalTouched || !!globalTouchOverride,
         myTouchedState,
         clientValidationDispatcher,
         touchedStateDispatcher,
         allTouched: isGlobalTouched,
-        validate: (andSetInputToTouched = true, silent = false, validateAll = false) => {
+        validate: (
+          andSetInputToTouched = true,
+          silent = false,
+          validateAll = false
+        ) => {
           if (andSetInputToTouched) {
             setTouched(keyChain, true);
           }
 
-          return parseValidationSchema(validateAll ? undefined : keyChain, silent);
+          return parseValidationSchema(
+            validateAll ? undefined : keyChain,
+            silent
+          );
         },
         isValid: !myValidationErrors.length,
         parseValidationSchema,
@@ -280,8 +326,14 @@ export const useFormBase = <TData extends object>(
   const formProp = React.useCallback(
     (...keyChain: KeyChain): BindingTools<Required<TData>> => {
       const value = valueByKeyChain(formStateRef.current, keyChain);
-      const myTouchedState = touchedStateForKeyChain(touchedStateRef.current, keyChain);
-      const myValidationErrors = validationErrorsByKeyChain(combinedValidationErrors, keyChain);
+      const myTouchedState = touchedStateForKeyChain(
+        touchedStateRef.current,
+        keyChain
+      );
+      const myValidationErrors = validationErrorsByKeyChain(
+        combinedValidationErrors,
+        keyChain
+      );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is safe
       const methods: BindingTools<any> = {
         bind: (bindConfig?: IBindConfig<unknown>) => bind(keyChain, bindConfig),
@@ -310,7 +362,10 @@ export const useFormBase = <TData extends object>(
           remove(keyChain, value as unknown[], index);
           return formProp(...keyChain) as BindingTools<unknown>;
         },
-        addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => {
+        addValidationError: (
+          messages: ValidationMessage | ValidationMessage[],
+          identifier?: string
+        ) => {
           addValidationErrorFromKeyChain(keyChain, messages, identifier);
           return formProp(...keyChain) as BindingTools<unknown>;
         },
@@ -324,7 +379,8 @@ export const useFormBase = <TData extends object>(
           }
           return parseValidationSchema(keyChain, silent);
         },
-        isTouched: !!myTouchedState.length || isGlobalTouched || !!globalTouchOverride,
+        isTouched:
+          !!myTouchedState.length || isGlobalTouched || !!globalTouchOverride,
         setTouched: (isTouched: boolean) => {
           setTouched(keyChain, isTouched);
           return formProp(...keyChain) as BindingTools<unknown>;
@@ -363,7 +419,7 @@ export const useFormBase = <TData extends object>(
    * Resets form data to it's latest "initial" state.
    */
   const resetFormData = React.useCallback(() => {
-    dispatch({ type: 'set-all', data: initialData });
+    dispatch({ type: "set-all", data: initialData });
   }, [initialData, dispatch]);
 
   /**
@@ -371,7 +427,7 @@ export const useFormBase = <TData extends object>(
    */
   const setFormData = React.useCallback(
     (newFormData: TData) => {
-      return dispatch({ type: 'set-all', data: newFormData });
+      return dispatch({ type: "set-all", data: newFormData });
     },
     [dispatch]
   );
@@ -381,7 +437,7 @@ export const useFormBase = <TData extends object>(
    */
   const resetTouchedState = React.useCallback(() => {
     setGlobalTouched(false);
-    touchedStateDispatcher({ type: 'reset-touched' });
+    touchedStateDispatcher({ type: "reset-touched" });
   }, [touchedStateDispatcher]);
 
   return {
@@ -395,7 +451,8 @@ export const useFormBase = <TData extends object>(
     validate,
     touchAll: () => setGlobalTouched(true),
     allTouched: isGlobalTouched,
-    isValid: !clientValidationErrors.length && !formConfig?.validationErrors?.length,
+    isValid:
+      !clientValidationErrors.length && !formConfig?.validationErrors?.length,
     resetTouchedState,
   };
 };

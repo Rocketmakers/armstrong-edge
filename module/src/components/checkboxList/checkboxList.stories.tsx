@@ -1,3 +1,4 @@
+import { expect } from "@storybook/jest";
 /** metadata */
 
 import { expect } from "@storybook/test";

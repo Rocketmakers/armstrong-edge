@@ -1,1 +1,1 @@
-export * from './rangeInput.component';
+export * from "./rangeInput.component";

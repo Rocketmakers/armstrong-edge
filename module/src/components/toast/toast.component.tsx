@@ -1,10 +1,10 @@
-import * as RadixToast from '@radix-ui/react-toast';
-import * as React from 'react';
+import * as RadixToast from "@radix-ui/react-toast";
+import * as React from "react";
 
-import { concat } from '../../utils';
-import type { IToast, ToastPosition } from './toast.context';
+import { concat } from "../../utils";
+import type { IToast, ToastPosition } from "./toast.context";
 
-import './toast.theme.css';
+import "./toast.theme.css";
 
 export interface IToastProps extends IToast {
   /** where to position the toast, defaults to "bottom-right" */
@@ -28,15 +28,21 @@ export const Toast: React.FC<IToastProps> = ({
 }) => {
   return (
     <RadixToast.Root
-      className={concat('arm-toast', className)}
+      className={concat("arm-toast", className)}
       duration={duration}
       data-position={position}
       data-testid={testId}
       aria-label="Notification"
       {...additionalProps}
     >
-      {title && <RadixToast.Title className="arm-toast-title">{title}</RadixToast.Title>}
-      {description && <RadixToast.Description className="arm-toast-description">{description}</RadixToast.Description>}
+      {title && (
+        <RadixToast.Title className="arm-toast-title">{title}</RadixToast.Title>
+      )}
+      {description && (
+        <RadixToast.Description className="arm-toast-description">
+          {description}
+        </RadixToast.Description>
+      )}
       {closeButtonIcon !== false && !hideClose && (
         <RadixToast.Close className="arm-toast-close" aria-label="Close">
           {closeButtonIcon}
@@ -47,4 +53,4 @@ export const Toast: React.FC<IToastProps> = ({
   );
 };
 
-Toast.displayName = 'Toast';
+Toast.displayName = "Toast";

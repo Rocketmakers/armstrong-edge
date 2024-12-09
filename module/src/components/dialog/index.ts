@@ -1,2 +1,2 @@
-export * from './dialog.component';
-export * from './dialog.hooks';
+export * from "./dialog.component";
+export * from "./dialog.hooks";

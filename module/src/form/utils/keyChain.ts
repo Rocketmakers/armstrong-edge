@@ -3,7 +3,7 @@
  * --------------------------------------
  * Useful functions relating to the "key chain" system of interrogating a nested state object through an array of string keys
  */
-import type { KeyChain } from '../types';
+import type { KeyChain } from "../types";
 
 /**
  * Returns a specific value from within a nested form state based on a `keyChain`.
@@ -11,7 +11,10 @@ import type { KeyChain } from '../types';
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
  * @returns The value if one is set, else undefined.
  */
-export function valueByKeyChain<TData extends object>(state?: TData, keyChain?: KeyChain): unknown {
+export function valueByKeyChain<TData extends object>(
+  state?: TData,
+  keyChain?: KeyChain
+): unknown {
   if (!keyChain?.length) {
     return state;
   }
@@ -38,12 +41,14 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
     if (Array.isArray(value)) {
       return [...value] as TObject;
     }
-    if (typeof value === 'object') {
+    if (typeof value === "object") {
       return { ...value } as unknown as TObject;
     }
   }
   const output = (
-    Array.isArray(target) || Number.isInteger(keyChain[0]) ? [...((target || []) as unknown[])] : { ...(target || {}) }
+    Array.isArray(target) || Number.isInteger(keyChain[0])
+      ? [...((target || []) as unknown[])]
+      : { ...(target || {}) }
   ) as TObject;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- "any" is almost never the correct type, but this is a reference variable for a recursive loop through a mixed state object, it could genuinely be anything.
   let bookmarkRef = output as any;
@@ -52,7 +57,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
     if (i === keyChain.length - 1) {
       if (Array.isArray(value)) {
         bookmarkRef[key] = [...value];
-      } else if (typeof value === 'object') {
+      } else if (typeof value === "object") {
         bookmarkRef[key] = { ...value };
       } else {
         bookmarkRef[key] = value;
@@ -60,7 +65,7 @@ export function mergeDeepFromKeyChain<TObject extends object, TValue>(
     } else if (Array.isArray(bookmarkRef[key])) {
       bookmarkRef[key] = [...bookmarkRef[key]];
       bookmarkRef = bookmarkRef[key];
-    } else if (typeof bookmarkRef[key] === 'object') {
+    } else if (typeof bookmarkRef[key] === "object") {
       bookmarkRef[key] = { ...bookmarkRef[key] };
       bookmarkRef = bookmarkRef[key];
     } else if (Number.isInteger(key)) {
@@ -85,11 +90,15 @@ export function childKeyChainStringFromParent(
   parentKeyChain: KeyChain | undefined
 ): string {
   // make the parent key regex safe
-  const regexSafeParent = parentKeyChain?.join('.').replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') ?? '';
+  const regexSafeParent =
+    parentKeyChain?.join(".").replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&") ?? "";
   // remove the parent keyChain from the beginning of the child string.
-  const childWithoutParent = childKeyChainString.replace(new RegExp(`^${regexSafeParent}`), '');
+  const childWithoutParent = childKeyChainString.replace(
+    new RegExp(`^${regexSafeParent}`),
+    ""
+  );
   // strip accessor tokens (. | [n].) from the beginning of the child keyChain string and return.
-  return childWithoutParent.replace(/^.*?\./, '');
+  return childWithoutParent.replace(/^.*?\./, "");
 }
 
 /**
@@ -98,7 +107,10 @@ export function childKeyChainStringFromParent(
  * @param attemptedAction The action being attempted on the form prop.
  * @returns Throws if not an array or returns true with a cast.
  */
-export function isArrayValue(value: unknown, attemptedAction: string): value is unknown[] {
+export function isArrayValue(
+  value: unknown,
+  attemptedAction: string
+): value is unknown[] {
   if (value && !Array.isArray(value)) {
     throw new Error(
       `"${attemptedAction}" cannot be used on a set form property that does not contain an array value, the current value of this property is: ${JSON.stringify(
@@ -115,24 +127,29 @@ export function isArrayValue(value: unknown, attemptedAction: string): value is 
  * @param mode (dots|brackets) Whether to use dot syntax for array indexes, or square brackets.
  * @returns The key string
  */
-export function keyStringFromKeyChain(keyChain: KeyChain | undefined, mode: 'dots' | 'brackets'): string {
+export function keyStringFromKeyChain(
+  keyChain: KeyChain | undefined,
+  mode: "dots" | "brackets"
+): string {
   switch (mode) {
-    case 'dots':
-      return keyChain?.filter(key => !!key).join('.') ?? '';
-    case 'brackets':
+    case "dots":
+      return keyChain?.filter((key) => !!key).join(".") ?? "";
+    case "brackets":
       return (
         keyChain?.reduce<string>((attrString, key) => {
-          if (typeof key === 'string') {
-            return `${attrString}${attrString ? `.` : ''}${key}`;
+          if (typeof key === "string") {
+            return `${attrString}${attrString ? `.` : ""}${key}`;
           }
-          if (typeof key === 'number') {
+          if (typeof key === "number") {
             return `${attrString}[${key}]`;
           }
           return attrString;
-        }, '') ?? ''
+        }, "") ?? ""
       );
     default:
-      throw new Error(`Unsupported mode: ${mode} sent to validation key factory`);
+      throw new Error(
+        `Unsupported mode: ${mode} sent to validation key factory`
+      );
   }
 }
 
@@ -142,12 +159,15 @@ export function keyStringFromKeyChain(keyChain: KeyChain | undefined, mode: 'dot
  * @param propertyKeyChains The property keyChain strings to check
  * @returns {boolean} `true` if the validation error belongs to (or is a child of) one of the passed property keyChains, else `false`.
  */
-export function isMyKeyChainItem(itemKey: string | undefined, ...propertyKeyChains: KeyChain): boolean {
+export function isMyKeyChainItem(
+  itemKey: string | undefined,
+  ...propertyKeyChains: KeyChain
+): boolean {
   if (!itemKey) {
     return true;
   }
 
-  return propertyKeyChains.some(propertyKeyChain => {
+  return propertyKeyChains.some((propertyKeyChain) => {
     return (
       propertyKeyChain === itemKey ||
       itemKey.indexOf(`${propertyKeyChain}.`) === 0 ||

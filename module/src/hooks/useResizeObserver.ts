@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { isBrowser, supportsResizeObserver } from '../utils/globals';
-import { useContentMemo } from './useContentMemo';
-import { useSSRLayoutEffect } from './useSSRLayoutEffect';
+import { isBrowser, supportsResizeObserver } from "../utils/globals";
+import { useContentMemo } from "./useContentMemo";
+import { useSSRLayoutEffect } from "./useSSRLayoutEffect";
 
 /**
  * Use an resize observer to fire the passed callback - also cleans up on unmount. Can either be used by just passing in a ref, or by using the functions returned to observe and disconnect

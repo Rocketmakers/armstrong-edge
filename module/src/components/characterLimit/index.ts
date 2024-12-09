@@ -1,1 +1,1 @@
-export * from './characterLimit.component';
+export * from "./characterLimit.component";

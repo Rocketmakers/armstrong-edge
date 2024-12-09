@@ -1,19 +1,31 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { IBindingProps, useBindingState } from '../../form';
-import { useDebounce } from '../../hooks/useDebounce';
-import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
-import { concat } from '../../utils/classNames';
-import { onBlurWorkaround } from '../../workarounds/radixDialog';
-import { useArmstrongConfig } from '../config';
-import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
+import { IBindingProps, useBindingState } from "../../form";
+import { useDebounce } from "../../hooks/useDebounce";
+import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCProps,
+  ArmstrongFCReturn,
+  DisplaySize,
+  NullOrUndefined,
+} from "../../types";
+import { concat } from "../../utils/classNames";
+import { onBlurWorkaround } from "../../workarounds/radixDialog";
+import { useArmstrongConfig } from "../config";
+import {
+  IInputWrapperProps,
+  InputWrapper,
+} from "../inputWrapper/inputWrapper.component";
 
-import './textArea.theme.css';
+import "./textArea.theme.css";
 
 type NativeTextAreaProps = Omit<
-  React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
-  'value' | 'ref'
+  React.DetailedHTMLProps<
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
+  >,
+  "value" | "ref"
 >;
 
 interface IDelayedTextAreaBaseProps<TValue> extends NativeTextAreaProps {
@@ -27,27 +39,40 @@ interface IDelayedTextAreaBaseProps<TValue> extends NativeTextAreaProps {
   value?: TValue;
 }
 
-const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextAreaBaseProps<string>>(
-  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-    const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
+const DebounceTextAreaBase = React.forwardRef<
+  HTMLTextAreaElement,
+  IDelayedTextAreaBaseProps<string>
+>(({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
+  const [actualValue, setActualValue] = useDebounce(
+    milliseconds,
+    value,
+    onValueChange
+  );
 
-    const onChangeEvent = React.useCallback(
-      (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setActualValue(e.currentTarget.value);
-        onChange?.(e);
-      },
-      [setActualValue, onChange]
-    );
+  const onChangeEvent = React.useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setActualValue(e.currentTarget.value);
+      onChange?.(e);
+    },
+    [setActualValue, onChange]
+  );
 
-    return <textarea ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
-  }
-);
+  return (
+    <textarea
+      ref={ref}
+      value={actualValue}
+      onChange={onChangeEvent}
+      {...nativeProps}
+    />
+  );
+});
 
-DebounceTextAreaBase.displayName = 'DebounceInput';
+DebounceTextAreaBase.displayName = "DebounceInput";
 
-export interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefined<number>>
-  extends NativeTextAreaProps,
-    Omit<IInputWrapperProps, 'onClick' | 'onValueChange'> {
+export interface ITextAreaProps<
+  TValue extends NullOrUndefined<string> | NullOrUndefined<number>
+> extends NativeTextAreaProps,
+    Omit<IInputWrapperProps, "onClick" | "onValueChange"> {
   /** A class name to apply to the input element */
   textAreaClassName?: string;
 
@@ -77,7 +102,10 @@ export interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrU
 }
 
 /** A component which wraps up a native text area element with some binding logic, labels and validation errors. */
-export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<string>>(
+export const TextArea = React.forwardRef<
+  HTMLTextAreaElement,
+  ITextAreaProps<string>
+>(
   (
     {
       bind,
@@ -137,7 +165,8 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
 
     const onBindValueChange = React.useCallback(
       (currentValue?: string) => {
-        const formattedValue = bind?.bindConfig?.format?.toData?.(currentValue) || currentValue;
+        const formattedValue =
+          bind?.bindConfig?.format?.toData?.(currentValue) || currentValue;
         setBoundValue(formattedValue);
       },
       [setBoundValue, bind]
@@ -182,9 +211,9 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
 
     const textAreaProps: NativeTextAreaProps & { value?: string } = {
       id,
-      className: concat('arm-text-area', textAreaClassName),
+      className: concat("arm-text-area", textAreaClassName),
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
-      value: boundValue?.toString() ?? (bind && ''),
+      value: boundValue?.toString() ?? (bind && ""),
       disabled,
       onBlur: onBlurEvent,
     };
@@ -192,9 +221,12 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
     return (
       <InputWrapper
         data-size={globals.inputDisplaySize}
-        className={concat(className, 'arm-text-area-wrapper')}
-        statusClassName={concat(statusClassName, 'arm-text-area-status')}
-        validationErrorsClassName={concat(validationErrorsClassName, 'arm-text-area-validation')}
+        className={concat(className, "arm-text-area-wrapper")}
+        statusClassName={concat(statusClassName, "arm-text-area-status")}
+        validationErrorsClassName={concat(
+          validationErrorsClassName,
+          "arm-text-area-validation"
+        )}
         validationErrorMessages={bindConfig.validationErrorMessages}
         errorIcon={bindConfig.validationErrorIcon}
         validationMode={bindConfig.validationMode}
@@ -206,7 +238,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
         hideIconOnStatus={globals.hideInputErrorIconOnStatus}
         label={label}
         labelId={labelId ?? id}
-        labelClassName={concat(labelClassName, 'arm-text-area-label')}
+        labelClassName={concat(labelClassName, "arm-text-area-label")}
         required={required}
         requiredIndicator={globals.requiredIndicator}
         data-testid={testId}
@@ -225,7 +257,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
         )}
         {!delay && (
           <textarea
-            className={'arm-text-area'}
+            className={"arm-text-area"}
             {...nativeProps}
             {...textAreaProps}
             onChange={onChangeEvent}
@@ -243,4 +275,4 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ITextAreaProps<string>>;
 
-TextArea.displayName = 'Text Area';
+TextArea.displayName = "Text Area";

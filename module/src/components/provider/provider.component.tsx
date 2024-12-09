@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import * as React from 'react';
+import * as React from "react";
 
-import { ArmstrongConfigProvider, IArmstrongConfig } from '../config';
-import { ToastProvider } from '../toast';
+import { ArmstrongConfigProvider, IArmstrongConfig } from "../config";
+import { ToastProvider } from "../toast";
 
 /** Props type for the unified armstrong provider */
 export interface IArmstrongProviderProps extends React.PropsWithChildren {
@@ -11,7 +11,10 @@ export interface IArmstrongProviderProps extends React.PropsWithChildren {
   config?: IArmstrongConfig;
 }
 
-export const ArmstrongProvider: React.FC<IArmstrongProviderProps> = ({ children, config = {} }) => {
+export const ArmstrongProvider: React.FC<IArmstrongProviderProps> = ({
+  children,
+  config = {},
+}) => {
   return (
     <ArmstrongConfigProvider {...config}>
       <ToastProvider>{children}</ToastProvider>

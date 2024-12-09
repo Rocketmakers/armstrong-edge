@@ -19,7 +19,11 @@ export function getPercent(value: number, total: number) {
 }
 
 /** lerp between two numbers based on a progress */
-export function lerp(start: number, end: number, /** out of 100 */ progress: number): number {
+export function lerp(
+  start: number,
+  end: number,
+  /** out of 100 */ progress: number
+): number {
   const clampedProgress = clamp(progress, 0, 100);
 
   return start + ((end - start) / 100) * clampedProgress;
@@ -30,7 +34,9 @@ export function multiLerp(breakpoints: number[], progress: number): number {
   const clampedProgress = clamp(progress, 0, 100);
   const breakpointSpacing = 100 / (breakpoints.length - 1);
 
-  const previousBreakpointIndex = Math.floor(clampedProgress / breakpointSpacing);
+  const previousBreakpointIndex = Math.floor(
+    clampedProgress / breakpointSpacing
+  );
   const nextBreakpointIndex = previousBreakpointIndex + 1;
 
   if (previousBreakpointIndex === breakpoints.length - 1) {
@@ -41,7 +47,8 @@ export function multiLerp(breakpoints: number[], progress: number): number {
   const nextBreakpoint = breakpoints[nextBreakpointIndex];
 
   const previousBreakpointPercent = breakpointSpacing * previousBreakpointIndex;
-  const pointProgress = (clampedProgress - previousBreakpointPercent) * (100 / breakpointSpacing);
+  const pointProgress =
+    (clampedProgress - previousBreakpointPercent) * (100 / breakpointSpacing);
 
   return lerp(previousBreakpoint, nextBreakpoint, pointProgress);
 }

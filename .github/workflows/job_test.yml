@@ -34,7 +34,7 @@ jobs:
         working-directory: ./storybook
 
       - name: Build Armstrong & Storybook
-        run: npm run build-storybook
+        run: npm i && npm run build-storybook
         working-directory: ./storybook
 
       - name: Serve Storybook and run tests

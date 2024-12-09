@@ -2,7 +2,13 @@ interface ClassNameDictionary {
   [id: string]: boolean | undefined | null;
 }
 type ClassNameArray = Array<ClassName>;
-type ClassName = string | ClassNameDictionary | ClassNameArray | undefined | null | false;
+type ClassName =
+  | string
+  | ClassNameDictionary
+  | ClassNameArray
+  | undefined
+  | null
+  | false;
 
 /**
  * Concatenate classnames into a single string
@@ -10,17 +16,17 @@ type ClassName = string | ClassNameDictionary | ClassNameArray | undefined | nul
 export function concat(...args: ClassName[]) {
   let classes: string[] = [];
 
-  args.forEach(argument => {
+  args.forEach((argument) => {
     if (argument) {
-      if (typeof argument === 'string') {
+      if (typeof argument === "string") {
         // if string add to output
         classes.push(argument);
       } else if (Array.isArray(argument)) {
         // if array, spread into output
-        classes = [...classes, ...argument.map(v => v as string)];
-      } else if (typeof argument === 'object') {
+        classes = [...classes, ...argument.map((v) => v as string)];
+      } else if (typeof argument === "object") {
         const keys = Object.keys(argument);
-        keys.forEach(key => {
+        keys.forEach((key) => {
           // if object,
           if (argument[key]) {
             classes.push(key);
@@ -30,5 +36,5 @@ export function concat(...args: ClassName[]) {
     }
   });
 
-  return classes.join(' ');
+  return classes.join(" ");
 }

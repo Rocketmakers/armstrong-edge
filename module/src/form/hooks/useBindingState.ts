@@ -3,10 +3,15 @@
  * --------------------------------------
  * Hook for creating a `useState` equivalent from a bind prop
  */
-import * as React from 'react';
+import * as React from "react";
 
-import type { FormValidationMode, IBindingProps, IUseBindingStateOverrides, UseBindingStateReturn } from '../types';
-import { useMyValidationErrorMessages } from './useMyValidationErrorMessages';
+import type {
+  FormValidationMode,
+  IBindingProps,
+  IUseBindingStateOverrides,
+  UseBindingStateReturn,
+} from "../types";
+import { useMyValidationErrorMessages } from "./useMyValidationErrorMessages";
 
 /**
  * Tool for unwrapping a bind prop into a getter, setter, and set of tools/elements to render
@@ -19,7 +24,10 @@ export function useBindingState<TData>(
   overrides?: IUseBindingStateOverrides<TData>
 ): UseBindingStateReturn<TData> {
   const value = React.useMemo(
-    () => overrides?.value ?? bind?.bindConfig?.format?.fromData?.(bind.value) ?? bind?.value,
+    () =>
+      overrides?.value ??
+      bind?.bindConfig?.format?.fromData?.(bind.value) ??
+      bind?.value,
     [overrides?.value, bind?.bindConfig?.format, bind?.value]
   );
 
@@ -43,10 +51,15 @@ export function useBindingState<TData>(
     [bind?.bindConfig?.format]
   );
 
-  const validationErrorMessages = useMyValidationErrorMessages(bind, overrides?.validationErrorMessages);
+  const validationErrorMessages = useMyValidationErrorMessages(
+    bind,
+    overrides?.validationErrorMessages
+  );
 
-  const validationMode: FormValidationMode = overrides?.validationMode ?? bind?.formConfig?.validationMode ?? 'both';
-  const validationErrorIcon = overrides?.validationErrorIcon ?? bind?.formConfig?.validationErrorIcon;
+  const validationMode: FormValidationMode =
+    overrides?.validationMode ?? bind?.formConfig?.validationMode ?? "both";
+  const validationErrorIcon =
+    overrides?.validationErrorIcon ?? bind?.formConfig?.validationErrorIcon;
 
   return [
     value,
@@ -56,14 +69,20 @@ export function useBindingState<TData>(
       getFormattedValueToData,
       validationErrorMessages,
       isTouched: bind?.isTouched ?? false,
-      setTouched: touched => bind?.setTouched(touched),
+      setTouched: (touched) => bind?.setTouched(touched),
       validate: (setInputTouched?: boolean, silent?: boolean) =>
-        bind?.validate(setInputTouched, silent, bind?.bindConfig?.autoValidateAll) ?? true,
+        bind?.validate(
+          setInputTouched,
+          silent,
+          bind?.bindConfig?.autoValidateAll
+        ) ?? true,
       isValid: (bind?.isValid ?? true) && !validationErrorMessages.length,
       validationMode,
       validationErrorIcon,
-      shouldShowValidationErrorIcon: validationMode === 'icon' || validationMode === 'both',
-      shouldShowValidationErrorMessage: validationMode === 'message' || validationMode === 'both',
+      shouldShowValidationErrorIcon:
+        validationMode === "icon" || validationMode === "both",
+      shouldShowValidationErrorMessage:
+        validationMode === "message" || validationMode === "both",
     },
   ];
 }

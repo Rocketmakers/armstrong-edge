@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { useDidUpdateEffect } from './useDidUpdateEffect';
+import { useDidUpdateEffect } from "./useDidUpdateEffect";
 
 /**
  * Like a state hook, but also exports a "throttled" value (set after x amount of inactivity through the setter method)
@@ -47,11 +47,9 @@ export function useDebounce<T>(
  * @param ms How long a period of inactivity before running the effect
  * @param deps List of dependencies to trigger rerunning the effect
  */
-export function useDebounceEffect<TFunc extends (...params: unknown[]) => unknown>(
-  fn: TFunc,
-  ms: number,
-  deps: React.DependencyList
-) {
+export function useDebounceEffect<
+  TFunc extends (...params: unknown[]) => unknown
+>(fn: TFunc, ms: number, deps: React.DependencyList) {
   const throttleRef = React.useRef<NodeJS.Timeout>();
 
   useDidUpdateEffect(() => {

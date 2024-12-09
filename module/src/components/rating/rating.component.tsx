@@ -1,24 +1,32 @@
-import * as React from 'react';
-import { ImStarEmpty, ImStarFull } from 'react-icons/im';
+import * as React from "react";
+import { ImStarEmpty, ImStarFull } from "react-icons/im";
 
-import { IBindingProps, useBindingState } from '../../form';
-import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
-import { repeat } from '../../utils/arrays';
-import { concat } from '../../utils/classNames';
-import { clamp } from '../../utils/maths';
-import { Button, IButtonProps } from '../button';
-import { useArmstrongConfig } from '../config';
-import { IInputWrapperProps } from '../inputWrapper';
-import { Label } from '../label';
-import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
-import { ValidationErrors } from '../validationErrors';
-import { iconJsxFromDefinition } from './rating.utils';
+import { IBindingProps, useBindingState } from "../../form";
+import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCReturn,
+  ArmstrongVFCProps,
+  NullOrUndefined,
+} from "../../types";
+import { repeat } from "../../utils/arrays";
+import { concat } from "../../utils/classNames";
+import { clamp } from "../../utils/maths";
+import { Button, IButtonProps } from "../button";
+import { useArmstrongConfig } from "../config";
+import { IInputWrapperProps } from "../inputWrapper";
+import { Label } from "../label";
+import { IStatusWrapperProps, StatusWrapper } from "../statusWrapper";
+import { ValidationErrors } from "../validationErrors";
+import { iconJsxFromDefinition } from "./rating.utils";
 
-import './rating.theme.css';
+import "./rating.theme.css";
 
 export interface IRatingPartProps
-  extends Pick<IRatingProps<NullOrUndefined<number>>, 'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'disabled'> {
+  extends Pick<
+    IRatingProps<NullOrUndefined<number>>,
+    "filledIcon" | "emptyIcon" | "step" | "mode" | "disabled"
+  > {
   /** the index of this rating part */
   index: number;
 
@@ -33,7 +41,20 @@ export interface IRatingPartProps
 }
 
 const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
-  ({ index, value, onSelectPart, filledIcon, emptyIcon, step, mode, readOnly, disabled }, ref) => {
+  (
+    {
+      index,
+      value,
+      onSelectPart,
+      filledIcon,
+      emptyIcon,
+      step,
+      mode,
+      readOnly,
+      disabled,
+    },
+    ref
+  ) => {
     const steps = Math.floor(1 / (step || 1));
 
     const isFilled = value && value >= index + 1;
@@ -46,7 +67,7 @@ const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
         style={
           value
             ? ({
-                '--rating-amount': `${clamp((value - index) * 100, 0, 100)}%`,
+                "--rating-amount": `${clamp((value - index) * 100, 0, 100)}%`,
               } as React.CSSProperties)
             : undefined
         }
@@ -56,21 +77,26 @@ const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
         <div className="arm-rating-part-icon-wrapper">
           {filledIcon && (
             <div className="arm-rating-part-icon arm-rating-part-filled">
-              <div className="arm-rating-part-icon-inner">{iconJsxFromDefinition(filledIcon, index)}</div>
+              <div className="arm-rating-part-icon-inner">
+                {iconJsxFromDefinition(filledIcon, index)}
+              </div>
             </div>
           )}
 
           {emptyIcon && (
             <div className="arm-rating-part-icon arm-rating-part-empty">
-              <div className="arm-rating-part-icon-inner">{iconJsxFromDefinition(emptyIcon, index)}</div>
+              <div className="arm-rating-part-icon-inner">
+                {iconJsxFromDefinition(emptyIcon, index)}
+              </div>
             </div>
           )}
         </div>
 
-        {!readOnly && mode === 'buttons' && (
+        {!readOnly && mode === "buttons" && (
           <div className="arm-rating-part-buttons">
-            {repeat(steps, buttonIndex => {
-              const inputValue = index + (steps === 2 ? 0.5 : 1) + (buttonIndex ? 0.5 : 0);
+            {repeat(steps, (buttonIndex) => {
+              const inputValue =
+                index + (steps === 2 ? 0.5 : 1) + (buttonIndex ? 0.5 : 0);
               return (
                 <Button
                   role="radio"
@@ -87,16 +113,22 @@ const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
           </div>
         )}
 
-        {!readOnly && mode === 'radio' && (
+        {!readOnly && mode === "radio" && (
           <div className="arm-rating-part-radios">
-            {repeat(steps, buttonIndex => {
-              const inputValue = index + (steps === 2 ? 0.5 : 1) + (buttonIndex ? 0.5 : 0);
+            {repeat(steps, (buttonIndex) => {
+              const inputValue =
+                index + (steps === 2 ? 0.5 : 1) + (buttonIndex ? 0.5 : 0);
               return (
-                <div className="arm-rating-part-radio-wrapper" key={buttonIndex}>
+                <div
+                  className="arm-rating-part-radio-wrapper"
+                  key={buttonIndex}
+                >
                   <input
                     className="arm-rating-part-radio"
                     type="radio"
-                    onChange={() => onSelectPart((step || 1) * (buttonIndex + 1))}
+                    onChange={() =>
+                      onSelectPart((step || 1) * (buttonIndex + 1))
+                    }
                     aria-label={inputValue.toString()}
                     value={inputValue}
                     checked={inputValue === value}
@@ -112,28 +144,36 @@ const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
   }
 );
 
-RatingPart.displayName = 'RatingPart';
+RatingPart.displayName = "RatingPart";
 
-export type RatingIconDefinition = JSX.Element | ((index: number) => JSX.Element);
+export type RatingIconDefinition =
+  | JSX.Element
+  | ((index: number) => JSX.Element);
 
 export interface IRatingProps<TBind extends NullOrUndefined<number>>
-  extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
+  extends Omit<
+      React.DetailedHTMLProps<
+        React.BaseHTMLAttributes<HTMLDivElement>,
+        HTMLDivElement
+      >,
+      "onChange"
+    >,
     Pick<
       IInputWrapperProps,
-      | 'scrollValidationErrorsIntoView'
-      | 'validationMode'
-      | 'errorIcon'
-      | 'validationErrorMessages'
-      | 'statusClassName'
-      | 'validationErrorsClassName'
-      | 'labelClassName'
-      | 'labelId'
-      | 'label'
-      | 'required'
-      | 'requiredIndicator'
-      | 'displaySize'
+      | "scrollValidationErrorsIntoView"
+      | "validationMode"
+      | "errorIcon"
+      | "validationErrorMessages"
+      | "statusClassName"
+      | "validationErrorsClassName"
+      | "labelClassName"
+      | "labelId"
+      | "label"
+      | "required"
+      | "requiredIndicator"
+      | "displaySize"
     >,
-    Pick<IButtonProps, 'leftOverlay' | 'rightOverlay'>,
+    Pick<IButtonProps, "leftOverlay" | "rightOverlay">,
     IStatusWrapperProps {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -162,7 +202,7 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
    * range will use an input with type='range' to handle the interaction, buttons will render a series of buttons, radio will render radio inputs
    * @default 'buttons'
    */
-  mode?: 'range' | 'buttons' | 'radio';
+  mode?: "range" | "buttons" | "radio";
 
   /** Whether to disable the input */
   disabled?: boolean;
@@ -171,7 +211,10 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
   autoValidate?: boolean;
 }
 
-export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefined<number>>>(
+export const Rating = React.forwardRef<
+  HTMLDivElement,
+  IRatingProps<NullOrUndefined<number>>
+>(
   (
     {
       bind,
@@ -239,16 +282,20 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
         <div
           ref={ref}
           role="radiogroup"
-          aria-label={boundValue !== undefined ? `Rating: ${boundValue}/${maximum}` : undefined}
+          aria-label={
+            boundValue !== undefined
+              ? `Rating: ${boundValue}/${maximum}`
+              : undefined
+          }
           {...htmlProps}
-          className={concat('arm-rating', className)}
+          className={concat("arm-rating", className)}
           data-read-only={!setBoundValue}
           data-size={globals.inputDisplaySize}
         >
           {label && (
             <Label
               id={finalLabelId}
-              className={concat('arm-rating-input-label', labelClassName)}
+              className={concat("arm-rating-input-label", labelClassName)}
               data-disabled={disabled}
               required={required}
               displaySize={globals.inputDisplaySize}
@@ -257,7 +304,10 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
               {label}
             </Label>
           )}
-          <div className="arm-rating-input-inner" aria-labelledby={finalLabelId}>
+          <div
+            className="arm-rating-input-inner"
+            aria-labelledby={finalLabelId}
+          >
             <StatusWrapper
               error={error}
               statusPosition={statusPosition}
@@ -268,14 +318,16 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
               <>
                 {leftOverlay}
                 <div className="arm-rating-parts">
-                  {repeat(maximum as number, index => (
+                  {repeat(maximum as number, (index) => (
                     <RatingPart
                       key={index}
                       index={index}
                       filledIcon={filledIcon}
                       emptyIcon={emptyIcon}
                       value={boundValue || undefined}
-                      onSelectPart={proportion => setBoundValue?.(index + proportion)}
+                      onSelectPart={(proportion) =>
+                        setBoundValue?.(index + proportion)
+                      }
                       step={step}
                       mode={mode}
                       disabled={disabled}
@@ -283,7 +335,7 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
                     />
                   ))}
 
-                  {mode === 'range' && (
+                  {mode === "range" && (
                     <input
                       className="arm-rating-range"
                       type="range"
@@ -292,7 +344,9 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
                       max={maximum}
                       disabled={disabled}
                       value={boundValue || undefined}
-                      onChange={event => setBoundValue?.(event.currentTarget.valueAsNumber)}
+                      onChange={(event) =>
+                        setBoundValue?.(event.currentTarget.valueAsNumber)
+                      }
                     />
                   )}
                 </div>
@@ -302,13 +356,14 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
           </div>
         </div>
 
-        {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            validationErrors={validationErrorMessages}
-            validationMode={bindConfig.validationMode}
-            scrollIntoView={scrollValidationErrorsIntoView}
-          />
-        )}
+        {!!validationErrorMessages?.length &&
+          bindConfig.shouldShowValidationErrorMessage && (
+            <ValidationErrors
+              validationErrors={validationErrorMessages}
+              validationMode={bindConfig.validationMode}
+              scrollIntoView={scrollValidationErrorsIntoView}
+            />
+          )}
       </>
     );
   }
@@ -324,7 +379,7 @@ Rating.defaultProps = {
   filledIcon: <ImStarFull />,
   emptyIcon: <ImStarEmpty />,
   step: 1,
-  mode: 'buttons',
+  mode: "buttons",
 };
 
-Rating.displayName = 'Rating';
+Rating.displayName = "Rating";

@@ -1,25 +1,26 @@
-import { expect } from '@storybook/test';
-import { Meta, StoryObj } from '@storybook/react';
-import { within } from '@storybook/test';
-import React from 'react';
+import { expect } from "@storybook/jest";
+import { expect } from "@storybook/test";
+import { Meta, StoryObj } from "@storybook/react";
+import { within } from "@storybook/test";
+import React from "react";
 
-import { ProgressBar } from './progressBar.component';
+import { ProgressBar } from "./progressBar.component";
 
 /** metadata */
 
 export default {
-  title: 'Components/ProgressBar',
+  title: "Components/ProgressBar",
   component: ProgressBar,
 } as Meta<typeof ProgressBar>;
 
 /** component template */
 const Template: StoryObj<typeof ProgressBar> = {
-  render: args => {
+  render: (args) => {
     const [progress, setProgress] = React.useState(0);
 
     React.useEffect(() => {
       const timer = setInterval(() => {
-        setProgress(s => {
+        setProgress((s) => {
           if (s >= 100) {
             clearInterval(timer);
             return 100;
@@ -38,7 +39,7 @@ const Template: StoryObj<typeof ProgressBar> = {
 export const Default: StoryObj<typeof ProgressBar> = {
   ...Template,
   play: async ({ canvasElement }) => {
-    const progress = within(canvasElement).getByRole('progressbar');
+    const progress = within(canvasElement).getByRole("progressbar");
     expect(progress).toBeVisible();
   },
 };

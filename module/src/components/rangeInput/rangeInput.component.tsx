@@ -1,21 +1,33 @@
-import * as RadixSlider from '@radix-ui/react-slider';
-import * as React from 'react';
+import * as RadixSlider from "@radix-ui/react-slider";
+import * as React from "react";
 
-import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
-import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
-import { concat } from '../../utils/classNames';
-import { onBlurWorkaround } from '../../workarounds/radixDialog';
-import { useArmstrongConfig } from '../config';
-import { Label } from '../label/label.component';
-import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
-import { IValidationErrorsProps, ValidationErrors } from '../validationErrors/validationErrors.component';
+import { IBindingProps, useBindingState, ValidationMessage } from "../../form";
+import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
+import {
+  ArmstrongFCExtensions,
+  ArmstrongFCProps,
+  ArmstrongFCReturn,
+  DisplaySize,
+  NullOrUndefined,
+} from "../../types";
+import { concat } from "../../utils/classNames";
+import { onBlurWorkaround } from "../../workarounds/radixDialog";
+import { useArmstrongConfig } from "../config";
+import { Label } from "../label/label.component";
+import { StatusWrapper } from "../statusWrapper/statusWrapper.component";
+import {
+  IValidationErrorsProps,
+  ValidationErrors,
+} from "../validationErrors/validationErrors.component";
 
-import './rangeInput.theme.css';
+import "./rangeInput.theme.css";
 
 export interface IRangeInputProps<TData extends NullOrUndefined<number>>
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'type' | 'checked' | 'onChange' | 'ref' | 'dir' | 'defaultValue'>,
-    Omit<IValidationErrorsProps, 'validationErrors' | 'scrollIntoView'> {
+  extends Omit<
+      React.HTMLAttributes<HTMLSpanElement>,
+      "type" | "checked" | "onChange" | "ref" | "dir" | "defaultValue"
+    >,
+    Omit<IValidationErrorsProps, "validationErrors" | "scrollIntoView"> {
   /** (Optional) An IBindingProps<TData> object to bind the checkbox input to a form. */
   bind?: IBindingProps<TData>;
 
@@ -74,7 +86,10 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   autoValidate?: boolean;
 }
 
-export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<NullOrUndefined<number>>>(
+export const RangeInput = React.forwardRef<
+  HTMLSpanElement,
+  IRangeInputProps<NullOrUndefined<number>>
+>(
   (
     {
       bind,
@@ -141,14 +156,14 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
 
     return (
       <StatusWrapper
-        className={concat(statusClassName, 'arm-range-input-base')}
+        className={concat(statusClassName, "arm-range-input-base")}
         validationMode={bindConfig.validationMode}
         errorIcon={bindConfig.validationErrorIcon}
       >
         {label && (
           <Label
             id={finalLabelId}
-            className={concat('arm-range-input-label', labelClassName)}
+            className={concat("arm-range-input-label", labelClassName)}
             data-disabled={disabled}
             required={required}
             displaySize={globals.inputDisplaySize}
@@ -158,7 +173,7 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
           </Label>
         )}
         <RadixSlider.Root
-          className={concat(className, 'arm-range-input-root')}
+          className={concat(className, "arm-range-input-root")}
           {...nativeProps}
           max={max}
           min={min}
@@ -168,27 +183,28 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
           data-size={globals.inputDisplaySize}
           aria-labelledby={finalLabelId}
           value={boundValue ? [boundValue] : undefined}
-          onValueChange={v => setBoundValue(v?.[0])}
+          onValueChange={(v) => setBoundValue(v?.[0])}
         >
           <RadixSlider.Track className="arm-range-input-track">
             <RadixSlider.Range className="arm-range-input-range" />
           </RadixSlider.Track>
           <RadixSlider.Thumb
             className="arm-range-input-thumb"
-            aria-label={typeof label === 'string' ? label : undefined}
+            aria-label={typeof label === "string" ? label : undefined}
             onBlur={onBlurEvent}
           >
             {customThumb}
           </RadixSlider.Thumb>
         </RadixSlider.Root>
-        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            className={validationErrorsClassName}
-            validationMode={globals.validationMode}
-            validationErrors={bindConfig.validationErrorMessages}
-            scrollIntoView={globals.scrollValidationErrorsIntoView}
-          />
-        )}
+        {!!bindConfig.validationErrorMessages?.length &&
+          bindConfig.shouldShowValidationErrorMessage && (
+            <ValidationErrors
+              className={validationErrorsClassName}
+              validationMode={globals.validationMode}
+              validationErrors={bindConfig.validationErrorMessages}
+              scrollIntoView={globals.scrollValidationErrorsIntoView}
+            />
+          )}
       </StatusWrapper>
     );
   }
@@ -197,4 +213,4 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRangeInputProps<NullOrUndefined<number>>>;
 
-RangeInput.displayName = 'RangeInput';
+RangeInput.displayName = "RangeInput";

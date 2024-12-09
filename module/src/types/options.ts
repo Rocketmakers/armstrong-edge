@@ -1,9 +1,13 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { ArmstrongId, DataAttributes } from './core';
+import { ArmstrongId, DataAttributes } from "./core";
 
 /** an option in an array of options, intended for use in a component like a Select or RadioList */
-export interface IArmstrongOption<Id extends ArmstrongId, HtmlProps = unknown, TData = unknown> {
+export interface IArmstrongOption<
+  Id extends ArmstrongId,
+  HtmlProps = unknown,
+  TData = unknown
+> {
   /** the value to be bound */
   id: Id;
 
@@ -32,5 +36,7 @@ export const getContentFromOption = <Id extends ArmstrongId>(
   option: IArmstrongOption<Id>,
   active = !!option.disabled
 ) => {
-  return typeof option.content === 'function' ? option.content(active) : option.content;
+  return typeof option.content === "function"
+    ? option.content(active)
+    : option.content;
 };

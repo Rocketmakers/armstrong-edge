@@ -1,1 +1,1 @@
-export * from './inputWrapper.component';
+export * from "./inputWrapper.component";

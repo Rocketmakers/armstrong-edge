@@ -20,7 +20,7 @@ import {
   type ZodString,
   type ZodTypeAny,
   type ZodUnion,
-} from 'zod';
+} from "zod";
 
 /**
  * Works out whether some data is an object, and array, or another type.ß
@@ -29,7 +29,10 @@ import {
  * If it's an array, this type becomes `number` to support indexing the array.
  * If it's any other type this type becomes `never`, to prevent `formProp` users digging into a non-nested type.
  */
-export type KeyOrIndex<TData, TDataKey extends keyof TData> = TData extends object
+export type KeyOrIndex<
+  TData,
+  TDataKey extends keyof TData
+> = TData extends object
   ? Extract<TDataKey, TData extends unknown[] ? number : unknown>
   : never;
 
@@ -38,23 +41,23 @@ export type KeyOrIndex<TData, TDataKey extends keyof TData> = TData extends obje
  * Used by Zod schema type system to return the correct zod type for a form state key
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any is the correct type here, we need to handle it
-type StringType<T> = [any extends T ? 'true' : 'false'] extends ['true']
-  ? 'any'
+type StringType<T> = [any extends T ? "true" : "false"] extends ["true"]
+  ? "any"
   : T extends boolean
-  ? 'boolean'
+  ? "boolean"
   : T extends Array<unknown>
-  ? 'array'
+  ? "array"
   : T extends string
-  ? 'string'
+  ? "string"
   : T extends bigint
-  ? 'bigint'
+  ? "bigint"
   : T extends number
-  ? 'number'
+  ? "number"
   : T extends Date
-  ? 'date'
+  ? "date"
   : T extends object
-  ? 'object'
-  : 'rest';
+  ? "object"
+  : "rest";
 
 /**
  * The set of tools returned from `formProp` if the property in question is NOT an array.
@@ -87,7 +90,10 @@ export interface BindingToolsStandard<TValue> {
    * @param messages The validation error message(s) to add.
    * @param identifier The identifier so use when adding the validation error(s), allows this group to be independently cleared.
    */
-  addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => void;
+  addValidationError: (
+    messages: ValidationMessage | ValidationMessage[],
+    identifier?: string
+  ) => void;
   /**
    * Clears all client validation errors for the current form state.
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
@@ -99,7 +105,11 @@ export interface BindingToolsStandard<TValue> {
    * @param silent A boolean representing whether validation errors should be dispatched to the form elements
    * @param validateAll If true, the validator will run against the entire schema, not just the current field
    */
-  validate: (setInputTouched?: boolean, silent?: boolean, validateAll?: boolean) => boolean;
+  validate: (
+    setInputTouched?: boolean,
+    silent?: boolean,
+    validateAll?: boolean
+  ) => boolean;
   /**
    * Whether the field input has been interacted with
    */
@@ -124,7 +134,9 @@ export interface BindingToolsArray<TValue> {
    *
    * WARNING: Available to array properties only
    */
-  add: TValue extends unknown[] ? (newItem: TValue[0]) => BindingTools<TValue> : never;
+  add: TValue extends unknown[]
+    ? (newItem: TValue[0]) => BindingTools<TValue>
+    : never;
   /**
    * Removes the last item from an array field in the form state.
    *
@@ -138,21 +150,26 @@ export interface BindingToolsArray<TValue> {
    *
    * WARNING: Available to array properties only
    */
-  insert: TValue extends unknown[] ? (newItem: TValue[0], index: number) => BindingTools<TValue> : never;
+  insert: TValue extends unknown[]
+    ? (newItem: TValue[0], index: number) => BindingTools<TValue>
+    : never;
   /**
    * Removes an item from an array field at a specific index.
    * @param index The index at which to insert the new item.
    *
    * WARNING: Available to array properties only
    */
-  remove: TValue extends unknown[] ? (index: number) => BindingTools<TValue> : never;
+  remove: TValue extends unknown[]
+    ? (index: number) => BindingTools<TValue>
+    : never;
 }
 
 /**
  * The set of tools returned from `formProp`.
  * - This root type detects whether the value is an array and assigns the correct type accordingly.
  */
-export type BindingTools<TValue> = BindingToolsArray<TValue> & BindingToolsStandard<TValue>;
+export type BindingTools<TValue> = BindingToolsArray<TValue> &
+  BindingToolsStandard<TValue>;
 
 /**
  * This interface is used to handle the typings for the args passed to `formProp`.
@@ -170,15 +187,22 @@ export interface IFormProp<TData extends object> {
    * Used to access a property within the form data.
    * @param args The key of the property to access.
    */
-  <TDataKey extends keyof Required<TData>>(...args: [key1: KeyOrIndex<Required<TData>, TDataKey>]): BindingTools<
-    Required<TData>[TDataKey]
-  >;
+  <TDataKey extends keyof Required<TData>>(
+    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>]
+  ): BindingTools<Required<TData>[TDataKey]>;
   /**
    * Used to access a property within the form data.
    * @param args The keys or indexes used to access a nested property to a depth of 2.
    */
-  <TDataKey extends keyof Required<TData>, TData2 extends Required<TData>[TDataKey], TDataKey2 extends keyof TData2>(
-    ...args: [key1: KeyOrIndex<Required<TData>, TDataKey>, key2: KeyOrIndex<TData2, TDataKey2>]
+  <
+    TDataKey extends keyof Required<TData>,
+    TData2 extends Required<TData>[TDataKey],
+    TDataKey2 extends keyof TData2
+  >(
+    ...args: [
+      key1: KeyOrIndex<Required<TData>, TDataKey>,
+      key2: KeyOrIndex<TData2, TDataKey2>
+    ]
   ): BindingTools<TData2[TDataKey2]>;
   /**
    * Used to access a property within the form data.
@@ -307,7 +331,10 @@ export interface IBindingProps<TValue> {
    * @param messages (ValidationMessage | ValidationMessage[]) The validation error message(s) to add. A validation message can be a string or a JSX element, if using JSX please add a key to the element to keep the animations consistent
    * @param identifier The identifier so use when adding the validation error(s), allows this group to be independently cleared.
    */
-  addValidationError: (messages: ValidationMessage | ValidationMessage[], identifier?: string) => void;
+  addValidationError: (
+    messages: ValidationMessage | ValidationMessage[],
+    identifier?: string
+  ) => void;
   /**
    * Clears all client validation errors for the current form state.
    * @param identifiers an optional array of validation error identifiers, if passed, only errors that match the identifier will be deleted.
@@ -346,7 +373,11 @@ export interface IBindingProps<TValue> {
    * @param validateAll If true, the validator will run against the entire schema, not just the current field
    * NOTE: If no schema has been passed, this will always return `true`
    */
-  validate: (setInputTouched?: boolean, silent?: boolean, validateAll?: boolean) => boolean;
+  validate: (
+    setInputTouched?: boolean,
+    silent?: boolean,
+    validateAll?: boolean
+  ) => boolean;
   /**
    * Whether the field input has any validation errors
    */
@@ -366,7 +397,7 @@ export interface IFormSetOneAction<TValue> {
   /**
    * The type used to detect a `set-one` action
    */
-  type: 'set-one';
+  type: "set-one";
   /**
    * The key or index used to retrieve the root property from the form data object.
    */
@@ -384,7 +415,7 @@ export interface IFormSetPathAction<TValue> {
   /**
    * The type used to detect a `set-path` action
    */
-  type: 'set-path';
+  type: "set-path";
   /**
    * The chain of keys and/or indexes used to retrieve the property from the form data object.
    */
@@ -402,7 +433,7 @@ export interface IFormSetAllAction<TData> {
   /**
    * The type used to detect a `set-all` action
    */
-  type: 'set-all';
+  type: "set-all";
   /**
    * An optional object to set as the entire new state, can be partial, if not passed form data will be reset to empty.
    */
@@ -415,12 +446,14 @@ export interface IFormSetAllAction<TData> {
  * - `message` displays a supplied error message in the event of a validation error.
  * - `both` displays both the icon and the message.
  */
-export type FormValidationMode = 'icon' | 'message' | 'both';
+export type FormValidationMode = "icon" | "message" | "both";
 
 /**
  * A dispatch function used to send an action to the form data reducer.
  */
-export type FormDispatcher<TData> = (action: FormAction<TData, unknown>) => TData;
+export type FormDispatcher<TData> = (
+  action: FormAction<TData, unknown>
+) => TData;
 
 /**
  * The validation message
@@ -478,7 +511,10 @@ export interface IBindConfig<TValue> {
 /**
  * Checks a form state field type and adds the necessary zod validation extensions for optional / nullable fields
  */
-export type ZodNullOrUndefined<TProp, TZod extends ZodTypeAny> = TProp extends undefined
+export type ZodNullOrUndefined<
+  TProp,
+  TZod extends ZodTypeAny
+> = TProp extends undefined
   ? ZodOptional<TZod>
   : TProp extends null
   ? ZodNullable<TZod>
@@ -490,7 +526,9 @@ export type ZodNullOrUndefined<TProp, TZod extends ZodTypeAny> = TProp extends u
  */
 export interface IArrayOfZod<TProp> {
   /** The validation for each item within the array (will be an object of key/validator pairs if it's an array of objects) */
-  itemSchema: TProp extends object ? { [TKey in keyof TProp]: ToZod<TProp[TKey]> } : ToZod<TProp>;
+  itemSchema: TProp extends object
+    ? { [TKey in keyof TProp]: ToZod<TProp[TKey]> }
+    : ToZod<TProp>;
   /** A function which defines the validation to apply to the array itself (e.g. `opts: arr => arr.min(1).max(5)`) */
   opts?: (
     arr: ZodArray<TProp & ZodTypeAny>
@@ -566,14 +604,18 @@ export type IValidationSchema<TData> = TData extends Array<infer U>
 export type IRootValidationSchema<TData> = TData extends Array<infer U>
   ? IArrayOfZod<U>
   : TData extends object
-  ? { [K in keyof TData]: ToZod<TData[K]> } | IObjectOfZod<{ [K in keyof TData]: ToZod<TData[K]> }>
+  ?
+      | { [K in keyof TData]: ToZod<TData[K]> }
+      | IObjectOfZod<{ [K in keyof TData]: ToZod<TData[K]> }>
   : never;
 
 /**
  * Allows the validation schema to be a function that returns a schema.
  * The function receives the live form state as an argument so it can be used to create dynamic validation schemas.
  */
-export type IFunctionValidationSchema<TData> = (data: TData | undefined) => IRootValidationSchema<TData>;
+export type IFunctionValidationSchema<TData> = (
+  data: TData | undefined
+) => IRootValidationSchema<TData>;
 
 /**
  * Optional configuration for the form hook
@@ -587,7 +629,9 @@ export interface IFormConfig<TData> {
    * Optional client side validation schema.
    * - Uses a type safe wrapper around the zod framework.
    */
-  validationSchema?: IRootValidationSchema<TData> | IFunctionValidationSchema<TData>;
+  validationSchema?:
+    | IRootValidationSchema<TData>
+    | IFunctionValidationSchema<TData>;
   /**
    * How to display validation errors
    * - `icon` displays an error icon in the event of a validation error.
@@ -690,7 +734,7 @@ export interface IAddValidationAction {
   /**
    * Type discriminating property - defines the action type
    */
-  type: 'add-validation';
+  type: "add-validation";
   /**
    * An array of validation errors to add
    */
@@ -704,7 +748,7 @@ export interface IClearValidationAction {
   /**
    * Type discriminating property - defines the action type
    */
-  type: 'clear-validation';
+  type: "clear-validation";
   /**
    * The form property key for the validation messages to clear, will clear all if absent
    */
@@ -728,7 +772,9 @@ export type ValidationDispatcher = (action: ValidationAction) => void;
 /**
  * Type for initial data when passed to the form hook as a functional initializer rather than an object
  */
-export type InitialDataFunction<TData extends object> = (currentState?: TData) => TData;
+export type InitialDataFunction<TData extends object> = (
+  currentState?: TData
+) => TData;
 
 /**
  * Tools and elements returned as the final part of the `useBindingState` hook
@@ -817,7 +863,7 @@ export interface ISetTouchedAction {
   /**
    * Type discriminating property - defines the action type
    */
-  type: 'set-touched';
+  type: "set-touched";
   /**
    * The key chain that references the correct field
    */
@@ -832,7 +878,7 @@ export interface ISetTouchedAction {
  * Action type dispatched to reset all touch states to untouched
  */
 export interface IResetTouchAction {
-  type: 'reset-touched';
+  type: "reset-touched";
 }
 
 /**

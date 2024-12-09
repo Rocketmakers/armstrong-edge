@@ -3,10 +3,10 @@
  * --------------------------------------
  * Root React hook for form binding
  */
-import * as React from 'react';
+import * as React from "react";
 
-import { useContentMemo } from '../../hooks/useContentMemo';
-import { useDidUpdateSSRLayoutEffect } from '../../hooks/useSSRLayoutEffect';
+import { useContentMemo } from "../../hooks/useContentMemo";
+import { useDidUpdateSSRLayoutEffect } from "../../hooks/useSSRLayoutEffect";
 import {
   FormDispatcher,
   HookReturn,
@@ -16,17 +16,17 @@ import {
   KeyChain,
   TouchedDispatcher,
   TouchedState,
-} from '../types';
-import { dataReducer, initialDataIsCallback } from '../utils/data';
-import { keyStringFromKeyChain } from '../utils/keyChain';
-import { touchedStateReducer } from '../utils/touchedState';
+} from "../types";
+import { dataReducer, initialDataIsCallback } from "../utils/data";
+import { keyStringFromKeyChain } from "../utils/keyChain";
+import { touchedStateReducer } from "../utils/touchedState";
 import {
   clientValidationReducer,
   getMyZodErrors,
   rootValidationSchemaIsFunction,
   zodFromValidationSchema,
-} from '../utils/validation';
-import { useFormBase } from './useFormBase';
+} from "../utils/validation";
+import { useFormBase } from "./useFormBase";
 
 /**
  * Turns a potentially complex nested object or array into a piece of live state and a set of helper tools designed to be used in a form.
@@ -44,9 +44,14 @@ export function useForm<TData extends object>(
 
   // create state stores for values, validation errors and touched state
   const [formState, setFormState] = React.useState<TData>(
-    initialDataIsCallback(initialData) ? initialData() : initialData ?? ({} as TData)
+    initialDataIsCallback(initialData)
+      ? initialData()
+      : initialData ?? ({} as TData)
   );
-  const [clientValidationErrors, clientValidationDispatcher] = React.useReducer(clientValidationReducer, []);
+  const [clientValidationErrors, clientValidationDispatcher] = React.useReducer(
+    clientValidationReducer,
+    []
+  );
   const [touchedState, setTouchedState] = React.useState<TouchedState>([]);
 
   const formStateRef = React.useRef<TData>(formState);
@@ -54,14 +59,16 @@ export function useForm<TData extends object>(
 
   // read initial data
   const liveInitialDataObject = React.useMemo<TData>(() => {
-    return initialDataIsCallback(initialData) ? initialData(formStateRef.current) : initialData ?? ({} as TData);
+    return initialDataIsCallback(initialData)
+      ? initialData(formStateRef.current)
+      : initialData ?? ({} as TData);
   }, [initialData]);
 
   const liveInitialData = useContentMemo(liveInitialDataObject);
 
   // create manual dispatcher to keep ref up to date for chaining
   const dispatch = React.useCallback<FormDispatcher<TData | undefined>>(
-    action => {
+    (action) => {
       formStateRef.current = dataReducer<TData>(formStateRef.current, action);
       setFormState(formStateRef.current);
       return formStateRef.current;
@@ -71,8 +78,11 @@ export function useForm<TData extends object>(
 
   // create manual touch state dispatcher to keep ref up to date for chaining
   const touchedStateDispatcher = React.useCallback<TouchedDispatcher>(
-    action => {
-      touchedStateRef.current = touchedStateReducer(touchedStateRef.current, action);
+    (action) => {
+      touchedStateRef.current = touchedStateReducer(
+        touchedStateRef.current,
+        action
+      );
       setTouchedState(touchedStateRef.current);
       return touchedStateRef.current;
     },
@@ -81,7 +91,7 @@ export function useForm<TData extends object>(
 
   // set initial data to store
   useDidUpdateSSRLayoutEffect(() => {
-    dispatch({ type: 'set-all', data: liveInitialData });
+    dispatch({ type: "set-all", data: liveInitialData });
   }, [liveInitialData]);
 
   /**
@@ -90,7 +100,9 @@ export function useForm<TData extends object>(
   const zodValidationSchema = React.useMemo(() => {
     const initialSchema = formConfig?.validationSchema;
     if (initialSchema) {
-      const finalSchema = rootValidationSchemaIsFunction(initialSchema) ? initialSchema(formState) : initialSchema;
+      const finalSchema = rootValidationSchemaIsFunction(initialSchema)
+        ? initialSchema(formState)
+        : initialSchema;
       return zodFromValidationSchema(finalSchema);
     }
     return undefined;
@@ -102,12 +114,17 @@ export function useForm<TData extends object>(
   const parseZodSchema = React.useCallback(
     (keyChain: KeyChain = [], silent?: boolean) => {
       if (!zodValidationSchema) {
-        throw new Error('No validation schema has been provided');
+        throw new Error("No validation schema has been provided");
       }
 
-      const keyChainString = keyChain.length ? keyStringFromKeyChain(keyChain, 'dots') : undefined;
+      const keyChainString = keyChain.length
+        ? keyStringFromKeyChain(keyChain, "dots")
+        : undefined;
       if (!silent) {
-        clientValidationDispatcher({ type: 'clear-validation', key: keyChainString });
+        clientValidationDispatcher({
+          type: "clear-validation",
+          key: keyChainString,
+        });
       }
 
       const results = zodValidationSchema.safeParse(formStateRef.current ?? {});
@@ -118,7 +135,7 @@ export function useForm<TData extends object>(
         errors = getMyZodErrors(results.error.errors, keyChainString);
 
         if (errors.length && !silent) {
-          clientValidationDispatcher({ type: 'add-validation', errors });
+          clientValidationDispatcher({ type: "add-validation", errors });
         }
       }
 
@@ -138,7 +155,12 @@ export function useForm<TData extends object>(
 
       return valid;
     },
-    [zodValidationSchema, clientValidationDispatcher, formStateRef, formConfig?.logSchemaErrors]
+    [
+      zodValidationSchema,
+      clientValidationDispatcher,
+      formStateRef,
+      formConfig?.logSchemaErrors,
+    ]
   );
 
   /**

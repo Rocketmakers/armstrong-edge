@@ -1,4 +1,4 @@
-import { lerp, multiLerp } from './maths';
+import { lerp, multiLerp } from "./maths";
 
 /** A 3 channel interface of numbers describing an RGB color, with an optional alpha channel */
 export interface IRGBColor {
@@ -14,7 +14,9 @@ export type Color = string | IRGBColor;
 /** Convert a hex string to an RGB object */
 export function hexToRGB(hex: string): IRGBColor {
   // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-  const parts = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?$/i.exec(hex);
+  const parts = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?$/i.exec(
+    hex
+  );
 
   if (parts?.length === 5) {
     if (parts[4]) {
@@ -32,13 +34,15 @@ export function hexToRGB(hex: string): IRGBColor {
     };
   }
 
-  throw new Error(`${hex} was passed to hexToRGB but it doesn't look like a valid hex color`);
+  throw new Error(
+    `${hex} was passed to hexToRGB but it doesn't look like a valid hex color`
+  );
 }
 
 /** Ensure that a Color (a hex string or an RGB object) is an RGB object, converting it if not */
 export function colorToRGB(color: Color): IRGBColor {
   switch (typeof color) {
-    case 'string': {
+    case "string": {
       return hexToRGB(color);
     }
     default:
@@ -54,13 +58,19 @@ const RGBComponentToHex = (component: number) => {
 /** Convert an RGB string to a hex colour */
 export function RGBToHex({ red, green, blue, alpha }: IRGBColor): string {
   // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-  return `#${RGBComponentToHex(red)}${RGBComponentToHex(green)}${RGBComponentToHex(blue)}${
-    alpha ? RGBComponentToHex(Math.round(alpha * 255)) : ''
+  return `#${RGBComponentToHex(red)}${RGBComponentToHex(
+    green
+  )}${RGBComponentToHex(blue)}${
+    alpha ? RGBComponentToHex(Math.round(alpha * 255)) : ""
   }`;
 }
 
 /** Get a colour lerped using a progress between a start and end colour */
-export function lerpRGB(startColor: IRGBColor, endColor: IRGBColor, /** out of 100 */ progress: number): IRGBColor {
+export function lerpRGB(
+  startColor: IRGBColor,
+  endColor: IRGBColor,
+  /** out of 100 */ progress: number
+): IRGBColor {
   return {
     red: Math.round(lerp(startColor.red, endColor.red, progress)),
     green: Math.round(lerp(startColor.green, endColor.green, progress)),
@@ -69,23 +79,26 @@ export function lerpRGB(startColor: IRGBColor, endColor: IRGBColor, /** out of 1
 }
 
 /** Get a colour lerped between multiple breakpoints */
-export function multiLerpRGB(colors: IRGBColor[], /** out of 100 */ progress: number): IRGBColor {
+export function multiLerpRGB(
+  colors: IRGBColor[],
+  /** out of 100 */ progress: number
+): IRGBColor {
   return {
     red: Math.round(
       multiLerp(
-        colors.map(color => color.red),
+        colors.map((color) => color.red),
         progress
       )
     ),
     green: Math.round(
       multiLerp(
-        colors.map(color => color.green),
+        colors.map((color) => color.green),
         progress
       )
     ),
     blue: Math.round(
       multiLerp(
-        colors.map(color => color.blue),
+        colors.map((color) => color.blue),
         progress
       )
     ),
@@ -93,7 +106,11 @@ export function multiLerpRGB(colors: IRGBColor[], /** out of 100 */ progress: nu
 }
 
 /** Get a colour lerped between a start and end colour as a hex */
-export function lerpHex(startColor: string, endColor: string, /** out of 100 */ progress: number): string {
+export function lerpHex(
+  startColor: string,
+  endColor: string,
+  /** out of 100 */ progress: number
+): string {
   const rgbStartColor = hexToRGB(startColor);
   const rgbEndColor = hexToRGB(endColor);
 
@@ -103,9 +120,12 @@ export function lerpHex(startColor: string, endColor: string, /** out of 100 */ 
 }
 
 /** Get a colour lerped between multiple breakpoints as a hex */
-export function multiLerpHex(colors: string[], /** out of 100 */ progress: number): string {
+export function multiLerpHex(
+  colors: string[],
+  /** out of 100 */ progress: number
+): string {
   const rgbLerped = multiLerpRGB(
-    colors.map(color => hexToRGB(color)),
+    colors.map((color) => hexToRGB(color)),
     progress
   );
 
@@ -116,7 +136,7 @@ export function multiLerpHex(colors: string[], /** out of 100 */ progress: numbe
 export function colorToRGBCSString(color: Color) {
   const rgb = colorToRGB(color);
 
-  if (typeof rgb.alpha === 'number') {
+  if (typeof rgb.alpha === "number") {
     return `rgba(${rgb.red}, ${rgb.green}, ${rgb.blue}, ${rgb.alpha})`;
   }
 

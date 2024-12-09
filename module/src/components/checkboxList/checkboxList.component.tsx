@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { IBindingProps, useBindingState } from '../../form';
-import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
+import { IBindingProps, useBindingState } from "../../form";
+import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
 import {
   ArmstrongFCExtensions,
   ArmstrongFCReturn,
@@ -10,24 +10,24 @@ import {
   DisplaySize,
   getContentFromOption,
   IArmstrongOption,
-} from '../../types';
-import { concat } from '../../utils';
-import { Checkbox, ICheckboxProps } from '../checkbox/checkbox.component';
-import { useArmstrongConfig } from '../config';
-import { IInputWrapperProps } from '../inputWrapper';
-import { Label } from '../label';
-import { ValidationErrors } from '../validationErrors';
+} from "../../types";
+import { concat } from "../../utils";
+import { Checkbox, ICheckboxProps } from "../checkbox/checkbox.component";
+import { useArmstrongConfig } from "../config";
+import { IInputWrapperProps } from "../inputWrapper";
+import { Label } from "../label";
+import { ValidationErrors } from "../validationErrors";
 
-import './checkboxList.theme.css';
+import "./checkboxList.theme.css";
 
 export interface ICheckboxListProps<Id extends ArmstrongId>
   extends Pick<
       IInputWrapperProps,
-      | 'scrollValidationErrorsIntoView'
-      | 'validationMode'
-      | 'errorIcon'
-      | 'validationErrorMessages'
-      | 'validationErrorsClassName'
+      | "scrollValidationErrorsIntoView"
+      | "validationMode"
+      | "errorIcon"
+      | "validationErrorMessages"
+      | "validationErrorsClassName"
     >,
     React.RefAttributes<HTMLDivElement> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
@@ -38,14 +38,14 @@ export interface ICheckboxListProps<Id extends ArmstrongId>
     Id,
     Omit<
       ICheckboxProps<boolean>,
-      | 'bind'
-      | 'checked'
-      | 'disabled'
-      | 'label'
-      | 'validationErrorsClassName'
-      | 'validationErrorMessages'
-      | 'scrollValidationErrorsIntoView'
-      | 'ref'
+      | "bind"
+      | "checked"
+      | "disabled"
+      | "label"
+      | "validationErrorsClassName"
+      | "validationErrorMessages"
+      | "scrollValidationErrorsIntoView"
+      | "ref"
     >
   >[];
 
@@ -90,7 +90,10 @@ export interface ICheckboxListProps<Id extends ArmstrongId>
 }
 
 /** Render a list of radio inputs which binds to a single string */
-export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<ArmstrongId>>(
+export const CheckboxList = React.forwardRef<
+  HTMLDivElement,
+  ICheckboxListProps<ArmstrongId>
+>(
   (
     {
       bind,
@@ -144,7 +147,9 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
           const isCurrentlyBound = boundValue?.includes(op.id);
           const addIfCurrentlyBound = !isSelectedOption || newValue;
           const addIfNotCurrentlyBound = isSelectedOption && newValue;
-          const shouldAdd = isCurrentlyBound ? addIfCurrentlyBound : addIfNotCurrentlyBound;
+          const shouldAdd = isCurrentlyBound
+            ? addIfCurrentlyBound
+            : addIfNotCurrentlyBound;
           return [...arr, ...(shouldAdd ? [op.id] : [])];
         }, [] as ArmstrongId[]);
         setBoundValue?.(newBoundValue);
@@ -164,7 +169,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
         {label && (
           <Label
             id={labelId}
-            className={concat('arm-checkbox-list-label', labelClassName)}
+            className={concat("arm-checkbox-list-label", labelClassName)}
             required={required}
             requiredIndicator={globals.requiredIndicator}
             displaySize={globals.inputDisplaySize}
@@ -173,14 +178,14 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
           </Label>
         )}
         <div
-          className={concat('arm-checkbox-list', className)}
+          className={concat("arm-checkbox-list", className)}
           ref={ref}
           data-error={error || !!validationErrorMessages?.length}
           data-disabled={disabled}
           data-size={globals.inputDisplaySize}
           {...nativeProps}
         >
-          {options.map(option => {
+          {options.map((option) => {
             const isChecked = boundValue?.includes(option.id);
             return (
               <Checkbox
@@ -190,26 +195,32 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
                 className="arm-checkbox-list-item"
                 checked={isChecked}
                 displaySize={globals.inputDisplaySize}
-                onCheckedChange={v => onCheckedChange(option, v)}
+                onCheckedChange={(v) => onCheckedChange(option, v)}
                 disabled={disabled || option.disabled}
                 label={getContentFromOption(option, isChecked)}
               />
             );
           })}
-          {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
-            <ValidationErrors
-              validationErrors={bindConfig.validationErrorMessages}
-              scrollIntoView={globals.scrollValidationErrorsIntoView}
-              className={concat('arm-checkbox-list-errors', validationErrorsClassName)}
-            />
-          )}
+          {bindConfig.shouldShowValidationErrorMessage &&
+            bindConfig.validationErrorMessages && (
+              <ValidationErrors
+                validationErrors={bindConfig.validationErrorMessages}
+                scrollIntoView={globals.scrollValidationErrorsIntoView}
+                className={concat(
+                  "arm-checkbox-list-errors",
+                  validationErrorsClassName
+                )}
+              />
+            )}
         </div>
       </>
     );
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+) as (<Id extends ArmstrongId>(
+  props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>
+) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICheckboxListProps<ArmstrongId>>;
 
-CheckboxList.displayName = 'CheckboxList';
+CheckboxList.displayName = "CheckboxList";

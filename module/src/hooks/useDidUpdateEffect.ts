@@ -1,7 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 
 /** A useEffect which won't run after the first render, will only run once the deps start changing */
-export function useDidUpdateEffect(callback: React.EffectCallback, deps?: React.DependencyList) {
+export function useDidUpdateEffect(
+  callback: React.EffectCallback,
+  deps?: React.DependencyList
+) {
   const didMountRef = React.useRef(false);
 
   return React.useEffect(() => {

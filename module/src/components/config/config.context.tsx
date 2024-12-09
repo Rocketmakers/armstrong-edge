@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { FaCheck } from 'react-icons/fa';
-import { ImMinus, ImSpinner2 } from 'react-icons/im';
-import { IoIosWarning } from 'react-icons/io';
-import { RiCloseLine } from 'react-icons/ri';
+import * as React from "react";
+import { FaCheck } from "react-icons/fa";
+import { ImMinus, ImSpinner2 } from "react-icons/im";
+import { IoIosWarning } from "react-icons/io";
+import { RiCloseLine } from "react-icons/ri";
 
-import { DisplaySize } from '../../types';
-import { stripNullOrUndefined } from '../../utils/objects';
-import type { ButtonDisplayStyle } from '../button';
-import type { ToastPosition } from '../toast';
+import { DisplaySize } from "../../types";
+import { stripNullOrUndefined } from "../../utils/objects";
+import type { ButtonDisplayStyle } from "../button";
+import type { ToastPosition } from "../toast";
 
 /**
  * Armstrong global config type
  */
 export interface IArmstrongConfig {
   /** overrides the error messaging and icon display used in the error validation display */
-  validationMode?: 'icon' | 'message' | 'both';
+  validationMode?: "icon" | "message" | "both";
 
   /** which size variant to use for buttons globally by default */
   buttonDisplaySize?: DisplaySize;
@@ -25,10 +25,10 @@ export interface IArmstrongConfig {
   buttonDisplayStyle?: ButtonDisplayStyle;
 
   /** which pending position to use for buttons globally by default */
-  buttonPendingPosition?: 'left' | 'right';
+  buttonPendingPosition?: "left" | "right";
 
   /** which side of the button to show the spinner/error icon on - defaults to 'right' */
-  inputStatusPosition?: 'left' | 'right';
+  inputStatusPosition?: "left" | "right";
 
   /** which size variant to use for inputs globally by default */
   inputDisplaySize?: DisplaySize;
@@ -79,56 +79,60 @@ export interface IArmstrongConfig {
   tooltipShowArrow?: boolean;
 
   /** Which side to render the tooltip, defaults to "top" */
-  tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
+  tooltipSide?: "top" | "right" | "bottom" | "left";
 
   /** should the inputs validate automatically against the provided schema? Default: `true` */
   autoValidate?: boolean;
 }
 
-type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo'>> &
-  Pick<IArmstrongConfig, 'globalPortalTo'>;
+type ArmstrongConfigDefaults = Required<
+  Omit<IArmstrongConfig, "globalPortalTo">
+> &
+  Pick<IArmstrongConfig, "globalPortalTo">;
 
 /**
  * System level defaults for armstrong global config
  */
 const systemDefaults: ArmstrongConfigDefaults = {
-  validationMode: 'both',
-  buttonDisplaySize: 'medium',
-  buttonDisplayStyle: 'primary',
-  buttonPendingPosition: 'right',
-  inputStatusPosition: 'right',
-  inputDisplaySize: 'medium',
+  validationMode: "both",
+  buttonDisplaySize: "medium",
+  buttonDisplayStyle: "primary",
+  buttonPendingPosition: "right",
+  inputStatusPosition: "right",
+  inputDisplaySize: "medium",
   hideInputErrorIconOnStatus: true,
   disableControlOnPending: true,
   scrollValidationErrorsIntoView: false,
-  requiredIndicator: '*',
+  requiredIndicator: "*",
   validationErrorIcon: <IoIosWarning size={24} />,
   spinnerIcon: <ImSpinner2 />,
   dialogCloseButtonIcon: <RiCloseLine size={24} />,
-  globalPortalTo: typeof document !== 'undefined' ? document.body : undefined,
+  globalPortalTo: typeof document !== "undefined" ? document.body : undefined,
   toastDuration: 5000,
-  toastPosition: 'bottom-right',
+  toastPosition: "bottom-right",
   toastCloseButtonIcon: <RiCloseLine size={18} />,
   checkboxCustomIndicator: <FaCheck />,
   checkboxCustomIndeterminateIndicator: <ImMinus />,
   tooltipDelay: 700,
   tooltipShowArrow: false,
-  tooltipSide: 'top',
+  tooltipSide: "top",
   autoValidate: true,
 };
 
-const ArmstrongConfigContext = React.createContext<ArmstrongConfigDefaults>(systemDefaults);
+const ArmstrongConfigContext =
+  React.createContext<ArmstrongConfigDefaults>(systemDefaults);
 
 /**
  * Configuration for Armstrong
  * - Allows for certain frequently repeated properties to be set at a global level
  */
-export const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<IArmstrongConfig>> = ({
-  children,
-  ...config
-}) => {
+export const ArmstrongConfigProvider: React.FC<
+  React.PropsWithChildren<IArmstrongConfig>
+> = ({ children, ...config }) => {
   return (
-    <ArmstrongConfigContext.Provider value={{ ...systemDefaults, ...stripNullOrUndefined(config) }}>
+    <ArmstrongConfigContext.Provider
+      value={{ ...systemDefaults, ...stripNullOrUndefined(config) }}
+    >
       {children}
     </ArmstrongConfigContext.Provider>
   );
@@ -140,7 +144,9 @@ export const ArmstrongConfigProvider: React.FC<React.PropsWithChildren<IArmstron
  * @param localOverrides Optional overrides for config properties, these will take precedence over anything set globally.
  * @returns A config dictionary with a guaranteed entry for every key in priority order: {...system, ...global, ...local}
  */
-export const useArmstrongConfig = (localOverrides?: IArmstrongConfig): ArmstrongConfigDefaults => {
+export const useArmstrongConfig = (
+  localOverrides?: IArmstrongConfig
+): ArmstrongConfigDefaults => {
   const config = React.useContext(ArmstrongConfigContext);
   return { ...config, ...stripNullOrUndefined(localOverrides) };
 };
