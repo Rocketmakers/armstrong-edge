@@ -12,17 +12,18 @@ jobs:
 
       - name: Set Node.js to current version and cache in module
         id: setup-node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@latest
         with:
           node-version-file: '.tool-versions'
 
       - name: Cache node modules
         id: node-modules
-        uses: actions/cache@v3
+        uses: actions/cache@latest
         with:
           path: |
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/module/node_modules
+            ${{ github.workspace }}/storybook/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-

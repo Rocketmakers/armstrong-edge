@@ -18,11 +18,12 @@ jobs:
 
       - name: Restore node modules cache
         id: node-modules
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@latest
         with:
           path: |
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/module/node_modules
+            ${{ github.workspace }}/storybook/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Run Jest Tests

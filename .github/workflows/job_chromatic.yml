@@ -22,11 +22,12 @@ jobs:
 
       - name: Restore node modules cache
         id: node-modules
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@latest
         with:
           path: |
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/module/node_modules
+            ${{ github.workspace }}/storybook/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Publish to Chromatic
@@ -34,7 +35,7 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true
-          buildScriptName: npm i && build-storybook
+          buildScriptName: build-storybook
           workingDir: ./storybook
           exitOnceUploaded: true
         env:
