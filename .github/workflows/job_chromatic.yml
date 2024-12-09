@@ -26,6 +26,11 @@ jobs:
             ${{ github.workspace }}/storybook/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Install storybook node modules
+        id: storybook-node-modules
+        run: npm install
+        working-directory: ./storybook
+
       - name: Publish to Chromatic
         uses: chromaui/action@latest
         with:
