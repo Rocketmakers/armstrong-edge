@@ -20,7 +20,7 @@ jobs:
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Download build artifact
-        uses: actions/download-artifact@latest
+        uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: ${{ github.workspace }}/module/dist

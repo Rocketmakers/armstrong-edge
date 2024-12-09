@@ -29,7 +29,7 @@ jobs:
         working-directory: ./module
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: ${{ github.workspace }}/module/dist
