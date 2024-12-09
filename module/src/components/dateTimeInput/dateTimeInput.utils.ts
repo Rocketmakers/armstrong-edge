@@ -1,16 +1,7 @@
-import {
-  addMonths,
-  addYears,
-  endOfMonth,
-  format,
-  isAfter,
-  isBefore,
-  startOfMonth,
-  startOfYear,
-} from "date-fns";
+import { addMonths, addYears, endOfMonth, format, isAfter, isBefore, startOfMonth, startOfYear } from 'date-fns';
 
-import { NullOrUndefined } from "../../types";
-import { IMonth } from "./dateTimeInput.types";
+import { NullOrUndefined } from '../../types';
+import { IMonth } from './dateTimeInput.types';
 
 /**
  * Throws an error if the max date is before the min date.
@@ -32,12 +23,7 @@ export function minMaxCheckThrow(min?: Date, max?: Date) {
  * @param max (Date) The optional `max` date prop passed to the calendar view.
  * @returns An array of months.
  */
-export function getMonths(
-  forYear: number,
-  locale: Locale,
-  min?: Date,
-  max?: Date
-): IMonth[] {
+export function getMonths(forYear: number, locale: Locale, min?: Date, max?: Date): IMonth[] {
   minMaxCheckThrow(min, max);
   const firstMonth = startOfYear(new Date(forYear, 1, 1));
   const months: IMonth[] = [];
@@ -45,10 +31,8 @@ export function getMonths(
     const currentDate = i === 0 ? firstMonth : addMonths(firstMonth, i);
     months.push({
       index: i,
-      name: format(currentDate, "MMMM", { locale }),
-      disabled:
-        (!!min && isBefore(currentDate, startOfMonth(min))) ||
-        (!!max && isAfter(currentDate, endOfMonth(max))),
+      name: format(currentDate, 'MMMM', { locale }),
+      disabled: (!!min && isBefore(currentDate, startOfMonth(min))) || (!!max && isAfter(currentDate, endOfMonth(max))),
     });
   }
   return months;
@@ -77,9 +61,6 @@ export function getYears(min?: Date, max?: Date): number[] {
  * @param {string} formatString - The format string to use for formatting the date.
  * @returns {string|undefined} The formatted date as a string, or undefined if the incoming date is null or undefined.
  */
-export function formatDate(
-  incomingDate: NullOrUndefined<Date>,
-  formatString: string
-): string | undefined {
+export function formatDate(incomingDate: NullOrUndefined<Date>, formatString: string): string | undefined {
   return incomingDate ? format(incomingDate, formatString) : undefined;
 }

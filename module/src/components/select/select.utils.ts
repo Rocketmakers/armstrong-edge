@@ -1,5 +1,5 @@
-import { ArmstrongId, IArmstrongOption, NullOrUndefined } from "../../types";
-import type { IReactSelectCreateOption } from "./select.component";
+import { ArmstrongId, IArmstrongOption, NullOrUndefined } from '../../types';
+import type { IReactSelectCreateOption } from './select.component';
 
 export interface GroupedOption<Id extends NullOrUndefined<ArmstrongId>> {
   label: string;
@@ -9,10 +9,7 @@ export interface GroupedOption<Id extends NullOrUndefined<ArmstrongId>> {
 export function isGroupedOptions<Id extends NullOrUndefined<ArmstrongId>>(
   options?: IArmstrongOption<Id>[] | GroupedOption<Id>[]
 ): options is GroupedOption<Id>[] {
-  return !!options?.some(
-    (o: GroupedOption<Id> | IArmstrongOption<Id>) =>
-      (o as GroupedOption<Id>).label
-  );
+  return !!options?.some((o: GroupedOption<Id> | IArmstrongOption<Id>) => (o as GroupedOption<Id>).label);
 }
 
 export function isCreatingOption(

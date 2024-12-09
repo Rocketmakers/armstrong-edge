@@ -1,23 +1,14 @@
-import { Dictionary } from "./objects";
+import { Dictionary } from './objects';
 
 /** Convert an array of arrays into a single array */
 export function flatten<T>(...arrays: (T[] | undefined)[]) {
-  return arrays.reduce<T[]>(
-    (output, current) => (current ? [...output, ...current] : output),
-    []
-  );
+  return arrays.reduce<T[]>((output, current) => (current ? [...output, ...current] : output), []);
 }
 
 /** Turn an array into a dictionary of items in that array by a given key */
-export function arrayToDictionary<T, Keys extends string = string>(
-  array: T[],
-  getKey: keyof T | ((item: T) => Keys)
-) {
+export function arrayToDictionary<T, Keys extends string = string>(array: T[], getKey: keyof T | ((item: T) => Keys)) {
   return array.reduce<Dictionary<T, Keys>>((dictionary, currentValue) => {
-    const key =
-      typeof getKey === "function"
-        ? getKey(currentValue)
-        : (currentValue[getKey] as unknown as Keys);
+    const key = typeof getKey === 'function' ? getKey(currentValue) : (currentValue[getKey] as unknown as Keys);
 
     return { ...dictionary, [key]: currentValue };
   }, {} as Dictionary<T, Keys>);
@@ -36,10 +27,7 @@ export function arrayToArrayDictionary<T, Keys extends string = string>(
 
     return {
       ...dictionary,
-      [key]: [
-        ...(dictionary[key as keyof typeof dictionary] || []),
-        currentValue,
-      ],
+      [key]: [...(dictionary[key as keyof typeof dictionary] || []), currentValue],
     };
   }, {} as ArrayDictionary<T, Keys>);
 }
@@ -50,12 +38,9 @@ interface IArrayWithKey<T, Keys extends string> {
 }
 
 /** Sort an array into an array of objects with a key and an array of items on it */
-export function arrayToArraysByKey<T, Keys extends string = string>(
-  array: T[],
-  getKey: (item: T) => Keys
-) {
+export function arrayToArraysByKey<T, Keys extends string = string>(array: T[], getKey: (item: T) => Keys) {
   const dictionary = arrayToArrayDictionary(array, getKey);
-  return Object.keys(dictionary).map<IArrayWithKey<T, Keys>>((key) => ({
+  return Object.keys(dictionary).map<IArrayWithKey<T, Keys>>(key => ({
     key: key as Keys,
     items: dictionary[key],
   }));
@@ -63,10 +48,7 @@ export function arrayToArraysByKey<T, Keys extends string = string>(
 
 /** A variant of findIndex that returns the index of the last item in the array where the callback returns true */
 export function findLastIndex<T>(array: T[], callback: (item: T) => boolean) {
-  return array.reduce(
-    (output, item, index) => (callback(item) ? index : output),
-    -1
-  );
+  return array.reduce((output, item, index) => (callback(item) ? index : output), -1);
 }
 /**
  * Re-indexes an array from a specific index point.
@@ -90,10 +72,7 @@ export function reIndex<T>(array: T[], startFrom: number): T[] {
  * @param mapper A function to call x number of times (x = `count`).
  * @returns The array of newly mapped items.
  */
-export function repeat<TMapped>(
-  count: number,
-  mapper: (index: number) => TMapped
-): TMapped[] {
+export function repeat<TMapped>(count: number, mapper: (index: number) => TMapped): TMapped[] {
   const array: number[] = [];
   for (let i = 0; i < count; i += 1) {
     array.push(i);
@@ -106,16 +85,8 @@ export function repeat<TMapped>(
  *
  * I.E. [[0,1,2], [3,4], [5,6,7]]
  */
-export function getOverallIndex<T>(
-  innerIndex: number,
-  outerIndex: number,
-  arrays: { items: T[] }[]
-) {
-  return (
-    arrays
-      .slice(0, outerIndex)
-      .reduce((output, array) => array.items.length + output, 0) + innerIndex
-  );
+export function getOverallIndex<T>(innerIndex: number, outerIndex: number, arrays: { items: T[] }[]) {
+  return arrays.slice(0, outerIndex).reduce((output, array) => array.items.length + output, 0) + innerIndex;
 }
 
 /** Get the item inside an array of arrays at an overall index */

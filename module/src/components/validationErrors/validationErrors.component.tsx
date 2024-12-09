@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
 
-import type { ValidationMessage } from "../../form";
-import { concat } from "../../utils/classNames";
-import { useArmstrongConfig } from "../config";
+import type { ValidationMessage } from '../../form';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 
-import "./validationErrors.theme.css";
+import './validationErrors.theme.css';
 
 export interface IValidationErrorsProps {
   /**
@@ -20,82 +20,54 @@ export interface IValidationErrorsProps {
   scrollIntoView?: boolean;
 
   /** overrides the error messaging and icon display used in the error validation display */
-  validationMode?: "icon" | "message" | "both";
+  validationMode?: 'icon' | 'message' | 'both';
 }
 
 /** Render an array of validation errors as error messages */
 export const ValidationErrors = React.forwardRef<
   HTMLDivElement,
-  React.PropsWithChildren<
-    IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>
-  >
->(
-  (
-    {
-      validationErrors,
-      className,
-      scrollIntoView,
-      validationMode,
-      ...nativeProps
-    },
-    ref
-  ) => {
-    const globals = useArmstrongConfig({
-      validationMode,
-      scrollValidationErrorsIntoView: scrollIntoView,
-    });
+  React.PropsWithChildren<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>>
+>(({ validationErrors, className, scrollIntoView, validationMode, ...nativeProps }, ref) => {
+  const globals = useArmstrongConfig({
+    validationMode,
+    scrollValidationErrorsIntoView: scrollIntoView,
+  });
 
-    const internalRef = React.useRef<HTMLInputElement>(null);
-    React.useImperativeHandle(
-      ref,
-      () => internalRef.current as HTMLInputElement,
-      [internalRef]
-    );
+  const internalRef = React.useRef<HTMLInputElement>(null);
+  React.useImperativeHandle(ref, () => internalRef.current as HTMLInputElement, [internalRef]);
 
-    React.useEffect(() => {
-      if (
-        validationErrors.length > 0 &&
-        globals.scrollValidationErrorsIntoView
-      ) {
-        internalRef.current?.scrollIntoView({
-          block: "center",
-          behavior: "smooth",
-        });
-      }
-    }, [validationErrors.length, globals.scrollValidationErrorsIntoView]);
+  React.useEffect(() => {
+    if (validationErrors.length > 0 && globals.scrollValidationErrorsIntoView) {
+      internalRef.current?.scrollIntoView({
+        block: 'center',
+        behavior: 'smooth',
+      });
+    }
+  }, [validationErrors.length, globals.scrollValidationErrorsIntoView]);
 
-    /** If the error is a JSX element use the key on the element or the index */
-    const getKey = React.useCallback(
-      (error: ValidationMessage, index: number) => {
-        if (typeof error === "string") {
-          return error + index;
-        }
-        return error?.key ?? index;
-      },
-      []
-    );
+  /** If the error is a JSX element use the key on the element or the index */
+  const getKey = React.useCallback((error: ValidationMessage, index: number) => {
+    if (typeof error === 'string') {
+      return error + index;
+    }
+    return error?.key ?? index;
+  }, []);
 
-    const shouldShowErrorMessage =
-      globals.validationMode === "both" || globals.validationMode === "message";
+  const shouldShowErrorMessage = globals.validationMode === 'both' || globals.validationMode === 'message';
 
-    return (
-      <div
-        ref={internalRef}
-        className={concat("arm-validation-errors", className)}
-        {...nativeProps}
-      >
-        {validationErrors.map((error, i) => (
-          <div
-            className="arm-validation-error-message"
-            key={getKey(error, i)}
-            aria-errormessage={typeof error === "string" ? error : ""}
-          >
-            {shouldShowErrorMessage && <span>{error}</span>}
-          </div>
-        ))}
-      </div>
-    );
-  }
-);
+  return (
+    <div ref={internalRef} className={concat('arm-validation-errors', className)} {...nativeProps}>
+      {validationErrors.map((error, i) => (
+        <div
+          className="arm-validation-error-message"
+          key={getKey(error, i)}
+          aria-errormessage={typeof error === 'string' ? error : ''}
+        >
+          {shouldShowErrorMessage && <span>{error}</span>}
+        </div>
+      ))}
+    </div>
+  );
+});
 
-ValidationErrors.displayName = "ValidationErrors";
+ValidationErrors.displayName = 'ValidationErrors';

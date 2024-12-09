@@ -1,33 +1,21 @@
-import * as React from "react";
-import { HTMLInputTypeAttribute } from "react";
+import * as React from 'react';
+import { HTMLInputTypeAttribute } from 'react';
 
-import { IBindingProps, useBindingState } from "../../form";
-import { useDebounce } from "../../hooks/useDebounce";
-import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
-import { useSSRLayoutEffect } from "../../hooks/useSSRLayoutEffect";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  DisplaySize,
-  NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { onBlurWorkaround } from "../../workarounds/radixDialog";
-import { useArmstrongConfig } from "../config";
-import {
-  IInputWrapperProps,
-  InputWrapper,
-} from "../inputWrapper/inputWrapper.component";
+import { IBindingProps, useBindingState } from '../../form';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
+import { useSSRLayoutEffect } from '../../hooks/useSSRLayoutEffect';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { onBlurWorkaround } from '../../workarounds/radixDialog';
+import { useArmstrongConfig } from '../config';
+import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
 
-import "./input.theme.css";
+import './input.theme.css';
 
 type NativeInputProps = Omit<
-  React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >,
-  "value" | "ref"
+  React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+  'value' | 'ref'
 >;
 
 interface IDelayedInputBaseProps<TValue> extends NativeInputProps {
@@ -41,39 +29,26 @@ interface IDelayedInputBaseProps<TValue> extends NativeInputProps {
   value?: TValue;
 }
 
-const DebounceInputBase = React.forwardRef<
-  HTMLInputElement,
-  IDelayedInputBaseProps<string>
->(({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-  const [actualValue, setActualValue] = useDebounce(
-    milliseconds,
-    value,
-    onValueChange
-  );
+const DebounceInputBase = React.forwardRef<HTMLInputElement, IDelayedInputBaseProps<string>>(
+  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
+    const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
 
-  const onChangeEvent = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setActualValue(e.currentTarget.value);
-      onChange?.(e);
-    },
-    [setActualValue, onChange]
-  );
+    const onChangeEvent = React.useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setActualValue(e.currentTarget.value);
+        onChange?.(e);
+      },
+      [setActualValue, onChange]
+    );
 
-  return (
-    <input
-      ref={ref}
-      value={actualValue}
-      onChange={onChangeEvent}
-      {...nativeProps}
-    />
-  );
-});
+    return <input ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+  }
+);
 
-DebounceInputBase.displayName = "DebounceInput";
+DebounceInputBase.displayName = 'DebounceInput';
 
-interface IInputProps<
-  TValue extends NullOrUndefined<string> | NullOrUndefined<number>
-> extends Omit<NativeInputProps, "type">,
+interface IInputProps<TValue extends NullOrUndefined<string> | NullOrUndefined<number>>
+  extends Omit<NativeInputProps, 'type'>,
     IInputWrapperProps {
   /** A class name to apply to the input element */
   inputClassName?: string;
@@ -101,30 +76,28 @@ interface IInputProps<
 }
 
 type SupportedStringInputTypes =
-  | "color"
-  | "date"
-  | "datetime-local"
-  | "email"
-  | "month"
-  | "password"
-  | "search"
-  | "tel"
-  | "text"
-  | "time"
-  | "url"
-  | "week"
-  | "hidden";
+  | 'color'
+  | 'date'
+  | 'datetime-local'
+  | 'email'
+  | 'month'
+  | 'password'
+  | 'search'
+  | 'tel'
+  | 'text'
+  | 'time'
+  | 'url'
+  | 'week'
+  | 'hidden';
 
-export interface ITextInputProps<TValue extends NullOrUndefined<string>>
-  extends IInputProps<TValue> {
+export interface ITextInputProps<TValue extends NullOrUndefined<string>> extends IInputProps<TValue> {
   /** The type of input, used to discriminate the bind/value type */
   type?: Extract<HTMLInputTypeAttribute, SupportedStringInputTypes>;
 }
 
-export interface INumberInputProps<TValue extends NullOrUndefined<number>>
-  extends IInputProps<TValue> {
+export interface INumberInputProps<TValue extends NullOrUndefined<number>> extends IInputProps<TValue> {
   /** The type of input, used to discriminate the bind/value type */
-  type: "number";
+  type: 'number';
 }
 
 /** A component which wraps up a native input element with some binding logic and some repeated elements (icons and stuff) for components which only contain a single input element. */
@@ -178,9 +151,7 @@ export const Input = React.forwardRef<
       autoValidate,
     });
 
-    const [internalValue, setInternalValue] = React.useState(
-      boundValue?.toString()
-    );
+    const [internalValue, setInternalValue] = React.useState(boundValue?.toString());
 
     useSSRLayoutEffect(() => {
       if (boundValue?.toString() !== internalValue?.toString()) {
@@ -202,7 +173,7 @@ export const Input = React.forwardRef<
 
     const parseValue = React.useCallback(
       (unparsedValue?: string) => {
-        if (nativeProps.type !== "number") {
+        if (nativeProps.type !== 'number') {
           return unparsedValue;
         }
         if (!unparsedValue) {
@@ -218,8 +189,7 @@ export const Input = React.forwardRef<
 
     const onBindValueChange = React.useCallback(
       (parsedValue?: string | number | undefined) => {
-        const formattedValue =
-          bind?.bindConfig?.format?.toData?.(parsedValue) || parsedValue;
+        const formattedValue = bind?.bindConfig?.format?.toData?.(parsedValue) || parsedValue;
         setBoundValue(formattedValue);
       },
       [setBoundValue, bind]
@@ -276,12 +246,12 @@ export const Input = React.forwardRef<
 
     const inputProps: NativeInputProps & {
       value?: string;
-      "data-testid"?: string;
+      'data-testid'?: string;
     } = {
       id,
-      className: concat("arm-input-base-input", inputClassName),
+      className: concat('arm-input-base-input', inputClassName),
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
-      value: internalValue?.toString() ?? (bind && ""),
+      value: internalValue?.toString() ?? (bind && ''),
       disabled,
       ...nativeProps,
       onBlur: onBlurEvent,
@@ -290,12 +260,9 @@ export const Input = React.forwardRef<
     return (
       <InputWrapper
         data-size={globals.inputDisplaySize}
-        className={concat(className, "arm-input-base")}
-        statusClassName={concat(statusClassName, "arm-input-base-status")}
-        validationErrorsClassName={concat(
-          validationErrorsClassName,
-          "arm-input-base-validation"
-        )}
+        className={concat(className, 'arm-input-base')}
+        statusClassName={concat(statusClassName, 'arm-input-base-status')}
+        validationErrorsClassName={concat(validationErrorsClassName, 'arm-input-base-validation')}
         leftOverlay={leftOverlay}
         rightOverlay={rightOverlay}
         validationErrorMessages={bindConfig.validationErrorMessages}
@@ -309,7 +276,7 @@ export const Input = React.forwardRef<
         hideIconOnStatus={globals.hideInputErrorIconOnStatus}
         label={label}
         labelId={labelId ?? id}
-        labelClassName={concat(labelClassName, "arm-input-base-label")}
+        labelClassName={concat(labelClassName, 'arm-input-base-label')}
         required={required}
         error={error}
         requiredIndicator={globals.requiredIndicator}
@@ -328,28 +295,16 @@ export const Input = React.forwardRef<
           />
         )}
         {!delay && (
-          <input
-            {...nativeProps}
-            {...inputProps}
-            onChange={onValueChangeRaw}
-            ref={ref}
-            data-size={displaySize}
-          />
+          <input {...nativeProps} {...inputProps} onChange={onValueChangeRaw} ref={ref} data-size={displaySize} />
         )}
       </InputWrapper>
     );
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<
-  TStringValue extends NullOrUndefined<string>,
-  TNumberValue extends NullOrUndefined<number>
->(
-  props: ArmstrongFCProps<
-    ITextInputProps<TStringValue> | INumberInputProps<TNumberValue>,
-    HTMLInputElement
-  >
+) as (<TStringValue extends NullOrUndefined<string>, TNumberValue extends NullOrUndefined<number>>(
+  props: ArmstrongFCProps<ITextInputProps<TStringValue> | INumberInputProps<TNumberValue>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ITextInputProps<string> | INumberInputProps<number>>;
 
-Input.displayName = "Input";
+Input.displayName = 'Input';

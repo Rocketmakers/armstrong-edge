@@ -1,22 +1,22 @@
-import { expect } from "@storybook/test";
-import { Meta, StoryObj } from "@storybook/react";
-import { within } from "@storybook/test";
-import * as React from "react";
-import { BiMinusCircle } from "react-icons/bi";
+import { expect } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/react';
+import { within } from '@storybook/test';
+import * as React from 'react';
+import { BiMinusCircle } from 'react-icons/bi';
 
-import { Spinner } from "./spinner.component";
+import { Spinner } from './spinner.component';
 
 /** metadata */
 
 export default {
-  title: "Components/Spinner",
+  title: 'Components/Spinner',
   component: Spinner,
 } as Meta<typeof Spinner>;
 
 /** component template */
 
 const Template: StoryObj<typeof Spinner> = {
-  render: (props) => <Spinner {...props} />,
+  render: props => <Spinner {...props} />,
 };
 
 /** stories */
@@ -25,7 +25,7 @@ export const Default: StoryObj<typeof Spinner> = {
   ...Template,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByRole("status", { name: "Loading..." });
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
 
     expect(spinner).toBeInTheDocument();
   },
@@ -38,7 +38,7 @@ export const CustomIcon: StoryObj<typeof Spinner> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByRole("status", { name: "Loading..." });
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
 
     expect(spinner).toBeInTheDocument();
   },
@@ -47,11 +47,11 @@ export const CustomIcon: StoryObj<typeof Spinner> = {
 export const Labelled: StoryObj<typeof Spinner> = {
   ...Template,
   args: {
-    label: "Loading...",
+    label: 'Loading...',
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinner = canvas.getByRole("status", { name: "Loading..." });
+    const spinner = canvas.getByRole('status', { name: 'Loading...' });
 
     expect(spinner).toBeInTheDocument();
 

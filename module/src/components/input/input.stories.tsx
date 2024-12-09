@@ -1,21 +1,21 @@
-import { expect } from "@storybook/test";
-import { Meta, StoryObj } from "@storybook/react";
-import { userEvent, within } from "@storybook/test";
-import * as React from "react";
-import { AiFillThunderbolt } from "react-icons/ai";
-import { BiSearch } from "react-icons/bi";
+import { expect } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/react';
+import { userEvent, within } from '@storybook/test';
+import * as React from 'react';
+import { AiFillThunderbolt } from 'react-icons/ai';
+import { BiSearch } from 'react-icons/bi';
 
-import { useForm } from "../../form";
-import { Input } from "./input.component";
+import { useForm } from '../../form';
+import { Input } from './input.component';
 
 /** Inputs with options to track errors, pending data and so on. */
 
 export default {
-  title: "Components/Input",
+  title: 'Components/Input',
   component: Input,
   args: {
-    type: "text",
-    placeholder: "Type here...",
+    type: 'text',
+    placeholder: 'Type here...',
   },
 } as Meta<typeof Input>;
 
@@ -23,11 +23,11 @@ type Story = StoryObj<typeof Input>;
 
 export const Default: Story = {
   args: {
-    type: "text",
+    type: 'text',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByRole("textbox");
+    const input = canvas.getByRole('textbox');
     expect(input).toBeInTheDocument();
   },
 };
@@ -35,7 +35,7 @@ export const Default: Story = {
 export const Labelled: Story = {
   render: () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         <Input label="Default" />
         <Input label="Required" required={true} />
       </div>
@@ -43,8 +43,8 @@ export const Labelled: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const defaultInput = canvas.getByLabelText("Default");
-    const requiredInput = canvas.getByLabelText("Required *");
+    const defaultInput = canvas.getByLabelText('Default');
+    const requiredInput = canvas.getByLabelText('Required *');
 
     expect(defaultInput).toBeInTheDocument();
     expect(requiredInput).toBeInTheDocument();
@@ -54,39 +54,34 @@ export const Labelled: Story = {
 export const Sizes: Story = {
   render: () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-        <Input label={"Small Input"} displaySize="small" required={true} />
-        <Input label={"Medium Input"} required={true} />
-        <Input label={"Large Input"} displaySize="large" required={true} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Input label={'Small Input'} displaySize="small" required={true} />
+        <Input label={'Medium Input'} required={true} />
+        <Input label={'Large Input'} displaySize="large" required={true} />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const smallInput = canvas.getByLabelText("Small Input *");
-    const mediumInput = canvas.getByLabelText("Medium Input *");
-    const largeInput = canvas.getByLabelText("Large Input *");
+    const smallInput = canvas.getByLabelText('Small Input *');
+    const mediumInput = canvas.getByLabelText('Medium Input *');
+    const largeInput = canvas.getByLabelText('Large Input *');
 
-    expect(smallInput.getAttribute("data-size")).toEqual("small");
-    expect(mediumInput.getAttribute("data-size")).toEqual(null);
-    expect(largeInput.getAttribute("data-size")).toEqual("large");
+    expect(smallInput.getAttribute('data-size')).toEqual('small');
+    expect(mediumInput.getAttribute('data-size')).toEqual(null);
+    expect(largeInput.getAttribute('data-size')).toEqual('large');
   },
 };
 
 export const Overlay: Story = {
   render: () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <Input label={'Left Overlay'} leftOverlay={<BiSearch size={22} data-testid={'search-icon'} />} />
+        <Input label={'Right Overlay'} rightOverlay="ml" />
         <Input
-          label={"Left Overlay"}
-          leftOverlay={<BiSearch size={22} data-testid={"search-icon"} />}
-        />
-        <Input label={"Right Overlay"} rightOverlay="ml" />
-        <Input
-          label={"Both overlays"}
-          leftOverlay={
-            <AiFillThunderbolt size={22} data-testid={"thunderbolt-icon"} />
-          }
+          label={'Both overlays'}
+          leftOverlay={<AiFillThunderbolt size={22} data-testid={'thunderbolt-icon'} />}
           rightOverlay="kw/h"
         />
       </div>
@@ -94,10 +89,10 @@ export const Overlay: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const searchIcon = canvas.getByTestId("search-icon");
-    const rightOverlayText = canvas.getByText("kw/h");
-    const thunderboltIcon = canvas.getByTestId("thunderbolt-icon");
-    const thunderboltOverlayText = canvas.getByText("ml");
+    const searchIcon = canvas.getByTestId('search-icon');
+    const rightOverlayText = canvas.getByText('kw/h');
+    const thunderboltIcon = canvas.getByTestId('thunderbolt-icon');
+    const thunderboltOverlayText = canvas.getByText('ml');
 
     expect(searchIcon).toBeVisible();
     expect(rightOverlayText).toBeVisible();
@@ -109,15 +104,15 @@ export const Overlay: Story = {
 export const Pending: Story = {
   render: () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-        <Input label={"Default"} pending={true} />
-        <Input label={"Icon on left"} pending={true} statusPosition="left" />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Input label={'Default'} pending={true} />
+        <Input label={'Icon on left'} pending={true} statusPosition="left" />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const spinners = canvas.getAllByRole("status");
+    const spinners = canvas.getAllByRole('status');
     // const defaultInput = canvas.getByLabelText('Default');
 
     expect(spinners[0]).toBeVisible();
@@ -128,75 +123,75 @@ export const Pending: Story = {
 export const Disabled: Story = {
   render: () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <Input label="Disabled" disabled={true} />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByRole("textbox");
-    expect(input).toHaveAttribute("disabled");
+    const input = canvas.getByRole('textbox');
+    expect(input).toHaveAttribute('disabled');
   },
 };
 
 export const ValidationError: Story = {
   render: () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <Input
-          label={"Validation mode - both"}
+          label={'Validation mode - both'}
           validationMode="both"
-          wrapperTestId={"both-validation"}
-          validationErrorMessages={["This field is required"]}
+          wrapperTestId={'both-validation'}
+          validationErrorMessages={['This field is required']}
         />
         <Input
-          label={"Validation mode - icon only"}
+          label={'Validation mode - icon only'}
           validationMode="icon"
-          validationErrorMessages={["This field is required"]}
-          wrapperTestId={"icon-validation"}
+          validationErrorMessages={['This field is required']}
+          wrapperTestId={'icon-validation'}
         />
         <Input
-          label={"Validation mode - message only"}
+          label={'Validation mode - message only'}
           validationMode="message"
-          validationErrorMessages={["This field is required"]}
-          wrapperTestId={"message-validation"}
+          validationErrorMessages={['This field is required']}
+          wrapperTestId={'message-validation'}
         />
         <Input
-          label={"Icon on left"}
+          label={'Icon on left'}
           validationMode="icon"
           statusPosition="left"
-          validationErrorMessages={["This field is required"]}
-          wrapperTestId={"left-icon-validation"}
+          validationErrorMessages={['This field is required']}
+          wrapperTestId={'left-icon-validation'}
         />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const statusIcons = canvas.getAllByRole("status");
-    const validationMessages = canvas.getAllByText("This field is required");
+    const statusIcons = canvas.getAllByRole('status');
+    const validationMessages = canvas.getAllByText('This field is required');
 
     // Validation mode - both
-    const bothValidation = canvas.getByTestId("both-validation");
-    expect(bothValidation.getAttribute("data-error")).toBe("true");
+    const bothValidation = canvas.getByTestId('both-validation');
+    expect(bothValidation.getAttribute('data-error')).toBe('true');
     expect(statusIcons[0]).toBeVisible();
     expect(validationMessages[0]).toBeVisible();
 
     // Validation mode - icon only
-    const iconValidation = canvas.getByTestId("icon-validation");
-    expect(iconValidation.getAttribute("data-error")).toBe("true");
+    const iconValidation = canvas.getByTestId('icon-validation');
+    expect(iconValidation.getAttribute('data-error')).toBe('true');
     expect(statusIcons[1]).toBeVisible();
 
     // Validation mode - message only
-    const messageValidation = canvas.getByTestId("message-validation");
-    expect(messageValidation.getAttribute("data-error")).toBe("true");
+    const messageValidation = canvas.getByTestId('message-validation');
+    expect(messageValidation.getAttribute('data-error')).toBe('true');
     expect(validationMessages[1]).toBeVisible();
 
     // Icon on left
-    const leftIconValidation = canvas.getByTestId("left-icon-validation");
-    expect(leftIconValidation.getAttribute("data-error")).toBe("true");
-    expect(leftIconValidation.getAttribute("data-left-overlay")).toBe("true");
+    const leftIconValidation = canvas.getByTestId('left-icon-validation');
+    expect(leftIconValidation.getAttribute('data-error')).toBe('true');
+    expect(leftIconValidation.getAttribute('data-left-overlay')).toBe('true');
     expect(statusIcons[2]).toBeVisible();
   },
 };
@@ -204,19 +199,11 @@ export const ValidationError: Story = {
 export const InputTypes: Story = {
   render: () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-        <Input label={"Number"} type="number" data-testid="number-input" />
-        <Input
-          label={"Password"}
-          type="password"
-          data-testid="password-input"
-        />
-        <Input label={"Email"} type="email" data-testid="email-input" />
-        <Input
-          label={"Telephone number"}
-          type="tel"
-          data-testid="telephone-input"
-        />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Input label={'Number'} type="number" data-testid="number-input" />
+        <Input label={'Password'} type="password" data-testid="password-input" />
+        <Input label={'Email'} type="email" data-testid="email-input" />
+        <Input label={'Telephone number'} type="tel" data-testid="telephone-input" />
       </div>
     );
   },
@@ -224,90 +211,67 @@ export const InputTypes: Story = {
     const canvas = within(canvasElement);
 
     // Number Input
-    const numberInput = canvas.getByTestId("number-input") as HTMLInputElement;
+    const numberInput = canvas.getByTestId('number-input') as HTMLInputElement;
     expect(numberInput).toBeInTheDocument();
-    expect(numberInput.getAttribute("type")).toBe("number");
+    expect(numberInput.getAttribute('type')).toBe('number');
 
-    await userEvent.type(numberInput, "no txt only numb");
-    expect(numberInput.value).not.toEqual("no txt only numb");
+    await userEvent.type(numberInput, 'no txt only numb');
+    expect(numberInput.value).not.toEqual('no txt only numb');
 
-    await userEvent.type(numberInput, "42");
-    expect(numberInput.value).toEqual("42");
+    await userEvent.type(numberInput, '42');
+    expect(numberInput.value).toEqual('42');
 
     // Password Input
-    const passwordInput = canvas.getByTestId(
-      "password-input"
-    ) as HTMLInputElement;
+    const passwordInput = canvas.getByTestId('password-input') as HTMLInputElement;
     expect(passwordInput).toBeInTheDocument();
-    expect(passwordInput.getAttribute("type")).toBe("password");
-    await userEvent.type(passwordInput, "password123");
-    expect(passwordInput.value).toEqual("password123");
+    expect(passwordInput.getAttribute('type')).toBe('password');
+    await userEvent.type(passwordInput, 'password123');
+    expect(passwordInput.value).toEqual('password123');
 
     // Email Input
-    const emailInput = canvas.getByTestId("email-input") as HTMLInputElement;
+    const emailInput = canvas.getByTestId('email-input') as HTMLInputElement;
     expect(emailInput).toBeInTheDocument();
-    expect(emailInput.getAttribute("type")).toBe("email");
-    await userEvent.type(emailInput, "helloworld@rocketmakers.com");
-    expect(emailInput.value).toEqual("helloworld@rocketmakers.com");
+    expect(emailInput.getAttribute('type')).toBe('email');
+    await userEvent.type(emailInput, 'helloworld@rocketmakers.com');
+    expect(emailInput.value).toEqual('helloworld@rocketmakers.com');
 
     // Telephone Input
-    const telephoneInput = canvas.getByTestId(
-      "telephone-input"
-    ) as HTMLInputElement;
+    const telephoneInput = canvas.getByTestId('telephone-input') as HTMLInputElement;
     expect(telephoneInput).toBeInTheDocument();
-    expect(telephoneInput.getAttribute("type")).toBe("tel");
-    await userEvent.type(telephoneInput, "01189998819991197253");
-    expect(telephoneInput.value).toEqual("01189998819991197253");
+    expect(telephoneInput.getAttribute('type')).toBe('tel');
+    await userEvent.type(telephoneInput, '01189998819991197253');
+    expect(telephoneInput.value).toEqual('01189998819991197253');
   },
 };
 
 export const Bound: Story = {
   render: () => {
     const { formProp, formState } = useForm({
-      text: "",
+      text: '',
       number: 0,
-      debounce: "",
+      debounce: '',
     });
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <div>
-          <Input
-            label={"Bound - text"}
-            type="text"
-            bind={formProp("text").bind()}
-          />
+          <Input label={'Bound - text'} type="text" bind={formProp('text').bind()} />
           <ul>
-            <li data-testid={"bound-result"}>Value: {formState?.text}</li>
-            <li data-testid={"bound-type"}>Type: {typeof formState?.text}</li>
+            <li data-testid={'bound-result'}>Value: {formState?.text}</li>
+            <li data-testid={'bound-type'}>Type: {typeof formState?.text}</li>
           </ul>
         </div>
         <div>
-          <Input
-            label={"Bound - number"}
-            type="number"
-            bind={formProp("number").bind()}
-          />
+          <Input label={'Bound - number'} type="number" bind={formProp('number').bind()} />
           <ul>
-            <li data-testid={"number-result"}>Value: {formState?.number}</li>
-            <li data-testid={"number-type"}>
-              Type: {typeof formState?.number}
-            </li>
+            <li data-testid={'number-result'}>Value: {formState?.number}</li>
+            <li data-testid={'number-type'}>Type: {typeof formState?.number}</li>
           </ul>
         </div>
         <div>
-          <Input
-            label={"Bound - debounced text (200ms)"}
-            type="text"
-            bind={formProp("debounce").bind()}
-            delay={200}
-          />
+          <Input label={'Bound - debounced text (200ms)'} type="text" bind={formProp('debounce').bind()} delay={200} />
           <ul>
-            <li data-testid={"debounce-result"}>
-              Value: {formState?.debounce}
-            </li>
-            <li data-testid={"debounce-type"}>
-              Type: {typeof formState?.debounce}
-            </li>
+            <li data-testid={'debounce-result'}>Value: {formState?.debounce}</li>
+            <li data-testid={'debounce-type'}>Type: {typeof formState?.debounce}</li>
           </ul>
         </div>
       </div>
@@ -316,45 +280,37 @@ export const Bound: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Get the Inputs
-    const boundInput = canvas.getByLabelText(
-      "Bound - text"
-    ) as HTMLInputElement;
-    const numberInput = canvas.getByLabelText(
-      "Bound - number"
-    ) as HTMLInputElement;
-    const debounceInput = canvas.getByLabelText(
-      "Bound - debounced text (200ms)"
-    ) as HTMLInputElement;
+    const boundInput = canvas.getByLabelText('Bound - text') as HTMLInputElement;
+    const numberInput = canvas.getByLabelText('Bound - number') as HTMLInputElement;
+    const debounceInput = canvas.getByLabelText('Bound - debounced text (200ms)') as HTMLInputElement;
 
     // Input results
-    const boundResult = canvas.getByTestId("bound-result");
-    const numberResult = canvas.getByTestId("number-result");
-    const debounceResult = canvas.getByTestId("debounce-result");
+    const boundResult = canvas.getByTestId('bound-result');
+    const numberResult = canvas.getByTestId('number-result');
+    const debounceResult = canvas.getByTestId('debounce-result');
 
     // Input Types
-    const boundType = canvas.getByTestId("bound-type");
-    const numberType = canvas.getByTestId("number-type");
-    const debounceType = canvas.getByTestId("debounce-type");
+    const boundType = canvas.getByTestId('bound-type');
+    const numberType = canvas.getByTestId('number-type');
+    const debounceType = canvas.getByTestId('debounce-type');
 
     // Test Bound Text Area
-    await userEvent.type(boundInput, "Hello, bound world");
-    await userEvent.type(numberInput, "42");
-    await userEvent.type(debounceInput, "Hello, bound world (but slower)");
+    await userEvent.type(boundInput, 'Hello, bound world');
+    await userEvent.type(numberInput, '42');
+    await userEvent.type(debounceInput, 'Hello, bound world (but slower)');
 
     // Check that the form state values match the typed input
-    expect(boundResult.textContent).toBe("Value: Hello, bound world");
-    expect(numberResult.textContent).toBe("Value: 42");
+    expect(boundResult.textContent).toBe('Value: Hello, bound world');
+    expect(numberResult.textContent).toBe('Value: 42');
     setTimeout(() => {
-      expect(debounceResult.textContent).toBe(
-        "Value: Hello, bound world (but slower)"
-      );
+      expect(debounceResult.textContent).toBe('Value: Hello, bound world (but slower)');
     }, 500);
 
     // Check that the input types are correct
-    expect(boundType.textContent).toBe("Type: string");
-    expect(numberType.textContent).toBe("Type: number");
+    expect(boundType.textContent).toBe('Type: string');
+    expect(numberType.textContent).toBe('Type: number');
     setTimeout(() => {
-      expect(debounceType.textContent).toBe("Type: string");
+      expect(debounceType.textContent).toBe('Type: string');
     }, 500);
   },
 };

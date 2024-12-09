@@ -1,4 +1,4 @@
-import type { RatingIconDefinition } from "./rating.component";
+import type { RatingIconDefinition } from './rating.component';
 
 /**
  * Converts a RatingIconDefinition to a JSX.Element.
@@ -7,11 +7,8 @@ import type { RatingIconDefinition } from "./rating.component";
  * @param {number} index - The index of the item in the rating array.
  * @returns {JSX.Element} The JSX element representing the icon.
  */
-export const iconJsxFromDefinition = (
-  icon: RatingIconDefinition,
-  index: number
-): JSX.Element => {
-  if (typeof icon === "function") {
+export const iconJsxFromDefinition = (icon: RatingIconDefinition, index: number): JSX.Element => {
+  if (typeof icon === 'function') {
     return icon(index);
   }
   return icon;

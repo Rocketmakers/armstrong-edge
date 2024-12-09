@@ -1,27 +1,19 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { DisplaySize } from "../../types";
-import { concat } from "../../utils/classNames";
-import { useArmstrongConfig } from "../config";
-import { Spinner } from "../spinner/spinner.component";
+import { DisplaySize } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
+import { Spinner } from '../spinner/spinner.component';
 
-import "./button.theme.css";
+import './button.theme.css';
 
 type ButtonHTMLProps = Omit<
-  React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >,
-  "ref"
+  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
+  'ref'
 >;
 
-export type ButtonDisplayStyle = "primary" | "secondary" | "outline" | "blank";
-export type ButtonDisplayStatus =
-  | "normal"
-  | "positive"
-  | "negative"
-  | "warning"
-  | "info";
+export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank';
+export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info';
 
 export interface IButtonProps extends ButtonHTMLProps {
   /** CSS className property */
@@ -31,7 +23,7 @@ export interface IButtonProps extends ButtonHTMLProps {
   pending?: boolean;
 
   /** show a spinner and disable */
-  pendingPosition?: "left" | "right";
+  pendingPosition?: 'left' | 'right';
 
   /** when pending is true should also disable the input */
   disableOnPending?: boolean;
@@ -56,10 +48,7 @@ export interface IButtonProps extends ButtonHTMLProps {
 }
 
 /** Renders an HTML button element with some useful additions */
-export const Button = React.forwardRef<
-  HTMLButtonElement,
-  React.PropsWithChildren<IButtonProps>
->((props, ref) => {
+export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IButtonProps>>((props, ref) => {
   const {
     className,
     disabled,
@@ -83,24 +72,14 @@ export const Button = React.forwardRef<
   });
 
   const spinner = (
-    <Spinner
-      className={concat(
-        "arm-button-spinner",
-        `arm-button-${pendingPosition}-icon`
-      )}
-      role="status"
-    />
+    <Spinner className={concat('arm-button-spinner', `arm-button-${pendingPosition}-icon`)} role="status" />
   );
-  const wrappedLeftIcon = leftOverlay && (
-    <span className="arm-button-left-icon">{leftOverlay}</span>
-  );
-  const wrappedRightIcon = rightOverlay && (
-    <span className="arm-button-right-icon">{rightOverlay}</span>
-  );
+  const wrappedLeftIcon = leftOverlay && <span className="arm-button-left-icon">{leftOverlay}</span>;
+  const wrappedRightIcon = rightOverlay && <span className="arm-button-right-icon">{rightOverlay}</span>;
 
   return (
     <button
-      className={concat("arm-button", className)}
+      className={concat('arm-button', className)}
       data-pending={pending}
       data-disabled={disabled || (globals.disableControlOnPending && pending)}
       data-size={globals.buttonDisplaySize}
@@ -111,19 +90,15 @@ export const Button = React.forwardRef<
       ref={ref}
       {...nativeProps}
     >
-      {pending && globals.buttonPendingPosition === "left"
-        ? spinner
-        : wrappedLeftIcon}
+      {pending && globals.buttonPendingPosition === 'left' ? spinner : wrappedLeftIcon}
       <span className="arm-button-contents">{children}</span>
-      {pending && globals.buttonPendingPosition === "right"
-        ? spinner
-        : wrappedRightIcon}
+      {pending && globals.buttonPendingPosition === 'right' ? spinner : wrappedRightIcon}
     </button>
   );
 });
 
 Button.defaultProps = {
-  pendingPosition: "right",
+  pendingPosition: 'right',
 };
 
-Button.displayName = "Button";
+Button.displayName = 'Button';

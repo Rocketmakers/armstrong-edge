@@ -1,20 +1,17 @@
-import { expect } from "@storybook/test";
-import { Meta, StoryObj } from "@storybook/react";
-import { within } from "@storybook/test";
-import * as React from "react";
+import { expect } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/react';
+import { within } from '@storybook/test';
+import * as React from 'react';
 
-import { ValidationErrors } from "./validationErrors.component";
+import { ValidationErrors } from './validationErrors.component';
 
 /** metadata */
 
 export default {
-  title: "Components/ValidationErrors",
+  title: 'Components/ValidationErrors',
   component: ValidationErrors,
   args: {
-    validationErrors: [
-      "This field is required",
-      "This field requires 12 characters",
-    ],
+    validationErrors: ['This field is required', 'This field requires 12 characters'],
   },
 } as Meta<typeof ValidationErrors>;
 
@@ -32,12 +29,8 @@ export const Default: StoryObj<typeof ValidationErrors> = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const validationError1 = canvas.getByText(
-      (args.validationErrors[0] as string) ?? ""
-    );
-    const validationError2 = canvas.getByText(
-      (args.validationErrors[1] as string) ?? ""
-    );
+    const validationError1 = canvas.getByText((args.validationErrors[0] as string) ?? '');
+    const validationError2 = canvas.getByText((args.validationErrors[1] as string) ?? '');
     expect(validationError1).toBeVisible();
     expect(validationError2).toBeVisible();
   },
@@ -47,6 +40,6 @@ export const Icons: StoryObj<typeof ValidationErrors> = {
   ...Template,
   args: {
     ...Template.args,
-    validationMode: "icon",
+    validationMode: 'icon',
   },
 };

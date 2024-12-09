@@ -4,13 +4,7 @@
  */
 export const onBlurWorkaround = (event: React.FocusEvent<HTMLElement>) => {
   const element = event.relatedTarget;
-  const focusableElementTagNames = [
-    "A",
-    "BUTTON",
-    "INPUT",
-    "TEXTAREA",
-    "SELECT",
-  ];
+  const focusableElementTagNames = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT'];
   if (element && focusableElementTagNames.includes(element.tagName)) {
     (element as HTMLElement).focus();
   }

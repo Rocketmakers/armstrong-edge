@@ -1,1 +1,1 @@
-export * from "./provider.component";
+export * from './provider.component';

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 /**
  * Will return the previous value for an incoming prop or potential dependency for comparison

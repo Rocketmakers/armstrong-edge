@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import * as RadixToast from "@radix-ui/react-toast";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as RadixToast from '@radix-ui/react-toast';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-import { useArmstrongConfig } from "../config";
-import { Toast } from "./toast.component";
+import { useArmstrongConfig } from '../config';
+import { Toast } from './toast.component';
 
-import "./toast.theme.css";
+import './toast.theme.css';
 
 /** Type denoting a toast message */
 export interface IToast {
@@ -30,11 +30,7 @@ export interface IToast {
 }
 
 /** Type denoting the position of a toast message */
-export type ToastPosition =
-  | "top-left"
-  | "top-right"
-  | "bottom-right"
-  | "bottom-left";
+export type ToastPosition = 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left';
 
 /** Types of the global toast context */
 interface IToastContext {
@@ -66,9 +62,12 @@ interface IToastProviderProps {
   closeButtonIcon?: JSX.Element | false;
 }
 
-export const ToastProvider: React.FC<
-  React.PropsWithChildren<IToastProviderProps>
-> = ({ children, duration, position, closeButtonIcon }) => {
+export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps>> = ({
+  children,
+  duration,
+  position,
+  closeButtonIcon,
+}) => {
   const [toasts, addToast] = React.useReducer<React.Reducer<IToast[], IToast>>(
     (state, action) => [...state, action],
     []
@@ -80,17 +79,11 @@ export const ToastProvider: React.FC<
   });
 
   const swipeDirection =
-    globals.toastPosition === "bottom-left" ||
-    globals.toastPosition === "top-left"
-      ? "left"
-      : "right";
+    globals.toastPosition === 'bottom-left' || globals.toastPosition === 'top-left' ? 'left' : 'right';
 
   return (
     <ToastContext.Provider value={{ addToast }}>
-      <RadixToast.Provider
-        swipeDirection={swipeDirection}
-        duration={globals.toastDuration}
-      >
+      <RadixToast.Provider swipeDirection={swipeDirection} duration={globals.toastDuration}>
         {children}
         {toasts.map((toast, i) => (
           <Toast
@@ -103,10 +96,7 @@ export const ToastProvider: React.FC<
         ))}
         {globals.globalPortalTo &&
           ReactDOM.createPortal(
-            <RadixToast.Viewport
-              className="arm-toast-viewport"
-              data-position={globals.toastPosition}
-            />,
+            <RadixToast.Viewport className="arm-toast-viewport" data-position={globals.toastPosition} />,
             globals.globalPortalTo
           )}
       </RadixToast.Provider>
@@ -114,4 +104,4 @@ export const ToastProvider: React.FC<
   );
 };
 
-ToastProvider.displayName = "ToastProvider";
+ToastProvider.displayName = 'ToastProvider';

@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Window } from "../utils/globals";
+import { Window } from '../utils/globals';
 
 /**
  * Hook to add an event listener, and remove it when the component unmounts
@@ -12,9 +12,7 @@ import { Window } from "../utils/globals";
 export function useEventListener(
   type: string,
   eventHandler: (e: unknown) => unknown,
-  element:
-    | Pick<HTMLElement, "addEventListener" | "removeEventListener">
-    | undefined = Window,
+  element: Pick<HTMLElement, 'addEventListener' | 'removeEventListener'> | undefined = Window,
   options: boolean | AddEventListenerOptions | undefined = { passive: true },
   enabled = true
 ) {
@@ -23,7 +21,7 @@ export function useEventListener(
       element.addEventListener(type, eventHandler, options);
 
       return () => {
-        if (typeof options === "object") {
+        if (typeof options === 'object') {
           const { once, passive, ...removeOptions } = options;
           element.removeEventListener(type, eventHandler, removeOptions);
         } else {

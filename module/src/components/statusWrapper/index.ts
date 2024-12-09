@@ -1,1 +1,1 @@
-export * from "./statusWrapper.component";
+export * from './statusWrapper.component';

@@ -1,6 +1,6 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from '@testing-library/react';
 
-import { useBoundingClientRect } from "./useBoundingClientRect";
+import { useBoundingClientRect } from './useBoundingClientRect';
 
 const dummyRect: DOMRect = {
   x: 16,
@@ -14,20 +14,20 @@ const dummyRect: DOMRect = {
   toJSON: () => {},
 };
 
-describe("useBoundingClientRect", () => {
+describe('useBoundingClientRect', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should get new rect and call the onChange event on resize", async () => {
-    const refElement = document.createElement("div");
+  it('should get new rect and call the onChange event on resize', async () => {
+    const refElement = document.createElement('div');
     const onChange = jest.fn();
     renderHook(() => useBoundingClientRect({ current: refElement }, onChange));
 
     const getBoundingClientRect = jest.fn(() => dummyRect);
     refElement.getBoundingClientRect = getBoundingClientRect;
 
-    const resizeEvent = new Event("resize");
+    const resizeEvent = new Event('resize');
     act(() => {
       document.dispatchEvent(resizeEvent);
     });
@@ -36,15 +36,15 @@ describe("useBoundingClientRect", () => {
     expect(onChange).toHaveBeenCalledWith(dummyRect);
   });
 
-  it("should get new rect and call the onChange event on scroll", async () => {
-    const refElement = document.createElement("div");
+  it('should get new rect and call the onChange event on scroll', async () => {
+    const refElement = document.createElement('div');
     const onChange = jest.fn();
     renderHook(() => useBoundingClientRect({ current: refElement }, onChange));
 
     const getBoundingClientRect = jest.fn(() => dummyRect);
     refElement.getBoundingClientRect = getBoundingClientRect;
 
-    const scrollEvent = new Event("scroll");
+    const scrollEvent = new Event('scroll');
     act(() => {
       document.dispatchEvent(scrollEvent);
     });
@@ -53,17 +53,15 @@ describe("useBoundingClientRect", () => {
     expect(onChange).toHaveBeenCalledWith(dummyRect);
   });
 
-  it("should NOT get new rect and call the onChange event on scroll if instructed not to with flag", async () => {
-    const refElement = document.createElement("div");
+  it('should NOT get new rect and call the onChange event on scroll if instructed not to with flag', async () => {
+    const refElement = document.createElement('div');
     const onChange = jest.fn();
-    renderHook(() =>
-      useBoundingClientRect({ current: refElement }, onChange, false)
-    );
+    renderHook(() => useBoundingClientRect({ current: refElement }, onChange, false));
 
     const getBoundingClientRect = jest.fn(() => dummyRect);
     refElement.getBoundingClientRect = getBoundingClientRect;
 
-    const scrollEvent = new Event("scroll");
+    const scrollEvent = new Event('scroll');
     act(() => {
       document.dispatchEvent(scrollEvent);
     });

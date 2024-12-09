@@ -8,7 +8,7 @@ export type Dictionary<T, Keys extends string> = Record<Keys, T>;
  */
 export function contentDependency<T>(item?: T): T | string | undefined {
   // falsy item or function, all we can do is return the reference like a normal memo
-  if (!item || typeof item === "function") {
+  if (!item || typeof item === 'function') {
     return item;
   }
   // sort array and serialize it for primitive comparison
@@ -16,7 +16,7 @@ export function contentDependency<T>(item?: T): T | string | undefined {
     return JSON.stringify([...item].sort());
   }
   // sort object keys and serialize it for primitive comparison
-  if (typeof item === "object") {
+  if (typeof item === 'object') {
     return JSON.stringify(
       Object.keys(item)
         .sort()
@@ -32,25 +32,19 @@ export function contentDependency<T>(item?: T): T | string | undefined {
  * @param target The target object to merge into
  * @param source The new source objects
  */
-export function mergeDeep<TObject>(
-  target: TObject,
-  ...sources: Partial<TObject>[]
-) {
-  if (!target || typeof target !== "object") {
+export function mergeDeep<TObject>(target: TObject, ...sources: Partial<TObject>[]) {
+  if (!target || typeof target !== 'object') {
     return target;
   }
   const newTarget = { ...target };
   for (const source of sources) {
-    if (typeof source === "object") {
-      Object.keys(source).forEach((key) => {
+    if (typeof source === 'object') {
+      Object.keys(source).forEach(key => {
         const targetValue = newTarget[key];
         const sourceValue = source[key];
         if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
           newTarget[key] = [...targetValue, ...sourceValue];
-        } else if (
-          typeof targetValue === "object" &&
-          typeof sourceValue === "object"
-        ) {
+        } else if (typeof targetValue === 'object' && typeof sourceValue === 'object') {
           newTarget[key] = mergeDeep(targetValue, sourceValue);
         } else {
           newTarget[key] = sourceValue;
@@ -67,9 +61,7 @@ export function mergeDeep<TObject>(
  * @param object The object to check
  * @returns A new object with the relevant key/value pairs removed
  */
-export function stripNullOrUndefined<TObject extends object | undefined>(
-  object: TObject
-): TObject {
+export function stripNullOrUndefined<TObject extends object | undefined>(object: TObject): TObject {
   if (!object) {
     return object;
   }

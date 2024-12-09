@@ -1,14 +1,14 @@
-import * as RadixTooltip from "@radix-ui/react-tooltip";
-import * as React from "react";
+import * as RadixTooltip from '@radix-ui/react-tooltip';
+import * as React from 'react';
 
-import { concat } from "../../utils";
-import { useArmstrongConfig } from "../config";
+import { concat } from '../../utils';
+import { useArmstrongConfig } from '../config';
 
-import "./tooltip.theme.css";
+import './tooltip.theme.css';
 
 export interface ITooltipProps
-  extends Omit<RadixTooltip.TooltipContentProps, "side" | "content">,
-    Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
+  extends Omit<RadixTooltip.TooltipContentProps, 'side' | 'content'>,
+    Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
   /** The content to display in the tooltip */
   content?: React.ReactNode;
 
@@ -45,28 +45,11 @@ export interface ITooltipProps
    * Which side to render the tooltip
    * @default top
    */
-  side?: "top" | "right" | "bottom" | "left";
+  side?: 'top' | 'right' | 'bottom' | 'left';
 }
 
-export const Tooltip = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<ITooltipProps>
->(
-  (
-    {
-      children,
-      content,
-      delay,
-      open,
-      onOpenChange,
-      showArrow,
-      className,
-      arrowClassName,
-      side,
-      ...props
-    },
-    ref
-  ) => {
+export const Tooltip = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITooltipProps>>(
+  ({ children, content, delay, open, onOpenChange, showArrow, className, arrowClassName, side, ...props }, ref) => {
     const { tooltipDelay, tooltipShowArrow, tooltipSide } = useArmstrongConfig({
       tooltipDelay: delay,
       tooltipShowArrow: showArrow,
@@ -80,16 +63,12 @@ export const Tooltip = React.forwardRef<
           <RadixTooltip.Portal>
             <RadixTooltip.Content
               ref={ref}
-              className={concat(className, "arm-tooltip-content")}
+              className={concat(className, 'arm-tooltip-content')}
               side={tooltipSide}
               {...props}
             >
               {content}
-              {tooltipShowArrow && (
-                <RadixTooltip.Arrow
-                  className={concat(arrowClassName, "arm-tooltip-arrow")}
-                />
-              )}
+              {tooltipShowArrow && <RadixTooltip.Arrow className={concat(arrowClassName, 'arm-tooltip-arrow')} />}
             </RadixTooltip.Content>
           </RadixTooltip.Portal>
         </RadixTooltip.Root>
@@ -98,7 +77,7 @@ export const Tooltip = React.forwardRef<
   }
 );
 
-Tooltip.displayName = "Tooltip";
+Tooltip.displayName = 'Tooltip';
 
 Tooltip.defaultProps = {
   sideOffset: 5,

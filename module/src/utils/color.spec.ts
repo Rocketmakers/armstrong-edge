@@ -7,11 +7,11 @@ import {
   multiLerpHex,
   multiLerpRGB,
   RGBToHex,
-} from "./color";
+} from './color';
 
-describe("Color utils", () => {
-  it("converts a hex code without alpha to RGB using hexToRGB", () => {
-    const hex = "#FFFFFF";
+describe('Color utils', () => {
+  it('converts a hex code without alpha to RGB using hexToRGB', () => {
+    const hex = '#FFFFFF';
 
     const result = hexToRGB(hex);
 
@@ -22,8 +22,8 @@ describe("Color utils", () => {
     });
   });
 
-  it("converts a hex code with alpha to RGB using hexToRGB", () => {
-    const hex = "#FFFFFF00";
+  it('converts a hex code with alpha to RGB using hexToRGB', () => {
+    const hex = '#FFFFFF00';
 
     const result = hexToRGB(hex);
 
@@ -35,8 +35,8 @@ describe("Color utils", () => {
     });
   });
 
-  it("converts a hex code to RGB using colorToRGB", () => {
-    const hex = "#FFFFFF";
+  it('converts a hex code to RGB using colorToRGB', () => {
+    const hex = '#FFFFFF';
 
     const result = colorToRGB(hex);
 
@@ -47,7 +47,7 @@ describe("Color utils", () => {
     });
   });
 
-  it("passes through an RGB object unchanged using colorToRGB", () => {
+  it('passes through an RGB object unchanged using colorToRGB', () => {
     const rgb = {
       red: 12,
       green: 17,
@@ -59,7 +59,7 @@ describe("Color utils", () => {
     expect(result).toEqual(rgb);
   });
 
-  it("converts an RGB object without alpha to hex using RGBToHex", () => {
+  it('converts an RGB object without alpha to hex using RGBToHex', () => {
     const rgb = {
       red: 255,
       green: 255,
@@ -68,10 +68,10 @@ describe("Color utils", () => {
 
     const result = RGBToHex(rgb);
 
-    expect(result).toBe("#FFFFFF");
+    expect(result).toBe('#FFFFFF');
   });
 
-  it("converts an RGB object with alpha to hex using RGBToHex", () => {
+  it('converts an RGB object with alpha to hex using RGBToHex', () => {
     const rgb = {
       red: 255,
       green: 255,
@@ -81,10 +81,10 @@ describe("Color utils", () => {
 
     const result = RGBToHex(rgb);
 
-    expect(result).toBe("#FFFFFF03");
+    expect(result).toBe('#FFFFFF03');
   });
 
-  it("gets an RGB colour lerped using a progress between a start and end colour using lerpRGB", () => {
+  it('gets an RGB colour lerped using a progress between a start and end colour using lerpRGB', () => {
     const startColor = { red: 0, green: 255, blue: 0 };
     const endColor = { red: 255, green: 0, blue: 0 };
 
@@ -97,7 +97,7 @@ describe("Color utils", () => {
     });
   });
 
-  it("gets an RGB colour lerped between multiple breakpoints using multiLerpRGB", () => {
+  it('gets an RGB colour lerped between multiple breakpoints using multiLerpRGB', () => {
     const startColor = { red: 0, green: 255, blue: 0 };
     const midColor = { red: 255, green: 0, blue: 0 };
     const endColor = { red: 0, green: 0, blue: 255 };
@@ -125,32 +125,32 @@ describe("Color utils", () => {
     });
   });
 
-  it("gets a Hex colour lerped using a progress between a start and end colour using lerpHex", () => {
-    const startColor = "#00FF00";
-    const endColor = "#FF0000";
+  it('gets a Hex colour lerped using a progress between a start and end colour using lerpHex', () => {
+    const startColor = '#00FF00';
+    const endColor = '#FF0000';
 
     const result = lerpHex(startColor, endColor, 50);
 
-    expect(result).toBe("#7F8000");
+    expect(result).toBe('#7F8000');
   });
 
-  it("gets a Hex colour lerped between multiple breakpoints using multiLerpHex", () => {
-    const startColor = "#00FF00";
-    const midColor = "#FF0000";
-    const endColor = "#0000FF";
+  it('gets a Hex colour lerped between multiple breakpoints using multiLerpHex', () => {
+    const startColor = '#00FF00';
+    const midColor = '#FF0000';
+    const endColor = '#0000FF';
 
     const result1 = multiLerpHex([startColor, midColor, endColor], 25);
     const result2 = multiLerpHex([startColor, midColor, endColor], 50);
     const result3 = multiLerpHex([startColor, midColor, endColor], 75);
 
-    expect(result1).toBe("#7F8000");
+    expect(result1).toBe('#7F8000');
 
-    expect(result2).toBe("#FF0000");
+    expect(result2).toBe('#FF0000');
 
-    expect(result3).toBe("#80007F");
+    expect(result3).toBe('#80007F');
   });
 
-  it("converts an RGB object without alpha into a CSS-friendly string using colorToRGBCSString", () => {
+  it('converts an RGB object without alpha into a CSS-friendly string using colorToRGBCSString', () => {
     const rgb = {
       red: 255,
       green: 255,
@@ -159,10 +159,10 @@ describe("Color utils", () => {
 
     const result = colorToRGBCSString(rgb);
 
-    expect(result).toBe("rgb(255, 255, 255)");
+    expect(result).toBe('rgb(255, 255, 255)');
   });
 
-  it("converts an RGB object with alpha into a CSS-friendly string using colorToRGBCSString", () => {
+  it('converts an RGB object with alpha into a CSS-friendly string using colorToRGBCSString', () => {
     const rgb = {
       red: 255,
       green: 255,
@@ -172,6 +172,6 @@ describe("Color utils", () => {
 
     const result = colorToRGBCSString(rgb);
 
-    expect(result).toBe("rgba(255, 255, 255, 1)");
+    expect(result).toBe('rgba(255, 255, 255, 1)');
   });
 });

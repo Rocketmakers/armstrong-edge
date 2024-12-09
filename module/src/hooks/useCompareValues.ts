@@ -1,4 +1,4 @@
-import { usePreviousValue } from "./usePreviousValue";
+import { usePreviousValue } from './usePreviousValue';
 
 /**
  * Compares an incoming prop or potential dependency to it's value on the previous render

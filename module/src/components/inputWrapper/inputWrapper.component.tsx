@@ -1,17 +1,14 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { ValidationMessage } from "../../form";
-import { DisplaySize } from "../../types";
-import { concat } from "../../utils/classNames";
-import { useArmstrongConfig } from "../config";
-import { Label } from "../label";
-import {
-  IStatusWrapperProps,
-  StatusWrapper,
-} from "../statusWrapper/statusWrapper.component";
-import { ValidationErrors } from "../validationErrors";
+import { ValidationMessage } from '../../form';
+import { DisplaySize } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
+import { Label } from '../label';
+import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
+import { ValidationErrors } from '../validationErrors';
 
-import "./inputWrapper.theme.css";
+import './inputWrapper.theme.css';
 
 export interface IInputWrapperProps extends IStatusWrapperProps {
   /** array of validation errors to render */
@@ -61,10 +58,7 @@ export interface IInputWrapperProps extends IStatusWrapperProps {
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
-export const InputWrapper = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<IInputWrapperProps>
->(
+export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IInputWrapperProps>>(
   (
     {
       className,
@@ -104,23 +98,20 @@ export const InputWrapper = React.forwardRef<
       inputDisplaySize: displaySize,
     });
 
-    const shouldShowValidationErrorsList =
-      globals.validationMode === "both" || globals.validationMode === "message";
+    const shouldShowValidationErrorsList = globals.validationMode === 'both' || globals.validationMode === 'message';
     const shouldShowErrorIcon =
-      (!!validationErrorMessages?.length &&
-        (globals.validationMode === "both" ||
-          globals.validationMode === "icon")) ||
+      (!!validationErrorMessages?.length && (globals.validationMode === 'both' || globals.validationMode === 'icon')) ||
       error;
 
     const showLeftOverlay =
       leftOverlay &&
-      (globals.inputStatusPosition !== "left" ||
+      (globals.inputStatusPosition !== 'left' ||
         !globals.hideInputErrorIconOnStatus ||
         (!pending && !shouldShowErrorIcon));
 
     const showRightOverlay =
       rightOverlay &&
-      (globals.inputStatusPosition !== "right" ||
+      (globals.inputStatusPosition !== 'right' ||
         !globals.hideInputErrorIconOnStatus ||
         (!pending && !shouldShowErrorIcon));
 
@@ -128,26 +119,16 @@ export const InputWrapper = React.forwardRef<
       <>
         <div
           ref={ref}
-          className={concat("arm-input", "arm-input-wrapper", className)}
-          data-disabled={
-            disabled || (pending && globals.disableControlOnPending)
-              ? true
-              : undefined
-          }
-          data-error={
-            error || !!validationErrorMessages?.length ? true : undefined
-          }
+          className={concat('arm-input', 'arm-input-wrapper', className)}
+          data-disabled={disabled || (pending && globals.disableControlOnPending) ? true : undefined}
+          data-error={error || !!validationErrorMessages?.length ? true : undefined}
           data-left-overlay={
-            showLeftOverlay ||
-            (globals.inputStatusPosition === "left" &&
-              (shouldShowErrorIcon || pending))
+            showLeftOverlay || (globals.inputStatusPosition === 'left' && (shouldShowErrorIcon || pending))
               ? true
               : undefined
           }
           data-right-overlay={
-            showRightOverlay ||
-            (globals.inputStatusPosition === "right" &&
-              (shouldShowErrorIcon || pending))
+            showRightOverlay || (globals.inputStatusPosition === 'right' && (shouldShowErrorIcon || pending))
               ? true
               : undefined
           }
@@ -155,7 +136,7 @@ export const InputWrapper = React.forwardRef<
         >
           {label && (
             <Label
-              className={concat("arm-input-base-label", labelClassName)}
+              className={concat('arm-input-base-label', labelClassName)}
               required={required}
               requiredIndicator={globals.requiredIndicator}
               htmlFor={labelId}
@@ -174,33 +155,24 @@ export const InputWrapper = React.forwardRef<
               className={statusClassName}
             >
               <>
-                {showLeftOverlay && (
-                  <div className="arm-input-overlay arm-input-overlay-left">
-                    {leftOverlay}
-                  </div>
-                )}
+                {showLeftOverlay && <div className="arm-input-overlay arm-input-overlay-left">{leftOverlay}</div>}
                 {children}
-                {showRightOverlay && (
-                  <div className="arm-input-overlay arm-input-overlay-right">
-                    {rightOverlay}
-                  </div>
-                )}
+                {showRightOverlay && <div className="arm-input-overlay arm-input-overlay-right">{rightOverlay}</div>}
               </>
             </StatusWrapper>
           </div>
-          {!!validationErrorMessages?.length &&
-            shouldShowValidationErrorsList && (
-              <ValidationErrors
-                className={validationErrorsClassName}
-                validationMode={globals.validationMode}
-                validationErrors={validationErrorMessages}
-                scrollIntoView={globals.scrollValidationErrorsIntoView}
-              />
-            )}
+          {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (
+            <ValidationErrors
+              className={validationErrorsClassName}
+              validationMode={globals.validationMode}
+              validationErrors={validationErrorMessages}
+              scrollIntoView={globals.scrollValidationErrorsIntoView}
+            />
+          )}
         </div>
       </>
     );
   }
 );
 
-InputWrapper.displayName = "InputWrapper";
+InputWrapper.displayName = 'InputWrapper';

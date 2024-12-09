@@ -2,10 +2,7 @@
 export type ArmstrongId = NullOrUndefined<string | number>;
 
 /** Allow a type with any key prepended with data- to allow object types to take data attributes */
-export type DataAttributes = Record<
-  `data-${string}`,
-  string | boolean | number
->;
+export type DataAttributes = Record<`data-${string}`, string | boolean | number>;
 
 /** Allow a type to also be null or undefined (needed for strict mode support) */
 export type NullOrUndefined<T> = T | null | undefined;
@@ -25,10 +22,7 @@ type PickTypeInner<TData, K extends AllKeys<TData>> = TData extends {
 }
   ? TData[K]
   : undefined;
-export type PickType<
-  T,
-  K extends string | number | symbol
-> = K extends AllKeys<T> ? PickTypeInner<T, K> : never;
+export type PickType<T, K extends string | number | symbol> = K extends AllKeys<T> ? PickTypeInner<T, K> : never;
 
 /**
  * Merges object keys from a union type.
@@ -41,11 +35,9 @@ export type Merge<T extends object> = {
 /**
  * Checks a generic value and returns `never` if generic is undefined. else returns second generic value.
  */
-export type NeverUndefined<TCheck, TReturn> = TCheck extends undefined
-  ? never
-  : TReturn;
+export type NeverUndefined<TCheck, TReturn> = TCheck extends undefined ? never : TReturn;
 
 /**
  * Display type options for inputs
  */
-export type DisplaySize = "small" | "medium" | "large";
+export type DisplaySize = 'small' | 'medium' | 'large';

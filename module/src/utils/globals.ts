@@ -1,10 +1,10 @@
 /** Globals wrapped up in type checks to ensure Armstrong won't break any server side rendering where using them would otherwise throw an error */
 
 /** The global window object, protected if in an environment that doesn't support window */
-export const Window = typeof window === "undefined" ? undefined : window;
+export const Window = typeof window === 'undefined' ? undefined : window;
 
 /** The global document object, protected if in an environment that doesn't support document */
-export const Document = typeof document === "undefined" ? undefined : document;
+export const Document = typeof document === 'undefined' ? undefined : document;
 
 /** Does the current environment support resize observer */
 export const supportsResizeObserver = !!Window?.ResizeObserver;

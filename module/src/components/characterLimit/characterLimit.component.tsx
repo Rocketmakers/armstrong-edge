@@ -1,19 +1,14 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { FormValidationMode, IBindingProps, useBindingState } from "../../form";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { useArmstrongConfig } from "../config";
+import { FormValidationMode, IBindingProps, useBindingState } from '../../form';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config';
 
-import "./characterLimit.theme.css";
+import './characterLimit.theme.css';
 
 export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
-  extends Omit<React.RefAttributes<HTMLDivElement>, "ref"> {
+  extends Omit<React.RefAttributes<HTMLDivElement>, 'ref'> {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind: IBindingProps<TBind>;
 
@@ -43,10 +38,7 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
-export const CharacterLimit = React.forwardRef<
-  HTMLDivElement,
-  ICharacterLimitProps<NullOrUndefined<string>>
->(
+export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitProps<NullOrUndefined<string>>>(
   (
     {
       bind,
@@ -78,26 +70,16 @@ export const CharacterLimit = React.forwardRef<
     }, [boundValue, exceeded, limit, setBoundValue, shouldEnforce]);
 
     return (
-      <div
-        ref={ref}
-        className={concat("arm-character-limit", className)}
-        data-exceeded={exceeded}
-        {...nativeProps}
-      >
+      <div ref={ref} className={concat('arm-character-limit', className)} data-exceeded={exceeded} {...nativeProps}>
         <div className="arm-character-limit-text">
           {boundValue?.length}/{limit}
         </div>
         {exceeded && (
           <div
-            className={concat(
-              "arm-character-limit-icon",
-              validationErrorsClassName
-            )}
-            title={validationErrorsTitle ?? "Character limit exceeded"}
+            className={concat('arm-character-limit-icon', validationErrorsClassName)}
+            title={validationErrorsTitle ?? 'Character limit exceeded'}
           >
-            {(globals.validationMode === "both" ||
-              globals.validationMode === "icon") &&
-              globals.validationErrorIcon}
+            {(globals.validationMode === 'both' || globals.validationMode === 'icon') && globals.validationErrorIcon}
           </div>
         )}
       </div>
@@ -110,4 +92,4 @@ export const CharacterLimit = React.forwardRef<
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>;
 
-CharacterLimit.displayName = "CharacterLimit";
+CharacterLimit.displayName = 'CharacterLimit';

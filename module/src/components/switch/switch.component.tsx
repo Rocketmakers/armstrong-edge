@@ -1,41 +1,33 @@
-import { Root, SwitchProps, Thumb } from "@radix-ui/react-switch";
-import * as React from "react";
+import { Root, SwitchProps, Thumb } from '@radix-ui/react-switch';
+import * as React from 'react';
 
-import { IBindingProps, useBindingState } from "../../form";
-import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  NullOrUndefined,
-} from "../../types";
-import { concat } from "../../utils/classNames";
-import { useArmstrongConfig } from "../config/config.context";
-import { IInputWrapperProps } from "../inputWrapper/inputWrapper.component";
-import { Label } from "../label/label.component";
-import { ValidationErrors } from "../validationErrors/validationErrors.component";
+import { IBindingProps, useBindingState } from '../../form';
+import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
+import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { concat } from '../../utils/classNames';
+import { useArmstrongConfig } from '../config/config.context';
+import { IInputWrapperProps } from '../inputWrapper/inputWrapper.component';
+import { Label } from '../label/label.component';
+import { ValidationErrors } from '../validationErrors/validationErrors.component';
 
-import "./switch.theme.css";
+import './switch.theme.css';
 
 export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<
-      React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLButtonElement>,
-        HTMLButtonElement
-      >,
-      "onChange" | "checked"
+      React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
+      'onChange' | 'checked'
     >,
     Pick<
       IInputWrapperProps,
-      | "scrollValidationErrorsIntoView"
-      | "validationMode"
-      | "validationErrorMessages"
-      | "disabled"
-      | "className"
-      | "displaySize"
-      | "labelId"
-      | "required"
-      | "requiredIndicator"
+      | 'scrollValidationErrorsIntoView'
+      | 'validationMode'
+      | 'validationErrorMessages'
+      | 'disabled'
+      | 'className'
+      | 'displaySize'
+      | 'labelId'
+      | 'required'
+      | 'requiredIndicator'
     > {
   /**  prop for binding to an Armstrong form binder (see forms documentation) */
   bind?: IBindingProps<TBind>;
@@ -68,10 +60,7 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   autoValidate?: boolean;
 }
 
-export const Switch = React.forwardRef<
-  HTMLButtonElement,
-  ISwitchProps<NullOrUndefined<boolean>>
->(
+export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUndefined<boolean>>>(
   (
     {
       bind,
@@ -114,10 +103,8 @@ export const Switch = React.forwardRef<
       autoValidate: bindConfig.autoValidate,
     });
 
-    const onCheckedChangeInternal = React.useCallback<
-      Required<SwitchProps>["onCheckedChange"]
-    >(
-      (newValue) => {
+    const onCheckedChangeInternal = React.useCallback<Required<SwitchProps>['onCheckedChange']>(
+      newValue => {
         setBoundValue?.(newValue);
       },
       [setBoundValue]
@@ -132,10 +119,7 @@ export const Switch = React.forwardRef<
 
     return (
       <>
-        <div
-          className={concat("arm-switch-container", className)}
-          data-disabled={disabled}
-        >
+        <div className={concat('arm-switch-container', className)} data-disabled={disabled}>
           <Root
             {...nativeProps}
             className="arm-switch"
@@ -154,7 +138,7 @@ export const Switch = React.forwardRef<
             id={labelId}
             required={required}
             requiredIndicator={globals.requiredIndicator}
-            className={concat(labelClassName, "arm-switch-label")}
+            className={concat(labelClassName, 'arm-switch-label')}
             data-disabled={disabled}
             htmlFor={id}
             displaySize={globals.inputDisplaySize}
@@ -163,15 +147,14 @@ export const Switch = React.forwardRef<
           </Label>
         </div>
 
-        {bindConfig.validationErrorMessages &&
-          bindConfig.shouldShowValidationErrorMessage && (
-            <ValidationErrors
-              className={validationErrorsClassName}
-              validationMode={globals.validationMode}
-              validationErrors={bindConfig.validationErrorMessages}
-              scrollIntoView={globals.scrollValidationErrorsIntoView}
-            />
-          )}
+        {bindConfig.validationErrorMessages && bindConfig.shouldShowValidationErrorMessage && (
+          <ValidationErrors
+            className={validationErrorsClassName}
+            validationMode={globals.validationMode}
+            validationErrors={bindConfig.validationErrorMessages}
+            scrollIntoView={globals.scrollValidationErrorsIntoView}
+          />
+        )}
       </>
     );
   }
@@ -182,4 +165,4 @@ export const Switch = React.forwardRef<
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>;
 
-Switch.displayName = "Switch";
+Switch.displayName = 'Switch';

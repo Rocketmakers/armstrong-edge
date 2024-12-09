@@ -15,7 +15,5 @@ module.exports = {
     tsconfigRootDir: path.resolve(__dirname, '../'),
   },
 
-  overrides: [
-    ...config.overrides,
-  ],
+  overrides: [...config.overrides],
 };
