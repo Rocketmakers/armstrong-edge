@@ -4,6 +4,7 @@ import * as React from 'react';
 import { clamp, concat } from '../../utils';
 
 import './progressBar.theme.css';
+import { ArmstrongVFCProps } from '../../types';
 
 export interface IProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The content to display in the tooltip */
@@ -19,9 +20,7 @@ export const ProgressBar = ({
   className,
   indicatorClassName,
   ...props
-}: IProgressBarProps & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongVFCProps<IProgressBarProps, HTMLDivElement>) => {
   const style = { '--arm-progress-bar-value': `${clamp(progress ?? 0, 0, 100)}%` } as React.CSSProperties;
 
   return (

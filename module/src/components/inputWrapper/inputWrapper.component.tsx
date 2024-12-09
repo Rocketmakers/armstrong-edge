@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ValidationMessage } from '../../form';
-import { DisplaySize } from '../../types';
+import { ArmstrongFCProps, DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Label } from '../label';
@@ -83,9 +83,7 @@ export const InputWrapper = ({
   labelId,
   displaySize,
   ...nativeProps
-}: React.PropsWithChildren<IInputWrapperProps> & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongFCProps<IInputWrapperProps, HTMLDivElement>) => {
   const globals = useArmstrongConfig({
     validationMode,
     hideInputErrorIconOnStatus: hideIconOnStatus,

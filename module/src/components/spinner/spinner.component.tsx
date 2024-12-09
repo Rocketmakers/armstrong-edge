@@ -6,6 +6,7 @@ import { useArmstrongConfig } from '../config';
 import './spinner.theme.css';
 
 import type { JSX } from 'react';
+import { ArmstrongFCProps } from '../../types';
 
 export interface ISpinnerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'label'> {
   /** icon definition for icon to spin in middle of div, can be overridden using children */
@@ -27,9 +28,7 @@ export const Spinner = ({
   fillContainer = true,
   label,
   ...HTMLProps
-}: React.PropsWithChildren<ISpinnerProps> & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongFCProps<ISpinnerProps, HTMLDivElement>) => {
   const { spinnerIcon } = useArmstrongConfig({ spinnerIcon: icon });
   return (
     <div
@@ -52,4 +51,3 @@ export const Spinner = ({
 };
 
 Spinner.displayName = 'Spinner';
-

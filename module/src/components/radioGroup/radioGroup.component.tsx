@@ -112,9 +112,7 @@ export const RadioGroup = // type assertion to ensure generic works with RefForw
     labelId,
     autoValidate,
     ...nativeProps
-  }: IRadioGroupProps<ArmstrongId> & {
-    ref?: React.RefObject<HTMLDivElement>;
-  }) => {
+  }: ArmstrongVFCProps<IRadioGroupProps<ArmstrongId>, HTMLDivElement>) => {
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       validationErrorMessages,

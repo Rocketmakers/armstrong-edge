@@ -4,6 +4,7 @@ import * as React from 'react';
 import { concat } from '../../utils';
 
 import './dropdownMenu.theme.css';
+import { ArmstrongFCProps } from '../../types';
 
 /**
  * Represents a dropdown menu item.
@@ -77,9 +78,7 @@ export const DropdownMenu = ({
   defaultOpen,
   onOpenChange,
   ...nativeProps
-}: React.PropsWithChildren<IDropdownMenuProps> & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongFCProps<IDropdownMenuProps, HTMLDivElement>) => {
   const parsedContent = React.useMemo(() => {
     if (React.isValidElement(items)) {
       return items;

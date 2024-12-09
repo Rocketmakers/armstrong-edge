@@ -2,7 +2,7 @@ import * as RadixLabel from '@radix-ui/react-label';
 import * as React from 'react';
 import { LabelHTMLAttributes } from 'react';
 
-import { DisplaySize } from '../../types';
+import { ArmstrongFCProps, DisplaySize } from '../../types';
 import { concat } from '../../utils';
 import { useArmstrongConfig } from '../config';
 
@@ -28,9 +28,7 @@ export const Label = ({
   children,
   displaySize,
   ...nativeProps
-}: ILabelProps & {
-  ref?: React.RefObject<HTMLLabelElement>;
-}) => {
+}: ArmstrongFCProps<ILabelProps, HTMLLabelElement>) => {
   const globals = useArmstrongConfig({
     inputDisplaySize: displaySize,
     requiredIndicator,

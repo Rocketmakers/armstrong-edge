@@ -5,6 +5,7 @@ import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 
 import './validationErrors.theme.css';
+import { ArmstrongFCProps } from '../../types';
 
 export interface IValidationErrorsProps {
   /**
@@ -31,9 +32,7 @@ export const ValidationErrors = ({
   scrollIntoView,
   validationMode,
   ...nativeProps
-}: React.PropsWithChildren<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>> & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongFCProps<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => {
   const globals = useArmstrongConfig({
     validationMode,
     scrollValidationErrorsIntoView: scrollIntoView,

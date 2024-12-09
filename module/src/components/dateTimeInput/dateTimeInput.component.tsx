@@ -132,7 +132,7 @@ export interface IDateAndTimeInputSingleProps<TBind extends NullOrUndefined<stri
   mode: 'date-time';
 
   /** Optional element ref to apply to the time input. (the root ref attr will apply to the date input.) */
-  timeInputRef?: React.RefObject<HTMLInputElement>;
+  timeInputRef?: React.Ref<HTMLInputElement>;
 
   /** Optional config to pass to the date input */
   dateInputConfig?: IDatePickerConfig;
@@ -289,9 +289,7 @@ export const SingleDateTimeInput = ({
   showCalendarOnLeftOverlayClick = true,
   onBlur,
   ...inputProps
-}: IDateOrTimeInputSingleProps<string | null> & {
-  ref?: React.RefObject<HTMLInputElement>;
-}) => {
+}: ArmstrongFCProps<IDateOrTimeInputSingleProps<string | null>, HTMLInputElement>) => {
   const datePickerRef = React.useRef<ReactDatePicker>(null);
 
   const [date, setDate, bindDateConfig] = useBindingState(bind, {
@@ -418,7 +416,6 @@ export const SingleDateTimeInput = ({
 
 SingleDateTimeInput.displayName = 'SingleDateTimeInput';
 
-
 export const RangeDateTimeInput = ({
   ref,
   config,
@@ -435,11 +432,9 @@ export const RangeDateTimeInput = ({
   locale = defaultLocale,
   autoValidate,
   showCalendarOnLeftOverlayClick = true,
-  leftOverlay =  <FaRegCalendar />,
+  leftOverlay = <FaRegCalendar />,
   ...inputProps
-}: IDateTimeInputRangeProps<string | null> & {
-  ref?: React.RefObject<HTMLInputElement>;
-}) => {
+}: ArmstrongFCProps<IDateTimeInputRangeProps<string | null>, HTMLInputElement>) => {
   const datePickerRef = React.useRef<ReactDatePicker<never, true>>(null);
 
   const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
@@ -549,9 +544,7 @@ const NativeDateTimeInput = ({
   selectsRange,
   native,
   ...props
-}: IDateTimeInputNativeProps<string | null> & {
-  ref?: React.RefObject<HTMLInputElement>;
-}) => {
+}: ArmstrongFCProps<IDateTimeInputNativeProps<string | null>, HTMLInputElement>) => {
   return <Input ref={ref} type={mode === 'date-time' ? 'datetime-local' : mode} {...props} />;
 };
 
@@ -594,9 +587,7 @@ export const SingleDateAndTimeInput = ({
   labelClassName,
   autoValidate,
   ...nativeProps
-}: IDateAndTimeInputSingleProps<string | null> & {
-  ref?: React.RefObject<HTMLInputElement>;
-}) => {
+}: ArmstrongFCProps<IDateAndTimeInputSingleProps<string | null>, HTMLInputElement>) => {
   const [dateTime, setDateTime, bindConfig] = useBindingState(bind, {
     validationErrorMessages,
     value,
@@ -732,12 +723,10 @@ export const SingleDateAndTimeInput = ({
 
 SingleDateAndTimeInput.displayName = 'SingleDateAndTimeInput';
 
-
-
 /** third-party docs: https://reactdatepicker.com */
 export const DateTimeInput = // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-  (({ ref,  ...props }: DateTimeInputProps<string | null> & { ref?: React.RefObject<HTMLInputElement> }) => {
+  (({ ref, ...props }: ArmstrongFCProps<DateTimeInputProps<string | null>, HTMLInputElement>) => {
     // (({ ref, selectsRange = false, native = false, mode = 'date', ...props }) => {
     if (props.selectsRange) {
       return <RangeDateTimeInput ref={ref} {...props} />;
@@ -746,7 +735,7 @@ export const DateTimeInput = // type assertion to ensure generic works with RefF
       return <NativeDateTimeInput ref={ref} {...props} />;
     }
     if (props.mode === 'date-time') {
-      return <SingleDateAndTimeInput ref={ref} {...props} mode='date-time' />;
+      return <SingleDateAndTimeInput ref={ref} {...props} mode="date-time" />;
     }
 
     return <SingleDateTimeInput ref={ref} {...props} />;
@@ -754,6 +743,5 @@ export const DateTimeInput = // type assertion to ensure generic works with RefF
     props: ArmstrongFCProps<DateTimeInputProps<TValue>, HTMLInputElement>
   ) => ArmstrongFCReturn) &
     ArmstrongFCExtensions<DateTimeInputProps<string>>;
-
 
 DateTimeInput.displayName = 'DateTimeInput';

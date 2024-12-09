@@ -34,9 +34,7 @@ const DebounceTextAreaBase = ({
   onValueChange,
   onChange,
   ...nativeProps
-}: IDelayedTextAreaBaseProps<string> & {
-  ref?: React.RefObject<HTMLTextAreaElement>;
-}) => {
+}: ArmstrongFCProps<IDelayedTextAreaBaseProps<string>, HTMLTextAreaElement>) => {
   const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
 
   const onChangeEvent = React.useCallback(
@@ -117,9 +115,7 @@ export const TextArea = // type assertion to ensure generic works with RefForwar
     statusPosition,
     autoValidate,
     ...nativeProps
-  }: ITextAreaProps<string> & {
-    ref?: React.RefObject<HTMLTextAreaElement>;
-  }) => {
+  }: ArmstrongFCProps<ITextAreaProps<string>, HTMLTextAreaElement>) => {
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 

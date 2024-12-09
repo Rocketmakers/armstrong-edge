@@ -82,9 +82,7 @@ export const Switch = // type assertion to ensure generic works with RefForwarde
     requiredIndicator,
     autoValidate,
     ...nativeProps
-  }: ISwitchProps<NullOrUndefined<boolean>> & {
-    ref?: React.RefObject<HTMLButtonElement>;
-  }) => {
+  }: ArmstrongFCProps<ISwitchProps<NullOrUndefined<boolean>>, HTMLButtonElement>) => {
     const generatedId = React.useId();
     const id = nativeProps.id ?? generatedId;
 

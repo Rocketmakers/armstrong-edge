@@ -45,9 +45,7 @@ const RatingPart = ({
   mode,
   readOnly,
   disabled,
-}: IRatingPartProps & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongVFCProps<IRatingPartProps, HTMLDivElement>) => {
   const steps = Math.floor(1 / (step || 1));
 
   const isFilled = value && value >= index + 1;
@@ -217,9 +215,7 @@ export const Rating = // type assertion to ensure generic works with RefForwarde
     displaySize,
     autoValidate,
     ...htmlProps
-  }: IRatingProps<NullOrUndefined<number>> & {
-    ref?: React.RefObject<HTMLDivElement>;
-  }) => {
+  }: ArmstrongVFCProps<IRatingProps<NullOrUndefined<number>>, HTMLDivElement>) => {
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       onChange: onValueChange,

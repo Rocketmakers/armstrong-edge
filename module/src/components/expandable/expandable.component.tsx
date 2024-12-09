@@ -4,6 +4,7 @@ import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
 import { concat } from '../../utils/classNames';
 
 import './expandable.theme.css';
+import { ArmstrongFCProps } from '../../types';
 
 export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
   /** is the expandable region open, if false will take up no space */
@@ -22,9 +23,7 @@ export const Expandable = ({
   animate = true,
   isOpen,
   ...nativeProps
-}: React.PropsWithChildren<IExpandableProps> & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongFCProps<IExpandableProps, HTMLDivElement>) => {
   const contentRef = React.useRef<HTMLDivElement>(null);
   const [{ height }] = useBoundingClientRect(contentRef);
 

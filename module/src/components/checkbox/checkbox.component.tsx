@@ -94,9 +94,7 @@ export const Checkbox = (({
   statusPosition,
   autoValidate,
   ...nativeProps
-}: ICheckboxProps<BindType> & {
-  ref?: React.RefObject<HTMLButtonElement>;
-}) => {
+}: ArmstrongFCProps<ICheckboxProps<BindType>, HTMLButtonElement>) => {
   const reactId = React.useId();
   const id = nativeProps.id ?? reactId;
 

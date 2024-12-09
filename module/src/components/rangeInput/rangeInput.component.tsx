@@ -100,9 +100,7 @@ export const RangeInput = (({
   requiredIndicator,
   autoValidate,
   ...nativeProps
-}: IRangeInputProps<NullOrUndefined<number>> & {
-  ref?: React.RefObject<HTMLSpanElement>;
-}) => {
+}: ArmstrongFCProps<IRangeInputProps<NullOrUndefined<number>>, HTMLSpanElement>) => {
   const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
     value,
     onChange,

@@ -5,6 +5,7 @@ import { concat } from '../../utils';
 import { useArmstrongConfig } from '../config';
 
 import './tooltip.theme.css';
+import { ArmstrongFCProps } from '../../types';
 
 export interface ITooltipProps
   extends Omit<RadixTooltip.TooltipContentProps, 'side' | 'content'>,
@@ -61,9 +62,7 @@ export const Tooltip = ({
   side,
   sideOffset = 5,
   ...props
-}: React.PropsWithChildren<ITooltipProps> & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongFCProps<ITooltipProps, HTMLDivElement>) => {
   const { tooltipDelay, tooltipShowArrow, tooltipSide } = useArmstrongConfig({
     tooltipDelay: delay,
     tooltipShowArrow: showArrow,

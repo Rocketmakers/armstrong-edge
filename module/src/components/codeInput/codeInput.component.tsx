@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IBindingProps, useBindingState, useForm } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, DisplaySize, NullOrUndefined } from '../../types';
-import { concat, findLastIndex } from '../../utils';
+import { concat, contentDependency, findLastIndex } from '../../utils';
 import { useArmstrongConfig } from '../config';
 import { Input, ITextInputProps } from '../input';
 import { IInputWrapperProps } from '../inputWrapper';
@@ -28,9 +28,7 @@ const CodeInputPart = // type assertion to ensure generic works with RefForwarde
     bind,
     part,
     ...inputProps
-  }: ICodeInputPartProps<NullOrUndefined<string>> & {
-    ref?: React.Ref<HTMLInputElement>;
-  }) => {
+  }: ArmstrongVFCProps<ICodeInputPartProps<NullOrUndefined<string>>, HTMLInputElement>) => {
     const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
     if (typeof part === 'string') {
@@ -169,9 +167,7 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
     disabled,
     autoValidate,
     ...nativeProps
-  }: ICodeInputProps<NullOrUndefined<string>> & {
-    ref?: React.RefObject<HTMLDivElement>;
-  }) => {
+  }: ArmstrongVFCProps<ICodeInputProps<NullOrUndefined<string>>, HTMLDivElement>) => {
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -231,6 +227,8 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
 
     const onPartValueChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
+        formProp('parts', partIndex).set(event.currentTarget.value);
+
         const currentPartLength = getLengthFromPart(parts[partIndex]);
 
         const currentPartValue = event.currentTarget.value || '';
@@ -267,6 +265,7 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
         const newValue = startSlice + pasteValue + endSlice;
 
         setBoundValue(newValue);
+        inputRefs.current[inputRefs.current.length - 1]?.focus();
       },
       [setBoundValue, boundValue, parts]
     );
@@ -315,7 +314,7 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
     React.useEffect(() => {
       setBoundValue?.(formState?.parts?.join(''));
       // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want the trigger the effect when the function is re-defined
-    }, [formState]);
+    }, [contentDependency(formState?.parts)]);
 
     useDidUpdateEffect(() => {
       if (globals.autoValidate && bindConfig.isTouched) {

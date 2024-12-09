@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { DisplaySize } from '../../types';
+import { ArmstrongFCProps, DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner/spinner.component';
@@ -50,12 +50,7 @@ export interface IButtonProps extends ButtonHTMLProps {
 }
 
 /** Renders an HTML button element with some useful additions */
-export const Button = ({
-  ref,
-  ...props
-}: React.PropsWithChildren<IButtonProps> & {
-  ref?: React.RefObject<HTMLButtonElement>;
-}) => {
+export const Button = ({ ref, ...props }: ArmstrongFCProps<IButtonProps, HTMLButtonElement>) => {
   const {
     className,
     disabled,

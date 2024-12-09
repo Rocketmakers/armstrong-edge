@@ -308,10 +308,12 @@ const ReactSelectComponent = ({
   inModalPortalTarget,
   noOptionsMessage,
   ...nativeProps
-}: (Omit<ISingleSelectProps<ArmstrongId>, 'ref'> | Omit<IMultiSelectProps<ArmstrongId>, 'ref'>) & {
-  multi: boolean;
-  ref?: React.RefObject<ReactSelectRef<ArmstrongId>>;
-}) => {
+}: ArmstrongVFCProps<
+  (ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>) & {
+    multi: boolean;
+  },
+  ReactSelectRef<ArmstrongId>
+>) => {
   const internalRef = React.useRef<ReactSelectRef<ArmstrongId>>(null);
   React.useImperativeHandle(ref, () => internalRef.current as ReactSelectRef<ArmstrongId>, [internalRef]);
 
@@ -595,7 +597,7 @@ export const NativeSelect = (({
   leftOverlay,
   autoValidate,
   ...nativeProps
-}: INativeSelectProps<ArmstrongId> & { ref?: React.RefObject<HTMLSelectElement> }) => {
+}: ArmstrongVFCProps<INativeSelectProps<ArmstrongId>, HTMLSelectElement>) => {
   const internalRef = React.useRef<HTMLSelectElement>(null);
   React.useImperativeHandle(ref, () => internalRef.current as HTMLSelectElement, [internalRef]);
 
@@ -734,7 +736,7 @@ NativeSelect.displayName = 'NativeSelect';
 export const Select = (({
   ref,
   ...props
-}: ISingleSelectProps<ArmstrongId> & { ref?: React.RefObject<ReactSelectRef<ArmstrongId>> }) => {
+}: ArmstrongVFCProps<ISingleSelectProps<ArmstrongId>, ReactSelectRef<ArmstrongId>>) => {
   return <ReactSelectComponent {...props} multi={false} />;
 }) as (<Id extends ArmstrongId>(
   props: ArmstrongVFCProps<ISingleSelectProps<Id>, ReactSelectRef<Id>>
@@ -750,7 +752,7 @@ Select.displayName = 'Select';
 export const MultiSelect = (({
   ref,
   ...props
-}: IMultiSelectProps<ArmstrongId> & { ref?: React.RefObject<ReactSelectRef<ArmstrongId>> }) => {
+}: ArmstrongVFCProps<IMultiSelectProps<ArmstrongId>, ReactSelectRef<ArmstrongId>>) => {
   return <ReactSelectComponent {...props} multi={true} ref={ref} />;
 }) as (<Id extends ArmstrongId>(
   props: ArmstrongVFCProps<IMultiSelectProps<Id>, ReactSelectRef<Id>>

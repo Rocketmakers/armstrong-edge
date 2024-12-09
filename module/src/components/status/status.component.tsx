@@ -7,6 +7,7 @@ import { Spinner } from '../spinner';
 import './status.theme.css';
 
 import type { JSX } from 'react';
+import { ArmstrongFCProps } from '../../types';
 
 export interface IStatusProps {
   /** show a spinner */
@@ -34,9 +35,7 @@ export const Status = ({
   spinnerIcon,
   className,
   ...rest
-}: IStatusProps & {
-  ref?: React.RefObject<HTMLDivElement>;
-}) => {
+}: ArmstrongFCProps<IStatusProps, HTMLDivElement>) => {
   const globals = useArmstrongConfig({
     validationErrorIcon: errorIcon,
     spinnerIcon,

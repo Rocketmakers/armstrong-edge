@@ -142,7 +142,7 @@ export const Input = // type assertion to ensure generic works with RefForwarded
     error,
     autoValidate,
     ...nativeProps
-  }: IInputProps<string | number> & { type?: HTMLInputTypeAttribute; ref?: React.Ref<HTMLInputElement> }) => {
+  }: ArmstrongFCProps<IInputProps<string | number> & { type?: HTMLInputTypeAttribute }, HTMLInputElement>) => {
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 

@@ -117,9 +117,7 @@ export const CheckboxList = // type assertion to ensure generic works with RefFo
     requiredIndicator,
     autoValidate,
     ...nativeProps
-  }: ICheckboxListProps<ArmstrongId> & {
-    ref?: React.RefObject<HTMLDivElement>;
-  }) => {
+  }: ArmstrongVFCProps<ICheckboxListProps<ArmstrongId>, HTMLDivElement>) => {
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       validationErrorMessages,

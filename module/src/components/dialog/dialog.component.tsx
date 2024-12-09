@@ -76,12 +76,7 @@ export interface DialogElement<TData = unknown> {
  */
 export const Dialog = // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-  (({
-    ref,
-    ...props
-  }: React.PropsWithChildren<IDialogProps<unknown>> & {
-    ref?: React.RefObject<DialogElement<unknown>>;
-  }) => {
+  (({ ref, ...props }: ArmstrongFCProps<IDialogProps<unknown>, DialogElement<unknown>>) => {
     const {
       children,
       title,

@@ -49,7 +49,7 @@ export const Default: StoryObj<typeof CodeInput> = {
     expect(inputs[0]).toHaveValue('1');
     expect(inputs[1]).toHaveValue('2');
     expect(inputs[2]).toHaveValue('3');
-    
+
     await waitFor(() => expect(value).toHaveTextContent('Value: 123'));
     await userEvent.clear(inputs[0]);
     expect(inputs[0]).toHaveValue('2');

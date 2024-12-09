@@ -54,9 +54,7 @@ export const CharacterLimit = // type assertion to ensure generic works with Ref
     validationErrorsTitle,
     validationMode,
     ...nativeProps
-  }: ICharacterLimitProps<NullOrUndefined<string>> & {
-    ref?: React.RefObject<HTMLDivElement>;
-  }) => {
+  }: ArmstrongFCProps<ICharacterLimitProps<NullOrUndefined<string>>, HTMLDivElement>) => {
     const globals = useArmstrongConfig({
       validationErrorIcon,
       validationMode,
