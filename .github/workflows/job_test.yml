@@ -18,11 +18,12 @@ jobs:
 
       - name: Restore node modules cache
         id: node-modules
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: |
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/module/node_modules
+            ${{ github.workspace }}/storybook/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Run Jest Tests
@@ -31,12 +32,12 @@ jobs:
 
       - name: Install Playwright
         run: npx playwright install --with-deps
-        working-directory: ./module
+        working-directory: ./storybook
 
       - name: Build Armstrong & Storybook
-        run: npm run build-storybook
-        working-directory: ./module
+        run: npm i && npm run build-storybook
+        working-directory: ./storybook
 
       - name: Serve Storybook and run tests
         run: npm run test-storybook-ci
-        working-directory: ./module
+        working-directory: ./storybook

@@ -86,7 +86,11 @@ describe('useFormBase', () => {
     const { result } = renderHook(() => useTestHook());
     const formPropResult = result.current.formProp('field1');
     formPropResult.set('change1');
-    expect(formStateDispatcher).toHaveBeenCalledWith({ type: 'set-one', propertyKey: 'field1', value: 'change1' });
+    expect(formStateDispatcher).toHaveBeenCalledWith({
+      type: 'set-one',
+      propertyKey: 'field1',
+      value: 'change1',
+    });
 
     const formPropResultNested = result.current.formProp('field4', 'nestedField1');
     formPropResultNested.set('change2');
@@ -228,24 +232,34 @@ describe('useFormBase', () => {
     const { result } = renderHook(() => useTestHook());
     const newState = { ...formState, field1: 'new field one' };
     result.current.setFormData(newState);
-    expect(formStateDispatcher).toHaveBeenCalledWith({ type: 'set-all', data: newState });
+    expect(formStateDispatcher).toHaveBeenCalledWith({
+      type: 'set-all',
+      data: newState,
+    });
   });
 
   it('returns a clearClientValidationErrors function which clears all client validation errors', () => {
     const { result } = renderHook(() => useTestHook());
     result.current.clearClientValidationErrors();
-    expect(clientValidationDispatcher).toHaveBeenCalledWith({ type: 'clear-validation' });
+    expect(clientValidationDispatcher).toHaveBeenCalledWith({
+      type: 'clear-validation',
+    });
   });
 
   it('returns a resetFormData function which resets all form data to initial values', () => {
     const { result } = renderHook(() => useTestHook());
     result.current.resetFormData();
-    expect(formStateDispatcher).toHaveBeenCalledWith({ type: 'set-all', data: { field1: 'initial' } });
+    expect(formStateDispatcher).toHaveBeenCalledWith({
+      type: 'set-all',
+      data: { field1: 'initial' },
+    });
   });
 
   it('returns a resetTouchedState function which clears touch state on all fields', async () => {
     const { result } = renderHook(() => useTestHook());
     act(() => result.current.resetTouchedState());
-    expect(touchedStateDispatcher).toHaveBeenCalledWith({ type: 'reset-touched' });
+    expect(touchedStateDispatcher).toHaveBeenCalledWith({
+      type: 'reset-touched',
+    });
   });
 });

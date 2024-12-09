@@ -1,6 +1,6 @@
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within, fn } from '@storybook/test';
 import * as React from 'react';
 import { ImRocket } from 'react-icons/im';
 
@@ -17,6 +17,7 @@ type Story = StoryObj<typeof Checkbox>;
 export const Default: Story = {
   args: {
     label: 'Here is label',
+    onCheckedChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -45,6 +46,7 @@ export const CustomIndicator: Story = {
     label: 'Check for Custom Indicator',
     testId: 'arm-checkbox-container',
     customIndicator: <ImRocket data-testid={'rocket-indicator'} />,
+    onCheckedChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -59,6 +61,7 @@ export const ValidationError: Story = {
   args: {
     label: 'Option 1',
     validationErrorMessages: ['This field is required'],
+    onCheckedChange: fn(),
   },
   play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -70,6 +73,7 @@ export const ValidationError: Story = {
 export const Bound: Story = {
   args: {
     label: 'Bound checkbox',
+    onCheckedChange: fn(),
   },
   render: () => {
     const { formProp, formState } = useForm({ checked: false });

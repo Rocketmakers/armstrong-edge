@@ -13,10 +13,6 @@
     "watch-ts": "vite build --watch",
     "test": "jest",
     "test-ci": "jest --ci",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "test-storybook": "test-storybook --url http://127.0.0.1:6006",
-    "test-storybook-ci": "npx concurrently -k -s first -n 'SB,TEST' -c 'magenta,blue' 'npx http-server storybook-static --port 6006 --silent' 'npx wait-on http://127.0.0.1:6006 && npm run test-storybook'",
     "format": "prettier --write .",
     "lint": "eslint . --fix --quiet",
     "stylelint": "stylelint 'src/**/*.{css,scss}' --fix"
@@ -30,17 +26,31 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.es.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": [
     "manager.ts"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.es.js"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*/index.js",
+      "require": "./dist/*/index.cjs",
+      "types": "./dist/*/index.d.ts"
     },
     "./css": "./dist/style.css"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*/index.d.ts",
+        "./dist/index.d.ts"
+      ]
+    }
   },
   "keywords": [],
   "author": "",
@@ -50,32 +60,23 @@
     "@rocketmakers/prettier-config": "1.0.1",
     "@rocketmakers/shell-commands": "7.1.0",
     "@rocketmakers/stylelint-config": "1.0.1",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^10.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^9.0.3",
-    "@semantic-release/npm": "^10.0.4",
-    "@semantic-release/release-notes-generator": "^11.0.4",
-    "@storybook/addon-a11y": "7.6.10",
-    "@storybook/addon-essentials": "7.6.10",
-    "@storybook/addon-interactions": "7.6.10",
-    "@storybook/addon-links": "7.6.10",
-    "@storybook/addon-mdx-gfm": "7.6.10",
-    "@storybook/addons": "7.6.10",
-    "@storybook/jest": "0.1.0",
-    "@storybook/react": "7.6.10",
-    "@storybook/react-vite": "7.6.10",
-    "@storybook/test-runner": "0.11.0",
-    "@storybook/testing-library": "0.1.0",
-    "@storybook/theming": "7.6.10",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/commit-analyzer": "10.0.1",
+    "@semantic-release/git": "10.0.1",
+    "@semantic-release/github": "9.0.3",
+    "@semantic-release/npm": "10.0.4",
+    "@semantic-release/release-notes-generator": "11.0.4",
+    "@storybook/addon-docs": "^8.4.7",
+    "@storybook/react": "8.4.7",
+    "@storybook/test": "8.4.7",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@types/glob": "8.1.0",
     "@types/jest": "29.5.3",
     "@types/lodash": "4.14.195",
-    "@types/react": "18.2.15",
+    "@types/react": "18.3.1",
     "@types/react-datepicker": "4.11.2",
-    "@types/react-dom": "18.2.7",
+    "@types/react-dom": "18.3.1",
     "chokidar": "3.5.3",
     "concurrently": "8.2.0",
     "http-server": "14.1.1",
@@ -84,21 +85,20 @@
     "jest-config": "29.6.1",
     "jest-environment-jsdom": "29.6.1",
     "jest-junit": "16.0.0",
-    "lodash": "4.17.21",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "sass": "1.63.6",
     "scss-concat": "0.3.9",
     "semantic-release": "21.0.7",
-    "storybook": "7.6.10",
-    "storybook-addon-designs": "7.0.0-beta.2",
+    "storybook": "8.4.7",
     "ts-jest": "29.1.1",
     "ts-node": "10.9.1",
     "typescript": "5.1.6",
     "vite": "4.4.4",
     "vite-plugin-dts": "3.2.0",
+    "vite-plugin-sdk": "0.1.2",
     "vite-plugin-static-copy": "0.16.0",
-    "vite-plugin-turbosnap": "^1.0.3",
+    "vite-plugin-turbosnap": "1.0.3",
     "wait-on": "7.0.1",
     "zod": "3.21.4"
   },
@@ -113,7 +113,6 @@
     "@radix-ui/react-switch": "1.0.3",
     "@radix-ui/react-toast": "1.1.4",
     "@radix-ui/react-tooltip": "1.0.6",
-    "lodash": "4.17.21",
     "react-datepicker": "4.16.0",
     "react-icons": "4.10.1",
     "react-select": "5.7.4"

@@ -15,7 +15,9 @@ export interface IProgressBarProps extends React.HTMLAttributes<HTMLDivElement> 
 
 export const ProgressBar = React.forwardRef<HTMLDivElement, IProgressBarProps>(
   ({ progress, className, indicatorClassName, ...props }, ref) => {
-    const style = { '--arm-progress-bar-value': `${clamp(progress ?? 0, 0, 100)}%` } as React.CSSProperties;
+    const style = {
+      '--arm-progress-bar-value': `${clamp(progress ?? 0, 0, 100)}%`,
+    } as React.CSSProperties;
 
     return (
       <RadixProgress.Root className={concat(className, 'arm-progress-bar')} value={progress} ref={ref} {...props}>

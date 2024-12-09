@@ -52,7 +52,13 @@ describe('clientValidationReducer', () => {
     const state = [{ key: 'field1', identifier: 'identifier1', message: 'error message' }];
     const action = {
       type: 'add-validation' as const,
-      errors: [{ key: 'field2', identifier: 'identifier2', message: 'another error message' }],
+      errors: [
+        {
+          key: 'field2',
+          identifier: 'identifier2',
+          message: 'another error message',
+        },
+      ],
     };
     const newState = clientValidationReducer(state, action);
     expect(newState).toEqual([...state, ...action.errors]);
@@ -61,24 +67,52 @@ describe('clientValidationReducer', () => {
   it('clears validation errors from state when action type is "clear-validation"', () => {
     const state = [
       { key: 'field1', identifier: 'identifier1', message: 'error message' },
-      { key: 'field2', identifier: 'identifier2', message: 'another error message' },
-      { key: 'field3', identifier: 'identifier3', message: 'yet another error message' },
+      {
+        key: 'field2',
+        identifier: 'identifier2',
+        message: 'another error message',
+      },
+      {
+        key: 'field3',
+        identifier: 'identifier3',
+        message: 'yet another error message',
+      },
     ];
-    const action = { type: 'clear-validation' as const, key: 'field2', identifiers: ['identifier2'] };
+    const action = {
+      type: 'clear-validation' as const,
+      key: 'field2',
+      identifiers: ['identifier2'],
+    };
     const newState = clientValidationReducer(state, action);
     expect(newState).toEqual([
       { key: 'field1', identifier: 'identifier1', message: 'error message' },
-      { key: 'field3', identifier: 'identifier3', message: 'yet another error message' },
+      {
+        key: 'field3',
+        identifier: 'identifier3',
+        message: 'yet another error message',
+      },
     ]);
   });
 
   it('does not clear validation errors when identifiers do not match', () => {
     const state = [
       { key: 'field1', identifier: 'identifier1', message: 'error message' },
-      { key: 'field2', identifier: 'identifier2', message: 'another error message' },
-      { key: 'field3', identifier: 'identifier3', message: 'yet another error message' },
+      {
+        key: 'field2',
+        identifier: 'identifier2',
+        message: 'another error message',
+      },
+      {
+        key: 'field3',
+        identifier: 'identifier3',
+        message: 'yet another error message',
+      },
     ];
-    const action = { type: 'clear-validation' as const, key: 'field2', identifiers: ['identifier1'] };
+    const action = {
+      type: 'clear-validation' as const,
+      key: 'field2',
+      identifiers: ['identifier1'],
+    };
     const newState = clientValidationReducer(state, action);
     expect(newState).toEqual(state);
   });

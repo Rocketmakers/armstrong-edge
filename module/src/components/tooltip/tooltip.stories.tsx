@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within, expect, fn } from '@storybook/test';
 import React from 'react';
 import { IoIosHelpCircle } from 'react-icons/io';
 
@@ -18,6 +17,7 @@ export default {
 const Template: StoryObj<typeof Tooltip> = {
   args: {
     content: 'Here is some tooltip text, it has a delay of 700ms',
+    onOpenChange: fn(),
   },
   render: args => {
     return (
@@ -38,8 +38,8 @@ export const Default: StoryObj<typeof Tooltip> = {
     const trigger = within(canvasElement).getByTestId('trigger');
     userEvent.hover(trigger);
     const tooltip = await within(document.body).findByRole('tooltip');
-    expect(tooltip).toBeVisible();
-    expect(tooltip).toHaveTextContent('Here is some tooltip text, it has a delay of 700ms');
+    await waitFor(() => expect(tooltip).toBeVisible());
+    await waitFor(() => expect(tooltip).toHaveTextContent('Here is some tooltip text, it has a delay of 700ms'));
     userEvent.unhover(trigger);
     await waitFor(() => expect(tooltip).not.toBeVisible());
   },
@@ -157,7 +157,7 @@ export const Controlled: StoryObj<typeof Tooltip> = {
     expect(tooltip).toHaveTextContent(
       'This controlled tooltip will show when the button is clicked, useful for dedicated help buttons'
     );
-    userEvent.click(document.body);
+    await userEvent.click(document.body);
     await waitFor(() => expect(tooltip).not.toBeVisible());
   },
 };

@@ -91,7 +91,9 @@ export const Dialog = React.forwardRef(
     } = props;
 
     /** Pull globals from context */
-    const globals = useArmstrongConfig({ dialogCloseButtonIcon: closeButtonIcon });
+    const globals = useArmstrongConfig({
+      dialogCloseButtonIcon: closeButtonIcon,
+    });
 
     /** Finish action state is set when the dialog is closed */
     const [finishAction, setFinishAction] = React.useState<DialogFinishAction | undefined>(open ? undefined : 'close');

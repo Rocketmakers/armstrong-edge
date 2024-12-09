@@ -13,8 +13,11 @@ import ReactSelect, {
 import Creatable from 'react-select/creatable';
 // eslint-disable-next-line import/no-unresolved -- file exists
 import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
-// eslint-disable-next-line import/no-unresolved -- file exists
-import SelectRef, { Props as ReactSelectProps } from 'react-select/dist/declarations/src/Select';
+
+import SelectRef, {
+  Props as ReactSelectProps,
+  // eslint-disable-next-line import/no-unresolved -- file exists
+} from 'react-select/dist/declarations/src/Select';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useContentMemo } from '../../hooks/useContentMemo';
@@ -259,7 +262,9 @@ export interface IMultiSelectProps<Id extends ArmstrongId>
 
 const ReactSelectComponent = React.forwardRef<
   ReactSelectRef<ArmstrongId>,
-  (ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>) & { multi: boolean }
+  (ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>) & {
+    multi: boolean;
+  }
 >(
   (
     {
@@ -378,7 +383,12 @@ const ReactSelectComponent = React.forwardRef<
         }
         return (
           value?.map(
-            (v: ArmstrongId) => incomingOptions?.find(o => o.id === v) ?? { id: v, content: v, wasCreated: true }
+            (v: ArmstrongId) =>
+              incomingOptions?.find(o => o.id === v) ?? {
+                id: v,
+                content: v,
+                wasCreated: true,
+              }
           ) ?? null
         );
       };
@@ -501,7 +511,13 @@ const ReactSelectComponent = React.forwardRef<
       styles: {
         ...emptyStyles(),
         ...(isInModal
-          ? { menuPortal: base => ({ ...base, zIndex: inModalZIndex ?? 9999, pointerEvents: 'all' }) }
+          ? {
+              menuPortal: base => ({
+                ...base,
+                zIndex: inModalZIndex ?? 9999,
+                pointerEvents: 'all',
+              }),
+            }
           : {}),
       },
       onBlur: onBlurWorkaround,

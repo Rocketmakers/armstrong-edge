@@ -3,7 +3,9 @@ import { renderHook, waitFor } from '@testing-library/react';
 import * as globalsModule from '../utils/globals';
 import { useResizeObserver } from './useResizeObserver';
 
-const mockedGlobals = globalsModule as { -readonly [P in keyof typeof globalsModule]: typeof globalsModule[P] };
+const mockedGlobals = globalsModule as {
+  -readonly [P in keyof typeof globalsModule]: typeof globalsModule[P];
+};
 
 mockedGlobals.isBrowser = true;
 mockedGlobals.supportsResizeObserver = true;

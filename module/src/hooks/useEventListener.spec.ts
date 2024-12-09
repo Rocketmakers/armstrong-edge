@@ -17,7 +17,9 @@ describe('useEventListener', () => {
 
     renderHook(() => useEventListener(eventType, eventHandler, elementMock));
 
-    expect(addEventListenerMock).toHaveBeenCalledWith(eventType, eventHandler, { passive: true });
+    expect(addEventListenerMock).toHaveBeenCalledWith(eventType, eventHandler, {
+      passive: true,
+    });
   });
 
   it('should remove event listener when component unmounts', () => {

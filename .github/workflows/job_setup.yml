@@ -12,17 +12,18 @@ jobs:
 
       - name: Set Node.js to current version and cache in module
         id: setup-node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.tool-versions'
 
       - name: Cache node modules
         id: node-modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/module/node_modules
+            ${{ github.workspace }}/storybook/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -34,8 +35,14 @@ jobs:
         id: install-root-node-dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Install node dependencies
+      - name: Install module node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
-        id: install-node-dependencies
+        id: install-module-node-dependencies
         run: npm ci --legacy-peer-deps
         working-directory: ./module
+
+      - name: Install storybook node dependencies
+        if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
+        id: install-storybook-node-dependencies
+        run: npm ci --legacy-peer-deps
+        working-directory: ./storybook

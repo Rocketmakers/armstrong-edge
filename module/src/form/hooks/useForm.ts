@@ -107,7 +107,10 @@ export function useForm<TData extends object>(
 
       const keyChainString = keyChain.length ? keyStringFromKeyChain(keyChain, 'dots') : undefined;
       if (!silent) {
-        clientValidationDispatcher({ type: 'clear-validation', key: keyChainString });
+        clientValidationDispatcher({
+          type: 'clear-validation',
+          key: keyChainString,
+        });
       }
 
       const results = zodValidationSchema.safeParse(formStateRef.current ?? {});

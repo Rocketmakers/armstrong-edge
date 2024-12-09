@@ -10,7 +10,7 @@ jobs:
 
       - name: Set Node.js to current version and cache in module
         id: set-node-and-cache-module
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".tool-versions"
           cache: "npm"

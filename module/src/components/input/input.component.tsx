@@ -244,7 +244,10 @@ export const Input = React.forwardRef<
       [bindConfig, globals.autoValidate, nativeProps]
     );
 
-    const inputProps: NativeInputProps & { value?: string; 'data-testid'?: string } = {
+    const inputProps: NativeInputProps & {
+      value?: string;
+      'data-testid'?: string;
+    } = {
       id,
       className: concat('arm-input-base-input', inputClassName),
       /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */

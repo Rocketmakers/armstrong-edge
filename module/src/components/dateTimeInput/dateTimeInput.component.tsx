@@ -302,7 +302,9 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       autoValidate,
     });
 
-    const globals = useArmstrongConfig({ autoValidate: bindDateConfig.autoValidate });
+    const globals = useArmstrongConfig({
+      autoValidate: bindDateConfig.autoValidate,
+    });
 
     const renderCustomHeader = React.useCallback(
       (customHeaderProps: ReactDatePickerCustomHeaderProps) => {

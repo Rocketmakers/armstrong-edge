@@ -302,7 +302,9 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       parts: string[];
     }
 
-    const { formProp, formState } = useForm<IFormState>({ parts: boundValueArray });
+    const { formProp, formState } = useForm<IFormState>({
+      parts: boundValueArray,
+    });
 
     React.useEffect(() => {
       setBoundValue?.(formState?.parts?.join(''));

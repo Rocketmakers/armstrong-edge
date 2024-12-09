@@ -1,6 +1,6 @@
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/test';
 import * as React from 'react';
 
 import { useForm } from '../../form';
@@ -132,8 +132,8 @@ export const Bound: Story = {
     const boundResult = canvas.getByTestId('bound-result');
     const debounceResult = canvas.getByTestId('debounce-result');
     // Test Bound Text Area
-    userEvent.type(boundTextArea, 'Hello, bound world');
-    userEvent.type(debounceTextArea, 'Hello, bound world (but slower)');
+    await userEvent.type(boundTextArea, 'Hello, bound world');
+    await userEvent.type(debounceTextArea, 'Hello, bound world (but slower)');
 
     // Check that the form state values match the typed input
     expect(boundResult.textContent).toBe('Value: Hello, bound world');

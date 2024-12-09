@@ -66,7 +66,10 @@ export function stripNullOrUndefined<TObject extends object | undefined>(object:
     return object;
   }
   return Object.entries(object).reduce(
-    (finalObject, [key, val]) => ({ ...finalObject, ...(val !== null && val !== undefined ? { [key]: val } : {}) }),
+    (finalObject, [key, val]) => ({
+      ...finalObject,
+      ...(val !== null && val !== undefined ? { [key]: val } : {}),
+    }),
     {} as TObject
   );
 }

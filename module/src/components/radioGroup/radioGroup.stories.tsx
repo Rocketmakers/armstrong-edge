@@ -1,6 +1,6 @@
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/test';
 import React from 'react';
 import { ImCheckmark } from 'react-icons/im';
 
@@ -198,7 +198,9 @@ export const CustomIcon: StoryObj<typeof RadioGroup> = {
     const canvas = within(canvasElement);
     const radioChecked = await canvas.findByRole('radio', { checked: true });
     expect(radioChecked.getElementsByTagName('svg').length).toBeGreaterThan(0);
-    const radiosUnchecked = await canvas.findAllByRole('radio', { checked: false });
+    const radiosUnchecked = await canvas.findAllByRole('radio', {
+      checked: false,
+    });
     radiosUnchecked.forEach(r => expect(r.getElementsByTagName('svg')).toHaveLength(0));
   },
 };

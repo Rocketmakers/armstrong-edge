@@ -1,6 +1,6 @@
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/test';
 import * as React from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
@@ -215,37 +215,42 @@ export const InputTypes: Story = {
     expect(numberInput).toBeInTheDocument();
     expect(numberInput.getAttribute('type')).toBe('number');
 
-    userEvent.type(numberInput, 'no txt only numb');
+    await userEvent.type(numberInput, 'no txt only numb');
     expect(numberInput.value).not.toEqual('no txt only numb');
 
-    userEvent.type(numberInput, '42');
+    await userEvent.type(numberInput, '42');
     expect(numberInput.value).toEqual('42');
 
     // Password Input
     const passwordInput = canvas.getByTestId('password-input') as HTMLInputElement;
     expect(passwordInput).toBeInTheDocument();
     expect(passwordInput.getAttribute('type')).toBe('password');
-    userEvent.type(passwordInput, 'password123');
+    await userEvent.type(passwordInput, 'password123');
     expect(passwordInput.value).toEqual('password123');
 
     // Email Input
     const emailInput = canvas.getByTestId('email-input') as HTMLInputElement;
     expect(emailInput).toBeInTheDocument();
     expect(emailInput.getAttribute('type')).toBe('email');
-    userEvent.type(emailInput, 'helloworld@rocketmakers.com');
+    await userEvent.type(emailInput, 'helloworld@rocketmakers.com');
     expect(emailInput.value).toEqual('helloworld@rocketmakers.com');
 
     // Telephone Input
     const telephoneInput = canvas.getByTestId('telephone-input') as HTMLInputElement;
     expect(telephoneInput).toBeInTheDocument();
     expect(telephoneInput.getAttribute('type')).toBe('tel');
-    userEvent.type(telephoneInput, '01189998819991197253');
+    await userEvent.type(telephoneInput, '01189998819991197253');
+    expect(telephoneInput.value).toEqual('01189998819991197253');
   },
 };
 
 export const Bound: Story = {
   render: () => {
-    const { formProp, formState } = useForm({ text: '', number: 0, debounce: '' });
+    const { formProp, formState } = useForm({
+      text: '',
+      number: 0,
+      debounce: '',
+    });
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <div>
@@ -290,9 +295,9 @@ export const Bound: Story = {
     const debounceType = canvas.getByTestId('debounce-type');
 
     // Test Bound Text Area
-    userEvent.type(boundInput, 'Hello, bound world');
-    userEvent.type(numberInput, '42');
-    userEvent.type(debounceInput, 'Hello, bound world (but slower)');
+    await userEvent.type(boundInput, 'Hello, bound world');
+    await userEvent.type(numberInput, '42');
+    await userEvent.type(debounceInput, 'Hello, bound world (but slower)');
 
     // Check that the form state values match the typed input
     expect(boundResult.textContent).toBe('Value: Hello, bound world');

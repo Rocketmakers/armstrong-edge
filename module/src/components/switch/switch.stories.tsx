@@ -1,6 +1,6 @@
-import { expect } from '@storybook/jest';
+import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within, fn } from '@storybook/test';
 import * as React from 'react';
 
 import { useForm } from '../../form';
@@ -18,6 +18,7 @@ type Story = StoryObj<typeof Switch>;
 export const Default: Story = {
   args: {
     label: 'Airplane mode',
+    onCheckedChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -31,6 +32,7 @@ export const Disabled: Story = {
   args: {
     label: 'Switch is disabled',
     disabled: true,
+    onCheckedChange: fn(),
   },
   play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -45,6 +47,7 @@ export const ValidationError: Story = {
   args: {
     label: 'Check',
     validationErrorMessages: ['An error has occurred'],
+    onCheckedChange: fn(),
   },
   play: ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -78,6 +81,7 @@ export const Sizes: StoryObj<typeof Switch> = {
 export const Bound: Story = {
   args: {
     label: 'Bound label',
+    onCheckedChange: fn(),
   },
   render: () => {
     const { formProp, formState } = useForm({ checked: false });
