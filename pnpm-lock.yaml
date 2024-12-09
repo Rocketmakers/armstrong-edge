@@ -97,7 +97,7 @@ importers:
         specifier: 11.0.4
         version: 11.0.4(semantic-release@21.0.7)
       '@storybook/addon-docs':
-        specifier: 8.4.7
+        specifier: ^8.4.7
         version: 8.4.7(@types/react@19.0.1)(storybook@8.4.7)
       '@storybook/react':
         specifier: 8.4.7
