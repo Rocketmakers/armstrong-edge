@@ -1,0 +1,32 @@
+name: Push to pre-release
+
+on:
+  push:
+    branches:
+      - alpha
+
+jobs:
+  setup:
+    uses: ./.github/workflows/job_setup.yml
+
+  build:
+    needs: [setup]
+    uses: ./.github/workflows/job_build.yml
+
+  lint:
+    needs: [setup, build]
+    uses: ./.github/workflows/job_lint.yml
+
+  test:
+    needs: [setup, build]
+    uses: ./.github/workflows/job_test.yml
+
+  release_storybook:
+    needs: [setup, build, lint, test]
+    uses: ./.github/workflows/job_release_storybook.yml
+    secrets: inherit
+
+  release_armstrong:
+    needs: [setup, build, lint, test]
+    uses: ./.github/workflows/job_release.yml
+    secrets: inherit
