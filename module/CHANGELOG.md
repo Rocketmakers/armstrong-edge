@@ -1,3 +1,10 @@
+## [3.7.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.0...v3.7.1) (2024-12-10)
+
+
+### Bug Fixes
+
+* - Added support for unclickable items in dropdown menu ([141177d](https://github.com/Rocketmakers/armstrong-edge/commit/141177d8d2b3c40e4d87fd0360700ed9ae7a5e16))
+
 # [3.7.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.7...v3.7.0) (2024-12-09)
 
 ### Bug Fixes
