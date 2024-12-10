@@ -245,7 +245,7 @@ export const AsyncDialog: StoryObj<typeof Dialog> = {
   },
 };
 
-const ReusableDialogExample = React.forwardRef<DialogElement>((props, ref) => {
+const ReusableDialogExample = ({ ref, ...props }) => {
   const [dialogRef, { cancel }] = useDialog(ref);
 
   return (
@@ -256,7 +256,7 @@ const ReusableDialogExample = React.forwardRef<DialogElement>((props, ref) => {
       </Button>
     </Dialog>
   );
-});
+};
 
 ReusableDialogExample.displayName = 'ReusableDialogExample';
 
@@ -297,7 +297,7 @@ interface ILoginData {
   password: string;
 }
 
-const LoginDialog = React.forwardRef<DialogElement<ILoginData>>((props, ref) => {
+const LoginDialog = ({ ref, ...props }) => {
   const [dialogRef, { ok }] = useDialog(ref);
   const { formProp, formState } = useForm<ILoginData>();
 
@@ -325,7 +325,7 @@ const LoginDialog = React.forwardRef<DialogElement<ILoginData>>((props, ref) => 
       </form>
     </Dialog>
   );
-});
+};
 
 LoginDialog.displayName = 'LoginDialog';
 

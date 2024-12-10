@@ -6,7 +6,7 @@ import * as React from 'react';
  * @returns The previous value before the effect cycle.
  */
 export const usePreviousValue = <TValue>(value: TValue): TValue | undefined => {
-  const ref = React.useRef<TValue>();
+  const ref = React.useRef<TValue>(undefined);
   React.useEffect(() => {
     ref.current = value;
   }, [value]);

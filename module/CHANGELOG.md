@@ -1,3 +1,12 @@
+# [3.8.0-alpha.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.1...v3.8.0-alpha.1) (2024-12-10)
+
+
+### Features
+
+* create alpha branch with react 19 changes ([b241cfe](https://github.com/Rocketmakers/armstrong-edge/commit/b241cfea49d9ffb452d53d192f8f656c3fca16ab))
+* upgrade react to 19 ([1129733](https://github.com/Rocketmakers/armstrong-edge/commit/112973319834c6f70b82513bcfa75c7577e5e5fd))
+* upgrade to pnpm ([cf2661f](https://github.com/Rocketmakers/armstrong-edge/commit/cf2661f2618896ba77d9eca03880b66f327f150c))
+
 ## [3.7.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.0...v3.7.1) (2024-12-10)
 
 
