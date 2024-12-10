@@ -14,16 +14,18 @@ const item1change = test.fn();
 
 const items = [
   { label: 'Item 1', onClick: item1change },
-  { label: 'Item 2' },
+  { label: 'Item 2 (not clickable)' },
   { label: 'Item 3 disabled', disabled: true, addSeparatorUnder: true },
-  { label: 'Item 4' },
+  { label: 'Item 4', onClick: test.fn() },
   {
     label: 'Item 5 (left icon)',
     leftOverlay: <ImUser data-testid="user-icon" />,
+    onClick: test.fn(),
   },
   {
     label: 'Item 6 (right icon)',
     rightOverlay: <ImCheckmark data-testid="check-icon" />,
+    onClick: test.fn(),
   },
 ];
 

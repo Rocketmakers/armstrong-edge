@@ -78,9 +78,13 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
           return (
             <React.Fragment key={index}>
               <RadixDropdownMenu.Item
-                className={concat(item.className, 'arm-dropdown-menu-item')}
+                className={concat(
+                  item.className,
+                  'arm-dropdown-menu-item',
+                  item.onClick && 'arm-dropdown-menu-item-clickable'
+                )}
                 disabled={item.disabled}
-                onSelect={() => item.onClick?.(index)}
+                onSelect={item.onClick && (() => item.onClick?.(index))}
               >
                 {item.leftOverlay && <div className="arm-dropdown-menu-item-left-overlay">{item.leftOverlay}</div>}
                 {item.label && <div className="arm-dropdown-menu-item-label">{item.label}</div>}

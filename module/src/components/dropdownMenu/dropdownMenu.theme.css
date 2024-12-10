@@ -84,12 +84,15 @@
   font-size: var(--arm-font-size-xsmall);
   user-select: none;
   outline: none;
-  cursor: pointer;
   transition: var(--arm-dropdown-menu-item-highlight-animation, background-color 0.2s);
   display: flex;
   justify-content: space-between;
   align-items: center;
   pointer-events: all;
+}
+
+.arm-dropdown-menu-item.arm-dropdown-menu-item-clickable {
+  cursor: pointer;
 }
 
 .arm-dropdown-menu-item-label {
@@ -112,7 +115,7 @@
   cursor: initial;
 }
 
-.arm-dropdown-menu-item:not([data-disabled])[data-highlighted] {
+.arm-dropdown-menu-item.arm-dropdown-menu-item-clickable:not([data-disabled])[data-highlighted] {
   background-color: var(--arm-dropdown-menu-item-highlight-bg-color, var(--arm-color-grey-100));
 }
 

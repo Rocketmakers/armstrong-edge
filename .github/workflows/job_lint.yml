@@ -20,5 +20,5 @@ jobs:
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Run linting
-        run: npm run lint
+        run: npm run lint && npm run stylelint
         working-directory: ./module
