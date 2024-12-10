@@ -12,5 +12,5 @@ jobs:
       - uses: ./.github/actions/install-node-and-pnpm
 
       - name: Run linting
-        run: pnpm lint
+        run: pnpm lint && pnpm stylelint
         working-directory: ./module

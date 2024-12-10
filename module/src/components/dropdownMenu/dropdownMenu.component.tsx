@@ -1,10 +1,10 @@
 import * as RadixDropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as React from 'react';
 
+import { ArmstrongFCProps } from '../../types';
 import { concat } from '../../utils';
 
 import './dropdownMenu.theme.css';
-import { ArmstrongFCProps } from '../../types';
 
 /**
  * Represents a dropdown menu item.
@@ -69,7 +69,6 @@ export interface IDropdownMenuProps
 }
 
 export const DropdownMenu = ({
-  ref,
   items,
   children,
   className,
@@ -77,6 +76,7 @@ export const DropdownMenu = ({
   open,
   defaultOpen,
   onOpenChange,
+  ref,
   ...nativeProps
 }: ArmstrongFCProps<IDropdownMenuProps, HTMLDivElement>) => {
   const parsedContent = React.useMemo(() => {
@@ -88,9 +88,13 @@ export const DropdownMenu = ({
         return (
           <React.Fragment key={index}>
             <RadixDropdownMenu.Item
-              className={concat(item.className, 'arm-dropdown-menu-item')}
+              className={concat(
+                item.className,
+                'arm-dropdown-menu-item',
+                item.onClick && 'arm-dropdown-menu-item-clickable'
+              )}
               disabled={item.disabled}
-              onSelect={() => item.onClick?.(index)}
+              onSelect={item.onClick && (() => item.onClick?.(index))}
             >
               {item.leftOverlay && <div className="arm-dropdown-menu-item-left-overlay">{item.leftOverlay}</div>}
               {item.label && <div className="arm-dropdown-menu-item-label">{item.label}</div>}
