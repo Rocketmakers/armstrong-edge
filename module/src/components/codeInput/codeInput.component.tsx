@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IBindingProps, useBindingState, useForm } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, DisplaySize, NullOrUndefined } from '../../types';
-import { concat, contentDependency, findLastIndex } from '../../utils';
+import { concat, findLastIndex } from '../../utils';
 import { useArmstrongConfig } from '../config';
 import { Input, ITextInputProps } from '../input';
 import { IInputWrapperProps } from '../inputWrapper';
@@ -218,8 +218,14 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
       (partIndex: number) => {
         const nextIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string') + partIndex + 1;
 
+        const isLastPart = partIndex === parts.length - 1;
+
         if (nextIndex !== -1) {
           inputRefs.current[nextIndex]?.focus();
+
+          if (!isLastPart) {
+            inputRefs.current[nextIndex]?.select();
+          }
         }
       },
       [parts]
@@ -227,10 +233,11 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
 
     /** @todo - why is focussing selecting before the final character? */
     const goPreviousPart = React.useCallback(
-      (partIndex: number) => {
+      (partIndex: number, event: React.KeyboardEvent<HTMLInputElement>) => {
         const previousIndex = findLastIndex(parts.slice(0, partIndex), part => typeof part !== 'string');
 
         if (previousIndex !== -1) {
+          event.preventDefault();
           inputRefs.current[previousIndex]?.focus();
         }
       },
@@ -239,8 +246,6 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
 
     const onPartValueChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
-        formProp('parts', partIndex).set(event.currentTarget.value);
-
         const currentPartLength = getLengthFromPart(parts[partIndex]);
 
         const currentPartValue = event.currentTarget.value || '';
@@ -287,13 +292,13 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
         switch (event.key) {
           case 'Backspace': {
             if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
-              goPreviousPart(partIndex);
+              goPreviousPart(partIndex, event);
             }
             break;
           }
           case 'ArrowLeft': {
             if (event.currentTarget.selectionStart === 0 && partIndex > 0) {
-              goPreviousPart(partIndex);
+              goPreviousPart(partIndex, event);
             }
             break;
           }
@@ -311,23 +316,22 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
       [goPreviousPart, goNextPart, parts]
     );
 
-    React.useEffect(() => {
-      setBoundValue?.(formState?.parts?.join(''));
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want the trigger the effect when the function is re-defined
-    }, [contentDependency(formState?.parts)]);
-
     useDidUpdateEffect(() => {
       if (globals.autoValidate && bindConfig.isTouched) {
         bindConfig.validate();
       }
     }, [boundValue]);
 
-    const onBlur = React.useCallback(() => {
-      if (formState?.parts.every(p => p) && globals.autoValidate && !bindConfig.isTouched) {
-        bindConfig.validate();
-        bindConfig.setTouched(true);
-      }
-    }, [bindConfig, formState?.parts, globals.autoValidate]);
+    const onBlur = React.useCallback(
+      (event: React.FocusEvent<HTMLInputElement, Element>, index: number) => {
+        setBoundValue?.(formState?.parts.map((p, i) => (i === index ? event.target.value : p)).join(''));
+        if (formState?.parts.every(Boolean) && globals.autoValidate && !bindConfig.isTouched) {
+          bindConfig.validate();
+          bindConfig.setTouched(true);
+        }
+      },
+      [bindConfig, formState?.parts, globals.autoValidate, setBoundValue]
+    );
 
     const showLeftOverlay =
       leftOverlay &&
@@ -375,7 +379,7 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
                     onChange={event => onPartValueChange(event, index)}
                     onKeyDown={event => onKeyDown(event, index, +part)}
                     onPaste={onPaste}
-                    onBlur={onBlur}
+                    onBlur={e => onBlur(e, index)}
                     disabled={disabled || (pending && globals.disableControlOnPending)}
                     ref={r => {
                       inputRefs.current[index] = r;
