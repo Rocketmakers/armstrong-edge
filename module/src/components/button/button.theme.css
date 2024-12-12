@@ -102,9 +102,9 @@
 }
 
 .arm-button[data-style='outline'] {
-  background-color: transparent;
+  background-color: var(--arm-button-outline-bg-color, transparent);
   border: var(--arm-button-outline-stroke-thickness) var(--arm-button-outline-stroke-color) solid;
-  color: var(--arm-button-outline-stroke-color);
+  color: var(--arm-button-outline-fg-color, var(--arm-button-outline-stroke-color));
 }
 
 .arm-button[data-style='blank'] {
