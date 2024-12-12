@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { DisplaySize } from '../../types';
+import { CustomString, DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner/spinner.component';
@@ -12,8 +12,8 @@ type ButtonHTMLProps = Omit<
   'ref'
 >;
 
-export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank';
-export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info';
+export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank' | CustomString;
+export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info' | CustomString;
 
 export interface IButtonProps extends ButtonHTMLProps {
   /** CSS className property */
