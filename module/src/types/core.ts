@@ -38,6 +38,11 @@ export type Merge<T extends object> = {
 export type NeverUndefined<TCheck, TReturn> = TCheck extends undefined ? never : TReturn;
 
 /**
+ * Used whenever a custom string is needed as part of a union
+ */
+export type CustomString = `custom-${string}`;
+
+/**
  * Display type options for inputs
  */
-export type DisplaySize = 'small' | 'medium' | 'large';
+export type DisplaySize = 'small' | 'medium' | 'large' | CustomString;

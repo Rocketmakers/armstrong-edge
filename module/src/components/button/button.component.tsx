@@ -1,21 +1,20 @@
+import type { JSX } from 'react';
 import * as React from 'react';
 
-import { ArmstrongFCProps, DisplaySize } from '../../types';
+import { ArmstrongFCProps, CustomString, DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner/spinner.component';
 
 import './button.theme.css';
 
-import type { JSX } from 'react';
-
 type ButtonHTMLProps = Omit<
   React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
   'ref'
 >;
 
-export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank';
-export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info';
+export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank' | CustomString;
+export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info' | CustomString;
 
 export interface IButtonProps extends ButtonHTMLProps {
   /** CSS className property */
