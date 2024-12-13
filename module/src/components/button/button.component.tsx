@@ -1,6 +1,7 @@
+import type { JSX } from 'react';
 import * as React from 'react';
 
-import { CustomString, DisplaySize } from '../../types';
+import { ArmstrongFCProps, CustomString, DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner/spinner.component';
@@ -48,7 +49,7 @@ export interface IButtonProps extends ButtonHTMLProps {
 }
 
 /** Renders an HTML button element with some useful additions */
-export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IButtonProps>>((props, ref) => {
+export const Button = ({ ref, ...props }: ArmstrongFCProps<IButtonProps, HTMLButtonElement>) => {
   const {
     className,
     disabled,
@@ -56,7 +57,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
     displaySize,
     displayStatus,
     pending,
-    pendingPosition,
+    pendingPosition = 'right',
     disableOnPending,
     leftOverlay,
     rightOverlay,
@@ -95,10 +96,6 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
       {pending && globals.buttonPendingPosition === 'right' ? spinner : wrappedRightIcon}
     </button>
   );
-});
-
-Button.defaultProps = {
-  pendingPosition: 'right',
 };
 
 Button.displayName = 'Button';

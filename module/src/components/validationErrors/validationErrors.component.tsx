@@ -5,6 +5,7 @@ import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 
 import './validationErrors.theme.css';
+import { ArmstrongFCProps } from '../../types';
 
 export interface IValidationErrorsProps {
   /**
@@ -24,10 +25,14 @@ export interface IValidationErrorsProps {
 }
 
 /** Render an array of validation errors as error messages */
-export const ValidationErrors = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>>
->(({ validationErrors, className, scrollIntoView, validationMode, ...nativeProps }, ref) => {
+export const ValidationErrors = ({
+  ref,
+  validationErrors,
+  className,
+  scrollIntoView,
+  validationMode,
+  ...nativeProps
+}: ArmstrongFCProps<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => {
   const globals = useArmstrongConfig({
     validationMode,
     scrollValidationErrorsIntoView: scrollIntoView,
@@ -68,6 +73,6 @@ export const ValidationErrors = React.forwardRef<
       ))}
     </div>
   );
-});
+};
 
 ValidationErrors.displayName = 'ValidationErrors';

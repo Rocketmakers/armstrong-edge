@@ -46,18 +46,22 @@ export const Default: StoryObj<typeof CodeInput> = {
     const inputs = within(wrapper).getAllByRole('textbox', { hidden: true });
     expect(inputs.length).toBe(3);
     await userEvent.type(inputs[0], '123');
+    await userEvent.tab();
     expect(inputs[0]).toHaveValue('1');
     expect(inputs[1]).toHaveValue('2');
     expect(inputs[2]).toHaveValue('3');
+
     await waitFor(() => expect(value).toHaveTextContent('Value: 123'));
-    userEvent.clear(inputs[0]);
-    expect(inputs[1]).toHaveValue('2');
-    expect(inputs[2]).toHaveValue('3');
+    await userEvent.clear(inputs[0]);
+    await userEvent.tab();
+    expect(inputs[0]).toHaveValue('2');
+    expect(inputs[1]).toHaveValue('3');
     await waitFor(() => expect(value).toHaveTextContent('Value: 23'));
-    userEvent.clear(inputs[0]);
-    userEvent.clear(inputs[1]);
-    userEvent.clear(inputs[2]);
+    await userEvent.clear(inputs[0]);
+    await userEvent.clear(inputs[0]);
+    await userEvent.clear(inputs[0]);
     await userEvent.type(inputs[0], '4567');
+    await userEvent.tab();
     expect(inputs[0]).toHaveValue('4');
     expect(inputs[1]).toHaveValue('5');
     expect(inputs[2]).toHaveValue('6');

@@ -21,8 +21,14 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> exte
 }
 
 /** an individual input from the CodeInput */
-const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps<NullOrUndefined<string>>>(
-  ({ bind, part, ...inputProps }, ref) => {
+const CodeInputPart = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    bind,
+    part,
+    ...inputProps
+  }: ArmstrongVFCProps<ICodeInputPartProps<NullOrUndefined<string>>, HTMLInputElement>) => {
     const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
     if (typeof part === 'string') {
@@ -65,13 +71,10 @@ const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps<Nul
         displaySize={part.displaySize}
       />
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
+  }) as (<TBind extends NullOrUndefined<string>>(
+    props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
 
 CodeInputPart.displayName = 'CodeInputPart';
 
@@ -133,39 +136,42 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   autoValidate?: boolean;
 }
 
-export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOrUndefined<string>>>(
-  (
-    {
-      className,
-      parts,
-      bind,
-      onChange,
-      validationMode,
-      validationErrorMessages,
-      errorIcon,
-      error,
-      value,
-      pending,
-      statusPosition,
-      leftOverlay,
-      rightOverlay,
-      scrollValidationErrorsIntoView,
-      displaySize,
-      label,
-      required,
-      requiredIndicator,
-      hideIconOnStatus,
-      statusClassName,
-      validationErrorsClassName,
-      labelClassName,
-      labelId,
-      disableOnPending,
-      disabled,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+interface IInternalFormState {
+  parts: string[];
+}
+
+export const CodeInput = // type assertion to ensure generic works with RefForwarded component
+  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  (({
+    ref,
+    className,
+    parts,
+    bind,
+    onChange,
+    validationMode,
+    validationErrorMessages,
+    errorIcon,
+    error,
+    value,
+    pending,
+    statusPosition,
+    leftOverlay,
+    rightOverlay,
+    scrollValidationErrorsIntoView,
+    displaySize,
+    label,
+    required,
+    requiredIndicator,
+    hideIconOnStatus,
+    statusClassName,
+    validationErrorsClassName,
+    labelClassName,
+    labelId,
+    disableOnPending,
+    disabled,
+    autoValidate,
+    ...nativeProps
+  }: ArmstrongVFCProps<ICodeInputProps<NullOrUndefined<string>>, HTMLDivElement>) => {
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -174,6 +180,26 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       validationMode,
       value,
       autoValidate,
+    });
+
+    const getValueForPart = React.useCallback(
+      (partIndex: number, incomingValue: NullOrUndefined<string>) => {
+        const sliceStart = parts
+          .slice(0, partIndex)
+          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
+        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
+
+        return incomingValue?.slice(sliceStart, sliceEnd) || '';
+      },
+      [parts]
+    );
+
+    const boundValueArray = React.useMemo(() => {
+      return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
+    }, [getValueForPart, parts, boundValue]);
+
+    const { formProp, formState } = useForm<IInternalFormState>({
+      parts: boundValueArray,
     });
 
     const globals = useArmstrongConfig({
@@ -192,8 +218,14 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       (partIndex: number) => {
         const nextIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string') + partIndex + 1;
 
+        const isLastPart = partIndex === parts.length - 1;
+
         if (nextIndex !== -1) {
           inputRefs.current[nextIndex]?.focus();
+
+          if (!isLastPart) {
+            inputRefs.current[nextIndex]?.select();
+          }
         }
       },
       [parts]
@@ -201,24 +233,13 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
 
     /** @todo - why is focussing selecting before the final character? */
     const goPreviousPart = React.useCallback(
-      (partIndex: number) => {
+      (partIndex: number, event: React.KeyboardEvent<HTMLInputElement>) => {
         const previousIndex = findLastIndex(parts.slice(0, partIndex), part => typeof part !== 'string');
 
         if (previousIndex !== -1) {
+          event.preventDefault();
           inputRefs.current[previousIndex]?.focus();
         }
-      },
-      [parts]
-    );
-
-    const getValueForPart = React.useCallback(
-      (partIndex: number, incomingValue: NullOrUndefined<string>) => {
-        const sliceStart = parts
-          .slice(0, partIndex)
-          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
-        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
-
-        return incomingValue?.slice(sliceStart, sliceEnd) || '';
       },
       [parts]
     );
@@ -261,26 +282,23 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
         const newValue = startSlice + pasteValue + endSlice;
 
         setBoundValue(newValue);
+        inputRefs.current[inputRefs.current.length - 1]?.focus();
       },
       [setBoundValue, boundValue, parts]
     );
-
-    const boundValueArray = React.useMemo(() => {
-      return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
-    }, [getValueForPart, parts, boundValue]);
 
     const onKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
         switch (event.key) {
           case 'Backspace': {
             if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
-              goPreviousPart(partIndex);
+              goPreviousPart(partIndex, event);
             }
             break;
           }
           case 'ArrowLeft': {
             if (event.currentTarget.selectionStart === 0 && partIndex > 0) {
-              goPreviousPart(partIndex);
+              goPreviousPart(partIndex, event);
             }
             break;
           }
@@ -298,31 +316,22 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       [goPreviousPart, goNextPart, parts]
     );
 
-    interface IFormState {
-      parts: string[];
-    }
-
-    const { formProp, formState } = useForm<IFormState>({
-      parts: boundValueArray,
-    });
-
-    React.useEffect(() => {
-      setBoundValue?.(formState?.parts?.join(''));
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want the trigger the effect when the function is re-defined
-    }, [formState]);
-
     useDidUpdateEffect(() => {
       if (globals.autoValidate && bindConfig.isTouched) {
         bindConfig.validate();
       }
     }, [boundValue]);
 
-    const onBlur = React.useCallback(() => {
-      if (formState?.parts.every(p => p) && globals.autoValidate && !bindConfig.isTouched) {
-        bindConfig.validate();
-        bindConfig.setTouched(true);
-      }
-    }, [bindConfig, formState?.parts, globals.autoValidate]);
+    const onBlur = React.useCallback(
+      (event: React.FocusEvent<HTMLInputElement, Element>, index: number) => {
+        setBoundValue?.(formState?.parts.map((p, i) => (i === index ? event.target.value : p)).join(''));
+        if (formState?.parts.every(Boolean) && globals.autoValidate && !bindConfig.isTouched) {
+          bindConfig.validate();
+          bindConfig.setTouched(true);
+        }
+      },
+      [bindConfig, formState?.parts, globals.autoValidate, setBoundValue]
+    );
 
     const showLeftOverlay =
       leftOverlay &&
@@ -370,7 +379,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
                     onChange={event => onPartValueChange(event, index)}
                     onKeyDown={event => onKeyDown(event, index, +part)}
                     onPaste={onPaste}
-                    onBlur={onBlur}
+                    onBlur={e => onBlur(e, index)}
                     disabled={disabled || (pending && globals.disableControlOnPending)}
                     ref={r => {
                       inputRefs.current[index] = r;
@@ -393,12 +402,9 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
+  }) as (<TBind extends NullOrUndefined<string>>(
+    props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
+  ) => ArmstrongFCReturn) &
+    ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
 
 CodeInput.displayName = 'Code Input';

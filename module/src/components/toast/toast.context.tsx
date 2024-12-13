@@ -1,6 +1,7 @@
 'use client';
 
 import * as RadixToast from '@radix-ui/react-toast';
+import type { JSX } from 'react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -68,10 +69,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
   position,
   closeButtonIcon,
 }) => {
-  const [toasts, addToast] = React.useReducer<React.Reducer<IToast[], IToast>>(
-    (state, action) => [...state, action],
-    []
-  );
+  const [toasts, addToast] = React.useReducer((state: IToast[], action: IToast) => [...state, action], []);
   const globals = useArmstrongConfig({
     toastDuration: duration,
     toastPosition: position,

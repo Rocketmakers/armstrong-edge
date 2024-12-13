@@ -5,31 +5,14 @@ name: 'Chromatic'
 on: workflow_call
 
 jobs:
-  setup:
-    uses: ./.github/workflows/job_setup.yml
-
   chromatic-deployment:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
 
-      - name: Restore node modules cache
-        id: node-modules
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            ${{ github.workspace }}/node_modules
-            ${{ github.workspace }}/module/node_modules
-            ${{ github.workspace }}/storybook/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install storybook node modules
-        id: storybook-node-modules
-        run: npm install
-        working-directory: ./storybook
+      - uses: ./.github/actions/install-node-and-pnpm
 
       - name: Publish to Chromatic
         uses: chromaui/action@latest
