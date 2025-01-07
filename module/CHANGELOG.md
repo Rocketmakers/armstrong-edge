@@ -1,3 +1,10 @@
+## [3.7.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.2...v3.7.3) (2025-01-07)
+
+
+### Bug Fixes
+
+* - Fixed disabled state styling bug + prevented validation error block from always rendering ([47e2d55](https://github.com/Rocketmakers/armstrong-edge/commit/47e2d55b1a1892d247774dabf507371b021e0950))
+
 ## [3.7.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.1...v3.7.2) (2024-12-12)
 
 ### Bug Fixes
