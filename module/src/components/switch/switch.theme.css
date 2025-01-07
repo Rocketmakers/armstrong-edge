@@ -23,7 +23,7 @@
   flex-shrink: 0;
 }
 
-.arm-switch[data-disabled] {
+.arm-switch[data-disabled='true'] {
   cursor: not-allowed;
 }
 
@@ -65,7 +65,7 @@
   margin-inline-start: var(--arm-switch-label-spacing, var(--arm-spacing-small));
 }
 
-.arm-switch-label[data-disabled] {
+.arm-switch-label[data-disabled='true'] {
   cursor: not-allowed;
 }
 

@@ -80,11 +80,11 @@
 
 /* DISABLED */
 
-.arm-radio-group[data-disabled] {
+.arm-radio-group[data-disabled='true'] {
   opacity: 0.6;
 }
 
-.arm-radio-group[data-disabled] .arm-radio-group-item {
+.arm-radio-group[data-disabled='true'] .arm-radio-group-item {
   cursor: not-allowed;
 }
 
@@ -112,7 +112,7 @@
 
 /** HOVER */
 
-.arm-radio-group:not([data-disabled]) .arm-radio-group-item:hover {
+.arm-radio-group:not([data-disabled='true']) .arm-radio-group-item:hover {
   filter: brightness(85%);
 }
 

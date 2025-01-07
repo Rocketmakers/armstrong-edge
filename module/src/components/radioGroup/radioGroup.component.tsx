@@ -201,7 +201,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
             );
           })}
         </RadixRadioGroup.Root>
-        {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
+        {bindConfig.shouldShowValidationErrorMessage && !!bindConfig.validationErrorMessages.length && (
           <ValidationErrors
             validationErrors={bindConfig.validationErrorMessages}
             className={concat('arm-radio-errors', validationErrorsClassName)}
