@@ -196,7 +196,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
               />
             );
           })}
-          {bindConfig.shouldShowValidationErrorMessage && bindConfig.validationErrorMessages && (
+          {bindConfig.shouldShowValidationErrorMessage && !!bindConfig.validationErrorMessages.length && (
             <ValidationErrors
               validationErrors={bindConfig.validationErrorMessages}
               scrollIntoView={globals.scrollValidationErrorsIntoView}

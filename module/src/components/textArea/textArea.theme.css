@@ -17,7 +17,7 @@
   box-shadow: 0 0 0 var(--arm-form-border-thickness-highlight) var(--arm-focus-visible-color);
 }
 
-.arm-text-area-wrapper[data-disabled] .arm-text-area {
+.arm-text-area-wrapper[data-disabled='true'] .arm-text-area {
   cursor: not-allowed;
   resize: none;
   border-color: var(--arm-color-grey-300);
