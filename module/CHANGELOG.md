@@ -1,3 +1,10 @@
+## [3.7.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.3...v3.7.4) (2025-01-09)
+
+
+### Bug Fixes
+
+* - Fixed bug preventing items in dropdown menu from highlighting ([890cbc3](https://github.com/Rocketmakers/armstrong-edge/commit/890cbc3655231d718140de76415119fe611724b0))
+
 ## [3.7.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.2...v3.7.3) (2025-01-07)
 
 
