@@ -115,7 +115,7 @@
   cursor: initial;
 }
 
-.arm-dropdown-menu-item.arm-dropdown-menu-item-clickable:not([data-disabled='true'])[data-highlighted='true'] {
+.arm-dropdown-menu-item.arm-dropdown-menu-item-clickable:not([data-disabled='true'])[data-highlighted] {
   background-color: var(--arm-dropdown-menu-item-highlight-bg-color, var(--arm-color-grey-100));
 }
 
