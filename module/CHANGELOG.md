@@ -1,3 +1,10 @@
+## [3.7.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.4...v3.7.5) (2025-01-10)
+
+
+### Bug Fixes
+
+* - Now passing event through to dropdown item click ([c5549e4](https://github.com/Rocketmakers/armstrong-edge/commit/c5549e4279f4bd6f4c16f3174fbf1d240709545f))
+
 ## [3.7.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.3...v3.7.4) (2025-01-09)
 
 ### Bug Fixes
