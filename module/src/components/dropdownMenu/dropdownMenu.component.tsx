@@ -65,10 +65,34 @@ export interface IDropdownMenuProps
    * Specifies whether to show an arrow indicator next on the menu.
    */
   showArrow?: boolean;
+
+  /**
+   * Optional header content to render at the bottom of the dropdown menu.
+   */
+  headerContent?: React.ReactNode;
+
+  /**
+   * Optional footer content to render at the bottom of the dropdown menu.
+   */
+  footerContent?: React.ReactNode;
 }
 
 export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IDropdownMenuProps>>(
-  ({ items, children, className, showArrow, open, defaultOpen, onOpenChange, ...nativeProps }, ref) => {
+  (
+    {
+      items,
+      children,
+      className,
+      showArrow,
+      open,
+      defaultOpen,
+      onOpenChange,
+      footerContent,
+      headerContent,
+      ...nativeProps
+    },
+    ref
+  ) => {
     const parsedContent = React.useMemo(() => {
       if (React.isValidElement(items)) {
         return items;
@@ -107,7 +131,15 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
           className={concat(className, 'arm-dropdown-menu-content')}
           ref={ref}
         >
-          {parsedContent}
+          {!footerContent && !headerContent ? (
+            parsedContent
+          ) : (
+            <>
+              {headerContent && <div className="arm-dropdown-menu-header">{headerContent}</div>}
+              <div className="arm-dropdown-menu-items">{parsedContent}</div>
+              {footerContent && <div className="arm-dropdown-menu-footer">{footerContent}</div>}
+            </>
+          )}
           {showArrow && <div className="arm-dropdown-menu-arrow" data-testid="arm-dropdown-arrow" />}
         </RadixDropdownMenu.Content>
       </RadixDropdownMenu.Root>
