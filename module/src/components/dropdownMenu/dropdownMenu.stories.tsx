@@ -118,6 +118,59 @@ export const WithArrow: StoryObj<typeof DropdownMenu> = {
   },
 };
 
+export const WithHeaderAndFooter: StoryObj<typeof DropdownMenu> = {
+  render: () => {
+    return (
+      <div
+        style={{
+          height: '350px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <DropdownMenu
+          items={items}
+          data-testid="dropdown"
+          headerContent={
+            <div
+              data-testid="header"
+              style={{ padding: '16px', textAlign: 'center', fontSize: '14px', backgroundColor: '#e3e3e3' }}
+            >
+              Header content
+            </div>
+          }
+          footerContent={
+            <div
+              data-testid="footer"
+              style={{ padding: '16px', textAlign: 'center', fontSize: '14px', backgroundColor: '#e3e3e3' }}
+            >
+              Footer content
+            </div>
+          }
+        >
+          <Button type="button" data-testid="button">
+            Toggle with header/footer
+          </Button>
+        </DropdownMenu>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const openButton = canvas.getByTestId('button');
+    userEvent.click(openButton);
+
+    await waitFor(() => expect(canvas.getByTestId('dropdown')).toBeVisible());
+
+    const header = within(canvas.getByTestId('dropdown')).getByTestId('header');
+    expect(header).toBeVisible();
+
+    const footer = within(canvas.getByTestId('dropdown')).getByTestId('footer');
+    expect(footer).toBeVisible();
+  },
+};
+
 export const StateDriven: StoryObj<typeof DropdownMenu> = {
   render: () => {
     const [open, setOpen] = React.useState(false);
