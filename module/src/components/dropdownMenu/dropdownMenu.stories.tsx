@@ -77,7 +77,7 @@ export const Default: StoryObj<typeof DropdownMenu> = {
     expect(menuItems[0]).toHaveTextContent('Item 1');
     userEvent.click(menuItems[0]);
     await waitFor(() => expect(item1change).toHaveBeenCalledTimes(1));
-    expect(item1change).toHaveBeenCalledWith(0);
+    expect(item1change).toHaveBeenCalledWith(0, expect.anything());
 
     expect(menuItems[2]).toHaveTextContent('Item 3 disabled');
     expect(menuItems[2]).toHaveAttribute('data-disabled');

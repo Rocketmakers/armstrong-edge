@@ -25,9 +25,9 @@ export interface IDropdownMenuItem {
   rightOverlay?: React.ReactNode;
 
   /**
-   * Function to be called when the menu item is clicked, receives the menu item index.
+   * Function to be called when the menu item is clicked, receives the menu item index and the native event.
    */
-  onClick?: (index: number) => void;
+  onClick?: (index: number, event: Event) => void;
 
   /**
    * Specifies whether the menu item is disabled.
@@ -84,7 +84,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
                   item.onClick && 'arm-dropdown-menu-item-clickable'
                 )}
                 disabled={item.disabled}
-                onSelect={item.onClick && (() => item.onClick?.(index))}
+                onSelect={item.onClick && (event => item.onClick?.(index, event))}
               >
                 {item.leftOverlay && <div className="arm-dropdown-menu-item-left-overlay">{item.leftOverlay}</div>}
                 {item.label && <div className="arm-dropdown-menu-item-label">{item.label}</div>}
