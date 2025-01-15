@@ -1,3 +1,10 @@
+## [3.8.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.0...v3.8.1) (2025-01-15)
+
+
+### Bug Fixes
+
+* - Fixed bug causing placeholder not to work on create select inputs ([24a31b6](https://github.com/Rocketmakers/armstrong-edge/commit/24a31b6e8c1c1ba1303f1348a5e4d972efe7eb36))
+
 # [3.8.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.5...v3.8.0) (2025-01-10)
 
 ### Features
