@@ -1,9 +1,8 @@
 # [3.8.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.5...v3.8.0) (2025-01-10)
 
-
 ### Features
 
-* - Added optional header/footer to dropdown menu ([88530d3](https://github.com/Rocketmakers/armstrong-edge/commit/88530d3fa8ecf86a089ee4da1d6875cfd851442a))
+- - Added optional header/footer to dropdown menu ([88530d3](https://github.com/Rocketmakers/armstrong-edge/commit/88530d3fa8ecf86a089ee4da1d6875cfd851442a))
 
 ## [3.7.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.4...v3.7.5) (2025-01-10)
 
