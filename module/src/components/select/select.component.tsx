@@ -13,7 +13,6 @@ import ReactSelect, {
 import Creatable from 'react-select/creatable';
 // eslint-disable-next-line import/no-unresolved -- file exists
 import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
-
 import SelectRef, {
   Props as ReactSelectProps,
   // eslint-disable-next-line import/no-unresolved -- file exists
@@ -375,11 +374,7 @@ const ReactSelectComponent = React.forwardRef<
     const selectedValue = React.useMemo(() => {
       const valueFinder = (incomingOptions?: IArmstrongOption<ArmstrongId>[]) => {
         if (!multi) {
-          let singleVal = incomingOptions?.find(o => o.id === value) ?? null;
-          if (!singleVal && allowCreate) {
-            singleVal = { id: value, content: value, wasCreated: true };
-          }
-          return singleVal;
+          return incomingOptions?.find(o => o.id === value) ?? null;
         }
         return (
           value?.map(
@@ -396,7 +391,7 @@ const ReactSelectComponent = React.forwardRef<
         return valueFinder(options.map(o => o.options).flat(1));
       }
       return valueFinder(options);
-    }, [allowCreate, multi, options, value]);
+    }, [multi, options, value]);
 
     const valueGetter = React.useCallback<GetOptionValue<IArmstrongOption<ArmstrongId>>>(
       option => {
