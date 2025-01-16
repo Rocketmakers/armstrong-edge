@@ -407,7 +407,8 @@ export const useFormBase = <TData extends object>(
     validate,
     touchAll: () => setGlobalTouched(true),
     allTouched: isGlobalTouched,
-    isValid: !clientValidationErrors.length && !formConfig?.validationErrors?.length,
+    isValid:
+      !clientValidationErrors.length && !formConfig?.validationErrors?.length && parseValidationSchema(undefined, true),
     resetTouchedState,
   };
 };
