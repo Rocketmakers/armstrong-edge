@@ -1,3 +1,10 @@
+## [3.8.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.1...v3.8.2) (2025-01-16)
+
+
+### Bug Fixes
+
+* - fixes bug with isValid on useForm + strict mode support ([3790886](https://github.com/Rocketmakers/armstrong-edge/commit/379088641440a0847723749a50c9103ea164fea7))
+
 ## [3.8.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.0...v3.8.1) (2025-01-15)
 
 ### Bug Fixes
