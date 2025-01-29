@@ -89,6 +89,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
       onOpenChange,
       footerContent,
       headerContent,
+      disabled,
       ...nativeProps
     },
     ref
@@ -124,7 +125,11 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
 
     return (
       <RadixDropdownMenu.Root open={open} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
-        {children && <RadixDropdownMenu.Trigger asChild>{children}</RadixDropdownMenu.Trigger>}
+        {children && (
+          <RadixDropdownMenu.Trigger asChild disabled={disabled}>
+            {children}
+          </RadixDropdownMenu.Trigger>
+        )}
         <RadixDropdownMenu.Content
           {...nativeProps}
           data-has-arrow={!!showArrow}
