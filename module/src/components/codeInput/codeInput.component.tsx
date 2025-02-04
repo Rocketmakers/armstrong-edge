@@ -217,15 +217,13 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
     const goNextPart = React.useCallback(
       (partIndex: number) => {
         const nextIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string') + partIndex + 1;
-
         const isLastPart = partIndex === parts.length - 1;
 
-        if (nextIndex !== -1) {
+        if (nextIndex !== -1 && !isLastPart) {
           inputRefs.current[nextIndex]?.focus();
-
-          if (!isLastPart) {
-            inputRefs.current[nextIndex]?.select();
-          }
+          inputRefs.current[nextIndex]?.select();
+        } else {
+          inputRefs.current[partIndex]?.blur();
         }
       },
       [parts]
@@ -249,7 +247,6 @@ export const CodeInput = // type assertion to ensure generic works with RefForwa
         const currentPartLength = getLengthFromPart(parts[partIndex]);
 
         const currentPartValue = event.currentTarget.value || '';
-
         if (currentPartValue.length >= currentPartLength) {
           goNextPart(partIndex);
         }
