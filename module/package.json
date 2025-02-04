@@ -19,8 +19,8 @@
   },
   "peerDependencies": {
     "date-fns": "2.x",
-    "react": "18.x",
-    "react-dom": "18.x",
+    "react": "18.x  || 19.x",
+    "react-dom": "18.x || 19.x",
     "zod": "3.*"
   },
   "files": [
