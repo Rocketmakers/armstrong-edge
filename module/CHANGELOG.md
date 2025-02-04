@@ -1,3 +1,13 @@
+# [3.8.0-alpha.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.0-alpha.1...v3.8.0-alpha.2) (2025-02-04)
+
+
+### Bug Fixes
+
+* - Added missing styling vars for outline button ([b9c27e4](https://github.com/Rocketmakers/armstrong-edge/commit/b9c27e4e4e9d47bdc27e3ba129e2176f5bc024d0))
+* - support for custom types in certain string unions ([87e3b83](https://github.com/Rocketmakers/armstrong-edge/commit/87e3b83be433b484e84637cbb8221a68513572f9))
+* fix issue with code input hitting react state update limit ([bd947d0](https://github.com/Rocketmakers/armstrong-edge/commit/bd947d04b4cad43454264c50688bcb008ea8ed39))
+* update code input tests ([a594591](https://github.com/Rocketmakers/armstrong-edge/commit/a594591038e35a43f1c6577429ffaa21211d2f83))
+
 ## [3.7.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.1...v3.7.2) (2024-12-12)
 
 
