@@ -14,7 +14,6 @@
     "test-storybook-ci": "pnpm exec concurrently -k -s first -n 'SB,TEST' -c 'magenta,blue' 'pnpm exec http-server storybook-static --port 6006 --silent' 'pnpm exec wait-on tcp:127.0.0.1:6006 && npm run test-storybook'"
   },
   "dependencies": {
-    "playwright": "1.50.1",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
