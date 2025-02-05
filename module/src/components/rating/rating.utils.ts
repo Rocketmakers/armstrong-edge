@@ -1,5 +1,7 @@
 import type { RatingIconDefinition } from './rating.component';
 
+import { JSX } from 'react';
+
 /**
  * Converts a RatingIconDefinition to a JSX.Element.
  *
