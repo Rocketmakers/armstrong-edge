@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { JSX } from 'react';
-
 import { iconJsxFromDefinition } from './rating.utils';
 
 const iconFn1 = (index: number): React.JSX.Element => React.createElement('span', { key: index }, 'Icon 1');
