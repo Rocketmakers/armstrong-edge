@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useForm } from '../../form';
 import { Button } from '../button';
 import { Input } from '../input';
-import { Dialog, DialogElement } from './dialog.component';
+import { Dialog } from './dialog.component';
 import { useDialog } from './dialog.hooks';
 
 /** metadata */
