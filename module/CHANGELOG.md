@@ -1,9 +1,8 @@
 ## [3.8.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.2...v3.8.3) (2025-01-29)
 
-
 ### Bug Fixes
 
-* - Disabled prop now supported on dropdown menu ([7bba5a1](https://github.com/Rocketmakers/armstrong-edge/commit/7bba5a131e727af13ee7625eedef510cee54ac12))
+- - Disabled prop now supported on dropdown menu ([7bba5a1](https://github.com/Rocketmakers/armstrong-edge/commit/7bba5a131e727af13ee7625eedef510cee54ac12))
 
 ## [3.8.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.1...v3.8.2) (2025-01-16)
 
