@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { findByRole, findByText, queryByRole, userEvent, waitFor, within, expect, fn } from '@storybook/test';
+import { findByRole, findByText, queryByRole, userEvent, waitFor, within, expect, fn, Mock } from '@storybook/test';
 import * as React from 'react';
 
 import { useForm } from '../../form';
@@ -166,7 +166,8 @@ export const SimpleStateDialog: StoryObj<typeof Dialog> = {
 };
 
 export const AsyncDialog: StoryObj<typeof Dialog> = {
-  render: () => {
+  args: { onBeforeUnload: fn() },
+  render: ({ onBeforeUnload }) => {
     const [dialogRef, { open, ok, cancel, isOpen }] = useDialog();
     const [result, setResult] = React.useState('idle');
 
@@ -180,6 +181,7 @@ export const AsyncDialog: StoryObj<typeof Dialog> = {
         <Dialog
           ref={dialogRef}
           title="Are you sure?"
+          onBeforeUnload={onBeforeUnload}
           description="Actions have consequences, would you like to continue anyway?"
         >
           <div
@@ -203,7 +205,10 @@ export const AsyncDialog: StoryObj<typeof Dialog> = {
       </div>
     );
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, args }) => {
+    const castMockBeforeUnload = args.onBeforeUnload as Mock;
+    castMockBeforeUnload.mockReturnValue(true);
+
     // expect open state closed
     const openState = within(canvasElement).getByTestId('dialog-is-open');
     expect(openState).toHaveTextContent('closed');
@@ -231,17 +236,41 @@ export const AsyncDialog: StoryObj<typeof Dialog> = {
     await waitFor(() => expect(dialog).not.toBeVisible());
     await waitFor(() => expect(result).toHaveTextContent('ok'));
 
+    // onBeforeUnload check
+    expect(args.onBeforeUnload).toHaveBeenNthCalledWith(1, 'ok');
+
     // re-open dialog
     userEvent.click(openButton);
     dialog = await findByRole(document.body, 'dialog');
     await waitFor(() => expect(dialog).toBeVisible());
 
     // cancel button check
-    const cancelButton = within(dialog).getByRole('button', { name: 'Cancel' });
+    let cancelButton = within(dialog).getByRole('button', { name: 'Cancel' });
     expect(cancelButton).toBeVisible();
     userEvent.click(cancelButton);
     await waitFor(() => expect(dialog).not.toBeVisible());
     await waitFor(() => expect(result).toHaveTextContent('cancel'));
+
+    // onBeforeUnload check
+    expect(args.onBeforeUnload).toHaveBeenNthCalledWith(2, 'cancel');
+
+    // prevent close
+    castMockBeforeUnload.mockReturnValue(false);
+
+    // re-open dialog
+    userEvent.click(openButton);
+    dialog = await findByRole(document.body, 'dialog');
+    await waitFor(() => expect(dialog).toBeVisible());
+    cancelButton = within(dialog).getByRole('button', { name: 'Cancel' });
+
+    userEvent.click(cancelButton);
+    await waitFor(() => expect(args.onBeforeUnload).toHaveBeenNthCalledWith(3, 'cancel'));
+    await waitFor(() => expect(dialog).toBeVisible());
+
+    // allow close again and close
+    castMockBeforeUnload.mockReturnValue(true);
+    userEvent.click(cancelButton);
+    await waitFor(() => expect(dialog).not.toBeVisible());
   },
 };
 
