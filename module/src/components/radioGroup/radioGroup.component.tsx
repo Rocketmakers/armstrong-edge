@@ -57,7 +57,7 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
   error?: boolean;
 
   /** (Optional) A custom JSX.Element for the checked indicator. */
-  customIndicator?: JSX.Element;
+  customIndicator?: React.JSX.Element;
 
   /** which size variant to use */
   displaySize?: DisplaySize;

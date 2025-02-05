@@ -129,13 +129,13 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
   position?: 'auto' | 'bottom' | 'top';
 
   /** overrides the dropdown icon in the input */
-  dropdownIcon?: JSX.Element;
+  dropdownIcon?: React.JSX.Element;
 
   /** overrides the loading icon in the input */
-  loadingIcon?: JSX.Element;
+  loadingIcon?: React.JSX.Element;
 
   /** overrides the selected icon in the input */
-  selectedIcon?: JSX.Element;
+  selectedIcon?: React.JSX.Element;
 
   /** close the select menu when the user selects an option. Set to true as default */
   closeMenuOnSelect?: boolean;

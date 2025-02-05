@@ -11,7 +11,7 @@ export interface IToastProps extends IToast {
   position: ToastPosition;
 
   /** the icon to use for the dialog close button */
-  closeButtonIcon: JSX.Element | false;
+  closeButtonIcon: React.JSX.Element | false;
 }
 
 export const Toast: React.FC<IToastProps> = ({

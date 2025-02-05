@@ -3,6 +3,7 @@
  * --------------------------------------
  */
 
+import * as React from 'react';
 import {
   type ZodArray,
   type ZodBigInt,
@@ -426,7 +427,7 @@ export type FormDispatcher<TData> = (action: FormAction<TData, unknown>) => TDat
  * The validation message
  * Can be a string or an element
  */
-export type ValidationMessage = string | JSX.Element;
+export type ValidationMessage = string | React.JSX.Element;
 
 /**
  * An individual validation error.
@@ -599,7 +600,7 @@ export interface IFormConfig<TData> {
    * An optional icon to use for validation errors in place of the default.
    * @default warning
    */
-  validationErrorIcon?: JSX.Element;
+  validationErrorIcon?: React.JSX.Element;
 
   /** should the input validate automatically against the provided schema? Default: `true` */
   autoValidate?: boolean;
@@ -764,7 +765,7 @@ interface IUseBindingStateReturnUtils<TData> {
   validationMode?: FormValidationMode;
 
   /** The current validation mode for the form */
-  validationErrorIcon?: JSX.Element;
+  validationErrorIcon?: React.JSX.Element;
 
   /** Derived from the validation mode */
   shouldShowValidationErrorIcon?: boolean;
@@ -804,7 +805,7 @@ export interface IUseBindingStateOverrides<TData> {
   validationMode?: FormValidationMode;
 
   /** The current validation mode for the form */
-  validationErrorIcon?: JSX.Element;
+  validationErrorIcon?: React.JSX.Element;
 
   /** should the input validate automatically against the provided schema? Default: `true` */
   autoValidate?: boolean;
