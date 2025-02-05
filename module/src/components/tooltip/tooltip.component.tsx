@@ -49,7 +49,22 @@ export interface ITooltipProps
 }
 
 export const Tooltip = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITooltipProps>>(
-  ({ children, content, delay, open, onOpenChange, showArrow, className, arrowClassName, side, ...props }, ref) => {
+  (
+    {
+      children,
+      content,
+      delay,
+      open,
+      onOpenChange,
+      showArrow,
+      className,
+      arrowClassName,
+      side,
+      sideOffset = 5,
+      ...props
+    },
+    ref
+  ) => {
     const { tooltipDelay, tooltipShowArrow, tooltipSide } = useArmstrongConfig({
       tooltipDelay: delay,
       tooltipShowArrow: showArrow,
@@ -65,6 +80,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
               ref={ref}
               className={concat(className, 'arm-tooltip-content')}
               side={tooltipSide}
+              sideOffset={sideOffset}
               {...props}
             >
               {content}
@@ -78,7 +94,3 @@ export const Tooltip = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
 );
 
 Tooltip.displayName = 'Tooltip';
-
-Tooltip.defaultProps = {
-  sideOffset: 5,
-};

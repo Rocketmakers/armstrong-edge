@@ -26,10 +26,10 @@ export interface ICheckboxProps<TData extends BindType>
   checked?: TData;
 
   /** (Optional) A custom JSX.Element for the indeterminate state indicator. */
-  customIndeterminateIndicator?: JSX.Element;
+  customIndeterminateIndicator?: React.JSX.Element;
 
   /** (Optional) A custom JSX.Element for the checked indicator. */
-  customIndicator?: JSX.Element;
+  customIndicator?: React.JSX.Element;
 
   /** (Optional) A boolean flag to disable the checkbox input. */
   disabled?: boolean;

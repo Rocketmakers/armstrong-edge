@@ -25,7 +25,7 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
   className?: string;
 
   /** the icon to use for the validation errors */
-  validationErrorIcon?: JSX.Element;
+  validationErrorIcon?: React.JSX.Element;
 
   /** (Optional) Class name for the validation errors */
   validationErrorsClassName?: string;

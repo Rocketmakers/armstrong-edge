@@ -17,7 +17,7 @@ export interface IDialogProps<TData = unknown>
   /** Optional description to show in the body of the dialog in a P tag */
   description?: React.ReactNode;
   /** Icon to use as the close button. Send `false` to hide the close button entirely */
-  closeButtonIcon?: JSX.Element | false;
+  closeButtonIcon?: React.JSX.Element | false;
   /** Bool denoting whether the dialog is open or closed - for state controlled dialogs */
   open?: boolean;
   /** Function called when the dialog is opened/closed - for state controlled dialogs */

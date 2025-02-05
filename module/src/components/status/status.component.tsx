@@ -14,10 +14,10 @@ export interface IStatusProps {
   error?: boolean;
 
   /** the icon to use for the error */
-  errorIcon?: JSX.Element;
+  errorIcon?: React.JSX.Element;
 
   /** the icon to use for the spinner */
-  spinnerIcon?: JSX.Element;
+  spinnerIcon?: React.JSX.Element;
 
   /** an optional CSS className for the rendered status */
   className?: string;
