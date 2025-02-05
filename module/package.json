@@ -75,7 +75,6 @@
     "@types/jest": "29.5.3",
     "@types/lodash": "4.14.195",
     "@types/react": "19.0.1",
-    "@types/react-datepicker": "4.11.2",
     "@types/react-dom": "19.0.1",
     "chokidar": "3.5.3",
     "concurrently": "8.2.0",
@@ -113,7 +112,7 @@
     "@radix-ui/react-switch": "1.1.1",
     "@radix-ui/react-toast": "1.2.2",
     "@radix-ui/react-tooltip": "1.1.4",
-    "react-datepicker": "7.6.0",
+    "react-datepicker": "8.0.0",
     "react-icons": "4.10.1",
     "react-select": "5.10.0"
   }

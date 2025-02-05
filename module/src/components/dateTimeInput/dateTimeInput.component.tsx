@@ -380,6 +380,9 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       [onBlur]
     );
 
+      console.log(config);
+    console.log(stripNullOrUndefined(compiledConfig));
+
     return (
       <ReactDatePicker
         {...stripNullOrUndefined(compiledConfig)}
@@ -413,7 +416,9 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
           />
         }
         selected={dateVal}
-        onChange={newValue => setDate?.(formatDate(newValue as Date, compiledFormat))}
+        selectsMultiple={undefined}
+        showMonthYearDropdown={undefined}
+        onSelect={(newValue, event) => {setDate?.(formatDate(newValue as Date, compiledFormat))}}
       />
     );
   }
@@ -443,7 +448,7 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
     },
     ref
   ) => {
-    const datePickerRef = React.useRef<ReactDatePicker<never, true>>(null);
+    const datePickerRef = React.useRef<ReactDatePicker | null>(null);
 
     const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
       validationErrorMessages,
@@ -526,6 +531,8 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
         selectsRange={true}
         startDate={startDateVal}
         endDate={endDateVal}
+        selectsMultiple={undefined}
+        showMonthYearDropdown={undefined}
         onChange={newValue => {
           let hasChanged = false;
           if (newValue?.[0]) {
@@ -753,6 +760,7 @@ export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputPro
         <NativeDateTimeInput
           native={true}
           ref={ref}
+          mode={mode}
           {...(props as Omit<IDateTimeInputNativeProps<string | null>, 'selectsRange' | 'native'>)}
         />
       );
