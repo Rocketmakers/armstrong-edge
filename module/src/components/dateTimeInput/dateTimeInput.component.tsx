@@ -415,6 +415,7 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
         selected={dateVal}
         selectsMultiple={undefined}
         showMonthYearDropdown={undefined}
+        popperPlacement='bottom' // This keeps the calendar picker central to the Input
         onChange={(newValue, event) => {setDate?.(formatDate(newValue as Date, compiledFormat))}}
       />
     );
@@ -530,6 +531,7 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
         endDate={endDateVal}
         selectsMultiple={undefined}
         showMonthYearDropdown={undefined}
+        popperPlacement='bottom-start'  // This keeps the calendar picker aligned to the start of the Input
         onChange={newValue => {
           let hasChanged = false;
           if (newValue?.[0]) {
