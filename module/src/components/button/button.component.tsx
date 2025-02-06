@@ -85,7 +85,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
       data-size={globals.buttonDisplaySize}
       data-style={globals.buttonDisplayStyle}
       data-status={displayStatus}
-      disabled={disabled || pending}
+      disabled={disabled || (globals.disableControlOnPending && pending)}
       tabIndex={disabled ? -1 : nativeProps.tabIndex}
       ref={ref}
       {...nativeProps}
