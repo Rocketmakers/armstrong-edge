@@ -380,9 +380,6 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       [onBlur]
     );
 
-      console.log(config);
-    console.log(stripNullOrUndefined(compiledConfig));
-
     return (
       <ReactDatePicker
         {...stripNullOrUndefined(compiledConfig)}
@@ -418,7 +415,7 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
         selected={dateVal}
         selectsMultiple={undefined}
         showMonthYearDropdown={undefined}
-        onSelect={(newValue, event) => {setDate?.(formatDate(newValue as Date, compiledFormat))}}
+        onChange={(newValue, event) => {setDate?.(formatDate(newValue as Date, compiledFormat))}}
       />
     );
   }
