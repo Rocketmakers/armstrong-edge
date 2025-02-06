@@ -143,6 +143,27 @@ export const BottomLeft: StoryObj<typeof Toast> = {
   },
 };
 
+export const BottomRight: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider config={{ toastPosition: 'bottom-right' }}>
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    userEvent.click(button);
+    const toast = await findByRole(document.body, 'status', {
+      name: 'Notification',
+    });
+
+    expect(toast).toBeVisible();
+    expect(toast).toHaveAttribute('data-position', 'bottom-right');
+  },
+};
+
 export const CustomContent: StoryObj<typeof Toast> = {
   ...Template,
   args: {
