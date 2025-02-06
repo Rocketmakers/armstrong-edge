@@ -6,8 +6,9 @@
 
 /* override inline library styles */
 .react-datepicker-popper .react-datepicker__triangle {
-  transform: unset !important;
-  left: 50% !important;
+  color: var(--arm-color-white) !important;
+  stroke: 1px solid var(--arm-color-grey-100);
+  fill:  var(--arm-color-white) !important;
   z-index: 1;
 }
 
