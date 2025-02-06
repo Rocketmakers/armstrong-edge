@@ -133,6 +133,42 @@ export const Disabled: StoryObj<typeof RadioGroup> = {
   },
 };
 
+export const ButtonsDisabled: StoryObj<typeof RadioGroup> = {
+  render: () => {
+    interface IFormData {
+      value?: string;
+    }
+
+    const data: IFormData = { value: undefined };
+
+    const { formProp, formState } = useForm(data);
+
+    return (
+      <>
+        <RadioGroup
+          bind={formProp('value').bind()}
+          displayMode="button"
+          options={[
+            { id: '1', content: 'red' },
+            { id: '2', content: 'blue' },
+            { id: '3', content: 'pink' },
+            { id: '4', content: 'brown' },
+          ]}
+          label={'Radio group'}
+          disabled
+        />
+        <br />
+        <p>Bound value: {formState?.value}</p>
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const radios = await canvas.findAllByRole('radio');
+    radios.forEach(r => expect(r).toHaveAttribute('data-disabled'));
+  },
+};
+
 export const ValidationError: StoryObj<typeof RadioGroup> = {
   render: () => {
     interface IFormData {
