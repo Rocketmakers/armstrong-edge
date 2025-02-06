@@ -541,6 +541,9 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
           if (newValue?.[1]) {
             setEndDate?.(formatDate(newValue?.[1], format as string));
             hasChanged = true;
+          } else if (newValue?.[1] === null) {
+            setEndDate?.(null);
+            hasChanged = true;
           }
           if (hasChanged) {
             onChange?.(newValue?.map(nv => formatDate(nv, format as string)) as [string | null, string | null]);
