@@ -8,7 +8,7 @@
 .react-datepicker-popper .react-datepicker__triangle {
   color: var(--arm-color-white) !important;
   stroke: 1px solid var(--arm-color-grey-100);
-  fill:  var(--arm-color-white) !important;
+  fill: var(--arm-color-white) !important;
   z-index: 1;
 }
 

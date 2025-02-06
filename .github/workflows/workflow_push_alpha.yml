@@ -1,9 +1,8 @@
-name: Push
+name: Push to pre-release
 
 on:
   push:
-    branches-ignore:
-      - main
+    branches:
       - alpha
 
 jobs:
@@ -22,7 +21,7 @@ jobs:
     needs: [setup, build]
     uses: ./.github/workflows/job_test.yml
 
-  chromatic:
+  release_armstrong:
     needs: [setup, build, lint, test]
-    uses: ./.github/workflows/job_chromatic.yml
+    uses: ./.github/workflows/job_release.yml
     secrets: inherit
