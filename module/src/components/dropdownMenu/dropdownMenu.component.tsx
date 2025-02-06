@@ -109,6 +109,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
                   item.onClick && 'arm-dropdown-menu-item-clickable'
                 )}
                 disabled={item.disabled}
+                data-disabled={item.disabled}
                 onSelect={item.onClick && (event => item.onClick?.(index, event))}
               >
                 {item.leftOverlay && <div className="arm-dropdown-menu-item-left-overlay">{item.leftOverlay}</div>}
