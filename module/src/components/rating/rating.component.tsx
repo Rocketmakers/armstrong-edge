@@ -114,7 +114,7 @@ const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
 
 RatingPart.displayName = 'RatingPart';
 
-export type RatingIconDefinition = JSX.Element | ((index: number) => JSX.Element);
+export type RatingIconDefinition = React.JSX.Element | ((index: number) => React.JSX.Element);
 
 export interface IRatingProps<TBind extends NullOrUndefined<number>>
   extends Omit<React.DetailedHTMLProps<React.BaseHTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'>,
@@ -177,21 +177,21 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
       bind,
       value,
       onValueChange,
-      filledIcon,
-      emptyIcon,
-      maximum,
+      filledIcon = <ImStarFull />,
+      emptyIcon = <ImStarEmpty />,
+      maximum = 5,
       className,
       validationErrorMessages,
       validationMode,
       errorIcon,
       scrollValidationErrorsIntoView,
-      step,
+      step = 1,
       error,
       statusPosition,
       pending,
       leftOverlay,
       rightOverlay,
-      mode,
+      mode = 'buttons',
       disabled,
       statusClassName,
       validationErrorsClassName,
@@ -318,13 +318,5 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
   props: ArmstrongVFCProps<IRatingProps<TBind>, HTMLDivElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRatingProps<NullOrUndefined<number>>>;
-
-Rating.defaultProps = {
-  maximum: 5,
-  filledIcon: <ImStarFull />,
-  emptyIcon: <ImStarEmpty />,
-  step: 1,
-  mode: 'buttons',
-};
 
 Rating.displayName = 'Rating';

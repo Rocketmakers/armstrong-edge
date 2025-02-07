@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "include": [
     "src",
-    "_build",
     "_test",
     ".eslintrc.js",
     "prettier.config.js",

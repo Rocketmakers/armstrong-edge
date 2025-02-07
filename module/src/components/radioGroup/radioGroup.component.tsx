@@ -57,7 +57,7 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
   error?: boolean;
 
   /** (Optional) A custom JSX.Element for the checked indicator. */
-  customIndicator?: JSX.Element;
+  customIndicator?: React.JSX.Element;
 
   /** which size variant to use */
   displaySize?: DisplaySize;
@@ -105,7 +105,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
       disabled,
       scrollValidationErrorsIntoView,
       requiredIndicator,
-      displayMode,
+      displayMode = 'radio',
       validationErrorsClassName,
       labelId,
       autoValidate,
@@ -214,9 +214,5 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
 ) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
-
-RadioGroup.defaultProps = {
-  displayMode: 'radio',
-};
 
 RadioGroup.displayName = 'RadioGroup';

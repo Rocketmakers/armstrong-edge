@@ -1,9 +1,23 @@
-# [3.9.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.3...v3.9.0) (2025-02-05)
+# [3.10.0-alpha.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.0...v3.10.0-alpha.1) (2025-02-06)
+
+
+### Bug Fixes
+
+* fix an issue with handling of end date in range picker on subsequent selections ([fb608cf](https://github.com/Rocketmakers/armstrong-edge/commit/fb608cfac4c58c66cc421f4932ccf0e690488392))
+* fix up handling of time selection event (revert onSelect to onChange for DatePicker) ([680ea00](https://github.com/Rocketmakers/armstrong-edge/commit/680ea0018611a85a12d3b015f9ccfe4edd17028f))
+* make disabled DropdownMenu items appear greyed out like other disabled components ([ec48f14](https://github.com/Rocketmakers/armstrong-edge/commit/ec48f14035e8d204831baab2c25d82f275301a1f))
+* use Global disableControlOnPending config setting when disabling a pending button ([d51fd64](https://github.com/Rocketmakers/armstrong-edge/commit/d51fd6426238b44238ea3ad929afb6b4d9c01c78))
 
 
 ### Features
 
-* - onBeforeUnload implemented on dialog to allow close to be prevented ([f5fe0c4](https://github.com/Rocketmakers/armstrong-edge/commit/f5fe0c4ecd8e7e9ea1144dcf60ab8538bd30f9bd))
+* upgrade to support React 19 ([9dccde5](https://github.com/Rocketmakers/armstrong-edge/commit/9dccde52dbfc41be514a695ad3a572a50af8307e))
+
+# [3.9.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.3...v3.9.0) (2025-02-05)
+
+### Features
+
+- - onBeforeUnload implemented on dialog to allow close to be prevented ([f5fe0c4](https://github.com/Rocketmakers/armstrong-edge/commit/f5fe0c4ecd8e7e9ea1144dcf60ab8538bd30f9bd))
 
 ## [3.8.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.2...v3.8.3) (2025-01-29)
 

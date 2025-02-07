@@ -7,7 +7,7 @@ import './spinner.theme.css';
 
 export interface ISpinnerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'label'> {
   /** icon definition for icon to spin in middle of div, can be overridden using children */
-  icon?: JSX.Element;
+  icon?: React.JSX.Element;
 
   /** should the spinner wrapper fill the container, meaning the icon is centred */
   fillContainer?: boolean;
@@ -18,7 +18,7 @@ export interface ISpinnerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'la
 
 /** Renders a spinner centred in the div that's being wrapped */
 export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ISpinnerProps>>(
-  ({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => {
+  ({ children, className, icon, fillContainer = true, label, ...HTMLProps }, ref) => {
     const { spinnerIcon } = useArmstrongConfig({ spinnerIcon: icon });
     return (
       <div
@@ -42,7 +42,3 @@ export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
 );
 
 Spinner.displayName = 'Spinner';
-
-Spinner.defaultProps = {
-  fillContainer: true,
-};

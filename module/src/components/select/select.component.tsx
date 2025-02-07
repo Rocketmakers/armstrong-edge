@@ -129,13 +129,13 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
   position?: 'auto' | 'bottom' | 'top';
 
   /** overrides the dropdown icon in the input */
-  dropdownIcon?: JSX.Element;
+  dropdownIcon?: React.JSX.Element;
 
   /** overrides the loading icon in the input */
-  loadingIcon?: JSX.Element;
+  loadingIcon?: React.JSX.Element;
 
   /** overrides the selected icon in the input */
-  selectedIcon?: JSX.Element;
+  selectedIcon?: React.JSX.Element;
 
   /** close the select menu when the user selects an option. Set to true as default */
   closeMenuOnSelect?: boolean;
@@ -278,12 +278,12 @@ const ReactSelectComponent = React.forwardRef<
       currentValue,
       onSelectOption,
       getOptionValue,
-      clearable,
+      clearable = true,
       disabled,
-      searchable,
-      dropdownIcon,
+      searchable = true,
+      dropdownIcon = <FaChevronDown size={16} />,
       loadingIcon,
-      selectedIcon,
+      selectedIcon = <ImCheckmark />,
       position,
       formatOptionLabel,
       closeMenuOnSelect,
@@ -296,7 +296,7 @@ const ReactSelectComponent = React.forwardRef<
       pending,
       multi,
       allowCreate,
-      createText,
+      createText = 'Create:',
       onOptionCreated,
       labelId,
       labelClassName,
@@ -578,14 +578,6 @@ const ReactSelectComponent = React.forwardRef<
 
 ReactSelectComponent.displayName = 'ReactSelect';
 
-ReactSelectComponent.defaultProps = {
-  clearable: true,
-  searchable: true,
-  selectedIcon: <ImCheckmark />,
-  dropdownIcon: <FaChevronDown size={16} />,
-  createText: 'Create:',
-};
-
 /**
  * Native select export
  */
@@ -611,7 +603,7 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
       placeholderOptionEnabled,
       disabled,
       statusPosition,
-      dropdownIcon,
+      dropdownIcon = <FaChevronDown size={16} />,
       labelId,
       labelClassName,
       validationErrorsClassName,
@@ -754,10 +746,6 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
   ArmstrongFCExtensions<INativeSelectProps<ArmstrongId>>;
 
 NativeSelect.displayName = 'NativeSelect';
-
-NativeSelect.defaultProps = {
-  dropdownIcon: <FaChevronDown size={16} />,
-};
 
 /**
  * Single select export

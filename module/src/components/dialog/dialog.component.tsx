@@ -17,7 +17,7 @@ export interface IDialogProps<TData = unknown>
   /** Optional description to show in the body of the dialog in a P tag */
   description?: React.ReactNode;
   /** Icon to use as the close button. Send `false` to hide the close button entirely */
-  closeButtonIcon?: JSX.Element | false;
+  closeButtonIcon?: React.JSX.Element | false;
   /** Bool denoting whether the dialog is open or closed - for state controlled dialogs */
   open?: boolean;
   /** Function called when the dialog is opened/closed - for state controlled dialogs */
@@ -75,7 +75,7 @@ export interface DialogElement<TData = unknown> {
  * - Supports dynamic data in async mode, so that a form can be built as a reusable async dialog.
  */
 export const Dialog = React.forwardRef(
-  (props: React.PropsWithChildren<IDialogProps<unknown>>, ref: React.ForwardedRef<DialogElement<unknown>>) => {
+  (props: React.PropsWithChildren<IDialogProps<unknown>>, ref: React.ForwardedRef<DialogElement<unknown> | null>) => {
     const {
       children,
       title,
@@ -106,7 +106,7 @@ export const Dialog = React.forwardRef(
 
     /** Stores a reference to the promise resolver function */
     const resolverRef =
-      React.useRef<(value: IDialogOpenResponse<unknown> | PromiseLike<IDialogOpenResponse<unknown>>) => void>();
+      React.useRef<(value: IDialogOpenResponse<unknown> | PromiseLike<IDialogOpenResponse<unknown>>) => void>(null);
 
     /** Used to create prop comparisons to use as effect triggers */
     const finishActionChanged = useCompareValues(finishAction);
@@ -196,7 +196,7 @@ export const Dialog = React.forwardRef(
     React.useEffect(() => {
       if (finishAction && resolverRef.current) {
         resolverRef.current({ action: finishAction, data });
-        resolverRef.current = undefined;
+        resolverRef.current = null;
       }
       if (finishActionChanged) {
         onOpenChange?.(!finishAction);

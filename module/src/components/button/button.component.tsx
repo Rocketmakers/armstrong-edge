@@ -41,10 +41,10 @@ export interface IButtonProps extends ButtonHTMLProps {
   displayStatus?: ButtonDisplayStatus;
 
   /** icon definition for left icon, optionally uses custom JSX */
-  leftOverlay?: JSX.Element;
+  leftOverlay?: React.JSX.Element;
 
   /** icon definition for right icon, optionally uses custom JSX */
-  rightOverlay?: JSX.Element;
+  rightOverlay?: React.JSX.Element;
 }
 
 /** Renders an HTML button element with some useful additions */
@@ -56,7 +56,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
     displaySize,
     displayStatus,
     pending,
-    pendingPosition,
+    pendingPosition = 'right',
     disableOnPending,
     leftOverlay,
     rightOverlay,
@@ -85,7 +85,7 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
       data-size={globals.buttonDisplaySize}
       data-style={globals.buttonDisplayStyle}
       data-status={displayStatus}
-      disabled={disabled || pending}
+      disabled={disabled || (globals.disableControlOnPending && pending)}
       tabIndex={disabled ? -1 : nativeProps.tabIndex}
       ref={ref}
       {...nativeProps}
@@ -96,9 +96,5 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
     </button>
   );
 });
-
-Button.defaultProps = {
-  pendingPosition: 'right',
-};
 
 Button.displayName = 'Button';

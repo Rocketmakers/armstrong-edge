@@ -133,6 +133,42 @@ export const Disabled: StoryObj<typeof RadioGroup> = {
   },
 };
 
+export const ButtonsDisabled: StoryObj<typeof RadioGroup> = {
+  render: () => {
+    interface IFormData {
+      value?: string;
+    }
+
+    const data: IFormData = { value: undefined };
+
+    const { formProp, formState } = useForm(data);
+
+    return (
+      <>
+        <RadioGroup
+          bind={formProp('value').bind()}
+          displayMode="button"
+          options={[
+            { id: '1', content: 'red' },
+            { id: '2', content: 'blue' },
+            { id: '3', content: 'pink' },
+            { id: '4', content: 'brown' },
+          ]}
+          label={'Radio group'}
+          disabled
+        />
+        <br />
+        <p>Bound value: {formState?.value}</p>
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const radios = await canvas.findAllByRole('radio');
+    radios.forEach(r => expect(r).toHaveAttribute('data-disabled'));
+  },
+};
+
 export const ValidationError: StoryObj<typeof RadioGroup> = {
   render: () => {
     interface IFormData {
@@ -207,10 +243,19 @@ export const CustomIcon: StoryObj<typeof RadioGroup> = {
 
 export const Sizes: StoryObj<typeof RadioGroup> = {
   render: () => {
+    interface IFormData {
+      value?: string;
+    }
+
+    const data: IFormData = { value: undefined };
+
+    const { formProp, formState } = useForm(data);
+
     return (
       <>
         <h2>Large</h2>
         <RadioGroup
+          bind={formProp('value').bind()}
           options={[
             { id: '1', content: 'red' },
             { id: '2', content: 'blue' },
@@ -223,6 +268,7 @@ export const Sizes: StoryObj<typeof RadioGroup> = {
         />
         <h2>Medium</h2>
         <RadioGroup
+          bind={formProp('value').bind()}
           options={[
             { id: '1b', content: 'red' },
             { id: '2b', content: 'blue' },
@@ -235,6 +281,7 @@ export const Sizes: StoryObj<typeof RadioGroup> = {
         />
         <h2>Small</h2>
         <RadioGroup
+          bind={formProp('value').bind()}
           options={[
             { id: '1c', content: 'red' },
             { id: '2c', content: 'blue' },
@@ -245,14 +292,25 @@ export const Sizes: StoryObj<typeof RadioGroup> = {
           label="Small radio group"
           required
         />
+        <br />
+        <p>Bound value: {formState?.value}</p>
       </>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const result = canvas.getByText('Bound value:');
     const [large, medium, small] = await canvas.findAllByRole('radiogroup');
     expect(large).toHaveAttribute('data-size', 'large');
     expect(medium).toHaveAttribute('data-size', 'medium');
     expect(small).toHaveAttribute('data-size', 'small');
+
+    const [redLarge, redMedium, redSmall] = await canvas.findAllByText('red');
+    userEvent.click(redLarge);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 1'));
+    userEvent.click(redMedium);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 1b'));
+    userEvent.click(redSmall);
+    await waitFor(() => expect(result).toHaveTextContent('Bound value: 1c'));
   },
 };

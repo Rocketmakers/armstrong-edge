@@ -59,7 +59,7 @@ interface IToastProviderProps {
   position?: ToastPosition;
 
   /** the icon to use for the dialog close button */
-  closeButtonIcon?: JSX.Element | false;
+  closeButtonIcon?: React.JSX.Element | false;
 }
 
 export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps>> = ({
@@ -68,10 +68,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
   position,
   closeButtonIcon,
 }) => {
-  const [toasts, addToast] = React.useReducer<React.Reducer<IToast[], IToast>>(
-    (state, action) => [...state, action],
-    []
-  );
+  const [toasts, addToast] = React.useState<IToast[]>([]);
   const globals = useArmstrongConfig({
     toastDuration: duration,
     toastPosition: position,
@@ -82,7 +79,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
     globals.toastPosition === 'bottom-left' || globals.toastPosition === 'top-left' ? 'left' : 'right';
 
   return (
-    <ToastContext.Provider value={{ addToast }}>
+    <ToastContext.Provider value={{ addToast: newToast => addToast(prev => [...prev, newToast]) }}>
       <RadixToast.Provider swipeDirection={swipeDirection} duration={globals.toastDuration}>
         {children}
         {toasts.map((toast, i) => (

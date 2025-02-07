@@ -3,7 +3,7 @@ import { parse } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
 import { enGB } from 'date-fns/locale';
 import * as React from 'react';
-import ReactDatePicker, { ReactDatePickerCustomHeaderProps, ReactDatePickerProps } from 'react-datepicker';
+import ReactDatePicker, { DatePickerProps, ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import { FaChevronLeft, FaChevronRight, FaRegCalendar } from 'react-icons/fa';
 import { ImClock } from 'react-icons/im';
 
@@ -30,7 +30,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './dateTimeInput.theme.css';
 
 export type IDatePickerConfig = Omit<
-  ReactDatePickerProps,
+  DatePickerProps,
   'onChange' | 'value' | 'selectsRange' | 'selected' | 'startDate' | 'endDate' | 'disabled' | 'dateFormat' | 'locale'
 >;
 
@@ -284,10 +284,10 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       mode,
       native,
       format,
-      locale,
+      locale = defaultLocale,
       statusClassName,
       autoValidate,
-      showCalendarOnLeftOverlayClick,
+      showCalendarOnLeftOverlayClick = true,
       onBlur,
       ...inputProps
     },
@@ -412,20 +412,19 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
             validationErrorMessages={bindDateConfig.validationErrorMessages}
           />
         }
-        selectsRange={false}
         selected={dateVal}
-        onChange={newValue => setDate?.(formatDate(newValue as Date, compiledFormat))}
+        selectsMultiple={undefined}
+        showMonthYearDropdown={undefined}
+        popperPlacement="bottom" // This keeps the calendar picker central to the Input
+        onChange={newValue => {
+          setDate?.(formatDate(newValue as Date, compiledFormat));
+        }}
       />
     );
   }
 );
 
 SingleDateTimeInput.displayName = 'SingleDateTimeInput';
-
-SingleDateTimeInput.defaultProps = {
-  locale: defaultLocale,
-  showCalendarOnLeftOverlayClick: true,
-};
 
 export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputRangeProps<string | null>>(
   (
@@ -440,15 +439,16 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
       onChange,
       validationErrorMessages,
       native,
-      format,
-      locale,
+      format = defaultDateFormat,
+      locale = defaultLocale,
       autoValidate,
-      showCalendarOnLeftOverlayClick,
+      showCalendarOnLeftOverlayClick = true,
+      leftOverlay = <FaRegCalendar />,
       ...inputProps
     },
     ref
   ) => {
-    const datePickerRef = React.useRef<ReactDatePicker<never, true>>(null);
+    const datePickerRef = React.useRef<ReactDatePicker | null>(null);
 
     const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
       validationErrorMessages,
@@ -509,17 +509,17 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
             ref={ref}
             {...inputProps}
             leftOverlay={
-              showCalendarOnLeftOverlayClick && inputProps.leftOverlay ? (
+              showCalendarOnLeftOverlayClick && leftOverlay ? (
                 <button
                   type="button"
                   className="arm-date-time-overlay-button"
                   disabled={inputProps.disabled}
                   onClick={() => datePickerRef.current?.setOpen(true)}
                 >
-                  {inputProps.leftOverlay}
+                  {leftOverlay}
                 </button>
               ) : (
-                inputProps.leftOverlay
+                leftOverlay
               )
             }
             validationErrorMessages={[
@@ -531,6 +531,9 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
         selectsRange={true}
         startDate={startDateVal}
         endDate={endDateVal}
+        selectsMultiple={undefined}
+        showMonthYearDropdown={undefined}
+        popperPlacement="bottom-start" // This keeps the calendar picker aligned to the start of the Input
         onChange={newValue => {
           let hasChanged = false;
           if (newValue?.[0]) {
@@ -539,6 +542,9 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
           }
           if (newValue?.[1]) {
             setEndDate?.(formatDate(newValue?.[1], format as string));
+            hasChanged = true;
+          } else if (newValue?.[1] === null) {
+            setEndDate?.(null);
             hasChanged = true;
           }
           if (hasChanged) {
@@ -551,13 +557,6 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
 );
 
 RangeDateTimeInput.displayName = 'RangeDateTimeInput';
-
-RangeDateTimeInput.defaultProps = {
-  leftOverlay: <FaRegCalendar />,
-  format: defaultDateFormat,
-  locale: defaultLocale,
-  showCalendarOnLeftOverlayClick: true,
-};
 
 const NativeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputNativeProps<string | null>>(
   ({ mode, selectsRange, native, ...props }, ref) => {
@@ -587,14 +586,14 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
       onChange,
       dateInputConfig,
       timeInputConfig,
-      format,
-      locale,
+      format = defaultDateAndTimeFormat,
+      locale = defaultLocale,
       disabled,
       required,
       dateInputProps = {},
       timeInputProps = {},
-      timeInputDisplayFormat,
-      dateInputDisplayFormat,
+      timeInputDisplayFormat = defaultTimeFormat,
+      dateInputDisplayFormat = defaultDateFormat,
       timeInputRef,
       selectsRange,
       native,
@@ -744,26 +743,50 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
 
 SingleDateAndTimeInput.displayName = 'SingleDateAndTimeInput';
 
-SingleDateAndTimeInput.defaultProps = {
-  format: defaultDateAndTimeFormat,
-  locale: defaultLocale,
-  timeInputDisplayFormat: defaultTimeFormat,
-  dateInputDisplayFormat: defaultDateFormat,
-};
-
 /** third-party docs: https://reactdatepicker.com */
 export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputProps<string | null>>(
-  (props, ref) => {
-    if (props.selectsRange) {
-      return <RangeDateTimeInput ref={ref} {...props} />;
+  ({ selectsRange = false, native = false, ...props }, ref) => {
+    const mode =
+      (props as IDateOrTimeInputSingleProps<string | null> | IDateAndTimeInputSingleProps<string | null>).mode ??
+      'date';
+    if (selectsRange) {
+      return (
+        <RangeDateTimeInput
+          ref={ref}
+          native={false}
+          selectsRange={selectsRange}
+          {...(props as Omit<IDateTimeInputRangeProps<string | null>, 'selectsRange' | 'native'>)}
+        />
+      );
     }
-    if (props.native) {
-      return <NativeDateTimeInput ref={ref} {...props} />;
+    if (native) {
+      return (
+        <NativeDateTimeInput
+          native={true}
+          ref={ref}
+          mode={mode}
+          {...(props as Omit<IDateTimeInputNativeProps<string | null>, 'selectsRange' | 'native'>)}
+        />
+      );
     }
-    if (props.mode === 'date-time') {
-      return <SingleDateAndTimeInput ref={ref} {...props} />;
+    if (mode === 'date-time') {
+      return (
+        <SingleDateAndTimeInput
+          ref={ref}
+          mode={mode}
+          native={false}
+          {...(props as Omit<IDateAndTimeInputSingleProps<string | null>, 'selectsRange' | 'native' | 'mode'>)}
+        />
+      );
     }
-    return <SingleDateTimeInput ref={ref} {...props} />;
+    return (
+      <SingleDateTimeInput
+        ref={ref}
+        mode={mode}
+        native={false}
+        {...(props as Omit<IDateOrTimeInputSingleProps<string | null>, 'selectsRange' | 'native' | 'mode'>)}
+      />
+    );
   }
   // type assertion to ensure generic works with RefForwarded component
   // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
@@ -773,9 +796,3 @@ export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputPro
   ArmstrongFCExtensions<DateTimeInputProps<string>>;
 
 DateTimeInput.displayName = 'DateTimeInput';
-
-DateTimeInput.defaultProps = {
-  selectsRange: false,
-  mode: 'date',
-  native: false,
-};
