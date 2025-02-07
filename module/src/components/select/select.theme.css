@@ -16,6 +16,11 @@
   margin-bottom: var(--arm-spacing-xxxsmall);
 }
 
+/* Fixes height change when not input is not searchable */
+.arm-select__value-container *[inputmode="none"] {
+  position: absolute;
+}
+
 /** NATIVE SPECIFIC **/
 
 .arm-native-select {
@@ -74,7 +79,7 @@
 
 .arm-select__menu-list {
   background-color: inherit;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 250px;
 }
 
