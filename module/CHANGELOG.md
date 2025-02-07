@@ -1,16 +1,14 @@
 ## [3.9.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.0...v3.9.1) (2025-02-07)
 
-
 ### Bug Fixes
 
-* fixes select input change when not searchable, removes select options scrollbar when not necessary ([ff308c3](https://github.com/Rocketmakers/armstrong-edge/commit/ff308c3612202ee085cb046ab3d0576363e063be))
+- fixes select input change when not searchable, removes select options scrollbar when not necessary ([ff308c3](https://github.com/Rocketmakers/armstrong-edge/commit/ff308c3612202ee085cb046ab3d0576363e063be))
 
 # [3.9.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.3...v3.9.0) (2025-02-05)
 
-
 ### Features
 
-* - onBeforeUnload implemented on dialog to allow close to be prevented ([f5fe0c4](https://github.com/Rocketmakers/armstrong-edge/commit/f5fe0c4ecd8e7e9ea1144dcf60ab8538bd30f9bd))
+- - onBeforeUnload implemented on dialog to allow close to be prevented ([f5fe0c4](https://github.com/Rocketmakers/armstrong-edge/commit/f5fe0c4ecd8e7e9ea1144dcf60ab8538bd30f9bd))
 
 ## [3.8.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.2...v3.8.3) (2025-01-29)
 
