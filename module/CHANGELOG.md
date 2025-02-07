@@ -1,3 +1,10 @@
+## [3.9.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.0...v3.9.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* fixes select input change when not searchable, removes select options scrollbar when not necessary ([ff308c3](https://github.com/Rocketmakers/armstrong-edge/commit/ff308c3612202ee085cb046ab3d0576363e063be))
+
 # [3.9.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.3...v3.9.0) (2025-02-05)
 
 
