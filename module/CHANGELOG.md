@@ -1,3 +1,10 @@
+## [3.9.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.1...v3.9.2) (2025-02-11)
+
+
+### Bug Fixes
+
+* - Fixes bug causing no screen interaction after launching dialog from dropdown menu ([be793bc](https://github.com/Rocketmakers/armstrong-edge/commit/be793bc9a04281f256e16253c8a6a11a273b20d9))
+
 ## [3.9.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.0...v3.9.1) (2025-02-07)
 
 ### Bug Fixes
