@@ -17,7 +17,7 @@
 }
 
 /* Fixes height change when not input is not searchable */
-.arm-select__value-container *[inputmode="none"] {
+.arm-select__value-container *[inputmode='none'] {
   position: absolute;
 }
 
