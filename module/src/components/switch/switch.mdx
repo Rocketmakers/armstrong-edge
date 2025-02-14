@@ -1,0 +1,76 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Switch } from './switch.component';
+
+import * as SwitchStories from './switch.stories';
+
+<Meta title="Components/switch" component={Switch} />
+
+# Switch
+
+A switch component that lets users toggle settings on or off.
+
+## Contents
+
+- [Basic switch](#basic)
+- [Sizes](#sizes)
+- [Bound](#bound)
+- [Disabled](#disabled)
+- [Validation](#validation)
+- [Switch Props](#props)
+
+## <a name="basic">Basic switch</a>
+
+<Canvas of={SwitchStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+<Switch label={'Airplane mode'} />
+```
+
+## <a name="sizes">Sizes</a>
+
+<Canvas of={SwitchStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+<Switch label="Small Switch" displaySize="small" required={true} />
+```
+
+Sizes available:
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+## <a name="bound">Bound</a>
+
+<Canvas of={SwitchStories.Bound} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ checked: false })
+
+<Switch bind={formProp('checked').bind()} />
+<p>Bound value is {formState?.checked ? 'checked' : 'not checked'}</p>
+```
+
+The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
+
+## <a name="disabled">Disabled</a>
+
+```tsx
+<Switch disabled />
+```
+
+## <a name="validation">Validation</a>
+
+<Canvas of={SwitchStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<Switch bind={formProp('checked').bind()} label="Check" validationErrorMessages={['An error has occurred']} />
+```
+
+The `validationErrorMessages` takes an array of error messages to display on validation error.
+
+## <a name="props">Switch props</a>
+
+<ArgTypes of={Switch} />

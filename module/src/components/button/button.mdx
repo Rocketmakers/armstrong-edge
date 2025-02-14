@@ -1,0 +1,71 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Button } from './button.component';
+
+import * as ButtonStories from './button.stories';
+
+<Meta title="Components/Button" component={Button} />
+
+# Button
+
+A button component that adapts to your design needs with a variety of different sizes, styles and colours.
+
+<Canvas of={ButtonStories.Primary} layout="centered" sourceState="none" />
+
+## Button Props
+
+<ArgTypes of={Button} />
+
+## displaySize
+
+`displaySize` determines the size of the button.
+
+```tsx
+<Button displaySize="small">Small button</Button>
+```
+
+### Size Options
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+<Canvas of={ButtonStories.Sizes} layout="centered" sourceState="none" />
+
+## displayStatus
+
+The `displayStatus` prop determines the background color or the button.
+
+```tsx
+<Button displayStatus="info">Info button</Button>
+```
+
+### Status options
+
+- `normal` (default)
+- `positive`
+- `negative`
+- `warning`
+- `info`
+- `custom-<string>`
+
+<Canvas of={ButtonStories.Statuses} layout="centered" sourceState="none" />
+
+## displayStyle
+
+The `displayStyle` prop is for controlling the style of the button.
+
+```tsx
+<Button displayStyle="primary">Button</Button>
+```
+
+### Options
+
+- `primary` (default)
+- `secondary`
+- `outline`
+- `blank`
+- `custom-<string>`
+
+<Canvas of={ButtonStories.Styles} layout="centered" sourceState="none" />

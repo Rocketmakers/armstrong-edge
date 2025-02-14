@@ -1,0 +1,87 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Input } from './input.component';
+
+import * as InputStories from './input.stories';
+
+<Meta title="Components/Input" component={Input} />
+
+# Input
+
+An input field with multiple sizes and style variants.
+
+## Contents
+
+- [Basic input](#basic)
+- [With label](#with-label)
+- [With overlay](#with-overlay)
+- [Sizes](#sizes)
+- [Disabled and pending](#disabled-and-pending)
+- [Validation](#validation)
+- [Input props](#props)
+
+## <a name="basic">Basic input</a>
+
+<Canvas of={InputStories.Default} layout="centered" sourceState="none" />
+
+## <a name="with-label">With label</a>
+
+<Canvas of={InputStories.Labelled} layout="centered" sourceState="none" />
+
+```tsx
+<Input label="Default" />
+<Input label="Required" required={true} />
+```
+
+## <a name="with-overlay">With overlay</a>
+
+<Canvas of={InputStories.Overlay} layout="centered" sourceState="none" />
+
+```tsx
+<Input leftOverlay={<Icon />} />
+<Input label={'Right Overlay'} rightOverlay="ml" />
+```
+
+`leftOverlay` and `rightOverlay` determine content to show on the left of the input.
+
+## <a name="sizes">Sizes</a>
+
+<Canvas of={InputStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+<Input displaySize="small" />
+```
+
+Sizes available:
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+## <a name="disabled-and-pending">Disabled and Pending</a>
+
+<Canvas of={InputStories.Disabled} layout="centered" sourceState="none" />
+
+```tsx
+<Input disabled />
+```
+
+<Canvas of={InputStories.Pending} layout="centered" sourceState="none" />
+
+```tsx
+<Input pending={true} />
+<Input pending={true} statusPosition="left" />
+```
+
+## <a name="validation">Validation</a>
+
+<Canvas of={InputStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<Input validationErrorMessages={['This field is required']} validationMode="both" />
+```
+
+## <a name="props">Input Props</a>
+
+<ArgTypes of={Input} />

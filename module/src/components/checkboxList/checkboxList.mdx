@@ -1,0 +1,38 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { CheckboxList } from './checkboxList.component';
+
+import * as CheckboxListStories from './checkboxList.stories';
+
+<Meta title="Components/CheckboxList" component={CheckboxList} />
+
+# Checkbox list
+
+A list of `checkboxes` that binds with your form.
+
+<Canvas of={CheckboxListStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+interface IFormData {
+  value?: ArmstrongId[];
+}
+
+const { formProp, formState } = useForm<IFormData>();
+
+<CheckboxList
+  label="Checkbox list"
+  bind={formProp('value').bind()}
+  options={[
+    { id: '1', content: 'red' },
+    { id: '2', content: 'blue' },
+    { id: '3', content: 'pink' },
+    { id: '4', content: 'brown' },
+  ]}
+/>
+
+<p>Bound value: {formState?.value?.join(', ')}</p>
+```
+
+## Checkbox list Props
+
+<ArgTypes of={CheckboxList} />

@@ -1,0 +1,72 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Checkbox } from './checkbox.component';
+
+import * as CheckboxStories from './checkbox.stories';
+
+<Meta title="Components/Checkbox" component={Checkbox} />
+
+# Checkbox
+
+`Checkboxes` can be used to allow the user to select multiple options.
+
+## Basic checkbox
+
+<Canvas of={CheckboxStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+<Checkbox label="My label" />
+```
+
+## Disabled checkbox
+
+<Canvas of={CheckboxStories.Disabled} layout="centered" sourceState="none" />
+
+```tsx
+<Checkbox disabled={true} />
+```
+
+## Validation errors
+
+<Canvas of={CheckboxStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<Checkbox validationErrorMessages={['This field is required']} />
+```
+
+## Custom indicator
+
+`Checkbox` lets you replace the tick with a custom indicator for both `checked` and `indeterminate` states.
+
+<Canvas of={CheckboxStories.CustomIndicator} layout="centered" sourceState="none" />
+
+### Checked state
+
+```tsx
+<Checkbox customIndicator={<Icon />} />
+```
+
+### Indeterminate state
+
+```tsx
+<Checkbox customIndeterminateIndicator={<Icon />} />
+```
+
+## Checkbox sizes
+
+`Checkbox` has several size options
+
+- `large`
+- `medium` (default)
+- `small`
+- `custom-<string>`
+
+<Canvas of={CheckboxStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+<Checkbox displaySize="large" />
+```
+
+## Checkbox Props
+
+<ArgTypes of={Checkbox} />

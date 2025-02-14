@@ -1,0 +1,110 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { RadioGroup } from './radioGroup.component';
+
+import * as RadioGroupStories from './radioGroup.stories';
+
+<Meta title="Components/radioGroup" component={RadioGroup} />
+
+# Radio group
+
+A set of radio buttons that allows users to select one option from multiple choices.
+
+## Contents
+
+- [Basic radio group](#basic)
+- [Display modes](#display-modes)
+- [Custom icon](#custom-icon)
+- [Sizes](#sizes)
+- [Disabled](#disabled)
+- [Validation](#validation)
+- [RadioGroup Props](#props)
+
+## <a name="basic">Basic radio group</a>
+
+<Canvas of={RadioGroupStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+interface IFormData {
+  value?: string;
+}
+
+const data: IFormData = { value: undefined };
+
+const { formProp, formState } = useForm(data);
+
+<RadioGroup
+  bind={formProp('value').bind()}
+  options={[
+    { id: '1', content: 'red' },
+    { id: '2', content: 'blue' },
+    { id: '3', content: 'pink' },
+    { id: '4', content: 'brown' },
+  ]}
+/>
+<p>Bound value: {formState?.value}</p>
+```
+
+The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
+
+The `options` props sets the options to be shown in the input.
+
+## <a name="display-modes">Display modes</a>
+
+<Canvas of={RadioGroupStories.ButtonMode} layout="centered" sourceState="none" />
+
+```tsx
+<RadioGroup bind={formProp('value').bind()} options={options} displayMode="button" />
+```
+
+`displayMode` determines whether to show a vertical list of radio buttons or a horizontal set of adjacent buttons.
+
+Available display modes:
+
+- `radio` (default)
+- `button`
+
+## <a name="custom-icon">Custom icon</a>
+
+<Canvas of={RadioGroupStories.CustomIcon} layout="centered" sourceState="none" />
+
+```tsx
+<RadioGroup bind={formProp('value').bind()} options={options} customIndicator={<Icon />} />
+```
+
+The optional `customIndicator` props takes a custom JSX.Element to be displayed as the checked indicator.
+
+## <a name="sizes">Sizes</a>
+
+<Canvas of={RadioGroupStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+<RadioGroup bind={formProp('value').bind()} options={options} displaySize={large} />
+```
+
+Sizes available:
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+## <a name="disabled">Disabled</a>
+
+```tsx
+<RadioGroup bind={formProp('value').bind()} options={options} disabled />
+```
+
+## <a name="validation">Validation</a>
+
+<Canvas of={RadioGroupStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<RadioGroup bind={formProp('value').bind()} options={options} validationErrorMessages={['Invalid selection']} />
+```
+
+The `validationErrorMessages` takes an array of error messages to display on validation error.
+
+## <a name="props">Radio group Props</a>
+
+<ArgTypes of={RadioGroup} />

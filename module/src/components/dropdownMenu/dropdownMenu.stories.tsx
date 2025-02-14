@@ -123,7 +123,7 @@ export const WithHeaderAndFooter: StoryObj<typeof DropdownMenu> = {
     return (
       <div
         style={{
-          height: '350px',
+          height: '400px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

@@ -1,0 +1,46 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { CharacterLimit } from './characterLimit.component';
+
+import * as CharacterLimitStories from './characterLimit.stories';
+
+<Meta title="Components/Character Limit" component={CharacterLimit} />
+
+# Character limit
+
+Shows a character limit that binds with it's associated input.
+
+<Canvas of={CharacterLimitStories.Default} layout="centered" sourceState="none" />
+
+## Basic character limit
+
+```tsx
+const formData: IFormData = { thing: '' };
+const { formProp } = useForm(formData);
+
+<Input bind={formProp('thing').bind()} />
+<CharacterLimit bind={formProp('thing').bind()} limit="10" />
+```
+
+## Character limit inside the input
+
+`CharacterLimit` offers the option to move the character limit inside the input as an overlay.
+
+<Canvas of={CharacterLimitStories.InsideInput} layout="centered" sourceState="none" />
+
+```tsx
+<Input bind={formProp('thing').bind()} rightOverlay={<CharacterLimit bind={formProp('thing').bind()} limit="10" />} />
+```
+
+## Error icon
+
+Add a custom icon to the `CharacterLimit`.
+
+```tsx
+<Input bind={formProp('thing').bind()} />
+<CharacterLimit bind={formProp('thing').bind()} limit="10" validationErrorIcon={<Icon />} />
+```
+
+## Character limit Props
+
+<ArgTypes of={CharacterLimit} />
