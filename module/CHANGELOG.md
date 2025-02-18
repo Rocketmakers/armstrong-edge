@@ -1,3 +1,10 @@
+## [3.9.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.2...v3.9.3) (2025-02-18)
+
+
+### Bug Fixes
+
+* - Fixed bug causing right overlay on code input not to render ([b78ee14](https://github.com/Rocketmakers/armstrong-edge/commit/b78ee14be24ff7abb20575def60fd41d6e22044f))
+
 ## [3.9.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.1...v3.9.2) (2025-02-11)
 
 ### Bug Fixes
