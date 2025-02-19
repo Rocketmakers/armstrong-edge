@@ -12,8 +12,6 @@ Shows a character limit that binds with it's associated input.
 
 <Canvas of={CharacterLimitStories.Default} layout="centered" sourceState="none" />
 
-## Basic character limit
-
 ```tsx
 const formData: IFormData = { thing: '' };
 const { formProp } = useForm(formData);
@@ -22,9 +20,34 @@ const { formProp } = useForm(formData);
 <CharacterLimit bind={formProp('thing').bind()} limit="10" />
 ```
 
-## Character limit inside the input
+## Character limit Props
 
-`CharacterLimit` offers the option to move the character limit inside the input as an overlay.
+<ArgTypes of={CharacterLimit} />
+
+## Examples
+
+- [`limit`](#limit)
+- [`overlay`](#overlay)
+- [`validationErrorIcon`](#validationErrorIcon)
+
+<br />
+
+### <a name="limit">`limit`</a>
+
+```tsx
+<Input bind={formProp('thing').bind()} />
+<CharacterLimit bind={formProp('thing').bind()} limit="10" />
+```
+
+The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
+
+The `limit` prop shows a character limit.
+
+<br />
+
+### <a name="overlay">`overlay`</a>
+
+The `CharacterLimit` component offers the option to move the character limit inside the input as an overlay.
 
 <Canvas of={CharacterLimitStories.InsideInput} layout="centered" sourceState="none" />
 
@@ -32,15 +55,17 @@ const { formProp } = useForm(formData);
 <Input bind={formProp('thing').bind()} rightOverlay={<CharacterLimit bind={formProp('thing').bind()} limit="10" />} />
 ```
 
-## Error icon
+`leftOverlay` and `rightOverlay` add overlays on the sides of certain components. It can be used to display the character limit inside of an input.
 
-Add a custom icon to the `CharacterLimit`.
+<br />
+
+### <a name="validationErrorIcon">`validationErrorIcon`</a>
+
+Adds a custom icon to the `CharacterLimit` when the number of characters typed in the input is greater than the limit.
+
+<Canvas of={CharacterLimitStories.CustomIcon} layout="centered" sourceState="none" />
 
 ```tsx
 <Input bind={formProp('thing').bind()} />
 <CharacterLimit bind={formProp('thing').bind()} limit="10" validationErrorIcon={<Icon />} />
 ```
-
-## Character limit Props
-
-<ArgTypes of={CharacterLimit} />

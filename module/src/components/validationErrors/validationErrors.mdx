@@ -13,9 +13,11 @@ A component to render validation errors on forms.
 <Canvas of={ValidationErrorsStories.Default} layout="centered" sourceState="none" />
 
 ```tsx
-<ValidationErrors validationErrors={['This field is required', 'This field requires 12 characters']} />
+import { ValidationErrors } from '@rocketmakers/armstrong';
+
+<ValidationErrors validationErrors={['This field is required', 'This field requires 12 characters']} />;
 ```
 
-## <a name="basic">Validation errors props</a>
+## Validation errors props
 
 <ArgTypes of={ValidationErrors} />

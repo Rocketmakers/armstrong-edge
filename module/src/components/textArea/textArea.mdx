@@ -10,16 +10,30 @@ import * as TextAreaStories from './textArea.stories';
 
 A textarea component that captures multi-line input.
 
-## Contents
+<Canvas of={TextAreaStories.Default} layout="centered" sourceState="none" />
 
-- [Basic Text Area](#basic)
-- [Sizes](#sizes)
-- [Status](#status)
-- [Validation](#validation)
-- [Debounce](#debounce)
-- [Text Area Props](#props)
+```tsx
+import { TextArea } from '@rocketmakers/armstrong';
 
-## <a name="basic">Basic Text Area</a>
+<TextArea />;
+```
+
+## Text Area props
+
+<ArgTypes of={TextArea} />
+
+## Examples
+
+- [Basic TextArea example](#basic)
+- [Label and placeholder example](#label-placeholder)
+- [`displaySize`](#displaySize)
+- [`pending`](#pending)
+- [`delay`](#delay)
+- [`validationErrorMessages`](#validationErrorMessages)
+
+<br />
+
+### <a name="basic">Basic TextArea example</a>
 
 <Canvas of={TextAreaStories.Default} layout="centered" sourceState="none" />
 
@@ -27,7 +41,9 @@ A textarea component that captures multi-line input.
 <TextArea />
 ```
 
-## <a name="label-placeholder">Label and placeholder</a>
+<br />
+
+### <a name="label-placeholder">Label and placeholder</a>
 
 <Canvas of={TextAreaStories.Labelled} layout="centered" sourceState="none" />
 
@@ -35,7 +51,9 @@ A textarea component that captures multi-line input.
 <TextArea label="Please write below" placeholder="Placeholder content 🚀" required />
 ```
 
-## <a name="sizes">Sizes</a>
+<br />
+
+### <a name="displaySize">`displaySize`</a>
 
 <Canvas of={TextAreaStories.Sizes} layout="centered" sourceState="none" />
 
@@ -50,7 +68,9 @@ Sizes available:
 - `large`
 - `custom-<string>`
 
-## <a name="status">Status</a>
+<br />
+
+### <a name="pending">`pending`</a>
 
 <Canvas of={TextAreaStories.Pending} layout="centered" sourceState="none" />
 
@@ -64,24 +84,9 @@ When `pending` is `true`, the text area is disabled and a spinner is displayed.
 <TextArea disabled />
 ```
 
-## <a name="validation">Validation</a>
+<br />
 
-<Canvas of={TextAreaStories.ValidationError} layout="centered" sourceState="none" />
-
-```tsx
-<TextArea
-  label="Text Area Label"
-  placeholder="Enter text here..."
-  validationErrorMessages={['This field is required']}
-  required
-/>
-```
-
-`validationErrorMessages` are the validation errors from the binder concatenated with manually passed in errors.
-
-The `required` prop displays a required indicator at the end of the label.
-
-## <a name="debounce">Debounce</a>
+### <a name="delay">`delay`</a>
 
 <Canvas of={TextAreaStories.Bound} layout="centered" sourceState="none" />
 
@@ -98,6 +103,21 @@ The `bind` prop is used for binding to an Armstrong form binder (see forms docum
 
 The `delay` prop is the time in ms to delay the debounce or throttle effect.
 
-## <a name="props">Text Area props</a>
+<br />
 
-<ArgTypes of={TextArea} />
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
+
+<Canvas of={TextAreaStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<TextArea
+  label="Text Area Label"
+  placeholder="Enter text here..."
+  validationErrorMessages={['This field is required']}
+  required
+/>
+```
+
+`validationErrorMessages` are the validation errors from the binder concatenated with manually passed in errors.
+
+The `required` prop displays a required indicator at the end of the label.

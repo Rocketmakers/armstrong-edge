@@ -10,18 +10,33 @@ import * as SelectStories from './select.stories';
 
 A select component that offers single or multiple selection, customizable sizes, and validation.
 
-## Contents
+<Canvas of={SelectStories.Default} layout="centered" sourceState="none" />
 
-- [Single select](#single-select)
-- [Option creation for single select](#create-single)
-- [Sizes](#sizes)
-- [Validation](#validation)
-- [Native](#native)
-- [Multi select](#multi-select)
-- [Option creation for multi select](#create-multi)
-- [Select props](#props)
+```tsx
+import { formProp, formState, Select } from '@rocketmakers/armstrong';
 
-## <a name="single-select">Single select</a>
+const { formProp, formState } = useForm<{ value?: number }>();
+
+<Select bind={formProp('value').bind()} options={options} />;
+<p>Current value: {formState?.value}</p>;
+```
+
+## Select props
+
+<ArgTypes of={Select} />
+
+## Examples
+
+- [Single select example](#single-select)
+- [Multi select example](#multi-select)
+- [Create option example](#create-option)
+- [Native select example](#native)
+- [`displaySize`](#displaySize)
+- [`validationErrorMessages`](#validationErrorMessages)
+
+<br />
+
+### <a name="single-select">Single select example</a>
 
 <Canvas of={SelectStories.Default} layout="centered" sourceState="none" />
 
@@ -90,7 +105,23 @@ const groupedOptions = [
 ];
 ```
 
-## <a name="create-single">Option creation for single select</a>
+<br />
+
+### <a name="multi-select">Multi select example</a>
+
+<Canvas of={SelectStories.Multi} layout="centered" sourceState="none" />
+
+```tsx
+<MultiSelect bind={formProp('value').bind()} options={options} />
+```
+
+<br />
+
+### <a name="create-option">Create option example</a>
+
+<br />
+
+#### For a single select
 
 <Canvas of={SelectStories.Create} layout="centered" sourceState="none" />
 
@@ -102,7 +133,33 @@ const groupedOptions = [
 
 `onOptionCreated` is called when a new option is created.
 
-## <a name="sizes">Sizes</a>
+<br />
+
+#### For a multi select
+
+<Canvas of={SelectStories.CreateMulti} layout="centered" sourceState="none" />
+
+```tsx
+<MultiSelect bind={formProp('value').bind()} options={options} allowCreate={true} onOptionCreated={onOptionCreated} />
+```
+
+`allowCreate` enables the user to create select options by typing into the input.
+
+`onOptionCreated` is called when a new option is created.
+
+<br />
+
+### <a name="native">Native select example</a>
+
+<Canvas of={SelectStories.Native} layout="centered" sourceState="none" />
+
+```tsx
+<NativeSelect bind={formProp('value').bind()} options={options} />
+```
+
+<br />
+
+### <a name="displaySize">`displaySize`</a>
 
 <Canvas of={SelectStories.Sizes} layout="centered" sourceState="none" />
 
@@ -110,14 +167,16 @@ const groupedOptions = [
 <Select bind={formProp('value').bind()} options={options} displaySize="small" />
 ```
 
-Sizes available:
+Size options:
 
 - `small`
 - `medium` (default)
 - `large`
 - `custom-<string>`
 
-## <a name="validation">Validation</a>
+<br />
+
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
 
 <Canvas of={SelectStories.ValidationError} layout="centered" sourceState="none" />
 
@@ -136,35 +195,3 @@ Sizes available:
 `validationMode` determines how to render the validation errors. The `validationMode` options are `icon`, `message` or `both`.
 
 The `required` prop displays a required indicator at the end of the label.
-
-## <a name="native">Native</a>
-
-<Canvas of={SelectStories.Native} layout="centered" sourceState="none" />
-
-```tsx
-<NativeSelect bind={formProp('value').bind()} options={options} />
-```
-
-## <a name="multi-select">Multi select</a>
-
-<Canvas of={SelectStories.Multi} layout="centered" sourceState="none" />
-
-```tsx
-<MultiSelect bind={formProp('value').bind()} options={options} />
-```
-
-## <a name="create-multi">Option creation for multi select</a>
-
-<Canvas of={SelectStories.CreateMulti} layout="centered" sourceState="none" />
-
-```tsx
-<MultiSelect bind={formProp('value').bind()} options={options} allowCreate={true} onOptionCreated={onOptionCreated} />
-```
-
-`allowCreate` enables the user to create select options by typing into the input.
-
-`onOptionCreated` is called when a new option is created.
-
-## <a name="props">Select props</a>
-
-<ArgTypes of={Select} />

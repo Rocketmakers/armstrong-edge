@@ -12,7 +12,34 @@ A dropdown menu featuring section dividers and icon overlays.
 
 <Canvas of={DropdownMenuStories.Default} layout="centered" sourceState="none" />
 
-## Dropdown menu items
+```tsx
+import { DropdownMenu, Button } from '@rocketmakers/armstrong';
+
+const items = [
+  {
+    label: 'Item',
+    onClick: () => {},
+  },
+]
+
+<DropdownMenu items={items}>
+  <Button>Toggle item list menu</Button>
+</DropdownMenu>
+```
+
+## Dropdown menu props
+
+<ArgTypes of={DropdownMenu} />
+
+## Examples
+
+- [Dropdown menu items](#items)
+- [Dropdown menu header and footer](#header-footer)
+- [Dropdown menu with arrow](#arrow)
+
+<br />
+
+### <a name="items">Dropdown menu items</a>
 
 ### Basic item
 
@@ -57,7 +84,9 @@ A dropdown menu featuring section dividers and icon overlays.
 </DropdownMenu>
 ```
 
-## Dropdown menu with header and footer
+<br />
+
+### <a name="header-footer">Dropdown menu header and footer</a>
 
 ### Header
 
@@ -75,14 +104,12 @@ A dropdown menu featuring section dividers and icon overlays.
 </DropdownMenu>
 ```
 
-## Dropdown menu with arrow
+<br />
+
+### <a name="arrow">Dropdown menu with arrow</a>
 
 ```tsx
 <DropdownMenu items={items} showArrow>
   <Button>Button</Button>
 </DropdownMenu>
 ```
-
-## Dropdown menu props
-
-<ArgTypes of={DropdownMenu} />

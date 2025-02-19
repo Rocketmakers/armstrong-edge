@@ -10,20 +10,35 @@ import * as DateTimeInputStories from './dateTimeInput.stories';
 
 `DateTimeInput` is a datepicker based on <a href="https://reactdatepicker.com" target="_blank">React Date Picker</a>
 
-## Contents
+<Canvas of={DateTimeInputStories.Default} layout="centered" sourceState="none" />
 
-- [Basic DateTime input](#basic)
-- [Disabled](#disabled)
-- [Sizes](#sizes)
-- [Validation](#validation)
-- [Modes](#modes)
-- [Display variants](#display-variants)
-- [Range](#range)
-- [Min Max](#min-max)
-- [Native](#native)
-- [Props](#props)
+```tsx
+import { formProp, DateTimeInput } from '@rocketmakers/armstrong';
 
-## <a name="basic">Basic DateTime input</a>
+const { formProp } = useForm({ date: '30/05/2023' });
+
+<DateTimeInput bind={formProp('date').bind()} />;
+```
+
+## DateTime input Props
+
+<ArgTypes of={DateTimeInput} />
+
+## Examples
+
+- [Basic example](#basic)
+- [Date range example](#range)
+- [Min/max dates example](#min-max)
+- [Native datepicker](#native)
+- [`disabled`](#disabled)
+- [`displaySize`](#displaySize)
+- [`validationErrorMessages`](#validationErrorMessages)
+- [`Mode`](#mode)
+- [`monthSelectVariant`](#monthSelectVariant)
+
+<br />
+
+### <a name="basic">Basic example</a>
 
 <Canvas of={DateTimeInputStories.Default} layout="centered" sourceState="none" />
 
@@ -36,18 +51,52 @@ const { formProp } = useForm({ date: '30/05/2023' });
 The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
 
 <br />
+
+### <a name="range">Date range example</a>
+
+<Canvas of={DateTimeInputStories.Range} layout="centered" sourceState="none" />
+
+```tsx
+<DateTimeInput selectsRange startBind={formProp('startDate').bind()} endBind={formProp('endDate').bind()} />
+```
+
+The `selectRange` prop is a boolean that determines whether to select a single date or a date range. It is false by default.
+
 <br />
 
-## <a name="disabled">Disabled</a>
+### <a name="min-max">Min/max dates example</a>
+
+The `minDate` and `maxDate` properties within the `config` prop restrict the range of selectable dates to between the specified minimum and maximum values.
+
+<Canvas of={DateTimeInputStories.MinMaxDays} layout="centered" sourceState="none" />
+
+```tsx
+<DateTimeInput bind={formProp('date').bind()} config={{ minDate: new Date(), maxDate: addDays(new Date(), 5) }} />
+```
+
+<br />
+
+### <a name="native">Native datepicker</a>
+
+Whether to render a native date input (useful for mobile).
+
+<Canvas of={DateTimeInputStories.Native} layout="centered" sourceState="none" />
+
+```tsx
+<DateTimeInput native={true} />
+```
+
+<br />
+
+### <a name="disabled">`disabled`</a>
 
 ```tsx
 <DateTimeInput bind={formProp('date').bind()} disabled />
 ```
 
 <br />
-<br />
 
-## <a name="sizes">Sizes</a>
+### <a name="displaySize">`displaySize`</a>
 
 <Canvas of={DateTimeInputStories.Sizes} layout="centered" sourceState="none" />
 
@@ -55,7 +104,7 @@ The `bind` prop is used for binding to an Armstrong form binder (see forms docum
 <DateTimeInput bind={formProp('date').bind()} displaySize="small" />
 ```
 
-Sizes available:
+Size options:
 
 - `small`
 - `medium` (default)
@@ -63,9 +112,8 @@ Sizes available:
 - `custom-<string>`
 
 <br />
-<br />
 
-## <a name="sizes">Validation</a>
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
 
 <Canvas of={DateTimeInputStories.ValidationError} layout="centered" sourceState="none" />
 
@@ -78,13 +126,12 @@ Sizes available:
 `validationMode` determines how to render the validation errors. The `validationMode` options are `icon`, `message` or `both`.
 
 <br />
-<br />
 
-## <a name="modes">Modes</a>
+### <a name="mode">`Mode`</a>
 
 `mode` determines whether to pick date, time or both.
 
-Available modes :
+Mode options :
 
 - `date` (default)
 - `time`
@@ -97,48 +144,19 @@ Available modes :
 ```
 
 <br />
-<br />
 
-## <a name="display-variants">Display variant</a>
+### <a name="monthSelectVariant">`monthSelectVariant`</a>
 
-The display variant to use for the month/year selectors (defaults to 'centered', but 'dropdown' offers the most flexibility for picking dates a long way into the past/future)
+The display variant to use for the month/year selectors.
 
-Available display variants:
+<Canvas of={DateTimeInputStories.LeftAlignVariant} layout="centered" sourceState="none" />
+
+```tsx
+<DateTimeInput bind={formProp('date').bind()} locale={enGB} monthSelectVariant="left-align" />
+```
+
+`monthSelectVariant` options:
 
 - `left-align`
-- `centered`
+- `centered` (default)
 - `dropdown`
-
-## <a name="range">Range</a>
-
-<Canvas of={DateTimeInputStories.Range} layout="centered" sourceState="none" />
-
-```tsx
-<DateTimeInput selectsRange startBind={formProp('startDate').bind()} endBind={formProp('endDate').bind()} />
-```
-
-The `selectRange` prop is a boolean that determines whether to select a single date or a date range. It is false by default.
-
-## <a name="min-max">Min Max Days</a>
-
-The `minDate` and `maxDate` properties within the `config` prop restrict the range of selectable dates to between the specified minimum and maximum values.
-
-<Canvas of={DateTimeInputStories.MinMaxDays} layout="centered" sourceState="none" />
-
-```tsx
-<DateTimeInput bind={formProp('date').bind()} config={{ minDate: new Date(), maxDate: addDays(new Date(), 5) }} />
-```
-
-## <a name="native">Native</a>
-
-Whether to render a native date input (useful for mobile).
-
-<Canvas of={DateTimeInputStories.Native} layout="centered" sourceState="none" />
-
-```tsx
-<DateTimeInput native={true} />
-```
-
-## <a name="props">DateTime input Props</a>
-
-<ArgTypes of={DateTimeInput} />

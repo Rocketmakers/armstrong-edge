@@ -10,19 +10,39 @@ import * as CodeInputStories from './codeInput.stories';
 
 The `CodeInput` is a text input where the value is split between multiple inputs, where focus is automatically moved between them as the user edits.
 
-## Basic code input
+<Canvas of={CodeInputStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { useForm, Button } from '@rocketmakers/armstrong';
+
+const { formProp } = useForm({ code: '' });
+
+<CodeInput bind={formProp('code').bind()} parts={[1, 1, 1]} />;
+<p>Value: {formState?.code}</p>;
+```
+
+## Code input Props
+
+<ArgTypes of={CodeInput} />
+
+## Examples
+
+- [Basic example](#basic)
+- [With text between or different size inputs](#text-between-and-sizes)
+- [`displaySize`](#displaySize)
+- [`overlay`](#overlay)
+- [`validationError`](#validationError)
+
+<br />
+
+### <a name="basic">Basic example</a>
 
 <Canvas of={CodeInputStories.Default} layout="centered" sourceState="none" />
 
 ```tsx
-interface IFormData {
-  code: string | null | undefined;
-}
-
-const { formProp, formState } = useForm<IFormData>({ code: '' });
+const { formProp, formState } = useForm({ code: '' });
 
 <CodeInput bind={formProp('code').bind()} parts={[1, 1, 1]} />;
-
 <p>Value: {formState?.code}</p>;
 ```
 
@@ -31,9 +51,8 @@ The `bind` prop is used for binding to an Armstrong form binder (see forms docum
 The `parts` prop represents the length of the input. In this example, the `CodeInput` is made of three parts containing one character each.
 
 <br />
-<br />
 
-## With text between or different size inputs
+### <a name="text-between-and-sizes">With text between or different size inputs</a>
 
 <Canvas of={CodeInputStories.WithTextBetween} layout="centered" sourceState="none" />
 
@@ -44,9 +63,8 @@ The `parts` prop represents the length of the input. In this example, the `CodeI
 In this example the `parts` prop includes strings representing a piece of text in-between inputs, and each input accepts 2 characters.
 
 <br />
-<br />
 
-## Code input sizes
+### <a name="displaySize">`displaySize`</a>
 
 <Canvas of={CodeInputStories.Sizes} layout="centered" sourceState="none" />
 
@@ -54,7 +72,7 @@ In this example the `parts` prop includes strings representing a piece of text i
 <CodeInput bind={formProp('code').bind()} parts={[1, 1, 1]} displaySize="small" />
 ```
 
-Sizes available
+Size options:
 
 - `small`
 - `medium` (default)
@@ -62,9 +80,12 @@ Sizes available
 - `custom-<string>`
 
 <br />
-<br />
 
-## With overlays
+### <a name="overlay">`overlay`</a>
+
+`leftOverlay` and `rightOverlay` as props add overlays on the sides of the `CodeInput`.
+
+`leftOverlay` and `rightOverlay` inside the `parts` props adds overlays to the part itself.
 
 <Canvas of={CodeInputStories.WithOverlays} layout="centered" sourceState="none" />
 
@@ -85,12 +106,15 @@ Sizes available
 />
 ```
 
-`leftOverlay` and `rightOverlay` as props add overlays on the sides of the `CodeInput`, whereas `leftOverlay` and `rightOverlay` inside the `parts` props adds overlays to the part itself.
-
-<br />
 <br />
 
-## Code input validation errors
+### <a name="validationError">`validationError`</a>
+
+The `label` prop displays a `<label>` on top of the component.
+
+The `required` prop displays a required indicator at the end of the label.
+
+The `validationErrorMessages` takes an array of error messages to display on validation error.
 
 <Canvas of={CodeInputStories.ValidationError} layout="centered" sourceState="none" />
 
@@ -103,16 +127,3 @@ Sizes available
   required={true}
 />
 ```
-
-The `label` prop displays a `<label>` on top of the component.
-
-The `required` prop displays a required indicator at the end of the label.
-
-The `validationErrorMessages` takes an array of error messages to display on validation error.
-
-<br />
-<br />
-
-## Code input Props
-
-<ArgTypes of={CodeInput} />

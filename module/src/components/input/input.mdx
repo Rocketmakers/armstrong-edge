@@ -10,21 +10,31 @@ import * as InputStories from './input.stories';
 
 An input field with multiple sizes and style variants.
 
-## Contents
-
-- [Basic input](#basic)
-- [With label](#with-label)
-- [With overlay](#with-overlay)
-- [Sizes](#sizes)
-- [Disabled and pending](#disabled-and-pending)
-- [Validation](#validation)
-- [Input props](#props)
-
-## <a name="basic">Basic input</a>
-
 <Canvas of={InputStories.Default} layout="centered" sourceState="none" />
 
-## <a name="with-label">With label</a>
+```tsx
+import { Input } from '@rocketmakers/armstrong';
+
+<Input />;
+```
+
+## Input Props
+
+<ArgTypes of={Input} />
+
+## Examples
+
+## Contents
+
+- [`label`](#label)
+- [`overlay`](#overlay)
+- [`displaySize`](#displaySize)
+- [`validationErrorMessages`](#validationErrorMessages)
+- [Disabled and pending examples](#disabled-and-pending)
+
+<br />
+
+### <a name="label">`label`</a>
 
 <Canvas of={InputStories.Labelled} layout="centered" sourceState="none" />
 
@@ -33,7 +43,9 @@ An input field with multiple sizes and style variants.
 <Input label="Required" required={true} />
 ```
 
-## <a name="with-overlay">With overlay</a>
+<br />
+
+### <a name="overlay">`overlay`</a>
 
 <Canvas of={InputStories.Overlay} layout="centered" sourceState="none" />
 
@@ -44,7 +56,9 @@ An input field with multiple sizes and style variants.
 
 `leftOverlay` and `rightOverlay` determine content to show on the left of the input.
 
-## <a name="sizes">Sizes</a>
+<br />
+
+### <a name="displaySize">`displaySize`</a>
 
 <Canvas of={InputStories.Sizes} layout="centered" sourceState="none" />
 
@@ -52,14 +66,26 @@ An input field with multiple sizes and style variants.
 <Input displaySize="small" />
 ```
 
-Sizes available:
+Size options:
 
 - `small`
 - `medium` (default)
 - `large`
 - `custom-<string>`
 
-## <a name="disabled-and-pending">Disabled and Pending</a>
+<br />
+
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
+
+<Canvas of={InputStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<Input validationErrorMessages={['This field is required']} validationMode="both" />
+```
+
+<br />
+
+### <a name="disabled-and-pending">Disabled and Pending examples</a>
 
 <Canvas of={InputStories.Disabled} layout="centered" sourceState="none" />
 
@@ -73,15 +99,3 @@ Sizes available:
 <Input pending={true} />
 <Input pending={true} statusPosition="left" />
 ```
-
-## <a name="validation">Validation</a>
-
-<Canvas of={InputStories.ValidationError} layout="centered" sourceState="none" />
-
-```tsx
-<Input validationErrorMessages={['This field is required']} validationMode="both" />
-```
-
-## <a name="props">Input Props</a>
-
-<ArgTypes of={Input} />

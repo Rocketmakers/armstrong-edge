@@ -10,56 +10,26 @@ import * as CheckboxStories from './checkbox.stories';
 
 `Checkboxes` can be used to allow the user to select multiple options.
 
-## Basic checkbox
-
 <Canvas of={CheckboxStories.Default} layout="centered" sourceState="none" />
 
 ```tsx
-<Checkbox label="My label" />
+<Checkbox />
 ```
 
-## Disabled checkbox
+## Checkbox Props
 
-<Canvas of={CheckboxStories.Disabled} layout="centered" sourceState="none" />
+<ArgTypes of={Checkbox} />
 
-```tsx
-<Checkbox disabled={true} />
-```
+## Examples
 
-## Validation errors
+- [`displaySize`](#displaySize)
+- [`customIndicator`](#customIndicator)
+- [`validationErrorMessages`](#validationErrorMessages)
+- [`disabled`](#disabled)
 
-<Canvas of={CheckboxStories.ValidationError} layout="centered" sourceState="none" />
+<br />
 
-```tsx
-<Checkbox validationErrorMessages={['This field is required']} />
-```
-
-## Custom indicator
-
-`Checkbox` lets you replace the tick with a custom indicator for both `checked` and `indeterminate` states.
-
-<Canvas of={CheckboxStories.CustomIndicator} layout="centered" sourceState="none" />
-
-### Checked state
-
-```tsx
-<Checkbox customIndicator={<Icon />} />
-```
-
-### Indeterminate state
-
-```tsx
-<Checkbox customIndeterminateIndicator={<Icon />} />
-```
-
-## Checkbox sizes
-
-`Checkbox` has several size options
-
-- `large`
-- `medium` (default)
-- `small`
-- `custom-<string>`
+### <a name="displaySize">`displaySize`</a>
 
 <Canvas of={CheckboxStories.Sizes} layout="centered" sourceState="none" />
 
@@ -67,6 +37,41 @@ import * as CheckboxStories from './checkbox.stories';
 <Checkbox displaySize="large" />
 ```
 
-## Checkbox Props
+Size options:
 
-<ArgTypes of={Checkbox} />
+- `large`
+- `medium` (default)
+- `small`
+- `custom-<string>`
+
+<br />
+
+### <a name="customIndicator">`customIndicator`</a>
+
+`Checkbox` lets you replace the tick with a custom indicator for both `checked` and `indeterminate` states.
+
+<Canvas of={CheckboxStories.CustomIndicator} layout="centered" sourceState="none" />
+
+```tsx
+// checked indicator
+<Checkbox customIndicator={<Icon />} />
+
+// unchecked indicator
+<Checkbox customIndeterminateIndicator={<Icon />} />
+```
+
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
+
+<Canvas of={CheckboxStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<Checkbox validationErrorMessages={['This field is required']} />
+```
+
+### <a name="disabled">`disabled`</a>
+
+<Canvas of={CheckboxStories.Disabled} layout="centered" sourceState="none" />
+
+```tsx
+<Checkbox disabled={true} />
+```

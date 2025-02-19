@@ -12,29 +12,40 @@ The Spinner component is commonly used to indicate loading or processing actions
 
 <Canvas of={SpinnerStories.Default} layout="centered" sourceState="none" />
 
+```tsx
+import { Spinner } from '@rocketmakers/armstrong';
+
+<Spinner />;
+```
+
 ## Spinner Props
 
 <ArgTypes of={Spinner} />
 
-## Default spinner
+## Examples
 
-This is a basic spinner without any modifications.
+- [Custom icon spinner example](#icon)
+- [Spinner wwith a label example](#label)
 
-```tsx
-<Spinner />
-```
+<br />
 
-## Custom icon spinner
+### <a name="icon">Custom icon spinner example</a>
 
 The spinner accepts an icon prop that allows you to replace the default spinner.
+
+<Canvas of={SpinnerStories.CustomIcon} layout="centered" sourceState="none" />
 
 ```tsx
 <Spinner icon={<Icon />} />
 ```
 
-## Labelled spinner
+<br />
+
+### <a name="label">Spinner with a label example</a>
 
 The spinner accepts a label that can be styled separately.
+
+<Canvas of={SpinnerStories.Labelled} layout="centered" sourceState="none" />
 
 ```tsx
 <Spinner label="loading..." />
