@@ -1,0 +1,142 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { RangeInput } from './rangeInput.component';
+
+import * as RangeInputStories from './rangeInput.stories';
+
+<Meta title="Components/rangeInput" component={RangeInput} />
+
+# Range input
+
+A range slider that allows users to choose a specific value by moving a control across a set range.
+
+<Canvas of={RangeInputStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { formProp, formState, RangeInput } from '@rocketmakers/armstrong';
+
+const { formProp, formState } = useForm({ value: 50 });
+
+<RangeInput bind={formProp('value').bind()} />
+<p>Value: {formState?.value}</p>
+```
+
+## Range input props
+
+<ArgTypes of={RangeInput} />
+
+## Examples
+
+- [Basic range input example](#basic)
+- [Range input with a label](#with-label)
+- [`min max`](#min-max)
+- [`step`](#step)
+- [`displaySize`](#displaySize)
+- [`customThumb`](#customThumb)
+- [`validationErrorMessages`](#validationErrorMessages)
+
+<br />
+
+### <a name="basic">Basic range input example</a>
+
+<Canvas of={RangeInputStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ value: 50 });
+
+<RangeInput bind={formProp('value').bind()} />
+<p>Value: {formState?.value}</p>
+```
+
+The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
+
+The `value` prop is used to set the thumb of the range input.
+
+<br />
+
+### <a name="with-label">Range input with a label</a>
+
+<Canvas of={RangeInputStories.Labelled} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ value: 50 });
+
+<RangeInput bind={formProp('value').bind()} label="label" required={true} />;
+```
+
+<br />
+
+### <a name="displaySize">`displaySize`</a>
+
+<Canvas of={RangeInputStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ value: 50 });
+
+<RangeInput bind={formProp('value').bind()} displaySize="small" />;
+```
+
+Sizes available:
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+<br />
+
+### <a name="customThumb">`customThumb`</a>
+
+<Canvas of={RangeInputStories.CustomThumb} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ value: 50 });
+
+<RangeInput bind={formProp('value').bind()} customThumb={<Icon />} />;
+```
+
+<br />
+
+### <a name="min-max">`min max`</a>
+
+The `min` prop can be use to set the minimum value for the range. It is `0` by default.
+
+The `max` prop can be use to set the maximum value for the range. It is `100` by default.
+
+<Canvas of={RangeInputStories.CustomMinAndMax} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ value: 50 });
+
+<RangeInput bind={formProp('value').bind()} min="40" max="60" />;
+```
+
+<br />
+
+### <a name="step">`step`</a>
+
+The `step` prop determines how big the increments should be on the slider. Defaults to `1`.
+
+<Canvas of={RangeInputStories.CustomStep} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ value: 50 });
+
+<RangeInput bind={formProp('value').bind()} step="10" />;
+```
+
+<br />
+
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
+
+<Canvas of={RangeInputStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ value: 50 });
+
+<RangeInput bind={formProp('value').bind()} validationErrorMessages={['Invalid selection']} validationMode="both" />;
+```
+
+`validationErrorMessages` are the validation errors from the binder concatenated with manually passed in errors.
+
+`validationMode` determines how to render the validation errors. The `validationMode` options are `icon`, `message` or `both`.

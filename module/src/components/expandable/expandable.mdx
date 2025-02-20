@@ -1,0 +1,28 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Expandable } from './expandable.component';
+
+import * as ExpendableStories from './expandable.stories';
+
+<Meta title="Components/Expandable" component={Expandable} />
+
+# Expandable
+
+An expendable component that lets you collapse or display content.
+
+<Canvas of={ExpendableStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+const [isOpen, setIsOpen] = React.useState(false);
+
+<Button onClick={() => setIsOpen(!isOpen)}>Toggle content</Button>
+<Expandable isOpen={isOpen} data-testid="expandable">
+  <div>
+    Some inner content
+  </div>
+</Expandable>
+```
+
+## Expandable Props
+
+<ArgTypes of={Expandable} />

@@ -51,7 +51,52 @@ export const Sizes: StoryObj<typeof Button> = {
   },
 };
 
+export const Statuses: StoryObj<typeof Button> = {
+  ...Template,
+  render: () => {
+    return (
+      <>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <Button displayStatus="normal">Normal</Button>
+          <Button displayStatus="positive">Positive</Button>
+          <Button displayStatus="negative">Negative</Button>
+          <Button displayStatus="warning">Warning</Button>
+          <Button displayStatus="info">Info</Button>
+        </div>
+      </>
+    );
+  },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/f6yAoBwAQop8YahTF2ASSG/Block-up-design-system?node-id=197%3A3561&t=ccw4zqPQDfhSLCVL-1',
+    },
+  },
+};
+
 export const Styles: StoryObj<typeof Button> = {
+  ...Template,
+  render: () => {
+    return (
+      <>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <Button displayStyle="primary">Primary</Button>
+          <Button displayStyle="secondary">Secondary</Button>
+          <Button displayStyle="outline">Outline</Button>
+          <Button displayStyle="blank">Blank</Button>
+        </div>
+      </>
+    );
+  },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/f6yAoBwAQop8YahTF2ASSG/Block-up-design-system?node-id=197%3A3561&t=ccw4zqPQDfhSLCVL-1',
+    },
+  },
+};
+
+export const AllStyles: StoryObj<typeof Button> = {
   ...Template,
   render: () => {
     return (

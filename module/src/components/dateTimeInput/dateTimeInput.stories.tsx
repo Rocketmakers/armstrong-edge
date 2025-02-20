@@ -26,7 +26,19 @@ const Template: StoryObj<typeof DateTimeInput> = {
 };
 
 const DateTimeInputContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return <div style={{ paddingBottom: '350px' }}>{children}</div>;
+  return (
+    <div
+      style={{
+        paddingBottom: '350px',
+        minWidth: '600px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      {children}
+    </div>
+  );
 };
 
 /** stories */
