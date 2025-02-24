@@ -1,0 +1,123 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { TextArea } from './textArea.component';
+
+import * as TextAreaStories from './textArea.stories';
+
+<Meta title="Components/TextArea" component={TextArea} />
+
+# TextArea
+
+A textarea component that captures multi-line input.
+
+<Canvas of={TextAreaStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { TextArea } from '@rocketmakers/armstrong';
+
+<TextArea />;
+```
+
+## Text Area props
+
+<ArgTypes of={TextArea} />
+
+## Examples
+
+- [Basic TextArea example](#basic)
+- [Label and placeholder example](#label-placeholder)
+- [`displaySize`](#displaySize)
+- [`pending`](#pending)
+- [`delay`](#delay)
+- [`validationErrorMessages`](#validationErrorMessages)
+
+<br />
+
+### <a name="basic">Basic TextArea example</a>
+
+<Canvas of={TextAreaStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+<TextArea />
+```
+
+<br />
+
+### <a name="label-placeholder">Label and placeholder</a>
+
+<Canvas of={TextAreaStories.Labelled} layout="centered" sourceState="none" />
+
+```tsx
+<TextArea label="Please write below" placeholder="Placeholder content 🚀" required />
+```
+
+<br />
+
+### <a name="displaySize">`displaySize`</a>
+
+<Canvas of={TextAreaStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+<TextArea placeholder="Enter text here..." label="large" displaySize="large" />
+```
+
+Sizes available:
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+<br />
+
+### <a name="pending">`pending`</a>
+
+<Canvas of={TextAreaStories.Pending} layout="centered" sourceState="none" />
+
+When `pending` is `true`, the text area is disabled and a spinner is displayed.
+
+```tsx
+// pending textArea
+<TextArea label="Text Area Label" pending={true} />
+
+// disabled textArea
+<TextArea disabled />
+```
+
+<br />
+
+### <a name="delay">`delay`</a>
+
+<Canvas of={TextAreaStories.Bound} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ text: '', debounce: '' });
+
+<TextArea bind={formProp('text').bind()} label="Bound text area" />
+<p>Value: {formState?.text}</p>
+<TextArea bind={formProp('debounce').bind()} label="Bound debounce text area (400ms)" delay={400} />
+<>Value: {formState?.debounce}</p>
+```
+
+The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
+
+The `delay` prop is the time in ms to delay the debounce or throttle effect.
+
+<br />
+
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
+
+<Canvas of={TextAreaStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<TextArea
+  label="Text Area Label"
+  placeholder="Enter text here..."
+  validationErrorMessages={['This field is required']}
+  required
+/>
+```
+
+`validationErrorMessages` are the validation errors from the binder concatenated with manually passed in errors.
+
+The `required` prop displays a required indicator at the end of the label.

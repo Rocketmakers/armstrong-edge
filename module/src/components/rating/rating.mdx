@@ -1,0 +1,181 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Rating } from './rating.component';
+
+import * as RatingStories from './rating.stories';
+
+<Meta title="Components/rating" component={Rating} />
+
+# Rating
+
+A rating component to gather and display user feedback through customizable stars or symbols, supporting various sizes, icons, and interactive options.
+
+<Canvas of={RatingStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { formProp, formState, Rating } from '@rocketmakers/armstrong';
+
+const { formProp, formState } = useForm({ rating: 0 });
+
+<Rating bind={formProp('rating').bind()} onValueChange={onValueChange} />
+<p>Bound value: {formState?.rating}</p>
+```
+
+## Rating Props
+
+<ArgTypes of={Rating} />
+
+## Examples
+
+- [Basic rating example](#basic)
+- [Rating with a label example](#with-label)
+- [Custom icons example](#custom-icons)
+- [`displaySize`](#displaySize)
+- [`step`](#step)
+- [`maximum`](#maximum)
+- [`overlay`](#overlay)
+- [`mode`](#mode)
+- [`disabled`](#disabled)
+- [`validationErrorMessages`](#validationErrorMessages)
+
+<br />
+
+### <a name="basic">Basic rating example</a>
+
+<Canvas of={RatingStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ rating: 0 });
+
+<Rating bind={formProp('rating').bind()} onValueChange={onValueChange} />
+<p>Bound value: {formState?.rating}</p>
+```
+
+The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
+
+The `value` is the current value, as a number, of the rating.
+
+`onValueChange` is called when the value of the input changes.
+
+<br />
+
+### <a name="with-label">Rating with a label example</a>
+
+<Canvas of={RatingStories.Labelled} layout="centered" sourceState="none" />
+
+```tsx
+<Rating bind={formProp('rating').bind()} label="Default" />;
+<Rating bind={formProp('required').bind()} label="Required" required={true} />;
+```
+
+<br />
+
+### <a name="custom-icons">Custom icons example</a>
+
+<Canvas of={RatingStories.CustomIcons} layout="centered" sourceState="none" />
+
+```tsx
+// With an icon
+<Rating bind={formProp('rating').bind()} emptyIcon={<Icon />} filledIcon={<Icon />} />
+
+// With custom DOM
+<Rating bind={formProp('rating').bind()} emptyIcon={<div>X</div>} filledIcon={<div>X</div>} />
+
+// With custom DOM from index
+<Rating
+  bind={formProp('rating').bind()}
+  emptyIcon={index => <div>{index + 1}</div>}
+  filledIcon={index => <div>{index + 1}</div>}
+/>
+```
+
+<br />
+
+### <a name="displaySize">`displaySize`</a>
+
+<Canvas of={RatingStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+<Rating bind={formProp('rating').bind()} displaySize="small" />
+```
+
+Size options:
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+<br />
+
+### <a name="overlay">`overlay`</a>
+
+<Canvas of={RatingStories.WithIconAndStatus} layout="centered" sourceState="none" />
+
+```tsx
+<Rating bind={formProp('rating').bind()} leftOverlay={<Icon />} pending={true} />
+```
+
+The `leftOverlay` and `rightOverlay` props add overlays on the sides of the component.
+
+`pending` displays a spinner on the right of the rating.
+
+<br />
+
+### <a name="step">`step`</a>
+
+<Canvas of={RatingStories.Half} layout="centered" sourceState="none" />
+
+```tsx
+<Rating bind={formProp('rating').bind()} step="0.5" />
+```
+
+The `step` prop determines the size of each possible step. Its default value is `1`, set to `0.5` to allow half stars.
+
+<br />
+
+### <a name="maximum">`maximum`</a>
+
+<Canvas of={RatingStories.CustomMax} layout="centered" sourceState="none" />
+
+```tsx
+<Rating bind={formProp('rating').bind()} maximum="10" />
+```
+
+<br />
+
+### <a name="mode">`mode`</a>
+
+```tsx
+<Rating bind={formProp('rating').bind()} mode="radio" />
+```
+
+The `mode` prop determines the kind of elements used to handle the interaction. This doesn't affect the component visually.
+
+Mode options:
+
+- `button` renders a series of buttons (default)
+- `radio` renders radio inputs
+- `range` renders an input with type='range'
+
+<br />
+
+### <a name="disabled">`disabled`</a>
+
+<Canvas of={RatingStories.Disabled} layout="centered" sourceState="none" />
+
+```tsx
+<Rating bind={formProp('rating').bind()} disabled={true} />
+```
+
+<br />
+
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
+
+<Canvas of={RatingStories.WithError} layout="centered" sourceState="none" />
+
+```tsx
+<Rating bind={formProp('rating').bind()} validationErrorMessages={['Invalid rating']} />
+```
+
+The `validationErrorMessages` takes an array of error messages to display on validation error.

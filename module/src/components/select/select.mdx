@@ -1,0 +1,197 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Select } from './select.component';
+
+import * as SelectStories from './select.stories';
+
+<Meta title="Components/select" component={Select} />
+
+# Select
+
+A select component that offers single or multiple selection, customizable sizes, and validation.
+
+<Canvas of={SelectStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { formProp, formState, Select } from '@rocketmakers/armstrong';
+
+const { formProp, formState } = useForm<{ value?: number }>();
+
+<Select bind={formProp('value').bind()} options={options} />;
+<p>Current value: {formState?.value}</p>;
+```
+
+## Select props
+
+<ArgTypes of={Select} />
+
+## Examples
+
+- [Single select example](#single-select)
+- [Multi select example](#multi-select)
+- [Create option example](#create-option)
+- [Native select example](#native)
+- [`displaySize`](#displaySize)
+- [`validationErrorMessages`](#validationErrorMessages)
+
+<br />
+
+### <a name="single-select">Single select example</a>
+
+<Canvas of={SelectStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+const options = [
+  {
+    label: 'Colours',
+    options: [
+      { id: 1, content: 'ocean' },
+      { id: 2, content: 'blue' },
+      { id: 3, content: 'purple' },
+      { id: 4, content: 'red' },
+      { id: 5, content: 'orange' },
+      { id: 6, content: 'yellow' },
+      { id: 7, content: 'green' },
+      { id: 8, content: 'forest' },
+      { id: 9, content: 'slate' },
+      { id: 10, content: 'silver' },
+    ],
+  },
+  {
+    label: 'Flavours',
+    options: [
+      { id: 11, content: 'vanilla' },
+      { id: 12, content: 'chocolate' },
+      { id: 13, content: 'strawberry' },
+    ],
+  },
+];
+
+const { formProp, formState } = useForm<{ value?: number }>();
+
+<Select bind={formProp('value').bind()} options={options} />;
+<p>Current value: {formState?.value}</p>;
+```
+
+The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
+
+The `options` prop can be an array of options or an array of grouped options with a label:
+
+```tsx
+// flat options
+const options = [
+  { id: 1, content: 'ocean' },
+  { id: 2, content: 'blue' },
+  { id: 3, content: 'purple' },
+  { id: 4, content: 'red' },
+];
+
+// grouped options
+const groupedOptions = [
+  {
+    label: 'Colours',
+    options: [
+      { id: 1, content: 'ocean' },
+      { id: 2, content: 'blue' },
+    ],
+  },
+  {
+    label: 'Flavours',
+    options: [
+      { id: 11, content: 'vanilla' },
+      { id: 12, content: 'chocolate' },
+    ],
+  },
+];
+```
+
+<br />
+
+### <a name="multi-select">Multi select example</a>
+
+<Canvas of={SelectStories.Multi} layout="centered" sourceState="none" />
+
+```tsx
+<MultiSelect bind={formProp('value').bind()} options={options} />
+```
+
+<br />
+
+### <a name="create-option">Create option example</a>
+
+<br />
+
+#### For a single select
+
+<Canvas of={SelectStories.Create} layout="centered" sourceState="none" />
+
+```tsx
+<Select bind={formProp('value').bind()} options={options} allowCreate={true} onOptionCreated={onOptionCreated} />
+```
+
+`allowCreate` enables the user to create select options by typing into the input.
+
+`onOptionCreated` is called when a new option is created.
+
+<br />
+
+#### For a multi select
+
+<Canvas of={SelectStories.CreateMulti} layout="centered" sourceState="none" />
+
+```tsx
+<MultiSelect bind={formProp('value').bind()} options={options} allowCreate={true} onOptionCreated={onOptionCreated} />
+```
+
+`allowCreate` enables the user to create select options by typing into the input.
+
+`onOptionCreated` is called when a new option is created.
+
+<br />
+
+### <a name="native">Native select example</a>
+
+<Canvas of={SelectStories.Native} layout="centered" sourceState="none" />
+
+```tsx
+<NativeSelect bind={formProp('value').bind()} options={options} />
+```
+
+<br />
+
+### <a name="displaySize">`displaySize`</a>
+
+<Canvas of={SelectStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+<Select bind={formProp('value').bind()} options={options} displaySize="small" />
+```
+
+Size options:
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+<br />
+
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
+
+<Canvas of={SelectStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<Select
+  bind={formProp('value').bind()}
+  options={options}
+  validationMode="both"
+  validationErrorMessages={['This field is required']}
+  required
+/>
+```
+
+`validationErrorMessages` are the validation errors from the binder concatenated with manually passed in errors.
+
+`validationMode` determines how to render the validation errors. The `validationMode` options are `icon`, `message` or `both`.
+
+The `required` prop displays a required indicator at the end of the label.

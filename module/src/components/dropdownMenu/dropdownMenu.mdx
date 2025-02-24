@@ -1,0 +1,115 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DropdownMenu } from './dropdownMenu.component';
+
+import * as DropdownMenuStories from './dropdownMenu.stories';
+
+<Meta title="Components/DropdownMenu" component={DropdownMenu} />
+
+# Dropdown menu
+
+A dropdown menu featuring section dividers and icon overlays.
+
+<Canvas of={DropdownMenuStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { DropdownMenu, Button } from '@rocketmakers/armstrong';
+
+const items = [
+  {
+    label: 'Item',
+    onClick: () => {},
+  },
+]
+
+<DropdownMenu items={items}>
+  <Button>Toggle item list menu</Button>
+</DropdownMenu>
+```
+
+## Dropdown menu props
+
+<ArgTypes of={DropdownMenu} />
+
+## Examples
+
+- [Dropdown menu items](#items)
+- [Dropdown menu header and footer](#header-footer)
+- [Dropdown menu with arrow](#arrow)
+
+<br />
+
+### <a name="items">Dropdown menu items</a>
+
+### Basic item
+
+```tsx
+<DropdownMenu items={[{ label: 'Item', onClick: () => {} }]}>
+  <Button>Button</Button>
+</DropdownMenu>
+```
+
+### Non-clickable item
+
+```tsx
+<DropdownMenu items={[{ label: 'Non-clickable item' }]}>
+  <Button>Button</Button>
+</DropdownMenu>
+```
+
+### Disabled item
+
+```tsx
+<DropdownMenu items={[{ label: 'Disabled item', disabled: true }]}>
+  <Button>Button</Button>
+</DropdownMenu>
+```
+
+### Item with icon overlay
+
+```tsx
+<DropdownMenu
+  items={[
+    {
+      label: 'Icon on the left',
+      leftOverlay: <Icon />,
+    },
+    {
+      label: 'Icon on the right',
+      rightOverlay: <Icon />,
+    },
+  ]}
+>
+  <Button>Button</Button>
+</DropdownMenu>
+```
+
+<br />
+
+### <a name="header-footer">Dropdown menu header and footer</a>
+
+### Header
+
+```tsx
+<DropdownMenu items={items} headerContent={<div>Header content</div>}>
+  <Button>Button</Button>
+</DropdownMenu>
+```
+
+### Footer
+
+```tsx
+<DropdownMenu items={items} footerContent={<div>Footer content</div>}>
+  <Button>Button</Button>
+</DropdownMenu>
+```
+
+<br />
+
+### <a name="arrow">Dropdown menu with arrow</a>
+
+```tsx
+<DropdownMenu items={items} showArrow>
+  <Button>Button</Button>
+</DropdownMenu>
+```

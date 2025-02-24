@@ -1,0 +1,52 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Spinner } from './spinner.component';
+
+import * as SpinnerStories from './spinner.stories';
+
+<Meta title="Components/Spinner" component={Spinner} />
+
+# Spinner
+
+The Spinner component is commonly used to indicate loading or processing actions.
+
+<Canvas of={SpinnerStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { Spinner } from '@rocketmakers/armstrong';
+
+<Spinner />;
+```
+
+## Spinner Props
+
+<ArgTypes of={Spinner} />
+
+## Examples
+
+- [Custom icon spinner example](#icon)
+- [Spinner with a label example](#label)
+
+<br />
+
+### <a name="icon">Custom icon spinner example</a>
+
+The spinner accepts an icon prop that allows you to replace the default spinner.
+
+<Canvas of={SpinnerStories.CustomIcon} layout="centered" sourceState="none" />
+
+```tsx
+<Spinner icon={<Icon />} />
+```
+
+<br />
+
+### <a name="label">Spinner with a label example</a>
+
+The spinner accepts a label that can be styled separately.
+
+<Canvas of={SpinnerStories.Labelled} layout="centered" sourceState="none" />
+
+```tsx
+<Spinner label="loading..." />
+```
