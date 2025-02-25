@@ -1,3 +1,10 @@
+## [3.10.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.0...v3.10.1) (2025-02-25)
+
+
+### Bug Fixes
+
+* - Fixed bug causing auto validate setting not to be respected on bind or prop ([7507c7a](https://github.com/Rocketmakers/armstrong-edge/commit/7507c7a709c6662b39ec774601691b31878754d1))
+
 # [3.10.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.3...v3.10.0) (2025-02-24)
 
 
