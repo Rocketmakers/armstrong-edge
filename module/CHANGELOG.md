@@ -1,29 +1,25 @@
 ## [3.10.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.0...v3.10.1) (2025-02-25)
 
-
 ### Bug Fixes
 
-* - Fixed bug causing auto validate setting not to be respected on bind or prop ([7507c7a](https://github.com/Rocketmakers/armstrong-edge/commit/7507c7a709c6662b39ec774601691b31878754d1))
+- - Fixed bug causing auto validate setting not to be respected on bind or prop ([7507c7a](https://github.com/Rocketmakers/armstrong-edge/commit/7507c7a709c6662b39ec774601691b31878754d1))
 
 # [3.10.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.3...v3.10.0) (2025-02-24)
 
-
 ### Bug Fixes
 
-* fix typo ([c17ca08](https://github.com/Rocketmakers/armstrong-edge/commit/c17ca08686a8f2683d0c721fd5bd285658a325d9))
-* fix typos ([4258953](https://github.com/Rocketmakers/armstrong-edge/commit/42589538adced9172c614c44174f3f7b5106d40e))
-
+- fix typo ([c17ca08](https://github.com/Rocketmakers/armstrong-edge/commit/c17ca08686a8f2683d0c721fd5bd285658a325d9))
+- fix typos ([4258953](https://github.com/Rocketmakers/armstrong-edge/commit/42589538adced9172c614c44174f3f7b5106d40e))
 
 ### Features
 
-* adds mdx doc for every component ([02d55e1](https://github.com/Rocketmakers/armstrong-edge/commit/02d55e15906d14f333c197d2c17fdc2562ee2178))
+- adds mdx doc for every component ([02d55e1](https://github.com/Rocketmakers/armstrong-edge/commit/02d55e15906d14f333c197d2c17fdc2562ee2178))
 
 ## [3.9.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.2...v3.9.3) (2025-02-18)
 
-
 ### Bug Fixes
 
-* - Fixed bug causing right overlay on code input not to render ([b78ee14](https://github.com/Rocketmakers/armstrong-edge/commit/b78ee14be24ff7abb20575def60fd41d6e22044f))
+- - Fixed bug causing right overlay on code input not to render ([b78ee14](https://github.com/Rocketmakers/armstrong-edge/commit/b78ee14be24ff7abb20575def60fd41d6e22044f))
 
 ## [3.9.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.1...v3.9.2) (2025-02-11)
 
