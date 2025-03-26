@@ -490,7 +490,11 @@ export type ZodNullOrUndefined<TProp, TZod extends ZodTypeAny> = TProp extends u
  */
 export interface IArrayOfZod<TProp> {
   /** The validation for each item within the array (will be an object of key/validator pairs if it's an array of objects) */
-  itemSchema: TProp extends object ? { [TKey in keyof TProp]: ToZod<TProp[TKey]> } : ToZod<TProp>;
+  itemSchema: TProp extends Array<unknown>
+    ? ToZod<TProp>
+    : TProp extends object
+    ? { [TKey in keyof TProp]: ToZod<TProp[TKey]> }
+    : ToZod<TProp>;
   /** A function which defines the validation to apply to the array itself (e.g. `opts: arr => arr.min(1).max(5)`) */
   opts?: (
     arr: ZodArray<TProp & ZodTypeAny>
