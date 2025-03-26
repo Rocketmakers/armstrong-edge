@@ -1,3 +1,10 @@
+## [3.10.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.2...v3.10.3) (2025-03-26)
+
+
+### Bug Fixes
+
+* - potential runtime fix for nested arrays in zod validation ([860e53d](https://github.com/Rocketmakers/armstrong-edge/commit/860e53d743912cfcd01160d15f0f674b5268a9b7))
+
 ## [3.10.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.1...v3.10.2) (2025-03-26)
 
 
