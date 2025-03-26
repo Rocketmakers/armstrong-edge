@@ -1,3 +1,10 @@
+## [3.10.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.1...v3.10.2) (2025-03-26)
+
+
+### Bug Fixes
+
+* - Resolves issue with nested arrays in IValidationSchema ([fd791fd](https://github.com/Rocketmakers/armstrong-edge/commit/fd791fd03f18c96581411624a2e5d52dd5caa9f8))
+
 ## [3.10.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.0...v3.10.1) (2025-02-25)
 
 ### Bug Fixes
