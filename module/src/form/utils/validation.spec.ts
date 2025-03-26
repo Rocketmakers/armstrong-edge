@@ -298,6 +298,160 @@ describe('zodFromValidationSchema', () => {
     expect(fail1).toEqual(fail2);
   });
 
+  it('should convert a validation object with a nested array of arrays into a zod schema', () => {
+    interface IPet {
+      name: string;
+      breed: string;
+    }
+
+    interface ISchema {
+      name: string;
+      age: number;
+      pets: IPet[][];
+    }
+
+    const schema: IValidationSchema<ISchema> = {
+      name: z.string(),
+      age: z.number(),
+      pets: {
+        opts: arr => arr.min(1).max(3),
+        itemSchema: {
+          opts: arr => arr.min(1).max(3),
+          itemSchema: {
+            breed: z.string(),
+            name: z.string(),
+          },
+        },
+      },
+    };
+
+    const expectedSchema = z.object({
+      name: z.string(),
+      age: z.number(),
+      pets: z
+        .array(
+          z
+            .array(
+              z.object({
+                breed: z.string(),
+                name: z.string(),
+              })
+            )
+            .min(1)
+            .max(3)
+        )
+        .min(1)
+        .max(3),
+    });
+
+    const successShape: ISchema = {
+      name: '',
+      age: 3,
+      pets: [[{ breed: '', name: '' }]],
+    };
+
+    const success1 = zodFromValidationSchema<ISchema>(schema).safeParse(successShape);
+    const success2 = expectedSchema.safeParse(successShape);
+    expect(success1).toEqual(success2);
+
+    const failShape = {
+      name: '',
+      age: 3,
+    };
+
+    const fail1 = zodFromValidationSchema<ISchema>(schema).safeParse(failShape);
+    const fail2 = expectedSchema.safeParse(failShape);
+    expect(fail1).toEqual(fail2);
+  });
+
+  it('should convert a validation object with nested arrays containing objects containing arrays into a zod schema', () => {
+    interface IPetFriend {
+      names: string[];
+      breed: string;
+    }
+
+    interface IPet {
+      names: string[];
+      breed: string;
+      friends: IPetFriend[];
+    }
+
+    interface ISchema {
+      name: string;
+      age: number;
+      pets: IPet[];
+    }
+
+    const schema: IValidationSchema<ISchema> = {
+      name: z.string(),
+      age: z.number(),
+      pets: {
+        opts: arr => arr.min(1).max(3),
+        itemSchema: {
+          names: {
+            opts: arr => arr.min(1).max(3),
+            itemSchema: z.string(),
+          },
+          breed: z.string(),
+          friends: {
+            opts: arr => arr.min(1).max(3),
+            itemSchema: {
+              names: {
+                opts: arr => arr.min(1).max(3),
+                itemSchema: z.string(),
+              },
+              breed: z.string(),
+            },
+          },
+        },
+      },
+    };
+
+    const expectedSchema = z.object({
+      name: z.string(),
+      age: z.number(),
+      pets: z
+        .array(
+          z.object({
+            names: z.array(z.string()).min(1).max(3),
+            breed: z.string(),
+            friends: z
+              .array(
+                z.object({
+                  names: z.array(z.string()).min(1).max(3),
+                  breed: z.string(),
+                })
+              )
+              .min(1)
+              .max(3),
+          })
+        )
+        .min(1)
+        .max(3),
+    });
+
+    const successShape: ISchema = {
+      name: '',
+      age: 3,
+      pets: [
+        {
+          names: [''],
+          breed: '',
+          friends: [
+            {
+              names: [''],
+              breed: '',
+            },
+          ],
+        },
+      ],
+    };
+
+    const success1 = zodFromValidationSchema<ISchema>(schema).safeParse(successShape);
+    const success2 = expectedSchema.safeParse(successShape);
+    expect(success1).toEqual(success2);
+  });
+
   describe('rootValidationSchemaIsFunction', () => {
     it('should return true if the schema is a function', () => {
       // Arrange
