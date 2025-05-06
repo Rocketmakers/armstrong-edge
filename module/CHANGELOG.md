@@ -1,3 +1,10 @@
+# [3.11.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.3...v3.11.0) (2025-05-06)
+
+
+### Features
+
+* - Added additional config options to avoid toast duplication ([dab6cce](https://github.com/Rocketmakers/armstrong-edge/commit/dab6cce152cf64d3a2d221f91e9e148102d99d9d))
+
 ## [3.10.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.2...v3.10.3) (2025-03-26)
 
 
