@@ -46,3 +46,8 @@ export type CustomString = `custom-${string}`;
  * Display type options for inputs
  */
 export type DisplaySize = 'small' | 'medium' | 'large' | CustomString;
+
+/**
+ * Display mode for toast provider
+ */
+export type ToastDisplayMode = 'add' | 'replace';

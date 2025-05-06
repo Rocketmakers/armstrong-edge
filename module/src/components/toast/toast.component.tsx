@@ -12,6 +12,9 @@ export interface IToastProps extends IToast {
 
   /** the icon to use for the dialog close button */
   closeButtonIcon: JSX.Element | false;
+
+  /** called when the toast has left the screen */
+  onExit?: () => void;
 }
 
 export const Toast: React.FC<IToastProps> = ({
@@ -24,6 +27,7 @@ export const Toast: React.FC<IToastProps> = ({
   hideClose,
   className,
   testId,
+  onExit,
   additionalProps = {},
 }) => {
   return (
@@ -33,6 +37,11 @@ export const Toast: React.FC<IToastProps> = ({
       data-position={position}
       data-testid={testId}
       aria-label="Notification"
+      onOpenChange={open => {
+        if (!open && onExit) {
+          onExit();
+        }
+      }}
       {...additionalProps}
     >
       {title && <RadixToast.Title className="arm-toast-title">{title}</RadixToast.Title>}

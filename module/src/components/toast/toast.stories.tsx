@@ -156,3 +156,46 @@ export const CustomContent: StoryObj<typeof Toast> = {
     expect(customButton).toBeVisible();
   },
 };
+
+export const IgnoreDuplicateToast: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider
+        config={{
+          toastIgnorePredicate: (existing, incoming) =>
+            existing.some(t => t.title === incoming.title && t.description === incoming.description),
+        }}
+      >
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement, args }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    await userEvent.click(button);
+    await userEvent.click(button); // should be ignored
+
+    const toasts = await findAllByText(document.body, args.title ?? '');
+    expect(toasts.length).toBe(1);
+  },
+};
+
+export const ReplaceDisplayMode: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider config={{ toastDisplayMode: 'replace' }}>
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement, args }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    await userEvent.click(button);
+    await userEvent.click(button); // should replace the previous toast
+
+    const toasts = await findAllByText(document.body, args.title ?? '');
+    expect(toasts.length).toBe(1);
+  },
+};
