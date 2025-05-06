@@ -6,10 +6,10 @@ import { ImMinus, ImSpinner2 } from 'react-icons/im';
 import { IoIosWarning } from 'react-icons/io';
 import { RiCloseLine } from 'react-icons/ri';
 
-import { DisplaySize } from '../../types';
+import { DisplaySize, ToastDisplayMode } from '../../types';
 import { stripNullOrUndefined } from '../../utils/objects';
 import type { ButtonDisplayStyle } from '../button';
-import type { ToastPosition } from '../toast';
+import type { IToast, ToastPosition } from '../toast';
 
 /**
  * Armstrong global config type
@@ -66,6 +66,12 @@ export interface IArmstrongConfig {
   /** the icon to use for the dialog close button */
   toastCloseButtonIcon?: JSX.Element | false;
 
+  /** whether to add toasts to a stack or display one at a time */
+  toastDisplayMode?: ToastDisplayMode;
+
+  /** ignore toasts if an existing toast matches this predicate */
+  toastIgnorePredicate?: (existingToasts: IToast[], incomingToast: IToast) => boolean;
+
   /** A custom JSX.Element for the checked indicator. (Optional) */
   checkboxCustomIndicator?: JSX.Element;
 
@@ -85,8 +91,8 @@ export interface IArmstrongConfig {
   autoValidate?: boolean;
 }
 
-type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo'>> &
-  Pick<IArmstrongConfig, 'globalPortalTo'>;
+type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo' | 'toastIgnorePredicate'>> &
+  Pick<IArmstrongConfig, 'globalPortalTo' | 'toastIgnorePredicate'>;
 
 /**
  * System level defaults for armstrong global config
@@ -109,6 +115,7 @@ const systemDefaults: ArmstrongConfigDefaults = {
   toastDuration: 5000,
   toastPosition: 'bottom-right',
   toastCloseButtonIcon: <RiCloseLine size={18} />,
+  toastDisplayMode: 'add',
   checkboxCustomIndicator: <FaCheck />,
   checkboxCustomIndeterminateIndicator: <ImMinus />,
   tooltipDelay: 700,

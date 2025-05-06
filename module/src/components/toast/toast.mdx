@@ -63,3 +63,37 @@ export const MyApp: React.FC<React.PropsWithChildren> = ({ children }) => {
 ```
 
 NOTE: These settings can also be passed in as props to the `<ToastProvider>` if you're using that, and `duration` can also be set on a per-toast basis
+
+## ToastProvider Props
+
+The `ToastProvider` component supplies the context and configuration for displaying toast notifications globally.
+
+### `duration`
+
+- **Type**: `number`
+- **Default**: `5000`
+- Specifies how long a toast remains visible (in milliseconds) before auto-dismissal.
+
+### `position`
+
+- **Type**: `'top-left' | 'top-right' | 'bottom-right' | 'bottom-left'`
+- **Default**: `'bottom-right'`
+- Controls where toast notifications appear on the screen.
+
+### `closeButtonIcon`
+
+- **Type**: `JSX.Element | false`
+- **Default**: `undefined`
+- Defines a custom icon for the close button. Use `false` to hide the close button entirely.
+
+### `displayMode`
+
+- **Type**: `'add' | 'replace'`
+- **Default**: `'add'`
+- Determines whether new toasts are stacked (`'add'`) or replace the current toast (`'replace'`).
+
+### `ignorePredicate`
+
+- **Type**: `(existingToasts: IToast[], incomingToast: IToast) => boolean`
+- **Default**: `undefined`
+- If defined, prevents a new toast from being added if the function returns `true`. Useful for deduplication.
