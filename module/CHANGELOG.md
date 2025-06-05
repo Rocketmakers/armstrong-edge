@@ -1,3 +1,10 @@
+# [3.12.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.11.0...v3.12.0) (2025-06-05)
+
+
+### Features
+
+* - Adds the ability to dismiss toasts programatically ([b0ba88c](https://github.com/Rocketmakers/armstrong-edge/commit/b0ba88ca0a6d09bcbb17680bcd80907321e5fefd))
+
 # [3.11.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.3...v3.11.0) (2025-05-06)
 
 ### Features
