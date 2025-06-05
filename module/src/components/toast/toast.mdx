@@ -97,3 +97,41 @@ The `ToastProvider` component supplies the context and configuration for display
 - **Type**: `(existingToasts: IToast[], incomingToast: IToast) => boolean`
 - **Default**: `undefined`
 - If defined, prevents a new toast from being added if the function returns `true`. Useful for deduplication.
+
+## How to dismiss toasts programmatically
+
+To dismiss a toast programmatically, you can use the `dismissToastByKey` function provided by the `useDismissToast` hook. This hook can be used in any component that is a descendant of the `ToastProvider`.
+
+Here's an example of how to use it:
+
+```tsx
+import { useDismissToast } from '@rocketmakers/armstrong';
+
+export const MyComponent: React.FC = () => {
+  const dispatchToast = useToast();
+  const dismissToast = useDismissToast();
+
+  const myToastKey = React.useRef<string | undefined>();
+
+  const sendToast = () => {
+    myToastKey.current = dispatchToast({
+      title: 'Toast 1',
+      description: 'This is the first toast message.',
+    });
+  };
+
+  const handleDismiss = () => {
+    if (myToastKey.current) {
+      dismissToast(myToastKey.current);
+      myToastKey.current = undefined;
+    }
+  };
+
+  return (
+    <>
+      <button onClick={sendToast}>Send Toast 1</button>
+      <button onClick={handleDismiss}>Dismiss Toast 1</button>
+    </>
+  );
+};
+```

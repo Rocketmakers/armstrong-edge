@@ -41,8 +41,11 @@ export type ToastPosition = 'top-left' | 'top-right' | 'bottom-right' | 'bottom-
 
 /** Types of the global toast context */
 interface IToastContext {
-  /** Adds a new toast message to the global stack */
-  addToast: (newToast: IToast) => void;
+  /** Adds a new toast message to the global stack, returns the key of the added toast (if toast was added) */
+  addToast: (newToast: IToast) => string | undefined;
+
+  /** Dismisses a toast by its key, removing it from the stack */
+  dismissToastByKey: (key: string) => void;
 }
 
 /** The default context to initialize with */
@@ -50,6 +53,11 @@ const initialContext: IToastContext = {
   addToast: () => {
     throw new Error(
       "Unable to dispatch toast, are you sure you've added either the <ArmstrongProvider> or <ToastProvider>?"
+    );
+  },
+  dismissToastByKey: () => {
+    throw new Error(
+      "Unable to dismiss toast, are you sure you've added either the <ArmstrongProvider> or <ToastProvider>?"
     );
   },
 };
@@ -105,7 +113,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
           newToast
         )
       ) {
-        return;
+        return undefined;
       }
       const key = `toast-${nextToastKey.current}`;
       nextToastKey.current += 1;
@@ -116,6 +124,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
         }
         return [toast];
       });
+      return key;
     },
     [globals, toasts]
   );
@@ -124,8 +133,12 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
     setToasts(prevToasts => prevToasts.map(toast => (toast.key === key ? { ...toast, exited: true } : toast)));
   }, []);
 
+  const dismissToastByKey = React.useCallback((key: string) => {
+    setToasts(prevToasts => prevToasts.filter(toast => toast.key !== key));
+  }, []);
+
   return (
-    <ToastContext.Provider value={{ addToast }}>
+    <ToastContext.Provider value={{ addToast, dismissToastByKey }}>
       <RadixToast.Provider swipeDirection={swipeDirection} duration={globals.toastDuration}>
         {children}
         {toasts.map(({ key, ...toast }) => (
