@@ -11,3 +11,13 @@ export const useToast = () => {
   const { addToast } = React.useContext(ToastContext);
   return addToast;
 };
+
+/**
+ * Simple hook allowing global toast messages to be dismissed.
+ * WARNING: This hook must be used within either the unified <ArmstrongProvider> or standalone <ToastProvider> to work.
+ * @returns A method for dismissing a global toast message by its key
+ */
+export const useDismissToast = () => {
+  const { dismissToastByKey } = React.useContext(ToastContext);
+  return dismissToastByKey;
+};
