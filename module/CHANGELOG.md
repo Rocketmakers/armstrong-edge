@@ -1,3 +1,10 @@
+# [3.13.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.12.0...v3.13.0) (2025-07-07)
+
+
+### Features
+
+* allowed passing radix's modal prop to the dropdown ([da7ab44](https://github.com/Rocketmakers/armstrong-edge/commit/da7ab44c9cce1c8fe8c3eca64d298830057553cc))
+
 # [3.12.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.11.0...v3.12.0) (2025-06-05)
 
 
