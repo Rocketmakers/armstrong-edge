@@ -1,3 +1,10 @@
+## [3.13.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.0...v3.13.1) (2025-07-07)
+
+
+### Bug Fixes
+
+* fixes the docs for non-modal dropdown ([fb8ad1a](https://github.com/Rocketmakers/armstrong-edge/commit/fb8ad1aaaff5183e98453ae6ce62e763afdff45d))
+
 # [3.13.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.12.0...v3.13.0) (2025-07-07)
 
 
