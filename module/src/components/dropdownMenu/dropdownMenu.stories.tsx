@@ -248,7 +248,7 @@ export const CustomContent: StoryObj<typeof DropdownMenu> = {
   },
 };
 
-export const Modal: StoryObj<typeof DropdownMenu> = {
+export const NonModal: StoryObj<typeof DropdownMenu> = {
   render: () => {
     return (
       <div
