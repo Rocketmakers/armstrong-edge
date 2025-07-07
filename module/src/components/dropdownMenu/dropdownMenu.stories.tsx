@@ -1,7 +1,6 @@
-import { expect } from '@storybook/test';
 import * as test from '@storybook/test';
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/test';
 import * as React from 'react';
 import { ImCheckmark, ImUser } from 'react-icons/im';
 
@@ -246,5 +245,49 @@ export const CustomContent: StoryObj<typeof DropdownMenu> = {
 
     const customContent = within(canvas.getByTestId('dropdown')).getByTestId('custom-content');
     expect(customContent).toBeVisible();
+  },
+};
+
+export const Modal: StoryObj<typeof DropdownMenu> = {
+  render: () => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: '16px',
+        }}
+      >
+        <DropdownMenu items={<div data-testid={'item-1'}>Item 1</div>} data-testid="dropdown-1" modal={false}>
+          <Button type="button" data-testid="button-1">
+            None Modal Dropdown
+          </Button>
+        </DropdownMenu>
+        <DropdownMenu items={<div data-testid={'item-2'}>Item 2</div>} data-testid="dropdown-2" modal={false}>
+          <Button type="button" data-testid="button-2">
+            Another None Modal Dropdown
+          </Button>
+        </DropdownMenu>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const openButton1 = canvas.getByTestId('button-1');
+    userEvent.click(openButton1);
+
+    await waitFor(() => expect(canvas.getByTestId('dropdown-1')).toBeVisible());
+
+    const item1 = within(canvas.getByTestId('dropdown-1')).getByTestId('item-1');
+    expect(item1).toBeVisible();
+
+    const openButton2 = canvas.getByTestId('button-2');
+    userEvent.click(openButton2);
+    await waitFor(() => expect(canvas.getByTestId('dropdown-2')).toBeVisible());
+    const item2 = within(canvas.getByTestId('dropdown-2')).getByTestId('item-2');
+    expect(item2).toBeVisible();
+
+    expect(item1).not.toBeVisible();
   },
 };

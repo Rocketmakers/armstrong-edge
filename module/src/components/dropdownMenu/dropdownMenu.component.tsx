@@ -55,7 +55,7 @@ export interface IDropdownMenuItem {
 export interface IDropdownMenuProps
   extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement>,
     Pick<React.ComponentProps<typeof RadixDropdownMenu['Content']>, 'side' | 'align' | 'sticky'>,
-    Pick<React.ComponentProps<typeof RadixDropdownMenu['Root']>, 'open' | 'defaultOpen' | 'onOpenChange'> {
+    Pick<React.ComponentProps<typeof RadixDropdownMenu['Root']>, 'open' | 'defaultOpen' | 'onOpenChange' | 'modal'> {
   /**
    * Array of dropdown menu items, or a custom React node to render.
    */
@@ -90,6 +90,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
       footerContent,
       headerContent,
       disabled,
+      modal,
       ...nativeProps
     },
     ref
@@ -146,7 +147,12 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
     }, [items]);
 
     return (
-      <RadixDropdownMenu.Root open={internalOpen} onOpenChange={onOpenChangeInner} defaultOpen={defaultOpen}>
+      <RadixDropdownMenu.Root
+        open={internalOpen}
+        onOpenChange={onOpenChangeInner}
+        defaultOpen={defaultOpen}
+        modal={modal}
+      >
         {children && (
           <RadixDropdownMenu.Trigger asChild disabled={disabled}>
             {children}
