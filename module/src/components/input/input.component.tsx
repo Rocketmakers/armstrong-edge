@@ -260,6 +260,7 @@ export const Input = React.forwardRef<
     return (
       <InputWrapper
         data-size={globals.inputDisplaySize}
+        data-has-value={!!boundValue}
         className={concat(className, 'arm-input-base')}
         statusClassName={concat(statusClassName, 'arm-input-base-status')}
         validationErrorsClassName={concat(validationErrorsClassName, 'arm-input-base-validation')}
