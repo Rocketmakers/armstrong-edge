@@ -1,3 +1,10 @@
+## [3.13.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.1...v3.13.2) (2025-08-20)
+
+
+### Bug Fixes
+
+* add value to input wrappers ([16a94d9](https://github.com/Rocketmakers/armstrong-edge/commit/16a94d99cfdeb05f3da200bf0429964f7aa12b2b))
+
 ## [3.13.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.0...v3.13.1) (2025-07-07)
 
 
