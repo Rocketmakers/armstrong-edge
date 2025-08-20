@@ -1,3 +1,10 @@
+## [3.13.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.3...v3.13.4) (2025-08-20)
+
+
+### Bug Fixes
+
+* add value prop to text area ([99d2355](https://github.com/Rocketmakers/armstrong-edge/commit/99d2355fc289a8ed712d7ed198bceedd4bcd2807))
+
 ## [3.13.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.2...v3.13.3) (2025-08-20)
 
 
