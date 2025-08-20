@@ -192,6 +192,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<str
     return (
       <InputWrapper
         data-size={globals.inputDisplaySize}
+        data-has-value={!!textAreaProps.value}
         className={concat(className, 'arm-text-area-wrapper')}
         statusClassName={concat(statusClassName, 'arm-text-area-status')}
         validationErrorsClassName={concat(validationErrorsClassName, 'arm-text-area-validation')}
