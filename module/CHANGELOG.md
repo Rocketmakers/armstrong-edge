@@ -1,3 +1,10 @@
+## [3.13.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.2...v3.13.3) (2025-08-20)
+
+
+### Bug Fixes
+
+* bind attribute to correct prop ([45c827b](https://github.com/Rocketmakers/armstrong-edge/commit/45c827b8be0b6f3a2973e52cc71323652fc24ea8))
+
 ## [3.13.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.1...v3.13.2) (2025-08-20)
 
 
