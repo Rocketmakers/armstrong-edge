@@ -110,6 +110,15 @@ export function isArrayValue(value: unknown, attemptedAction: string): value is 
 }
 
 /**
+ * Checks a possible keyChain to make sure it is a valid keyChain.
+ * @param keyChain The keyChain to check.
+ * @returns true if the keyChain is valid, false if not.
+ */
+export function isValidPropertyKey(propertyKey: PropertyKey | undefined): propertyKey is PropertyKey {
+  return typeof propertyKey === 'number' || (typeof propertyKey === 'string' && propertyKey.length > 0);
+}
+
+/**
  * Converts a keyChain into a key string
  * @param keyChain The chain of keys passed to `formProp` and used to access the property within a nested form object.
  * @param mode (dots|brackets) Whether to use dot syntax for array indexes, or square brackets.
@@ -118,7 +127,7 @@ export function isArrayValue(value: unknown, attemptedAction: string): value is 
 export function keyStringFromKeyChain(keyChain: KeyChain | undefined, mode: 'dots' | 'brackets'): string {
   switch (mode) {
     case 'dots':
-      return keyChain?.filter(key => key !== undefined && key !== null).join('.') ?? '';
+      return keyChain?.filter(isValidPropertyKey).join('.') ?? '';
     case 'brackets':
       return (
         keyChain?.reduce<string>((attrString, key) => {
