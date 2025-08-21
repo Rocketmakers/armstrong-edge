@@ -118,7 +118,7 @@ export function isArrayValue(value: unknown, attemptedAction: string): value is 
 export function keyStringFromKeyChain(keyChain: KeyChain | undefined, mode: 'dots' | 'brackets'): string {
   switch (mode) {
     case 'dots':
-      return keyChain?.filter(key => !!key).join('.') ?? '';
+      return keyChain?.filter(key => key !== undefined && key !== null).join('.') ?? '';
     case 'brackets':
       return (
         keyChain?.reduce<string>((attrString, key) => {

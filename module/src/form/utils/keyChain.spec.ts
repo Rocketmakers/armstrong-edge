@@ -212,6 +212,12 @@ describe('keyStringFromKeyChain', () => {
     expect(result).toBe('test.value.3.target');
   });
 
+  it('converts a keychain to dot notation to target an item stored by keychain string when the keychain containes a zero', () => {
+    const keyChain = ['test', 'value', 0, 'target'];
+    const result = keyStringFromKeyChain(keyChain, 'dots');
+    expect(result).toBe('test.value.0.target');
+  });
+
   it('converts a keychain to bracket notation to target an item stored by keychain string', () => {
     const keyChain = ['test', 'value', 3, 'target'];
     const result = keyStringFromKeyChain(keyChain, 'brackets');
