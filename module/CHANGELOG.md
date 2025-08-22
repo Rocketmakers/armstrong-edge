@@ -1,3 +1,11 @@
+## [3.13.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.4...v3.13.5) (2025-08-22)
+
+
+### Bug Fixes
+
+* fixed keychain string creation for keychains with zeros ([e9fd6ac](https://github.com/Rocketmakers/armstrong-edge/commit/e9fd6ac3cccd3a67ecf2633c1506898e39c4df4c))
+* handles empty string case when creating string keys from keychains ([0134a3d](https://github.com/Rocketmakers/armstrong-edge/commit/0134a3dd14fe470754475ec82ed01f80a76eb91c))
+
 ## [3.13.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.3...v3.13.4) (2025-08-20)
 
 
