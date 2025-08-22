@@ -2,6 +2,7 @@ import {
   childKeyChainStringFromParent,
   isArrayValue,
   isMyKeyChainItem,
+  isValidPropertyKey,
   keyStringFromKeyChain,
   mergeDeepFromKeyChain,
   valueByKeyChain,
@@ -204,12 +205,50 @@ describe('isArrayValue', () => {
   });
 });
 
+describe('isValidPropertyKey', () => {
+  it('returns true for a valid string key', () => {
+    const key = 'validKey';
+    const result = isValidPropertyKey(key);
+    expect(result).toBeTruthy();
+  });
+
+  it('returns true for a valid number key', () => {
+    const key = 123;
+    const result = isValidPropertyKey(key);
+    expect(result).toBeTruthy();
+  });
+
+  it('returns true for 0 as a valid number key', () => {
+    const key = 0;
+    const result = isValidPropertyKey(key);
+    expect(result).toBeTruthy();
+  });
+
+  it('returns false for an empty string key', () => {
+    const key = '';
+    const result = isValidPropertyKey(key);
+    expect(result).toBeFalsy();
+  });
+
+  it('returns false for undefined key', () => {
+    const key = undefined;
+    const result = isValidPropertyKey(key);
+    expect(result).toBeFalsy();
+  });
+});
+
 /* validationKeyStringFromKeyChain */
 describe('keyStringFromKeyChain', () => {
   it('converts a keychain to dot notation to target an item stored by keychain string', () => {
     const keyChain = ['test', 'value', 3, 'target'];
     const result = keyStringFromKeyChain(keyChain, 'dots');
     expect(result).toBe('test.value.3.target');
+  });
+
+  it('converts a keychain to dot notation to target an item stored by keychain string when the keychain containes a zero', () => {
+    const keyChain = ['test', 'value', 0, 'target'];
+    const result = keyStringFromKeyChain(keyChain, 'dots');
+    expect(result).toBe('test.value.0.target');
   });
 
   it('converts a keychain to bracket notation to target an item stored by keychain string', () => {
