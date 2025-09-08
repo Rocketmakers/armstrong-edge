@@ -123,9 +123,9 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
  */
 export const getMyZodErrors = (errors: ZodIssue[], keyChainString?: string) => {
   return errors
-    .filter(e => (keyChainString ? isMyKeyChainItem(keyStringFromKeyChain(e.path, 'dots'), keyChainString) : true))
+    .filter(e => (keyChainString ? isMyKeyChainItem(keyStringFromKeyChain(e.path as KeyChain, 'dots'), keyChainString) : true))
     .map(e => ({
-      key: keyStringFromKeyChain(e.path, 'dots'),
+      key: keyStringFromKeyChain(e.path as KeyChain, 'dots'),
       message: e.message,
     }));
 };
