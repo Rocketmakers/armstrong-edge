@@ -60,30 +60,28 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   autoValidate?: boolean;
 }
 
-export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUndefined<boolean>>>(
-  (
-    {
-      bind,
-      checked,
-      onCheckedChange,
-      defaultChecked,
-      disabled,
-      className,
-      labelClassName,
-      label,
-      validationErrorMessages,
-      validationErrorsClassName,
-      scrollValidationErrorsIntoView,
-      validationMode,
-      displaySize,
-      labelId,
-      required,
-      requiredIndicator,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const Switch = (props: React.PropsWithChildren<ISwitchProps<NullOrUndefined<boolean>> & { ref?: React.Ref<HTMLButtonElement> }>) => {
+  const {
+    bind,
+    checked,
+    onCheckedChange,
+    defaultChecked,
+    disabled,
+    className,
+    labelClassName,
+    label,
+    validationErrorMessages,
+    validationErrorsClassName,
+    scrollValidationErrorsIntoView,
+    validationMode,
+    displaySize,
+    labelId,
+    required,
+    requiredIndicator,
+    autoValidate,
+    ref,
+    ...nativeProps
+  } = props;
     const generatedId = React.useId();
     const id = nativeProps.id ?? generatedId;
 
@@ -157,12 +155,11 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<boolean>>(
-  props: ArmstrongFCProps<ISwitchProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>;
+};
+
+// Type assertion for generic support - updated for React 19 ref as prop pattern
+(Switch as any) = (Switch as (<TBind extends NullOrUndefined<boolean>>(
+  props: React.PropsWithChildren<ISwitchProps<TBind> & { ref?: React.Ref<HTMLButtonElement> }>
+) => React.ReactElement) & ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>);
 
 Switch.displayName = 'Switch';

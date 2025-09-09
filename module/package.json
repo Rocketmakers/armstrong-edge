@@ -19,8 +19,8 @@
   },
   "peerDependencies": {
     "date-fns": "2.x",
-    "react": "18.x",
-    "react-dom": "18.x",
+    "react": "19.x",
+    "react-dom": "19.x",
     "zod": "3.*"
   },
   "files": [
@@ -74,9 +74,9 @@
     "@types/glob": "8.1.0",
     "@types/jest": "29.5.3",
     "@types/lodash": "4.14.195",
-    "@types/react": "18.3.1",
+    "@types/react": "^19.1.12",
     "@types/react-datepicker": "4.11.2",
-    "@types/react-dom": "18.3.1",
+    "@types/react-dom": "^19.1.9",
     "chokidar": "3.5.3",
     "concurrently": "8.2.0",
     "http-server": "14.1.1",
@@ -85,8 +85,8 @@
     "jest-config": "29.6.1",
     "jest-environment-jsdom": "29.6.1",
     "jest-junit": "16.0.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "sass": "1.63.6",
     "scss-concat": "0.3.9",
     "semantic-release": "21.0.7",

@@ -25,11 +25,11 @@ export interface ICheckboxProps<TData extends BindType>
   /** (Optional) A TData value representing the initial checked state of the checkbox. This can be true, false, or 'indeterminate'. */
   checked?: TData;
 
-  /** (Optional) A custom JSX.Element for the indeterminate state indicator. */
-  customIndeterminateIndicator?: JSX.Element;
+  /** (Optional) A custom React.ReactElement for the indeterminate state indicator. */
+  customIndeterminateIndicator?: React.ReactElement;
 
-  /** (Optional) A custom JSX.Element for the checked indicator. */
-  customIndicator?: JSX.Element;
+  /** (Optional) A custom React.ReactElement for the checked indicator. */
+  customIndicator?: React.ReactElement;
 
   /** (Optional) A boolean flag to disable the checkbox input. */
   disabled?: boolean;
@@ -68,34 +68,32 @@ export interface ICheckboxProps<TData extends BindType>
   autoValidate?: boolean;
 }
 
-export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindType>>(
-  (
-    {
-      bind,
-      checked,
-      customIndicator,
-      className,
-      customIndeterminateIndicator,
-      disabled,
-      onCheckedChange,
-      label,
-      labelClassName,
-      labelId,
-      scrollValidationErrorsIntoView,
-      statusClassName,
-      testId,
-      validationErrorsClassName,
-      validationErrorMessages,
-      validationMode,
-      displaySize,
-      required,
-      requiredIndicator,
-      statusPosition,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const Checkbox = (props: React.PropsWithChildren<ICheckboxProps<BindType> & { ref?: React.Ref<HTMLButtonElement> }>) => {
+  const {
+    bind,
+    checked,
+    customIndicator,
+    className,
+    customIndeterminateIndicator,
+    disabled,
+    onCheckedChange,
+    label,
+    labelClassName,
+    labelId,
+    scrollValidationErrorsIntoView,
+    statusClassName,
+    testId,
+    validationErrorsClassName,
+    validationErrorMessages,
+    validationMode,
+    displaySize,
+    required,
+    requiredIndicator,
+    statusPosition,
+    autoValidate,
+    ref,
+    ...nativeProps
+  } = props;
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
 
@@ -189,10 +187,11 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
         )}
       </StatusWrapper>
     );
-  }
-) as (<TBind extends NullOrUndefined<boolean>>(
-  props: ArmstrongFCProps<ICheckboxProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICheckboxProps<NullOrUndefined<boolean>>>;
+};
+
+// Type assertion for generic support - updated for React 19 ref as prop pattern
+(Checkbox as any) = (Checkbox as (<TBind extends NullOrUndefined<boolean>>(
+  props: React.PropsWithChildren<ICheckboxProps<TBind> & { ref?: React.Ref<HTMLButtonElement> }>
+) => React.ReactElement) & ArmstrongFCExtensions<ICheckboxProps<NullOrUndefined<boolean>>>);
 
 Checkbox.displayName = 'Checkbox';

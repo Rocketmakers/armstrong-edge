@@ -56,8 +56,8 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
   /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
 
-  /** (Optional) A custom JSX.Element for the checked indicator. */
-  customIndicator?: JSX.Element;
+  /** (Optional) A custom React.ReactElement for the checked indicator. */
+  customIndicator?: React.ReactElement;
 
   /** which size variant to use */
   displaySize?: DisplaySize;
@@ -85,138 +85,129 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
 }
 
 /** Render a list of radio inputs which binds to a single string */
-export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<ArmstrongId>>(
-  (
-    {
-      bind,
-      options,
-      className,
-      value,
-      errorIcon,
-      validationMode,
-      validationErrorMessages,
-      onChange,
-      customIndicator,
-      error,
-      displaySize,
-      label,
-      labelClassName,
-      required,
-      disabled,
-      scrollValidationErrorsIntoView,
-      requiredIndicator,
-      displayMode,
-      validationErrorsClassName,
-      labelId,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value,
-      validationErrorMessages,
-      validationErrorIcon: errorIcon,
-      validationMode,
-      onChange,
-      autoValidate,
-    });
+export const RadioGroup = <Id extends ArmstrongId>(props: IRadioGroupProps<Id> & { ref?: React.Ref<HTMLDivElement> }) => {
+  const {
+    bind,
+    options,
+    className,
+    value,
+    errorIcon,
+    validationMode,
+    validationErrorMessages,
+    onChange,
+    customIndicator,
+    error,
+    displaySize,
+    label,
+    labelClassName,
+    required,
+    disabled,
+    scrollValidationErrorsIntoView,
+    requiredIndicator,
+    displayMode,
+    validationErrorsClassName,
+    labelId,
+    autoValidate,
+    ref,
+    ...nativeProps
+  } = props;
+  const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+    value,
+    validationErrorMessages,
+    validationErrorIcon: errorIcon,
+    validationMode,
+    onChange,
+    autoValidate,
+  });
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-      inputDisplaySize: displaySize,
-      autoValidate: bindConfig.autoValidate,
-    });
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+    inputDisplaySize: displaySize,
+    autoValidate: bindConfig.autoValidate,
+  });
 
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindConfig.validate();
-      }
-      bindConfig.setTouched(true);
-    }, [boundValue]);
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindConfig.validate();
+    }
+    bindConfig.setTouched(true);
+  }, [boundValue]);
 
-    return (
-      <>
-        {label && (
-          <Label
-            id={labelId}
-            className={concat('arm-radio-group-label', labelClassName)}
-            required={required}
-            requiredIndicator={globals.requiredIndicator}
-            displaySize={globals.inputDisplaySize}
-          >
-            {label}
-          </Label>
-        )}
-        <RadixRadioGroup.Root
-          className={concat('arm-radio-group', className)}
-          data-error={error || !!validationErrorMessages?.length}
-          data-disabled={disabled}
-          data-size={displaySize}
-          data-mode={displayMode}
-          value={boundValue?.toString() ?? 'undefined'}
-          onValueChange={newValue =>
-            setBoundValue(
-              typeof boundValue === 'number' && newValue !== null && newValue !== undefined ? +newValue : newValue
-            )
-          }
-          disabled={disabled}
-          ref={ref}
-          {...nativeProps}
+  return (
+    <>
+      {label && (
+        <Label
+          id={labelId}
+          className={concat('arm-radio-group-label', labelClassName)}
+          required={required}
+          requiredIndicator={globals.requiredIndicator}
+          displaySize={globals.inputDisplaySize}
         >
-          {options.map((option, i) => {
-            const isChecked = boundValue === option.id;
-            const labelContent = getContentFromOption(option, isChecked);
-            return (
-              <div className="arm-radio-group-item-container" key={option.id}>
-                <RadixRadioGroup.Item
-                  {...(option.htmlProps ?? {})}
-                  className="arm-radio-group-item"
-                  value={option.id?.toString() ?? ''}
-                  id={option.id?.toString()}
-                  disabled={option.disabled}
-                  data-checked={isChecked}
-                  data-index={i}
-                >
-                  {displayMode === 'radio' ? (
-                    <RadixRadioGroup.Indicator
-                      className="arm-radio-group-item-indicator"
-                      data-custom-icon={!!customIndicator}
-                    >
-                      {isChecked && customIndicator}
-                    </RadixRadioGroup.Indicator>
-                  ) : (
-                    labelContent
-                  )}
-                </RadixRadioGroup.Item>
-                {displayMode === 'radio' && (
-                  <label className="arm-radio-label" htmlFor={option.id?.toString()}>
-                    {labelContent}
-                  </label>
+          {label}
+        </Label>
+      )}
+      <RadixRadioGroup.Root
+        className={concat('arm-radio-group', className)}
+        data-error={error || !!validationErrorMessages?.length}
+        data-disabled={disabled}
+        data-size={displaySize}
+        data-mode={displayMode}
+        value={boundValue?.toString() ?? 'undefined'}
+        onValueChange={newValue =>
+          setBoundValue(
+            typeof boundValue === 'number' && newValue !== null && newValue !== undefined ? +newValue : newValue
+          )
+        }
+        disabled={disabled}
+        ref={ref}
+        {...nativeProps}
+      >
+        {options.map((option, i) => {
+          const isChecked = boundValue === option.id;
+          const labelContent = getContentFromOption(option, isChecked);
+          return (
+            <div className="arm-radio-group-item-container" key={option.id}>
+              <RadixRadioGroup.Item
+                {...(option.htmlProps ?? {})}
+                className="arm-radio-group-item"
+                value={option.id?.toString() ?? ''}
+                id={option.id?.toString()}
+                disabled={option.disabled}
+                data-checked={isChecked}
+                data-index={i}
+              >
+                {displayMode === 'radio' ? (
+                  <RadixRadioGroup.Indicator
+                    className="arm-radio-group-item-indicator"
+                    data-custom-icon={!!customIndicator}
+                  >
+                    {isChecked && customIndicator}
+                  </RadixRadioGroup.Indicator>
+                ) : (
+                  labelContent
                 )}
-              </div>
-            );
-          })}
-        </RadixRadioGroup.Root>
-        {bindConfig.shouldShowValidationErrorMessage && !!bindConfig.validationErrorMessages.length && (
-          <ValidationErrors
-            validationErrors={bindConfig.validationErrorMessages}
-            className={concat('arm-radio-errors', validationErrorsClassName)}
-          />
-        )}
-      </>
-    );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
-
-RadioGroup.defaultProps = {
-  displayMode: 'radio',
+              </RadixRadioGroup.Item>
+              {displayMode === 'radio' && (
+                <label className="arm-radio-label" htmlFor={option.id?.toString()}>
+                  {labelContent}
+                </label>
+              )}
+            </div>
+          );
+        })}
+      </RadixRadioGroup.Root>
+      {bindConfig.shouldShowValidationErrorMessage && !!bindConfig.validationErrorMessages.length && (
+        <ValidationErrors
+          validationErrors={bindConfig.validationErrorMessages}
+          className={concat('arm-radio-errors', validationErrorsClassName)}
+        />
+      )}
+    </>
+  );
 };
+
 
 RadioGroup.displayName = 'RadioGroup';

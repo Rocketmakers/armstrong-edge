@@ -7,5 +7,5 @@ export type ArmstrongVFCProps<TProps, TRef> = React.PropsWithoutRef<TProps> & Re
 export type ArmstrongFCReturn = ReturnType<React.FC>;
 export type ArmstrongFCExtensions<TDefaultProps> = Pick<
   React.FC<TDefaultProps>,
-  'contextTypes' | 'defaultProps' | 'displayName' | 'propTypes'
+  'displayName' | 'propTypes'
 >;
