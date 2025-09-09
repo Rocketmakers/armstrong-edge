@@ -415,7 +415,6 @@ export const SingleDateTimeInput = (props: IDateOrTimeInputSingleProps<string | 
         onChange={newValue => setDate?.(formatDate(newValue as Date, compiledFormat))}
       />
     );
-  }
 };
 
 SingleDateTimeInput.displayName = 'SingleDateTimeInput';
@@ -539,7 +538,6 @@ export const RangeDateTimeInput = (props: IDateTimeInputRangeProps<string | null
         }}
       />
     );
-  }
 };
 
 RangeDateTimeInput.displayName = 'RangeDateTimeInput';
@@ -722,7 +720,6 @@ export const SingleDateAndTimeInput = (props: IDateAndTimeInputSingleProps<strin
         )}
       </div>
     );
-  }
 };
 
 SingleDateAndTimeInput.displayName = 'SingleDateAndTimeInput';

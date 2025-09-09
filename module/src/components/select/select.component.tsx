@@ -259,65 +259,58 @@ export interface IMultiSelectProps<Id extends ArmstrongId>
  * - Not exported because single and multi are exported separately
  */
 
-const ReactSelectComponent = React.forwardRef<
-  ReactSelectRef<ArmstrongId>,
-  (ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>) & {
-    multi: boolean;
-  }
->(
-  (
-    {
-      className,
-      bind,
-      options,
-      placeholder,
-      validationMode,
-      validationErrorMessages: errorMessages,
-      errorIcon,
-      ariaLabel,
-      currentValue,
-      onSelectOption,
-      getOptionValue,
-      clearable,
-      disabled,
-      searchable,
-      dropdownIcon,
-      loadingIcon,
-      selectedIcon,
-      position,
-      formatOptionLabel,
-      closeMenuOnSelect,
-      displaySize,
-      label,
-      required,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      statusPosition,
-      pending,
-      multi,
-      allowCreate,
-      createText,
-      onOptionCreated,
-      labelId,
-      labelClassName,
-      validationErrorsClassName,
-      statusClassName,
-      disableOnPending,
-      hideIconOnStatus,
-      leftOverlay,
-      autoValidate,
-      onInputChange,
-      inputValue,
-      caseSensitive,
-      filterOption,
-      isInModal,
-      inModalZIndex,
-      inModalPortalTarget,
-      noOptionsMessage,
-      ...nativeProps
-    },
-    ref
-  ) => {
+const ReactSelectComponent = (props: ((ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>) & { multi: boolean }) & { ref?: React.Ref<ReactSelectRef<ArmstrongId>> }) => {
+  const {
+    className,
+    bind,
+    options,
+    placeholder,
+    validationMode,
+    validationErrorMessages: errorMessages,
+    errorIcon,
+    ariaLabel,
+    currentValue,
+    onSelectOption,
+    getOptionValue,
+    clearable,
+    disabled,
+    searchable,
+    dropdownIcon,
+    loadingIcon,
+    selectedIcon,
+    position,
+    formatOptionLabel,
+    closeMenuOnSelect,
+    displaySize,
+    label,
+    required,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    statusPosition,
+    pending,
+    multi,
+    allowCreate,
+    createText,
+    onOptionCreated,
+    labelId,
+    labelClassName,
+    validationErrorsClassName,
+    statusClassName,
+    disableOnPending,
+    hideIconOnStatus,
+    leftOverlay,
+    autoValidate,
+    onInputChange,
+    inputValue,
+    caseSensitive,
+    filterOption,
+    isInModal,
+    inModalZIndex,
+    inModalPortalTarget,
+    noOptionsMessage,
+    ref,
+    ...nativeProps
+  } = props;
     const internalRef = React.useRef<ReactSelectRef<ArmstrongId>>(null);
     React.useImperativeHandle(ref, () => internalRef.current as ReactSelectRef<ArmstrongId>, [internalRef]);
 
@@ -573,8 +566,7 @@ const ReactSelectComponent = React.forwardRef<
         )}
       </div>
     );
-  }
-);
+};
 
 ReactSelectComponent.displayName = 'ReactSelect';
 
@@ -583,39 +575,37 @@ ReactSelectComponent.displayName = 'ReactSelect';
  * Native select export
  */
 
-export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectProps<ArmstrongId>>(
-  (
-    {
-      validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      errorIcon,
-      validationErrorMessages,
-      currentValue,
-      onSelectOption,
-      bind,
-      className,
-      displaySize,
-      label,
-      required,
-      options,
-      onChange,
-      placeholderOption,
-      placeholderOptionEnabled,
-      disabled,
-      statusPosition,
-      dropdownIcon,
-      labelId,
-      labelClassName,
-      validationErrorsClassName,
-      statusClassName,
-      hideIconOnStatus,
-      leftOverlay,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const NativeSelect = (props: INativeSelectProps<ArmstrongId> & { ref?: React.Ref<HTMLSelectElement> }) => {
+  const {
+    validationMode,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    errorIcon,
+    validationErrorMessages,
+    currentValue,
+    onSelectOption,
+    bind,
+    className,
+    displaySize,
+    label,
+    required,
+    options,
+    onChange,
+    placeholderOption,
+    placeholderOptionEnabled,
+    disabled,
+    statusPosition,
+    dropdownIcon,
+    labelId,
+    labelClassName,
+    validationErrorsClassName,
+    statusClassName,
+    hideIconOnStatus,
+    leftOverlay,
+    autoValidate,
+    ref,
+    ...nativeProps
+  } = props;
     const internalRef = React.useRef<HTMLSelectElement>(null);
     React.useImperativeHandle(ref, () => internalRef.current as HTMLSelectElement, [internalRef]);
 
@@ -740,11 +730,7 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
         )}
       </div>
     );
-  }
-) as (<Id extends ArmstrongId>(
-  props: ArmstrongVFCProps<INativeSelectProps<Id>, HTMLSelectElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<INativeSelectProps<ArmstrongId>>;
+};
 
 NativeSelect.displayName = 'NativeSelect';
 
@@ -753,12 +739,10 @@ NativeSelect.displayName = 'NativeSelect';
  * Single select export
  */
 
-export const Select = React.forwardRef<ReactSelectRef<ArmstrongId>, ISingleSelectProps<ArmstrongId>>((props, ref) => {
-  return <ReactSelectComponent {...props} multi={false} ref={ref} />;
-}) as (<Id extends ArmstrongId>(
-  props: ArmstrongVFCProps<ISingleSelectProps<Id>, ReactSelectRef<Id>>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ISingleSelectProps<ArmstrongId>>;
+export const Select = <Id extends ArmstrongId>(props: ISingleSelectProps<Id> & { ref?: React.Ref<ReactSelectRef<Id>> }) => {
+  const { ref, ...otherProps } = props;
+  return <ReactSelectComponent {...otherProps} multi={false} ref={ref} />;
+};
 
 Select.displayName = 'Select';
 
@@ -766,13 +750,9 @@ Select.displayName = 'Select';
  * Multi select export
  */
 
-export const MultiSelect = React.forwardRef<ReactSelectRef<ArmstrongId>, IMultiSelectProps<ArmstrongId>>(
-  (props, ref) => {
-    return <ReactSelectComponent {...props} multi={true} ref={ref} />;
-  }
-) as (<Id extends ArmstrongId>(
-  props: ArmstrongVFCProps<IMultiSelectProps<Id>, ReactSelectRef<Id>>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IMultiSelectProps<ArmstrongId>>;
+export const MultiSelect = <Id extends ArmstrongId>(props: IMultiSelectProps<Id> & { ref?: React.Ref<ReactSelectRef<Id>> }) => {
+  const { ref, ...otherProps } = props;
+  return <ReactSelectComponent {...otherProps} multi={true} ref={ref} />;
+};
 
 MultiSelect.displayName = 'MultiSelect';
