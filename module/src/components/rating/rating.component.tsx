@@ -32,14 +32,14 @@ export interface IRatingPartProps
   readOnly?: boolean;
 }
 
-const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
-  ({ index, value, onSelectPart, filledIcon, emptyIcon, step, mode, readOnly, disabled }, ref) => {
-    const steps = Math.floor(1 / (step || 1));
+const RatingPart = (props: IRatingPartProps & { ref?: React.Ref<HTMLDivElement> }) => {
+  const { index, value, onSelectPart, filledIcon, emptyIcon, step, mode, readOnly, disabled, ref } = props;
+  const steps = Math.floor(1 / (step || 1));
 
-    const isFilled = value && value >= index + 1;
-    const isPart = value && value < index + 1 && value > index;
+  const isFilled = value && value >= index + 1;
+  const isPart = value && value < index + 1 && value > index;
 
-    return (
+  return (
       <div
         ref={ref}
         className="arm-rating-part"
@@ -109,8 +109,7 @@ const RatingPart = React.forwardRef<HTMLDivElement, IRatingPartProps>(
         )}
       </div>
     );
-  }
-);
+};
 
 RatingPart.displayName = 'RatingPart';
 
@@ -171,41 +170,39 @@ export interface IRatingProps<TBind extends NullOrUndefined<number>>
   autoValidate?: boolean;
 }
 
-export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefined<number>>>(
-  (
-    {
-      bind,
-      value,
-      onValueChange,
-      filledIcon,
-      emptyIcon,
-      maximum,
-      className,
-      validationErrorMessages,
-      validationMode,
-      errorIcon,
-      scrollValidationErrorsIntoView,
-      step,
-      error,
-      statusPosition,
-      pending,
-      leftOverlay,
-      rightOverlay,
-      mode,
-      disabled,
-      statusClassName,
-      validationErrorsClassName,
-      labelClassName,
-      labelId,
-      label,
-      required,
-      requiredIndicator,
-      displaySize,
-      autoValidate,
-      ...htmlProps
-    },
-    ref
-  ) => {
+export const Rating = <TBind extends NullOrUndefined<number>>(props: IRatingProps<TBind> & { ref?: React.Ref<HTMLDivElement> }) => {
+  const {
+    bind,
+    value,
+    onValueChange,
+    filledIcon,
+    emptyIcon,
+    maximum,
+    className,
+    validationErrorMessages,
+    validationMode,
+    errorIcon,
+    scrollValidationErrorsIntoView,
+    step,
+    error,
+    statusPosition,
+    pending,
+    leftOverlay,
+    rightOverlay,
+    mode,
+    disabled,
+    statusClassName,
+    validationErrorsClassName,
+    labelClassName,
+    labelId,
+    label,
+    required,
+    requiredIndicator,
+    displaySize,
+    autoValidate,
+    ref,
+    ...htmlProps
+  } = props;
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       onChange: onValueChange,
@@ -311,13 +308,7 @@ export const Rating = React.forwardRef<HTMLDivElement, IRatingProps<NullOrUndefi
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<number>>(
-  props: ArmstrongVFCProps<IRatingProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IRatingProps<NullOrUndefined<number>>>;
+};
 
 
 Rating.displayName = 'Rating';

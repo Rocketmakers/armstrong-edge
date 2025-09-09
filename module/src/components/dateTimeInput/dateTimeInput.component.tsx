@@ -270,29 +270,27 @@ const CenteredHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   );
 };
 
-export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTimeInputSingleProps<string | null>>(
-  (
-    {
-      config,
-      selectsRange,
-      className,
-      bind,
-      value,
-      onChange,
-      validationErrorMessages,
-      monthSelectVariant,
-      mode,
-      native,
-      format,
-      locale,
-      statusClassName,
-      autoValidate,
-      showCalendarOnLeftOverlayClick,
-      onBlur,
-      ...inputProps
-    },
-    ref
-  ) => {
+export const SingleDateTimeInput = (props: IDateOrTimeInputSingleProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const {
+    config,
+    selectsRange,
+    className,
+    bind,
+    value,
+    onChange,
+    validationErrorMessages,
+    monthSelectVariant,
+    mode,
+    native,
+    format,
+    locale,
+    statusClassName,
+    autoValidate,
+    showCalendarOnLeftOverlayClick,
+    onBlur,
+    ref,
+    ...inputProps
+  } = props;
     const datePickerRef = React.useRef<ReactDatePicker>(null);
 
     const [date, setDate, bindDateConfig] = useBindingState(bind, {
@@ -418,32 +416,30 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       />
     );
   }
-);
+};
 
 SingleDateTimeInput.displayName = 'SingleDateTimeInput';
 
 
-export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputRangeProps<string | null>>(
-  (
-    {
-      config,
-      selectsRange,
-      startBind,
-      endBind,
-      startValue,
-      endValue,
-      className,
-      onChange,
-      validationErrorMessages,
-      native,
-      format,
-      locale,
-      autoValidate,
-      showCalendarOnLeftOverlayClick,
-      ...inputProps
-    },
-    ref
-  ) => {
+export const RangeDateTimeInput = (props: IDateTimeInputRangeProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const {
+    config,
+    selectsRange,
+    startBind,
+    endBind,
+    startValue,
+    endValue,
+    className,
+    onChange,
+    validationErrorMessages,
+    native,
+    format,
+    locale,
+    autoValidate,
+    showCalendarOnLeftOverlayClick,
+    ref,
+    ...inputProps
+  } = props;
     const datePickerRef = React.useRef<ReactDatePicker<never, true>>(null);
 
     const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
@@ -544,60 +540,57 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
       />
     );
   }
-);
+};
 
 RangeDateTimeInput.displayName = 'RangeDateTimeInput';
 
 
-const NativeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputNativeProps<string | null>>(
-  ({ mode, selectsRange, native, ...props }, ref) => {
-    return <Input ref={ref} type={mode === 'date-time' ? 'datetime-local' : mode} {...props} />;
-  }
-);
+const NativeDateTimeInput = (props: IDateTimeInputNativeProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const { mode, selectsRange, native, ref, ...otherProps } = props;
+  return <Input ref={ref} type={mode === 'date-time' ? 'datetime-local' : mode} {...otherProps} />;
+};
 
 NativeDateTimeInput.displayName = 'NativeDateTimeInput';
 
-export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAndTimeInputSingleProps<string | null>>(
-  (
-    {
-      className,
-      bind,
-      mode,
-      validationErrorMessages,
-      disableOnPending,
-      hideIconOnStatus,
-      displaySize,
-      statusPosition,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationMode,
-      errorIcon,
-      validationErrorsClassName,
-      value,
-      onChange,
-      dateInputConfig,
-      timeInputConfig,
-      format,
-      locale,
-      disabled,
-      required,
-      dateInputProps = {},
-      timeInputProps = {},
-      timeInputDisplayFormat,
-      dateInputDisplayFormat,
-      timeInputRef,
-      selectsRange,
-      native,
-      monthSelectVariant,
-      error,
-      label,
-      labelId,
-      labelClassName,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const SingleDateAndTimeInput = (props: IDateAndTimeInputSingleProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const {
+    className,
+    bind,
+    mode,
+    validationErrorMessages,
+    disableOnPending,
+    hideIconOnStatus,
+    displaySize,
+    statusPosition,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    validationMode,
+    errorIcon,
+    validationErrorsClassName,
+    value,
+    onChange,
+    dateInputConfig,
+    timeInputConfig,
+    format,
+    locale,
+    disabled,
+    required,
+    dateInputProps = {},
+    timeInputProps = {},
+    timeInputDisplayFormat,
+    dateInputDisplayFormat,
+    timeInputRef,
+    selectsRange,
+    native,
+    monthSelectVariant,
+    error,
+    label,
+    labelId,
+    labelClassName,
+    autoValidate,
+    ref,
+    ...nativeProps
+  } = props;
     const [dateTime, setDateTime, bindConfig] = useBindingState(bind, {
       validationErrorMessages,
       value,
@@ -730,31 +723,25 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
       </div>
     );
   }
-);
+};
 
 SingleDateAndTimeInput.displayName = 'SingleDateAndTimeInput';
 
 
 /** third-party docs: https://reactdatepicker.com */
-export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputProps<string | null>>(
-  (props, ref) => {
-    if (props.selectsRange) {
-      return <RangeDateTimeInput ref={ref} {...props} />;
-    }
-    if (props.native) {
-      return <NativeDateTimeInput ref={ref} {...props} />;
-    }
-    if (props.mode === 'date-time') {
-      return <SingleDateAndTimeInput ref={ref} {...props} />;
-    }
-    return <SingleDateTimeInput ref={ref} {...props} />;
+export const DateTimeInput = <TValue extends NullOrUndefined<string>>(props: DateTimeInputProps<TValue> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const { ref, ...otherProps } = props;
+  if (props.selectsRange) {
+    return <RangeDateTimeInput ref={ref} {...otherProps} />;
   }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TValue extends NullOrUndefined<string>>(
-  props: ArmstrongFCProps<DateTimeInputProps<TValue>, HTMLInputElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<DateTimeInputProps<string>>;
+  if (props.native) {
+    return <NativeDateTimeInput ref={ref} {...otherProps} />;
+  }
+  if (props.mode === 'date-time') {
+    return <SingleDateAndTimeInput ref={ref} {...otherProps} />;
+  }
+  return <SingleDateTimeInput ref={ref} {...otherProps} />;
+};
 
 DateTimeInput.displayName = 'DateTimeInput';
 
