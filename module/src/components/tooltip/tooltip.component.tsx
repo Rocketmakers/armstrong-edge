@@ -48,34 +48,33 @@ export interface ITooltipProps
   side?: 'top' | 'right' | 'bottom' | 'left';
 }
 
-export const Tooltip = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ITooltipProps>>(
-  ({ children, content, delay, open, onOpenChange, showArrow, className, arrowClassName, side, ...props }, ref) => {
-    const { tooltipDelay, tooltipShowArrow, tooltipSide } = useArmstrongConfig({
-      tooltipDelay: delay,
-      tooltipShowArrow: showArrow,
-      tooltipSide: side,
-    });
+export const Tooltip = (props: React.PropsWithChildren<ITooltipProps & { ref?: React.Ref<HTMLDivElement> }>) => {
+  const { children, content, delay, open, onOpenChange, showArrow, className, arrowClassName, side, ref, ...otherProps } = props;
+  const { tooltipDelay, tooltipShowArrow, tooltipSide } = useArmstrongConfig({
+    tooltipDelay: delay,
+    tooltipShowArrow: showArrow,
+    tooltipSide: side,
+  });
 
-    return (
-      <RadixTooltip.Provider delayDuration={tooltipDelay}>
-        <RadixTooltip.Root open={open} onOpenChange={onOpenChange}>
-          <RadixTooltip.Trigger asChild>{children}</RadixTooltip.Trigger>
-          <RadixTooltip.Portal>
-            <RadixTooltip.Content
-              ref={ref}
-              className={concat(className, 'arm-tooltip-content')}
-              side={tooltipSide}
-              {...props}
-            >
-              {content}
-              {tooltipShowArrow && <RadixTooltip.Arrow className={concat(arrowClassName, 'arm-tooltip-arrow')} />}
-            </RadixTooltip.Content>
-          </RadixTooltip.Portal>
-        </RadixTooltip.Root>
-      </RadixTooltip.Provider>
-    );
-  }
-);
+  return (
+    <RadixTooltip.Provider delayDuration={tooltipDelay}>
+      <RadixTooltip.Root open={open} onOpenChange={onOpenChange}>
+        <RadixTooltip.Trigger asChild>{children}</RadixTooltip.Trigger>
+        <RadixTooltip.Portal>
+          <RadixTooltip.Content
+            ref={ref}
+            className={concat(className, 'arm-tooltip-content')}
+            side={tooltipSide}
+            {...otherProps}
+          >
+            {content}
+            {tooltipShowArrow && <RadixTooltip.Arrow className={concat(arrowClassName, 'arm-tooltip-arrow')} />}
+          </RadixTooltip.Content>
+        </RadixTooltip.Portal>
+      </RadixTooltip.Root>
+    </RadixTooltip.Provider>
+  );
+};
 
 Tooltip.displayName = 'Tooltip';
 

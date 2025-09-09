@@ -90,126 +90,120 @@ export interface ICheckboxListProps<Id extends ArmstrongId>
 }
 
 /** Render a list of radio inputs which binds to a single string */
-export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<ArmstrongId>>(
-  (
-    {
-      bind,
-      options,
-      className,
-      value,
-      errorIcon,
-      validationMode,
-      validationErrorMessages,
-      onChange,
-      customIndicator,
-      error,
-      displaySize,
-      label,
-      labelClassName,
-      labelId,
-      required,
-      disabled,
-      scrollValidationErrorsIntoView,
-      validationErrorsClassName,
-      requiredIndicator,
-      autoValidate,
-      ...nativeProps
+export const CheckboxList = <Id extends ArmstrongId>(props: ICheckboxListProps<Id> & { ref?: React.Ref<HTMLDivElement> }) => {
+  const {
+    bind,
+    options,
+    className,
+    value,
+    errorIcon,
+    validationMode,
+    validationErrorMessages,
+    onChange,
+    customIndicator,
+    error,
+    displaySize,
+    label,
+    labelClassName,
+    labelId,
+    required,
+    disabled,
+    scrollValidationErrorsIntoView,
+    validationErrorsClassName,
+    requiredIndicator,
+    autoValidate,
+    ref,
+    ...nativeProps
+  } = props;
+  const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+    value,
+    validationErrorMessages,
+    validationErrorIcon: errorIcon,
+    validationMode,
+    onChange,
+    autoValidate,
+  });
+
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+    inputDisplaySize: displaySize,
+    autoValidate: bindConfig.autoValidate,
+  });
+
+  const onCheckedChange = React.useCallback(
+    (option: typeof options[0], newValue: boolean) => {
+      // Always mapping the bound value from the original array of options.
+      // It's a bit more cumbersome, but it means that the bound value ids will always be in the same order as the options, which is what you'd expect as a consuming app.
+      const newBoundValue = options.reduce((arr, op) => {
+        const isSelectedOption = op.id === option.id;
+        const isCurrentlyBound = boundValue?.includes(op.id);
+        const addIfCurrentlyBound = !isSelectedOption || newValue;
+        const addIfNotCurrentlyBound = isSelectedOption && newValue;
+        const shouldAdd = isCurrentlyBound ? addIfCurrentlyBound : addIfNotCurrentlyBound;
+        return [...arr, ...(shouldAdd ? [op.id] : [])];
+      }, [] as ArmstrongId[]);
+      setBoundValue?.(newBoundValue);
     },
-    ref
-  ) => {
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value,
-      validationErrorMessages,
-      validationErrorIcon: errorIcon,
-      validationMode,
-      onChange,
-      autoValidate,
-    });
+    [setBoundValue, boundValue, options]
+  );
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-      inputDisplaySize: displaySize,
-      autoValidate: bindConfig.autoValidate,
-    });
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindConfig.validate();
+    }
+    bindConfig.setTouched(true);
+  }, [boundValue]);
 
-    const onCheckedChange = React.useCallback(
-      (option: typeof options[0], newValue: boolean) => {
-        // Always mapping the bound value from the original array of options.
-        // It's a bit more cumbersome, but it means that the bound value ids will always be in the same order as the options, which is what you'd expect as a consuming app.
-        const newBoundValue = options.reduce((arr, op) => {
-          const isSelectedOption = op.id === option.id;
-          const isCurrentlyBound = boundValue?.includes(op.id);
-          const addIfCurrentlyBound = !isSelectedOption || newValue;
-          const addIfNotCurrentlyBound = isSelectedOption && newValue;
-          const shouldAdd = isCurrentlyBound ? addIfCurrentlyBound : addIfNotCurrentlyBound;
-          return [...arr, ...(shouldAdd ? [op.id] : [])];
-        }, [] as ArmstrongId[]);
-        setBoundValue?.(newBoundValue);
-      },
-      [setBoundValue, boundValue, options]
-    );
-
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindConfig.validate();
-      }
-      bindConfig.setTouched(true);
-    }, [boundValue]);
-
-    return (
-      <>
-        {label && (
-          <Label
-            id={labelId}
-            className={concat('arm-checkbox-list-label', labelClassName)}
-            required={required}
-            requiredIndicator={globals.requiredIndicator}
-            displaySize={globals.inputDisplaySize}
-          >
-            {label}
-          </Label>
-        )}
-        <div
-          className={concat('arm-checkbox-list', className)}
-          ref={ref}
-          data-error={error || !!validationErrorMessages?.length}
-          data-disabled={disabled}
-          data-size={globals.inputDisplaySize}
-          {...nativeProps}
+  return (
+    <>
+      {label && (
+        <Label
+          id={labelId}
+          className={concat('arm-checkbox-list-label', labelClassName)}
+          required={required}
+          requiredIndicator={globals.requiredIndicator}
+          displaySize={globals.inputDisplaySize}
         >
-          {options.map(option => {
-            const isChecked = boundValue?.includes(option.id);
-            return (
-              <Checkbox
-                customIndicator={customIndicator}
-                {...(option.htmlProps ?? {})}
-                key={option.id}
-                className="arm-checkbox-list-item"
-                checked={isChecked}
-                displaySize={globals.inputDisplaySize}
-                onCheckedChange={v => onCheckedChange(option, v)}
-                disabled={disabled || option.disabled}
-                label={getContentFromOption(option, isChecked)}
-              />
-            );
-          })}
-          {bindConfig.shouldShowValidationErrorMessage && !!bindConfig.validationErrorMessages.length && (
-            <ValidationErrors
-              validationErrors={bindConfig.validationErrorMessages}
-              scrollIntoView={globals.scrollValidationErrorsIntoView}
-              className={concat('arm-checkbox-list-errors', validationErrorsClassName)}
+          {label}
+        </Label>
+      )}
+      <div
+        className={concat('arm-checkbox-list', className)}
+        ref={ref}
+        data-error={error || !!validationErrorMessages?.length}
+        data-disabled={disabled}
+        data-size={globals.inputDisplaySize}
+        {...nativeProps}
+      >
+        {options.map(option => {
+          const isChecked = boundValue?.includes(option.id);
+          return (
+            <Checkbox
+              customIndicator={customIndicator}
+              {...(option.htmlProps ?? {})}
+              key={option.id}
+              className="arm-checkbox-list-item"
+              checked={isChecked}
+              displaySize={globals.inputDisplaySize}
+              onCheckedChange={v => onCheckedChange(option, v)}
+              disabled={disabled || option.disabled}
+              label={getContentFromOption(option, isChecked)}
             />
-          )}
-        </div>
-      </>
-    );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICheckboxListProps<ArmstrongId>>;
+          );
+        })}
+        {bindConfig.shouldShowValidationErrorMessage && !!bindConfig.validationErrorMessages.length && (
+          <ValidationErrors
+            validationErrors={bindConfig.validationErrorMessages}
+            scrollIntoView={globals.scrollValidationErrorsIntoView}
+            className={concat('arm-checkbox-list-errors', validationErrorsClassName)}
+          />
+        )}
+      </div>
+    </>
+  );
+};
 
 CheckboxList.displayName = 'CheckboxList';
