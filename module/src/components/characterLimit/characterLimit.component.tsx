@@ -38,22 +38,20 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
-export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitProps<NullOrUndefined<string>>>(
-  (
-    {
-      bind,
-      limit,
-      shouldEnforce,
-      value,
-      className,
-      validationErrorIcon,
-      validationErrorsClassName,
-      validationErrorsTitle,
-      validationMode,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const CharacterLimit = (props: React.PropsWithChildren<ICharacterLimitProps<NullOrUndefined<string>> & { ref?: React.Ref<HTMLDivElement> }>) => {
+  const {
+    bind,
+    limit,
+    shouldEnforce,
+    value,
+    className,
+    validationErrorIcon,
+    validationErrorsClassName,
+    validationErrorsTitle,
+    validationMode,
+    ref,
+    ...nativeProps
+  } = props;
     const globals = useArmstrongConfig({
       validationErrorIcon,
       validationMode,
@@ -84,12 +82,11 @@ export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitPr
         )}
       </div>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
-  props: ArmstrongFCProps<ICharacterLimitProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>;
+};
+
+// Type assertion for generic support - updated for React 19 ref as prop pattern
+(CharacterLimit as any) = (CharacterLimit as (<TBind extends NullOrUndefined<string>>(
+  props: React.PropsWithChildren<ICharacterLimitProps<TBind> & { ref?: React.Ref<HTMLDivElement> }>
+) => React.ReactElement) & ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>);
 
 CharacterLimit.displayName = 'CharacterLimit';

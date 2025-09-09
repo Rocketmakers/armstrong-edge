@@ -17,29 +17,28 @@ export interface ISpinnerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'la
 }
 
 /** Renders a spinner centred in the div that's being wrapped */
-export const Spinner = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ISpinnerProps>>(
-  ({ children, className, icon, fillContainer, label, ...HTMLProps }, ref) => {
-    const { spinnerIcon } = useArmstrongConfig({ spinnerIcon: icon });
-    return (
-      <div
-        ref={ref}
-        className={concat('arm-spinner', className)}
-        data-fill-container={fillContainer}
-        role="status"
-        aria-busy={true}
-        aria-label="Loading..."
-        {...HTMLProps}
-      >
-        <div className="arm-spinner-inner">{children || spinnerIcon}</div>
-        {label && (
-          <div className="arm-spinner-label">
-            <span>{label}</span>
-          </div>
-        )}
-      </div>
-    );
-  }
-);
+export const Spinner = (props: React.PropsWithChildren<ISpinnerProps & { ref?: React.Ref<HTMLDivElement> }>) => {
+  const { children, className, icon, fillContainer, label, ref, ...HTMLProps } = props;
+  const { spinnerIcon } = useArmstrongConfig({ spinnerIcon: icon });
+  return (
+    <div
+      ref={ref}
+      className={concat('arm-spinner', className)}
+      data-fill-container={fillContainer}
+      role="status"
+      aria-busy={true}
+      aria-label="Loading..."
+      {...HTMLProps}
+    >
+      <div className="arm-spinner-inner">{children || spinnerIcon}</div>
+      {label && (
+        <div className="arm-spinner-label">
+          <span>{label}</span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 Spinner.displayName = 'Spinner';
 
