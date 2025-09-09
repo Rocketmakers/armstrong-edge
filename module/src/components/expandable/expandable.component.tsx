@@ -43,6 +43,3 @@ export const Expandable = React.forwardRef<HTMLDivElement, React.PropsWithChildr
 
 Expandable.displayName = 'Expandable';
 
-Expandable.defaultProps = {
-  animate: true,
-};

@@ -22,8 +22,8 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   /** (Optional) A TData value representing the value of the input. */
   value?: TData;
 
-  /** (Optional) A custom JSX.Element for the thumb of the slider. */
-  customThumb?: JSX.Element;
+  /** (Optional) A custom React.ReactElement for the thumb of the slider. */
+  customThumb?: React.ReactElement;
 
   /** (Optional) A boolean flag to disable the checkbox input. */
   disabled?: boolean;

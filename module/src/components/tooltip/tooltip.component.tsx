@@ -79,6 +79,3 @@ export const Tooltip = React.forwardRef<HTMLDivElement, React.PropsWithChildren<
 
 Tooltip.displayName = 'Tooltip';
 
-Tooltip.defaultProps = {
-  sideOffset: 5,
-};

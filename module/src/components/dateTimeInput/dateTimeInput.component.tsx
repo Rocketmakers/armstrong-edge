@@ -422,10 +422,6 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
 
 SingleDateTimeInput.displayName = 'SingleDateTimeInput';
 
-SingleDateTimeInput.defaultProps = {
-  locale: defaultLocale,
-  showCalendarOnLeftOverlayClick: true,
-};
 
 export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputRangeProps<string | null>>(
   (
@@ -552,12 +548,6 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
 
 RangeDateTimeInput.displayName = 'RangeDateTimeInput';
 
-RangeDateTimeInput.defaultProps = {
-  leftOverlay: <FaRegCalendar />,
-  format: defaultDateFormat,
-  locale: defaultLocale,
-  showCalendarOnLeftOverlayClick: true,
-};
 
 const NativeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputNativeProps<string | null>>(
   ({ mode, selectsRange, native, ...props }, ref) => {
@@ -744,12 +734,6 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
 
 SingleDateAndTimeInput.displayName = 'SingleDateAndTimeInput';
 
-SingleDateAndTimeInput.defaultProps = {
-  format: defaultDateAndTimeFormat,
-  locale: defaultLocale,
-  timeInputDisplayFormat: defaultTimeFormat,
-  dateInputDisplayFormat: defaultDateFormat,
-};
 
 /** third-party docs: https://reactdatepicker.com */
 export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputProps<string | null>>(
@@ -774,8 +758,3 @@ export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputPro
 
 DateTimeInput.displayName = 'DateTimeInput';
 
-DateTimeInput.defaultProps = {
-  selectsRange: false,
-  mode: 'date',
-  native: false,
-};

@@ -52,7 +52,7 @@ export function useDebounceEffect<TFunc extends (...params: unknown[]) => unknow
   ms: number,
   deps: React.DependencyList
 ) {
-  const throttleRef = React.useRef<NodeJS.Timeout>();
+  const throttleRef = React.useRef<NodeJS.Timeout | undefined>(undefined);
 
   useDidUpdateEffect(() => {
     if (throttleRef.current) {

@@ -16,7 +16,7 @@ export function useResizeObserver(
   optionsInput?: ResizeObserverOptions,
   ref?: React.MutableRefObject<Element | undefined | null>
 ) {
-  const observer = React.useRef<ResizeObserver>();
+  const observer = React.useRef<ResizeObserver | undefined>(undefined);
   const options = useContentMemo(optionsInput);
 
   const observe = React.useCallback(

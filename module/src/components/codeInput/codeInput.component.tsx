@@ -15,7 +15,7 @@ import { getLengthFromPart } from './codeInput.utils';
 
 import './codeInput.theme.css';
 
-export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> extends ITextInputProps<TBind> {
+export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> extends Omit<ITextInputProps<TBind>, 'part'> {
   /** The given length of this part. If this is a string, the string will be rendered. */
   part: CodeInputPartDefinition<TBind>;
 }

@@ -18,7 +18,7 @@ export interface IStatusWrapperProps {
   validationMode?: FormValidationMode;
 
   /** the icon to use for validation errors */
-  errorIcon?: JSX.Element;
+  errorIcon?: React.ReactElement;
 
   /** an optional CSS className for the rendered status */
   className?: string;

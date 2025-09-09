@@ -56,8 +56,8 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
   /** show an error state icon on the component (will be true automatically if validationErrorMessages are passed in or errors are in the binder) */
   error?: boolean;
 
-  /** (Optional) A custom JSX.Element for the checked indicator. */
-  customIndicator?: JSX.Element;
+  /** (Optional) A custom React.ReactElement for the checked indicator. */
+  customIndicator?: React.ReactElement;
 
   /** which size variant to use */
   displaySize?: DisplaySize;
@@ -215,8 +215,5 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
 ) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
 
-RadioGroup.defaultProps = {
-  displayMode: 'radio',
-};
 
 RadioGroup.displayName = 'RadioGroup';
