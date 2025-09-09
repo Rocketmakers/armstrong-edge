@@ -14,32 +14,31 @@ export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProp
 }
 
 /** A div which will automatically resize depending on the size of its children */
-export const Expandable = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IExpandableProps>>(
-  ({ className, children, style, animate, isOpen, ...nativeProps }, ref) => {
-    const contentRef = React.useRef<HTMLDivElement>(null);
-    const [{ height }] = useBoundingClientRect(contentRef);
+export const Expandable = (props: React.PropsWithChildren<IExpandableProps & { ref?: React.Ref<HTMLDivElement> }>) => {
+  const { className, children, style, animate, isOpen, ref, ...nativeProps } = props;
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const [{ height }] = useBoundingClientRect(contentRef);
 
-    return (
-      <div
-        {...nativeProps}
-        className={concat('arm-expandable', className)}
-        style={
-          {
-            ...(animate ? { '--arm-expandable-height': `${height}px` } : {}),
-            ...(style || {}),
-          } as React.CSSProperties
-        }
-        data-animate={!!animate}
-        data-is-open={!!isOpen}
-        ref={ref}
-      >
-        <div ref={contentRef} className="arm-expandable-content">
-          {children}
-        </div>
+  return (
+    <div
+      {...nativeProps}
+      className={concat('arm-expandable', className)}
+      style={
+        {
+          ...(animate ? { '--arm-expandable-height': `${height}px` } : {}),
+          ...(style || {}),
+        } as React.CSSProperties
+      }
+      data-animate={!!animate}
+      data-is-open={!!isOpen}
+      ref={ref}
+    >
+      <div ref={contentRef} className="arm-expandable-content">
+        {children}
       </div>
-    );
-  }
-);
+    </div>
+  );
+};
 
 Expandable.displayName = 'Expandable';
 
