@@ -1,4 +1,4 @@
-[![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest) [![storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://github.com/storybookjs)
+[![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest) [![storybook](https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg)](https://github.com/storybookjs) [![blazingly fast](https://blazingly.fast/api/badge.svg?repo=rocketmakers%2Farmstrong-edge)](https://blazingly.fast)
 
 ![armstrong logo](https://raw.githubusercontent.com/Rocketmakers/armstrong-edge/main/docs/assets/armstrong-logo.svg)
 
