@@ -46,16 +46,16 @@ export interface IArmstrongConfig {
   requiredIndicator?: React.ReactNode;
 
   /** the icon to use for the validation errors */
-  validationErrorIcon?: JSX.Element;
+  validationErrorIcon?: React.ReactElement;
 
   /** the icon to use for the spinner */
-  spinnerIcon?: JSX.Element;
+  spinnerIcon?: React.ReactElement;
 
   /** the element to portal global overlays to (like toast and modal), defaults to the body element */
   globalPortalTo?: Element;
 
   /** the icon to use for the dialog close button */
-  dialogCloseButtonIcon?: JSX.Element | false;
+  dialogCloseButtonIcon?: React.ReactElement | false;
 
   /** how long ot show toast messages for in ms, defaults to 5000 */
   toastDuration?: number;
@@ -64,7 +64,7 @@ export interface IArmstrongConfig {
   toastPosition?: ToastPosition;
 
   /** the icon to use for the dialog close button */
-  toastCloseButtonIcon?: JSX.Element | false;
+  toastCloseButtonIcon?: React.ReactElement | false;
 
   /** whether to add toasts to a stack or display one at a time */
   toastDisplayMode?: ToastDisplayMode;
@@ -72,11 +72,11 @@ export interface IArmstrongConfig {
   /** ignore toasts if an existing toast matches this predicate */
   toastIgnorePredicate?: (existingToasts: IToast[], incomingToast: IToast) => boolean;
 
-  /** A custom JSX.Element for the checked indicator. (Optional) */
-  checkboxCustomIndicator?: JSX.Element;
+  /** A custom React.ReactElement for the checked indicator. (Optional) */
+  checkboxCustomIndicator?: React.ReactElement;
 
-  /** A custom JSX.Element for the indeterminate state indicator. (Optional) */
-  checkboxCustomIndeterminateIndicator?: JSX.Element;
+  /** A custom React.ReactElement for the indeterminate state indicator. (Optional) */
+  checkboxCustomIndeterminateIndicator?: React.ReactElement;
 
   /** How long in ms to wait after hover before displaying the tooltip, defaults to 700 */
   tooltipDelay?: number;

@@ -7,10 +7,7 @@ import { Spinner } from '../spinner/spinner.component';
 
 import './button.theme.css';
 
-type ButtonHTMLProps = Omit<
-  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
-  'ref'
->;
+type ButtonHTMLProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
 export type ButtonDisplayStyle = 'primary' | 'secondary' | 'outline' | 'blank' | CustomString;
 export type ButtonDisplayStatus = 'normal' | 'positive' | 'negative' | 'warning' | 'info' | CustomString;
@@ -41,14 +38,14 @@ export interface IButtonProps extends ButtonHTMLProps {
   displayStatus?: ButtonDisplayStatus;
 
   /** icon definition for left icon, optionally uses custom JSX */
-  leftOverlay?: JSX.Element;
+  leftOverlay?: React.ReactElement;
 
   /** icon definition for right icon, optionally uses custom JSX */
-  rightOverlay?: JSX.Element;
+  rightOverlay?: React.ReactElement;
 }
 
 /** Renders an HTML button element with some useful additions */
-export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<IButtonProps>>((props, ref) => {
+export const Button = (props: React.PropsWithChildren<IButtonProps>) => {
   const {
     className,
     disabled,
@@ -56,11 +53,12 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
     displaySize,
     displayStatus,
     pending,
-    pendingPosition,
+    pendingPosition = 'right',
     disableOnPending,
     leftOverlay,
     rightOverlay,
     children,
+    ref,
     ...nativeProps
   } = props;
 
@@ -95,10 +93,6 @@ export const Button = React.forwardRef<HTMLButtonElement, React.PropsWithChildre
       {pending && globals.buttonPendingPosition === 'right' ? spinner : wrappedRightIcon}
     </button>
   );
-});
-
-Button.defaultProps = {
-  pendingPosition: 'right',
 };
 
 Button.displayName = 'Button';

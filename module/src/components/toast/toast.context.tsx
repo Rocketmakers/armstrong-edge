@@ -74,7 +74,7 @@ interface IToastProviderProps {
   position?: ToastPosition;
 
   /** the icon to use for the dialog close button */
-  closeButtonIcon?: JSX.Element | false;
+  closeButtonIcon?: React.ReactElement | false;
 
   /** whether to add toasts to a stack or display one at a time */
   displayMode?: ToastDisplayMode;

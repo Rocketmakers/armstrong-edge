@@ -58,121 +58,118 @@ export interface IInputWrapperProps extends IStatusWrapperProps {
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
-export const InputWrapper = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IInputWrapperProps>>(
-  (
-    {
-      className,
-      children,
-      leftOverlay,
-      rightOverlay,
-      validationMode,
-      validationErrorMessages,
-      errorIcon,
-      disabled,
-      pending,
-      error,
-      statusPosition,
-      hideIconOnStatus,
-      disableOnPending,
-      scrollValidationErrorsIntoView,
-      statusClassName,
-      validationErrorsClassName,
-      label,
-      required,
-      requiredIndicator,
-      labelClassName,
-      labelId,
-      displaySize,
-      ...nativeProps
-    },
-    ref
-  ) => {
-    const globals = useArmstrongConfig({
-      validationMode,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
-      disableControlOnPending: disableOnPending,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      inputStatusPosition: statusPosition,
-      validationErrorIcon: errorIcon,
-      inputDisplaySize: displaySize,
-    });
+export const InputWrapper = (props: React.PropsWithChildren<IInputWrapperProps & { ref?: React.Ref<HTMLDivElement> }>) => {
+  const {
+    className,
+    children,
+    leftOverlay,
+    rightOverlay,
+    validationMode,
+    validationErrorMessages,
+    errorIcon,
+    disabled,
+    pending,
+    error,
+    statusPosition,
+    hideIconOnStatus,
+    disableOnPending,
+    scrollValidationErrorsIntoView,
+    statusClassName,
+    validationErrorsClassName,
+    label,
+    required,
+    requiredIndicator,
+    labelClassName,
+    labelId,
+    displaySize,
+    ref,
+    ...nativeProps
+  } = props;
+  const globals = useArmstrongConfig({
+    validationMode,
+    hideInputErrorIconOnStatus: hideIconOnStatus,
+    disableControlOnPending: disableOnPending,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    inputStatusPosition: statusPosition,
+    validationErrorIcon: errorIcon,
+    inputDisplaySize: displaySize,
+  });
 
-    const shouldShowValidationErrorsList = globals.validationMode === 'both' || globals.validationMode === 'message';
-    const shouldShowErrorIcon =
-      (!!validationErrorMessages?.length && (globals.validationMode === 'both' || globals.validationMode === 'icon')) ||
-      error;
+  const shouldShowValidationErrorsList = globals.validationMode === 'both' || globals.validationMode === 'message';
+  const shouldShowErrorIcon =
+    (!!validationErrorMessages?.length && (globals.validationMode === 'both' || globals.validationMode === 'icon')) ||
+    error;
 
-    const showLeftOverlay =
-      leftOverlay &&
-      (globals.inputStatusPosition !== 'left' ||
-        !globals.hideInputErrorIconOnStatus ||
-        (!pending && !shouldShowErrorIcon));
+  const showLeftOverlay =
+    leftOverlay &&
+    (globals.inputStatusPosition !== 'left' ||
+      !globals.hideInputErrorIconOnStatus ||
+      (!pending && !shouldShowErrorIcon));
 
-    const showRightOverlay =
-      rightOverlay &&
-      (globals.inputStatusPosition !== 'right' ||
-        !globals.hideInputErrorIconOnStatus ||
-        (!pending && !shouldShowErrorIcon));
+  const showRightOverlay =
+    rightOverlay &&
+    (globals.inputStatusPosition !== 'right' ||
+      !globals.hideInputErrorIconOnStatus ||
+      (!pending && !shouldShowErrorIcon));
 
-    return (
-      <>
-        <div
-          ref={ref}
-          className={concat('arm-input', 'arm-input-wrapper', className)}
-          data-disabled={disabled || (pending && globals.disableControlOnPending) ? true : undefined}
-          data-error={error || !!validationErrorMessages?.length ? true : undefined}
-          data-left-overlay={
-            showLeftOverlay || (globals.inputStatusPosition === 'left' && (shouldShowErrorIcon || pending))
-              ? true
-              : undefined
-          }
-          data-right-overlay={
-            showRightOverlay || (globals.inputStatusPosition === 'right' && (shouldShowErrorIcon || pending))
-              ? true
-              : undefined
-          }
-          {...nativeProps}
-        >
-          {label && (
-            <Label
-              className={concat('arm-input-base-label', labelClassName)}
-              required={required}
-              requiredIndicator={globals.requiredIndicator}
-              htmlFor={labelId}
-              displaySize={globals.inputDisplaySize}
-            >
-              {label}
-            </Label>
-          )}
-          <div className="arm-input-inner">
-            <StatusWrapper
-              error={error || !!validationErrorMessages?.length}
-              pending={pending}
-              statusPosition={globals.inputStatusPosition}
-              errorIcon={globals.validationErrorIcon}
-              validationMode={globals.validationMode}
-              className={statusClassName}
-            >
-              <>
-                {showLeftOverlay && <div className="arm-input-overlay arm-input-overlay-left">{leftOverlay}</div>}
-                {children}
-                {showRightOverlay && <div className="arm-input-overlay arm-input-overlay-right">{rightOverlay}</div>}
-              </>
-            </StatusWrapper>
-          </div>
-          {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (
-            <ValidationErrors
-              className={validationErrorsClassName}
-              validationMode={globals.validationMode}
-              validationErrors={validationErrorMessages}
-              scrollIntoView={globals.scrollValidationErrorsIntoView}
-            />
-          )}
+  return (
+    <>
+      <div
+        ref={ref}
+        className={concat('arm-input', 'arm-input-wrapper', className)}
+        data-disabled={disabled || (pending && globals.disableControlOnPending) ? true : undefined}
+        data-error={error || !!validationErrorMessages?.length ? true : undefined}
+        data-left-overlay={
+          showLeftOverlay || (globals.inputStatusPosition === 'left' && (shouldShowErrorIcon || pending))
+            ? true
+            : undefined
+        }
+        data-right-overlay={
+          showRightOverlay || (globals.inputStatusPosition === 'right' && (shouldShowErrorIcon || pending))
+            ? true
+            : undefined
+        }
+        {...nativeProps}
+      >
+        {label && (
+          <Label
+            className={concat('arm-input-base-label', labelClassName)}
+            required={required}
+            requiredIndicator={globals.requiredIndicator}
+            htmlFor={labelId}
+            displaySize={globals.inputDisplaySize}
+          >
+            {label}
+          </Label>
+        )}
+        <div className="arm-input-inner">
+          <StatusWrapper
+            error={error || !!validationErrorMessages?.length}
+            pending={pending}
+            statusPosition={globals.inputStatusPosition}
+            errorIcon={globals.validationErrorIcon}
+            validationMode={globals.validationMode}
+            className={statusClassName}
+          >
+            <>
+              {showLeftOverlay && <div className="arm-input-overlay arm-input-overlay-left">{leftOverlay}</div>}
+              {children}
+              {showRightOverlay && <div className="arm-input-overlay arm-input-overlay-right">{rightOverlay}</div>}
+            </>
+          </StatusWrapper>
         </div>
-      </>
-    );
-  }
-);
+        {!!validationErrorMessages?.length && shouldShowValidationErrorsList && (
+          <ValidationErrors
+            className={validationErrorsClassName}
+            validationMode={globals.validationMode}
+            validationErrors={validationErrorMessages}
+            scrollIntoView={globals.scrollValidationErrorsIntoView}
+          />
+        )}
+      </div>
+    </>
+  );
+};
 
 InputWrapper.displayName = 'InputWrapper';

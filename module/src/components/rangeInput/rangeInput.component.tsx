@@ -22,8 +22,8 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   /** (Optional) A TData value representing the value of the input. */
   value?: TData;
 
-  /** (Optional) A custom JSX.Element for the thumb of the slider. */
-  customThumb?: JSX.Element;
+  /** (Optional) A custom React.ReactElement for the thumb of the slider. */
+  customThumb?: React.ReactElement;
 
   /** (Optional) A boolean flag to disable the checkbox input. */
   disabled?: boolean;
@@ -74,34 +74,32 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   autoValidate?: boolean;
 }
 
-export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<NullOrUndefined<number>>>(
-  (
-    {
-      bind,
-      className,
-      disabled,
-      onChange,
-      label,
-      labelClassName,
-      labelId,
-      scrollValidationErrorsIntoView,
-      statusClassName,
-      validationErrorsClassName,
-      validationErrorMessages,
-      displaySize,
-      min,
-      max,
-      value,
-      validationMode,
-      step,
-      required,
-      customThumb,
-      requiredIndicator,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const RangeInput = <TBind extends NullOrUndefined<number>>(props: IRangeInputProps<TBind> & { ref?: React.Ref<HTMLSpanElement> }) => {
+  const {
+    bind,
+    className,
+    disabled,
+    onChange,
+    label,
+    labelClassName,
+    labelId,
+    scrollValidationErrorsIntoView,
+    statusClassName,
+    validationErrorsClassName,
+    validationErrorMessages,
+    displaySize,
+    min,
+    max,
+    value,
+    validationMode,
+    step,
+    required,
+    customThumb,
+    requiredIndicator,
+    autoValidate,
+    ref,
+    ...nativeProps
+  } = props;
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
       onChange,
@@ -191,10 +189,6 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
         )}
       </StatusWrapper>
     );
-  }
-) as (<TBind extends NullOrUndefined<number>>(
-  props: ArmstrongFCProps<IRangeInputProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
-  ArmstrongFCExtensions<IRangeInputProps<NullOrUndefined<number>>>;
+};
 
 RangeInput.displayName = 'RangeInput';
