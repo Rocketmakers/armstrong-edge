@@ -21,7 +21,7 @@
     "date-fns": "2.x",
     "react": "18.x",
     "react-dom": "18.x",
-    "zod": "3.*"
+    "zod": "^3.21.4 || ^4.0.0"
   },
   "files": [
     "dist"
@@ -100,7 +100,7 @@
     "vite-plugin-static-copy": "0.16.0",
     "vite-plugin-turbosnap": "1.0.3",
     "wait-on": "7.0.1",
-    "zod": "3.21.4"
+    "zod": "^4.1.5"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "1.0.4",

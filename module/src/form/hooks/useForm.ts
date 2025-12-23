@@ -118,7 +118,7 @@ export function useForm<TData extends object>(
       let errors: IValidationError[] = [];
 
       if (!results.success) {
-        errors = getMyZodErrors(results.error.errors, keyChainString);
+        errors = getMyZodErrors(results.error.issues, keyChainString);
 
         if (errors.length && !silent) {
           clientValidationDispatcher({ type: 'add-validation', errors });

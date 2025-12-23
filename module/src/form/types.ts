@@ -8,10 +8,9 @@ import {
   type ZodBigInt,
   type ZodBoolean,
   type ZodDate,
-  type ZodEffects,
+  type ZodTransform,
   type ZodEnum,
   type ZodLiteral,
-  type ZodNativeEnum,
   type ZodNullable,
   type ZodNumber,
   type ZodObject,
@@ -498,12 +497,7 @@ export interface IArrayOfZod<TProp> {
   /** A function which defines the validation to apply to the array itself (e.g. `opts: arr => arr.min(1).max(5)`) */
   opts?: (
     arr: ZodArray<TProp & ZodTypeAny>
-  ) =>
-    | ZodArray<TProp & ZodTypeAny>
-    | ZodNullable<ZodTypeAny>
-    | ZodOptional<ZodTypeAny>
-    | ZodOptional<ZodNullable<ZodTypeAny>>
-    | ZodEffects<ZodTypeAny>;
+  ) => ZodTypeAny;
 }
 
 /**
@@ -516,24 +510,27 @@ export interface IObjectOfZod<TProp> {
   /** A function which defines the validation to apply to the object itself (e.g. `opts: ob => ob.required()`) */
   opts?: (
     ob: ZodObject<TProp & ZodRawShape>
-  ) =>
-    | ZodObject<TProp & ZodRawShape>
-    | ZodNullable<ZodTypeAny>
-    | ZodOptional<ZodTypeAny>
-    | ZodOptional<ZodNullable<ZodTypeAny>>
-    | ZodEffects<ZodTypeAny>;
+  ) => ZodTypeAny;
 }
 
-type WithZodAdditions<T extends ZodTypeAny, K> =
+type WithZodAdditions<T extends ZodTypeAny, K extends string | number | boolean> =
   | T
   | ZodLiteral<K>
   | ZodOptional<T>
   | ZodNullable<T>
   | ZodOptional<ZodNullable<T>>
-  | ZodEffects<T, K, K>
-  | ZodUnion<[WithZodAdditions<T, K>, ...ZodTypeAny[]]>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any required for zod native enum
-  | ZodNativeEnum<any>
+  | ZodTransform<T, K>
+  | ZodUnion<[T, ...ZodTypeAny[]]>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any required for zod enum
+  | ZodEnum<any>;
+
+type WithZodAdditionsDate<T extends ZodTypeAny> =
+  | T
+  | ZodOptional<T>
+  | ZodNullable<T>
+  | ZodOptional<ZodNullable<T>>
+  | ZodTransform<T, Date>
+  | ZodUnion<[T, ...ZodTypeAny[]]>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any required for zod enum
   | ZodEnum<any>;
 
@@ -548,7 +545,7 @@ export type ToZod<TProp> = {
   bigint: ZodNullOrUndefined<TProp, WithZodAdditions<ZodBigInt, number>>;
   number: ZodNullOrUndefined<TProp, WithZodAdditions<ZodNumber, number>>;
   boolean: ZodNullOrUndefined<TProp, WithZodAdditions<ZodBoolean, boolean>>;
-  date: ZodNullOrUndefined<TProp, WithZodAdditions<ZodDate, Date>>;
+  date: ZodNullOrUndefined<TProp, WithZodAdditionsDate<ZodDate>>;
   object: IObjectOfZod<{ [TKey in keyof TProp]: ToZod<TProp[TKey]> }>;
   rest: never;
 }[StringType<TProp>];
