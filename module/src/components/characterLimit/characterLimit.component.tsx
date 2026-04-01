@@ -38,52 +38,50 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
-export const CharacterLimit = ((
-    {
-      ref,
-      bind,
-      limit,
-      shouldEnforce,
-      value,
-      className,
-      validationErrorIcon,
-      validationErrorsClassName,
-      validationErrorsTitle,
-      validationMode,
-      ...nativeProps
-    }: ICharacterLimitProps<NullOrUndefined<string>> & { ref?: React.Ref<HTMLDivElement> }
-  ) => {
-    const globals = useArmstrongConfig({
-      validationErrorIcon,
-      validationMode,
-    });
+export const CharacterLimit = (({
+  ref,
+  bind,
+  limit,
+  shouldEnforce,
+  value,
+  className,
+  validationErrorIcon,
+  validationErrorsClassName,
+  validationErrorsTitle,
+  validationMode,
+  ...nativeProps
+}: ICharacterLimitProps<NullOrUndefined<string>> & { ref?: React.Ref<HTMLDivElement> }) => {
+  const globals = useArmstrongConfig({
+    validationErrorIcon,
+    validationMode,
+  });
 
-    const [boundValue, setBoundValue] = useBindingState(bind, { value });
+  const [boundValue, setBoundValue] = useBindingState(bind, { value });
 
-    const exceeded = boundValue && boundValue.length > limit;
+  const exceeded = boundValue && boundValue.length > limit;
 
-    React.useLayoutEffect(() => {
-      if (shouldEnforce && exceeded) {
-        setBoundValue?.(boundValue?.slice(0, limit));
-      }
-    }, [boundValue, exceeded, limit, setBoundValue, shouldEnforce]);
+  React.useLayoutEffect(() => {
+    if (shouldEnforce && exceeded) {
+      setBoundValue?.(boundValue?.slice(0, limit));
+    }
+  }, [boundValue, exceeded, limit, setBoundValue, shouldEnforce]);
 
-    return (
-      <div ref={ref} className={concat('arm-character-limit', className)} data-exceeded={exceeded} {...nativeProps}>
-        <div className="arm-character-limit-text">
-          {boundValue?.length}/{limit}
-        </div>
-        {exceeded && (
-          <div
-            className={concat('arm-character-limit-icon', validationErrorsClassName)}
-            title={validationErrorsTitle ?? 'Character limit exceeded'}
-          >
-            {(globals.validationMode === 'both' || globals.validationMode === 'icon') && globals.validationErrorIcon}
-          </div>
-        )}
+  return (
+    <div ref={ref} className={concat('arm-character-limit', className)} data-exceeded={exceeded} {...nativeProps}>
+      <div className="arm-character-limit-text">
+        {boundValue?.length}/{limit}
       </div>
-    );
-  }) as (<TBind extends NullOrUndefined<string>>(
+      {exceeded && (
+        <div
+          className={concat('arm-character-limit-icon', validationErrorsClassName)}
+          title={validationErrorsTitle ?? 'Character limit exceeded'}
+        >
+          {(globals.validationMode === 'both' || globals.validationMode === 'icon') && globals.validationErrorIcon}
+        </div>
+      )}
+    </div>
+  );
+}) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongFCProps<ICharacterLimitProps<TBind>, HTMLDivElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>;

@@ -77,23 +77,21 @@ export interface IDropdownMenuProps
   footerContent?: React.ReactNode;
 }
 
-export const DropdownMenu = (
-  {
-    ref,
-    items,
-    children,
-    className,
-    showArrow,
-    open,
-    defaultOpen,
-    onOpenChange,
-    footerContent,
-    headerContent,
-    disabled,
-    modal,
-    ...nativeProps
-  }: React.PropsWithChildren<IDropdownMenuProps> & { ref?: React.Ref<HTMLDivElement> }
-) => {
+export const DropdownMenu = ({
+  ref,
+  items,
+  children,
+  className,
+  showArrow,
+  open,
+  defaultOpen,
+  onOpenChange,
+  footerContent,
+  headerContent,
+  disabled,
+  modal,
+  ...nativeProps
+}: React.PropsWithChildren<IDropdownMenuProps> & { ref?: React.Ref<HTMLDivElement> }) => {
   const [internalOpen, setInternalOpen] = React.useState(open ?? defaultOpen ?? false);
   React.useEffect(() => {
     if (open !== undefined) {

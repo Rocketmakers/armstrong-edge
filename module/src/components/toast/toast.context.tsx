@@ -111,7 +111,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
     (newToast: IToast) => {
       if (
         globals.toastIgnorePredicate?.(
-          toastsRef.current.filter(t => !t.exited).map(({ key, exited, ...toast }) => toast),
+          toastsRef.current.filter(t => !t.exited).map(({ key: _key, exited: _exited, ...toast }) => toast),
           newToast
         )
       ) {

@@ -60,103 +60,101 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   autoValidate?: boolean;
 }
 
-export const Switch = ((
-    {
-      ref,
-      bind,
-      checked,
-      onCheckedChange,
-      defaultChecked,
-      disabled,
-      className,
-      labelClassName,
-      label,
-      validationErrorMessages,
-      validationErrorsClassName,
-      scrollValidationErrorsIntoView,
-      validationMode,
-      displaySize,
-      labelId,
-      required,
-      requiredIndicator,
-      autoValidate,
-      ...nativeProps
-    }: ISwitchProps<NullOrUndefined<boolean>> & { ref?: React.Ref<HTMLButtonElement> }
-  ) => {
-    const generatedId = React.useId();
-    const id = nativeProps.id ?? generatedId;
+export const Switch = (({
+  ref,
+  bind,
+  checked,
+  onCheckedChange,
+  defaultChecked,
+  disabled,
+  className,
+  labelClassName,
+  label,
+  validationErrorMessages,
+  validationErrorsClassName,
+  scrollValidationErrorsIntoView,
+  validationMode,
+  displaySize,
+  labelId,
+  required,
+  requiredIndicator,
+  autoValidate,
+  ...nativeProps
+}: ISwitchProps<NullOrUndefined<boolean>> & { ref?: React.Ref<HTMLButtonElement> }) => {
+  const generatedId = React.useId();
+  const id = nativeProps.id ?? generatedId;
 
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value: checked,
-      onChange: onCheckedChange,
-      validationErrorMessages,
-      validationMode,
-      autoValidate,
-    });
+  const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+    value: checked,
+    onChange: onCheckedChange,
+    validationErrorMessages,
+    validationMode,
+    autoValidate,
+  });
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      scrollValidationErrorsIntoView,
-      inputDisplaySize: displaySize,
-      requiredIndicator,
-      autoValidate: bindConfig.autoValidate,
-    });
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    scrollValidationErrorsIntoView,
+    inputDisplaySize: displaySize,
+    requiredIndicator,
+    autoValidate: bindConfig.autoValidate,
+  });
 
-    const onCheckedChangeInternal = React.useCallback<Required<SwitchProps>['onCheckedChange']>(
-      newValue => {
-        setBoundValue?.(newValue);
-      },
-      [setBoundValue]
-    );
+  const onCheckedChangeInternal = React.useCallback<Required<SwitchProps>['onCheckedChange']>(
+    newValue => {
+      setBoundValue?.(newValue);
+    },
+    [setBoundValue]
+  );
 
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindConfig.validate();
-      }
-      bindConfig.setTouched(true);
-    }, [boundValue]);
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindConfig.validate();
+    }
+    bindConfig.setTouched(true);
+  }, [boundValue]);
 
-    return (
-      <>
-        <div className={concat('arm-switch-container', className)} data-disabled={disabled}>
-          <Root
-            {...nativeProps}
-            className="arm-switch"
-            id={id}
-            ref={ref}
-            disabled={disabled}
-            defaultChecked={defaultChecked}
-            onCheckedChange={onCheckedChangeInternal}
-            checked={boundValue ?? undefined}
-            data-size={globals.inputDisplaySize}
-          >
-            <Thumb className="arm-switch-nub" />
-          </Root>
+  return (
+    <>
+      <div className={concat('arm-switch-container', className)} data-disabled={disabled}>
+        <Root
+          {...nativeProps}
+          className="arm-switch"
+          id={id}
+          ref={ref}
+          disabled={disabled}
+          defaultChecked={defaultChecked}
+          onCheckedChange={onCheckedChangeInternal}
+          checked={boundValue ?? undefined}
+          data-size={globals.inputDisplaySize}
+        >
+          <Thumb className="arm-switch-nub" />
+        </Root>
 
-          <Label
-            id={labelId}
-            required={required}
-            requiredIndicator={globals.requiredIndicator}
-            className={concat(labelClassName, 'arm-switch-label')}
-            data-disabled={disabled}
-            htmlFor={id}
-            displaySize={globals.inputDisplaySize}
-          >
-            {label}
-          </Label>
-        </div>
+        <Label
+          id={labelId}
+          required={required}
+          requiredIndicator={globals.requiredIndicator}
+          className={concat(labelClassName, 'arm-switch-label')}
+          data-disabled={disabled}
+          htmlFor={id}
+          displaySize={globals.inputDisplaySize}
+        >
+          {label}
+        </Label>
+      </div>
 
-        {bindConfig.validationErrorMessages && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            className={validationErrorsClassName}
-            validationMode={globals.validationMode}
-            validationErrors={bindConfig.validationErrorMessages}
-            scrollIntoView={globals.scrollValidationErrorsIntoView}
-          />
-        )}
-      </>
-    );
-  }) as (<TBind extends NullOrUndefined<boolean>>(
+      {bindConfig.validationErrorMessages && bindConfig.shouldShowValidationErrorMessage && (
+        <ValidationErrors
+          className={validationErrorsClassName}
+          validationMode={globals.validationMode}
+          validationErrors={bindConfig.validationErrorMessages}
+          scrollIntoView={globals.scrollValidationErrorsIntoView}
+        />
+      )}
+    </>
+  );
+}) as (<TBind extends NullOrUndefined<boolean>>(
   props: ArmstrongFCProps<ISwitchProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>;

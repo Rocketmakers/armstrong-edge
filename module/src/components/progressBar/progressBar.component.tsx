@@ -13,7 +13,13 @@ export interface IProgressBarProps extends React.HTMLAttributes<HTMLDivElement> 
   indicatorClassName?: string;
 }
 
-export const ProgressBar = ({ ref, progress, className, indicatorClassName, ...props }: IProgressBarProps & { ref?: React.Ref<HTMLDivElement> }) => {
+export const ProgressBar = ({
+  ref,
+  progress,
+  className,
+  indicatorClassName,
+  ...props
+}: IProgressBarProps & { ref?: React.Ref<HTMLDivElement> }) => {
   const style = {
     '--arm-progress-bar-value': `${clamp(progress ?? 0, 0, 100)}%`,
   } as React.CSSProperties;

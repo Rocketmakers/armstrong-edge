@@ -199,8 +199,8 @@ export const Rating = (({
   rightOverlay,
   mode = 'buttons',
   disabled,
-  statusClassName,
-  validationErrorsClassName,
+  statusClassName: _statusClassName,
+  validationErrorsClassName: _validationErrorsClassName,
   labelClassName,
   labelId,
   label,
@@ -210,111 +210,111 @@ export const Rating = (({
   autoValidate,
   ...htmlProps
 }: IRatingProps<NullOrUndefined<number>> & { ref?: React.Ref<HTMLDivElement> }) => {
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value,
-      onChange: onValueChange,
-      validationErrorMessages,
-      validationMode,
-      autoValidate,
-      validationErrorIcon: errorIcon,
-    });
+  const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+    value,
+    onChange: onValueChange,
+    validationErrorMessages,
+    validationMode,
+    autoValidate,
+    validationErrorIcon: errorIcon,
+  });
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      inputDisplaySize: displaySize,
-      scrollValidationErrorsIntoView,
-      requiredIndicator,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-      autoValidate: bindConfig.autoValidate,
-    });
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    inputDisplaySize: displaySize,
+    scrollValidationErrorsIntoView,
+    requiredIndicator,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+    autoValidate: bindConfig.autoValidate,
+  });
 
-    const generatedLabelId = React.useId();
-    const finalLabelId = labelId ?? generatedLabelId;
+  const generatedLabelId = React.useId();
+  const finalLabelId = labelId ?? generatedLabelId;
 
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindConfig.validate();
-      }
-      bindConfig.setTouched(true);
-    }, [boundValue]);
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindConfig.validate();
+    }
+    bindConfig.setTouched(true);
+  }, [boundValue]);
 
-    return (
-      <>
-        <div
-          ref={ref}
-          role="radiogroup"
-          aria-label={boundValue !== undefined ? `Rating: ${boundValue}/${maximum}` : undefined}
-          {...htmlProps}
-          className={concat('arm-rating', className)}
-          data-read-only={!setBoundValue}
-          data-size={globals.inputDisplaySize}
-        >
-          {label && (
-            <Label
-              id={finalLabelId}
-              className={concat('arm-rating-input-label', labelClassName)}
-              data-disabled={disabled}
-              required={required}
-              displaySize={globals.inputDisplaySize}
-              requiredIndicator={globals.requiredIndicator}
-            >
-              {label}
-            </Label>
-          )}
-          <div className="arm-rating-input-inner" aria-labelledby={finalLabelId}>
-            <StatusWrapper
-              error={error}
-              statusPosition={statusPosition}
-              errorIcon={bindConfig.validationErrorIcon}
-              validationMode={bindConfig.validationMode}
-              pending={pending}
-            >
-              <>
-                {leftOverlay}
-                <div className="arm-rating-parts">
-                  {repeat(maximum as number, index => (
-                    <RatingPart
-                      key={index}
-                      index={index}
-                      filledIcon={filledIcon}
-                      emptyIcon={emptyIcon}
-                      value={boundValue || undefined}
-                      onSelectPart={proportion => setBoundValue?.(index + proportion)}
-                      step={step}
-                      mode={mode}
-                      disabled={disabled}
-                      readOnly={!setBoundValue}
-                    />
-                  ))}
-
-                  {mode === 'range' && (
-                    <input
-                      className="arm-rating-range"
-                      type="range"
-                      step={step}
-                      min={0}
-                      max={maximum}
-                      disabled={disabled}
-                      value={boundValue || undefined}
-                      onChange={event => setBoundValue?.(event.currentTarget.valueAsNumber)}
-                    />
-                  )}
-                </div>
-                {rightOverlay}
-              </>
-            </StatusWrapper>
-          </div>
-        </div>
-
-        {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            validationErrors={validationErrorMessages}
-            validationMode={bindConfig.validationMode}
-            scrollIntoView={scrollValidationErrorsIntoView}
-          />
+  return (
+    <>
+      <div
+        ref={ref}
+        role="radiogroup"
+        aria-label={boundValue !== undefined ? `Rating: ${boundValue}/${maximum}` : undefined}
+        {...htmlProps}
+        className={concat('arm-rating', className)}
+        data-read-only={!setBoundValue}
+        data-size={globals.inputDisplaySize}
+      >
+        {label && (
+          <Label
+            id={finalLabelId}
+            className={concat('arm-rating-input-label', labelClassName)}
+            data-disabled={disabled}
+            required={required}
+            displaySize={globals.inputDisplaySize}
+            requiredIndicator={globals.requiredIndicator}
+          >
+            {label}
+          </Label>
         )}
-      </>
-    );
+        <div className="arm-rating-input-inner" aria-labelledby={finalLabelId}>
+          <StatusWrapper
+            error={error}
+            statusPosition={statusPosition}
+            errorIcon={bindConfig.validationErrorIcon}
+            validationMode={bindConfig.validationMode}
+            pending={pending}
+          >
+            <>
+              {leftOverlay}
+              <div className="arm-rating-parts">
+                {repeat(maximum as number, index => (
+                  <RatingPart
+                    key={index}
+                    index={index}
+                    filledIcon={filledIcon}
+                    emptyIcon={emptyIcon}
+                    value={boundValue || undefined}
+                    onSelectPart={proportion => setBoundValue?.(index + proportion)}
+                    step={step}
+                    mode={mode}
+                    disabled={disabled}
+                    readOnly={!setBoundValue}
+                  />
+                ))}
+
+                {mode === 'range' && (
+                  <input
+                    className="arm-rating-range"
+                    type="range"
+                    step={step}
+                    min={0}
+                    max={maximum}
+                    disabled={disabled}
+                    value={boundValue || undefined}
+                    onChange={event => setBoundValue?.(event.currentTarget.valueAsNumber)}
+                  />
+                )}
+              </div>
+              {rightOverlay}
+            </>
+          </StatusWrapper>
+        </div>
+      </div>
+
+      {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+        <ValidationErrors
+          validationErrors={validationErrorMessages}
+          validationMode={bindConfig.validationMode}
+          scrollIntoView={scrollValidationErrorsIntoView}
+        />
+      )}
+    </>
+  );
 }) as (<TBind extends NullOrUndefined<number>>(
   props: ArmstrongVFCProps<IRatingProps<TBind>, HTMLDivElement>
 ) => ArmstrongFCReturn) &

@@ -270,357 +270,370 @@ const CenteredHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   );
 };
 
-export const SingleDateTimeInput = (
-    {
-      ref,
-      config,
-      selectsRange,
-      className,
-      bind,
-      value,
-      onChange,
-      validationErrorMessages,
-      monthSelectVariant,
-      mode,
-      native,
-      format,
-      locale = defaultLocale,
-      statusClassName,
-      autoValidate,
-      showCalendarOnLeftOverlayClick = true,
-      onBlur,
-      ...inputProps
-    }: IDateOrTimeInputSingleProps<string | null> & { ref?: React.Ref<HTMLInputElement> }
-  ) => {
-    const datePickerRef = React.useRef<ReactDatePicker>(null);
+export const SingleDateTimeInput = ({
+  ref,
+  config,
+  selectsRange: _selectsRange,
+  className,
+  bind,
+  value,
+  onChange,
+  validationErrorMessages,
+  monthSelectVariant,
+  mode,
+  native: _native,
+  format,
+  locale = defaultLocale,
+  statusClassName: _statusClassName,
+  autoValidate,
+  showCalendarOnLeftOverlayClick = true,
+  onBlur,
+  ...inputProps
+}: IDateOrTimeInputSingleProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const datePickerRef = React.useRef<ReactDatePicker>(null);
 
-    const [date, setDate, bindDateConfig] = useBindingState(bind, {
-      validationErrorMessages,
-      value,
-      onChange,
-      autoValidate,
-    });
+  const [date, setDate, bindDateConfig] = useBindingState(bind, {
+    validationErrorMessages,
+    value,
+    onChange,
+    autoValidate,
+  });
 
-    const globals = useArmstrongConfig({
-      autoValidate: bindDateConfig.autoValidate,
-    });
+  const globals = useArmstrongConfig({
+    autoValidate: bindDateConfig.autoValidate,
+  });
 
-    const renderCustomHeader = React.useCallback(
-      (customHeaderProps: ReactDatePickerCustomHeaderProps) => {
-        return (
-          <div className="customer-header-container">
-            {monthSelectVariant === 'dropdown' && (
-              <DropdownHeader
-                {...customHeaderProps}
-                min={config?.minDate ?? undefined}
-                max={config?.maxDate ?? undefined}
-              />
-            )}
-            {monthSelectVariant === 'left-align' && <LeftAlignHeader {...customHeaderProps} />}
-            {(!monthSelectVariant || monthSelectVariant === 'centered') && <CenteredHeader {...customHeaderProps} />}
-          </div>
-        );
-      },
-      [monthSelectVariant, config]
-    );
+  const renderCustomHeader = React.useCallback(
+    (customHeaderProps: ReactDatePickerCustomHeaderProps) => {
+      return (
+        <div className="customer-header-container">
+          {monthSelectVariant === 'dropdown' && (
+            <DropdownHeader
+              {...customHeaderProps}
+              min={config?.minDate ?? undefined}
+              max={config?.maxDate ?? undefined}
+            />
+          )}
+          {monthSelectVariant === 'left-align' && <LeftAlignHeader {...customHeaderProps} />}
+          {(!monthSelectVariant || monthSelectVariant === 'centered') && <CenteredHeader {...customHeaderProps} />}
+        </div>
+      );
+    },
+    [monthSelectVariant, config]
+  );
 
-    const compiledFormat = format ?? (mode === 'date' ? defaultDateFormat : mode === 'time' ? defaultTimeFormat : (assertNever(mode), ''));
-
-    const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
-      return {
-        // initial two props can be overridden with config
-        monthsShown: 1,
-        dateFormat: compiledFormat,
-        ...config,
-        renderCustomHeader,
-        renderDayContents: day => <div className="arm-date-time-input-day-contents">{day}</div>,
-        showTimeSelect: mode === 'time',
-        showTimeSelectOnly: mode === 'time',
-      };
-    }, [mode, config, renderCustomHeader, compiledFormat]);
-
-    const dateVal = React.useMemo(
-      () => (date ? parse(date, compiledFormat as string, new Date(), { locale }) : undefined),
-      [date, compiledFormat, locale]
-    );
-
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindDateConfig.validate();
-      }
-      bindDateConfig.setTouched(true);
-    }, [dateVal]);
-
-    const leftOverlay = inputProps.leftOverlay === false ? undefined : inputProps.leftOverlay || (mode === 'time' ? <ImClock /> : <FaRegCalendar />);
-
-    const onBlurEvent = React.useCallback(
-      (event: React.FocusEvent<HTMLInputElement>) => {
-        onBlurWorkaround(event);
-        return onBlur?.(event);
-      },
-      [onBlur]
-    );
-
-    return (
-      <ReactDatePicker
-        {...stripNullOrUndefined(compiledConfig)}
-        ref={datePickerRef}
-        className={className}
-        locale={locale}
-        dateFormat={compiledFormat}
-        disabled={inputProps.disabled}
-        required={inputProps.required}
-        onBlur={onBlurEvent}
-        customInput={
-          <Input
-            ref={ref}
-            {...inputProps}
-            leftOverlay={
-              showCalendarOnLeftOverlayClick && leftOverlay ? (
-                <button
-                  type="button"
-                  className="arm-date-time-overlay-button"
-                  disabled={inputProps.disabled}
-                  onClick={() => datePickerRef.current?.setOpen(true)}
-                >
-                  {leftOverlay}
-                </button>
-              ) : (
-                leftOverlay
-              )
-            }
-            className={concat(inputProps.inputClassName, 'arm-date-time-input')}
-            validationErrorMessages={bindDateConfig.validationErrorMessages}
-          />
-        }
-        selected={dateVal}
-        selectsMultiple={undefined}
-        showMonthYearDropdown={undefined}
-        popperPlacement='bottom' // This keeps the calendar picker central to the Input
-        onChange={(newValue, event) => {setDate?.(formatDate(newValue as Date, compiledFormat))}}
-      />
-    );
+  const getDefaultFormat = () => {
+    if (mode === 'date') return defaultDateFormat;
+    if (mode === 'time') return defaultTimeFormat;
+    assertNever(mode);
+    return '';
   };
+  const compiledFormat = format ?? getDefaultFormat();
+
+  const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
+    return {
+      // initial two props can be overridden with config
+      monthsShown: 1,
+      dateFormat: compiledFormat,
+      ...config,
+      renderCustomHeader,
+      renderDayContents: day => <div className="arm-date-time-input-day-contents">{day}</div>,
+      showTimeSelect: mode === 'time',
+      showTimeSelectOnly: mode === 'time',
+    };
+  }, [mode, config, renderCustomHeader, compiledFormat]);
+
+  const dateVal = React.useMemo(
+    () => (date ? parse(date, compiledFormat as string, new Date(), { locale }) : undefined),
+    [date, compiledFormat, locale]
+  );
+
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindDateConfig.validate();
+    }
+    bindDateConfig.setTouched(true);
+  }, [dateVal]);
+
+  const leftOverlay = React.useMemo(
+    () =>
+      inputProps.leftOverlay === false
+        ? undefined
+        : inputProps.leftOverlay || (mode === 'time' ? <ImClock /> : <FaRegCalendar />),
+    [inputProps.leftOverlay, mode]
+  );
+
+  const onBlurEvent = React.useCallback(
+    (event: React.FocusEvent<HTMLInputElement>) => {
+      onBlurWorkaround(event);
+      return onBlur?.(event);
+    },
+    [onBlur]
+  );
+
+  return (
+    <ReactDatePicker
+      {...stripNullOrUndefined(compiledConfig)}
+      ref={datePickerRef}
+      className={className}
+      locale={locale}
+      dateFormat={compiledFormat}
+      disabled={inputProps.disabled}
+      required={inputProps.required}
+      onBlur={onBlurEvent}
+      customInput={
+        <Input
+          ref={ref}
+          {...inputProps}
+          leftOverlay={
+            showCalendarOnLeftOverlayClick && leftOverlay ? (
+              <button
+                type="button"
+                className="arm-date-time-overlay-button"
+                disabled={inputProps.disabled}
+                onClick={() => datePickerRef.current?.setOpen(true)}
+              >
+                {leftOverlay}
+              </button>
+            ) : (
+              leftOverlay
+            )
+          }
+          className={concat(inputProps.inputClassName, 'arm-date-time-input')}
+          validationErrorMessages={bindDateConfig.validationErrorMessages}
+        />
+      }
+      selected={dateVal}
+      // react-datepicker v8 uses discriminated union types; explicitly passing undefined
+      // narrows to the single-date variant and satisfies the type checker
+      selectsMultiple={undefined}
+      showMonthYearDropdown={undefined}
+      popperPlacement="bottom" // This keeps the calendar picker central to the Input
+      onChange={(newValue, _event) => {
+        setDate?.(formatDate(newValue as Date, compiledFormat));
+      }}
+    />
+  );
+};
 
 SingleDateTimeInput.displayName = 'SingleDateTimeInput';
 
-export const RangeDateTimeInput = (
-    {
-      ref,
-      config,
-      selectsRange,
-      startBind,
-      endBind,
-      startValue,
-      endValue,
-      className,
-      onChange,
-      validationErrorMessages,
-      native,
-      format = defaultDateFormat,
-      locale = defaultLocale,
-      autoValidate,
-      showCalendarOnLeftOverlayClick = true,
-      leftOverlay = <FaRegCalendar />,
-      ...inputProps
-    }: IDateTimeInputRangeProps<string | null> & { ref?: React.Ref<HTMLInputElement> }
-  ) => {
-    const datePickerRef = React.useRef<ReactDatePicker | null>(null);
+export const RangeDateTimeInput = ({
+  ref,
+  config,
+  selectsRange: _selectsRange,
+  startBind,
+  endBind,
+  startValue,
+  endValue,
+  className,
+  onChange,
+  validationErrorMessages,
+  native: _native,
+  format = defaultDateFormat,
+  locale = defaultLocale,
+  autoValidate,
+  showCalendarOnLeftOverlayClick = true,
+  leftOverlay = <FaRegCalendar />,
+  ...inputProps
+}: IDateTimeInputRangeProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const datePickerRef = React.useRef<ReactDatePicker | null>(null);
 
-    const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
-      validationErrorMessages,
-      value: startValue,
-      autoValidate,
-    });
+  const [startDate, setStartDate, bindStartDateConfig] = useBindingState(startBind, {
+    validationErrorMessages,
+    value: startValue,
+    autoValidate,
+  });
 
-    const [endDate, setEndDate, bindEndDateConfig] = useBindingState(endBind, {
-      // only pass in validationErrorMessages once for date range as errors will be combined!
-      validationErrorMessages: [],
-      value: endValue,
-      autoValidate,
-    });
+  const [endDate, setEndDate, bindEndDateConfig] = useBindingState(endBind, {
+    // only pass in validationErrorMessages once for date range as errors will be combined!
+    validationErrorMessages: [],
+    value: endValue,
+    autoValidate,
+  });
 
-    const globals = useArmstrongConfig({
-      autoValidate: bindEndDateConfig.autoValidate ?? bindStartDateConfig.autoValidate,
-    });
+  const globals = useArmstrongConfig({
+    autoValidate: bindEndDateConfig.autoValidate ?? bindStartDateConfig.autoValidate,
+  });
 
-    const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
-      return {
-        // initial values can be overridden with config
-        monthsShown: 2,
-        ...config,
-        renderDayContents: day => <div className="arm-date-time-input-day-contents">{day}</div>,
-      };
-    }, [config]);
+  const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
+    return {
+      // initial values can be overridden with config
+      monthsShown: 2,
+      ...config,
+      renderDayContents: day => <div className="arm-date-time-input-day-contents">{day}</div>,
+    };
+  }, [config]);
 
-    const startDateVal = startDate ? parse(startDate, format as string, new Date(), { locale }) : undefined;
-    const endDateVal = endDate ? parse(endDate, format as string, new Date(), { locale }) : undefined;
+  const startDateVal = startDate ? parse(startDate, format as string, new Date(), { locale }) : undefined;
+  const endDateVal = endDate ? parse(endDate, format as string, new Date(), { locale }) : undefined;
 
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindEndDateConfig.validate();
-        bindStartDateConfig.validate();
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindEndDateConfig.validate();
+      bindStartDateConfig.validate();
+    }
+    bindStartDateConfig.setTouched(true);
+    bindEndDateConfig.setTouched(true);
+  }, [endDate]);
+
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate && bindStartDateConfig.isTouched && bindEndDateConfig.isTouched) {
+      bindEndDateConfig.validate();
+      bindStartDateConfig.validate();
+    }
+  }, [startDate]);
+
+  return (
+    <ReactDatePicker
+      {...stripNullOrUndefined(compiledConfig)}
+      ref={datePickerRef}
+      locale={locale}
+      className={concat('arm-date-time-input', className)}
+      dateFormat={format}
+      disabled={inputProps.disabled}
+      customInput={
+        <Input
+          type="text"
+          ref={ref}
+          {...inputProps}
+          leftOverlay={
+            showCalendarOnLeftOverlayClick && leftOverlay ? (
+              <button
+                type="button"
+                className="arm-date-time-overlay-button"
+                disabled={inputProps.disabled}
+                onClick={() => datePickerRef.current?.setOpen(true)}
+              >
+                {leftOverlay}
+              </button>
+            ) : (
+              leftOverlay
+            )
+          }
+          validationErrorMessages={[
+            ...bindStartDateConfig.validationErrorMessages,
+            ...bindEndDateConfig.validationErrorMessages,
+          ]}
+        />
       }
-      bindStartDateConfig.setTouched(true);
-      bindEndDateConfig.setTouched(true);
-    }, [endDate]);
-
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate && bindStartDateConfig.isTouched && bindEndDateConfig.isTouched) {
-        bindEndDateConfig.validate();
-        bindStartDateConfig.validate();
-      }
-    }, [startDate]);
-
-    return (
-      <ReactDatePicker
-        {...stripNullOrUndefined(compiledConfig)}
-        ref={datePickerRef}
-        locale={locale}
-        className={concat('arm-date-time-input', className)}
-        dateFormat={format}
-        disabled={inputProps.disabled}
-        customInput={
-          <Input
-            type="text"
-            ref={ref}
-            {...inputProps}
-            leftOverlay={
-              showCalendarOnLeftOverlayClick && leftOverlay ? (
-                <button
-                  type="button"
-                  className="arm-date-time-overlay-button"
-                  disabled={inputProps.disabled}
-                  onClick={() => datePickerRef.current?.setOpen(true)}
-                >
-                  {leftOverlay}
-                </button>
-              ) : (
-                leftOverlay
-              )
-            }
-            validationErrorMessages={[
-              ...bindStartDateConfig.validationErrorMessages,
-              ...bindEndDateConfig.validationErrorMessages,
-            ]}
-          />
+      selectsRange={true}
+      startDate={startDateVal}
+      endDate={endDateVal}
+      // react-datepicker v8 uses discriminated union types; explicitly passing undefined
+      // narrows to the range variant and satisfies the type checker
+      selectsMultiple={undefined}
+      showMonthYearDropdown={undefined}
+      popperPlacement="bottom-start" // This keeps the calendar picker aligned to the start of the Input
+      onChange={newValue => {
+        let hasChanged = false;
+        if (newValue?.[0]) {
+          setStartDate?.(formatDate(newValue?.[0], format as string));
+          hasChanged = true;
         }
-        selectsRange={true}
-        startDate={startDateVal}
-        endDate={endDateVal}
-        selectsMultiple={undefined}
-        showMonthYearDropdown={undefined}
-        popperPlacement='bottom-start'  // This keeps the calendar picker aligned to the start of the Input
-        onChange={newValue => {
-          let hasChanged = false;
-          if (newValue?.[0]) {
-            setStartDate?.(formatDate(newValue?.[0], format as string));
-            hasChanged = true;
-          }
-          if (newValue?.[1]) {
-            setEndDate?.(formatDate(newValue?.[1], format as string));
-            hasChanged = true;
-          } else if (newValue?.[1] === null) {
-            setEndDate?.(null);
-            hasChanged = true;
-          }
-          if (hasChanged) {
-            onChange?.(newValue?.map(nv => formatDate(nv, format as string)) as [string | null, string | null]);
-          }
-        }}
-      />
-    );
-  };
+        if (newValue?.[1]) {
+          setEndDate?.(formatDate(newValue?.[1], format as string));
+          hasChanged = true;
+        } else if (newValue?.[1] === null) {
+          setEndDate?.(null);
+          hasChanged = true;
+        }
+        if (hasChanged) {
+          onChange?.(newValue?.map(nv => formatDate(nv, format as string)) as [string | null, string | null]);
+        }
+      }}
+    />
+  );
+};
 
 RangeDateTimeInput.displayName = 'RangeDateTimeInput';
 
-const NativeDateTimeInput: React.FC<IDateTimeInputNativeProps<string | null> & { ref?: React.Ref<HTMLInputElement> }> =
-  ({ ref, mode, selectsRange, native, ...props }) => {
-    return <Input ref={ref} type={mode === 'date-time' ? 'datetime-local' : mode} {...props} />;
-  };
+const NativeDateTimeInput: React.FC<
+  IDateTimeInputNativeProps<string | null> & { ref?: React.Ref<HTMLInputElement> }
+> = ({ ref, mode, selectsRange: _selectsRange, native: _native, ...props }) => {
+  return <Input ref={ref} type={mode === 'date-time' ? 'datetime-local' : mode} {...props} />;
+};
 
 NativeDateTimeInput.displayName = 'NativeDateTimeInput';
 
-export const SingleDateAndTimeInput =
-  (
-    {
-      ref,
-      className,
-      bind,
-      mode,
-      validationErrorMessages,
-      disableOnPending,
-      hideIconOnStatus,
-      displaySize,
-      statusPosition,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationMode,
-      errorIcon,
-      validationErrorsClassName,
-      value,
-      onChange,
-      dateInputConfig,
-      timeInputConfig,
-      format = defaultDateAndTimeFormat,
-      locale = defaultLocale,
-      disabled,
-      required,
-      dateInputProps = {},
-      timeInputProps = {},
-      timeInputDisplayFormat = defaultTimeFormat,
-      dateInputDisplayFormat = defaultDateFormat,
-      timeInputRef,
-      selectsRange,
-      native,
-      monthSelectVariant,
-      error,
-      label,
-      labelId,
-      labelClassName,
-      autoValidate,
-      ...nativeProps
-    }: IDateAndTimeInputSingleProps<string | null> & { ref?: React.Ref<HTMLInputElement> }
-  ) => {
-    const [dateTime, setDateTime, bindConfig] = useBindingState(bind, {
-      validationErrorMessages,
-      value,
-      onChange,
-      validationMode,
-      autoValidate,
-    });
+export const SingleDateAndTimeInput = ({
+  ref,
+  className,
+  bind,
+  mode: _mode,
+  validationErrorMessages,
+  disableOnPending,
+  hideIconOnStatus,
+  displaySize,
+  statusPosition,
+  requiredIndicator,
+  scrollValidationErrorsIntoView,
+  validationMode,
+  errorIcon: _errorIcon,
+  validationErrorsClassName,
+  value,
+  onChange,
+  dateInputConfig,
+  timeInputConfig,
+  format = defaultDateAndTimeFormat,
+  locale = defaultLocale,
+  disabled,
+  required,
+  dateInputProps = {},
+  timeInputProps = {},
+  timeInputDisplayFormat = defaultTimeFormat,
+  dateInputDisplayFormat = defaultDateFormat,
+  timeInputRef,
+  selectsRange: _selectsRange,
+  native: _native,
+  monthSelectVariant,
+  error,
+  label,
+  labelId,
+  labelClassName,
+  autoValidate,
+  ...nativeProps
+}: IDateAndTimeInputSingleProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const [dateTime, setDateTime, bindConfig] = useBindingState(bind, {
+    validationErrorMessages,
+    value,
+    onChange,
+    validationMode,
+    autoValidate,
+  });
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      disableControlOnPending: disableOnPending,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
-      inputDisplaySize: displaySize,
-      inputStatusPosition: statusPosition,
-      requiredIndicator,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-      scrollValidationErrorsIntoView,
-      autoValidate: bindConfig.autoValidate,
-    });
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    disableControlOnPending: disableOnPending,
+    hideInputErrorIconOnStatus: hideIconOnStatus,
+    inputDisplaySize: displaySize,
+    inputStatusPosition: statusPosition,
+    requiredIndicator,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+    scrollValidationErrorsIntoView,
+    autoValidate: bindConfig.autoValidate,
+  });
 
-    const incomingDateValue = React.useMemo(() => {
-      if (!dateTime) return undefined;
-      const asDate = parse(dateTime, format as string, new Date(), { locale });
-      return formatDate(asDate, dateInputDisplayFormat as string);
-    }, [dateTime, format, locale, dateInputDisplayFormat]);
+  const incomingDateValue = React.useMemo(() => {
+    if (!dateTime) return undefined;
+    const asDate = parse(dateTime, format as string, new Date(), { locale });
+    return formatDate(asDate, dateInputDisplayFormat as string);
+  }, [dateTime, format, locale, dateInputDisplayFormat]);
 
-    const incomingTimeValue = React.useMemo(() => {
-      if (!dateTime) return undefined;
-      const asDate = parse(dateTime, format as string, new Date(), { locale });
-      return formatDate(asDate, timeInputDisplayFormat as string);
-    }, [dateTime, format, locale, timeInputDisplayFormat]);
+  const incomingTimeValue = React.useMemo(() => {
+    if (!dateTime) return undefined;
+    const asDate = parse(dateTime, format as string, new Date(), { locale });
+    return formatDate(asDate, timeInputDisplayFormat as string);
+  }, [dateTime, format, locale, timeInputDisplayFormat]);
 
-    const [dateValue, setDateValue] = React.useState<NullOrUndefined<string>>(incomingDateValue);
-    const [timeValue, setTimeValue] = React.useState<NullOrUndefined<string>>(incomingTimeValue);
+  const [dateValue, setDateValue] = React.useState<NullOrUndefined<string>>(incomingDateValue);
+  const [timeValue, setTimeValue] = React.useState<NullOrUndefined<string>>(incomingTimeValue);
 
-    React.useEffect(() => setDateValue(incomingDateValue), [incomingDateValue]);
-    React.useEffect(() => setTimeValue(incomingTimeValue), [incomingTimeValue]);
+  React.useEffect(() => setDateValue(incomingDateValue), [incomingDateValue]);
+  React.useEffect(() => setTimeValue(incomingTimeValue), [incomingTimeValue]);
 
-    const combineDateAndTime = React.useCallback((newDate: NullOrUndefined<string>, newTime: NullOrUndefined<string>) => {
+  const combineDateAndTime = React.useCallback(
+    (newDate: NullOrUndefined<string>, newTime: NullOrUndefined<string>) => {
       if (newDate && newTime) {
         const dateAsDate = parse(newDate, dateInputDisplayFormat as string, new Date(), { locale });
         const timeAsDate = parse(newTime, timeInputDisplayFormat as string, new Date(), { locale });
@@ -635,143 +648,153 @@ export const SingleDateAndTimeInput =
         );
         setDateTime?.(formatDate(combinedDate, format as string));
       }
-    }, [dateInputDisplayFormat, timeInputDisplayFormat, locale, format, setDateTime]);
+    },
+    [dateInputDisplayFormat, timeInputDisplayFormat, locale, format, setDateTime]
+  );
 
-    const onDateChange = React.useCallback((newDateValue: NullOrUndefined<string>) => {
+  const onDateChange = React.useCallback(
+    (newDateValue: NullOrUndefined<string>) => {
       setDateValue(newDateValue);
       combineDateAndTime(newDateValue, timeValue);
-    }, [combineDateAndTime, timeValue]);
+    },
+    [combineDateAndTime, timeValue]
+  );
 
-    const onTimeChange = React.useCallback((newTimeValue: NullOrUndefined<string>) => {
+  const onTimeChange = React.useCallback(
+    (newTimeValue: NullOrUndefined<string>) => {
       setTimeValue(newTimeValue);
       combineDateAndTime(dateValue, newTimeValue);
-    }, [combineDateAndTime, dateValue]);
+    },
+    [combineDateAndTime, dateValue]
+  );
 
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindConfig.validate();
-      }
-      bindConfig.setTouched(true);
-    }, [dateTime]);
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindConfig.validate();
+    }
+    bindConfig.setTouched(true);
+  }, [dateTime]);
 
-    return (
-      <div className={concat('arm-date-and-time-input-container', className)} {...nativeProps}>
-        {label && (
-          <Label
-            className={concat('arm-input-base-label arm-date-and-time-input-label', labelClassName)}
+  return (
+    <div className={concat('arm-date-and-time-input-container', className)} {...nativeProps}>
+      {label && (
+        <Label
+          className={concat('arm-input-base-label arm-date-and-time-input-label', labelClassName)}
+          required={required}
+          requiredIndicator={globals.requiredIndicator}
+          htmlFor={labelId}
+          displaySize={globals.inputDisplaySize}
+        >
+          {label}
+        </Label>
+      )}
+      <div className="arm-date-and-time-inputs">
+        <div className="arm-date-and-time-input arm-date-input">
+          <SingleDateTimeInput
+            mode="date"
+            ref={ref}
+            locale={locale}
+            format={dateInputDisplayFormat}
+            config={dateInputConfig}
+            value={dateValue}
+            onChange={onDateChange}
+            displaySize={globals.inputDisplaySize}
+            validationMode={bindConfig.validationMode}
+            disabled={disabled}
+            statusPosition={globals.inputStatusPosition}
+            disableOnPending={globals.disableControlOnPending}
+            hideIconOnStatus={globals.hideInputErrorIconOnStatus}
             required={required}
             requiredIndicator={globals.requiredIndicator}
-            htmlFor={labelId}
-            displaySize={globals.inputDisplaySize}
-          >
-            {label}
-          </Label>
-        )}
-        <div className="arm-date-and-time-inputs">
-          <div className="arm-date-and-time-input arm-date-input">
-            <SingleDateTimeInput
-              mode="date"
-              ref={ref}
-              locale={locale}
-              format={dateInputDisplayFormat}
-              config={dateInputConfig}
-              value={dateValue}
-              onChange={onDateChange}
-              displaySize={globals.inputDisplaySize}
-              validationMode={bindConfig.validationMode}
-              disabled={disabled}
-              statusPosition={globals.inputStatusPosition}
-              disableOnPending={globals.disableControlOnPending}
-              hideIconOnStatus={globals.hideInputErrorIconOnStatus}
-              required={required}
-              requiredIndicator={globals.requiredIndicator}
-              monthSelectVariant={monthSelectVariant}
-              error={error || !!validationErrorMessages?.length}
-              {...dateInputProps}
-            />
-          </div>
-          <div className="arm-date-and-time-input arm-time-input">
-            <SingleDateTimeInput
-              mode="time"
-              locale={locale}
-              format={timeInputDisplayFormat}
-              config={timeInputConfig}
-              ref={timeInputRef}
-              value={timeValue}
-              onChange={onTimeChange}
-              displaySize={globals.inputDisplaySize}
-              validationMode={bindConfig.validationMode}
-              disabled={disabled}
-              statusPosition={globals.inputStatusPosition}
-              disableOnPending={globals.disableControlOnPending}
-              hideIconOnStatus={globals.hideInputErrorIconOnStatus}
-              required={required}
-              requiredIndicator={globals.requiredIndicator}
-              error={error || !!validationErrorMessages?.length}
-              {...timeInputProps}
-            />
-          </div>
-        </div>
-        {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            className={validationErrorsClassName}
-            validationMode={globals.validationMode}
-            validationErrors={validationErrorMessages}
-            scrollIntoView={globals.scrollValidationErrorsIntoView}
+            monthSelectVariant={monthSelectVariant}
+            error={error || !!validationErrorMessages?.length}
+            {...dateInputProps}
           />
-        )}
+        </div>
+        <div className="arm-date-and-time-input arm-time-input">
+          <SingleDateTimeInput
+            mode="time"
+            locale={locale}
+            format={timeInputDisplayFormat}
+            config={timeInputConfig}
+            ref={timeInputRef}
+            value={timeValue}
+            onChange={onTimeChange}
+            displaySize={globals.inputDisplaySize}
+            validationMode={bindConfig.validationMode}
+            disabled={disabled}
+            statusPosition={globals.inputStatusPosition}
+            disableOnPending={globals.disableControlOnPending}
+            hideIconOnStatus={globals.hideInputErrorIconOnStatus}
+            required={required}
+            requiredIndicator={globals.requiredIndicator}
+            error={error || !!validationErrorMessages?.length}
+            {...timeInputProps}
+          />
+        </div>
       </div>
-    );
-  };
+      {!!validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+        <ValidationErrors
+          className={validationErrorsClassName}
+          validationMode={globals.validationMode}
+          validationErrors={validationErrorMessages}
+          scrollIntoView={globals.scrollValidationErrorsIntoView}
+        />
+      )}
+    </div>
+  );
+};
 
 SingleDateAndTimeInput.displayName = 'SingleDateAndTimeInput';
 
 /** third-party docs: https://reactdatepicker.com */
-export const DateTimeInput = (({ ref, selectsRange = false, native = false, ...props }: DateTimeInputProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
-    const mode =
-      (props as IDateOrTimeInputSingleProps<string | null> | IDateAndTimeInputSingleProps<string | null>).mode ??
-      'date';
-    if (selectsRange) {
-      return (
-        <RangeDateTimeInput
-          ref={ref}
-          native={false}
-          selectsRange={selectsRange}
-          {...(props as Omit<IDateTimeInputRangeProps<string | null>, 'selectsRange' | 'native'>)}
-        />
-      );
-    }
-    if (native) {
-      return (
-        <NativeDateTimeInput
-          native={true}
-          ref={ref}
-          mode={mode}
-          {...(props as Omit<IDateTimeInputNativeProps<string | null>, 'selectsRange' | 'native'>)}
-        />
-      );
-    }
-    if (mode === 'date-time') {
-      return (
-        <SingleDateAndTimeInput
-          ref={ref}
-          mode={mode}
-          native={false}
-          {...(props as Omit<IDateAndTimeInputSingleProps<string | null>, 'selectsRange' | 'native' | 'mode'>)}
-        />
-      );
-    }
+export const DateTimeInput = (({
+  ref,
+  selectsRange = false,
+  native = false,
+  ...props
+}: DateTimeInputProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const mode =
+    (props as IDateOrTimeInputSingleProps<string | null> | IDateAndTimeInputSingleProps<string | null>).mode ?? 'date';
+  if (selectsRange) {
     return (
-      <SingleDateTimeInput
+      <RangeDateTimeInput
         ref={ref}
-        mode={mode}
         native={false}
-        {...(props as Omit<IDateOrTimeInputSingleProps<string | null>, 'selectsRange' | 'native' | 'mode'>)}
+        selectsRange={selectsRange}
+        {...(props as Omit<IDateTimeInputRangeProps<string | null>, 'selectsRange' | 'native'>)}
       />
     );
   }
-  // type assertion to ensure generic works with ref-as-prop component
-) as (<TValue extends NullOrUndefined<string>>(
+  if (native) {
+    return (
+      <NativeDateTimeInput
+        native={true}
+        ref={ref}
+        mode={mode}
+        {...(props as Omit<IDateTimeInputNativeProps<string | null>, 'selectsRange' | 'native'>)}
+      />
+    );
+  }
+  if (mode === 'date-time') {
+    return (
+      <SingleDateAndTimeInput
+        ref={ref}
+        mode={mode}
+        native={false}
+        {...(props as Omit<IDateAndTimeInputSingleProps<string | null>, 'selectsRange' | 'native' | 'mode'>)}
+      />
+    );
+  }
+  return (
+    <SingleDateTimeInput
+      ref={ref}
+      mode={mode}
+      native={false}
+      {...(props as Omit<IDateOrTimeInputSingleProps<string | null>, 'selectsRange' | 'native' | 'mode'>)}
+    />
+  );
+}) as (<TValue extends NullOrUndefined<string>>( // type assertion to ensure generic works with ref-as-prop component
   props: ArmstrongFCProps<DateTimeInputProps<TValue>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<DateTimeInputProps<string>>;

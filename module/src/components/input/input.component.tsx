@@ -137,166 +137,166 @@ export const Input = (({
   autoValidate,
   ...nativeProps
 }: IInputProps<string | number> & { type?: HTMLInputTypeAttribute } & { ref?: React.Ref<HTMLInputElement> }) => {
-    const reactId = React.useId();
-    const id = nativeProps.id ?? reactId;
+  const reactId = React.useId();
+  const id = nativeProps.id ?? reactId;
 
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value: value?.toString(),
-      validationErrorMessages,
-      validationMode,
-      validationErrorIcon,
-      autoValidate,
-    });
+  const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+    value: value?.toString(),
+    validationErrorMessages,
+    validationMode,
+    validationErrorIcon,
+    autoValidate,
+  });
 
-    const [internalValue, setInternalValue] = React.useState(boundValue?.toString());
+  const [internalValue, setInternalValue] = React.useState(boundValue?.toString());
 
-    useSSRLayoutEffect(() => {
-      if (boundValue?.toString() !== internalValue?.toString()) {
-        setInternalValue(boundValue?.toString());
+  useSSRLayoutEffect(() => {
+    if (boundValue?.toString() !== internalValue?.toString()) {
+      setInternalValue(boundValue?.toString());
+    }
+  }, [boundValue]);
+
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    disableControlOnPending: disableOnPending,
+    hideInputErrorIconOnStatus: hideIconOnStatus,
+    inputDisplaySize: displaySize,
+    inputStatusPosition: statusPosition,
+    requiredIndicator,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+    scrollValidationErrorsIntoView,
+    autoValidate: bindConfig.autoValidate,
+  });
+
+  const parseValue = React.useCallback(
+    (unparsedValue?: string) => {
+      if (nativeProps.type !== 'number') {
+        return unparsedValue;
       }
-    }, [boundValue]);
+      if (!unparsedValue) {
+        return undefined;
+      }
+      if (!Number.isNaN(parseFloat(unparsedValue))) {
+        return parseFloat(unparsedValue);
+      }
+      return null;
+    },
+    [nativeProps.type]
+  );
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      disableControlOnPending: disableOnPending,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
-      inputDisplaySize: displaySize,
-      inputStatusPosition: statusPosition,
-      requiredIndicator,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-      scrollValidationErrorsIntoView,
-      autoValidate: bindConfig.autoValidate,
-    });
+  const onBindValueChange = React.useCallback(
+    (parsedValue?: string | number | undefined) => {
+      const formattedValue = bind?.bindConfig?.format?.toData?.(parsedValue) || parsedValue;
+      setBoundValue(formattedValue);
+    },
+    [setBoundValue, bind]
+  );
 
-    const parseValue = React.useCallback(
-      (unparsedValue?: string) => {
-        if (nativeProps.type !== 'number') {
-          return unparsedValue;
-        }
-        if (!unparsedValue) {
-          return undefined;
-        }
-        if (!Number.isNaN(parseFloat(unparsedValue))) {
-          return parseFloat(unparsedValue);
-        }
-        return null;
-      },
-      [nativeProps.type]
-    );
+  const updateValue = React.useCallback(
+    (newValue: string | undefined) => {
+      const parsedValue = parseValue(newValue);
+      if (parsedValue !== null) {
+        onBindValueChange(parsedValue);
+        onValueChange?.(parsedValue);
+      }
+    },
+    [parseValue, onBindValueChange, onValueChange]
+  );
 
-    const onBindValueChange = React.useCallback(
-      (parsedValue?: string | number | undefined) => {
-        const formattedValue = bind?.bindConfig?.format?.toData?.(parsedValue) || parsedValue;
-        setBoundValue(formattedValue);
-      },
-      [setBoundValue, bind]
-    );
+  /** onChange used for throttled inputs */
+  const onValueChangeEvent = React.useCallback(
+    (currentValue?: string) => {
+      setInternalValue(currentValue);
+      updateValue(currentValue);
+    },
+    [updateValue]
+  );
 
-    const updateValue = React.useCallback(
-      (newValue: string | undefined) => {
-        const parsedValue = parseValue(newValue);
-        if (parsedValue !== null) {
-          onBindValueChange(parsedValue);
-          onValueChange?.(parsedValue);
-        }
-      },
-      [parseValue, onBindValueChange, onValueChange]
-    );
+  /** onChange used for standard inputs */
+  const onValueChangeRaw = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(event);
+      const newValue = event.currentTarget.value;
+      setInternalValue(newValue);
+      updateValue(newValue);
+    },
+    [onChange, updateValue]
+  );
 
-    /** onChange used for throttled inputs */
-    const onValueChangeEvent = React.useCallback(
-      (currentValue?: string) => {
-        setInternalValue(currentValue);
-        updateValue(currentValue);
-      },
-      [updateValue]
-    );
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate && bindConfig.isTouched) {
+      bindConfig.validate();
+    }
+  }, [boundValue]);
 
-    /** onChange used for standard inputs */
-    const onValueChangeRaw = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        onChange?.(event);
-        const newValue = event.currentTarget.value;
-        setInternalValue(newValue);
-        updateValue(newValue);
-      },
-      [onChange, updateValue]
-    );
-
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate && bindConfig.isTouched) {
+  const onBlurEvent = React.useCallback(
+    (event: React.FocusEvent<HTMLInputElement, HTMLElement>) => {
+      if (globals.autoValidate && !bindConfig.isTouched) {
         bindConfig.validate();
       }
-    }, [boundValue]);
+      bindConfig.setTouched(true);
+      onBlurWorkaround(event);
+      return nativeProps.onBlur?.(event);
+    },
+    [bindConfig, globals.autoValidate, nativeProps]
+  );
 
-    const onBlurEvent = React.useCallback(
-      (event: React.FocusEvent<HTMLInputElement, HTMLElement>) => {
-        if (globals.autoValidate && !bindConfig.isTouched) {
-          bindConfig.validate();
-        }
-        bindConfig.setTouched(true);
-        onBlurWorkaround(event);
-        return nativeProps.onBlur?.(event);
-      },
-      [bindConfig, globals.autoValidate, nativeProps]
-    );
+  const inputProps: NativeInputProps & {
+    value?: string;
+    'data-testid'?: string;
+  } = {
+    id,
+    className: concat('arm-input-base-input', inputClassName),
+    /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
+    value: internalValue?.toString() ?? (bind && ''),
+    disabled,
+    ...nativeProps,
+    onBlur: onBlurEvent,
+  };
 
-    const inputProps: NativeInputProps & {
-      value?: string;
-      'data-testid'?: string;
-    } = {
-      id,
-      className: concat('arm-input-base-input', inputClassName),
-      /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
-      value: internalValue?.toString() ?? (bind && ''),
-      disabled,
-      ...nativeProps,
-      onBlur: onBlurEvent,
-    };
-
-    return (
-      <InputWrapper
-        data-size={globals.inputDisplaySize}
-        data-has-value={!!inputProps.value}
-        className={concat(className, 'arm-input-base')}
-        statusClassName={concat(statusClassName, 'arm-input-base-status')}
-        validationErrorsClassName={concat(validationErrorsClassName, 'arm-input-base-validation')}
-        leftOverlay={leftOverlay}
-        rightOverlay={rightOverlay}
-        validationErrorMessages={bindConfig.validationErrorMessages}
-        errorIcon={bindConfig.validationErrorIcon}
-        validationMode={bindConfig.validationMode}
-        pending={pending}
-        disabled={disabled}
-        statusPosition={globals.inputStatusPosition}
-        scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
-        disableOnPending={globals.disableControlOnPending}
-        hideIconOnStatus={globals.hideInputErrorIconOnStatus}
-        label={label}
-        labelId={labelId ?? id}
-        labelClassName={concat(labelClassName, 'arm-input-base-label')}
-        required={required}
-        error={error}
-        requiredIndicator={globals.requiredIndicator}
-        data-testid={wrapperTestId}
-        displaySize={globals.inputDisplaySize}
-      >
-        {!!delay && (
-          <DebounceInputBase
-            {...nativeProps}
-            {...inputProps}
-            milliseconds={delay}
-            onChange={onChange}
-            onValueChange={onValueChangeEvent}
-            ref={ref}
-            data-size={displaySize}
-          />
-        )}
-        {!delay && (
-          <input {...nativeProps} {...inputProps} onChange={onValueChangeRaw} ref={ref} data-size={displaySize} />
-        )}
-      </InputWrapper>
-    );
+  return (
+    <InputWrapper
+      data-size={globals.inputDisplaySize}
+      data-has-value={!!inputProps.value}
+      className={concat(className, 'arm-input-base')}
+      statusClassName={concat(statusClassName, 'arm-input-base-status')}
+      validationErrorsClassName={concat(validationErrorsClassName, 'arm-input-base-validation')}
+      leftOverlay={leftOverlay}
+      rightOverlay={rightOverlay}
+      validationErrorMessages={bindConfig.validationErrorMessages}
+      errorIcon={bindConfig.validationErrorIcon}
+      validationMode={bindConfig.validationMode}
+      pending={pending}
+      disabled={disabled}
+      statusPosition={globals.inputStatusPosition}
+      scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
+      disableOnPending={globals.disableControlOnPending}
+      hideIconOnStatus={globals.hideInputErrorIconOnStatus}
+      label={label}
+      labelId={labelId ?? id}
+      labelClassName={concat(labelClassName, 'arm-input-base-label')}
+      required={required}
+      error={error}
+      requiredIndicator={globals.requiredIndicator}
+      data-testid={wrapperTestId}
+      displaySize={globals.inputDisplaySize}
+    >
+      {!!delay && (
+        <DebounceInputBase
+          {...nativeProps}
+          {...inputProps}
+          milliseconds={delay}
+          onChange={onChange}
+          onValueChange={onValueChangeEvent}
+          ref={ref}
+          data-size={displaySize}
+        />
+      )}
+      {!delay && (
+        <input {...nativeProps} {...inputProps} onChange={onValueChangeRaw} ref={ref} data-size={displaySize} />
+      )}
+    </InputWrapper>
+  );
 }) as (<TStringValue extends NullOrUndefined<string>, TNumberValue extends NullOrUndefined<number>>(
   props: ArmstrongFCProps<ITextInputProps<TStringValue> | INumberInputProps<TNumberValue>, HTMLInputElement>
 ) => ArmstrongFCReturn) &

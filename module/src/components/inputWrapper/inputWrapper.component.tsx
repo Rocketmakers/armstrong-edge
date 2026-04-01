@@ -58,34 +58,32 @@ export interface IInputWrapperProps extends IStatusWrapperProps {
 }
 
 /** Wrapper for individual input elements, allowing them to be styled consistently] */
-export const InputWrapper = (
-  {
-    ref,
-    className,
-    children,
-    leftOverlay,
-    rightOverlay,
-    validationMode,
-    validationErrorMessages,
-    errorIcon,
-    disabled,
-    pending,
-    error,
-    statusPosition,
-    hideIconOnStatus,
-    disableOnPending,
-    scrollValidationErrorsIntoView,
-    statusClassName,
-    validationErrorsClassName,
-    label,
-    required,
-    requiredIndicator,
-    labelClassName,
-    labelId,
-    displaySize,
-    ...nativeProps
-  }: React.PropsWithChildren<IInputWrapperProps> & { ref?: React.Ref<HTMLDivElement> }
-) => {
+export const InputWrapper = ({
+  ref,
+  className,
+  children,
+  leftOverlay,
+  rightOverlay,
+  validationMode,
+  validationErrorMessages,
+  errorIcon,
+  disabled,
+  pending,
+  error,
+  statusPosition,
+  hideIconOnStatus,
+  disableOnPending,
+  scrollValidationErrorsIntoView,
+  statusClassName,
+  validationErrorsClassName,
+  label,
+  required,
+  requiredIndicator,
+  labelClassName,
+  labelId,
+  displaySize,
+  ...nativeProps
+}: React.PropsWithChildren<IInputWrapperProps> & { ref?: React.Ref<HTMLDivElement> }) => {
   const globals = useArmstrongConfig({
     validationMode,
     hideInputErrorIconOnStatus: hideIconOnStatus,

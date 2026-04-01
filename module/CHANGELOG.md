@@ -1,52 +1,45 @@
 ## [3.13.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.4...v3.13.5) (2025-08-22)
 
-
 ### Bug Fixes
 
-* fixed keychain string creation for keychains with zeros ([e9fd6ac](https://github.com/Rocketmakers/armstrong-edge/commit/e9fd6ac3cccd3a67ecf2633c1506898e39c4df4c))
-* handles empty string case when creating string keys from keychains ([0134a3d](https://github.com/Rocketmakers/armstrong-edge/commit/0134a3dd14fe470754475ec82ed01f80a76eb91c))
+- fixed keychain string creation for keychains with zeros ([e9fd6ac](https://github.com/Rocketmakers/armstrong-edge/commit/e9fd6ac3cccd3a67ecf2633c1506898e39c4df4c))
+- handles empty string case when creating string keys from keychains ([0134a3d](https://github.com/Rocketmakers/armstrong-edge/commit/0134a3dd14fe470754475ec82ed01f80a76eb91c))
 
 ## [3.13.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.3...v3.13.4) (2025-08-20)
 
-
 ### Bug Fixes
 
-* add value prop to text area ([99d2355](https://github.com/Rocketmakers/armstrong-edge/commit/99d2355fc289a8ed712d7ed198bceedd4bcd2807))
+- add value prop to text area ([99d2355](https://github.com/Rocketmakers/armstrong-edge/commit/99d2355fc289a8ed712d7ed198bceedd4bcd2807))
 
 ## [3.13.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.2...v3.13.3) (2025-08-20)
 
-
 ### Bug Fixes
 
-* bind attribute to correct prop ([45c827b](https://github.com/Rocketmakers/armstrong-edge/commit/45c827b8be0b6f3a2973e52cc71323652fc24ea8))
+- bind attribute to correct prop ([45c827b](https://github.com/Rocketmakers/armstrong-edge/commit/45c827b8be0b6f3a2973e52cc71323652fc24ea8))
 
 ## [3.13.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.1...v3.13.2) (2025-08-20)
 
-
 ### Bug Fixes
 
-* add value to input wrappers ([16a94d9](https://github.com/Rocketmakers/armstrong-edge/commit/16a94d99cfdeb05f3da200bf0429964f7aa12b2b))
+- add value to input wrappers ([16a94d9](https://github.com/Rocketmakers/armstrong-edge/commit/16a94d99cfdeb05f3da200bf0429964f7aa12b2b))
 
 ## [3.13.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.0...v3.13.1) (2025-07-07)
 
-
 ### Bug Fixes
 
-* fixes the docs for non-modal dropdown ([fb8ad1a](https://github.com/Rocketmakers/armstrong-edge/commit/fb8ad1aaaff5183e98453ae6ce62e763afdff45d))
+- fixes the docs for non-modal dropdown ([fb8ad1a](https://github.com/Rocketmakers/armstrong-edge/commit/fb8ad1aaaff5183e98453ae6ce62e763afdff45d))
 
 # [3.13.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.12.0...v3.13.0) (2025-07-07)
 
-
 ### Features
 
-* allowed passing radix's modal prop to the dropdown ([da7ab44](https://github.com/Rocketmakers/armstrong-edge/commit/da7ab44c9cce1c8fe8c3eca64d298830057553cc))
+- allowed passing radix's modal prop to the dropdown ([da7ab44](https://github.com/Rocketmakers/armstrong-edge/commit/da7ab44c9cce1c8fe8c3eca64d298830057553cc))
 
 # [3.12.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.11.0...v3.12.0) (2025-06-05)
 
-
 ### Features
 
-* - Adds the ability to dismiss toasts programatically ([b0ba88c](https://github.com/Rocketmakers/armstrong-edge/commit/b0ba88ca0a6d09bcbb17680bcd80907321e5fefd))
+- - Adds the ability to dismiss toasts programatically ([b0ba88c](https://github.com/Rocketmakers/armstrong-edge/commit/b0ba88ca0a6d09bcbb17680bcd80907321e5fefd))
 
 # [3.11.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.3...v3.11.0) (2025-05-06)
 

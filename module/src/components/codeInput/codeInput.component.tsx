@@ -15,7 +15,8 @@ import { getLengthFromPart } from './codeInput.utils';
 
 import './codeInput.theme.css';
 
-export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> extends Omit<ITextInputProps<TBind>, 'part'> {
+export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>>
+  extends Omit<ITextInputProps<TBind>, 'part'> {
   /** The given length of this part. If this is a string, the string will be rendered. */
   part: CodeInputPartDefinition<TBind>;
 }
@@ -164,233 +165,250 @@ export const CodeInput = (({
   autoValidate,
   ...nativeProps
 }: ICodeInputProps<NullOrUndefined<string>> & { ref?: React.Ref<HTMLDivElement> }) => {
-    const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
+  const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      onChange,
-      validationErrorMessages,
-      validationMode,
-      value,
-      autoValidate,
-    });
+  const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+    onChange,
+    validationErrorMessages,
+    validationMode,
+    value,
+    autoValidate,
+  });
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      inputStatusPosition: statusPosition,
-      inputDisplaySize: displaySize,
-      requiredIndicator,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
-      disableControlOnPending: disableOnPending,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: errorIcon,
-      autoValidate: bindConfig.autoValidate,
-    });
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    inputStatusPosition: statusPosition,
+    inputDisplaySize: displaySize,
+    requiredIndicator,
+    hideInputErrorIconOnStatus: hideIconOnStatus,
+    disableControlOnPending: disableOnPending,
+    scrollValidationErrorsIntoView,
+    validationErrorIcon: errorIcon,
+    autoValidate: bindConfig.autoValidate,
+  });
 
-    const goNextPart = React.useCallback(
-      (partIndex: number) => {
-        const nextIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string') + partIndex + 1;
+  const goNextPart = React.useCallback(
+    (partIndex: number) => {
+      const nextIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string') + partIndex + 1;
 
-        if (nextIndex !== -1) {
-          inputRefs.current[nextIndex]?.focus();
-        }
-      },
-      [parts]
-    );
+      if (nextIndex !== -1) {
+        inputRefs.current[nextIndex]?.focus();
+      }
+    },
+    [parts]
+  );
 
-    /** @todo - why is focussing selecting before the final character? */
-    const goPreviousPart = React.useCallback(
-      (partIndex: number) => {
-        const previousIndex = findLastIndex(parts.slice(0, partIndex), part => typeof part !== 'string');
+  /** @todo - why is focussing selecting before the final character? */
+  const goPreviousPart = React.useCallback(
+    (partIndex: number) => {
+      const previousIndex = findLastIndex(parts.slice(0, partIndex), part => typeof part !== 'string');
 
-        if (previousIndex !== -1) {
-          inputRefs.current[previousIndex]?.focus();
-        }
-      },
-      [parts]
-    );
+      if (previousIndex !== -1) {
+        inputRefs.current[previousIndex]?.focus();
+      }
+    },
+    [parts]
+  );
 
-    const getValueForPart = React.useCallback(
-      (partIndex: number, incomingValue: NullOrUndefined<string>) => {
-        const sliceStart = parts
-          .slice(0, partIndex)
-          .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
-        const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
+  const getValueForPart = React.useCallback(
+    (partIndex: number, incomingValue: NullOrUndefined<string>) => {
+      const sliceStart = parts
+        .slice(0, partIndex)
+        .reduce<number>((output, part) => output + getLengthFromPart(part), 0);
+      const sliceEnd = sliceStart + getLengthFromPart(parts[partIndex]);
 
-        return incomingValue?.slice(sliceStart, sliceEnd) || '';
-      },
-      [parts]
-    );
+      return incomingValue?.slice(sliceStart, sliceEnd) || '';
+    },
+    [parts]
+  );
 
-    const onPartValueChange = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
-        const currentPartLength = getLengthFromPart(parts[partIndex]);
+  // Tracks the authoritative per-part values to avoid the lossy roundtrip
+  // through boundValue (joining then re-splitting loses empty-part positions).
+  const partsRef = React.useRef<string[] | null>(null);
 
-        const currentPartValue = event.currentTarget.value || '';
-
-        if (currentPartValue.length >= currentPartLength) {
-          goNextPart(partIndex);
-        }
-
-        const newParts = parts.map((_, i) =>
-          i === partIndex ? currentPartValue : getValueForPart(i, boundValue)
-        );
-        setBoundValue?.(newParts.join(''));
-      },
-      [parts, goNextPart, getValueForPart, boundValue, setBoundValue]
-    );
-
-    const onPaste = React.useCallback(
-      (event: React.ClipboardEvent<HTMLInputElement>) => {
-        event.preventDefault();
-        const pasteValue = event.clipboardData.getData('text/plain');
-        const target = event.target as HTMLInputElement;
-
-        const partIndex = inputRefs.current.indexOf(target);
-
-        const selectionStart = Math.min(target.selectionStart ?? 0, target.selectionEnd ?? 0);
-        const selectionEnd = Math.max(target.selectionStart ?? 0, target.selectionEnd ?? 0);
-
-        const insertionStart =
-          new Array(partIndex).fill(null).reduce((memo, _, i) => {
-            const part = parts[i];
-            return memo + getLengthFromPart(part);
-          }, 0) + selectionStart;
-
-        const insertionEnd = insertionStart + (selectionEnd - selectionStart);
-
-        const startSlice = boundValue?.slice(0, insertionStart) ?? '';
-        const endSlice = boundValue?.slice(insertionEnd) ?? '';
-
-        const newValue = startSlice + pasteValue + endSlice;
-
-        setBoundValue(newValue);
-      },
-      [setBoundValue, boundValue, parts]
-    );
-
-    const boundValueArray = React.useMemo(() => {
-      return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
-    }, [getValueForPart, parts, boundValue]);
-
-    const onKeyDown = React.useCallback(
-      (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
-        switch (event.key) {
-          case 'Backspace': {
-            if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
-              goPreviousPart(partIndex);
-            }
-            break;
-          }
-          case 'ArrowLeft': {
-            if (event.currentTarget.selectionStart === 0 && partIndex > 0) {
-              goPreviousPart(partIndex);
-            }
-            break;
-          }
-          case 'ArrowRight': {
-            if (event.currentTarget.selectionEnd === getLengthFromPart(part) && partIndex < parts.length) {
-              goNextPart(partIndex);
-            }
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-      },
-      [goPreviousPart, goNextPart, parts]
-    );
-
-    interface IFormState {
-      parts: string[];
+  const boundValueArray = React.useMemo(() => {
+    // When we have a tracked parts array whose join matches the current boundValue,
+    // use it directly — this preserves correct part positions even when middle parts
+    // are empty (e.g. ["a","","c"] joins to "ac" but getValueForPart would misparse it as ["a","c",""])
+    if (partsRef.current && partsRef.current.join('') === (boundValue ?? '')) {
+      return partsRef.current;
     }
+    // Fall back to getValueForPart for external value changes (e.g. consumer sets the form value)
+    return parts.map((_, partIndex) => getValueForPart(partIndex, boundValue));
+  }, [getValueForPart, parts, boundValue]);
 
-    const { formProp, formState } = useForm<IFormState>({
-      parts: boundValueArray,
-    });
+  interface IFormState {
+    parts: string[];
+  }
 
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate && bindConfig.isTouched) {
-        bindConfig.validate();
+  const { formProp, formState } = useForm<IFormState>({
+    parts: boundValueArray,
+  });
+
+  const onPartValueChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, partIndex: number) => {
+      const currentPartLength = getLengthFromPart(parts[partIndex]);
+
+      const currentPartValue = event.currentTarget.value || '';
+
+      if (currentPartValue.length >= currentPartLength) {
+        goNextPart(partIndex);
       }
-    }, [boundValue]);
 
-    const onBlur = React.useCallback(() => {
-      if (formState?.parts.every(p => p) && globals.autoValidate && !bindConfig.isTouched) {
-        bindConfig.validate();
-        bindConfig.setTouched(true);
+      const newParts = parts.map((_, i) => (i === partIndex ? currentPartValue : formState?.parts[i] ?? ''));
+      partsRef.current = newParts;
+      setBoundValue?.(newParts.join(''));
+    },
+    [parts, goNextPart, formState?.parts, setBoundValue]
+  );
+
+  const onPaste = React.useCallback(
+    (event: React.ClipboardEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      const pasteValue = event.clipboardData.getData('text/plain');
+      const target = event.target as HTMLInputElement;
+
+      const partIndex = inputRefs.current.indexOf(target);
+      if (partIndex === -1) return;
+
+      const selectionStart = Math.min(target.selectionStart ?? 0, target.selectionEnd ?? 0);
+      const selectionEnd = Math.max(target.selectionStart ?? 0, target.selectionEnd ?? 0);
+
+      // Build the new part value by inserting pasted text at the cursor position
+      const currentPartValue = formState?.parts[partIndex] ?? '';
+      const newPartValue =
+        currentPartValue.slice(0, selectionStart) + pasteValue + currentPartValue.slice(selectionEnd);
+
+      // Distribute the result across parts starting from the target part,
+      // overflowing into subsequent parts as needed
+      const newParts = parts.map((_, i) => formState?.parts[i] ?? '');
+      let remaining = newPartValue;
+      for (let i = partIndex; i < parts.length; i += 1) {
+        if (typeof parts[i] !== 'string') {
+          const partLength = getLengthFromPart(parts[i]);
+          newParts[i] = remaining.slice(0, partLength);
+          remaining = remaining.slice(partLength);
+          if (!remaining) break;
+        }
       }
-    }, [bindConfig, formState?.parts, globals.autoValidate]);
 
-    const showLeftOverlay =
-      leftOverlay &&
-      (globals.inputStatusPosition !== 'left' ||
-        !globals.hideInputErrorIconOnStatus ||
-        (!pending && (!bindConfig.shouldShowValidationErrorIcon || !bindConfig.validationErrorMessages.length)));
+      partsRef.current = newParts;
+      setBoundValue(newParts.join(''));
+    },
+    [setBoundValue, formState?.parts, parts]
+  );
 
-    const showRightOverlay =
-      rightOverlay &&
-      (globals.inputStatusPosition !== 'right' ||
-        !globals.hideInputErrorIconOnStatus ||
-        (!pending && (!bindConfig.shouldShowValidationErrorIcon || !bindConfig.validationErrorMessages.length)));
+  const onKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
+      switch (event.key) {
+        case 'Backspace': {
+          if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
+            goPreviousPart(partIndex);
+          }
+          break;
+        }
+        case 'ArrowLeft': {
+          if (event.currentTarget.selectionStart === 0 && partIndex > 0) {
+            goPreviousPart(partIndex);
+          }
+          break;
+        }
+        case 'ArrowRight': {
+          if (event.currentTarget.selectionEnd === getLengthFromPart(part) && partIndex < parts.length) {
+            goNextPart(partIndex);
+          }
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    },
+    [goPreviousPart, goNextPart, parts]
+  );
 
-    return (
-      <>
-        <div ref={ref} title="Code input" {...nativeProps}>
-          {label && (
-            <Label
-              className={concat('arm-code-input-label', labelClassName)}
-              id={labelId}
-              required={required}
-              requiredIndicator={globals.requiredIndicator}
-              displaySize={globals.inputDisplaySize}
-            >
-              {label}
-            </Label>
-          )}
-          <div className={concat('arm-code-input', className)}>
-            <StatusWrapper
-              error={error || !!bindConfig.validationErrorMessages.length}
-              errorIcon={bindConfig.validationErrorIcon}
-              statusPosition={globals.inputStatusPosition}
-              pending={pending}
-              validationMode={bindConfig.validationMode}
-              className={statusClassName}
-            >
-              <>
-                {showLeftOverlay && leftOverlay}
-                {parts?.map((part, index) => (
-                  <CodeInputPart<string>
-                    type="text"
-                    bind={formProp('parts', index).bind()}
-                    part={part}
-                    key={index}
-                    onChange={event => onPartValueChange(event, index)}
-                    onKeyDown={event => onKeyDown(event, index, +part)}
-                    onPaste={onPaste}
-                    onBlur={onBlur}
-                    disabled={disabled || (pending && globals.disableControlOnPending)}
-                    ref={r => {
-                      inputRefs.current[index] = r;
-                    }}
-                    displaySize={globals.inputDisplaySize}
-                  />
-                ))}
-                {showRightOverlay && rightOverlay}
-              </>
-            </StatusWrapper>
-          </div>
-        </div>
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate && bindConfig.isTouched) {
+      bindConfig.validate();
+    }
+  }, [boundValue]);
 
-        {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
-          <ValidationErrors
-            className={validationErrorsClassName}
-            validationErrors={bindConfig.validationErrorMessages}
-            scrollIntoView={globals.scrollValidationErrorsIntoView}
-          />
+  const onBlur = React.useCallback(() => {
+    if (formState?.parts.every(p => p) && globals.autoValidate && !bindConfig.isTouched) {
+      bindConfig.validate();
+      bindConfig.setTouched(true);
+    }
+  }, [bindConfig, formState?.parts, globals.autoValidate]);
+
+  const showLeftOverlay =
+    leftOverlay &&
+    (globals.inputStatusPosition !== 'left' ||
+      !globals.hideInputErrorIconOnStatus ||
+      (!pending && (!bindConfig.shouldShowValidationErrorIcon || !bindConfig.validationErrorMessages.length)));
+
+  const showRightOverlay =
+    rightOverlay &&
+    (globals.inputStatusPosition !== 'right' ||
+      !globals.hideInputErrorIconOnStatus ||
+      (!pending && (!bindConfig.shouldShowValidationErrorIcon || !bindConfig.validationErrorMessages.length)));
+
+  return (
+    <>
+      <div ref={ref} title="Code input" {...nativeProps}>
+        {label && (
+          <Label
+            className={concat('arm-code-input-label', labelClassName)}
+            id={labelId}
+            required={required}
+            requiredIndicator={globals.requiredIndicator}
+            displaySize={globals.inputDisplaySize}
+          >
+            {label}
+          </Label>
         )}
-      </>
-    );
+        <div className={concat('arm-code-input', className)}>
+          <StatusWrapper
+            error={error || !!bindConfig.validationErrorMessages.length}
+            errorIcon={bindConfig.validationErrorIcon}
+            statusPosition={globals.inputStatusPosition}
+            pending={pending}
+            validationMode={bindConfig.validationMode}
+            className={statusClassName}
+          >
+            <>
+              {showLeftOverlay && leftOverlay}
+              {parts?.map((part, index) => (
+                <CodeInputPart<string>
+                  type="text"
+                  bind={formProp('parts', index).bind()}
+                  part={part}
+                  key={index}
+                  onChange={event => onPartValueChange(event, index)}
+                  onKeyDown={event => onKeyDown(event, index, +part)}
+                  onPaste={onPaste}
+                  onBlur={onBlur}
+                  disabled={disabled || (pending && globals.disableControlOnPending)}
+                  ref={r => {
+                    inputRefs.current[index] = r;
+                  }}
+                  displaySize={globals.inputDisplaySize}
+                />
+              ))}
+              {showRightOverlay && rightOverlay}
+            </>
+          </StatusWrapper>
+        </div>
+      </div>
+
+      {!!bindConfig.validationErrorMessages?.length && bindConfig.shouldShowValidationErrorMessage && (
+        <ValidationErrors
+          className={validationErrorsClassName}
+          validationErrors={bindConfig.validationErrorMessages}
+          scrollIntoView={globals.scrollValidationErrorsIntoView}
+        />
+      )}
+    </>
+  );
 }) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
 ) => ArmstrongFCReturn) &

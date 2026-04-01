@@ -9,7 +9,7 @@
   color: var(--arm-color-white) !important;
   stroke: var(--arm-color-grey-100);
   stroke-width: 1px;
-  fill:  var(--arm-color-white) !important;
+  fill: var(--arm-color-white) !important;
   z-index: 1;
 }
 

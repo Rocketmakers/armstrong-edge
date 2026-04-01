@@ -14,9 +14,15 @@ export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProp
 }
 
 /** A div which will automatically resize depending on the size of its children */
-export const Expandable = (
-  { ref, className, children, style, animate = true, isOpen, ...nativeProps }: React.PropsWithChildren<IExpandableProps> & { ref?: React.Ref<HTMLDivElement> }
-) => {
+export const Expandable = ({
+  ref,
+  className,
+  children,
+  style,
+  animate = true,
+  isOpen,
+  ...nativeProps
+}: React.PropsWithChildren<IExpandableProps> & { ref?: React.Ref<HTMLDivElement> }) => {
   const contentRef = React.useRef<HTMLDivElement>(null);
   const [{ height }] = useBoundingClientRect(contentRef);
 

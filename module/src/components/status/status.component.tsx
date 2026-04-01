@@ -24,7 +24,15 @@ export interface IStatusProps {
 }
 
 /** Render a status icon which can either be pending or errored */
-export const Status = ({ ref, pending, error, errorIcon, spinnerIcon, className, ...rest }: IStatusProps & { ref?: React.Ref<HTMLDivElement> }) => {
+export const Status = ({
+  ref,
+  pending,
+  error,
+  errorIcon,
+  spinnerIcon,
+  className,
+  ...rest
+}: IStatusProps & { ref?: React.Ref<HTMLDivElement> }) => {
   const globals = useArmstrongConfig({
     validationErrorIcon: errorIcon,
     spinnerIcon,

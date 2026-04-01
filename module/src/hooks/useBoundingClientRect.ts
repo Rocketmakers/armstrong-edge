@@ -34,7 +34,9 @@ export function useBoundingClientRect(
   const setRectSize = React.useCallback(() => {
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
-      if (contentDependency(domRectToObject(boundingClientRect)) !== contentDependency(domRectToObject(rectRef.current))) {
+      if (
+        contentDependency(domRectToObject(boundingClientRect)) !== contentDependency(domRectToObject(rectRef.current))
+      ) {
         onChangeRef.current?.(boundingClientRect);
         setRect(boundingClientRect);
       }

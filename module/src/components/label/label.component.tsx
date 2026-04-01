@@ -20,7 +20,15 @@ export interface ILabelProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>,
 }
 
 /** Render a status icon which can either be pending or errored */
-export const Label = ({ ref, required, className, requiredIndicator, children, displaySize, ...nativeProps }: ILabelProps & { ref?: React.Ref<HTMLLabelElement> }) => {
+export const Label = ({
+  ref,
+  required,
+  className,
+  requiredIndicator,
+  children,
+  displaySize,
+  ...nativeProps
+}: ILabelProps & { ref?: React.Ref<HTMLLabelElement> }) => {
   const globals = useArmstrongConfig({
     inputDisplaySize: displaySize,
     requiredIndicator,

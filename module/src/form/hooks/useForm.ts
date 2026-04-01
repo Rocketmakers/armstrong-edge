@@ -151,7 +151,13 @@ export function useForm<TData extends object>(
 
       return valid;
     },
-    [staticZodSchema, formConfig?.validationSchema, clientValidationDispatcher, formStateRef, formConfig?.logSchemaErrors]
+    [
+      staticZodSchema,
+      formConfig?.validationSchema,
+      clientValidationDispatcher,
+      formStateRef,
+      formConfig?.logSchemaErrors,
+    ]
   );
 
   /**

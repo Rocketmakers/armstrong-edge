@@ -48,22 +48,20 @@ export interface ITooltipProps
   side?: 'top' | 'right' | 'bottom' | 'left';
 }
 
-export const Tooltip = (
-  {
-    ref,
-    children,
-    content,
-    delay,
-    open,
-    onOpenChange,
-    showArrow,
-    className,
-    arrowClassName,
-    side,
-    sideOffset = 5,
-    ...props
-  }: React.PropsWithChildren<ITooltipProps> & { ref?: React.Ref<HTMLDivElement> }
-) => {
+export const Tooltip = ({
+  ref,
+  children,
+  content,
+  delay,
+  open,
+  onOpenChange,
+  showArrow,
+  className,
+  arrowClassName,
+  side,
+  sideOffset = 5,
+  ...props
+}: React.PropsWithChildren<ITooltipProps> & { ref?: React.Ref<HTMLDivElement> }) => {
   const { tooltipDelay, tooltipShowArrow, tooltipSide } = useArmstrongConfig({
     tooltipDelay: delay,
     tooltipShowArrow: showArrow,

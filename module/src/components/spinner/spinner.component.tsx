@@ -17,7 +17,15 @@ export interface ISpinnerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'la
 }
 
 /** Renders a spinner centred in the div that's being wrapped */
-export const Spinner = ({ ref, children, className, icon, fillContainer = true, label, ...HTMLProps }: React.PropsWithChildren<ISpinnerProps> & { ref?: React.Ref<HTMLDivElement> }) => {
+export const Spinner = ({
+  ref,
+  children,
+  className,
+  icon,
+  fillContainer = true,
+  label,
+  ...HTMLProps
+}: React.PropsWithChildren<ISpinnerProps> & { ref?: React.Ref<HTMLDivElement> }) => {
   const { spinnerIcon } = useArmstrongConfig({ spinnerIcon: icon });
   return (
     <div

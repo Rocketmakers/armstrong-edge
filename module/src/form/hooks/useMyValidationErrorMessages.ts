@@ -5,8 +5,8 @@
  */
 import * as React from 'react';
 
-import type { IBindingProps, ValidationMessage } from '../types';
 import { uniq } from '../../utils/arrays';
+import type { IBindingProps, ValidationMessage } from '../types';
 
 /**
  * Small utility hook to return the combined validation messages from a custom component

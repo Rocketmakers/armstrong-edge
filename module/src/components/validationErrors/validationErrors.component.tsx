@@ -24,9 +24,16 @@ export interface IValidationErrorsProps {
 }
 
 /** Render an array of validation errors as error messages */
-export const ValidationErrors = (
-  { ref, validationErrors, className, scrollIntoView, validationMode, ...nativeProps }: React.PropsWithChildren<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>> & { ref?: React.Ref<HTMLDivElement> }
-) => {
+export const ValidationErrors = ({
+  ref,
+  validationErrors,
+  className,
+  scrollIntoView,
+  validationMode,
+  ...nativeProps
+}: React.PropsWithChildren<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>> & {
+  ref?: React.Ref<HTMLDivElement>;
+}) => {
   const globals = useArmstrongConfig({
     validationMode,
     scrollValidationErrorsIntoView: scrollIntoView,
