@@ -315,7 +315,7 @@ const ReactSelectComponent = (
     } & { ref?: React.Ref<ReactSelectRef<ArmstrongId>> }
   ) => {
     const internalRef = React.useRef<ReactSelectRef<ArmstrongId>>(null);
-    React.useImperativeHandle(ref, () => internalRef.current as ReactSelectRef<ArmstrongId>, [internalRef]);
+    React.useImperativeHandle(ref, () => internalRef.current as ReactSelectRef<ArmstrongId>, []);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- not an ideal use of any, but it's the only way of binding for single and multi from the same component
     const [value, setValue, bindConfig] = useBindingState<any>(bind, {
@@ -611,7 +611,7 @@ export const NativeSelect = (
     }: INativeSelectProps<ArmstrongId> & { ref?: React.Ref<HTMLSelectElement> }
   ) => {
     const internalRef = React.useRef<HTMLSelectElement>(null);
-    React.useImperativeHandle(ref, () => internalRef.current as HTMLSelectElement, [internalRef]);
+    React.useImperativeHandle(ref, () => internalRef.current as HTMLSelectElement, []);
 
     const [value, setValue, bindConfig] = useBindingState(bind, {
       validationErrorMessages,
