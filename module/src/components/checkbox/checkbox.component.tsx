@@ -68,9 +68,9 @@ export interface ICheckboxProps<TData extends BindType>
   autoValidate?: boolean;
 }
 
-export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindType>>(
-  (
+export const Checkbox = ((
     {
+      ref,
       bind,
       checked,
       customIndicator,
@@ -93,8 +93,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
       statusPosition,
       autoValidate,
       ...nativeProps
-    },
-    ref
+    }: ICheckboxProps<BindType> & { ref?: React.Ref<HTMLButtonElement> }
   ) => {
     const reactId = React.useId();
     const id = nativeProps.id ?? reactId;
@@ -189,8 +188,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, ICheckboxProps<BindT
         )}
       </StatusWrapper>
     );
-  }
-) as (<TBind extends NullOrUndefined<boolean>>(
+  }) as (<TBind extends NullOrUndefined<boolean>>(
   props: ArmstrongFCProps<ICheckboxProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICheckboxProps<NullOrUndefined<boolean>>>;

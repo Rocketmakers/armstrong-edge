@@ -82,12 +82,12 @@ See it in action here (this example has some simple styling added for demo purpo
 
 ## <a name="reusable">Reusable dialog component</a>
 
-If you're building a dialog component to be used throughout your app, the `useDialog` hook has you covered. Simply write your component with a `forwardRef` and pass the ref into the `useDialog` hook.
+If you're building a dialog component to be used throughout your app, the `useDialog` hook has you covered. Simply write your component with a `ref` prop and pass the ref into the `useDialog` hook.
 
 **NOTE:** Reusable dialogs can still use the utility function returned from the `useDialog` hook just like the earlier example.
 
 ```tsx
-export const ReusableDialog = React.forwardRef<DialogElement>((props, ref) => {
+export const ReusableDialog = ({ ref }: { ref?: React.Ref<DialogElement> }) => {
   const [dialogRef, { cancel }] = useDialog(ref);
 
   return (
@@ -96,7 +96,7 @@ export const ReusableDialog = React.forwardRef<DialogElement>((props, ref) => {
       <Button onClick={cancel}>Cancel</Button>
     </Dialog>
   );
-});
+};
 
 export const ConsumingComponent: React.FC = () => {
   const [customDialogRef, { open }] = useDialog();
@@ -126,7 +126,7 @@ interface ILoginData {
   password: string;
 }
 
-export const LoginDialog = React.forwardRef<DialogElement<ILoginData>>((props, ref) => {
+export const LoginDialog = ({ ref }: { ref?: React.Ref<DialogElement<ILoginData>> }) => {
   const [dialogRef, { ok }] = useDialog(ref);
   const { formProp, formState } = useForm<ILoginData>();
 
@@ -149,7 +149,7 @@ export const LoginDialog = React.forwardRef<DialogElement<ILoginData>>((props, r
       </form>
     </Dialog>
   );
-});
+};
 
 export const ConsumingComponent: StoryObj<typeof Dialog> = {
   render: () => {

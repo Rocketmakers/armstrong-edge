@@ -270,9 +270,9 @@ const CenteredHeader: React.FC<ReactDatePickerCustomHeaderProps> = props => {
   );
 };
 
-export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTimeInputSingleProps<string | null>>(
-  (
+export const SingleDateTimeInput = (
     {
+      ref,
       config,
       selectsRange,
       className,
@@ -290,8 +290,7 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
       showCalendarOnLeftOverlayClick = true,
       onBlur,
       ...inputProps
-    },
-    ref
+    }: IDateOrTimeInputSingleProps<string | null> & { ref?: React.Ref<HTMLInputElement> }
   ) => {
     const datePickerRef = React.useRef<ReactDatePicker>(null);
 
@@ -419,14 +418,13 @@ export const SingleDateTimeInput = React.forwardRef<HTMLInputElement, IDateOrTim
         onChange={(newValue, event) => {setDate?.(formatDate(newValue as Date, compiledFormat))}}
       />
     );
-  }
-);
+  };
 
 SingleDateTimeInput.displayName = 'SingleDateTimeInput';
 
-export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputRangeProps<string | null>>(
-  (
+export const RangeDateTimeInput = (
     {
+      ref,
       config,
       selectsRange,
       startBind,
@@ -443,8 +441,7 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
       showCalendarOnLeftOverlayClick = true,
       leftOverlay = <FaRegCalendar />,
       ...inputProps
-    },
-    ref
+    }: IDateTimeInputRangeProps<string | null> & { ref?: React.Ref<HTMLInputElement> }
   ) => {
     const datePickerRef = React.useRef<ReactDatePicker | null>(null);
 
@@ -551,22 +548,21 @@ export const RangeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeIn
         }}
       />
     );
-  }
-);
+  };
 
 RangeDateTimeInput.displayName = 'RangeDateTimeInput';
 
-const NativeDateTimeInput = React.forwardRef<HTMLInputElement, IDateTimeInputNativeProps<string | null>>(
-  ({ mode, selectsRange, native, ...props }, ref) => {
+const NativeDateTimeInput: React.FC<IDateTimeInputNativeProps<string | null> & { ref?: React.Ref<HTMLInputElement> }> =
+  ({ ref, mode, selectsRange, native, ...props }) => {
     return <Input ref={ref} type={mode === 'date-time' ? 'datetime-local' : mode} {...props} />;
-  }
-);
+  };
 
 NativeDateTimeInput.displayName = 'NativeDateTimeInput';
 
-export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAndTimeInputSingleProps<string | null>>(
+export const SingleDateAndTimeInput =
   (
     {
+      ref,
       className,
       bind,
       mode,
@@ -602,8 +598,7 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
       labelClassName,
       autoValidate,
       ...nativeProps
-    },
-    ref
+    }: IDateAndTimeInputSingleProps<string | null> & { ref?: React.Ref<HTMLInputElement> }
   ) => {
     const [dateTime, setDateTime, bindConfig] = useBindingState(bind, {
       validationErrorMessages,
@@ -736,14 +731,12 @@ export const SingleDateAndTimeInput = React.forwardRef<HTMLInputElement, IDateAn
         )}
       </div>
     );
-  }
-);
+  };
 
 SingleDateAndTimeInput.displayName = 'SingleDateAndTimeInput';
 
 /** third-party docs: https://reactdatepicker.com */
-export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputProps<string | null>>(
-  ({ selectsRange = false, native = false, ...props }, ref) => {
+export const DateTimeInput = (({ ref, selectsRange = false, native = false, ...props }: DateTimeInputProps<string | null> & { ref?: React.Ref<HTMLInputElement> }) => {
     const mode =
       (props as IDateOrTimeInputSingleProps<string | null> | IDateAndTimeInputSingleProps<string | null>).mode ??
       'date';
@@ -786,8 +779,7 @@ export const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputPro
       />
     );
   }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  // type assertion to ensure generic works with ref-as-prop component
 ) as (<TValue extends NullOrUndefined<string>>(
   props: ArmstrongFCProps<DateTimeInputProps<TValue>, HTMLInputElement>
 ) => ArmstrongFCReturn) &

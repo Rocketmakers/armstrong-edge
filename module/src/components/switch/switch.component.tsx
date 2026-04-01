@@ -60,9 +60,9 @@ export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   autoValidate?: boolean;
 }
 
-export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUndefined<boolean>>>(
-  (
+export const Switch = ((
     {
+      ref,
       bind,
       checked,
       onCheckedChange,
@@ -81,8 +81,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
       requiredIndicator,
       autoValidate,
       ...nativeProps
-    },
-    ref
+    }: ISwitchProps<NullOrUndefined<boolean>> & { ref?: React.Ref<HTMLButtonElement> }
   ) => {
     const generatedId = React.useId();
     const id = nativeProps.id ?? generatedId;
@@ -157,10 +156,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps<NullOrUnd
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<boolean>>(
+  }) as (<TBind extends NullOrUndefined<boolean>>(
   props: ArmstrongFCProps<ISwitchProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>;

@@ -38,9 +38,9 @@ export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
 }
 
 /** Render a character limit from a bound value, showing as an error if the user  */
-export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitProps<NullOrUndefined<string>>>(
-  (
+export const CharacterLimit = ((
     {
+      ref,
       bind,
       limit,
       shouldEnforce,
@@ -51,8 +51,7 @@ export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitPr
       validationErrorsTitle,
       validationMode,
       ...nativeProps
-    },
-    ref
+    }: ICharacterLimitProps<NullOrUndefined<string>> & { ref?: React.Ref<HTMLDivElement> }
   ) => {
     const globals = useArmstrongConfig({
       validationErrorIcon,
@@ -84,10 +83,7 @@ export const CharacterLimit = React.forwardRef<HTMLDivElement, ICharacterLimitPr
         )}
       </div>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
+  }) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongFCProps<ICharacterLimitProps<TBind>, HTMLDivElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>;

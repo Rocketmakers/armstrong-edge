@@ -90,9 +90,9 @@ export interface ICheckboxListProps<Id extends ArmstrongId>
 }
 
 /** Render a list of radio inputs which binds to a single string */
-export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<ArmstrongId>>(
-  (
+export const CheckboxList = ((
     {
+      ref,
       bind,
       options,
       className,
@@ -114,8 +114,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
       requiredIndicator,
       autoValidate,
       ...nativeProps
-    },
-    ref
+    }: ICheckboxListProps<ArmstrongId> & { ref?: React.Ref<HTMLDivElement> }
   ) => {
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
@@ -206,10 +205,7 @@ export const CheckboxList = React.forwardRef<HTMLDivElement, ICheckboxListProps<
         </div>
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+  }) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICheckboxListProps<ArmstrongId>>;
 
 CheckboxList.displayName = 'CheckboxList';

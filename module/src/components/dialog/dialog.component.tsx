@@ -74,9 +74,9 @@ export interface DialogElement<TData = unknown> {
  * - Can be async by assigning a ref and calling the utility functions (a `useDialog` helper hook is available for this.)
  * - Supports dynamic data in async mode, so that a form can be built as a reusable async dialog.
  */
-export const Dialog = React.forwardRef(
-  (props: React.PropsWithChildren<IDialogProps<unknown>>, ref: React.ForwardedRef<DialogElement<unknown> | null>) => {
+export const Dialog = ((props: React.PropsWithChildren<IDialogProps<unknown>> & { ref?: React.Ref<DialogElement<unknown> | null> }) => {
     const {
+      ref,
       children,
       title,
       description,
@@ -257,8 +257,7 @@ export const Dialog = React.forwardRef(
       </RadixDialog.Root>
     );
   }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
+  // type assertion to ensure generic works with ref-as-prop component
 ) as (<TData>(props: ArmstrongFCProps<IDialogProps<TData>, DialogElement<TData>>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IDialogProps<unknown>>;
 

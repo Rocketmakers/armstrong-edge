@@ -74,9 +74,9 @@ export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   autoValidate?: boolean;
 }
 
-export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<NullOrUndefined<number>>>(
-  (
+export const RangeInput = ((
     {
+      ref,
       bind,
       className,
       disabled,
@@ -99,8 +99,7 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
       requiredIndicator,
       autoValidate,
       ...nativeProps
-    },
-    ref
+    }: IRangeInputProps<NullOrUndefined<number>> & { ref?: React.Ref<HTMLSpanElement> }
   ) => {
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
@@ -191,8 +190,7 @@ export const RangeInput = React.forwardRef<HTMLSpanElement, IRangeInputProps<Nul
         )}
       </StatusWrapper>
     );
-  }
-) as (<TBind extends NullOrUndefined<number>>(
+  }) as (<TBind extends NullOrUndefined<number>>(
   props: ArmstrongFCProps<IRangeInputProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRangeInputProps<NullOrUndefined<number>>>;

@@ -85,9 +85,9 @@ export interface IRadioGroupProps<Id extends ArmstrongId>
 }
 
 /** Render a list of radio inputs which binds to a single string */
-export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<ArmstrongId>>(
-  (
+export const RadioGroup = ((
     {
+      ref,
       bind,
       options,
       className,
@@ -110,8 +110,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
       labelId,
       autoValidate,
       ...nativeProps
-    },
-    ref
+    }: IRadioGroupProps<ArmstrongId> & { ref?: React.Ref<HTMLDivElement> }
   ) => {
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
       value,
@@ -209,10 +208,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, IRadioGroupProps<Arms
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+  }) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
 
 RadioGroup.displayName = 'RadioGroup';

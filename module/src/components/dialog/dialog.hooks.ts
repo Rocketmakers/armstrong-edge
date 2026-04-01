@@ -19,7 +19,7 @@ export type UseDialogReturn<TData> = [React.RefObject<DialogElement<TData>>, Dia
  * @returns {UseDialogReturn}
  */
 export const useDialog = <TData>(
-  forwardRef?: React.ForwardedRef<DialogElement<TData>>
+  forwardRef?: React.Ref<DialogElement<TData>>
 ): [React.RefObject<DialogElement<TData> | null>, Omit<DialogElement<TData>, 'addOpenChangeListener'>] => {
   const dialogRef = React.useRef<DialogElement<TData>>(null);
   const [isOpen, setIsOpen] = React.useState(false);

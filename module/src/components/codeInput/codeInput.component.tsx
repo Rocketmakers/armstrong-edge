@@ -21,54 +21,55 @@ export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>> exte
 }
 
 /** an individual input from the CodeInput */
-const CodeInputPart = React.forwardRef<HTMLInputElement, ICodeInputPartProps<NullOrUndefined<string>>>(
-  ({ bind, part, ...inputProps }, ref) => {
-    const length = React.useMemo(() => getLengthFromPart(part), [part]);
+const CodeInputPart = (({
+  ref,
+  bind,
+  part,
+  ...inputProps
+}: ICodeInputPartProps<NullOrUndefined<string>> & { ref?: React.Ref<HTMLInputElement> }) => {
+  const length = React.useMemo(() => getLengthFromPart(part), [part]);
 
-    if (typeof part === 'string') {
-      return <p className="arm-code-input-part-text">{part}</p>;
-    }
+  if (typeof part === 'string') {
+    return <p className="arm-code-input-part-text">{part}</p>;
+  }
 
-    if (typeof part === 'number') {
-      return (
-        <Input
-          ref={ref}
-          bind={bind as IBindingProps<string | null>}
-          {...inputProps}
-          className="arm-code-input-part-input"
-          style={{ '--arm-code-input-length': length } as React.CSSProperties}
-          data-length={length}
-          onClick={event => event.currentTarget.select()}
-          maxLength={part}
-        />
-      );
-    }
-
-    const { className, ...textInputProps } = part;
-
+  if (typeof part === 'number') {
     return (
       <Input
         ref={ref}
         bind={bind as IBindingProps<string | null>}
-        className={concat('arm-code-input-part-input', className)}
-        style={
-          {
-            ...(textInputProps.style || {}),
-            '--arm-code-input-length': length,
-          } as React.CSSProperties
-        }
+        {...inputProps}
+        className="arm-code-input-part-input"
+        style={{ '--arm-code-input-length': length } as React.CSSProperties}
         data-length={length}
         onClick={event => event.currentTarget.select()}
-        {...inputProps}
-        {...textInputProps}
-        maxLength={part.length}
-        displaySize={part.displaySize}
+        maxLength={part}
       />
     );
   }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
+
+  const { className, ...textInputProps } = part;
+
+  return (
+    <Input
+      ref={ref}
+      bind={bind as IBindingProps<string | null>}
+      className={concat('arm-code-input-part-input', className)}
+      style={
+        {
+          ...(textInputProps.style || {}),
+          '--arm-code-input-length': length,
+        } as React.CSSProperties
+      }
+      data-length={length}
+      onClick={event => event.currentTarget.select()}
+      {...inputProps}
+      {...textInputProps}
+      maxLength={part.length}
+      displaySize={part.displaySize}
+    />
+  );
+}) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
@@ -133,39 +134,36 @@ export interface ICodeInputProps<TBind extends NullOrUndefined<string>>
   autoValidate?: boolean;
 }
 
-export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOrUndefined<string>>>(
-  (
-    {
-      className,
-      parts,
-      bind,
-      onChange,
-      validationMode,
-      validationErrorMessages,
-      errorIcon,
-      error,
-      value,
-      pending,
-      statusPosition,
-      leftOverlay,
-      rightOverlay,
-      scrollValidationErrorsIntoView,
-      displaySize,
-      label,
-      required,
-      requiredIndicator,
-      hideIconOnStatus,
-      statusClassName,
-      validationErrorsClassName,
-      labelClassName,
-      labelId,
-      disableOnPending,
-      disabled,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
+export const CodeInput = (({
+  ref,
+  className,
+  parts,
+  bind,
+  onChange,
+  validationMode,
+  validationErrorMessages,
+  errorIcon,
+  error,
+  value,
+  pending,
+  statusPosition,
+  leftOverlay,
+  rightOverlay,
+  scrollValidationErrorsIntoView,
+  displaySize,
+  label,
+  required,
+  requiredIndicator,
+  hideIconOnStatus,
+  statusClassName,
+  validationErrorsClassName,
+  labelClassName,
+  labelId,
+  disableOnPending,
+  disabled,
+  autoValidate,
+  ...nativeProps
+}: ICodeInputProps<NullOrUndefined<string>> & { ref?: React.Ref<HTMLDivElement> }) => {
     const inputRefs = React.useRef<(HTMLInputElement | null | undefined)[]>([]);
 
     const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
@@ -393,10 +391,7 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
         )}
       </>
     );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TBind extends NullOrUndefined<string>>(
+}) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
 ) => ArmstrongFCReturn) &
   ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
