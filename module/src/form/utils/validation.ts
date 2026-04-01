@@ -89,7 +89,7 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
   // unpacks the value of a TS schema field into a zod equivalent
   const unpackValueToZod = (incomingToZod: unknown): unknown => {
     if (isArrayOfZod(incomingToZod)) {
-      const arrayInner = z.array(unpackValueToZod(incomingToZod.itemSchema) as z.ZodTypeAny);
+      const arrayInner = z.array(unpackValueToZod(incomingToZod.itemSchema) as z.ZodType);
       return incomingToZod.opts ? incomingToZod.opts(arrayInner) : arrayInner;
     }
     if (isObjectOfZod(incomingToZod)) {
@@ -97,7 +97,7 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
       return incomingToZod.opts ? incomingToZod.opts(obInner) : obInner;
     }
     // eslint-disable-next-line no-underscore-dangle -- these are zod values
-    if ((incomingToZod as z.ZodAny)._def) {
+    if ((incomingToZod as z.ZodAny)._zod) {
       return incomingToZod;
     }
     if (typeof incomingToZod === 'object') {
@@ -123,9 +123,11 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
  */
 export const getMyZodErrors = (errors: ZodIssue[], keyChainString?: string) => {
   return errors
-    .filter(e => (keyChainString ? isMyKeyChainItem(keyStringFromKeyChain(e.path, 'dots'), keyChainString) : true))
+    .filter(e =>
+      keyChainString ? isMyKeyChainItem(keyStringFromKeyChain(e.path as KeyChain, 'dots'), keyChainString) : true
+    )
     .map(e => ({
-      key: keyStringFromKeyChain(e.path, 'dots'),
+      key: keyStringFromKeyChain(e.path as KeyChain, 'dots'),
       message: e.message,
     }));
 };
