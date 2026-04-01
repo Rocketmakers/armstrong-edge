@@ -3,20 +3,17 @@ import { FaChevronDown } from 'react-icons/fa';
 import { ImCheckmark } from 'react-icons/im';
 import ReactSelect, {
   components,
+  FilterOptionOption,
   GetOptionValue,
   GroupBase,
   MultiValue,
   OnChangeValue,
+  Props as ReactSelectProps,
+  SelectInstance,
   SingleValue,
   ValueContainerProps,
 } from 'react-select';
 import Creatable from 'react-select/creatable';
-// eslint-disable-next-line import/no-unresolved -- file exists
-import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
-import SelectRef, {
-  Props as ReactSelectProps,
-  // eslint-disable-next-line import/no-unresolved -- file exists
-} from 'react-select/dist/declarations/src/Select';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useContentMemo } from '../../hooks/useContentMemo';
@@ -44,7 +41,7 @@ import './select.theme.css';
 
 const { DropdownIndicator, Option, ValueContainer } = components;
 
-export type ReactSelectRef<Id extends ArmstrongId> = SelectRef<
+export type ReactSelectRef<Id extends ArmstrongId> = SelectInstance<
   IArmstrongOption<Id>,
   false,
   GroupBase<IArmstrongOption<Id>>

@@ -82,7 +82,7 @@ export const Button = (props: React.PropsWithChildren<IButtonProps> & { ref?: Re
     <button
       className={concat('arm-button', className)}
       data-pending={pending}
-      data-disabled={disabled || pending}
+      data-disabled={disabled || (globals.disableControlOnPending && pending)}
       data-size={globals.buttonDisplaySize}
       data-style={globals.buttonDisplayStyle}
       data-status={displayStatus}
