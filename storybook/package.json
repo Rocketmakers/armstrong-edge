@@ -11,7 +11,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook --testTimeout=30000",
-    "test-storybook-ci": "npx concurrently -k -s first -n 'SB,TEST' -c 'magenta,blue' 'npx http-server storybook-static --port 6006 --silent' 'npx wait-on tcp:127.0.0.1:6006 && npm run test-storybook'"
+    "test-storybook-ci": "pnpm exec concurrently -k -s first -n 'SB,TEST' -c 'magenta,blue' 'pnpm exec http-server storybook-static --port 6006 --silent' 'pnpm exec wait-on tcp:127.0.0.1:6006 && pnpm test-storybook'"
   },
   "dependencies": {
     "react": "18.3.1",

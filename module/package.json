@@ -9,7 +9,7 @@
   "scripts": {
     "start": "concurrently -n armstrong- npm:watch-*",
     "copy-readme": "cp ../README.md ./README.md",
-    "build": "npm run copy-readme && tsc && vite build --mode production",
+    "build": "pnpm copy-readme && tsc && vite build --mode production",
     "watch-ts": "vite build --watch",
     "test": "jest",
     "test-ci": "jest --ci",
@@ -19,8 +19,8 @@
   },
   "peerDependencies": {
     "date-fns": "2.x",
-    "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x",
+    "react": "19.x",
+    "react-dom": "19.x",
     "zod": "3.*"
   },
   "files": [

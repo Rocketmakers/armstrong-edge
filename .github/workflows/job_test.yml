@@ -16,6 +16,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.workflow_run.head_branch }}
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
       - name: Restore node modules cache
         id: node-modules
         uses: actions/cache/restore@v4
@@ -24,20 +29,20 @@ jobs:
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/module/node_modules
             ${{ github.workspace }}/storybook/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Run Jest Tests
-        run: npm run test-ci
+        run: pnpm test-ci
         working-directory: ./module
 
       - name: Install Playwright
-        run: npx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
         working-directory: ./storybook
 
       - name: Build Armstrong & Storybook
-        run: npm i && npm run build-storybook
+        run: pnpm install && pnpm build-storybook
         working-directory: ./storybook
 
       - name: Serve Storybook and run tests
-        run: npm run test-storybook-ci
+        run: pnpm test-storybook-ci
         working-directory: ./storybook

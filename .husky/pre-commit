@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Skip if this is the inner commit from our cz-ai adapter (checks already passed)
+[ "$CZ_AI_SKIP" = "1" ] && exit 0
+
+cd module && pnpm exec tsc --noEmit && pnpm test
