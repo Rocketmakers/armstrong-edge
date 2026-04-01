@@ -633,11 +633,6 @@ export const NativeSelect = (
       autoValidate: bindConfig.autoValidate,
     });
 
-    const clearSelect = React.useCallback(() => {
-      onSelectOption?.(undefined);
-      bind?.setValue?.(undefined);
-    }, [onSelectOption, bind]);
-
     const onChangeEvent = React.useCallback(
       (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (onChange) {
@@ -650,10 +645,11 @@ export const NativeSelect = (
           setValue?.(selectedOption.id);
           onSelectOption?.(selectedOption.id);
         } else if (!newValue && placeholderOption && placeholderOptionEnabled) {
-          clearSelect();
+          onSelectOption?.(undefined);
+          bind?.setValue?.(undefined);
         }
       },
-      [onChange, options, placeholderOption, placeholderOptionEnabled, setValue, onSelectOption, clearSelect]
+      [onChange, options, placeholderOption, placeholderOptionEnabled, setValue, onSelectOption, bind]
     );
 
     useDidUpdateEffect(() => {

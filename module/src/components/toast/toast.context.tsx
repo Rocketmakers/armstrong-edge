@@ -101,6 +101,8 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
 
   const nextToastKey = React.useRef(1);
   const [toasts, setToasts] = React.useState<IToastWitKey[]>([]);
+  const toastsRef = React.useRef(toasts);
+  toastsRef.current = toasts;
 
   const swipeDirection =
     globals.toastPosition === 'bottom-left' || globals.toastPosition === 'top-left' ? 'left' : 'right';
@@ -109,7 +111,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
     (newToast: IToast) => {
       if (
         globals.toastIgnorePredicate?.(
-          toasts.filter(t => !t.exited).map(({ key, exited, ...toast }) => toast),
+          toastsRef.current.filter(t => !t.exited).map(({ key, exited, ...toast }) => toast),
           newToast
         )
       ) {
@@ -126,7 +128,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
       });
       return key;
     },
-    [globals, toasts]
+    [globals]
   );
 
   const removeToastByKey = React.useCallback((key: string) => {

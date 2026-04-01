@@ -85,23 +85,33 @@ export function useForm<TData extends object>(
   }, [liveInitialData]);
 
   /**
-   * Transform incoming validation schema into zod compatible schema and memoize
+   * Transform incoming validation schema into zod compatible schema and memoize.
+   * Static schemas are memoized based on validationSchema identity only.
+   * Dynamic schemas (functions) are evaluated at validation time using latest form state.
    */
-  const zodValidationSchema = React.useMemo(() => {
+  const hasValidationSchema = !!formConfig?.validationSchema;
+
+  const staticZodSchema = React.useMemo(() => {
     const initialSchema = formConfig?.validationSchema;
-    if (initialSchema) {
-      const finalSchema = rootValidationSchemaIsFunction(initialSchema) ? initialSchema(formState) : initialSchema;
-      return zodFromValidationSchema(finalSchema);
+    if (initialSchema && !rootValidationSchemaIsFunction(initialSchema)) {
+      return zodFromValidationSchema(initialSchema);
     }
     return undefined;
-  }, [formConfig?.validationSchema, formState]);
+  }, [formConfig?.validationSchema]);
 
   /**
    * Runs the Zod validation for the whole form, or optionally for a specific key chain
    */
   const parseZodSchema = React.useCallback(
     (keyChain: KeyChain = [], silent?: boolean) => {
-      if (!zodValidationSchema) {
+      let zodSchema = staticZodSchema;
+      if (!zodSchema) {
+        const initialSchema = formConfig?.validationSchema;
+        if (initialSchema && rootValidationSchemaIsFunction(initialSchema)) {
+          zodSchema = zodFromValidationSchema(initialSchema(formStateRef.current as TData));
+        }
+      }
+      if (!zodSchema) {
         throw new Error('No validation schema has been provided');
       }
 
@@ -113,7 +123,7 @@ export function useForm<TData extends object>(
         });
       }
 
-      const results = zodValidationSchema.safeParse(formStateRef.current ?? {});
+      const results = zodSchema.safeParse(formStateRef.current ?? {});
 
       let errors: IValidationError[] = [];
 
@@ -141,14 +151,14 @@ export function useForm<TData extends object>(
 
       return valid;
     },
-    [zodValidationSchema, clientValidationDispatcher, formStateRef, formConfig?.logSchemaErrors]
+    [staticZodSchema, formConfig?.validationSchema, clientValidationDispatcher, formStateRef, formConfig?.logSchemaErrors]
   );
 
   /**
    * Runs the Zod validation for the whole form, if no schema is present the default true will be returned
    */
   const parseValidationSchema = (keyChain?: KeyChain, silent?: boolean) => {
-    if (zodValidationSchema) {
+    if (hasValidationSchema) {
       return parseZodSchema(keyChain, silent);
     }
 

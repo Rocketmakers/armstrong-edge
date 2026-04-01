@@ -27,7 +27,7 @@ const CodeInputPart = (({
   part,
   ...inputProps
 }: ICodeInputPartProps<NullOrUndefined<string>> & { ref?: React.Ref<HTMLInputElement> }) => {
-  const length = React.useMemo(() => getLengthFromPart(part), [part]);
+  const length = getLengthFromPart(part);
 
   if (typeof part === 'string') {
     return <p className="arm-code-input-part-text">{part}</p>;
@@ -230,8 +230,14 @@ export const CodeInput = (({
         if (currentPartValue.length >= currentPartLength) {
           goNextPart(partIndex);
         }
+
+        // Write combined value directly to parent instead of relying on effect sync
+        const newParts = parts.map((_, i) =>
+          i === partIndex ? currentPartValue : getValueForPart(i, boundValue)
+        );
+        setBoundValue?.(newParts.join(''));
       },
-      [parts, goNextPart]
+      [parts, goNextPart, getValueForPart, boundValue, setBoundValue]
     );
 
     const onPaste = React.useCallback(
@@ -303,11 +309,6 @@ export const CodeInput = (({
     const { formProp, formState } = useForm<IFormState>({
       parts: boundValueArray,
     });
-
-    React.useEffect(() => {
-      setBoundValue?.(formState?.parts?.join(''));
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want the trigger the effect when the function is re-defined
-    }, [formState]);
 
     useDidUpdateEffect(() => {
       if (globals.autoValidate && bindConfig.isTouched) {

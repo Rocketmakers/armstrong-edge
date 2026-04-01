@@ -324,20 +324,7 @@ export const SingleDateTimeInput = (
       [monthSelectVariant, config]
     );
 
-    const compiledFormat = React.useMemo(() => {
-      if (format) {
-        return format;
-      }
-      switch (mode) {
-        case 'date':
-          return defaultDateFormat;
-        case 'time':
-          return defaultTimeFormat;
-        default:
-          assertNever(mode);
-          return '';
-      }
-    }, [mode, format]);
+    const compiledFormat = format ?? (mode === 'date' ? defaultDateFormat : mode === 'time' ? defaultTimeFormat : (assertNever(mode), ''));
 
     const compiledConfig = React.useMemo<IDatePickerConfig>(() => {
       return {
@@ -364,12 +351,7 @@ export const SingleDateTimeInput = (
       bindDateConfig.setTouched(true);
     }, [dateVal]);
 
-    const leftOverlay = React.useMemo(() => {
-      if (inputProps.leftOverlay === false) return undefined;
-      if (inputProps.leftOverlay) return inputProps.leftOverlay;
-      if (mode === 'time') return <ImClock />;
-      return <FaRegCalendar />;
-    }, [inputProps.leftOverlay, mode]);
+    const leftOverlay = inputProps.leftOverlay === false ? undefined : inputProps.leftOverlay || (mode === 'time' ? <ImClock /> : <FaRegCalendar />);
 
     const onBlurEvent = React.useCallback(
       (event: React.FocusEvent<HTMLInputElement>) => {
@@ -638,10 +620,10 @@ export const SingleDateAndTimeInput =
     React.useEffect(() => setDateValue(incomingDateValue), [incomingDateValue]);
     React.useEffect(() => setTimeValue(incomingTimeValue), [incomingTimeValue]);
 
-    React.useEffect(() => {
-      if (dateValue && timeValue) {
-        const dateAsDate = parse(dateValue, dateInputDisplayFormat as string, new Date(), { locale });
-        const timeAsDate = parse(timeValue, timeInputDisplayFormat as string, new Date(), { locale });
+    const combineDateAndTime = React.useCallback((newDate: NullOrUndefined<string>, newTime: NullOrUndefined<string>) => {
+      if (newDate && newTime) {
+        const dateAsDate = parse(newDate, dateInputDisplayFormat as string, new Date(), { locale });
+        const timeAsDate = parse(newTime, timeInputDisplayFormat as string, new Date(), { locale });
         const combinedDate = new Date(
           dateAsDate.getFullYear(),
           dateAsDate.getMonth(),
@@ -653,8 +635,17 @@ export const SingleDateAndTimeInput =
         );
         setDateTime?.(formatDate(combinedDate, format as string));
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- Don't want to trigger effect when setter changes
-    }, [dateInputDisplayFormat, dateValue, format, locale, timeInputDisplayFormat, timeValue]);
+    }, [dateInputDisplayFormat, timeInputDisplayFormat, locale, format, setDateTime]);
+
+    const onDateChange = React.useCallback((newDateValue: NullOrUndefined<string>) => {
+      setDateValue(newDateValue);
+      combineDateAndTime(newDateValue, timeValue);
+    }, [combineDateAndTime, timeValue]);
+
+    const onTimeChange = React.useCallback((newTimeValue: NullOrUndefined<string>) => {
+      setTimeValue(newTimeValue);
+      combineDateAndTime(dateValue, newTimeValue);
+    }, [combineDateAndTime, dateValue]);
 
     useDidUpdateEffect(() => {
       if (globals.autoValidate) {
@@ -685,7 +676,7 @@ export const SingleDateAndTimeInput =
               format={dateInputDisplayFormat}
               config={dateInputConfig}
               value={dateValue}
-              onChange={setDateValue}
+              onChange={onDateChange}
               displaySize={globals.inputDisplaySize}
               validationMode={bindConfig.validationMode}
               disabled={disabled}
@@ -707,7 +698,7 @@ export const SingleDateAndTimeInput =
               config={timeInputConfig}
               ref={timeInputRef}
               value={timeValue}
-              onChange={setTimeValue}
+              onChange={onTimeChange}
               displaySize={globals.inputDisplaySize}
               validationMode={bindConfig.validationMode}
               disabled={disabled}

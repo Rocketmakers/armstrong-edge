@@ -131,14 +131,7 @@ export const Checkbox = ((
       bindConfig.setTouched(true);
     }, [boundValue]);
 
-    const indicator = React.useMemo(() => {
-      switch (boundValue) {
-        case 'indeterminate':
-          return globals.checkboxCustomIndeterminateIndicator;
-        default:
-          return globals.checkboxCustomIndicator;
-      }
-    }, [boundValue, globals.checkboxCustomIndicator, globals.checkboxCustomIndeterminateIndicator]);
+    const indicator = boundValue === 'indeterminate' ? globals.checkboxCustomIndeterminateIndicator : globals.checkboxCustomIndicator;
 
     return (
       <StatusWrapper

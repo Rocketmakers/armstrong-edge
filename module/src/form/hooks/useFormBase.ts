@@ -59,7 +59,8 @@ export const useFormBase = <TData extends object>(
   const formConfig = useContentMemo(formConfigObject) as IFormConfig<unknown> | undefined;
   const initialData = useContentMemo(initialDataObject);
 
-  const [isGlobalTouched, setGlobalTouched] = React.useState(globalTouchOverride ?? false);
+  const [localGlobalTouched, setGlobalTouched] = React.useState(false);
+  const isGlobalTouched = globalTouchOverride ?? localGlobalTouched;
 
   /**
    * For setting a new value for a target property
@@ -78,10 +79,6 @@ export const useFormBase = <TData extends object>(
     },
     [dispatch]
   );
-
-  React.useEffect(() => {
-    setGlobalTouched(globalTouchOverride ?? false);
-  }, [globalTouchOverride]);
 
   /**
    * For adding validation errors with a string key
