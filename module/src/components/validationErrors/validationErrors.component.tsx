@@ -39,8 +39,8 @@ export const ValidationErrors = ({
     scrollValidationErrorsIntoView: scrollIntoView,
   });
 
-  const internalRef = React.useRef<HTMLInputElement>(null);
-  React.useImperativeHandle(ref, () => internalRef.current as HTMLInputElement, [internalRef]);
+  const internalRef = React.useRef<HTMLDivElement>(null);
+  React.useImperativeHandle(ref, () => internalRef.current as HTMLDivElement, [internalRef]);
 
   React.useEffect(() => {
     if (validationErrors.length > 0 && globals.scrollValidationErrorsIntoView) {

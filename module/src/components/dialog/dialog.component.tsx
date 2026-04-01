@@ -107,8 +107,9 @@ export const Dialog = ((
   const [visible, setVisible] = React.useState(open);
 
   /** Stores a reference to the promise resolver function */
-  const resolverRef =
-    React.useRef<(value: IDialogOpenResponse<unknown> | PromiseLike<IDialogOpenResponse<unknown>>) => void>(null);
+  const resolverRef = React.useRef<
+    ((value: IDialogOpenResponse<unknown> | PromiseLike<IDialogOpenResponse<unknown>>) => void) | null
+  >(null);
 
   /** Used to create prop comparisons to use as effect triggers */
   const finishActionChanged = useCompareValues(finishAction);

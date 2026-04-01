@@ -7,7 +7,7 @@
     "url": "https://github.com/Rocketmakers/armstrong-edge.git"
   },
   "scripts": {
-    "start": "concurrently -n armstrong- npm:watch-*",
+    "start": "concurrently -n armstrong- pnpm:watch-*",
     "copy-readme": "cp ../README.md ./README.md",
     "build": "pnpm copy-readme && tsc && vite build --mode production",
     "watch-ts": "vite build --watch",

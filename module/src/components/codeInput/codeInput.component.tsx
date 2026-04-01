@@ -189,10 +189,10 @@ export const CodeInput = (({
 
   const goNextPart = React.useCallback(
     (partIndex: number) => {
-      const nextIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string') + partIndex + 1;
+      const relativeIndex = parts.slice(partIndex + 1).findIndex(part => typeof part !== 'string');
 
-      if (nextIndex !== -1) {
-        inputRefs.current[nextIndex]?.focus();
+      if (relativeIndex !== -1) {
+        inputRefs.current[relativeIndex + partIndex + 1]?.focus();
       }
     },
     [parts]
@@ -299,7 +299,11 @@ export const CodeInput = (({
   );
 
   const onKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>, partIndex: number, part: number) => {
+    (
+      event: React.KeyboardEvent<HTMLInputElement>,
+      partIndex: number,
+      part: CodeInputPartDefinition<NullOrUndefined<string>>
+    ) => {
       switch (event.key) {
         case 'Backspace': {
           if (event.currentTarget.value?.length <= 0 && partIndex > 0) {
@@ -384,7 +388,7 @@ export const CodeInput = (({
                   part={part}
                   key={index}
                   onChange={event => onPartValueChange(event, index)}
-                  onKeyDown={event => onKeyDown(event, index, +part)}
+                  onKeyDown={event => onKeyDown(event, index, part)}
                   onPaste={onPaste}
                   onBlur={onBlur}
                   disabled={disabled || (pending && globals.disableControlOnPending)}

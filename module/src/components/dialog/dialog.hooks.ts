@@ -8,7 +8,10 @@ const emptyRefError = new Error(
 );
 
 /** Hook return tuple */
-export type UseDialogReturn<TData> = [React.RefObject<DialogElement<TData>>, DialogElement<TData>];
+export type UseDialogReturn<TData> = [
+  React.RefObject<DialogElement<TData> | null>,
+  Omit<DialogElement<TData>, 'addOpenChangeListener'>
+];
 
 /**
  * A hook providing quick access to the utilities of an Armstrong Dialog component
