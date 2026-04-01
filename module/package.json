@@ -76,6 +76,7 @@
     "@types/glob": "8.1.0",
     "@types/jest": "29.5.3",
     "@types/lodash": "4.14.195",
+    "@types/node": "^25.5.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "chokidar": "3.5.3",
