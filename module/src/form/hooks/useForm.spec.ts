@@ -101,4 +101,43 @@ describe('useForm', () => {
     const successResponse = await act(() => result.current.formProp('field1').validate());
     expect(successResponse).toBe(true);
   });
+
+  describe('function-based validation schema', () => {
+    it('should receive the current form state when schema is a function', async () => {
+      const schemaFn = jest.fn().mockReturnValue({
+        name: z.string().min(1),
+      });
+
+      const { result } = renderHook(() => useForm({ name: 'test' }, { validationSchema: schemaFn }));
+
+      await act(() => result.current.formProp('name').validate());
+
+      expect(schemaFn).toHaveBeenCalledWith({ name: 'test' });
+    });
+
+    it('should validate correctly using a function-based schema', async () => {
+      const { result } = renderHook(() =>
+        useForm(
+          { name: '', age: 25 },
+          {
+            validationSchema: data => ({
+              name: z.string().min(1, 'Name is required'),
+              age: data?.name === '' ? z.number().max(0, 'Fix name first') : z.number(),
+            }),
+          }
+        )
+      );
+
+      const nameResult = await act(() => result.current.formProp('name').validate());
+      expect(nameResult).toBe(false);
+
+      const ageResult = await act(() => result.current.formProp('age').validate());
+      expect(ageResult).toBe(false);
+
+      act(() => result.current.formProp('name').set('Alice'));
+
+      const ageResultAfterFix = await act(() => result.current.formProp('age').validate());
+      expect(ageResultAfterFix).toBe(true);
+    });
+  });
 });

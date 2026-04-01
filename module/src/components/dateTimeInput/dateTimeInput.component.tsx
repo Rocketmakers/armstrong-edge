@@ -9,13 +9,7 @@ import { ImClock } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import {
-  ArmstrongFCExtensions,
-  ArmstrongFCProps,
-  ArmstrongFCReturn,
-  IArmstrongOption,
-  NullOrUndefined,
-} from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, IArmstrongOption, NullOrUndefined } from '../../types';
 import { assertNever, concat, stripNullOrUndefined } from '../../utils';
 import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { Button } from '../button';
@@ -796,7 +790,7 @@ export const DateTimeInput = (({
   );
 }) as (<TValue extends NullOrUndefined<string>>( // type assertion to ensure generic works with ref-as-prop component
   props: ArmstrongFCProps<DateTimeInputProps<TValue>, HTMLInputElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<DateTimeInputProps<string>>;
 
 DateTimeInput.displayName = 'DateTimeInput';

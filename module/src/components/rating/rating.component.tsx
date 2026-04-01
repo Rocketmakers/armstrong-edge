@@ -3,7 +3,7 @@ import { ImStarEmpty, ImStarFull } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongVFCProps, NullOrUndefined } from '../../types';
 import { repeat } from '../../utils/arrays';
 import { concat } from '../../utils/classNames';
 import { clamp } from '../../utils/maths';
@@ -317,7 +317,7 @@ export const Rating = (({
   );
 }) as (<TBind extends NullOrUndefined<number>>(
   props: ArmstrongVFCProps<IRatingProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<IRatingProps<NullOrUndefined<number>>>;
 
 Rating.displayName = 'Rating';

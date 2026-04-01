@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
@@ -189,8 +189,8 @@ export const RangeInput = (({
     </StatusWrapper>
   );
 }) as (<TBind extends NullOrUndefined<number>>(
-  props: ArmstrongFCProps<IRangeInputProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
+  props: ArmstrongFCProps<IRangeInputProps<TBind>, HTMLSpanElement>
+) => React.ReactNode) &
   ArmstrongFCExtensions<IRangeInputProps<NullOrUndefined<number>>>;
 
 RangeInput.displayName = 'RangeInput';

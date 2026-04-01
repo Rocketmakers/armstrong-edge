@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { FormValidationMode, IBindingProps, useBindingState } from '../../form';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 
@@ -83,7 +83,7 @@ export const CharacterLimit = (({
   );
 }) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongFCProps<ICharacterLimitProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<ICharacterLimitProps<NullOrUndefined<string>>>;
 
 CharacterLimit.displayName = 'CharacterLimit';

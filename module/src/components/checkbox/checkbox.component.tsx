@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { ILabelProps, Label } from '../label/label.component';
@@ -181,8 +181,8 @@ export const Checkbox = (({
     </StatusWrapper>
   );
 }) as (<TBind extends NullOrUndefined<boolean>>(
-  props: ArmstrongFCProps<ICheckboxProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
+  props: ArmstrongFCProps<ICheckboxProps<TBind>, HTMLButtonElement>
+) => React.ReactNode) &
   ArmstrongFCExtensions<ICheckboxProps<NullOrUndefined<boolean>>>;
 
 Checkbox.displayName = 'Checkbox';

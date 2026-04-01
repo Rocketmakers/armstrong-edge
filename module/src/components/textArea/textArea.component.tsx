@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
@@ -238,7 +238,7 @@ export const TextArea = (({
   );
 }) as (<TStringValue extends NullOrUndefined<string>>(
   props: ArmstrongFCProps<ITextAreaProps<TStringValue>, HTMLTextAreaElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<ITextAreaProps<string>>;
 
 TextArea.displayName = 'Text Area';

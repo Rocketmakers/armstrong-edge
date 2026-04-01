@@ -46,13 +46,13 @@ export const Default: StoryObj<typeof RadioGroup> = {
     const canvas = within(canvasElement);
     const result = canvas.getByText('Bound value:');
     const [red, blue, pink, brown] = await canvas.findAllByRole('radio');
-    userEvent.click(red);
+    await userEvent.click(red);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 1'));
-    userEvent.click(blue);
+    await userEvent.click(blue);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 2'));
-    userEvent.click(pink);
+    await userEvent.click(pink);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 3'));
-    userEvent.click(brown);
+    await userEvent.click(brown);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 4'));
   },
 };
@@ -87,13 +87,13 @@ export const ButtonMode: StoryObj<typeof RadioGroup> = {
     const canvas = within(canvasElement);
     const result = canvas.getByText('Bound value:');
     const [red, blue, pink, brown] = await canvas.findAllByRole('radio');
-    userEvent.click(red);
+    await userEvent.click(red);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 1'));
-    userEvent.click(blue);
+    await userEvent.click(blue);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 2'));
-    userEvent.click(pink);
+    await userEvent.click(pink);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 3'));
-    userEvent.click(brown);
+    await userEvent.click(brown);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 4'));
   },
 };
@@ -306,11 +306,11 @@ export const Sizes: StoryObj<typeof RadioGroup> = {
     expect(small).toHaveAttribute('data-size', 'small');
 
     const [redLarge, redMedium, redSmall] = await canvas.findAllByText('red');
-    userEvent.click(redLarge);
+    await userEvent.click(redLarge);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 1'));
-    userEvent.click(redMedium);
+    await userEvent.click(redMedium);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 1b'));
-    userEvent.click(redSmall);
+    await userEvent.click(redSmall);
     await waitFor(() => expect(result).toHaveTextContent('Bound value: 1c'));
   },
 };

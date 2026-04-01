@@ -4,7 +4,6 @@ import { IBindingProps, useBindingState } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import {
   ArmstrongFCExtensions,
-  ArmstrongFCReturn,
   ArmstrongId,
   ArmstrongVFCProps,
   DisplaySize,
@@ -203,9 +202,7 @@ export const CheckboxList = (({
       </div>
     </>
   );
-}) as (<Id extends ArmstrongId>(
-  props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>
-) => ArmstrongFCReturn) &
+}) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<ICheckboxListProps<Id>, HTMLDivElement>) => React.ReactNode) &
   ArmstrongFCExtensions<ICheckboxListProps<ArmstrongId>>;
 
 CheckboxList.displayName = 'CheckboxList';

@@ -5,7 +5,6 @@ import { IBindingProps, useBindingState } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import {
   ArmstrongFCExtensions,
-  ArmstrongFCReturn,
   ArmstrongId,
   ArmstrongVFCProps,
   DisplaySize,
@@ -206,7 +205,7 @@ export const RadioGroup = (({
       )}
     </>
   );
-}) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => ArmstrongFCReturn) &
+}) as (<Id extends ArmstrongId>(props: ArmstrongVFCProps<IRadioGroupProps<Id>, HTMLDivElement>) => React.ReactNode) &
   ArmstrongFCExtensions<IRadioGroupProps<ArmstrongId>>;
 
 RadioGroup.displayName = 'RadioGroup';

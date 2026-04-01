@@ -20,7 +20,6 @@ import { useContentMemo } from '../../hooks/useContentMemo';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import {
   ArmstrongFCExtensions,
-  ArmstrongFCReturn,
   ArmstrongId,
   ArmstrongVFCProps,
   DisplaySize,
@@ -724,7 +723,7 @@ export const NativeSelect = (({
   );
 }) as (<Id extends ArmstrongId>(
   props: ArmstrongVFCProps<INativeSelectProps<Id>, HTMLSelectElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<INativeSelectProps<ArmstrongId>>;
 
 NativeSelect.displayName = 'NativeSelect';
@@ -740,7 +739,7 @@ export const Select = (({
   return <ReactSelectComponent {...props} multi={false} ref={ref} />;
 }) as (<Id extends ArmstrongId>(
   props: ArmstrongVFCProps<ISingleSelectProps<Id>, ReactSelectRef<Id>>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<ISingleSelectProps<ArmstrongId>>;
 
 Select.displayName = 'Select';
@@ -756,7 +755,7 @@ export const MultiSelect = (({
   return <ReactSelectComponent {...props} multi={true} ref={ref} />;
 }) as (<Id extends ArmstrongId>(
   props: ArmstrongVFCProps<IMultiSelectProps<Id>, ReactSelectRef<Id>>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<IMultiSelectProps<ArmstrongId>>;
 
 MultiSelect.displayName = 'MultiSelect';

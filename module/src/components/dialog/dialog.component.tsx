@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { useCompareValues } from '../../hooks/useCompareValues';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 
@@ -256,7 +256,7 @@ export const Dialog = ((
         )}
     </RadixDialog.Root>
   );
-}) as (<TData>(props: ArmstrongFCProps<IDialogProps<TData>, DialogElement<TData>>) => ArmstrongFCReturn) & // type assertion to ensure generic works with ref-as-prop component
+}) as (<TData>(props: ArmstrongFCProps<IDialogProps<TData>, DialogElement<TData>>) => React.ReactNode) & // type assertion to ensure generic works with ref-as-prop component
   ArmstrongFCExtensions<IDialogProps<unknown>>;
 
 Dialog.displayName = 'Dialog';

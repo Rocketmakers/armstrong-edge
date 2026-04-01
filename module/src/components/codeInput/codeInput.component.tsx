@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IBindingProps, useBindingState, useForm } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCReturn, ArmstrongVFCProps, DisplaySize, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongVFCProps, DisplaySize, NullOrUndefined } from '../../types';
 import { concat, findLastIndex } from '../../utils';
 import { useArmstrongConfig } from '../config';
 import { Input, ITextInputProps } from '../input';
@@ -72,7 +72,7 @@ const CodeInputPart = (({
   );
 }) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongVFCProps<ICodeInputPartProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<ICodeInputPartProps<NullOrUndefined<string>>>;
 
 CodeInputPart.displayName = 'CodeInputPart';
@@ -415,7 +415,7 @@ export const CodeInput = (({
   );
 }) as (<TBind extends NullOrUndefined<string>>(
   props: ArmstrongVFCProps<ICodeInputProps<TBind>, HTMLDivElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<ICodeInputProps<NullOrUndefined<string>>>;
 
 CodeInput.displayName = 'Code Input';

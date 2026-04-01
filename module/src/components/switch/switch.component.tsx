@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config/config.context';
 import { IInputWrapperProps } from '../inputWrapper/inputWrapper.component';
@@ -155,8 +155,8 @@ export const Switch = (({
     </>
   );
 }) as (<TBind extends NullOrUndefined<boolean>>(
-  props: ArmstrongFCProps<ISwitchProps<TBind>, HTMLInputElement>
-) => ArmstrongFCReturn) &
+  props: ArmstrongFCProps<ISwitchProps<TBind>, HTMLButtonElement>
+) => React.ReactNode) &
   ArmstrongFCExtensions<ISwitchProps<NullOrUndefined<boolean>>>;
 
 Switch.displayName = 'Switch';
