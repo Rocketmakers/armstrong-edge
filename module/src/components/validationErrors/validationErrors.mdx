@@ -1,0 +1,23 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ValidationErrors } from './validationErrors.component';
+
+import * as ValidationErrorsStories from './validationErrors.stories';
+
+<Meta title="Components/ValidationErrors" component={ValidationErrors} />
+
+# ValidationErrors
+
+A component to render validation errors on forms.
+
+<Canvas of={ValidationErrorsStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { ValidationErrors } from '@rocketmakers/armstrong';
+
+<ValidationErrors validationErrors={['This field is required', 'This field requires 12 characters']} />;
+```
+
+## Validation errors props
+
+<ArgTypes of={ValidationErrors} />

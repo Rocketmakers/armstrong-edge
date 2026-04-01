@@ -64,6 +64,7 @@ export function useBindingState<TData>(
       validationErrorIcon,
       shouldShowValidationErrorIcon: validationMode === 'icon' || validationMode === 'both',
       shouldShowValidationErrorMessage: validationMode === 'message' || validationMode === 'both',
+      autoValidate: overrides?.autoValidate ?? bind?.formConfig?.autoValidate,
     },
   ];
 }

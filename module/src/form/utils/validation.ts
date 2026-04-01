@@ -89,19 +89,21 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
   // unpacks the value of a TS schema field into a zod equivalent
   const unpackValueToZod = (incomingToZod: unknown): unknown => {
     if (isArrayOfZod(incomingToZod)) {
-      const arrayInner = z.array(
-        // eslint-disable-next-line no-underscore-dangle -- this is in the zod types
-        !(incomingToZod.itemSchema as z.ZodTypeAny)._def
-          ? z.object(unpackObject(incomingToZod.itemSchema))
-          : incomingToZod.itemSchema
-      );
+      const arrayInner = z.array(unpackValueToZod(incomingToZod.itemSchema) as z.ZodTypeAny);
       return incomingToZod.opts ? incomingToZod.opts(arrayInner) : arrayInner;
     }
     if (isObjectOfZod(incomingToZod)) {
-      const obInner = z.object(unpackObject(incomingToZod.schema as z.ZodRawShape));
+      const obInner = unpackValueToZod(incomingToZod.schema) as z.ZodObject<z.ZodRawShape>;
       return incomingToZod.opts ? incomingToZod.opts(obInner) : obInner;
     }
-    return incomingToZod;
+    // eslint-disable-next-line no-underscore-dangle -- these are zod values
+    if ((incomingToZod as z.ZodAny)._def) {
+      return incomingToZod;
+    }
+    if (typeof incomingToZod === 'object') {
+      return z.object(unpackObject(incomingToZod as z.ZodRawShape));
+    }
+    return unpackValueToZod(incomingToZod);
   };
 
   // if root schema is a custom array or custom object, return a zod object containing the unpacked TS schema

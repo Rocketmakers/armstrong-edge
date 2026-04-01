@@ -22,6 +22,8 @@ export interface IDialogProps<TData = unknown>
   open?: boolean;
   /** Function called when the dialog is opened/closed - for state controlled dialogs */
   onOpenChange?: (open: boolean) => void;
+  /** Function called when the dialog is about to close. Return `false` or a promise of `false` to prevent the dialog from closing */
+  onBeforeUnload?: (finishAction: DialogFinishAction) => boolean | Promise<boolean>;
   /** Optional CSS class for the dialog component */
   className?: string;
   /** Optional CSS class for the dialog overlay */
@@ -87,6 +89,7 @@ export const Dialog = React.forwardRef(
       overlayClassName,
       testId,
       delayCloseFor,
+      onBeforeUnload,
       ...nativeProps
     } = props;
 
@@ -112,9 +115,28 @@ export const Dialog = React.forwardRef(
     /** Store for open change listeners */
     const openChangeListeners = React.useRef<OpenChangeListener[]>([]);
 
+    /** Function to call the onBeforeUnload function, if it exists and unwrap the promise */
+    const getBeforeUnloadValue = React.useCallback(
+      async (action: DialogFinishAction) => {
+        if (onBeforeUnload) {
+          const response = onBeforeUnload(action);
+          if (response instanceof Promise) {
+            return response;
+          }
+          return Promise.resolve(response);
+        }
+        return true;
+      },
+      [onBeforeUnload]
+    );
+
     /** Called when the internal open/close state of the dialog changes */
     const onInnerOpenChange = React.useCallback(
-      (val: boolean) => {
+      async (val: boolean) => {
+        if (val === false) {
+          const response = await getBeforeUnloadValue?.('close');
+          if (response === false) return;
+        }
         setFinishAction(val ? undefined : 'close');
         if (!val && delayCloseFor) {
           setTimeout(() => {
@@ -124,7 +146,7 @@ export const Dialog = React.forwardRef(
         }
         setVisible(val);
       },
-      [delayCloseFor]
+      [delayCloseFor, getBeforeUnloadValue]
     );
 
     /** This might seem odd, but these functions are often used as dependencies so we want to memoize them as much as possible */
@@ -136,9 +158,20 @@ export const Dialog = React.forwardRef(
         }),
       [onInnerOpenChange]
     );
-    const setOk = React.useCallback(() => setFinishAction('ok'), []);
-    const setClose = React.useCallback(() => setFinishAction('close'), []);
-    const setCancel = React.useCallback(() => setFinishAction('cancel'), []);
+    const setOk = React.useCallback(async () => {
+      if ((await getBeforeUnloadValue?.('ok')) === false) return;
+      setFinishAction('ok');
+    }, [getBeforeUnloadValue]);
+
+    const setClose = React.useCallback(async () => {
+      if ((await getBeforeUnloadValue?.('close')) === false) return;
+      setFinishAction('close');
+    }, [getBeforeUnloadValue]);
+
+    const setCancel = React.useCallback(async () => {
+      if ((await getBeforeUnloadValue?.('cancel')) === false) return;
+      setFinishAction('cancel');
+    }, [getBeforeUnloadValue]);
 
     /** Exposes the DialogElement utility functions to the ref */
     React.useImperativeHandle(

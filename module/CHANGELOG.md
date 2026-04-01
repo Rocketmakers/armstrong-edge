@@ -1,9 +1,117 @@
-## [3.8.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.2...v3.8.3) (2025-01-29)
+## [3.13.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.4...v3.13.5) (2025-08-22)
 
 
 ### Bug Fixes
 
-* - Disabled prop now supported on dropdown menu ([7bba5a1](https://github.com/Rocketmakers/armstrong-edge/commit/7bba5a131e727af13ee7625eedef510cee54ac12))
+* fixed keychain string creation for keychains with zeros ([e9fd6ac](https://github.com/Rocketmakers/armstrong-edge/commit/e9fd6ac3cccd3a67ecf2633c1506898e39c4df4c))
+* handles empty string case when creating string keys from keychains ([0134a3d](https://github.com/Rocketmakers/armstrong-edge/commit/0134a3dd14fe470754475ec82ed01f80a76eb91c))
+
+## [3.13.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.3...v3.13.4) (2025-08-20)
+
+
+### Bug Fixes
+
+* add value prop to text area ([99d2355](https://github.com/Rocketmakers/armstrong-edge/commit/99d2355fc289a8ed712d7ed198bceedd4bcd2807))
+
+## [3.13.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.2...v3.13.3) (2025-08-20)
+
+
+### Bug Fixes
+
+* bind attribute to correct prop ([45c827b](https://github.com/Rocketmakers/armstrong-edge/commit/45c827b8be0b6f3a2973e52cc71323652fc24ea8))
+
+## [3.13.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.1...v3.13.2) (2025-08-20)
+
+
+### Bug Fixes
+
+* add value to input wrappers ([16a94d9](https://github.com/Rocketmakers/armstrong-edge/commit/16a94d99cfdeb05f3da200bf0429964f7aa12b2b))
+
+## [3.13.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.0...v3.13.1) (2025-07-07)
+
+
+### Bug Fixes
+
+* fixes the docs for non-modal dropdown ([fb8ad1a](https://github.com/Rocketmakers/armstrong-edge/commit/fb8ad1aaaff5183e98453ae6ce62e763afdff45d))
+
+# [3.13.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.12.0...v3.13.0) (2025-07-07)
+
+
+### Features
+
+* allowed passing radix's modal prop to the dropdown ([da7ab44](https://github.com/Rocketmakers/armstrong-edge/commit/da7ab44c9cce1c8fe8c3eca64d298830057553cc))
+
+# [3.12.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.11.0...v3.12.0) (2025-06-05)
+
+
+### Features
+
+* - Adds the ability to dismiss toasts programatically ([b0ba88c](https://github.com/Rocketmakers/armstrong-edge/commit/b0ba88ca0a6d09bcbb17680bcd80907321e5fefd))
+
+# [3.11.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.3...v3.11.0) (2025-05-06)
+
+### Features
+
+- - Added additional config options to avoid toast duplication ([dab6cce](https://github.com/Rocketmakers/armstrong-edge/commit/dab6cce152cf64d3a2d221f91e9e148102d99d9d))
+
+## [3.10.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.2...v3.10.3) (2025-03-26)
+
+### Bug Fixes
+
+- - potential runtime fix for nested arrays in zod validation ([860e53d](https://github.com/Rocketmakers/armstrong-edge/commit/860e53d743912cfcd01160d15f0f674b5268a9b7))
+
+## [3.10.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.1...v3.10.2) (2025-03-26)
+
+### Bug Fixes
+
+- - Resolves issue with nested arrays in IValidationSchema ([fd791fd](https://github.com/Rocketmakers/armstrong-edge/commit/fd791fd03f18c96581411624a2e5d52dd5caa9f8))
+
+## [3.10.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.0...v3.10.1) (2025-02-25)
+
+### Bug Fixes
+
+- - Fixed bug causing auto validate setting not to be respected on bind or prop ([7507c7a](https://github.com/Rocketmakers/armstrong-edge/commit/7507c7a709c6662b39ec774601691b31878754d1))
+
+# [3.10.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.3...v3.10.0) (2025-02-24)
+
+### Bug Fixes
+
+- fix typo ([c17ca08](https://github.com/Rocketmakers/armstrong-edge/commit/c17ca08686a8f2683d0c721fd5bd285658a325d9))
+- fix typos ([4258953](https://github.com/Rocketmakers/armstrong-edge/commit/42589538adced9172c614c44174f3f7b5106d40e))
+
+### Features
+
+- adds mdx doc for every component ([02d55e1](https://github.com/Rocketmakers/armstrong-edge/commit/02d55e15906d14f333c197d2c17fdc2562ee2178))
+
+## [3.9.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.2...v3.9.3) (2025-02-18)
+
+### Bug Fixes
+
+- - Fixed bug causing right overlay on code input not to render ([b78ee14](https://github.com/Rocketmakers/armstrong-edge/commit/b78ee14be24ff7abb20575def60fd41d6e22044f))
+
+## [3.9.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.1...v3.9.2) (2025-02-11)
+
+### Bug Fixes
+
+- - Fixes bug causing no screen interaction after launching dialog from dropdown menu ([be793bc](https://github.com/Rocketmakers/armstrong-edge/commit/be793bc9a04281f256e16253c8a6a11a273b20d9))
+
+## [3.9.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.0...v3.9.1) (2025-02-07)
+
+### Bug Fixes
+
+- fixes select input change when not searchable, removes select options scrollbar when not necessary ([ff308c3](https://github.com/Rocketmakers/armstrong-edge/commit/ff308c3612202ee085cb046ab3d0576363e063be))
+
+# [3.9.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.3...v3.9.0) (2025-02-05)
+
+### Features
+
+- - onBeforeUnload implemented on dialog to allow close to be prevented ([f5fe0c4](https://github.com/Rocketmakers/armstrong-edge/commit/f5fe0c4ecd8e7e9ea1144dcf60ab8538bd30f9bd))
+
+## [3.8.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.2...v3.8.3) (2025-01-29)
+
+### Bug Fixes
+
+- - Disabled prop now supported on dropdown menu ([7bba5a1](https://github.com/Rocketmakers/armstrong-edge/commit/7bba5a131e727af13ee7625eedef510cee54ac12))
 
 ## [3.8.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.1...v3.8.2) (2025-01-16)
 

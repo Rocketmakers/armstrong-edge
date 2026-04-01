@@ -1,0 +1,93 @@
+import { Canvas, ArgTypes } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Switch } from './switch.component';
+
+import * as SwitchStories from './switch.stories';
+
+<Meta title="Components/switch" component={Switch} />
+
+# Switch
+
+A switch component that lets users toggle settings on or off.
+
+<Canvas of={SwitchStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+import { Switch } from '@rocketmakers/armstrong';
+
+<Switch label={'Airplane mode'} />;
+```
+
+## Switch props
+
+<ArgTypes of={Switch} />
+
+## Examples
+
+- [Basic switch example](#basic)
+- [Bound switch example](#bound)
+- [`displaySize`](#displaySize)
+- [`disabled`](#disabled)
+- [`validationErrorMessages`](#validationErrorMessages)
+
+### <a name="basic">Basic switch example</a>
+
+<Canvas of={SwitchStories.Default} layout="centered" sourceState="none" />
+
+```tsx
+<Switch label={'Airplane mode'} />
+```
+
+<br />
+
+### <a name="bound">Bound switch example</a>
+
+The `bind` prop is used for binding to an Armstrong form binder (see forms documentation).
+
+<Canvas of={SwitchStories.Bound} layout="centered" sourceState="none" />
+
+```tsx
+const { formProp, formState } = useForm({ checked: false })
+
+<Switch bind={formProp('checked').bind()} />
+<p>Bound value is {formState?.checked ? 'checked' : 'not checked'}</p>
+```
+
+<br />
+
+### <a name="displaySize">`displaySize`</a>
+
+<Canvas of={SwitchStories.Sizes} layout="centered" sourceState="none" />
+
+```tsx
+<Switch label="Small Switch" displaySize="small" required={true} />
+```
+
+Size options:
+
+- `small`
+- `medium` (default)
+- `large`
+- `custom-<string>`
+
+<br />
+
+### <a name="disabled">`disabled`</a>
+
+<Canvas of={SwitchStories.Disabled} layout="centered" sourceState="none" />
+
+```tsx
+<Switch disabled />
+```
+
+<br />
+
+### <a name="validationErrorMessages">`validationErrorMessages`</a>
+
+The `validationErrorMessages` takes an array of error messages to display on validation error.
+
+<Canvas of={SwitchStories.ValidationError} layout="centered" sourceState="none" />
+
+```tsx
+<Switch bind={formProp('checked').bind()} label="Check" validationErrorMessages={['An error has occurred']} />
+```

@@ -55,7 +55,7 @@ export interface IDropdownMenuItem {
 export interface IDropdownMenuProps
   extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement>,
     Pick<React.ComponentProps<typeof RadixDropdownMenu['Content']>, 'side' | 'align' | 'sticky'>,
-    Pick<React.ComponentProps<typeof RadixDropdownMenu['Root']>, 'open' | 'defaultOpen' | 'onOpenChange'> {
+    Pick<React.ComponentProps<typeof RadixDropdownMenu['Root']>, 'open' | 'defaultOpen' | 'onOpenChange' | 'modal'> {
   /**
    * Array of dropdown menu items, or a custom React node to render.
    */
@@ -90,10 +90,27 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
       footerContent,
       headerContent,
       disabled,
+      modal,
       ...nativeProps
     },
     ref
   ) => {
+    const [internalOpen, setInternalOpen] = React.useState(open ?? defaultOpen ?? false);
+    React.useEffect(() => {
+      if (open !== undefined) {
+        setInternalOpen(open);
+      }
+    }, [open]);
+    const onOpenChangeInner = React.useCallback(
+      (isOpen: boolean) => {
+        if (onOpenChange) {
+          onOpenChange(isOpen);
+        } else {
+          setInternalOpen(isOpen);
+        }
+      },
+      [onOpenChange]
+    );
     const parsedContent = React.useMemo(() => {
       if (React.isValidElement(items)) {
         return items;
@@ -110,7 +127,13 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
                 )}
                 disabled={item.disabled}
                 data-disabled={item.disabled}
-                onSelect={item.onClick && (event => item.onClick?.(index, event))}
+                onSelect={
+                  item.onClick &&
+                  (event => {
+                    setInternalOpen(false);
+                    item.onClick?.(index, event);
+                  })
+                }
               >
                 {item.leftOverlay && <div className="arm-dropdown-menu-item-left-overlay">{item.leftOverlay}</div>}
                 {item.label && <div className="arm-dropdown-menu-item-label">{item.label}</div>}
@@ -125,7 +148,12 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.PropsWithChil
     }, [items]);
 
     return (
-      <RadixDropdownMenu.Root open={open} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
+      <RadixDropdownMenu.Root
+        open={internalOpen}
+        onOpenChange={onOpenChangeInner}
+        defaultOpen={defaultOpen}
+        modal={modal}
+      >
         {children && (
           <RadixDropdownMenu.Trigger asChild disabled={disabled}>
             {children}

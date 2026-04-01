@@ -6,7 +6,7 @@ import * as React from 'react';
 import { Button } from '../button';
 import { ArmstrongProvider } from '../provider';
 import { Toast } from './toast.component';
-import { useToast } from './toast.hooks';
+import { useDismissToast, useToast } from './toast.hooks';
 
 /** metadata */
 
@@ -175,5 +175,92 @@ export const CustomContent: StoryObj<typeof Toast> = {
     userEvent.click(button);
     const customButton = await findByText(document.body, 'Custom button');
     expect(customButton).toBeVisible();
+  },
+};
+
+export const IgnoreDuplicateToast: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider
+        config={{
+          toastIgnorePredicate: (existing, incoming) =>
+            existing.some(t => t.title === incoming.title && t.description === incoming.description),
+        }}
+      >
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement, args }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    await userEvent.click(button);
+    await userEvent.click(button); // should be ignored
+
+    const toasts = await findAllByText(document.body, args.title ?? '');
+    expect(toasts.length).toBe(1);
+  },
+};
+
+export const ReplaceDisplayMode: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider config={{ toastDisplayMode: 'replace' }}>
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement, args }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    await userEvent.click(button);
+    await userEvent.click(button); // should replace the previous toast
+
+    const toasts = await findAllByText(document.body, args.title ?? '');
+    expect(toasts.length).toBe(1);
+  },
+};
+
+export const DismissToast: StoryObj<typeof Toast> = {
+  ...Template,
+  render: args => {
+    const lastToastRef = React.useRef<string | undefined>();
+    const [incrementor, increment] = React.useReducer(n => n + 1, 1);
+    const dispatch = useToast();
+    const dismiss = useDismissToast();
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
+        <Button
+          onClick={() => {
+            lastToastRef.current = dispatch({ ...args, content: <span>Toast #{incrementor}</span> });
+            increment();
+          }}
+        >
+          Send a toast
+        </Button>
+        <Button
+          onClick={() => {
+            if (lastToastRef.current) {
+              dismiss(lastToastRef.current);
+              lastToastRef.current = undefined;
+            }
+          }}
+        >
+          Dismiss the last toast
+        </Button>
+      </div>
+    );
+  },
+  play: async ({ canvasElement, args }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    userEvent.click(button);
+
+    const title = await findByText(document.body, args.title ?? '');
+    expect(title).toBeVisible();
+
+    // check close
+    const close = within(canvasElement).getByText('Dismiss the last toast');
+    await waitFor(() => userEvent.click(close));
+    await waitFor(() => expect(title).not.toBeVisible());
   },
 };

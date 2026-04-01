@@ -4,6 +4,7 @@ import * as RadixToast from '@radix-ui/react-toast';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import { ToastDisplayMode } from '../../types';
 import { useArmstrongConfig } from '../config';
 import { Toast } from './toast.component';
 
@@ -29,13 +30,22 @@ export interface IToast {
   additionalProps?: React.RefAttributes<HTMLLIElement>;
 }
 
+interface IToastWitKey extends IToast {
+  /** key for identifying the toast */
+  key: string;
+  exited: boolean;
+}
+
 /** Type denoting the position of a toast message */
 export type ToastPosition = 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left';
 
 /** Types of the global toast context */
 interface IToastContext {
-  /** Adds a new toast message to the global stack */
-  addToast: (newToast: IToast) => void;
+  /** Adds a new toast message to the global stack, returns the key of the added toast (if toast was added) */
+  addToast: (newToast: IToast) => string | undefined;
+
+  /** Dismisses a toast by its key, removing it from the stack */
+  dismissToastByKey: (key: string) => void;
 }
 
 /** The default context to initialize with */
@@ -43,6 +53,11 @@ const initialContext: IToastContext = {
   addToast: () => {
     throw new Error(
       "Unable to dispatch toast, are you sure you've added either the <ArmstrongProvider> or <ToastProvider>?"
+    );
+  },
+  dismissToastByKey: () => {
+    throw new Error(
+      "Unable to dismiss toast, are you sure you've added either the <ArmstrongProvider> or <ToastProvider>?"
     );
   },
 };
@@ -60,6 +75,12 @@ interface IToastProviderProps {
 
   /** the icon to use for the dialog close button */
   closeButtonIcon?: React.JSX.Element | false;
+
+  /** whether to add toasts to a stack or display one at a time */
+  displayMode?: ToastDisplayMode;
+
+  /** ignore toasts if an existing toast matches this predicate */
+  ignorePredicate?: (existingToasts: IToast[], incomingToast: IToast) => boolean;
 }
 
 export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps>> = ({
@@ -67,27 +88,66 @@ export const ToastProvider: React.FC<React.PropsWithChildren<IToastProviderProps
   duration,
   position,
   closeButtonIcon,
+  displayMode,
+  ignorePredicate,
 }) => {
-  const [toasts, addToast] = React.useState<IToast[]>([]);
   const globals = useArmstrongConfig({
     toastDuration: duration,
     toastPosition: position,
     toastCloseButtonIcon: closeButtonIcon,
+    toastDisplayMode: displayMode,
+    toastIgnorePredicate: ignorePredicate,
   });
+
+  const nextToastKey = React.useRef(1);
+  const [toasts, setToasts] = React.useState<IToastWitKey[]>([]);
 
   const swipeDirection =
     globals.toastPosition === 'bottom-left' || globals.toastPosition === 'top-left' ? 'left' : 'right';
 
+  const addToast = React.useCallback(
+    (newToast: IToast) => {
+      if (
+        globals.toastIgnorePredicate?.(
+          toasts.filter(t => !t.exited).map(({ key, exited, ...toast }) => toast),
+          newToast
+        )
+      ) {
+        return undefined;
+      }
+      const key = `toast-${nextToastKey.current}`;
+      nextToastKey.current += 1;
+      const toast = { ...newToast, key, exited: false };
+      setToasts(prevToasts => {
+        if (globals.toastDisplayMode === 'add') {
+          return [...prevToasts, toast];
+        }
+        return [toast];
+      });
+      return key;
+    },
+    [globals, toasts]
+  );
+
+  const removeToastByKey = React.useCallback((key: string) => {
+    setToasts(prevToasts => prevToasts.map(toast => (toast.key === key ? { ...toast, exited: true } : toast)));
+  }, []);
+
+  const dismissToastByKey = React.useCallback((key: string) => {
+    setToasts(prevToasts => prevToasts.filter(toast => toast.key !== key));
+  }, []);
+
   return (
-    <ToastContext.Provider value={{ addToast: newToast => addToast(prev => [...prev, newToast]) }}>
+    <ToastContext.Provider value={{ addToast, dismissToastByKey }}>
       <RadixToast.Provider swipeDirection={swipeDirection} duration={globals.toastDuration}>
         {children}
-        {toasts.map((toast, i) => (
+        {toasts.map(({ key, ...toast }) => (
           <Toast
-            key={`${toast.title}-${i}`}
+            key={key}
             duration={globals.toastDuration}
             position={globals.toastPosition}
             closeButtonIcon={globals.toastCloseButtonIcon}
+            onExit={() => removeToastByKey(key)}
             {...toast}
           />
         ))}

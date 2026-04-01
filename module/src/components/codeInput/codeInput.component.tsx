@@ -328,13 +328,13 @@ export const CodeInput = React.forwardRef<HTMLDivElement, ICodeInputProps<NullOr
       leftOverlay &&
       (globals.inputStatusPosition !== 'left' ||
         !globals.hideInputErrorIconOnStatus ||
-        (!pending && !bindConfig.shouldShowValidationErrorIcon));
+        (!pending && (!bindConfig.shouldShowValidationErrorIcon || !bindConfig.validationErrorMessages.length)));
 
     const showRightOverlay =
       rightOverlay &&
       (globals.inputStatusPosition !== 'right' ||
         !globals.hideInputErrorIconOnStatus ||
-        (!pending && !bindConfig.shouldShowValidationErrorIcon));
+        (!pending && (!bindConfig.shouldShowValidationErrorIcon || !bindConfig.validationErrorMessages.length)));
 
     return (
       <>

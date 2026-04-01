@@ -14,3 +14,6 @@ module/README.md
 test-results
 *storybook.log
 playground
+
+# IDE Settings
+.idea
