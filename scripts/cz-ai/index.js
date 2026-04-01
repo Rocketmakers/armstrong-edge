@@ -167,8 +167,12 @@ module.exports = {
     process.stdout.write('\n  Generating AI suggestion...');
     try {
       ai = getAiSuggestion(stat, diff);
-      const scopeDisplay = ai.scope ? `(${ai.scope})` : '';
-      console.log(` done!\n\n  Suggestion: ${ai.type}${scopeDisplay}: ${ai.subject}\n`);
+      if (ai) {
+        const scopeDisplay = ai.scope ? `(${ai.scope})` : '';
+        console.log(` done!\n\n  Suggestion: ${ai.type}${scopeDisplay}: ${ai.subject}\n`);
+      } else {
+        console.log(` done, but no suggestion was returned.\n`);
+      }
     } catch (err) {
       console.log(` unavailable (${err.message})\n  Proceeding with manual entry.\n`);
     }
