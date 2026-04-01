@@ -117,6 +117,9 @@ importers:
       concurrently:
         specifier: 8.2.0
         version: 8.2.0
+      eslint:
+        specifier: ^8.29.0
+        version: 8.29.0
       http-server:
         specifier: 14.1.1
         version: 14.1.1

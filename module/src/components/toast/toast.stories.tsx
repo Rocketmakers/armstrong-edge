@@ -42,7 +42,7 @@ export const Default: StoryObj<typeof Toast> = {
   play: async ({ canvasElement, args }) => {
     // launch toast
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
 
     // check title and description
     const title = await findByText(document.body, args.title ?? '');
@@ -71,7 +71,7 @@ export const CustomDuration: StoryObj<typeof Toast> = {
   },
   play: async ({ canvasElement, args }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
 
     const title = await findByText(document.body, args.title ?? '');
     expect(title).toBeVisible();
@@ -91,7 +91,7 @@ export const TopLeft: StoryObj<typeof Toast> = {
   ],
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
     const toast = await findByRole(document.body, 'status', {
       name: 'Notification',
     });
@@ -112,7 +112,7 @@ export const TopRight: StoryObj<typeof Toast> = {
   ],
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
     const toast = await findByRole(document.body, 'status', {
       name: 'Notification',
     });
@@ -133,7 +133,7 @@ export const BottomLeft: StoryObj<typeof Toast> = {
   ],
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
     const toast = await findByRole(document.body, 'status', {
       name: 'Notification',
     });
@@ -154,7 +154,7 @@ export const BottomRight: StoryObj<typeof Toast> = {
   ],
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
     const toast = await findByRole(document.body, 'status', {
       name: 'Notification',
     });
@@ -172,7 +172,7 @@ export const CustomContent: StoryObj<typeof Toast> = {
   },
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
     const customButton = await findByText(document.body, 'Custom button');
     expect(customButton).toBeVisible();
   },
@@ -253,7 +253,7 @@ export const DismissToast: StoryObj<typeof Toast> = {
   },
   play: async ({ canvasElement, args }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
 
     const title = await findByText(document.body, args.title ?? '');
     expect(title).toBeVisible();
