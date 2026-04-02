@@ -28,5 +28,9 @@ jobs:
 
   release_armstrong:
     needs: [setup, build, lint, test]
+    permissions:
+      contents: write
+      issues: write
+      id-token: write
     uses: ./.github/workflows/job_release.yml
     secrets: inherit
