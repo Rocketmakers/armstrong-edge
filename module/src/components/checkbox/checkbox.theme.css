@@ -54,6 +54,7 @@
 
 .arm-checkbox-indicator[data-state='checked'] {
   color: var(--arm-color-white);
+  padding-top: 0.2rem; /* This is to center the checkmark */
 }
 
 /* LABEL */

@@ -1,7 +1,6 @@
 import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within, fn } from '@storybook/test';
-import * as React from 'react';
 import { ImPlus } from 'react-icons/im';
 
 import { useForm } from '../../form';

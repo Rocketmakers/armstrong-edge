@@ -1,4 +1,40 @@
-#!/usr/bin/env sh
+#!/bin/sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-exec < /dev/tty && ./node_modules/.bin/cz --hook || true
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+# Skip for merge/squash/amend/message-provided commits
+case "$COMMIT_SOURCE" in
+  merge|squash|commit|message)
+    exit 0
+    ;;
+esac
+
+# Skip if this is our internal commit (avoids recursion)
+[ "$CZ_AI_SKIP" = "1" ] && exit 0
+
+# Detect TTY availability without corrupting stdin (subshell test)
+if sh -c ': < /dev/tty' 2>/dev/null; then
+  # Interactive — full cz-ai flow with prompts, inner commit handles it
+  exec < /dev/tty
+  pnpm exec cz --hook --commit-msg-file "$COMMIT_MSG_FILE"
+  CZ_EXIT=$?
+
+  if [ $CZ_EXIT -eq 0 ] && [ -s "$COMMIT_MSG_FILE" ]; then
+    CZ_AI_SKIP=1 git commit -F "$COMMIT_MSG_FILE"
+  fi
+
+  # Abort the outer git commit (inner one already succeeded, or user cancelled)
+  exit 1
+else
+  # Headless (no TTY, e.g. Claude Code) — generate AI message and let git's
+  # normal commit flow proceed. No inner commit needed.
+  CZ_AI_HEADLESS=1 pnpm exec cz --hook --commit-msg-file "$COMMIT_MSG_FILE"
+  CZ_EXIT=$?
+
+  if [ $CZ_EXIT -eq 0 ] && [ -s "$COMMIT_MSG_FILE" ]; then
+    exit 0
+  fi
+  exit 1
+fi

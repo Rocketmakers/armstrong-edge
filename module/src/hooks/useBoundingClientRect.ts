@@ -8,6 +8,11 @@ import { useResizeObserver } from './useResizeObserver';
 
 export type UseBoundingClientRectReturn = [DOMRect, () => void];
 
+function domRectToObject(domRect: DOMRect) {
+  const { top, right, bottom, left, width, height, x, y } = domRect;
+  return { top, right, bottom, left, width, height, x, y };
+}
+
 /**
  * Get the size of the element with the given ref - uses a resize observer, listens to scroll events, and listens to resize events
  * WARNING: positions will not update automatically unless happening at the same time as a resize, if you need to do anything fancier, you'll have to
@@ -20,21 +25,23 @@ export function useBoundingClientRect(
   listenToScroll = true
 ): UseBoundingClientRectReturn {
   const [rect, setRect] = React.useState<DOMRect>(ref.current?.getBoundingClientRect() || new DOMRect(0, 0, 0, 0));
+  const rectRef = React.useRef(rect);
+  rectRef.current = rect;
 
-  const domRectToObject = React.useCallback((domRect: DOMRect) => {
-    const { top, right, bottom, left, width, height, x, y } = domRect;
-    return { top, right, bottom, left, width, height, x, y };
-  }, []);
+  const onChangeRef = React.useRef(onChange);
+  onChangeRef.current = onChange;
 
   const setRectSize = React.useCallback(() => {
     if (ref.current) {
       const boundingClientRect = ref.current.getBoundingClientRect();
-      if (contentDependency(domRectToObject(boundingClientRect)) !== contentDependency(domRectToObject(rect))) {
-        onChange?.(boundingClientRect);
+      if (
+        contentDependency(domRectToObject(boundingClientRect)) !== contentDependency(domRectToObject(rectRef.current))
+      ) {
+        onChangeRef.current?.(boundingClientRect);
         setRect(boundingClientRect);
       }
     }
-  }, [ref, domRectToObject, rect, onChange]);
+  }, [ref]);
 
   /** Run the callback to get the element's size whenever it resizes */
   useResizeObserver(setRectSize, {}, ref);

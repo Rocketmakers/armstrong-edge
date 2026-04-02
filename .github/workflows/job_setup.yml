@@ -10,6 +10,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
       - name: Set Node.js to current version and cache in module
         id: setup-node
         uses: actions/setup-node@v4
@@ -24,7 +29,7 @@ jobs:
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/module/node_modules
             ${{ github.workspace }}/storybook/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
@@ -33,16 +38,16 @@ jobs:
       - name: Install root node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
         id: install-root-node-dependencies
-        run: npm ci --legacy-peer-deps
+        run: pnpm install --frozen-lockfile
 
       - name: Install module node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
         id: install-module-node-dependencies
-        run: npm ci --legacy-peer-deps
+        run: pnpm install --frozen-lockfile
         working-directory: ./module
 
       - name: Install storybook node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
         id: install-storybook-node-dependencies
-        run: npm ci --legacy-peer-deps
+        run: pnpm install --frozen-lockfile
         working-directory: ./storybook

@@ -36,6 +36,22 @@ export const Default: StoryObj<typeof ValidationErrors> = {
   },
 };
 
+export const Messages: StoryObj<typeof ValidationErrors> = {
+  ...Template,
+  args: {
+    ...Template.args,
+    validationMode: 'message',
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const validationError1 = canvas.getByText((args.validationErrors[0] as string) ?? '');
+    const validationError2 = canvas.getByText((args.validationErrors[1] as string) ?? '');
+    expect(validationError1).toBeVisible();
+    expect(validationError2).toBeVisible();
+  },
+};
+
 export const Icons: StoryObj<typeof ValidationErrors> = {
   ...Template,
   args: {

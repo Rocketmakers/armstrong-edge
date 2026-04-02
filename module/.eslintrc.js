@@ -15,5 +15,26 @@ module.exports = {
     tsconfigRootDir: path.resolve(__dirname, '../'),
   },
 
+  rules: {
+    ...config.rules,
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'variable',
+        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+        leadingUnderscore: 'allow',
+      },
+      {
+        selector: 'function',
+        format: ['camelCase', 'PascalCase'],
+      },
+      {
+        selector: 'typeLike',
+        format: ['PascalCase'],
+      },
+    ],
+  },
+
   overrides: [...config.overrides],
 };

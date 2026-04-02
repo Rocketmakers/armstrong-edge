@@ -3,27 +3,23 @@ import { FaChevronDown } from 'react-icons/fa';
 import { ImCheckmark } from 'react-icons/im';
 import ReactSelect, {
   components,
+  FilterOptionOption,
   GetOptionValue,
   GroupBase,
   MultiValue,
   OnChangeValue,
+  Props as ReactSelectProps,
+  SelectInstance,
   SingleValue,
   ValueContainerProps,
 } from 'react-select';
 import Creatable from 'react-select/creatable';
-// eslint-disable-next-line import/no-unresolved -- file exists
-import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
-import SelectRef, {
-  Props as ReactSelectProps,
-  // eslint-disable-next-line import/no-unresolved -- file exists
-} from 'react-select/dist/declarations/src/Select';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useContentMemo } from '../../hooks/useContentMemo';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
 import {
   ArmstrongFCExtensions,
-  ArmstrongFCReturn,
   ArmstrongId,
   ArmstrongVFCProps,
   DisplaySize,
@@ -44,7 +40,7 @@ import './select.theme.css';
 
 const { DropdownIndicator, Option, ValueContainer } = components;
 
-export type ReactSelectRef<Id extends ArmstrongId> = SelectRef<
+export type ReactSelectRef<Id extends ArmstrongId> = SelectInstance<
   IArmstrongOption<Id>,
   false,
   GroupBase<IArmstrongOption<Id>>
@@ -129,13 +125,13 @@ export interface ISingleSelectProps<Id extends ArmstrongId>
   position?: 'auto' | 'bottom' | 'top';
 
   /** overrides the dropdown icon in the input */
-  dropdownIcon?: JSX.Element;
+  dropdownIcon?: React.JSX.Element;
 
   /** overrides the loading icon in the input */
-  loadingIcon?: JSX.Element;
+  loadingIcon?: React.JSX.Element;
 
   /** overrides the selected icon in the input */
-  selectedIcon?: JSX.Element;
+  selectedIcon?: React.JSX.Element;
 
   /** close the select menu when the user selects an option. Set to true as default */
   closeMenuOnSelect?: boolean;
@@ -259,448 +255,197 @@ export interface IMultiSelectProps<Id extends ArmstrongId>
  * - Not exported because single and multi are exported separately
  */
 
-const ReactSelectComponent = React.forwardRef<
-  ReactSelectRef<ArmstrongId>,
-  (ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>) & {
-    multi: boolean;
-  }
->(
-  (
-    {
-      className,
-      bind,
-      options,
-      placeholder,
-      validationMode,
-      validationErrorMessages: errorMessages,
-      errorIcon,
-      ariaLabel,
-      currentValue,
-      onSelectOption,
-      getOptionValue,
-      clearable,
-      disabled,
-      searchable,
-      dropdownIcon,
-      loadingIcon,
-      selectedIcon,
-      position,
-      formatOptionLabel,
-      closeMenuOnSelect,
-      displaySize,
-      label,
-      required,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      statusPosition,
-      pending,
-      multi,
-      allowCreate,
-      createText,
-      onOptionCreated,
-      labelId,
-      labelClassName,
-      validationErrorsClassName,
-      statusClassName,
-      disableOnPending,
-      hideIconOnStatus,
-      leftOverlay,
-      autoValidate,
-      onInputChange,
-      inputValue,
-      caseSensitive,
-      filterOption,
-      isInModal,
-      inModalZIndex,
-      inModalPortalTarget,
-      noOptionsMessage,
-      ...nativeProps
-    },
-    ref
-  ) => {
-    const internalRef = React.useRef<ReactSelectRef<ArmstrongId>>(null);
-    React.useImperativeHandle(ref, () => internalRef.current as ReactSelectRef<ArmstrongId>, [internalRef]);
+const ReactSelectComponent = ({
+  ref,
+  className,
+  bind,
+  options,
+  placeholder,
+  validationMode,
+  validationErrorMessages: errorMessages,
+  errorIcon,
+  ariaLabel,
+  currentValue,
+  onSelectOption,
+  getOptionValue,
+  clearable = true,
+  disabled,
+  searchable = true,
+  dropdownIcon = <FaChevronDown size={16} />,
+  loadingIcon,
+  selectedIcon = <ImCheckmark />,
+  position,
+  formatOptionLabel,
+  closeMenuOnSelect,
+  displaySize,
+  label,
+  required,
+  requiredIndicator,
+  scrollValidationErrorsIntoView,
+  statusPosition,
+  pending,
+  multi,
+  allowCreate,
+  createText = 'Create:',
+  onOptionCreated,
+  labelId,
+  labelClassName,
+  validationErrorsClassName,
+  statusClassName,
+  disableOnPending,
+  hideIconOnStatus,
+  leftOverlay,
+  autoValidate,
+  onInputChange,
+  inputValue,
+  caseSensitive,
+  filterOption,
+  isInModal,
+  inModalZIndex,
+  inModalPortalTarget,
+  noOptionsMessage,
+  ...nativeProps
+}: (ISingleSelectProps<ArmstrongId> | IMultiSelectProps<ArmstrongId>) & {
+  multi: boolean;
+} & { ref?: React.Ref<ReactSelectRef<ArmstrongId>> }) => {
+  const internalRef = React.useRef<ReactSelectRef<ArmstrongId>>(null);
+  React.useImperativeHandle(ref, () => internalRef.current as ReactSelectRef<ArmstrongId>, []);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- not an ideal use of any, but it's the only way of binding for single and multi from the same component
-    const [value, setValue, bindConfig] = useBindingState<any>(bind, {
-      validationErrorMessages: errorMessages,
-      validationMode,
-      value: currentValue,
-      onChange: onSelectOption,
-      autoValidate,
-      validationErrorIcon: errorIcon,
-    });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- not an ideal use of any, but it's the only way of binding for single and multi from the same component
+  const [value, setValue, bindConfig] = useBindingState<any>(bind, {
+    validationErrorMessages: errorMessages,
+    validationMode,
+    value: currentValue,
+    onChange: onSelectOption,
+    autoValidate,
+    validationErrorIcon: errorIcon,
+  });
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-      inputStatusPosition: statusPosition,
-      inputDisplaySize: displaySize,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
-      disableControlOnPending: disableOnPending,
-      autoValidate: bindConfig.autoValidate,
-    });
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+    inputStatusPosition: statusPosition,
+    inputDisplaySize: displaySize,
+    hideInputErrorIconOnStatus: hideIconOnStatus,
+    disableControlOnPending: disableOnPending,
+    autoValidate: bindConfig.autoValidate,
+  });
 
-    const handleChange = React.useCallback(
-      (newValue: OnChangeValue<IArmstrongOption<ArmstrongId> | IReactSelectCreateOption, boolean>) => {
-        if (!multi) {
-          const singleValue = newValue as SingleValue<IArmstrongOption<ArmstrongId>> | undefined;
-          if (isCreatingOption(singleValue)) {
-            setValue?.(onOptionCreated?.(singleValue.value) ?? singleValue.value);
-            return;
-          }
-          setValue?.(singleValue?.id);
-        } else {
-          const multiValue = newValue as MultiValue<IArmstrongOption<ArmstrongId>> | undefined;
-          setValue?.(
-            multiValue?.map(v => {
-              if (isCreatingOption(v)) {
-                return onOptionCreated?.(v.value) ?? v.value;
-              }
-              return v.id;
-            })
-          );
-          // updating the value on a controlled react multiselect seems to cause the input to lose focus.
-          // this is a bit of a hack but it seems to fix the issue.
-          // @todo is there a better way of solving this?
-          setTimeout(() => internalRef.current?.focus(), 1);
+  const handleChange = React.useCallback(
+    (newValue: OnChangeValue<IArmstrongOption<ArmstrongId> | IReactSelectCreateOption, boolean>) => {
+      if (!multi) {
+        const singleValue = newValue as SingleValue<IArmstrongOption<ArmstrongId>> | undefined;
+        if (isCreatingOption(singleValue)) {
+          setValue?.(onOptionCreated?.(singleValue.value) ?? singleValue.value);
+          return;
         }
-      },
-      [multi, setValue, onOptionCreated]
-    );
-
-    const selectedValue = React.useMemo(() => {
-      const valueFinder = (incomingOptions?: IArmstrongOption<ArmstrongId>[]) => {
-        if (!multi) {
-          return incomingOptions?.find(o => o.id === value) ?? null;
-        }
-        return (
-          value?.map(
-            (v: ArmstrongId) =>
-              incomingOptions?.find(o => o.id === v) ?? {
-                id: v,
-                content: v,
-                wasCreated: true,
-              }
-          ) ?? null
-        );
-      };
-      if (isGroupedOptions(options)) {
-        return valueFinder(options.map(o => o.options).flat(1));
-      }
-      return valueFinder(options);
-    }, [multi, options, value]);
-
-    const valueGetter = React.useCallback<GetOptionValue<IArmstrongOption<ArmstrongId>>>(
-      option => {
-        if (isCreatingOption(option)) {
-          return option.value;
-        }
-        return getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? '';
-      },
-      [getOptionValue]
-    );
-
-    const labelGetter = React.useCallback<
-      (option: IArmstrongOption<ArmstrongId> | IReactSelectCreateOption) => React.ReactNode
-    >(
-      option => {
-        if (isCreatingOption(option)) {
-          return `${createText} ${option.value}`;
-        }
-        return formatOptionLabel?.(option) ?? getContentFromOption(option);
-      },
-      [createText, formatOptionLabel]
-    );
-
-    const filterOptionInner = React.useCallback<
-      (option: FilterOptionOption<IArmstrongOption<ArmstrongId, unknown>>, incomingInputValue: string) => boolean
-    >(
-      (option, incomingInputValue) => {
-        if (filterOption) {
-          return filterOption(option.data, incomingInputValue);
-        }
-        if (caseSensitive) {
-          return !!labelGetter(option.data)?.toString().includes(incomingInputValue);
-        }
-        return !!labelGetter(option.data)?.toString().toLowerCase().includes(incomingInputValue.toLowerCase());
-      },
-
-      [caseSensitive, filterOption, labelGetter]
-    );
-
-    const valueContent = useContentMemo(value);
-
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindConfig.validate();
-      }
-      bindConfig.setTouched(true);
-    }, [valueContent]);
-
-    const showLeftOverlay =
-      leftOverlay &&
-      (globals.inputStatusPosition !== 'left' ||
-        !globals.hideInputErrorIconOnStatus ||
-        (!pending && !bindConfig.shouldShowValidationErrorIcon));
-
-    const valueContainer = React.useCallback(
-      (
-        props: ValueContainerProps<
-          IArmstrongOption<ArmstrongId, unknown>,
-          boolean,
-          GroupBase<IArmstrongOption<ArmstrongId, unknown>>
-        >
-      ) => {
-        return (
-          <div className="arm-select-inner" data-error-icon={globals.inputStatusPosition}>
-            <StatusWrapper
-              error={!bindConfig.isValid}
-              errorIcon={globals.validationErrorIcon}
-              className={concat('arm-select-status', statusClassName)}
-              statusPosition={globals.inputStatusPosition}
-              validationMode={globals.validationMode}
-            >
-              {showLeftOverlay && <div className="arm-select-overlay arm-select-overlay-left">{leftOverlay}</div>}
-              <ValueContainer {...props} />
-            </StatusWrapper>
-          </div>
-        );
-      },
-      [
-        bindConfig.isValid,
-        globals.inputStatusPosition,
-        globals.validationErrorIcon,
-        globals.validationMode,
-        leftOverlay,
-        showLeftOverlay,
-        statusClassName,
-      ]
-    );
-
-    const reactSelectProps: Partial<
-      ReactSelectProps<IArmstrongOption<ArmstrongId>, boolean, GroupBase<IArmstrongOption<ArmstrongId>>>
-    > = {
-      isMulti: multi,
-      className: 'arm-select-input',
-      classNamePrefix: 'arm-select',
-      onChange: handleChange,
-      filterOption: filterOptionInner,
-      options,
-      placeholder,
-      value: selectedValue,
-      getOptionValue: valueGetter,
-      formatOptionLabel: labelGetter,
-      'aria-invalid': !bindConfig.isValid,
-      'aria-label': ariaLabel,
-      isClearable: clearable,
-      isDisabled: disabled || (pending && globals.disableControlOnPending) ? true : undefined,
-      isOptionDisabled: o => !!o.disabled,
-      isLoading: pending,
-      noOptionsMessage: noOp => noOptionsMessage?.(noOp.inputValue) ?? 'No options',
-      isSearchable: searchable,
-      menuPlacement: position,
-      menuPortalTarget: isInModal ? inModalPortalTarget ?? document.body : undefined,
-      styles: {
-        ...emptyStyles(),
-        ...(isInModal
-          ? {
-              menuPortal: base => ({
-                ...base,
-                zIndex: inModalZIndex ?? 9999,
-                pointerEvents: 'all',
-              }),
+        setValue?.(singleValue?.id);
+      } else {
+        const multiValue = newValue as MultiValue<IArmstrongOption<ArmstrongId>> | undefined;
+        setValue?.(
+          multiValue?.map(v => {
+            if (isCreatingOption(v)) {
+              return onOptionCreated?.(v.value) ?? v.value;
             }
-          : {}),
-      },
-      onBlur: onBlurWorkaround,
-      onInputChange,
-      inputValue,
-      components: {
-        Option: props => {
-          return (
-            <Option {...props}>
-              <>
-                {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
-                {labelGetter(props.data)}
-                {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
-                {props.isSelected && selectedIcon}
-              </>
-            </Option>
-          );
-        },
-        DropdownIndicator: props => <DropdownIndicator {...props}>{dropdownIcon}</DropdownIndicator>,
-        LoadingIndicator: () => <Spinner className="arm-select-spinner" fillContainer={false} icon={loadingIcon} />,
-        ValueContainer: valueContainer,
-      },
-      closeMenuOnSelect,
-    };
-
-    return (
-      <div
-        className={concat('arm-select-wrapper', className)}
-        data-size={globals.inputDisplaySize}
-        data-multi={!!multi}
-        data-error={!bindConfig.isValid}
-        {...nativeProps}
-      >
-        {label && (
-          <Label
-            id={labelId}
-            className={concat('arm-select-label', labelClassName)}
-            required={required}
-            requiredIndicator={globals.requiredIndicator}
-            displaySize={globals.inputDisplaySize}
-          >
-            {label}
-          </Label>
-        )}
-        {allowCreate ? (
-          <Creatable ref={internalRef} {...reactSelectProps} />
-        ) : (
-          <ReactSelect ref={internalRef} {...reactSelectProps} />
-        )}
-        {!bindConfig.isValid && (
-          <ValidationErrors
-            aria-label="Error messages"
-            className={concat('arm-select-validation-error-display', validationErrorsClassName)}
-            validationMode={globals.validationMode}
-            scrollIntoView={globals.scrollValidationErrorsIntoView}
-            validationErrors={bindConfig.validationErrorMessages || []}
-          />
-        )}
-      </div>
-    );
-  }
-);
-
-ReactSelectComponent.displayName = 'ReactSelect';
-
-ReactSelectComponent.defaultProps = {
-  clearable: true,
-  searchable: true,
-  selectedIcon: <ImCheckmark />,
-  dropdownIcon: <FaChevronDown size={16} />,
-  createText: 'Create:',
-};
-
-/**
- * Native select export
- */
-
-export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectProps<ArmstrongId>>(
-  (
-    {
-      validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      errorIcon,
-      validationErrorMessages,
-      currentValue,
-      onSelectOption,
-      bind,
-      className,
-      displaySize,
-      label,
-      required,
-      options,
-      onChange,
-      placeholderOption,
-      placeholderOptionEnabled,
-      disabled,
-      statusPosition,
-      dropdownIcon,
-      labelId,
-      labelClassName,
-      validationErrorsClassName,
-      statusClassName,
-      hideIconOnStatus,
-      leftOverlay,
-      autoValidate,
-      ...nativeProps
-    },
-    ref
-  ) => {
-    const internalRef = React.useRef<HTMLSelectElement>(null);
-    React.useImperativeHandle(ref, () => internalRef.current as HTMLSelectElement, [internalRef]);
-
-    const [value, setValue, bindConfig] = useBindingState(bind, {
-      validationErrorMessages,
-      validationMode,
-      value: currentValue,
-      onChange: onSelectOption,
-      validationErrorIcon: errorIcon,
-      autoValidate,
-    });
-
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-      inputStatusPosition: statusPosition,
-      inputDisplaySize: displaySize,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
-      autoValidate: bindConfig.autoValidate,
-    });
-
-    const clearSelect = React.useCallback(() => {
-      onSelectOption?.(undefined);
-      bind?.setValue?.(undefined);
-    }, [onSelectOption, bind]);
-
-    const onChangeEvent = React.useCallback(
-      (event: React.ChangeEvent<HTMLSelectElement>) => {
-        if (onChange) {
-          onChange(event);
-        }
-
-        const { value: newValue } = event.currentTarget;
-        const selectedOption = options?.find(option => option.id?.toString() === newValue);
-        if (selectedOption) {
-          setValue?.(selectedOption.id);
-          onSelectOption?.(selectedOption.id);
-        } else if (!newValue && placeholderOption && placeholderOptionEnabled) {
-          clearSelect();
-        }
-      },
-      [onChange, options, placeholderOption, placeholderOptionEnabled, setValue, onSelectOption, clearSelect]
-    );
-
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate) {
-        bindConfig.validate();
+            return v.id;
+          })
+        );
+        // updating the value on a controlled react multiselect seems to cause the input to lose focus.
+        // this is a bit of a hack but it seems to fix the issue.
+        // @todo is there a better way of solving this?
+        setTimeout(() => internalRef.current?.focus(), 1);
       }
-      bindConfig.setTouched(true);
-    }, [value]);
+    },
+    [multi, setValue, onOptionCreated]
+  );
 
-    const showLeftOverlay =
-      leftOverlay &&
-      (globals.inputStatusPosition !== 'left' ||
-        !globals.hideInputErrorIconOnStatus ||
-        !bindConfig.shouldShowValidationErrorIcon);
+  const selectedValue = React.useMemo(() => {
+    const valueFinder = (incomingOptions?: IArmstrongOption<ArmstrongId>[]) => {
+      if (!multi) {
+        return incomingOptions?.find(o => o.id === value) ?? null;
+      }
+      return (
+        value?.map(
+          (v: ArmstrongId) =>
+            incomingOptions?.find(o => o.id === v) ?? {
+              id: v,
+              content: v,
+              wasCreated: true,
+            }
+        ) ?? null
+      );
+    };
+    if (isGroupedOptions(options)) {
+      return valueFinder(options.map(o => o.options).flat(1));
+    }
+    return valueFinder(options);
+  }, [multi, options, value]);
 
-    return (
-      <div
-        className={concat('arm-select-wrapper', 'arm-select-native-wrapper', className)}
-        data-size={displaySize}
-        data-error={!bindConfig.isValid}
-        data-disabled={!!disabled}
-        data-empty={!!value}
+  const valueGetter = React.useCallback<GetOptionValue<IArmstrongOption<ArmstrongId>>>(
+    option => {
+      if (isCreatingOption(option)) {
+        return option.value;
+      }
+      return getOptionValue?.(option)?.toString() ?? option.id?.toString() ?? '';
+    },
+    [getOptionValue]
+  );
+
+  const labelGetter = React.useCallback<
+    (option: IArmstrongOption<ArmstrongId> | IReactSelectCreateOption) => React.ReactNode
+  >(
+    option => {
+      if (isCreatingOption(option)) {
+        return `${createText} ${option.value}`;
+      }
+      return formatOptionLabel?.(option) ?? getContentFromOption(option);
+    },
+    [createText, formatOptionLabel]
+  );
+
+  const filterOptionInner = React.useCallback<
+    (option: FilterOptionOption<IArmstrongOption<ArmstrongId, unknown>>, incomingInputValue: string) => boolean
+  >(
+    (option, incomingInputValue) => {
+      if (filterOption) {
+        return filterOption(option.data, incomingInputValue);
+      }
+      if (caseSensitive) {
+        return !!labelGetter(option.data)?.toString().includes(incomingInputValue);
+      }
+      return !!labelGetter(option.data)?.toString().toLowerCase().includes(incomingInputValue.toLowerCase());
+    },
+
+    [caseSensitive, filterOption, labelGetter]
+  );
+
+  const valueContent = useContentMemo(value);
+
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindConfig.validate();
+    }
+    bindConfig.setTouched(true);
+  }, [valueContent]);
+
+  const showLeftOverlay =
+    leftOverlay &&
+    (globals.inputStatusPosition !== 'left' ||
+      !globals.hideInputErrorIconOnStatus ||
+      (!pending && !bindConfig.shouldShowValidationErrorIcon));
+
+  const valueContainer = React.useCallback(
+    (
+      props: ValueContainerProps<
+        IArmstrongOption<ArmstrongId, unknown>,
+        boolean,
+        GroupBase<IArmstrongOption<ArmstrongId, unknown>>
       >
-        {label && (
-          <Label
-            className={concat('arm-select-label')}
-            required={required}
-            requiredIndicator={globals.requiredIndicator}
-            displaySize={globals.inputDisplaySize}
-          >
-            {label}
-          </Label>
-        )}
-        <div className="arm-select-inner" data-error-icon={statusPosition} data-disabled={disabled}>
+    ) => {
+      return (
+        <div className="arm-select-inner" data-error-icon={globals.inputStatusPosition}>
           <StatusWrapper
             error={!bindConfig.isValid}
             errorIcon={globals.validationErrorIcon}
@@ -709,65 +454,292 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, INativeSelectPro
             validationMode={globals.validationMode}
           >
             {showLeftOverlay && <div className="arm-select-overlay arm-select-overlay-left">{leftOverlay}</div>}
-            <select
-              data-left-overlay={!!showLeftOverlay}
-              data-right-overlay={!bindConfig.isValid}
-              className="arm-native-select"
-              {...nativeProps}
-              ref={internalRef}
-              onChange={onChangeEvent}
-              value={value ?? undefined}
-              disabled={disabled}
-              defaultValue={placeholderOption && !nativeProps.defaultValue && !value ? '' : nativeProps.defaultValue}
-            >
-              {placeholderOption && (
-                <option value="" disabled={!placeholderOptionEnabled}>
-                  {placeholderOption}
-                </option>
-              )}
-              {options?.map(option => (
-                <option key={option.id} value={option.id ?? undefined} disabled={option.disabled} {...option.htmlProps}>
-                  {getContentFromOption(option)}
-                </option>
-              ))}
-            </select>
+            <ValueContainer {...props} />
           </StatusWrapper>
-          <div className="arm-native-indicators">
-            <div className="arm-native-select-arrow">{dropdownIcon}</div>
-          </div>
         </div>
-        {!bindConfig.isValid && (
-          <ValidationErrors
-            aria-label="Error messages"
-            className="arm-select-validation-error-display"
-            validationMode={globals.validationMode}
-            scrollIntoView={globals.scrollValidationErrorsIntoView}
-            validationErrors={bindConfig.validationErrorMessages || []}
-          />
-        )}
+      );
+    },
+    [
+      bindConfig.isValid,
+      globals.inputStatusPosition,
+      globals.validationErrorIcon,
+      globals.validationMode,
+      leftOverlay,
+      showLeftOverlay,
+      statusClassName,
+    ]
+  );
+
+  const reactSelectProps: Partial<
+    ReactSelectProps<IArmstrongOption<ArmstrongId>, boolean, GroupBase<IArmstrongOption<ArmstrongId>>>
+  > = {
+    isMulti: multi,
+    className: 'arm-select-input',
+    classNamePrefix: 'arm-select',
+    onChange: handleChange,
+    filterOption: filterOptionInner,
+    options,
+    placeholder,
+    value: selectedValue,
+    getOptionValue: valueGetter,
+    formatOptionLabel: labelGetter,
+    'aria-invalid': !bindConfig.isValid,
+    'aria-label': ariaLabel,
+    isClearable: clearable,
+    isDisabled: disabled || (pending && globals.disableControlOnPending) ? true : undefined,
+    isOptionDisabled: o => !!o.disabled,
+    isLoading: pending,
+    noOptionsMessage: noOp => noOptionsMessage?.(noOp.inputValue) ?? 'No options',
+    isSearchable: searchable,
+    menuPlacement: position,
+    menuPortalTarget: isInModal ? inModalPortalTarget ?? document.body : undefined,
+    styles: {
+      ...emptyStyles(),
+      ...(isInModal
+        ? {
+            menuPortal: base => ({
+              ...base,
+              zIndex: inModalZIndex ?? 9999,
+              pointerEvents: 'all',
+            }),
+          }
+        : {}),
+    },
+    onBlur: onBlurWorkaround,
+    onInputChange,
+    inputValue,
+    components: {
+      Option: props => {
+        return (
+          <Option {...props}>
+            <>
+              {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
+              {labelGetter(props.data)}
+              {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
+              {props.isSelected && selectedIcon}
+            </>
+          </Option>
+        );
+      },
+      DropdownIndicator: props => <DropdownIndicator {...props}>{dropdownIcon}</DropdownIndicator>,
+      LoadingIndicator: () => <Spinner className="arm-select-spinner" fillContainer={false} icon={loadingIcon} />,
+      ValueContainer: valueContainer,
+    },
+    closeMenuOnSelect,
+  };
+
+  return (
+    <div
+      className={concat('arm-select-wrapper', className)}
+      data-size={globals.inputDisplaySize}
+      data-multi={!!multi}
+      data-error={!bindConfig.isValid}
+      {...nativeProps}
+    >
+      {label && (
+        <Label
+          id={labelId}
+          className={concat('arm-select-label', labelClassName)}
+          required={required}
+          requiredIndicator={globals.requiredIndicator}
+          displaySize={globals.inputDisplaySize}
+        >
+          {label}
+        </Label>
+      )}
+      {allowCreate ? (
+        <Creatable ref={internalRef} {...reactSelectProps} />
+      ) : (
+        <ReactSelect ref={internalRef} {...reactSelectProps} />
+      )}
+      {!bindConfig.isValid && (
+        <ValidationErrors
+          aria-label="Error messages"
+          className={concat('arm-select-validation-error-display', validationErrorsClassName)}
+          validationMode={globals.validationMode}
+          scrollIntoView={globals.scrollValidationErrorsIntoView}
+          validationErrors={bindConfig.validationErrorMessages || []}
+        />
+      )}
+    </div>
+  );
+};
+
+ReactSelectComponent.displayName = 'ReactSelect';
+
+/**
+ * Native select export
+ */
+
+export const NativeSelect = (({
+  ref,
+  validationMode,
+  requiredIndicator,
+  scrollValidationErrorsIntoView,
+  errorIcon,
+  validationErrorMessages,
+  currentValue,
+  onSelectOption,
+  bind,
+  className,
+  displaySize,
+  label,
+  required,
+  options,
+  onChange,
+  placeholderOption,
+  placeholderOptionEnabled,
+  disabled,
+  statusPosition,
+  dropdownIcon = <FaChevronDown size={16} />,
+  labelId: _labelId,
+  labelClassName: _labelClassName,
+  validationErrorsClassName: _validationErrorsClassName,
+  statusClassName,
+  hideIconOnStatus,
+  leftOverlay,
+  autoValidate,
+  ...nativeProps
+}: INativeSelectProps<ArmstrongId> & { ref?: React.Ref<HTMLSelectElement> }) => {
+  const internalRef = React.useRef<HTMLSelectElement>(null);
+  React.useImperativeHandle(ref, () => internalRef.current as HTMLSelectElement, []);
+
+  const [value, setValue, bindConfig] = useBindingState(bind, {
+    validationErrorMessages,
+    validationMode,
+    value: currentValue,
+    onChange: onSelectOption,
+    validationErrorIcon: errorIcon,
+    autoValidate,
+  });
+
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+    inputStatusPosition: statusPosition,
+    inputDisplaySize: displaySize,
+    hideInputErrorIconOnStatus: hideIconOnStatus,
+    autoValidate: bindConfig.autoValidate,
+  });
+
+  const onChangeEvent = React.useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      if (onChange) {
+        onChange(event);
+      }
+
+      const { value: newValue } = event.currentTarget;
+      const selectedOption = options?.find(option => option.id?.toString() === newValue);
+      if (selectedOption) {
+        setValue?.(selectedOption.id);
+        onSelectOption?.(selectedOption.id);
+      } else if (!newValue && placeholderOption && placeholderOptionEnabled) {
+        onSelectOption?.(undefined);
+        bind?.setValue?.(undefined);
+      }
+    },
+    [onChange, options, placeholderOption, placeholderOptionEnabled, setValue, onSelectOption, bind]
+  );
+
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate) {
+      bindConfig.validate();
+    }
+    bindConfig.setTouched(true);
+  }, [value]);
+
+  const showLeftOverlay =
+    leftOverlay &&
+    (globals.inputStatusPosition !== 'left' ||
+      !globals.hideInputErrorIconOnStatus ||
+      !bindConfig.shouldShowValidationErrorIcon);
+
+  return (
+    <div
+      className={concat('arm-select-wrapper', 'arm-select-native-wrapper', className)}
+      data-size={displaySize}
+      data-error={!bindConfig.isValid}
+      data-disabled={!!disabled}
+      data-empty={!!value}
+    >
+      {label && (
+        <Label
+          className={concat('arm-select-label')}
+          required={required}
+          requiredIndicator={globals.requiredIndicator}
+          displaySize={globals.inputDisplaySize}
+        >
+          {label}
+        </Label>
+      )}
+      <div className="arm-select-inner" data-error-icon={statusPosition} data-disabled={disabled}>
+        <StatusWrapper
+          error={!bindConfig.isValid}
+          errorIcon={globals.validationErrorIcon}
+          className={concat('arm-select-status', statusClassName)}
+          statusPosition={globals.inputStatusPosition}
+          validationMode={globals.validationMode}
+        >
+          {showLeftOverlay && <div className="arm-select-overlay arm-select-overlay-left">{leftOverlay}</div>}
+          <select
+            data-left-overlay={!!showLeftOverlay}
+            data-right-overlay={!bindConfig.isValid}
+            className="arm-native-select"
+            {...nativeProps}
+            ref={internalRef}
+            onChange={onChangeEvent}
+            value={value ?? undefined}
+            disabled={disabled}
+            defaultValue={placeholderOption && !nativeProps.defaultValue && !value ? '' : nativeProps.defaultValue}
+          >
+            {placeholderOption && (
+              <option value="" disabled={!placeholderOptionEnabled}>
+                {placeholderOption}
+              </option>
+            )}
+            {options?.map(option => (
+              <option key={option.id} value={option.id ?? undefined} disabled={option.disabled} {...option.htmlProps}>
+                {getContentFromOption(option)}
+              </option>
+            ))}
+          </select>
+        </StatusWrapper>
+        <div className="arm-native-indicators">
+          <div className="arm-native-select-arrow">{dropdownIcon}</div>
+        </div>
       </div>
-    );
-  }
-) as (<Id extends ArmstrongId>(
+      {!bindConfig.isValid && (
+        <ValidationErrors
+          aria-label="Error messages"
+          className="arm-select-validation-error-display"
+          validationMode={globals.validationMode}
+          scrollIntoView={globals.scrollValidationErrorsIntoView}
+          validationErrors={bindConfig.validationErrorMessages || []}
+        />
+      )}
+    </div>
+  );
+}) as (<Id extends ArmstrongId>(
   props: ArmstrongVFCProps<INativeSelectProps<Id>, HTMLSelectElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<INativeSelectProps<ArmstrongId>>;
 
 NativeSelect.displayName = 'NativeSelect';
-
-NativeSelect.defaultProps = {
-  dropdownIcon: <FaChevronDown size={16} />,
-};
 
 /**
  * Single select export
  */
 
-export const Select = React.forwardRef<ReactSelectRef<ArmstrongId>, ISingleSelectProps<ArmstrongId>>((props, ref) => {
+export const Select = (({
+  ref,
+  ...props
+}: ISingleSelectProps<ArmstrongId> & { ref?: React.Ref<ReactSelectRef<ArmstrongId>> }) => {
   return <ReactSelectComponent {...props} multi={false} ref={ref} />;
 }) as (<Id extends ArmstrongId>(
   props: ArmstrongVFCProps<ISingleSelectProps<Id>, ReactSelectRef<Id>>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<ISingleSelectProps<ArmstrongId>>;
 
 Select.displayName = 'Select';
@@ -776,13 +748,14 @@ Select.displayName = 'Select';
  * Multi select export
  */
 
-export const MultiSelect = React.forwardRef<ReactSelectRef<ArmstrongId>, IMultiSelectProps<ArmstrongId>>(
-  (props, ref) => {
-    return <ReactSelectComponent {...props} multi={true} ref={ref} />;
-  }
-) as (<Id extends ArmstrongId>(
+export const MultiSelect = (({
+  ref,
+  ...props
+}: IMultiSelectProps<ArmstrongId> & { ref?: React.Ref<ReactSelectRef<ArmstrongId>> }) => {
+  return <ReactSelectComponent {...props} multi={true} ref={ref} />;
+}) as (<Id extends ArmstrongId>(
   props: ArmstrongVFCProps<IMultiSelectProps<Id>, ReactSelectRef<Id>>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<IMultiSelectProps<ArmstrongId>>;
 
 MultiSelect.displayName = 'MultiSelect';

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';
-import { ArmstrongFCExtensions, ArmstrongFCProps, ArmstrongFCReturn, DisplaySize, NullOrUndefined } from '../../types';
+import { ArmstrongFCExtensions, ArmstrongFCProps, DisplaySize, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
@@ -27,23 +27,26 @@ interface IDelayedTextAreaBaseProps<TValue> extends NativeTextAreaProps {
   value?: TValue;
 }
 
-const DebounceTextAreaBase = React.forwardRef<HTMLTextAreaElement, IDelayedTextAreaBaseProps<string>>(
-  ({ milliseconds, value, onValueChange, onChange, ...nativeProps }, ref) => {
-    const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
+const DebounceTextAreaBase = ({
+  ref,
+  milliseconds,
+  value,
+  onValueChange,
+  onChange,
+  ...nativeProps
+}: IDelayedTextAreaBaseProps<string> & { ref?: React.Ref<HTMLTextAreaElement> }) => {
+  const [actualValue, setActualValue] = useDebounce(milliseconds, value, onValueChange);
 
-    const onChangeEvent = React.useCallback(
-      (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setActualValue(e.currentTarget.value);
-        onChange?.(e);
-      },
-      [setActualValue, onChange]
-    );
+  const onChangeEvent = React.useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setActualValue(e.currentTarget.value);
+      onChange?.(e);
+    },
+    [setActualValue, onChange]
+  );
 
-    return <textarea ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
-  }
-);
-
-DebounceTextAreaBase.displayName = 'DebounceInput';
+  return <textarea ref={ref} value={actualValue} onChange={onChangeEvent} {...nativeProps} />;
+};
 
 export interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrUndefined<number>>
   extends NativeTextAreaProps,
@@ -77,171 +80,165 @@ export interface ITextAreaProps<TValue extends NullOrUndefined<string> | NullOrU
 }
 
 /** A component which wraps up a native text area element with some binding logic, labels and validation errors. */
-export const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps<string>>(
-  (
-    {
-      bind,
-      onChange,
-      value,
-      className,
-      validationErrorMessages,
-      validationMode,
-      pending,
-      disabled,
-      disableOnPending,
-      onValueChange,
-      scrollValidationErrorsIntoView,
-      delay,
-      validationErrorsClassName,
-      statusClassName,
-      textAreaClassName,
-      label,
-      required,
-      requiredIndicator,
-      displaySize,
-      labelClassName,
-      labelId,
-      testId,
-      errorIcon,
-      leftOverlay,
-      rightOverlay,
-      hideIconOnStatus,
-      statusPosition,
-      autoValidate,
-      ...nativeProps
+export const TextArea = (({
+  ref,
+  bind,
+  onChange,
+  value,
+  className,
+  validationErrorMessages,
+  validationMode,
+  pending,
+  disabled,
+  disableOnPending,
+  onValueChange,
+  scrollValidationErrorsIntoView,
+  delay,
+  validationErrorsClassName,
+  statusClassName,
+  textAreaClassName,
+  label,
+  required,
+  requiredIndicator,
+  displaySize,
+  labelClassName,
+  labelId,
+  testId,
+  errorIcon,
+  leftOverlay,
+  rightOverlay,
+  hideIconOnStatus,
+  statusPosition,
+  autoValidate,
+  ...nativeProps
+}: ITextAreaProps<string> & { ref?: React.Ref<HTMLTextAreaElement> }) => {
+  const reactId = React.useId();
+  const id = nativeProps.id ?? reactId;
+
+  const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
+    value: value?.toString(),
+    validationErrorMessages,
+    validationErrorIcon: errorIcon,
+    validationMode,
+    autoValidate,
+  });
+
+  const globals = useArmstrongConfig({
+    validationMode: bindConfig.validationMode,
+    disableControlOnPending: disableOnPending,
+    inputStatusPosition: statusPosition,
+    inputDisplaySize: displaySize,
+    requiredIndicator,
+    scrollValidationErrorsIntoView,
+    validationErrorIcon: bindConfig.validationErrorIcon,
+    hideInputErrorIconOnStatus: hideIconOnStatus,
+    autoValidate: bindConfig.autoValidate,
+  });
+
+  const onBindValueChange = React.useCallback(
+    (currentValue?: string) => {
+      const formattedValue = bind?.bindConfig?.format?.toData?.(currentValue) || currentValue;
+      setBoundValue(formattedValue);
     },
-    ref
-  ) => {
-    const reactId = React.useId();
-    const id = nativeProps.id ?? reactId;
+    [setBoundValue, bind]
+  );
 
-    const [boundValue, setBoundValue, bindConfig] = useBindingState(bind, {
-      value: value?.toString(),
-      validationErrorMessages,
-      validationErrorIcon: errorIcon,
-      validationMode,
-      autoValidate,
-    });
+  const onChangeEvent = React.useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      onChange?.(event);
+      const currentValue = event.currentTarget.value;
+      onBindValueChange(currentValue);
+      onValueChange?.(currentValue);
+    },
+    [onBindValueChange, onChange, onValueChange]
+  );
 
-    const globals = useArmstrongConfig({
-      validationMode: bindConfig.validationMode,
-      disableControlOnPending: disableOnPending,
-      inputStatusPosition: statusPosition,
-      inputDisplaySize: displaySize,
-      requiredIndicator,
-      scrollValidationErrorsIntoView,
-      validationErrorIcon: bindConfig.validationErrorIcon,
-      hideInputErrorIconOnStatus: hideIconOnStatus,
-      autoValidate: bindConfig.autoValidate,
-    });
+  /** onChange used for throttled inputs */
+  const onValueChangeEvent = React.useCallback(
+    (currentValue?: string) => {
+      onBindValueChange(currentValue);
+      onValueChange?.(currentValue);
+    },
+    [onValueChange, onBindValueChange]
+  );
 
-    const onBindValueChange = React.useCallback(
-      (currentValue?: string) => {
-        const formattedValue = bind?.bindConfig?.format?.toData?.(currentValue) || currentValue;
-        setBoundValue(formattedValue);
-      },
-      [setBoundValue, bind]
-    );
+  useDidUpdateEffect(() => {
+    if (globals.autoValidate && bindConfig.isTouched) {
+      bindConfig.validate();
+    }
+  }, [boundValue]);
 
-    const onChangeEvent = React.useCallback(
-      (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        onChange?.(event);
-        const currentValue = event.currentTarget.value;
-        onBindValueChange(currentValue);
-        onValueChange?.(currentValue);
-      },
-      [onBindValueChange, onChange, onValueChange]
-    );
-
-    /** onChange used for throttled inputs */
-    const onValueChangeEvent = React.useCallback(
-      (currentValue?: string) => {
-        onBindValueChange(currentValue);
-        onValueChange?.(currentValue);
-      },
-      [onValueChange, onBindValueChange]
-    );
-
-    useDidUpdateEffect(() => {
-      if (globals.autoValidate && bindConfig.isTouched) {
+  const onBlurEvent = React.useCallback(
+    (event: React.FocusEvent<HTMLTextAreaElement, HTMLElement>) => {
+      if (globals.autoValidate && !bindConfig.isTouched) {
         bindConfig.validate();
       }
-    }, [boundValue]);
+      bindConfig.setTouched(true);
+      onBlurWorkaround(event);
+      return nativeProps.onBlur?.(event);
+    },
+    [bindConfig, globals.autoValidate, nativeProps]
+  );
 
-    const onBlurEvent = React.useCallback(
-      (event: React.FocusEvent<HTMLTextAreaElement, HTMLElement>) => {
-        if (globals.autoValidate && !bindConfig.isTouched) {
-          bindConfig.validate();
-        }
-        bindConfig.setTouched(true);
-        onBlurWorkaround(event);
-        return nativeProps.onBlur?.(event);
-      },
-      [bindConfig, globals.autoValidate, nativeProps]
-    );
+  const textAreaProps: NativeTextAreaProps & { value?: string } = {
+    id,
+    className: concat('arm-text-area', textAreaClassName),
+    /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
+    value: boundValue?.toString() ?? (bind && ''),
+    disabled,
+    onBlur: onBlurEvent,
+  };
 
-    const textAreaProps: NativeTextAreaProps & { value?: string } = {
-      id,
-      className: concat('arm-text-area', textAreaClassName),
-      /** fallback to an empty string if bind is passed in but bound value is undefined to avoid React warning */
-      value: boundValue?.toString() ?? (bind && ''),
-      disabled,
-      onBlur: onBlurEvent,
-    };
-
-    return (
-      <InputWrapper
-        data-size={globals.inputDisplaySize}
-        data-has-value={!!textAreaProps.value}
-        className={concat(className, 'arm-text-area-wrapper')}
-        statusClassName={concat(statusClassName, 'arm-text-area-status')}
-        validationErrorsClassName={concat(validationErrorsClassName, 'arm-text-area-validation')}
-        validationErrorMessages={bindConfig.validationErrorMessages}
-        errorIcon={bindConfig.validationErrorIcon}
-        validationMode={bindConfig.validationMode}
-        pending={pending}
-        disabled={disabled}
-        statusPosition={globals.inputStatusPosition}
-        scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
-        disableOnPending={globals.disableControlOnPending}
-        hideIconOnStatus={globals.hideInputErrorIconOnStatus}
-        label={label}
-        labelId={labelId ?? id}
-        labelClassName={concat(labelClassName, 'arm-text-area-label')}
-        required={required}
-        requiredIndicator={globals.requiredIndicator}
-        data-testid={testId}
-        leftOverlay={leftOverlay}
-        rightOverlay={rightOverlay}
-      >
-        {!!delay && (
-          <DebounceTextAreaBase
-            {...nativeProps}
-            {...textAreaProps}
-            milliseconds={delay}
-            onChange={onChange}
-            onValueChange={onValueChangeEvent}
-            ref={ref}
-          />
-        )}
-        {!delay && (
-          <textarea
-            className={'arm-text-area'}
-            {...nativeProps}
-            {...textAreaProps}
-            onChange={onChangeEvent}
-            ref={ref}
-            disabled={disabled || pending}
-          />
-        )}
-      </InputWrapper>
-    );
-  }
-  // type assertion to ensure generic works with RefForwarded component
-  // DO NOT CHANGE TYPE WITHOUT CHANGING THIS, FIND TYPE BY INSPECTING React.forwardRef
-) as (<TStringValue extends NullOrUndefined<string>>(
+  return (
+    <InputWrapper
+      data-size={globals.inputDisplaySize}
+      data-has-value={!!textAreaProps.value}
+      className={concat(className, 'arm-text-area-wrapper')}
+      statusClassName={concat(statusClassName, 'arm-text-area-status')}
+      validationErrorsClassName={concat(validationErrorsClassName, 'arm-text-area-validation')}
+      validationErrorMessages={bindConfig.validationErrorMessages}
+      errorIcon={bindConfig.validationErrorIcon}
+      validationMode={bindConfig.validationMode}
+      pending={pending}
+      disabled={disabled}
+      statusPosition={globals.inputStatusPosition}
+      scrollValidationErrorsIntoView={globals.scrollValidationErrorsIntoView}
+      disableOnPending={globals.disableControlOnPending}
+      hideIconOnStatus={globals.hideInputErrorIconOnStatus}
+      label={label}
+      labelId={labelId ?? id}
+      labelClassName={concat(labelClassName, 'arm-text-area-label')}
+      required={required}
+      requiredIndicator={globals.requiredIndicator}
+      data-testid={testId}
+      leftOverlay={leftOverlay}
+      rightOverlay={rightOverlay}
+    >
+      {!!delay && (
+        <DebounceTextAreaBase
+          {...nativeProps}
+          {...textAreaProps}
+          milliseconds={delay}
+          onChange={onChange}
+          onValueChange={onValueChangeEvent}
+          ref={ref}
+        />
+      )}
+      {!delay && (
+        <textarea
+          className={'arm-text-area'}
+          {...nativeProps}
+          {...textAreaProps}
+          onChange={onChangeEvent}
+          ref={ref}
+          disabled={disabled || pending}
+        />
+      )}
+    </InputWrapper>
+  );
+}) as (<TStringValue extends NullOrUndefined<string>>(
   props: ArmstrongFCProps<ITextAreaProps<TStringValue>, HTMLTextAreaElement>
-) => ArmstrongFCReturn) &
+) => React.ReactNode) &
   ArmstrongFCExtensions<ITextAreaProps<string>>;
 
 TextArea.displayName = 'Text Area';

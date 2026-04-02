@@ -1,6 +1,6 @@
 import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import { findAllByText, findByRole, findByText, userEvent, waitFor, within } from '@storybook/test';
+import { findAllByText, findByLabelText, findByRole, findByText, userEvent, waitFor, within } from '@storybook/test';
 import * as React from 'react';
 
 import { Button } from '../button';
@@ -42,7 +42,7 @@ export const Default: StoryObj<typeof Toast> = {
   play: async ({ canvasElement, args }) => {
     // launch toast
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
 
     // check title and description
     const title = await findByText(document.body, args.title ?? '');
@@ -71,7 +71,7 @@ export const CustomDuration: StoryObj<typeof Toast> = {
   },
   play: async ({ canvasElement, args }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
 
     const title = await findByText(document.body, args.title ?? '');
     expect(title).toBeVisible();
@@ -91,10 +91,8 @@ export const TopLeft: StoryObj<typeof Toast> = {
   ],
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
-    const toast = await findByRole(document.body, 'status', {
-      name: 'Notification',
-    });
+    await userEvent.click(button);
+    const toast = await findByLabelText(document.body, 'Notification');
 
     expect(toast).toBeVisible();
     expect(toast).toHaveAttribute('data-position', 'top-left');
@@ -112,10 +110,8 @@ export const TopRight: StoryObj<typeof Toast> = {
   ],
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
-    const toast = await findByRole(document.body, 'status', {
-      name: 'Notification',
-    });
+    await userEvent.click(button);
+    const toast = await findByLabelText(document.body, 'Notification');
 
     expect(toast).toBeVisible();
     expect(toast).toHaveAttribute('data-position', 'top-right');
@@ -133,13 +129,30 @@ export const BottomLeft: StoryObj<typeof Toast> = {
   ],
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
-    const toast = await findByRole(document.body, 'status', {
-      name: 'Notification',
-    });
+    await userEvent.click(button);
+    const toast = await findByLabelText(document.body, 'Notification');
 
     expect(toast).toBeVisible();
     expect(toast).toHaveAttribute('data-position', 'bottom-left');
+  },
+};
+
+export const BottomRight: StoryObj<typeof Toast> = {
+  ...Template,
+  decorators: [
+    Story => (
+      <ArmstrongProvider config={{ toastPosition: 'bottom-right' }}>
+        <Story />
+      </ArmstrongProvider>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByText('Send a toast');
+    await userEvent.click(button);
+    const toast = await findByLabelText(document.body, 'Notification');
+
+    expect(toast).toBeVisible();
+    expect(toast).toHaveAttribute('data-position', 'bottom-right');
   },
 };
 
@@ -151,7 +164,7 @@ export const CustomContent: StoryObj<typeof Toast> = {
   },
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
     const customButton = await findByText(document.body, 'Custom button');
     expect(customButton).toBeVisible();
   },
@@ -232,7 +245,7 @@ export const DismissToast: StoryObj<typeof Toast> = {
   },
   play: async ({ canvasElement, args }) => {
     const button = within(canvasElement).getByText('Send a toast');
-    userEvent.click(button);
+    await userEvent.click(button);
 
     const title = await findByText(document.body, args.title ?? '');
     expect(title).toBeVisible();

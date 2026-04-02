@@ -22,7 +22,7 @@ export function useEventListener(
 
       return () => {
         if (typeof options === 'object') {
-          const { once, passive, ...removeOptions } = options;
+          const { once: _once, passive: _passive, ...removeOptions } = options;
           element.removeEventListener(type, eventHandler, removeOptions);
         } else {
           element.removeEventListener(type, eventHandler, options);

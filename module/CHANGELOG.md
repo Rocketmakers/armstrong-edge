@@ -1,76 +1,69 @@
 ## [3.13.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.4...v3.13.5) (2025-08-22)
 
-
 ### Bug Fixes
 
-* fixed keychain string creation for keychains with zeros ([e9fd6ac](https://github.com/Rocketmakers/armstrong-edge/commit/e9fd6ac3cccd3a67ecf2633c1506898e39c4df4c))
-* handles empty string case when creating string keys from keychains ([0134a3d](https://github.com/Rocketmakers/armstrong-edge/commit/0134a3dd14fe470754475ec82ed01f80a76eb91c))
+- fixed keychain string creation for keychains with zeros ([e9fd6ac](https://github.com/Rocketmakers/armstrong-edge/commit/e9fd6ac3cccd3a67ecf2633c1506898e39c4df4c))
+- handles empty string case when creating string keys from keychains ([0134a3d](https://github.com/Rocketmakers/armstrong-edge/commit/0134a3dd14fe470754475ec82ed01f80a76eb91c))
 
 ## [3.13.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.3...v3.13.4) (2025-08-20)
 
-
 ### Bug Fixes
 
-* add value prop to text area ([99d2355](https://github.com/Rocketmakers/armstrong-edge/commit/99d2355fc289a8ed712d7ed198bceedd4bcd2807))
+- add value prop to text area ([99d2355](https://github.com/Rocketmakers/armstrong-edge/commit/99d2355fc289a8ed712d7ed198bceedd4bcd2807))
 
 ## [3.13.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.2...v3.13.3) (2025-08-20)
 
-
 ### Bug Fixes
 
-* bind attribute to correct prop ([45c827b](https://github.com/Rocketmakers/armstrong-edge/commit/45c827b8be0b6f3a2973e52cc71323652fc24ea8))
+- bind attribute to correct prop ([45c827b](https://github.com/Rocketmakers/armstrong-edge/commit/45c827b8be0b6f3a2973e52cc71323652fc24ea8))
 
 ## [3.13.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.1...v3.13.2) (2025-08-20)
 
-
 ### Bug Fixes
 
-* add value to input wrappers ([16a94d9](https://github.com/Rocketmakers/armstrong-edge/commit/16a94d99cfdeb05f3da200bf0429964f7aa12b2b))
+- add value to input wrappers ([16a94d9](https://github.com/Rocketmakers/armstrong-edge/commit/16a94d99cfdeb05f3da200bf0429964f7aa12b2b))
 
 ## [3.13.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.0...v3.13.1) (2025-07-07)
 
-
 ### Bug Fixes
 
-* fixes the docs for non-modal dropdown ([fb8ad1a](https://github.com/Rocketmakers/armstrong-edge/commit/fb8ad1aaaff5183e98453ae6ce62e763afdff45d))
+- fixes the docs for non-modal dropdown ([fb8ad1a](https://github.com/Rocketmakers/armstrong-edge/commit/fb8ad1aaaff5183e98453ae6ce62e763afdff45d))
 
 # [3.13.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.12.0...v3.13.0) (2025-07-07)
 
-
 ### Features
 
-* allowed passing radix's modal prop to the dropdown ([da7ab44](https://github.com/Rocketmakers/armstrong-edge/commit/da7ab44c9cce1c8fe8c3eca64d298830057553cc))
+- allowed passing radix's modal prop to the dropdown ([da7ab44](https://github.com/Rocketmakers/armstrong-edge/commit/da7ab44c9cce1c8fe8c3eca64d298830057553cc))
 
 # [3.12.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.11.0...v3.12.0) (2025-06-05)
 
-
 ### Features
 
-* - Adds the ability to dismiss toasts programatically ([b0ba88c](https://github.com/Rocketmakers/armstrong-edge/commit/b0ba88ca0a6d09bcbb17680bcd80907321e5fefd))
+- Adds the ability to dismiss toasts programatically ([b0ba88c](https://github.com/Rocketmakers/armstrong-edge/commit/b0ba88ca0a6d09bcbb17680bcd80907321e5fefd))
 
 # [3.11.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.3...v3.11.0) (2025-05-06)
 
 ### Features
 
-- - Added additional config options to avoid toast duplication ([dab6cce](https://github.com/Rocketmakers/armstrong-edge/commit/dab6cce152cf64d3a2d221f91e9e148102d99d9d))
+- Added additional config options to avoid toast duplication ([dab6cce](https://github.com/Rocketmakers/armstrong-edge/commit/dab6cce152cf64d3a2d221f91e9e148102d99d9d))
 
 ## [3.10.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.2...v3.10.3) (2025-03-26)
 
 ### Bug Fixes
 
-- - potential runtime fix for nested arrays in zod validation ([860e53d](https://github.com/Rocketmakers/armstrong-edge/commit/860e53d743912cfcd01160d15f0f674b5268a9b7))
+- potential runtime fix for nested arrays in zod validation ([860e53d](https://github.com/Rocketmakers/armstrong-edge/commit/860e53d743912cfcd01160d15f0f674b5268a9b7))
 
 ## [3.10.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.1...v3.10.2) (2025-03-26)
 
 ### Bug Fixes
 
-- - Resolves issue with nested arrays in IValidationSchema ([fd791fd](https://github.com/Rocketmakers/armstrong-edge/commit/fd791fd03f18c96581411624a2e5d52dd5caa9f8))
+- Resolves issue with nested arrays in IValidationSchema ([fd791fd](https://github.com/Rocketmakers/armstrong-edge/commit/fd791fd03f18c96581411624a2e5d52dd5caa9f8))
 
 ## [3.10.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.10.0...v3.10.1) (2025-02-25)
 
 ### Bug Fixes
 
-- - Fixed bug causing auto validate setting not to be respected on bind or prop ([7507c7a](https://github.com/Rocketmakers/armstrong-edge/commit/7507c7a709c6662b39ec774601691b31878754d1))
+- Fixed bug causing auto validate setting not to be respected on bind or prop ([7507c7a](https://github.com/Rocketmakers/armstrong-edge/commit/7507c7a709c6662b39ec774601691b31878754d1))
 
 # [3.10.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.3...v3.10.0) (2025-02-24)
 
@@ -87,13 +80,13 @@
 
 ### Bug Fixes
 
-- - Fixed bug causing right overlay on code input not to render ([b78ee14](https://github.com/Rocketmakers/armstrong-edge/commit/b78ee14be24ff7abb20575def60fd41d6e22044f))
+- Fixed bug causing right overlay on code input not to render ([b78ee14](https://github.com/Rocketmakers/armstrong-edge/commit/b78ee14be24ff7abb20575def60fd41d6e22044f))
 
 ## [3.9.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.1...v3.9.2) (2025-02-11)
 
 ### Bug Fixes
 
-- - Fixes bug causing no screen interaction after launching dialog from dropdown menu ([be793bc](https://github.com/Rocketmakers/armstrong-edge/commit/be793bc9a04281f256e16253c8a6a11a273b20d9))
+- Fixes bug causing no screen interaction after launching dialog from dropdown menu ([be793bc](https://github.com/Rocketmakers/armstrong-edge/commit/be793bc9a04281f256e16253c8a6a11a273b20d9))
 
 ## [3.9.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.9.0...v3.9.1) (2025-02-07)
 
@@ -105,62 +98,62 @@
 
 ### Features
 
-- - onBeforeUnload implemented on dialog to allow close to be prevented ([f5fe0c4](https://github.com/Rocketmakers/armstrong-edge/commit/f5fe0c4ecd8e7e9ea1144dcf60ab8538bd30f9bd))
+- onBeforeUnload implemented on dialog to allow close to be prevented ([f5fe0c4](https://github.com/Rocketmakers/armstrong-edge/commit/f5fe0c4ecd8e7e9ea1144dcf60ab8538bd30f9bd))
 
 ## [3.8.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.2...v3.8.3) (2025-01-29)
 
 ### Bug Fixes
 
-- - Disabled prop now supported on dropdown menu ([7bba5a1](https://github.com/Rocketmakers/armstrong-edge/commit/7bba5a131e727af13ee7625eedef510cee54ac12))
+- Disabled prop now supported on dropdown menu ([7bba5a1](https://github.com/Rocketmakers/armstrong-edge/commit/7bba5a131e727af13ee7625eedef510cee54ac12))
 
 ## [3.8.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.1...v3.8.2) (2025-01-16)
 
 ### Bug Fixes
 
-- - fixes bug with isValid on useForm + strict mode support ([3790886](https://github.com/Rocketmakers/armstrong-edge/commit/379088641440a0847723749a50c9103ea164fea7))
+- fixes bug with isValid on useForm + strict mode support ([3790886](https://github.com/Rocketmakers/armstrong-edge/commit/379088641440a0847723749a50c9103ea164fea7))
 
 ## [3.8.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.8.0...v3.8.1) (2025-01-15)
 
 ### Bug Fixes
 
-- - Fixed bug causing placeholder not to work on create select inputs ([24a31b6](https://github.com/Rocketmakers/armstrong-edge/commit/24a31b6e8c1c1ba1303f1348a5e4d972efe7eb36))
+- Fixed bug causing placeholder not to work on create select inputs ([24a31b6](https://github.com/Rocketmakers/armstrong-edge/commit/24a31b6e8c1c1ba1303f1348a5e4d972efe7eb36))
 
 # [3.8.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.5...v3.8.0) (2025-01-10)
 
 ### Features
 
-- - Added optional header/footer to dropdown menu ([88530d3](https://github.com/Rocketmakers/armstrong-edge/commit/88530d3fa8ecf86a089ee4da1d6875cfd851442a))
+- Added optional header/footer to dropdown menu ([88530d3](https://github.com/Rocketmakers/armstrong-edge/commit/88530d3fa8ecf86a089ee4da1d6875cfd851442a))
 
 ## [3.7.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.4...v3.7.5) (2025-01-10)
 
 ### Bug Fixes
 
-- - Now passing event through to dropdown item click ([c5549e4](https://github.com/Rocketmakers/armstrong-edge/commit/c5549e4279f4bd6f4c16f3174fbf1d240709545f))
+- Now passing event through to dropdown item click ([c5549e4](https://github.com/Rocketmakers/armstrong-edge/commit/c5549e4279f4bd6f4c16f3174fbf1d240709545f))
 
 ## [3.7.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.3...v3.7.4) (2025-01-09)
 
 ### Bug Fixes
 
-- - Fixed bug preventing items in dropdown menu from highlighting ([890cbc3](https://github.com/Rocketmakers/armstrong-edge/commit/890cbc3655231d718140de76415119fe611724b0))
+- Fixed bug preventing items in dropdown menu from highlighting ([890cbc3](https://github.com/Rocketmakers/armstrong-edge/commit/890cbc3655231d718140de76415119fe611724b0))
 
 ## [3.7.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.2...v3.7.3) (2025-01-07)
 
 ### Bug Fixes
 
-- - Fixed disabled state styling bug + prevented validation error block from always rendering ([47e2d55](https://github.com/Rocketmakers/armstrong-edge/commit/47e2d55b1a1892d247774dabf507371b021e0950))
+- Fixed disabled state styling bug + prevented validation error block from always rendering ([47e2d55](https://github.com/Rocketmakers/armstrong-edge/commit/47e2d55b1a1892d247774dabf507371b021e0950))
 
 ## [3.7.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.1...v3.7.2) (2024-12-12)
 
 ### Bug Fixes
 
-- - Added missing styling vars for outline button ([b9c27e4](https://github.com/Rocketmakers/armstrong-edge/commit/b9c27e4e4e9d47bdc27e3ba129e2176f5bc024d0))
-- - support for custom types in certain string unions ([87e3b83](https://github.com/Rocketmakers/armstrong-edge/commit/87e3b83be433b484e84637cbb8221a68513572f9))
+- Added missing styling vars for outline button ([b9c27e4](https://github.com/Rocketmakers/armstrong-edge/commit/b9c27e4e4e9d47bdc27e3ba129e2176f5bc024d0))
+- support for custom types in certain string unions ([87e3b83](https://github.com/Rocketmakers/armstrong-edge/commit/87e3b83be433b484e84637cbb8221a68513572f9))
 
 ## [3.7.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.7.0...v3.7.1) (2024-12-10)
 
 ### Bug Fixes
 
-- - Added support for unclickable items in dropdown menu ([141177d](https://github.com/Rocketmakers/armstrong-edge/commit/141177d8d2b3c40e4d87fd0360700ed9ae7a5e16))
+- Added support for unclickable items in dropdown menu ([141177d](https://github.com/Rocketmakers/armstrong-edge/commit/141177d8d2b3c40e4d87fd0360700ed9ae7a5e16))
 
 # [3.7.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.7...v3.7.0) (2024-12-09)
 
@@ -193,13 +186,13 @@
 
 ### Bug Fixes
 
-- - Ability to set no options message on select ([24e2ffc](https://github.com/Rocketmakers/armstrong-edge/commit/24e2ffc3794617459dee2cd085a32a143e6c65ba))
+- Ability to set no options message on select ([24e2ffc](https://github.com/Rocketmakers/armstrong-edge/commit/24e2ffc3794617459dee2cd085a32a143e6c65ba))
 
 ## [3.6.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.5...v3.6.6) (2024-11-21)
 
 ### Bug Fixes
 
-- - Fixes overflow bugs with react select inside radix modal ([7120377](https://github.com/Rocketmakers/armstrong-edge/commit/712037702425fe7254d5be97ddaab5d582f73209))
+- Fixes overflow bugs with react select inside radix modal ([7120377](https://github.com/Rocketmakers/armstrong-edge/commit/712037702425fe7254d5be97ddaab5d582f73209))
 
 ## [3.6.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.4...v3.6.5) (2024-11-20)
 
@@ -211,13 +204,13 @@
 
 ### Bug Fixes
 
-- - Temporary fix for annoying radix dialog focus bug ([668c957](https://github.com/Rocketmakers/armstrong-edge/commit/668c957974c511dd5115977f28ac292a0006b21a))
+- Temporary fix for annoying radix dialog focus bug ([668c957](https://github.com/Rocketmakers/armstrong-edge/commit/668c957974c511dd5115977f28ac292a0006b21a))
 
 ## [3.6.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.2...v3.6.3) (2024-11-11)
 
 ### Bug Fixes
 
-- - Fixed date time input exports ([0cd2c22](https://github.com/Rocketmakers/armstrong-edge/commit/0cd2c2277dabd10ebe328b75e355cd331dd39dc7))
+- Fixed date time input exports ([0cd2c22](https://github.com/Rocketmakers/armstrong-edge/commit/0cd2c2277dabd10ebe328b75e355cd331dd39dc7))
 
 ## [3.6.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.6.1...v3.6.2) (2024-09-09)
 
@@ -241,7 +234,7 @@
 
 ### Bug Fixes
 
-- - Fixed bug causing checkbox to appear disabled when disabled attribute is present regardless of value ([9836885](https://github.com/Rocketmakers/armstrong-edge/commit/983688557a1b1047c26ea229d700a512917456f9))
+- Fixed bug causing checkbox to appear disabled when disabled attribute is present regardless of value ([9836885](https://github.com/Rocketmakers/armstrong-edge/commit/983688557a1b1047c26ea229d700a512917456f9))
 
 ## [3.5.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.2...v3.5.3) (2024-05-21)
 
@@ -253,7 +246,7 @@
 
 ### Bug Fixes
 
-- - Added use client directives for SSR support on context ([b4393d3](https://github.com/Rocketmakers/armstrong-edge/commit/b4393d3439736136bdd2456c7ff98e8e8c660645))
+- Added use client directives for SSR support on context ([b4393d3](https://github.com/Rocketmakers/armstrong-edge/commit/b4393d3439736136bdd2456c7ff98e8e8c660645))
 
 ## [3.5.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.5.0...v3.5.1) (2024-05-09)
 
@@ -283,13 +276,13 @@
 
 ### Bug Fixes
 
-- - ZOD types now supporting enums ([3550008](https://github.com/Rocketmakers/armstrong-edge/commit/3550008417fcb9bab0dfa4b77e3724d0b5746379))
+- ZOD types now supporting enums ([3550008](https://github.com/Rocketmakers/armstrong-edge/commit/3550008417fcb9bab0dfa4b77e3724d0b5746379))
 
 ## [3.4.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.4.0...v3.4.1) (2024-03-11)
 
 ### Bug Fixes
 
-- - Added types to support zod union ([517e37e](https://github.com/Rocketmakers/armstrong-edge/commit/517e37e28516e2df54382b0b72d2e90ee82a2b9b))
+- Added types to support zod union ([517e37e](https://github.com/Rocketmakers/armstrong-edge/commit/517e37e28516e2df54382b0b72d2e90ee82a2b9b))
 
 # [3.4.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.3.1...v3.4.0) (2024-02-15)
 
@@ -307,7 +300,7 @@
 
 ### Features
 
-- - useDialog hook now returns isOpen state ([d9c2a21](https://github.com/Rocketmakers/armstrong-edge/commit/d9c2a2152ce473c82f5dea82a5bf567e79aed081))
+- useDialog hook now returns isOpen state ([d9c2a21](https://github.com/Rocketmakers/armstrong-edge/commit/d9c2a2152ce473c82f5dea82a5bf567e79aed081))
 
 ## [3.2.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.2.1...v3.2.2) (2023-12-19)
 
@@ -337,7 +330,7 @@
 
 ### Bug Fixes
 
-- - Adds a clear method because formProp can't receive undefined ([8b1ad92](https://github.com/Rocketmakers/armstrong-edge/commit/8b1ad92967ff8f1a0fc3cca5fb44367829608f87))
+- Adds a clear method because formProp can't receive undefined ([8b1ad92](https://github.com/Rocketmakers/armstrong-edge/commit/8b1ad92967ff8f1a0fc3cca5fb44367829608f87))
 
 ## [3.1.17](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.16...v3.1.17) (2023-12-01)
 
@@ -355,49 +348,49 @@
 
 ### Bug Fixes
 
-- - Fixed the annonying console warning when interacting with the Checkbox input. ([6cfcbcf](https://github.com/Rocketmakers/armstrong-edge/commit/6cfcbcfa620356821a0590bf1fcdbc4c37bd3f22))
+- Fixed the annonying console warning when interacting with the Checkbox input. ([6cfcbcf](https://github.com/Rocketmakers/armstrong-edge/commit/6cfcbcfa620356821a0590bf1fcdbc4c37bd3f22))
 
 ## [3.1.14](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.13...v3.1.14) (2023-10-24)
 
 ### Bug Fixes
 
-- - Fixed a bug causing react select inputs no to deselect when the value is cleared ([ecbca81](https://github.com/Rocketmakers/armstrong-edge/commit/ecbca81006dbdb26913b3578d08fc7f5d7277d39))
+- Fixed a bug causing react select inputs no to deselect when the value is cleared ([ecbca81](https://github.com/Rocketmakers/armstrong-edge/commit/ecbca81006dbdb26913b3578d08fc7f5d7277d39))
 
 ## [3.1.13](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.12...v3.1.13) (2023-10-12)
 
 ### Bug Fixes
 
-- - Prevented value container remount in select input ([3b676a5](https://github.com/Rocketmakers/armstrong-edge/commit/3b676a5e482fc61b6f3a7c7aabcb053ceaec1665))
+- Prevented value container remount in select input ([3b676a5](https://github.com/Rocketmakers/armstrong-edge/commit/3b676a5e482fc61b6f3a7c7aabcb053ceaec1665))
 
 ## [3.1.12](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.11...v3.1.12) (2023-10-12)
 
 ### Bug Fixes
 
-- - Added input value to react select props ([53ac113](https://github.com/Rocketmakers/armstrong-edge/commit/53ac1137b0bdf98cbe42c612cf98fd14554e1ff7))
+- Added input value to react select props ([53ac113](https://github.com/Rocketmakers/armstrong-edge/commit/53ac1137b0bdf98cbe42c612cf98fd14554e1ff7))
 
 ## [3.1.11](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.10...v3.1.11) (2023-10-12)
 
 ### Bug Fixes
 
-- - onInputChange now supported in select components ([a8fa9f1](https://github.com/Rocketmakers/armstrong-edge/commit/a8fa9f12624a8c06f3baf17fb086f687e8e69934))
+- onInputChange now supported in select components ([a8fa9f1](https://github.com/Rocketmakers/armstrong-edge/commit/a8fa9f12624a8c06f3baf17fb086f687e8e69934))
 
 ## [3.1.10](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.9...v3.1.10) (2023-10-03)
 
 ### Bug Fixes
 
-- - Fixed issues with date input ([722fa36](https://github.com/Rocketmakers/armstrong-edge/commit/722fa36d663ce99d35ff7ffe7fc621b1d3a749cb))
+- Fixed issues with date input ([722fa36](https://github.com/Rocketmakers/armstrong-edge/commit/722fa36d663ce99d35ff7ffe7fc621b1d3a749cb))
 
 ## [3.1.9](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.8...v3.1.9) (2023-09-21)
 
 ### Bug Fixes
 
-- - Fixed issue with native select and box sizing ([6885907](https://github.com/Rocketmakers/armstrong-edge/commit/6885907493e2805604e4c01290d580a88bf04eb8))
+- Fixed issue with native select and box sizing ([6885907](https://github.com/Rocketmakers/armstrong-edge/commit/6885907493e2805604e4c01290d580a88bf04eb8))
 
 ## [3.1.8](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.7...v3.1.8) (2023-09-20)
 
 ### Bug Fixes
 
-- - Fixed issue in which native select was not opening on arrow click ([b0a2b6c](https://github.com/Rocketmakers/armstrong-edge/commit/b0a2b6ce98cec8a84ceab0f405c8f0c0cd977047))
+- Fixed issue in which native select was not opening on arrow click ([b0a2b6c](https://github.com/Rocketmakers/armstrong-edge/commit/b0a2b6ce98cec8a84ceab0f405c8f0c0cd977047))
 
 ## [3.1.7](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.6...v3.1.7) (2023-09-11)
 
@@ -409,27 +402,27 @@
 
 ### Bug Fixes
 
-- - Added \"hidden\" to the supported types on input ([732797e](https://github.com/Rocketmakers/armstrong-edge/commit/732797ed4fee3627acc6d5d61a0bfd1059025638))
+- Added \"hidden\" to the supported types on input ([732797e](https://github.com/Rocketmakers/armstrong-edge/commit/732797ed4fee3627acc6d5d61a0bfd1059025638))
 
 ## [3.1.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.4...v3.1.5) (2023-09-05)
 
 ### Bug Fixes
 
-- - Fixed issue with useDialog action dependency management ([9f77524](https://github.com/Rocketmakers/armstrong-edge/commit/9f775241e5353adea26a5c0f393b03a4cc62fd5f))
+- Fixed issue with useDialog action dependency management ([9f77524](https://github.com/Rocketmakers/armstrong-edge/commit/9f775241e5353adea26a5c0f393b03a4cc62fd5f))
 
 ## [3.1.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.3...v3.1.4) (2023-08-31)
 
 ### Bug Fixes
 
-- - Correct wrong validation errors being sent to native select ([2c9b804](https://github.com/Rocketmakers/armstrong-edge/commit/2c9b804ffc64169a1e6c2e178a96aa95bbcaa9f5))
-- - Fixed deepscan issue ([19b68f5](https://github.com/Rocketmakers/armstrong-edge/commit/19b68f561ca05bc019b19fb309aa14be99319499))
-- - Fixed dialog props extension type ([37ae8db](https://github.com/Rocketmakers/armstrong-edge/commit/37ae8db0e5652a9c74d5d85e2a67827d63c8aa09))
+- Correct wrong validation errors being sent to native select ([2c9b804](https://github.com/Rocketmakers/armstrong-edge/commit/2c9b804ffc64169a1e6c2e178a96aa95bbcaa9f5))
+- Fixed deepscan issue ([19b68f5](https://github.com/Rocketmakers/armstrong-edge/commit/19b68f561ca05bc019b19fb309aa14be99319499))
+- Fixed dialog props extension type ([37ae8db](https://github.com/Rocketmakers/armstrong-edge/commit/37ae8db0e5652a9c74d5d85e2a67827d63c8aa09))
 
 ## [3.1.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.2...v3.1.3) (2023-08-23)
 
 ### Bug Fixes
 
-- - Added missing close delay prop for styling dialogs ([30335b5](https://github.com/Rocketmakers/armstrong-edge/commit/30335b5dc67b9d1f9ac0d160973b2f535ae6d9e6))
+- Added missing close delay prop for styling dialogs ([30335b5](https://github.com/Rocketmakers/armstrong-edge/commit/30335b5dc67b9d1f9ac0d160973b2f535ae6d9e6))
 
 ## [3.1.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.1.1...v3.1.2) (2023-08-02)
 
@@ -441,19 +434,19 @@
 
 ### Bug Fixes
 
-- - Minor type fix in Zod schema ([61f2e1d](https://github.com/Rocketmakers/armstrong-edge/commit/61f2e1d384e6d3a2b0faf26b5b224a1d2a3d2dba))
+- Minor type fix in Zod schema ([61f2e1d](https://github.com/Rocketmakers/armstrong-edge/commit/61f2e1d384e6d3a2b0faf26b5b224a1d2a3d2dba))
 
 # [3.1.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.12...v3.1.0) (2023-08-01)
 
 ### Features
 
-- - Added auto validate + touch support and fixed globals override order ([6567341](https://github.com/Rocketmakers/armstrong-edge/commit/65673413b6d2c5bf42018b51764f3399f582055a))
+- Added auto validate + touch support and fixed globals override order ([6567341](https://github.com/Rocketmakers/armstrong-edge/commit/65673413b6d2c5bf42018b51764f3399f582055a))
 
 ## [3.0.12](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.11...v3.0.12) (2023-07-31)
 
 ### Bug Fixes
 
-- - Added missing validation component export ([617b72d](https://github.com/Rocketmakers/armstrong-edge/commit/617b72d519531e1a19a50a891e9b6eaf8919d903))
+- Added missing validation component export ([617b72d](https://github.com/Rocketmakers/armstrong-edge/commit/617b72d519531e1a19a50a891e9b6eaf8919d903))
 
 ## [3.0.11](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.10...v3.0.11) (2023-07-26)
 
@@ -465,7 +458,7 @@
 
 ### Bug Fixes
 
-- - Added types export to barrel file ([ba8e4e0](https://github.com/Rocketmakers/armstrong-edge/commit/ba8e4e0d06983bb268557e45a8b98d544f203503))
+- Added types export to barrel file ([ba8e4e0](https://github.com/Rocketmakers/armstrong-edge/commit/ba8e4e0d06983bb268557e45a8b98d544f203503))
 
 ## [3.0.9](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.8...v3.0.9) (2023-07-25)
 
@@ -478,49 +471,49 @@
 
 ### Bug Fixes
 
-- - Added util exports ([35b46c7](https://github.com/Rocketmakers/armstrong-edge/commit/35b46c741754d897bfcbd74f01670125e79deda2))
+- Added util exports ([35b46c7](https://github.com/Rocketmakers/armstrong-edge/commit/35b46c741754d897bfcbd74f01670125e79deda2))
 
 ## [3.0.7](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.6...v3.0.7) (2023-07-24)
 
 ### Bug Fixes
 
-- - Switched focus outline to box shadow for Safari bug ([6035ad0](https://github.com/Rocketmakers/armstrong-edge/commit/6035ad065c09884ef2e7594c8d87b9b82fa8e86d))
+- Switched focus outline to box shadow for Safari bug ([6035ad0](https://github.com/Rocketmakers/armstrong-edge/commit/6035ad065c09884ef2e7594c8d87b9b82fa8e86d))
 
 ## [3.0.6](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.5...v3.0.6) (2023-07-24)
 
 ### Bug Fixes
 
-- - Added missing toast export ([f203bd2](https://github.com/Rocketmakers/armstrong-edge/commit/f203bd2d9315412244fa17e57b22b809a4039105))
+- Added missing toast export ([f203bd2](https://github.com/Rocketmakers/armstrong-edge/commit/f203bd2d9315412244fa17e57b22b809a4039105))
 
 ## [3.0.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.4...v3.0.5) (2023-07-20)
 
 ### Bug Fixes
 
-- - Fixed bug causing select placeholder not to work ([19bae25](https://github.com/Rocketmakers/armstrong-edge/commit/19bae25a04a79cf6a986631224d04443c4123fdd))
-- - Type discrimination on select was complex and broken, now exporting separate components ([caecc8b](https://github.com/Rocketmakers/armstrong-edge/commit/caecc8b1c9a1c84342e50e092588a07071261a36))
+- Fixed bug causing select placeholder not to work ([19bae25](https://github.com/Rocketmakers/armstrong-edge/commit/19bae25a04a79cf6a986631224d04443c4123fdd))
+- Type discrimination on select was complex and broken, now exporting separate components ([caecc8b](https://github.com/Rocketmakers/armstrong-edge/commit/caecc8b1c9a1c84342e50e092588a07071261a36))
 
 ## [3.0.4](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.3...v3.0.4) (2023-07-14)
 
 ### Bug Fixes
 
-- - Added missing provider export ([cc026ec](https://github.com/Rocketmakers/armstrong-edge/commit/cc026ec115025417e272afb2e8693267844a0313))
+- Added missing provider export ([cc026ec](https://github.com/Rocketmakers/armstrong-edge/commit/cc026ec115025417e272afb2e8693267844a0313))
 
 ## [3.0.3](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.2...v3.0.3) (2023-07-13)
 
 ### Bug Fixes
 
-- - Added missing css export to package file ([8153b3e](https://github.com/Rocketmakers/armstrong-edge/commit/8153b3e785b5fc926d71ea171062860ecd2f98d5))
+- Added missing css export to package file ([8153b3e](https://github.com/Rocketmakers/armstrong-edge/commit/8153b3e785b5fc926d71ea171062860ecd2f98d5))
 
 ## [3.0.2](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.1...v3.0.2) (2023-07-11)
 
 ### Bug Fixes
 
-- - Another attempted build script fix ([ef9cc85](https://github.com/Rocketmakers/armstrong-edge/commit/ef9cc8548910439e105ca031d6aa27d9eb629b87))
-- - build fixes ([6b18fd1](https://github.com/Rocketmakers/armstrong-edge/commit/6b18fd1b503e7317f5fb884e6d481f59696d79ae))
+- Another attempted build script fix ([ef9cc85](https://github.com/Rocketmakers/armstrong-edge/commit/ef9cc8548910439e105ca031d6aa27d9eb629b87))
+- build fixes ([6b18fd1](https://github.com/Rocketmakers/armstrong-edge/commit/6b18fd1b503e7317f5fb884e6d481f59696d79ae))
 
 ## [3.0.1](https://github.com/Rocketmakers/armstrong-edge/compare/v3.0.0...v3.0.1) (2023-07-11)
 
 ### Bug Fixes
 
-- - Fixed the readme and some of the build scripts ([efe7fa2](https://github.com/Rocketmakers/armstrong-edge/commit/efe7fa22eea3e274a4e9515eceb951e5f1fcd48a))
+- Fixed the readme and some of the build scripts ([efe7fa2](https://github.com/Rocketmakers/armstrong-edge/commit/efe7fa22eea3e274a4e9515eceb951e5f1fcd48a))
 - fixed release script ([44882af](https://github.com/Rocketmakers/armstrong-edge/commit/44882afb22661f8fc7aeaff189e0b7ff314d9eb0))

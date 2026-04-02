@@ -24,17 +24,23 @@ export interface IValidationErrorsProps {
 }
 
 /** Render an array of validation errors as error messages */
-export const ValidationErrors = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>>
->(({ validationErrors, className, scrollIntoView, validationMode, ...nativeProps }, ref) => {
+export const ValidationErrors = ({
+  ref,
+  validationErrors,
+  className,
+  scrollIntoView,
+  validationMode,
+  ...nativeProps
+}: React.PropsWithChildren<IValidationErrorsProps & React.HTMLAttributes<HTMLDivElement>> & {
+  ref?: React.Ref<HTMLDivElement>;
+}) => {
   const globals = useArmstrongConfig({
     validationMode,
     scrollValidationErrorsIntoView: scrollIntoView,
   });
 
-  const internalRef = React.useRef<HTMLInputElement>(null);
-  React.useImperativeHandle(ref, () => internalRef.current as HTMLInputElement, [internalRef]);
+  const internalRef = React.useRef<HTMLDivElement>(null);
+  React.useImperativeHandle(ref, () => internalRef.current as HTMLDivElement, [internalRef]);
 
   React.useEffect(() => {
     if (validationErrors.length > 0 && globals.scrollValidationErrorsIntoView) {
@@ -68,6 +74,6 @@ export const ValidationErrors = React.forwardRef<
       ))}
     </div>
   );
-});
+};
 
 ValidationErrors.displayName = 'ValidationErrors';
