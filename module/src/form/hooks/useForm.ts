@@ -4,6 +4,7 @@
  * Root React hook for form binding
  */
 import * as React from 'react';
+import { z } from 'zod';
 
 import { useContentMemo } from '../../hooks/useContentMemo';
 import { useDidUpdateSSRLayoutEffect } from '../../hooks/useSSRLayoutEffect';
@@ -128,7 +129,7 @@ export function useForm<TData extends object>(
       let errors: IValidationError[] = [];
 
       if (!results.success) {
-        errors = getMyZodErrors(results.error.errors, keyChainString);
+        errors = getMyZodErrors(results.error.issues, keyChainString);
 
         if (errors.length && !silent) {
           clientValidationDispatcher({ type: 'add-validation', errors });
@@ -138,15 +139,13 @@ export function useForm<TData extends object>(
       const valid = !errors.length;
 
       if (formConfig?.logSchemaErrors) {
-        // eslint-disable-next-line no-console -- log requested by config
-        console.log(`Armstrong validation log`, {
-          zodResults: results,
-          errors,
-          valid,
-          keyChainString,
-          silent,
-          keyChain,
-        });
+        if (!results.success) {
+          // eslint-disable-next-line no-console -- log requested by config
+          console.log(`Armstrong validation log\n${z.prettifyError(results.error)}`);
+        } else {
+          // eslint-disable-next-line no-console -- log requested by config
+          console.log(`Armstrong validation log: valid`);
+        }
       }
 
       return valid;
