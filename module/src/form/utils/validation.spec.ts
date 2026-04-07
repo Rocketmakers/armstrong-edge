@@ -3,6 +3,7 @@ import { z } from 'zod';
 import type { IRootValidationSchema, IValidationError, IValidationSchema } from '../types';
 import {
   clientValidationReducer,
+  getMyZodErrors,
   rootValidationSchemaIsFunction,
   validationErrorsByKeyChain,
   zodFromValidationSchema,
@@ -450,6 +451,78 @@ describe('zodFromValidationSchema', () => {
     const success1 = zodFromValidationSchema<ISchema>(schema).safeParse(successShape);
     const success2 = expectedSchema.safeParse(successShape);
     expect(success1).toEqual(success2);
+  });
+
+  describe('getMyZodErrors', () => {
+    it('should return all errors mapped to {key, message} when no keyChainString is provided', () => {
+      const schema = z.object({
+        name: z.string(),
+        age: z.number(),
+      });
+
+      const result = schema.safeParse({ name: 123, age: 'not a number' });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const errors = getMyZodErrors(result.error.issues);
+        expect(errors).toHaveLength(2);
+        expect(errors).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ key: 'name', message: expect.any(String) }),
+            expect.objectContaining({ key: 'age', message: expect.any(String) }),
+          ])
+        );
+      }
+    });
+
+    it('should filter errors by keyChainString for root-level keys', () => {
+      const schema = z.object({
+        name: z.string(),
+        age: z.number(),
+      });
+
+      const result = schema.safeParse({ name: 123, age: 'not a number' });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const errors = getMyZodErrors(result.error.issues, 'name');
+        expect(errors).toHaveLength(1);
+        expect(errors[0].key).toBe('name');
+      }
+    });
+
+    it('should filter errors by keyChainString for nested keys', () => {
+      const schema = z.object({
+        address: z.object({
+          city: z.string(),
+          postcode: z.string(),
+        }),
+      });
+
+      const result = schema.safeParse({ address: { city: 123, postcode: 456 } });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const errors = getMyZodErrors(result.error.issues, 'address.city');
+        expect(errors).toHaveLength(1);
+        expect(errors[0].key).toBe('address.city');
+      }
+    });
+
+    it('should return an empty array when all errors are filtered out', () => {
+      const schema = z.object({
+        name: z.string(),
+      });
+
+      const result = schema.safeParse({ name: 123 });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const errors = getMyZodErrors(result.error.issues, 'nonexistent');
+        expect(errors).toEqual([]);
+      }
+    });
+
+    it('should return an empty array when there are no issues', () => {
+      const errors = getMyZodErrors([]);
+      expect(errors).toEqual([]);
+    });
   });
 
   describe('rootValidationSchemaIsFunction', () => {

@@ -5,6 +5,7 @@
 
 import React from 'react';
 import {
+  type z,
   type ZodArray,
   type ZodBigInt,
   type ZodBoolean,
@@ -19,7 +20,6 @@ import {
   type ZodType,
   type ZodUnion,
 } from 'zod';
-import type { $ZodShape } from 'zod/v4/core';
 
 /**
  * Works out whether some data is an object, and array, or another type.ß
@@ -509,8 +509,8 @@ export interface IObjectOfZod<TProp> {
   schema: TProp;
   /** A function which defines the validation to apply to the object itself (e.g. `opts: ob => ob.required()`) */
   opts?: (
-    ob: ZodObject<TProp & $ZodShape>
-  ) => ZodObject<$ZodShape> | ZodNullable<ZodType> | ZodOptional<ZodType> | ZodOptional<ZodNullable<ZodType>>;
+    ob: ZodObject<TProp & z.core.$ZodShape>
+  ) => ZodObject<z.core.$ZodShape> | ZodNullable<ZodType> | ZodOptional<ZodType> | ZodOptional<ZodNullable<ZodType>>;
 }
 
 type WithZodAdditions<T extends ZodType, K> =
