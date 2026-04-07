@@ -1,9 +1,11 @@
-name: Push to main
+name: Push to release branch
 
 on:
   push:
     branches:
       - main
+      - "4.x"
+      - "5.x"
 
 permissions:
   contents: read

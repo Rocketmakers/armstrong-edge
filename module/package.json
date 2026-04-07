@@ -20,7 +20,7 @@
     "stylelint": "stylelint 'src/**/*.{css,scss}' --fix"
   },
   "peerDependencies": {
-    "date-fns": "2.x",
+    "date-fns": "4.x",
     "react": "19.x",
     "react-dom": "19.x",
     "zod": "^4.3.6"
