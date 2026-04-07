@@ -6,7 +6,7 @@ jobs:
   setup-and-cache-node-module:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -17,13 +17,13 @@ jobs:
 
       - name: Set Node.js to current version and cache in module
         id: setup-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: '.tool-versions'
 
       - name: Cache node modules
         id: node-modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ${{ github.workspace }}/node_modules

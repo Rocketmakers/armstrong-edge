@@ -9,7 +9,7 @@ jobs:
       issues: write
       id-token: write
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -19,13 +19,13 @@ jobs:
           version: latest
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: ".tool-versions"
 
       - name: Restore node modules cache
         id: node-modules
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ${{ github.workspace }}/node_modules
