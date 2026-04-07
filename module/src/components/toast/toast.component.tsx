@@ -1,10 +1,10 @@
+import './toast.theme.css';
+
 import * as RadixToast from '@radix-ui/react-toast';
 import * as React from 'react';
 
 import { concat } from '../../utils';
 import type { IToast, ToastPosition } from './toast.context';
-
-import './toast.theme.css';
 
 export interface IToastProps extends IToast {
   /** where to position the toast, defaults to "bottom-right" */

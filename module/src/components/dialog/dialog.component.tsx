@@ -1,3 +1,5 @@
+import './dialog.theme.css';
+
 import * as RadixDialog from '@radix-ui/react-dialog';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -6,8 +8,6 @@ import { useCompareValues } from '../../hooks/useCompareValues';
 import { ArmstrongFCExtensions, ArmstrongFCProps } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
-
-import './dialog.theme.css';
 
 /** Dialog component props */
 export interface IDialogProps<TData = unknown>

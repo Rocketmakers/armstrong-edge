@@ -79,7 +79,7 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
     return Object.keys(incomingObject).reduce(
       (sch, key) => ({
         ...sch,
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define -- these two require eachother
+
         [key]: unpackValueToZod(incomingObject[key as keyof typeof incomingObject]),
       }),
       {}
@@ -96,7 +96,7 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
       const obInner = unpackValueToZod(incomingToZod.schema) as z.ZodObject<z.ZodRawShape>;
       return incomingToZod.opts ? incomingToZod.opts(obInner) : obInner;
     }
-    // eslint-disable-next-line no-underscore-dangle -- these are zod values
+
     if ((incomingToZod as z.ZodAny)._def) {
       return incomingToZod;
     }

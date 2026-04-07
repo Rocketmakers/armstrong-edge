@@ -1,7 +1,10 @@
-// eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
+import 'react-datepicker/dist/react-datepicker.css';
+import './dateTimeInput.theme.css';
+
+/* eslint-disable import-x/no-duplicates -- date-fns/locale is a separate entry point, not a true duplicate */
 import { parse } from 'date-fns';
-// eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
 import { enGB } from 'date-fns/locale';
+/* eslint-enable import-x/no-duplicates -- re-enable after date-fns imports */
 import * as React from 'react';
 import ReactDatePicker, { DatePickerProps, ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import { FaChevronLeft, FaChevronRight, FaRegCalendar } from 'react-icons/fa';
@@ -19,9 +22,6 @@ import { Label } from '../label';
 import { Select } from '../select';
 import { ValidationErrors } from '../validationErrors';
 import { formatDate, getMonths, getYears } from './dateTimeInput.utils';
-
-import 'react-datepicker/dist/react-datepicker.css';
-import './dateTimeInput.theme.css';
 
 export type IDatePickerConfig = Omit<
   DatePickerProps,

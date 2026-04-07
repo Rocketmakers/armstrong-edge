@@ -1,9 +1,9 @@
+import './expandable.theme.css';
+
 import * as React from 'react';
 
 import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
 import { concat } from '../../utils/classNames';
-
-import './expandable.theme.css';
 
 export interface IExpandableProps extends React.DetailedHTMLProps<React.HTMLProps<HTMLDivElement>, HTMLDivElement> {
   /** is the expandable region open, if false will take up no space */

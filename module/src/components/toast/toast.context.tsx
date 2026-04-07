@@ -1,5 +1,7 @@
 'use client';
 
+import './toast.theme.css';
+
 import * as RadixToast from '@radix-ui/react-toast';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -7,8 +9,6 @@ import * as ReactDOM from 'react-dom';
 import { ToastDisplayMode } from '../../types';
 import { useArmstrongConfig } from '../config';
 import { Toast } from './toast.component';
-
-import './toast.theme.css';
 
 /** Type denoting a toast message */
 export interface IToast {

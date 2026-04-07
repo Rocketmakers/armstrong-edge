@@ -1,11 +1,11 @@
+import './button.theme.css';
+
 import * as React from 'react';
 
 import { CustomString, DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner/spinner.component';
-
-import './button.theme.css';
 
 type ButtonHTMLProps = Omit<
   React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,

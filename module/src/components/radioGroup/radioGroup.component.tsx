@@ -1,3 +1,5 @@
+import './radioGroup.theme.css';
+
 import * as RadixRadioGroup from '@radix-ui/react-radio-group';
 import * as React from 'react';
 
@@ -16,8 +18,6 @@ import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';
 import { Label } from '../label';
 import { ValidationErrors } from '../validationErrors';
-
-import './radioGroup.theme.css';
 
 export type RadioGroupOption<Id extends ArmstrongId> = IArmstrongOption<
   Id,

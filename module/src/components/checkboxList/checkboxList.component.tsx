@@ -1,3 +1,5 @@
+import './checkboxList.theme.css';
+
 import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
@@ -16,8 +18,6 @@ import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps } from '../inputWrapper';
 import { Label } from '../label';
 import { ValidationErrors } from '../validationErrors';
-
-import './checkboxList.theme.css';
 
 export interface ICheckboxListProps<Id extends ArmstrongId>
   extends Pick<

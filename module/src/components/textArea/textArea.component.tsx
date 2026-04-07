@@ -1,3 +1,5 @@
+import './textArea.theme.css';
+
 import * as React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
@@ -8,8 +10,6 @@ import { concat } from '../../utils/classNames';
 import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
-
-import './textArea.theme.css';
 
 type NativeTextAreaProps = Omit<
   React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
