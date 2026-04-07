@@ -1,7 +1,7 @@
 import './tooltip.theme.css';
 
 import * as RadixTooltip from '@radix-ui/react-tooltip';
-import * as React from 'react';
+import React from 'react';
 
 import { concat } from '../../utils';
 import { useArmstrongConfig } from '../config';

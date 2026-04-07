@@ -4,7 +4,7 @@
  * Base React hook for form binding
  * NOTE: This hook shouldn't be used by consuming apps, it's used by `useForm` and `useChildForm`
  */
-import * as React from 'react';
+import React from 'react';
 
 import { useContentMemo } from '../../hooks/useContentMemo';
 import type {

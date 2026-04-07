@@ -3,7 +3,7 @@
  * --------------------------------------
  * Root React hook for form binding
  */
-import * as React from 'react';
+import React from 'react';
 
 import { useContentMemo } from '../../hooks/useContentMemo';
 import { useDidUpdateSSRLayoutEffect } from '../../hooks/useSSRLayoutEffect';

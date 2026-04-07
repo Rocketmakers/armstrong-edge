@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { FormValidationMode } from '../../form';
 import { useArmstrongConfig } from '../config';

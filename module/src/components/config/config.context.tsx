@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { ImMinus, ImSpinner2 } from 'react-icons/im';
 import { IoIosWarning } from 'react-icons/io';

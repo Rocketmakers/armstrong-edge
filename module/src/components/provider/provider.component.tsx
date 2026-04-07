@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 
 import { ArmstrongConfigProvider, IArmstrongConfig } from '../config';
 import { ToastProvider } from '../toast';

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, waitFor, within, fn } from '@storybook/test';
-import * as React from 'react';
+import React from 'react';
 import { AiFillEye } from 'react-icons/ai';
 import { TiStarburst, TiStarburstOutline } from 'react-icons/ti';
 

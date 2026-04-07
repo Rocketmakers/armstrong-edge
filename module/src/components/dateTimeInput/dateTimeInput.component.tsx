@@ -5,7 +5,7 @@ import './dateTimeInput.theme.css';
 import { parse } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 /* eslint-enable import-x/no-duplicates -- re-enable after date-fns imports */
-import * as React from 'react';
+import React from 'react';
 import ReactDatePicker, { DatePickerProps, ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import { FaChevronLeft, FaChevronRight, FaRegCalendar } from 'react-icons/fa';
 import { ImClock } from 'react-icons/im';

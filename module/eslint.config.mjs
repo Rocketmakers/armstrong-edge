@@ -42,6 +42,7 @@ export default tseslint.config(
       'import-x/newline-after-import': 'error',
       'import-x/no-duplicates': 'error',
       'import-x/no-extraneous-dependencies': 'error',
+      'import-x/default': 'off',
       'import-x/no-named-as-default-member': 'off',
       'import-x/no-named-as-default': 'off',
 
