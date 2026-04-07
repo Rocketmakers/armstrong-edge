@@ -23,7 +23,7 @@
     "date-fns": "2.x",
     "react": "19.x",
     "react-dom": "19.x",
-    "zod": "4.*"
+    "zod": "^4.3.6"
   },
   "files": [
     "dist"
