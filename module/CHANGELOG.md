@@ -12,6 +12,29 @@
 * **form:** Migrate form validation to zod v4 ([3413b91](https://github.com/Rocketmakers/armstrong-edge/commit/3413b9114a78ad6387e7aaa286b69f7fa8856a7d))
 
 
+### Reverts
+
+* **config:** remove maintenance branch config, keep date-fns 4.x ([bf7018d](https://github.com/Rocketmakers/armstrong-edge/commit/bf7018d21bb441f5ec974dfb3a5957235d9be806))
+
+
+### BREAKING CHANGES
+
+* **form:** peerDependency `zod` bumped from `3.*` to `4.*`; consumers must upgrade to Zod v4
+
+# [6.0.0](https://github.com/Rocketmakers/armstrong-edge/compare/v5.0.0...v6.0.0) (2026-04-07)
+
+
+### Bug Fixes
+
+* **form:** Replace $ZodShape direct import with z.core namespace and add getMyZodErrors tests ([e3e4928](https://github.com/Rocketmakers/armstrong-edge/commit/e3e4928853942c4340ff560955d7bc63e524b384))
+
+
+### Features
+
+* **config:** add maintenance branches and update date-fns peer dep to 4.x ([6497f62](https://github.com/Rocketmakers/armstrong-edge/commit/6497f62cea4ffca68fdfc4b685f60b3b0b6ad4e9))
+* **form:** Migrate form validation to zod v4 ([3413b91](https://github.com/Rocketmakers/armstrong-edge/commit/3413b9114a78ad6387e7aaa286b69f7fa8856a7d))
+
+
 ### BREAKING CHANGES
 
 * **form:** peerDependency `zod` bumped from `3.*` to `4.*`; consumers must upgrade to Zod v4
