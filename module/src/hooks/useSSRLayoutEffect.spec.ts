@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
 import { act, render, within } from '@testing-library/react';
-import React from 'react';
+import * as React from 'react';
 
 import { useDidUpdateSSRLayoutEffect, useSSRLayoutEffect } from './useSSRLayoutEffect';
 
