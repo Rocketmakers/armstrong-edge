@@ -27,6 +27,8 @@ jobs:
 
   release_storybook:
     needs: [setup, build, lint, test]
+    permissions:
+      contents: write
     uses: ./.github/workflows/job_release_storybook.yml
     secrets: inherit
 
