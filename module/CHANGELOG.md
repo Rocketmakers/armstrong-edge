@@ -45,6 +45,53 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 
 Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 
+# [4.0.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.5...v4.0.0) (2026-04-07)
+
+
+### Bug Fixes
+
+* **components:** Await userEvent.click calls in toast stories and add missing dev deps ([539a327](https://github.com/Rocketmakers/armstrong-edge/commit/539a3270f9ffcbb80978e290821d2deb48169481))
+* **components:** Replace ArmstrongFCReturn with React.ReactNode across all components ([bcbd5b7](https://github.com/Rocketmakers/armstrong-edge/commit/bcbd5b7c161651d2d6615beae1ec9eb2807c5707))
+* **components:** Resolve React 19 ref type incompatibilities and codeInput navigation bug ([66b848c](https://github.com/Rocketmakers/armstrong-edge/commit/66b848c405ad41e71dd6e04042d8b6e27439fbe8))
+* **components:** Use findByLabelText instead of findByRole for toast element queries in stories ([7e96d8a](https://github.com/Rocketmakers/armstrong-edge/commit/7e96d8afd6eb158b14c664ed40b12a7c98f0aace))
+* **config:** Handle null return from AI suggestion gracefully ([864a5ca](https://github.com/Rocketmakers/armstrong-edge/commit/864a5cab76810b5a7cc3f9fdd4ceb1cf1ed17c34))
+* fix an issue with handling of end date in range picker on subsequent selections ([0c5b810](https://github.com/Rocketmakers/armstrong-edge/commit/0c5b810d7c9ab766a7399df3ab05c26d3823591f))
+* fix up handling of time selection event (revert onSelect to onChange for DatePicker) ([8aeacd5](https://github.com/Rocketmakers/armstrong-edge/commit/8aeacd53de178ce4ee818c9f043f796def9274d7))
+* make disabled DropdownMenu items appear greyed out like other disabled components ([e9a20aa](https://github.com/Rocketmakers/armstrong-edge/commit/e9a20aaf8746084c8d2734bb2f1075ad1356691c))
+* remove double bullet prefix (- -) in CHANGELOG.md ([5eea7f3](https://github.com/Rocketmakers/armstrong-edge/commit/5eea7f39cd4f3fc4801b040a0f77bbecb349a345))
+* use Global disableControlOnPending config setting when disabling a pending button ([c7f0ea0](https://github.com/Rocketmakers/armstrong-edge/commit/c7f0ea055143575da69dd1a86f2faac4b9d818a2))
+
+
+### chore
+
+* **config:** Rename package from armstrong to armstrong-edge ([2b7e20e](https://github.com/Rocketmakers/armstrong-edge/commit/2b7e20e3ddfd0c1fab44e132a56f17d7ccee2a2b))
+* migrate from npm to pnpm and update commit tooling ([2ba4544](https://github.com/Rocketmakers/armstrong-edge/commit/2ba454420d72bfe3bae3855215d05f0911a6f2b6))
+* **release:** Upgrade semantic-release and all official plugins to latest major versions ([d704506](https://github.com/Rocketmakers/armstrong-edge/commit/d7045061da4afe0aa5456fe8db1d8258cd2217d9))
+
+
+### Code Refactoring
+
+* apply React 19 best practices across components and hooks ([8badd2c](https://github.com/Rocketmakers/armstrong-edge/commit/8badd2cb0a2fc4f782af00ad62607bee416b9faf))
+
+
+### Features
+
+* upgrade to support React 19 ([c44ac15](https://github.com/Rocketmakers/armstrong-edge/commit/c44ac156fccf056666da475a1e83827ad6a88751))
+
+
+### BREAKING CHANGES
+
+* **config:** Package renamed from @rocketmakers/armstrong to @rocketmakers/armstrong-edge — consumers must update their dependency references
+* **release:** @semantic-release/github@12 and @semantic-release/npm@13 now require Node.js ^22.14.0 || >=24.10.0 (up from Node 18); the release CI environment must be updated to match
+* **components:** ArmstrongFCReturn has been removed from the public types export; consumers importing it directly must update to React.ReactNode. Checkbox ref type changed from HTMLInputElement to HTMLButtonElement.
+* **components:** UseDialogReturn second tuple member is now Omit<DialogElement<TData>, 'addOpenChangeListener'> — callers that accessed addOpenChangeListener directly from the hook return value will need to update
+* Drops React 18 support. Peer dependency narrowed from "react 18.x || 19.x" to "react 19.x". Consumers must upgrade to React 19.
+
+Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+* Package manager changed from npm to pnpm. Contributors must install pnpm to work on this project.
+
+Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+
 ## [3.13.5](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.4...v3.13.5) (2025-08-22)
 
 ### Bug Fixes
