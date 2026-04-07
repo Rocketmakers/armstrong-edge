@@ -1,8 +1,7 @@
 import './label.theme.css';
 
 import * as RadixLabel from '@radix-ui/react-label';
-import * as React from 'react';
-import { LabelHTMLAttributes } from 'react';
+import React, { LabelHTMLAttributes } from 'react';
 
 import { DisplaySize } from '../../types';
 import { concat } from '../../utils';

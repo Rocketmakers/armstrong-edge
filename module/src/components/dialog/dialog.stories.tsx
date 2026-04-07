@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { findByRole, findByText, queryByRole, userEvent, waitFor, within, expect, fn, Mock } from '@storybook/test';
-import * as React from 'react';
+import React from 'react';
 
 import { useForm } from '../../form';
 import { Button } from '../button';

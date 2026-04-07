@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 /** Used for exporting components that use generics with ref-as-prop pattern */
 export type ArmstrongFCProps<TProps, TRef> = React.PropsWithoutRef<React.PropsWithChildren<TProps>> &

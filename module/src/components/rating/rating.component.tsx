@@ -1,6 +1,6 @@
 import './rating.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 import { ImStarEmpty, ImStarFull } from 'react-icons/im';
 
 import { IBindingProps, useBindingState } from '../../form';

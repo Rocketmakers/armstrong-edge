@@ -1,6 +1,6 @@
 import './inputWrapper.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 
 import { ValidationMessage } from '../../form';
 import { DisplaySize } from '../../types';

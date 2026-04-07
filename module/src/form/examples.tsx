@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import type { BindingToolsArray, BindingToolsStandard, HookReturn, IBindingProps, IFormConfig } from './types';
 

@@ -1,7 +1,7 @@
 import './checkbox.theme.css';
 
 import { CheckboxProps, Indicator, Root } from '@radix-ui/react-checkbox';
-import * as React from 'react';
+import React from 'react';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';

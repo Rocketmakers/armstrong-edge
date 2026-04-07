@@ -1,6 +1,6 @@
 import './expandable.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 
 import { useBoundingClientRect } from '../../hooks/useBoundingClientRect';
 import { concat } from '../../utils/classNames';

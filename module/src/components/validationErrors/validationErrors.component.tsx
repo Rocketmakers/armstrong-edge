@@ -1,6 +1,6 @@
 import './validationErrors.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 
 import type { ValidationMessage } from '../../form';
 import { concat } from '../../utils/classNames';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import type { IBindingProps, ValidationMessage } from '../../form';
 import { flatten } from '../../utils/arrays';

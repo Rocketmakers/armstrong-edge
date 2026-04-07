@@ -1,7 +1,7 @@
 import './dropdownMenu.theme.css';
 
 import * as RadixDropdownMenu from '@radix-ui/react-dropdown-menu';
-import * as React from 'react';
+import React from 'react';
 
 import { concat } from '../../utils';
 

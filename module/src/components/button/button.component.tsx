@@ -1,6 +1,6 @@
 import './button.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 
 import { CustomString, DisplaySize } from '../../types';
 import { concat } from '../../utils/classNames';
