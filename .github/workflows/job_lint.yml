@@ -24,10 +24,6 @@ jobs:
             ${{ github.workspace }}/storybook/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Rebuild native dependencies
-        run: pnpm rebuild unrs-resolver
-        working-directory: ./module
-
       - name: Run linting
         run: pnpm lint && pnpm stylelint
         working-directory: ./module
