@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/Rocketmakers/armstrong-edge/compare/v4.0.0...v5.0.0) (2026-04-07)
+
+
+### chore
+
+* **deps:** Upgrade TypeScript to 6.0.2 and ts-jest to 29.4.9 ([2ac7f71](https://github.com/Rocketmakers/armstrong-edge/commit/2ac7f718bcafe9d6d512be52a466e0c9c988634e))
+
+
+### BREAKING CHANGES
+
+* **deps:** consumers using TypeScript < 6 may encounter type incompatibilities if emitted declaration files rely on TypeScript 6 type semantics
+
 # [4.0.0](https://github.com/Rocketmakers/armstrong-edge/compare/v3.13.5...v4.0.0) (2026-04-07)
 
 
