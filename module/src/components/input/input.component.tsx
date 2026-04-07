@@ -1,3 +1,5 @@
+import './input.theme.css';
+
 import * as React from 'react';
 import { HTMLInputTypeAttribute } from 'react';
 
@@ -10,8 +12,6 @@ import { concat } from '../../utils/classNames';
 import { onBlurWorkaround } from '../../workarounds/radixDialog';
 import { useArmstrongConfig } from '../config';
 import { IInputWrapperProps, InputWrapper } from '../inputWrapper/inputWrapper.component';
-
-import './input.theme.css';
 
 type NativeInputProps = Omit<
   React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,

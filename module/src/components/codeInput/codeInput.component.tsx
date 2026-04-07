@@ -1,3 +1,5 @@
+import './codeInput.theme.css';
+
 import * as React from 'react';
 
 import { IBindingProps, useBindingState, useForm } from '../../form';
@@ -12,8 +14,6 @@ import { StatusWrapper } from '../statusWrapper';
 import { ValidationErrors } from '../validationErrors';
 import { CodeInputPartDefinition } from './codeInput.types';
 import { getLengthFromPart } from './codeInput.utils';
-
-import './codeInput.theme.css';
 
 export interface ICodeInputPartProps<TBind extends NullOrUndefined<string>>
   extends Omit<ITextInputProps<TBind>, 'part'> {

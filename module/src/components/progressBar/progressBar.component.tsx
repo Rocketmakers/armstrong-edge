@@ -1,9 +1,9 @@
+import './progressBar.theme.css';
+
 import * as RadixProgress from '@radix-ui/react-progress';
 import * as React from 'react';
 
 import { clamp, concat } from '../../utils';
-
-import './progressBar.theme.css';
 
 export interface IProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The content to display in the tooltip */

@@ -1,11 +1,11 @@
+import './characterLimit.theme.css';
+
 import * as React from 'react';
 
 import { FormValidationMode, IBindingProps, useBindingState } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, NullOrUndefined } from '../../types';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
-
-import './characterLimit.theme.css';
 
 export interface ICharacterLimitProps<TBind extends NullOrUndefined<string>>
   extends Omit<React.RefAttributes<HTMLDivElement>, 'ref'> {

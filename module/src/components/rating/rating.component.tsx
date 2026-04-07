@@ -1,3 +1,5 @@
+import './rating.theme.css';
+
 import * as React from 'react';
 import { ImStarEmpty, ImStarFull } from 'react-icons/im';
 
@@ -14,8 +16,6 @@ import { Label } from '../label';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper';
 import { ValidationErrors } from '../validationErrors';
 import { iconJsxFromDefinition } from './rating.utils';
-
-import './rating.theme.css';
 
 export interface IRatingPartProps
   extends Pick<IRatingProps<NullOrUndefined<number>>, 'filledIcon' | 'emptyIcon' | 'step' | 'mode' | 'disabled'> {

@@ -1,3 +1,5 @@
+import './rangeInput.theme.css';
+
 import * as RadixSlider from '@radix-ui/react-slider';
 import * as React from 'react';
 
@@ -10,8 +12,6 @@ import { useArmstrongConfig } from '../config';
 import { Label } from '../label/label.component';
 import { StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { IValidationErrorsProps, ValidationErrors } from '../validationErrors/validationErrors.component';
-
-import './rangeInput.theme.css';
 
 export interface IRangeInputProps<TData extends NullOrUndefined<number>>
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'type' | 'checked' | 'onChange' | 'ref' | 'dir' | 'defaultValue'>,

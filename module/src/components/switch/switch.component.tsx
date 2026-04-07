@@ -1,3 +1,5 @@
+import './switch.theme.css';
+
 import { Root, SwitchProps, Thumb } from '@radix-ui/react-switch';
 import * as React from 'react';
 
@@ -9,8 +11,6 @@ import { useArmstrongConfig } from '../config/config.context';
 import { IInputWrapperProps } from '../inputWrapper/inputWrapper.component';
 import { Label } from '../label/label.component';
 import { ValidationErrors } from '../validationErrors/validationErrors.component';
-
-import './switch.theme.css';
 
 export interface ISwitchProps<TBind extends NullOrUndefined<boolean>>
   extends Omit<

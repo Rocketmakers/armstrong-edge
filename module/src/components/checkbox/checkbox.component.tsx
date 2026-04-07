@@ -1,3 +1,5 @@
+import './checkbox.theme.css';
+
 import { CheckboxProps, Indicator, Root } from '@radix-ui/react-checkbox';
 import * as React from 'react';
 
@@ -9,8 +11,6 @@ import { useArmstrongConfig } from '../config';
 import { ILabelProps, Label } from '../label/label.component';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { IValidationErrorsProps, ValidationErrors } from '../validationErrors/validationErrors.component';
-
-import './checkbox.theme.css';
 
 type BindType = NullOrUndefined<boolean | 'indeterminate'>;
 

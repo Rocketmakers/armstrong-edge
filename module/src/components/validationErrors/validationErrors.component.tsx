@@ -1,10 +1,10 @@
+import './validationErrors.theme.css';
+
 import * as React from 'react';
 
 import type { ValidationMessage } from '../../form';
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
-
-import './validationErrors.theme.css';
 
 export interface IValidationErrorsProps {
   /**

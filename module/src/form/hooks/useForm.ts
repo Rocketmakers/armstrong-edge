@@ -138,7 +138,7 @@ export function useForm<TData extends object>(
       const valid = !errors.length;
 
       if (formConfig?.logSchemaErrors) {
-        // eslint-disable-next-line no-console -- log requested by config
+        // eslint-disable-next-line no-console -- opt-in debug logging via formConfig.logSchemaErrors
         console.log(`Armstrong validation log`, {
           zodResults: results,
           errors,

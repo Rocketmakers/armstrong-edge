@@ -148,11 +148,10 @@
 .arm-select__value-container--is-multi {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: var(--arm-spacing-xxxsmall);
   padding-top: var(--arm-spacing-xxxsmall);
   padding-bottom: var(--arm-spacing-xxxsmall);
-  -webkit-box-align: center;
+  align-items: center;
   flex: 1 1 0%;
   position: relative;
   overflow: hidden;
