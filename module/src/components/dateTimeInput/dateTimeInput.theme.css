@@ -105,8 +105,7 @@
 .react-datepicker__header {
   background-color: transparent;
   border: none;
-  padding-inline-start: 0.4rem;
-  padding-inline-end: 0.4rem;
+  padding-inline: 0.4rem;
 }
 
 .react-datepicker__day--outside-month {

@@ -1,9 +1,9 @@
+import './spinner.theme.css';
+
 import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
-
-import './spinner.theme.css';
 
 export interface ISpinnerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'label'> {
   /** icon definition for icon to spin in middle of div, can be overridden using children */

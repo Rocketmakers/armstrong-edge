@@ -1,3 +1,5 @@
+import './select.theme.css';
+
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { ImCheckmark } from 'react-icons/im';
@@ -35,8 +37,6 @@ import { Spinner } from '../spinner';
 import { StatusWrapper } from '../statusWrapper';
 import { ValidationErrors } from '../validationErrors';
 import { emptyStyles, GroupedOption, isCreatingOption, isGroupedOptions } from './select.utils';
-
-import './select.theme.css';
 
 const { DropdownIndicator, Option, ValueContainer } = components;
 
@@ -513,9 +513,9 @@ const ReactSelectComponent = ({
         return (
           <Option {...props}>
             <>
-              {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
+              {}
               {labelGetter(props.data)}
-              {/* eslint-disable-next-line react/prop-types -- ESLint bug */}
+              {}
               {props.isSelected && selectedIcon}
             </>
           </Option>

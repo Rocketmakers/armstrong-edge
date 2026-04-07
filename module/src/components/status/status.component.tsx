@@ -1,10 +1,10 @@
+import './status.theme.css';
+
 import * as React from 'react';
 
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';
 import { Spinner } from '../spinner';
-
-import './status.theme.css';
 
 export interface IStatusProps {
   /** show a spinner */

@@ -1,3 +1,5 @@
+import './inputWrapper.theme.css';
+
 import * as React from 'react';
 
 import { ValidationMessage } from '../../form';
@@ -7,8 +9,6 @@ import { useArmstrongConfig } from '../config';
 import { Label } from '../label';
 import { IStatusWrapperProps, StatusWrapper } from '../statusWrapper/statusWrapper.component';
 import { ValidationErrors } from '../validationErrors';
-
-import './inputWrapper.theme.css';
 
 export interface IInputWrapperProps extends IStatusWrapperProps {
   /** array of validation errors to render */

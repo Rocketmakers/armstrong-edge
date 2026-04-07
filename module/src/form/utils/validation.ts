@@ -79,7 +79,7 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
     return Object.keys(incomingObject).reduce(
       (sch, key) => ({
         ...sch,
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define -- these two require eachother
+
         [key]: unpackValueToZod(incomingObject[key as keyof typeof incomingObject]),
       }),
       {}
