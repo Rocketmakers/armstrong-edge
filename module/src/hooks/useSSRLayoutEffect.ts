@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 /**
  * A version of the React `useLayoutEffect` that supports server side rendering by falling back to a standard `useEffect`.

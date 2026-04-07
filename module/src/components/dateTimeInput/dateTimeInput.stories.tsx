@@ -5,7 +5,7 @@ import { userEvent, waitFor, within } from '@storybook/test';
 import { addDays, format } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates -- needed to prevent date-fns input lint fix bug
 import { enGB } from 'date-fns/locale';
-import * as React from 'react';
+import React from 'react';
 
 import { useForm } from '../../form';
 import { DateTimeInput } from './dateTimeInput.component';

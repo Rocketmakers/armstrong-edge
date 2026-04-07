@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { isBrowser, supportsResizeObserver } from '../utils/globals';
 import { useContentMemo } from './useContentMemo';

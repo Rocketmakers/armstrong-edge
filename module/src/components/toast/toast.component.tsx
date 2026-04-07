@@ -1,7 +1,7 @@
 import './toast.theme.css';
 
 import * as RadixToast from '@radix-ui/react-toast';
-import * as React from 'react';
+import React from 'react';
 
 import { concat } from '../../utils';
 import type { IToast, ToastPosition } from './toast.context';

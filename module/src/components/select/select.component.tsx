@@ -1,6 +1,6 @@
 import './select.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { ImCheckmark } from 'react-icons/im';
 import ReactSelect, {

@@ -1,7 +1,7 @@
 import './radioGroup.theme.css';
 
 import * as RadixRadioGroup from '@radix-ui/react-radio-group';
-import * as React from 'react';
+import React from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';

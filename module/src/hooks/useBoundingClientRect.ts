@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { contentDependency } from '../utils';
 import { Document } from '../utils/globals';

@@ -3,7 +3,7 @@
  * --------------------------------------
  * Hook for creating a `useState` equivalent from a bind prop
  */
-import * as React from 'react';
+import React from 'react';
 
 import type { FormValidationMode, IBindingProps, IUseBindingStateOverrides, UseBindingStateReturn } from '../types';
 import { useMyValidationErrorMessages } from './useMyValidationErrorMessages';

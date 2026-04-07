@@ -1,7 +1,7 @@
 import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/test';
-import * as React from 'react';
+import React from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
 

@@ -1,7 +1,7 @@
 import './rangeInput.theme.css';
 
 import * as RadixSlider from '@radix-ui/react-slider';
-import * as React from 'react';
+import React from 'react';
 
 import { IBindingProps, useBindingState, ValidationMessage } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';

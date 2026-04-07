@@ -1,6 +1,6 @@
 import './characterLimit.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 
 import { FormValidationMode, IBindingProps, useBindingState } from '../../form';
 import { ArmstrongFCExtensions, ArmstrongFCProps, NullOrUndefined } from '../../types';

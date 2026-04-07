@@ -1,6 +1,6 @@
 import './codeInput.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 
 import { IBindingProps, useBindingState, useForm } from '../../form';
 import { useDidUpdateEffect } from '../../hooks/useDidUpdateEffect';

@@ -3,7 +3,7 @@
  * --------------------------------------
  * React hook for rendering validation messages
  */
-import * as React from 'react';
+import React from 'react';
 
 import { uniq } from '../../utils/arrays';
 import type { IBindingProps, ValidationMessage } from '../types';

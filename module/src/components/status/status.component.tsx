@@ -1,6 +1,6 @@
 import './status.theme.css';
 
-import * as React from 'react';
+import React from 'react';
 
 import { concat } from '../../utils/classNames';
 import { useArmstrongConfig } from '../config';

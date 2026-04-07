@@ -1,7 +1,7 @@
 import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
 import { findAllByText, findByLabelText, findByRole, findByText, userEvent, waitFor, within } from '@storybook/test';
-import * as React from 'react';
+import React from 'react';
 
 import { Button } from '../button';
 import { ArmstrongProvider } from '../provider';

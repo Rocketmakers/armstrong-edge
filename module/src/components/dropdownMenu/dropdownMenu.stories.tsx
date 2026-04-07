@@ -1,7 +1,7 @@
 import * as test from '@storybook/test';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
+import React from 'react';
 import { ImCheckmark, ImUser } from 'react-icons/im';
 
 import { Button } from '../button';

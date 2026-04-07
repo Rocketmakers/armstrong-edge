@@ -1,7 +1,7 @@
 import { expect } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within, fn } from '@storybook/test';
-import * as React from 'react';
+import React from 'react';
 
 import { useForm } from '../../form';
 import { Switch } from './switch.component';

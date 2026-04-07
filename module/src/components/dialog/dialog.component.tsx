@@ -1,7 +1,7 @@
 import './dialog.theme.css';
 
 import * as RadixDialog from '@radix-ui/react-dialog';
-import * as React from 'react';
+import React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { useCompareValues } from '../../hooks/useCompareValues';

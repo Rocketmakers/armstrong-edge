@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import * as React from 'react';
+import React from 'react';
 import { z } from 'zod';
 
 import { useFormBase } from './useFormBase';

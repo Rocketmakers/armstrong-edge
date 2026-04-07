@@ -1,7 +1,7 @@
 import './progressBar.theme.css';
 
 import * as RadixProgress from '@radix-ui/react-progress';
-import * as React from 'react';
+import React from 'react';
 
 import { clamp, concat } from '../../utils';
 

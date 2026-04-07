@@ -1,7 +1,7 @@
 import { expect, fn } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor, within } from '@storybook/test';
-import * as React from 'react';
+import React from 'react';
 import { ImPencil } from 'react-icons/im';
 
 import { Button } from './button.component';
