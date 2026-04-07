@@ -3,7 +3,7 @@
  * --------------------------------------
  * Various functions useful for interacting with client validation errors
  */
-import { z, ZodIssue } from 'zod';
+import { z } from 'zod';
 
 import type {
   IArrayOfZod,
@@ -89,26 +89,26 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
   // unpacks the value of a TS schema field into a zod equivalent
   const unpackValueToZod = (incomingToZod: unknown): unknown => {
     if (isArrayOfZod(incomingToZod)) {
-      const arrayInner = z.array(unpackValueToZod(incomingToZod.itemSchema) as z.ZodTypeAny);
+      const arrayInner = z.array(unpackValueToZod(incomingToZod.itemSchema) as z.ZodType);
       return incomingToZod.opts ? incomingToZod.opts(arrayInner) : arrayInner;
     }
     if (isObjectOfZod(incomingToZod)) {
-      const obInner = unpackValueToZod(incomingToZod.schema) as z.ZodObject<z.ZodRawShape>;
+      const obInner = unpackValueToZod(incomingToZod.schema) as z.ZodObject<z.core.$ZodShape>;
       return incomingToZod.opts ? incomingToZod.opts(obInner) : obInner;
     }
-
-    if ((incomingToZod as z.ZodAny)._def) {
+    // eslint-disable-next-line no-underscore-dangle -- these are zod values
+    if ((incomingToZod as z.ZodAny)._zod) {
       return incomingToZod;
     }
     if (typeof incomingToZod === 'object') {
-      return z.object(unpackObject(incomingToZod as z.ZodRawShape));
+      return z.object(unpackObject(incomingToZod as z.core.$ZodShape));
     }
     return unpackValueToZod(incomingToZod);
   };
 
   // if root schema is a custom array or custom object, return a zod object containing the unpacked TS schema
   if (isArrayOfZod(schema) || isObjectOfZod(schema)) {
-    return unpackValueToZod(schema) as z.ZodArray<z.ZodAny> | z.ZodObject<z.ZodRawShape>;
+    return unpackValueToZod(schema) as z.ZodArray<z.ZodAny> | z.ZodObject<z.core.$ZodShape>;
   }
 
   // if root schema is an object, return a zod object containing the unpacked TS schema
@@ -121,11 +121,13 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
  * @param keyChainString The key chain to filter the zod errors by
  * @returns An array of validation errors
  */
-export const getMyZodErrors = (errors: ZodIssue[], keyChainString?: string) => {
+export const getMyZodErrors = (errors: z.core.$ZodIssue[], keyChainString?: string) => {
   return errors
-    .filter(e => (keyChainString ? isMyKeyChainItem(keyStringFromKeyChain(e.path, 'dots'), keyChainString) : true))
+    .filter(e =>
+      keyChainString ? isMyKeyChainItem(keyStringFromKeyChain(e.path as KeyChain, 'dots'), keyChainString) : true
+    )
     .map(e => ({
-      key: keyStringFromKeyChain(e.path, 'dots'),
+      key: keyStringFromKeyChain(e.path as KeyChain, 'dots'),
       message: e.message,
     }));
 };

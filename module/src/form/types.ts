@@ -5,21 +5,19 @@
 
 import React from 'react';
 import {
+  type z,
   type ZodArray,
   type ZodBigInt,
   type ZodBoolean,
   type ZodDate,
-  type ZodEffects,
   type ZodEnum,
   type ZodLiteral,
-  type ZodNativeEnum,
   type ZodNullable,
   type ZodNumber,
   type ZodObject,
   type ZodOptional,
-  type ZodRawShape,
   type ZodString,
-  type ZodTypeAny,
+  type ZodType,
   type ZodUnion,
 } from 'zod';
 
@@ -479,7 +477,7 @@ export interface IBindConfig<TValue> {
 /**
  * Checks a form state field type and adds the necessary zod validation extensions for optional / nullable fields
  */
-export type ZodNullOrUndefined<TProp, TZod extends ZodTypeAny> = TProp extends undefined
+export type ZodNullOrUndefined<TProp, TZod extends ZodType> = TProp extends undefined
   ? ZodOptional<TZod>
   : TProp extends null
   ? ZodNullable<TZod>
@@ -498,13 +496,8 @@ export interface IArrayOfZod<TProp> {
     : ToZod<TProp>;
   /** A function which defines the validation to apply to the array itself (e.g. `opts: arr => arr.min(1).max(5)`) */
   opts?: (
-    arr: ZodArray<TProp & ZodTypeAny>
-  ) =>
-    | ZodArray<TProp & ZodTypeAny>
-    | ZodNullable<ZodTypeAny>
-    | ZodOptional<ZodTypeAny>
-    | ZodOptional<ZodNullable<ZodTypeAny>>
-    | ZodEffects<ZodTypeAny>;
+    arr: ZodArray<TProp & ZodType>
+  ) => ZodArray<TProp & ZodType> | ZodNullable<ZodType> | ZodOptional<ZodType> | ZodOptional<ZodNullable<ZodType>>;
 }
 
 /**
@@ -516,25 +509,17 @@ export interface IObjectOfZod<TProp> {
   schema: TProp;
   /** A function which defines the validation to apply to the object itself (e.g. `opts: ob => ob.required()`) */
   opts?: (
-    ob: ZodObject<TProp & ZodRawShape>
-  ) =>
-    | ZodObject<TProp & ZodRawShape>
-    | ZodNullable<ZodTypeAny>
-    | ZodOptional<ZodTypeAny>
-    | ZodOptional<ZodNullable<ZodTypeAny>>
-    | ZodEffects<ZodTypeAny>;
+    ob: ZodObject<TProp & z.core.$ZodShape>
+  ) => ZodObject<z.core.$ZodShape> | ZodNullable<ZodType> | ZodOptional<ZodType> | ZodOptional<ZodNullable<ZodType>>;
 }
 
-type WithZodAdditions<T extends ZodTypeAny, K> =
+type WithZodAdditions<T extends ZodType, K> =
   | T
-  | ZodLiteral<K>
+  | (K extends string | number | bigint | boolean ? ZodLiteral<K> : never)
   | ZodOptional<T>
   | ZodNullable<T>
   | ZodOptional<ZodNullable<T>>
-  | ZodEffects<T, K, K>
-  | ZodUnion<[WithZodAdditions<T, K>, ...ZodTypeAny[]]>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any required for zod native enum
-  | ZodNativeEnum<any>
+  | ZodUnion<readonly ZodType[]>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any required for zod enum
   | ZodEnum<any>;
 

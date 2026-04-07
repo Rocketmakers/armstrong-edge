@@ -217,8 +217,8 @@ importers:
         specifier: 7.0.1
         version: 7.0.1
       zod:
-        specifier: 3.21.4
-        version: 3.21.4
+        specifier: ^4.3.6
+        version: 4.3.6
 
 packages:
 
@@ -5927,8 +5927,8 @@ packages:
     engines: {node: '>=8.0.0'}
     hasBin: true
 
-  zod@3.21.4:
-    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
 snapshots:
 
@@ -12205,4 +12205,4 @@ snapshots:
     optionalDependencies:
       commander: 9.5.0
 
-  zod@3.21.4: {}
+  zod@4.3.6: {}
