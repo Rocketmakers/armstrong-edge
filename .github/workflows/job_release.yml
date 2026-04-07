@@ -22,8 +22,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: ".tool-versions"
-          registry-url: "https://registry.npmjs.org"
-          token: ""
 
       - name: Restore node modules cache
         id: node-modules
