@@ -1,7 +1,6 @@
 import './input.theme.css';
 
-import React from 'react';
-import { HTMLInputTypeAttribute } from 'react';
+import React, { HTMLInputTypeAttribute } from 'react';
 
 import { IBindingProps, useBindingState } from '../../form';
 import { useDebounce } from '../../hooks/useDebounce';
