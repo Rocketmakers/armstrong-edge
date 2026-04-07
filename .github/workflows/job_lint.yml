@@ -24,6 +24,10 @@ jobs:
             ${{ github.workspace }}/storybook/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: ./module
+
       - name: Run linting
         run: pnpm lint && pnpm stylelint
         working-directory: ./module
