@@ -46,9 +46,6 @@ jobs:
         run: pnpm install --frozen-lockfile
         working-directory: ./module
 
-      - name: Rebuild native dependencies
-        run: pnpm rebuild unrs-resolver
-        working-directory: ./module
 
       - name: Install storybook node dependencies
         if: ${{ steps.node-modules.outputs.cache-hit != 'true' }}
