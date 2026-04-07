@@ -3,7 +3,7 @@
  * --------------------------------------
  * Root React hook for creating a nested form binder from a parent form bind prop
  */
-import React from 'react';
+import * as React from 'react';
 
 import { useDidUpdateSSRLayoutEffect } from '../../hooks/useSSRLayoutEffect';
 import { assertNever } from '../../utils';
