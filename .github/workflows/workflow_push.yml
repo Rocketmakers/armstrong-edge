@@ -4,8 +4,6 @@ on:
   push:
     branches-ignore:
       - main
-      - "4.x"
-      - "5.x"
 
 jobs:
   setup:
