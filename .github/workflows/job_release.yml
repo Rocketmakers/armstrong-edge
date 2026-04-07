@@ -21,8 +21,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.tool-versions'
-          registry-url: 'https://registry.npmjs.org'
+          node-version-file: ".tool-versions"
+          registry-url: "https://registry.npmjs.org"
+          token: ""
 
       - name: Restore node modules cache
         id: node-modules
@@ -44,6 +45,5 @@ jobs:
         id: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
         run: pnpm exec semantic-release
         working-directory: ./module
