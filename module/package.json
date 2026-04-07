@@ -1,6 +1,6 @@
 {
-  "name": "@rocketmakers/armstrong",
-  "version": "3.13.5",
+  "name": "@rocketmakers/armstrong-edge",
+  "version": "4.0.0",
   "description": "Rocketmakers React component library",
   "repository": {
     "type": "git",
