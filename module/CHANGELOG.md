@@ -1,3 +1,10 @@
+# [6.1.0](https://github.com/Rocketmakers/armstrong-edge/compare/v6.0.0...v6.1.0) (2026-04-08)
+
+
+### Features
+
+* **deps:** update date-fns peer dependency to 4.x ([a5b0a7a](https://github.com/Rocketmakers/armstrong-edge/commit/a5b0a7a3d05b045213482324e3218a4049238d69))
+
 # [6.1.0](https://github.com/Rocketmakers/armstrong-edge/compare/v6.0.0...v6.1.0) (2026-04-07)
 
 
