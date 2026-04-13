@@ -6,6 +6,7 @@
 import React from 'react';
 import { z } from 'zod';
 
+import { useArmstrongConfig } from '../../components/config';
 import { useContentMemo } from '../../hooks/useContentMemo';
 import { useDidUpdateSSRLayoutEffect } from '../../hooks/useSSRLayoutEffect';
 import {
@@ -42,6 +43,8 @@ export function useForm<TData extends object>(
   formConfig?: IFormConfig<TData>
 ): HookReturn<TData> {
   const initialData = useContentMemo(initialDataProp);
+  const { defaultValidationMessageFormatter } = useArmstrongConfig();
+  const formatValidationMessage = formConfig?.formatValidationMessage ?? defaultValidationMessageFormatter;
 
   // create state stores for values, validation errors and touched state
   const [formState, setFormState] = React.useState<TData>(
@@ -129,7 +132,7 @@ export function useForm<TData extends object>(
       let errors: IValidationError[] = [];
 
       if (!results.success) {
-        errors = getMyZodErrors(results.error.issues, keyChainString);
+        errors = getMyZodErrors(results.error.issues, keyChainString, formatValidationMessage);
 
         if (errors.length && !silent) {
           clientValidationDispatcher({ type: 'add-validation', errors });
@@ -155,6 +158,7 @@ export function useForm<TData extends object>(
       formConfig?.validationSchema,
       clientValidationDispatcher,
       formStateRef,
+      formatValidationMessage,
       formConfig?.logSchemaErrors,
     ]
   );

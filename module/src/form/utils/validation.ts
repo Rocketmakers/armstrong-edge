@@ -14,6 +14,7 @@ import type {
   IValidationError,
   KeyChain,
   ValidationAction,
+  ValidationMessageFormatter,
 } from '../types';
 import { isMyKeyChainItem, keyStringFromKeyChain } from './keyChain';
 
@@ -96,7 +97,6 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
       const obInner = unpackValueToZod(incomingToZod.schema) as z.ZodObject<z.core.$ZodShape>;
       return incomingToZod.opts ? incomingToZod.opts(obInner) : obInner;
     }
-    // eslint-disable-next-line no-underscore-dangle -- these are zod values
     if ((incomingToZod as z.ZodAny)._zod) {
       return incomingToZod;
     }
@@ -121,15 +121,41 @@ export function zodFromValidationSchema<TData>(schema: IRootValidationSchema<TDa
  * @param keyChainString The key chain to filter the zod errors by
  * @returns An array of validation errors
  */
-export const getMyZodErrors = (errors: z.core.$ZodIssue[], keyChainString?: string) => {
+export const getMyZodErrors = (
+  errors: z.core.$ZodIssue[],
+  keyChainString?: string,
+  formatValidationMessage?: ValidationMessageFormatter
+) => {
   return errors
     .filter(e =>
       keyChainString ? isMyKeyChainItem(keyStringFromKeyChain(e.path as KeyChain, 'dots'), keyChainString) : true
     )
-    .map(e => ({
-      key: keyStringFromKeyChain(e.path as KeyChain, 'dots'),
-      message: e.message,
-    }));
+    .map(e => {
+      const key = keyStringFromKeyChain(e.path as KeyChain, 'dots');
+      const defaultMessage = e.message;
+      let message: IValidationError['message'] = defaultMessage;
+
+      if (formatValidationMessage) {
+        try {
+          const formattedMessage = formatValidationMessage({
+            issue: e,
+            key,
+            defaultMessage,
+          });
+          if (formattedMessage !== undefined && formattedMessage !== null) {
+            message = formattedMessage;
+          }
+        } catch {
+          // fall back to default zod message when custom formatter fails
+          message = defaultMessage;
+        }
+      }
+
+      return {
+        key,
+        message,
+      };
+    });
 };
 
 /**
