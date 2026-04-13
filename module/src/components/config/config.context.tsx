@@ -6,6 +6,7 @@ import { ImMinus, ImSpinner2 } from 'react-icons/im';
 import { IoIosWarning } from 'react-icons/io';
 import { RiCloseLine } from 'react-icons/ri';
 
+import type { ValidationMessageFormatter } from '../../form/types';
 import { DisplaySize, ToastDisplayMode } from '../../types';
 import { stripNullOrUndefined } from '../../utils/objects';
 import type { ButtonDisplayStyle } from '../button';
@@ -89,10 +90,18 @@ export interface IArmstrongConfig {
 
   /** should the inputs validate automatically against the provided schema? Default: `true` */
   autoValidate?: boolean;
+
+  /**
+   * Optional formatter used by `useForm` to transform Zod validation issue messages globally.
+   * - Can be overridden per-form by `formatValidationMessage` in `useForm` config.
+   */
+  defaultValidationMessageFormatter?: ValidationMessageFormatter;
 }
 
-type ArmstrongConfigDefaults = Required<Omit<IArmstrongConfig, 'globalPortalTo' | 'toastIgnorePredicate'>> &
-  Pick<IArmstrongConfig, 'globalPortalTo' | 'toastIgnorePredicate'>;
+type ArmstrongConfigDefaults = Required<
+  Omit<IArmstrongConfig, 'globalPortalTo' | 'toastIgnorePredicate' | 'defaultValidationMessageFormatter'>
+> &
+  Pick<IArmstrongConfig, 'globalPortalTo' | 'toastIgnorePredicate' | 'defaultValidationMessageFormatter'>;
 
 /**
  * System level defaults for armstrong global config

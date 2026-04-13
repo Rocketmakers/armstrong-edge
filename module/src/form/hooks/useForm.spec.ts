@@ -1,6 +1,8 @@
 import { act, renderHook } from '@testing-library/react';
+import React from 'react';
 import { z } from 'zod';
 
+import { ArmstrongConfigProvider } from '../../components/config';
 import { useForm } from './useForm';
 
 describe('useForm', () => {
@@ -138,6 +140,65 @@ describe('useForm', () => {
 
       const ageResultAfterFix = await act(() => result.current.formProp('age').validate());
       expect(ageResultAfterFix).toBe(true);
+    });
+  });
+
+  describe('formatValidationMessage', () => {
+    it('should use defaultValidationMessageFormatter from Armstrong config when no form formatter is provided', () => {
+      const wrapper: React.FC<React.PropsWithChildren> = ({ children }) =>
+        React.createElement(
+          ArmstrongConfigProvider,
+          {
+            defaultValidationMessageFormatter: ({ key }) => `Global message for ${key}`,
+          },
+          children
+        );
+
+      const { result } = renderHook(
+        () =>
+          useForm(
+            { name: '' },
+            {
+              validationSchema: {
+                name: z.string().min(1, 'Name is required'),
+              },
+            }
+          ),
+        { wrapper }
+      );
+
+      act(() => result.current.formProp('name').validate());
+
+      expect(result.current.formProp('name').bind().myValidationErrors).toEqual([
+        { key: 'name', message: 'Global message for name' },
+      ]);
+    });
+
+    it('should prioritize form-level formatter over global defaultValidationMessageFormatter', () => {
+      const globalFormatter = jest.fn(() => 'Global message');
+      const formFormatter = jest.fn(() => 'Form message');
+      const wrapper: React.FC<React.PropsWithChildren> = ({ children }) =>
+        React.createElement(ArmstrongConfigProvider, { defaultValidationMessageFormatter: globalFormatter }, children);
+
+      const { result } = renderHook(
+        () =>
+          useForm(
+            { name: '' },
+            {
+              validationSchema: {
+                name: z.string().min(1, 'Name is required'),
+              },
+              formatValidationMessage: formFormatter,
+            }
+          ),
+        { wrapper }
+      );
+
+      act(() => result.current.formProp('name').validate());
+
+      expect(result.current.formProp('name').bind().myValidationErrors).toEqual([{ key: 'name', message: 'Form message' }]);
+      expect(formFormatter).toHaveBeenCalled();
+      expect(globalFormatter).not.toHaveBeenCalled();
     });
   });
 });

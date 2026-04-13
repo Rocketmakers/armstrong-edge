@@ -474,6 +474,54 @@ describe('zodFromValidationSchema', () => {
       }
     });
 
+    it('should use a formatter callback when provided', () => {
+      const schema = z.object({
+        name: z.string(),
+      });
+
+      const result = schema.safeParse({ name: 123 });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const formatValidationMessage = jest.fn(({ key }) => `Friendly message for ${key}`);
+        const errors = getMyZodErrors(result.error.issues, undefined, formatValidationMessage);
+        expect(errors).toHaveLength(1);
+        expect(errors[0]).toEqual({ key: 'name', message: 'Friendly message for name' });
+        expect(formatValidationMessage).toHaveBeenCalledTimes(1);
+      }
+    });
+
+    it('should fall back to the default zod message if formatter returns undefined', () => {
+      const schema = z.object({
+        name: z.string(),
+      });
+
+      const result = schema.safeParse({ name: 123 });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const defaultMessage = result.error.issues[0].message;
+        const errors = getMyZodErrors(result.error.issues, undefined, () => undefined);
+        expect(errors).toHaveLength(1);
+        expect(errors[0]).toEqual({ key: 'name', message: defaultMessage });
+      }
+    });
+
+    it('should fall back to the default zod message if formatter throws', () => {
+      const schema = z.object({
+        name: z.string(),
+      });
+
+      const result = schema.safeParse({ name: 123 });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const defaultMessage = result.error.issues[0].message;
+        const errors = getMyZodErrors(result.error.issues, undefined, () => {
+          throw new Error('formatter failed');
+        });
+        expect(errors).toHaveLength(1);
+        expect(errors[0]).toEqual({ key: 'name', message: defaultMessage });
+      }
+    });
+
     it('should filter errors by keyChainString for root-level keys', () => {
       const schema = z.object({
         name: z.string(),

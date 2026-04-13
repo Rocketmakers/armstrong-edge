@@ -23,6 +23,7 @@ const KEY_ESC = 0x1b;
 const NO_SCOPE = '(none)';
 
 const DEFAULT_MODEL = config.ai?.defaultModel || 'google/gemini-2.5-flash-lite';
+const MAX_BOX_WIDTH = 100;
 
 // Pinned at the top of the model picker for quick access
 const FAVORITE_MODELS = [
@@ -102,6 +103,10 @@ function resolveSettings() {
     largeModel: vscode['harry-cz.ai.large-model'] ?? 'google/gemini-2.5-flash',
     smallCliModel: vscode['harry-cz.ai.small-cli-model'] ?? 'haiku',
     largeCliModel: vscode['harry-cz.ai.large-cli-model'] ?? 'sonnet',
+    directOpenAiSmallModel: vscode['harry-cz.ai.direct-openai-small-model'] ?? 'gpt-5.4-mini',
+    directOpenAiLargeModel: vscode['harry-cz.ai.direct-openai-large-model'] ?? 'gpt-5.4',
+    directGeminiSmallModel: vscode['harry-cz.ai.direct-gemini-small-model'] ?? 'gemini-2.5-flash-lite',
+    directGeminiLargeModel: vscode['harry-cz.ai.direct-gemini-large-model'] ?? 'gemini-2.5-flash',
   };
 }
 
@@ -109,8 +114,11 @@ function resolveSettings() {
 
 const CLAUDE_CLI = '__claude_cli__';
 const CLAUDE_CLI_SONNET = '__claude_cli_sonnet__';
+const OPENAI_DIRECT = '__openai_direct__';
+const GEMINI_DIRECT = '__gemini_direct__';
 const MANUAL_VALUE = '__manual__';
 const LARGE_DIFF_CHARS = 4000;
+const SPECIAL_MODELS = new Set([CLAUDE_CLI, CLAUDE_CLI_SONNET, OPENAI_DIRECT, GEMINI_DIRECT, MANUAL_VALUE]);
 
 const COMMIT_JSON_SCHEMA = {
   type: 'object',
@@ -124,6 +132,42 @@ const COMMIT_JSON_SCHEMA = {
   required: ['type', 'scope', 'subject', 'body', 'breaking'],
   additionalProperties: false,
 };
+
+function isOpenRouterModel(model) {
+  return !!model && !SPECIAL_MODELS.has(model);
+}
+
+function fallbackModelForAvailableProviders({ hasOpenRouterKey, hasOpenAiKey, hasGeminiKey }) {
+  if (hasOpenRouterKey) return DEFAULT_MODEL;
+  if (hasOpenAiKey) return OPENAI_DIRECT;
+  if (hasGeminiKey) return GEMINI_DIRECT;
+  return CLAUDE_CLI;
+}
+
+function requiredEnvVarForModel(model) {
+  if (model === OPENAI_DIRECT) return 'OPENAI_API_KEY';
+  if (model === GEMINI_DIRECT) return 'GEMINI_API_KEY';
+  if (isOpenRouterModel(model)) return 'OPENROUTER_API_KEY';
+  return undefined;
+}
+
+function resolveWorkingModel(model, keyState) {
+  if (!model) {
+    return fallbackModelForAvailableProviders(keyState);
+  }
+
+  if (model === OPENAI_DIRECT && !keyState.hasOpenAiKey) {
+    return fallbackModelForAvailableProviders(keyState);
+  }
+  if (model === GEMINI_DIRECT && !keyState.hasGeminiKey) {
+    return fallbackModelForAvailableProviders(keyState);
+  }
+  if (isOpenRouterModel(model) && !keyState.hasOpenRouterKey) {
+    return fallbackModelForAvailableProviders(keyState);
+  }
+
+  return model;
+}
 
 // Returns: 'yes' | 'no' | 'unknown'
 async function checkOpenRouterCredits() {
@@ -204,6 +248,86 @@ async function callOpenRouter(prompt, model) {
   return data.choices[0].message.content;
 }
 
+async function callOpenAiDirect(prompt, model) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error('OPENAI_API_KEY is not set. Configure it before using OpenAI direct mode.');
+  }
+  const response = await fetch('https://api.openai.com/v1/responses', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      input: prompt,
+      text: {
+        format: {
+          type: 'json_schema',
+          name: 'commit_message',
+          schema: COMMIT_JSON_SCHEMA,
+          strict: true,
+        },
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`OpenAI API error (${response.status}): ${err.slice(0, 200)}`);
+  }
+
+  const data = await response.json();
+  if (!data.output_text) {
+    throw new Error('OpenAI API returned no structured output text');
+  }
+
+  return data.output_text;
+}
+
+async function callGeminiDirect(prompt, model) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY is not set. Configure it before using Gemini direct mode.');
+  }
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': apiKey,
+    },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: COMMIT_JSON_SCHEMA,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Gemini API error (${response.status}): ${err.slice(0, 200)}`);
+  }
+
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts
+    ?.map(part => part.text || '')
+    .join('')
+    .trim();
+
+  if (!text) {
+    const blockReason = data.promptFeedback?.blockReason;
+    if (blockReason) {
+      throw new Error(`Gemini API returned no content (${blockReason})`);
+    }
+    throw new Error('Gemini API returned no structured output text');
+  }
+
+  return text;
+}
+
 // ── Diff helpers ──────────────────────────────────────────────────
 
 function getStagedStat() {
@@ -252,12 +376,23 @@ Respond with ONLY valid JSON matching the schema: {type, scope, subject, body, b
 async function getAiSuggestion(stat, diff, motivation, model, settings) {
   const prompt = buildPrompt(stat, diff, motivation);
   let result;
+  const largeDiff = diff.length > (settings?.largeDiffThreshold || LARGE_DIFF_CHARS);
 
   if (model === CLAUDE_CLI || model === CLAUDE_CLI_SONNET) {
     const cliModel = model === CLAUDE_CLI_SONNET
       ? (settings?.largeCliModel || 'sonnet')
       : (settings?.smallCliModel || 'haiku');
     result = callClaudeCli(prompt, cliModel);
+  } else if (model === OPENAI_DIRECT) {
+    const directModel = largeDiff
+      ? (settings?.directOpenAiLargeModel || 'gpt-5.4')
+      : (settings?.directOpenAiSmallModel || 'gpt-5.4-mini');
+    result = await callOpenAiDirect(prompt, directModel);
+  } else if (model === GEMINI_DIRECT) {
+    const directModel = largeDiff
+      ? (settings?.directGeminiLargeModel || 'gemini-2.5-flash')
+      : (settings?.directGeminiSmallModel || 'gemini-2.5-flash-lite');
+    result = await callGeminiDirect(prompt, directModel);
   } else {
     result = await callOpenRouter(prompt, model);
   }
@@ -291,6 +426,125 @@ function capitalize(str) {
 function formatScope(scope) {
   return scope ? `(${scope})` : '';
 }
+
+const CONTROLS_ACCEPT = ' Enter = accept | Tab = edit | Ctrl+C = abort ';
+
+function wrapLine(line, width) {
+  if (!line) return [''];
+  if (width <= 0) return [line];
+
+  const wrapped = [];
+  const paragraphs = line.split('\n');
+
+  paragraphs.forEach(paragraph => {
+    if (!paragraph) {
+      wrapped.push('');
+      return;
+    }
+
+    const words = paragraph.split(/(\s+)/).filter(Boolean);
+    let current = '';
+
+    words.forEach(word => {
+      if (/^\s+$/.test(word)) {
+        if (current && current.length + 1 <= width && !current.endsWith(' ')) current += ' ';
+        return;
+      }
+
+      if (!current) {
+        if (word.length <= width) {
+          current = word;
+          return;
+        }
+
+        for (let i = 0; i < word.length; i += width) {
+          wrapped.push(word.slice(i, i + width));
+        }
+        return;
+      }
+
+      if ((current + word).length <= width) {
+        current += word;
+        return;
+      }
+
+      wrapped.push(current.trimEnd());
+      if (word.length <= width) {
+        current = word;
+        return;
+      }
+
+      for (let i = 0; i < word.length; i += width) {
+        const chunk = word.slice(i, i + width);
+        if (chunk.length === width || i + width < word.length) {
+          wrapped.push(chunk);
+        } else {
+          current = chunk;
+        }
+      }
+    });
+
+    if (current) wrapped.push(current.trimEnd());
+  });
+
+  return wrapped.length ? wrapped : [''];
+}
+
+// Box with optional controls slicing through the bottom border
+function printBox(lines, controlsLabel) {
+  const terminalWidth = process.stdout.columns || 80;
+  const chromeWidth = 6;
+  const maxContentWidth = Math.max(20, Math.min(MAX_BOX_WIDTH, terminalWidth - chromeWidth));
+  const wrappedLines = lines.flatMap(line => wrapLine(line, maxContentWidth));
+  const minWidth = controlsLabel ? Math.min(maxContentWidth, controlsLabel.length + 2) : Math.min(maxContentWidth, 60);
+  const maxLen = Math.max(wrappedLines.reduce((max, l) => Math.max(max, l.length), 0), minWidth);
+  const pad = s => s + ' '.repeat(Math.max(0, maxLen - s.length));
+  console.log(`  ┌─${'─'.repeat(maxLen)}─┐`);
+  wrappedLines.forEach(l => console.log(`  │ ${pad(l)} │`));
+  if (controlsLabel) {
+    const label = controlsLabel.length > maxLen ? controlsLabel.slice(0, maxLen) : controlsLabel;
+    const inner = `─${label}─`;
+    console.log(`  └${inner}${'─'.repeat(Math.max(0, maxLen - label.length - 2))}┘`);
+  } else {
+    console.log(`  └─${'─'.repeat(maxLen)}─┘`);
+  }
+}
+
+function buildProviderSetupLines() {
+  return [
+    'AI provider setup options:',
+    '',
+    'OpenRouter:',
+    '  1. Get a key: openrouter.ai/settings/keys',
+    '  2. Add to ~/.zshrc: export OPENROUTER_API_KEY="your-key"',
+    '',
+    'OpenAI:',
+    '  1. Get a key: platform.openai.com/api-keys',
+    '  2. Add to ~/.zshrc: export OPENAI_API_KEY="your-key"',
+    '',
+    'Gemini:',
+    '  1. Get a key: ai.google.dev/gemini-api/docs/api-key',
+    '  2. Add to ~/.zshrc: export GEMINI_API_KEY="your-key"',
+    '',
+    'Then run: source ~/.zshrc',
+    '',
+    'Claude CLI also works without these env vars if `claude` is installed.',
+  ];
+}
+
+function pushChoiceGroup(choices, label, items) {
+  if (!items.length) return;
+  if (choices.length) {
+    choices.push({ type: 'separator', line: '────────────────' });
+  }
+  choices.push({ type: 'separator', line: `── ${label} ──` });
+  choices.push(...items);
+}
+
+function findFirstSelectableChoiceIndex(choices) {
+  return choices.findIndex(choice => choice && choice.type !== 'separator');
+}
+
 
 function waitForKey() {
   return new Promise((resolve, reject) => {
@@ -353,6 +607,7 @@ async function manualCommit(cz, commit, { type, scope, subject, body, breaking }
       default: breaking || undefined,
     });
   }
+
 
   const answers = await cz.prompt(prompts);
 
@@ -457,32 +712,70 @@ module.exports = {
       return;
     }
 
-    const hasApiKey = !!process.env.OPENROUTER_API_KEY;
+    const hasOpenRouterKey = !!process.env.OPENROUTER_API_KEY;
+    const hasOpenAiKey = !!process.env.OPENAI_API_KEY;
+    const hasGeminiKey = !!process.env.GEMINI_API_KEY;
+    const hasAnyApiKey = hasOpenRouterKey || hasOpenAiKey || hasGeminiKey;
+    const keyState = { hasOpenRouterKey, hasOpenAiKey, hasGeminiKey };
     const resolved = resolveSettings();
-    const settings = hasApiKey ? resolved : { ...resolved, model: CLAUDE_CLI, skipModel: false };
+    const baseSettings = hasAnyApiKey ? resolved : { ...resolved, model: CLAUDE_CLI, skipModel: false };
+    const configuredModel = baseSettings.model;
+    const workingModel = resolveWorkingModel(configuredModel, keyState);
+    const settings = workingModel === configuredModel ? baseSettings : { ...baseSettings, model: workingModel };
+
+    if (workingModel !== configuredModel) {
+      const requiredVar = requiredEnvVarForModel(configuredModel);
+      if (requiredVar) {
+        console.log(
+          `\n  Configured model "${configuredModel}" requires ${requiredVar}, which is not set. Falling back to "${workingModel}".\n`
+        );
+      }
+    }
 
     // Check OpenRouter credits before bothering with the model list
     // creditStatus: 'yes' = confirmed, 'unknown' = key works but never used, 'no' = none
     let creditStatus = 'no';
-    if (hasApiKey) {
+    if (hasOpenRouterKey) {
       process.stdout.write('\n  Checking OpenRouter credits...');
       try {
         creditStatus = await checkOpenRouterCredits();
-        const statusMsg = { yes: ' OK.\n', no: ' no credits remaining.\n', unknown: ' unable to confirm (key never used).\n' };
-        console.log(statusMsg[creditStatus]);
+        if (creditStatus === 'yes') {
+          console.log(' OK.\n');
+        } else if (creditStatus === 'no') {
+          console.log(' no credits.\n');
+          printBox([
+            'No OpenRouter credits remaining.',
+            'Purchase credits: https://openrouter.ai/settings/credits',
+          ]);
+          console.log('');
+        } else {
+          console.log(' uncertain (key never used).\n');
+        }
       } catch {
         console.log(' failed to check.\n');
       }
     }
 
     // Fetch models whenever we have an API key (can't fetch without one)
-    const modelsPromise = hasApiKey && !settings.skipModel ? fetchModels() : null;
+    const modelsPromise = hasOpenRouterKey && !settings.skipModel ? fetchModels() : null;
 
     // Model selection
     let model = settings.model;
     if (!settings.skipModel) {
       const choices = [];
       let defaultIdx = 0;
+      const directApiChoices = [];
+      const localCliChoices = [
+        { value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' },
+      ];
+      const manualChoices = [{ value: MANUAL_VALUE, name: 'Manual (no AI)' }];
+
+      if (hasOpenAiKey) {
+        directApiChoices.push({ value: OPENAI_DIRECT, name: `OpenAI API (${settings.directOpenAiSmallModel} / ${settings.directOpenAiLargeModel})` });
+      }
+      if (hasGeminiKey) {
+        directApiChoices.push({ value: GEMINI_DIRECT, name: `Gemini API (${settings.directGeminiSmallModel} / ${settings.directGeminiLargeModel})` });
+      }
 
       if (modelsPromise) {
         process.stdout.write('  Fetching available models...');
@@ -491,45 +784,56 @@ module.exports = {
           console.log(` found ${pinned.length + rest.length} models.\n`);
 
           if (creditStatus === 'yes') {
-            // Credits confirmed — OpenRouter models first, Claude CLI + Manual at bottom of favorites
-            if (pinned.length) choices.push(pinned[0]);
-            choices.push({ value: MANUAL_VALUE, name: 'Manual (no AI)' });
-            choices.push(...pinned.slice(1));
-            choices.push({ value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' });
-            if (rest.length) {
-              choices.push({ type: 'separator', line: '────────────────' });
-              choices.push(...rest);
-            }
+            const openRouterChoices = [...pinned, ...rest];
+            pushChoiceGroup(choices, 'Direct APIs', directApiChoices);
+            pushChoiceGroup(choices, 'OpenRouter', openRouterChoices);
+            pushChoiceGroup(choices, 'Local CLI', localCliChoices);
+            pushChoiceGroup(choices, 'Manual', manualChoices);
 
             defaultIdx = choices.findIndex(m => m.value === model);
             if (defaultIdx === -1 && model && model !== CLAUDE_CLI) {
               choices.unshift({ value: model, name: `${model} (configured)` });
               defaultIdx = 0;
             } else {
-              defaultIdx = Math.max(defaultIdx, 0);
+              defaultIdx = defaultIdx === -1 ? findFirstSelectableChoiceIndex(choices) : defaultIdx;
             }
           } else {
-            // No/uncertain credits — Claude CLI + Manual first, OpenRouter models below
-            choices.push({ value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' });
-            choices.push({ value: MANUAL_VALUE, name: 'Manual (no AI)' });
+            pushChoiceGroup(choices, 'Local CLI', localCliChoices);
+            pushChoiceGroup(choices, 'Direct APIs', directApiChoices);
             if (pinned.length || rest.length) {
-              choices.push({ type: 'separator', line: '── OpenRouter (may require credits) ──' });
-              choices.push(...pinned);
-              choices.push(...rest);
+              pushChoiceGroup(choices, 'OpenRouter (may require credits)', [...pinned, ...rest]);
             }
-            defaultIdx = 0;
+            pushChoiceGroup(choices, 'Manual', manualChoices);
+            defaultIdx = findFirstSelectableChoiceIndex(choices);
           }
         } catch (err) {
           console.log(` failed (${err.message})\n`);
-          choices.push({ value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' });
-          choices.push({ value: MANUAL_VALUE, name: 'Manual (no AI)' });
+          pushChoiceGroup(choices, 'Local CLI', localCliChoices);
+          pushChoiceGroup(choices, 'Direct APIs', directApiChoices);
+          pushChoiceGroup(choices, 'Manual', manualChoices);
           defaultIdx = choices.findIndex(c => c.value === CLAUDE_CLI);
+          if (defaultIdx === -1) {
+            defaultIdx = findFirstSelectableChoiceIndex(choices);
+          }
         }
       } else {
-        choices.push({ value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' });
-        choices.push({ value: MANUAL_VALUE, name: 'Manual (no AI)' });
-        defaultIdx = choices.findIndex(c => c.value === CLAUDE_CLI);
+        if (!hasAnyApiKey) {
+          console.log('');
+          printBox(buildProviderSetupLines());
+          console.log('');
+        }
+        pushChoiceGroup(choices, 'Local CLI', localCliChoices);
+        pushChoiceGroup(choices, 'Direct APIs', directApiChoices);
+        pushChoiceGroup(choices, 'Manual', manualChoices);
+        defaultIdx = choices.findIndex(c => c.value === model);
+        if (defaultIdx === -1) {
+          defaultIdx = choices.findIndex(c => c.value === CLAUDE_CLI);
+        }
+        if (defaultIdx === -1) {
+          defaultIdx = findFirstSelectableChoiceIndex(choices);
+        }
       }
+
 
       const answer = await cz.prompt([
         {
@@ -560,6 +864,7 @@ module.exports = {
       model = settings.largeModel;
     }
 
+  
     const { motivation } = await cz.prompt([
       {
         type: 'input',
@@ -569,7 +874,12 @@ module.exports = {
     ]);
 
     let ai = null;
-    const modelLabel = model === CLAUDE_CLI ? 'Haiku' : model === CLAUDE_CLI_SONNET ? 'Sonnet' : model;
+    const modelLabel =
+      model === CLAUDE_CLI ? 'Claude CLI (Haiku)' :
+      model === CLAUDE_CLI_SONNET ? 'Claude CLI (Sonnet)' :
+      model === OPENAI_DIRECT ? `OpenAI API (${largeDiff ? settings.directOpenAiLargeModel : settings.directOpenAiSmallModel})` :
+      model === GEMINI_DIRECT ? `Gemini API (${largeDiff ? settings.directGeminiLargeModel : settings.directGeminiSmallModel})` :
+      model;
     process.stdout.write(`  Generating AI suggestion (${modelLabel})...`);
     try {
       ai = await getAiSuggestion(stat, diff, motivation, model, settings);
@@ -582,21 +892,43 @@ module.exports = {
         ? { value: CLAUDE_CLI_SONNET, name: 'Claude Sonnet CLI (larger model)' }
         : { value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' };
 
+      const fallbackChoices = [];
+      pushChoiceGroup(fallbackChoices, 'Local CLI', [cliFallback]);
+      if (hasOpenAiKey && model !== OPENAI_DIRECT) {
+        pushChoiceGroup(fallbackChoices, 'Direct APIs', [
+          { value: OPENAI_DIRECT, name: `OpenAI API (${settings.directOpenAiSmallModel} / ${settings.directOpenAiLargeModel})` },
+        ]);
+      }
+      if (hasGeminiKey && model !== GEMINI_DIRECT) {
+        const hasDirectApiGroup = fallbackChoices.some(choice => choice.type === 'separator' && choice.line === '── Direct APIs ──');
+        if (hasDirectApiGroup) {
+          fallbackChoices.push({ value: GEMINI_DIRECT, name: `Gemini API (${settings.directGeminiSmallModel} / ${settings.directGeminiLargeModel})` });
+        } else {
+          pushChoiceGroup(fallbackChoices, 'Direct APIs', [
+            { value: GEMINI_DIRECT, name: `Gemini API (${settings.directGeminiSmallModel} / ${settings.directGeminiLargeModel})` },
+          ]);
+        }
+      }
+      pushChoiceGroup(fallbackChoices, 'Manual', [{ value: MANUAL_VALUE, name: 'Manual (no AI)' }]);
+
+
       const { fallback } = await cz.prompt([
         {
           type: 'list',
           name: 'fallback',
           message: 'AI generation failed. How would you like to proceed?',
-          choices: [
-            cliFallback,
-            { value: MANUAL_VALUE, name: 'Manual (no AI)' },
-          ],
+          choices: fallbackChoices,
         },
       ]);
 
       if (fallback !== MANUAL_VALUE) {
-        const fallbackLabel = fallback === CLAUDE_CLI_SONNET ? 'Sonnet' : 'Haiku';
-        process.stdout.write(`  Generating AI suggestion via Claude ${fallbackLabel} CLI...`);
+        const fallbackLabel =
+          fallback === CLAUDE_CLI_SONNET ? 'Claude Sonnet CLI' :
+          fallback === CLAUDE_CLI ? 'Claude CLI' :
+          fallback === OPENAI_DIRECT ? 'OpenAI API' :
+          fallback === GEMINI_DIRECT ? 'Gemini API' :
+          fallback;
+        process.stdout.write(`  Generating AI suggestion via ${fallbackLabel}...`);
         try {
           ai = await getAiSuggestion(stat, diff, motivation, fallback, settings);
           console.log(` done!\n\n  Suggestion: ${ai.type}${formatScope(ai.scope)}: ${ai.subject}\n`);
@@ -616,6 +948,7 @@ async function promptForCommit(cz, commit, ai) {
   const defaultTypeIdx = ai ? Math.max(TYPES.findIndex(t => t.value === ai.type), 0) : 0;
   const scopeChoices = SCOPES.map(s => s.name || NO_SCOPE);
   const defaultScopeIdx = ai ? Math.max(scopeChoices.findIndex(s => s === ai.scope), 0) : 0;
+
 
   const answers = await cz.prompt([
     {
@@ -646,18 +979,16 @@ async function promptForCommit(cz, commit, ai) {
   msg.breaking = ai.breaking || '';
 
   const scopePart = formatScope(scope);
-  console.log('\n  ┌─────────────────────────────────────────────');
-  console.log(`  │ ${msg.type}${scopePart}: ${msg.subject}`);
+  const boxLines = [`${msg.type}${scopePart}: ${msg.subject}`];
   if (msg.body) {
-    console.log('  │');
-    msg.body.split('\n').forEach(line => console.log(`  │ ${line}`));
+    boxLines.push('', ...msg.body.split('\n'));
   }
   if (msg.breaking) {
-    console.log('  │');
-    console.log(`  │ BREAKING CHANGE: ${msg.breaking}`);
+    boxLines.push('', `BREAKING CHANGE: ${msg.breaking}`);
   }
-  console.log('  └─────────────────────────────────────────────');
-  console.log('\n  Enter = accept  |  Tab = edit  |  Ctrl+C = abort\n');
+  console.log('');
+  printBox(boxLines, CONTROLS_ACCEPT);
+  console.log('');
 
   const key = await waitForValidKey();
 
