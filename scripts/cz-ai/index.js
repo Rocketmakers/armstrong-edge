@@ -118,6 +118,7 @@ const OPENAI_DIRECT = '__openai_direct__';
 const GEMINI_DIRECT = '__gemini_direct__';
 const MANUAL_VALUE = '__manual__';
 const LARGE_DIFF_CHARS = 4000;
+const SPECIAL_MODELS = new Set([CLAUDE_CLI, CLAUDE_CLI_SONNET, OPENAI_DIRECT, GEMINI_DIRECT, MANUAL_VALUE]);
 
 const COMMIT_JSON_SCHEMA = {
   type: 'object',
@@ -131,6 +132,42 @@ const COMMIT_JSON_SCHEMA = {
   required: ['type', 'scope', 'subject', 'body', 'breaking'],
   additionalProperties: false,
 };
+
+function isOpenRouterModel(model) {
+  return !!model && !SPECIAL_MODELS.has(model);
+}
+
+function fallbackModelForAvailableProviders({ hasOpenRouterKey, hasOpenAiKey, hasGeminiKey }) {
+  if (hasOpenRouterKey) return DEFAULT_MODEL;
+  if (hasOpenAiKey) return OPENAI_DIRECT;
+  if (hasGeminiKey) return GEMINI_DIRECT;
+  return CLAUDE_CLI;
+}
+
+function requiredEnvVarForModel(model) {
+  if (model === OPENAI_DIRECT) return 'OPENAI_API_KEY';
+  if (model === GEMINI_DIRECT) return 'GEMINI_API_KEY';
+  if (isOpenRouterModel(model)) return 'OPENROUTER_API_KEY';
+  return undefined;
+}
+
+function resolveWorkingModel(model, keyState) {
+  if (!model) {
+    return fallbackModelForAvailableProviders(keyState);
+  }
+
+  if (model === OPENAI_DIRECT && !keyState.hasOpenAiKey) {
+    return fallbackModelForAvailableProviders(keyState);
+  }
+  if (model === GEMINI_DIRECT && !keyState.hasGeminiKey) {
+    return fallbackModelForAvailableProviders(keyState);
+  }
+  if (isOpenRouterModel(model) && !keyState.hasOpenRouterKey) {
+    return fallbackModelForAvailableProviders(keyState);
+  }
+
+  return model;
+}
 
 // Returns: 'yes' | 'no' | 'unknown'
 async function checkOpenRouterCredits() {
@@ -213,6 +250,9 @@ async function callOpenRouter(prompt, model) {
 
 async function callOpenAiDirect(prompt, model) {
   const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error('OPENAI_API_KEY is not set. Configure it before using OpenAI direct mode.');
+  }
   const response = await fetch('https://api.openai.com/v1/responses', {
     method: 'POST',
     headers: {
@@ -248,6 +288,9 @@ async function callOpenAiDirect(prompt, model) {
 
 async function callGeminiDirect(prompt, model) {
   const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY is not set. Configure it before using Gemini direct mode.');
+  }
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
     method: 'POST',
     headers: {
@@ -404,7 +447,7 @@ function wrapLine(line, width) {
 
     words.forEach(word => {
       if (/^\s+$/.test(word)) {
-        if (current && current.length < width) current += word;
+        if (current && current.length + 1 <= width && !current.endsWith(' ')) current += ' ';
         return;
       }
 
@@ -673,8 +716,21 @@ module.exports = {
     const hasOpenAiKey = !!process.env.OPENAI_API_KEY;
     const hasGeminiKey = !!process.env.GEMINI_API_KEY;
     const hasAnyApiKey = hasOpenRouterKey || hasOpenAiKey || hasGeminiKey;
+    const keyState = { hasOpenRouterKey, hasOpenAiKey, hasGeminiKey };
     const resolved = resolveSettings();
-    const settings = hasAnyApiKey ? resolved : { ...resolved, model: CLAUDE_CLI, skipModel: false };
+    const baseSettings = hasAnyApiKey ? resolved : { ...resolved, model: CLAUDE_CLI, skipModel: false };
+    const configuredModel = baseSettings.model;
+    const workingModel = resolveWorkingModel(configuredModel, keyState);
+    const settings = workingModel === configuredModel ? baseSettings : { ...baseSettings, model: workingModel };
+
+    if (workingModel !== configuredModel) {
+      const requiredVar = requiredEnvVarForModel(configuredModel);
+      if (requiredVar) {
+        console.log(
+          `\n  Configured model "${configuredModel}" requires ${requiredVar}, which is not set. Falling back to "${workingModel}".\n`
+        );
+      }
+    }
 
     // Check OpenRouter credits before bothering with the model list
     // creditStatus: 'yes' = confirmed, 'unknown' = key works but never used, 'no' = none
