@@ -1,3 +1,15 @@
+# [6.2.0](https://github.com/Rocketmakers/armstrong-edge/compare/v6.1.0...v6.2.0) (2026-04-13)
+
+
+### Bug Fixes
+
+* **config:** Ensured all api key check have fallbacks & whitespace works nicely ([8cf06cd](https://github.com/Rocketmakers/armstrong-edge/commit/8cf06cdb45715027326183a1dea5eff0e955f291))
+
+
+### Features
+
+* **form:** Error msges can now be overrided neatly ([eb2ea06](https://github.com/Rocketmakers/armstrong-edge/commit/eb2ea068a857ef0002865406129731ba801d1e2a))
+
 # [6.1.0](https://github.com/Rocketmakers/armstrong-edge/compare/v6.0.0...v6.1.0) (2026-04-08)
 
 
