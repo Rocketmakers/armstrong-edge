@@ -94,14 +94,4 @@ const czCustomizable = {
   ],
 };
 
-/**
- * AI model defaults for cz-ai (OpenRouter).
- * Can be overridden by VS Code setting (harry-cz.ai.model)
- * or env var (CZ_AI_MODEL).
- * Falls back to DEFAULT_MODEL in scripts/cz-ai/index.js if unset.
- */
-const ai = {
-  defaultModel: 'google/gemini-2.5-flash-lite',
-};
-
-module.exports = { czCustomizable, ai };
+module.exports = { czCustomizable };
