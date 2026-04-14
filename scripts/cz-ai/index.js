@@ -15,12 +15,10 @@ const {
 const {
   buildModelChoices,
   getAiSuggestion,
-  getConfiguredDefaultModel,
+  getDefaultModelChoice,
   getExecutionModelLabel,
   getMissingKeyMessage,
   getModelChoiceLabel,
-  getRetryFallbackModel,
-  isConfiguredDefaultModel,
   promptForModel,
   resolveExecutionModel,
 } = require('./ai');
@@ -41,7 +39,11 @@ function printJson(value) {
   console.log(JSON.stringify(value, null, 2));
 }
 
-async function ensureModelReady(cz, getModelChoices, model, settings) {
+function printWarning(message) {
+  console.log(`\n  Warning: ${message}\n`);
+}
+
+async function ensureModelReady(cz, modelChoices, model) {
   let nextModel = model;
 
   while (nextModel !== MANUAL_VALUE) {
@@ -51,19 +53,8 @@ async function ensureModelReady(cz, getModelChoices, model, settings) {
       return nextModel;
     }
 
-    const defaultFailure = isConfiguredDefaultModel(nextModel, settings);
-    const warningMessage = defaultFailure
-      ? `Configured default unavailable. ${missingKeyMessage}`
-      : missingKeyMessage;
-    const fallbackModel = defaultFailure ? MANUAL_VALUE : getRetryFallbackModel(nextModel);
-    nextModel = await promptForModel(
-      cz,
-      await getModelChoices(),
-      nextModel,
-      fallbackModel,
-      true,
-      warningMessage
-    );
+    printWarning(missingKeyMessage);
+    nextModel = await promptForModel(cz, modelChoices, MANUAL_VALUE);
   }
 
   return nextModel;
@@ -88,58 +79,45 @@ async function runHeadlessPrompter(commit, stat) {
 }
 
 async function selectModel(cz, settings) {
-  const allowOpenRouterModels = Boolean(process.env.OPENROUTER_API_KEY);
-  const configuredDefaultModel = getConfiguredDefaultModel(settings);
-  const configuredDefaultMissingKeyMessage =
-    settings.configuredDefault && getMissingKeyMessage(configuredDefaultModel);
-  const defaultSelectionWarning = settings.configuredDefaultWarning ||
-    (configuredDefaultMissingKeyMessage
-      ? `Configured default unavailable. ${configuredDefaultMissingKeyMessage}`
-      : null);
-  const initialModel = defaultSelectionWarning ? MANUAL_VALUE : configuredDefaultModel;
-  let cachedChoices;
+  const modelChoices = buildModelChoices(settings);
+  const initialModel = getDefaultModelChoice(settings);
 
-  async function getModelChoices() {
-    if (!cachedChoices) {
-      cachedChoices = await buildModelChoices(configuredDefaultModel, allowOpenRouterModels, settings);
+  settings.warnings.forEach(printWarning);
+
+  if (settings.skipModelSelection) {
+    if (initialModel !== MANUAL_VALUE) {
+      const missingKeyMessage = getMissingKeyMessage(initialModel);
+
+      if (missingKeyMessage) {
+        printWarning(`Configured default unavailable. ${missingKeyMessage}`);
+        return {
+          model: MANUAL_VALUE,
+          modelChoices,
+        };
+      }
+
+      console.log(`\n  Model: ${getModelChoiceLabel(initialModel)} (from env)\n`);
+      return {
+        model: initialModel,
+        modelChoices,
+      };
     }
 
-    return cachedChoices;
+    return {
+      model: MANUAL_VALUE,
+      modelChoices,
+    };
   }
 
-  let model = initialModel;
-
-  if (!settings.skipDefaultModelSelection) {
-    model = await promptForModel(
-      cz,
-      await getModelChoices(),
-      initialModel,
-      MANUAL_VALUE,
-      false,
-      defaultSelectionWarning
-    );
-  } else if (settings.configuredDefault && !defaultSelectionWarning) {
-    console.log(`\n  Model: ${getModelChoiceLabel(model)} (configured default)\n`);
-  } else if (defaultSelectionWarning) {
-    model = await promptForModel(
-      cz,
-      await getModelChoices(),
-      MANUAL_VALUE,
-      MANUAL_VALUE,
-      true,
-      defaultSelectionWarning
-    );
-  } else {
-    model = MANUAL_VALUE;
-  }
+  const model = await promptForModel(cz, modelChoices, initialModel);
 
   return {
-    getModelChoices,
     model,
+    modelChoices,
   };
 }
 
-async function generateAiSuggestion(cz, stat, diff, model, settings, getModelChoices) {
+async function generateAiSuggestion(cz, stat, diff, model, settings, modelChoices) {
   const largeDiff = diff.length > settings.largeDiffThreshold;
   const { motivation } = await cz.prompt([
     {
@@ -160,7 +138,7 @@ async function generateAiSuggestion(cz, stat, diff, model, settings, getModelCho
       };
     }
 
-    selectedModel = await ensureModelReady(cz, getModelChoices, selectedModel, settings);
+    selectedModel = await ensureModelReady(cz, modelChoices, selectedModel);
     if (selectedModel === MANUAL_VALUE) {
       return {
         model: selectedModel,
@@ -176,15 +154,7 @@ async function generateAiSuggestion(cz, stat, diff, model, settings, getModelCho
       console.log(` done!\n\n  Suggestion: ${suggestion.type}${formatScope(suggestion.scope)}: ${suggestion.subject}\n`);
     } catch (error) {
       console.log(` failed.\n\n  Warning: ${error.message}\n`);
-      const defaultFailure = isConfiguredDefaultModel(selectedModel, settings);
-      selectedModel = await promptForModel(
-        cz,
-        await getModelChoices(),
-        selectedModel,
-        defaultFailure ? MANUAL_VALUE : getRetryFallbackModel(selectedModel),
-        true,
-        defaultFailure ? `Configured default failed. ${error.message}` : error.message
-      );
+      selectedModel = await promptForModel(cz, modelChoices, selectedModel);
     }
   }
 
@@ -208,15 +178,15 @@ module.exports = {
     }
 
     const settings = resolveSettings();
-    const { getModelChoices, model: selectedModel } = await selectModel(cz, settings);
-    const readyModel = await ensureModelReady(cz, getModelChoices, selectedModel, settings);
+    const { model: selectedModel, modelChoices } = await selectModel(cz, settings);
+    const readyModel = await ensureModelReady(cz, modelChoices, selectedModel);
 
     if (readyModel === MANUAL_VALUE) {
       return promptForCommit(cz, commit, null);
     }
 
     const diff = getStagedDiff();
-    const { suggestion } = await generateAiSuggestion(cz, stat, diff, readyModel, settings, getModelChoices);
+    const { suggestion } = await generateAiSuggestion(cz, stat, diff, readyModel, settings, modelChoices);
     return promptForCommit(cz, commit, suggestion);
   },
 };

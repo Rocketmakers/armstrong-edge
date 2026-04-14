@@ -3,10 +3,6 @@
 const {
   ALLOW_CUSTOM_SCOPES,
   CUSTOM_SCOPE,
-  KEY_CTRL_C,
-  KEY_ENTER,
-  KEY_ESC,
-  KEY_TAB,
   NO_SCOPE,
   SCOPES,
   TYPES,
@@ -20,35 +16,6 @@ const {
   getScopeValidationError,
   getSubjectValidationError,
 } = require('./commit');
-
-function waitForKey() {
-  return new Promise((resolve, reject) => {
-    const { stdin } = process;
-
-    if (!stdin.isTTY) {
-      reject(new Error('stdin is not a TTY - cannot read keypress'));
-      return;
-    }
-
-    const wasRaw = stdin.isRaw ?? false;
-    stdin.setRawMode(true);
-    stdin.resume();
-    stdin.once('data', data => {
-      stdin.setRawMode(wasRaw);
-      stdin.pause();
-      resolve(data[0]);
-    });
-  });
-}
-
-async function waitForValidKey() {
-  while (true) {
-    const key = await waitForKey();
-
-    if (key === KEY_ESC) return KEY_CTRL_C;
-    if (key === KEY_CTRL_C || key === KEY_ENTER || key === KEY_TAB) return key;
-  }
-}
 
 function buildScopeChoices() {
   const choices = SCOPES.map(scope => scope.name || NO_SCOPE);
@@ -168,7 +135,7 @@ function printCommitPreview(commitParts) {
   }
 
   console.log('  ---------------------------------------------');
-  console.log('\n  Enter = accept  |  Tab = edit  |  Ctrl+C = abort\n');
+  console.log('');
 }
 
 async function promptForCommit(cz, commit, aiSuggestion) {
@@ -208,14 +175,26 @@ async function promptForCommit(cz, commit, aiSuggestion) {
 
   printCommitPreview(previewCommit);
 
-  const key = await waitForValidKey();
+  const { action } = await cz.prompt([
+    {
+      type: 'list',
+      name: 'action',
+      message: 'What do you want to do with this suggestion?',
+      choices: [
+        { value: 'accept', name: 'Accept suggestion' },
+        { value: 'edit', name: 'Edit before committing' },
+        { value: 'abort', name: 'Abort' },
+      ],
+      default: 0,
+    },
+  ]);
 
-  if (key === KEY_CTRL_C) {
+  if (action === 'abort') {
     console.log('\n  Aborted.\n');
     return;
   }
 
-  if (key === KEY_TAB) {
+  if (action === 'edit') {
     return manualCommit(cz, commit, previewCommit);
   }
 

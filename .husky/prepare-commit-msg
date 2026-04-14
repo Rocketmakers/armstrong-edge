@@ -28,8 +28,8 @@ if sh -c ': < /dev/tty' 2>/dev/null; then
   # Abort the outer git commit (inner one already succeeded, or user cancelled)
   exit 1
 else
-  # Headless (no TTY, e.g. Claude Code) — generate AI message and let git's
-  # normal commit flow proceed. No inner commit needed.
+  # Headless (no TTY, e.g. Claude Code) — use the env-driven cz-ai path and
+  # let git's normal commit flow proceed. No inner commit needed.
   CZ_AI_HEADLESS=1 pnpm exec cz --hook --commit-msg-file "$COMMIT_MSG_FILE"
   CZ_EXIT=$?
 
