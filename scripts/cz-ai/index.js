@@ -102,6 +102,10 @@ function resolveSettings() {
     largeModel: vscode['harry-cz.ai.large-model'] ?? 'google/gemini-2.5-flash',
     smallCliModel: vscode['harry-cz.ai.small-cli-model'] ?? 'haiku',
     largeCliModel: vscode['harry-cz.ai.large-cli-model'] ?? 'sonnet',
+    geminiSmallModel: vscode['harry-cz.ai.gemini-small-model'] ?? 'gemini-2.5-flash',
+    geminiLargeModel: vscode['harry-cz.ai.gemini-large-model'] ?? 'gemini-2.5-pro',
+    openAiSmallModel: vscode['harry-cz.ai.openai-small-model'] ?? 'gpt-5.4-mini',
+    openAiLargeModel: vscode['harry-cz.ai.openai-large-model'] ?? 'gpt-5.4',
   };
 }
 
@@ -109,6 +113,8 @@ function resolveSettings() {
 
 const CLAUDE_CLI = '__claude_cli__';
 const CLAUDE_CLI_SONNET = '__claude_cli_sonnet__';
+const GEMINI_DIRECT = '__gemini__';
+const OPENAI_DIRECT = '__openai__';
 const MANUAL_VALUE = '__manual__';
 const LARGE_DIFF_CHARS = 4000;
 
@@ -125,19 +131,6 @@ const COMMIT_JSON_SCHEMA = {
   additionalProperties: false,
 };
 
-// Returns: 'yes' | 'no' | 'unknown'
-async function checkOpenRouterCredits() {
-  const res = await fetch('https://openrouter.ai/api/v1/auth/key', {
-    headers: { Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}` },
-  });
-  if (!res.ok) return 'no';
-  const data = await res.json();
-  const { usage, limit } = data.data || {};
-  if (limit != null) return usage < limit ? 'yes' : 'no';
-  // No key-level limit — if usage > 0, credits have worked before
-  return usage > 0 ? 'yes' : 'unknown';
-}
-
 function callClaudeCli(prompt, cliModel = 'haiku') {
   return execFileSync('claude', ['-p', '--model', cliModel], {
     input: prompt,
@@ -145,6 +138,78 @@ function callClaudeCli(prompt, cliModel = 'haiku') {
     timeout: 60000,
     maxBuffer: MAX_BUFFER,
   });
+}
+
+async function callGemini(prompt, model) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': apiKey,
+    },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 0.3,
+        responseMimeType: 'application/json',
+        responseJsonSchema: COMMIT_JSON_SCHEMA,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Gemini API error (${response.status}): ${err.slice(0, 200)}`);
+  }
+
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts
+    ?.map(part => part.text || '')
+    .join('')
+    .trim();
+
+  if (!text) {
+    throw new Error('Gemini API returned an empty response');
+  }
+
+  return text;
+}
+
+async function callOpenAi(prompt, model) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.3,
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'commit_message',
+          strict: true,
+          schema: COMMIT_JSON_SCHEMA,
+        },
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`OpenAI API error (${response.status}): ${err.slice(0, 200)}`);
+  }
+
+  const data = await response.json();
+  const text = data.choices?.[0]?.message?.content;
+  if (!text) {
+    throw new Error('OpenAI API returned an empty response');
+  }
+  return text;
 }
 
 async function fetchModels() {
@@ -249,17 +314,21 @@ BREAKING CHANGES:
 Respond with ONLY valid JSON matching the schema: {type, scope, subject, body, breaking}`;
 }
 
-async function getAiSuggestion(stat, diff, motivation, model, settings) {
+async function getAiSuggestion(stat, diff, motivation, model, settings, providerModel = model) {
   const prompt = buildPrompt(stat, diff, motivation);
   let result;
 
-  if (model === CLAUDE_CLI || model === CLAUDE_CLI_SONNET) {
-    const cliModel = model === CLAUDE_CLI_SONNET
+  if (providerModel === CLAUDE_CLI || providerModel === CLAUDE_CLI_SONNET) {
+    const cliModel = providerModel === CLAUDE_CLI_SONNET
       ? (settings?.largeCliModel || 'sonnet')
       : (settings?.smallCliModel || 'haiku');
     result = callClaudeCli(prompt, cliModel);
+  } else if (model === GEMINI_DIRECT) {
+    result = await callGemini(prompt, providerModel);
+  } else if (model === OPENAI_DIRECT) {
+    result = await callOpenAi(prompt, providerModel);
   } else {
-    result = await callOpenRouter(prompt, model);
+    result = await callOpenRouter(prompt, providerModel);
   }
 
   const parsed = parseJsonResponse(result);
@@ -324,6 +393,235 @@ function buildCommitMessage({ type, scope, subject, body, breaking }) {
   if (body) msg += `\n\n${body}`;
   if (breaking) msg += `\n\nBREAKING CHANGE: ${breaking}`;
   return msg;
+}
+
+function isSpecialModel(value) {
+  return [
+    MANUAL_VALUE,
+    CLAUDE_CLI,
+    CLAUDE_CLI_SONNET,
+    GEMINI_DIRECT,
+    OPENAI_DIRECT,
+  ].includes(value);
+}
+
+function isOpenRouterModel(value) {
+  return !!value && !isSpecialModel(value);
+}
+
+function getModelChoiceLabel(value) {
+  if (value === MANUAL_VALUE) return 'Manual';
+  if (value === CLAUDE_CLI || value === CLAUDE_CLI_SONNET) return 'Claude CLI';
+  if (value === GEMINI_DIRECT) return 'Gemini';
+  if (value === OPENAI_DIRECT) return 'OpenAI';
+  return value;
+}
+
+function formatModelVariantLabel(model) {
+  const friendlyLabels = {
+    'haiku': 'Haiku',
+    'sonnet': 'Sonnet',
+    'gemini-2.5-flash-lite': 'Flash Lite',
+    'gemini-2.5-flash': 'Flash',
+    'gemini-2.5-pro': 'Pro',
+    'gpt-5.4-nano': 'Nano',
+    'gpt-5.4-mini': 'Mini',
+    'gpt-5.4': '5.4',
+  };
+
+  if (friendlyLabels[model]) {
+    return friendlyLabels[model];
+  }
+
+  return model;
+}
+
+function buildAutoSelectChoiceName(label, smallModel, largeModel) {
+  return `${label} (auto-selects ${formatModelVariantLabel(smallModel)} or ${formatModelVariantLabel(largeModel)})`;
+}
+
+function detectCurrentShell() {
+  const shell = (process.env.SHELL || '').toLowerCase();
+  const comSpec = (process.env.ComSpec || '').toLowerCase();
+
+  if (shell.includes('zsh')) return 'zsh';
+  if (shell.includes('bash')) return 'bash';
+  if (shell.includes('fish')) return 'fish';
+  if (shell.includes('pwsh') || shell.includes('powershell')) return 'powershell';
+  if (process.env.PSModulePath || process.env.PSExecutionPolicyPreference) return 'powershell';
+  if (comSpec.includes('cmd.exe')) return 'cmd';
+  if (process.platform === 'darwin') return 'zsh';
+  if (process.platform === 'win32') return 'powershell';
+  return 'bash';
+}
+
+function getEnvVarSetupInstructions(envVar) {
+  const shell = detectCurrentShell();
+
+  if (shell === 'zsh') {
+    return {
+      label: 'zsh',
+      commands: [
+        `echo 'export ${envVar}=your_key_here' >> ~/.zshrc`,
+        'source ~/.zshrc',
+      ],
+    };
+  }
+
+  if (shell === 'bash') {
+    return {
+      label: 'bash',
+      commands: [
+        `echo 'export ${envVar}=your_key_here' >> ~/.bashrc`,
+        'source ~/.bashrc',
+      ],
+    };
+  }
+
+  if (shell === 'fish') {
+    return {
+      label: 'fish',
+      commands: [
+        `set -Ux ${envVar} your_key_here`,
+      ],
+    };
+  }
+
+  if (shell === 'cmd') {
+    return {
+      label: 'cmd.exe',
+      commands: [
+        `setx ${envVar} "your_key_here"`,
+        'Open a new terminal afterwards.',
+      ],
+    };
+  }
+
+  return {
+    label: 'PowerShell',
+    commands: [
+      `if (!(Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force | Out-Null }`,
+      `Add-Content -Path $PROFILE -Value '$env:${envVar}="your_key_here"'`,
+      '. $PROFILE',
+    ],
+  };
+}
+
+function buildEnvVarSetupMessage(envVar) {
+  const setup = getEnvVarSetupInstructions(envVar);
+
+  return [
+    `Detected shell: ${setup.label}`,
+    '',
+    ...setup.commands.map(command => `  ${command}`),
+  ].join('\n');
+}
+
+function getMissingKeyMessage(model) {
+  if (model === GEMINI_DIRECT && !process.env.GEMINI_API_KEY) {
+    return [
+      'Gemini needs `GEMINI_API_KEY` before it can run.',
+      '',
+      buildEnvVarSetupMessage('GEMINI_API_KEY'),
+    ].join('\n');
+  }
+
+  if (model === OPENAI_DIRECT && !process.env.OPENAI_API_KEY) {
+    return [
+      'OpenAI needs `OPENAI_API_KEY` before it can run.',
+      '',
+      buildEnvVarSetupMessage('OPENAI_API_KEY'),
+    ].join('\n');
+  }
+
+  if (isOpenRouterModel(model) && !process.env.OPENROUTER_API_KEY) {
+    return [
+      'OpenRouter models need `OPENROUTER_API_KEY` before they can run.',
+      '',
+      buildEnvVarSetupMessage('OPENROUTER_API_KEY'),
+    ].join('\n');
+  }
+
+  return null;
+}
+
+function resolveExecutionModel(model, largeDiff, settings) {
+  if (model === CLAUDE_CLI && largeDiff) return CLAUDE_CLI_SONNET;
+  if (model === GEMINI_DIRECT) return largeDiff ? settings.geminiLargeModel : settings.geminiSmallModel;
+  if (model === OPENAI_DIRECT) return largeDiff ? settings.openAiLargeModel : settings.openAiSmallModel;
+  if (model === settings.smallModel && largeDiff) return settings.largeModel;
+  return model;
+}
+
+function getExecutionModelLabel(model) {
+  if (model === CLAUDE_CLI) return 'Haiku';
+  if (model === CLAUDE_CLI_SONNET) return 'Sonnet';
+  return formatModelVariantLabel(model);
+}
+
+function ensureConfiguredModelChoice(choices, model, allowOpenRouterModels) {
+  if (!model || isSpecialModel(model)) return choices;
+  if (!allowOpenRouterModels) return choices;
+  if (choices.some(choice => choice.value === model)) return choices;
+
+  const next = [...choices];
+  const separatorIdx = next.findIndex(choice => choice.type === 'separator');
+  const insertAt = separatorIdx === -1 ? next.length : separatorIdx + 1;
+  next.splice(insertAt, 0, { value: model, name: `${model} (configured)` });
+  return next;
+}
+
+async function buildModelChoices(currentModel, allowOpenRouterModels, settings) {
+  let choices = [
+    { value: MANUAL_VALUE, name: 'Manual (no AI)' },
+    {
+      value: CLAUDE_CLI,
+      name: buildAutoSelectChoiceName('Claude CLI', settings.smallCliModel, settings.largeCliModel),
+    },
+    {
+      value: GEMINI_DIRECT,
+      name: buildAutoSelectChoiceName('Gemini', settings.geminiSmallModel, settings.geminiLargeModel),
+    },
+    {
+      value: OPENAI_DIRECT,
+      name: buildAutoSelectChoiceName('OpenAI', settings.openAiSmallModel, settings.openAiLargeModel),
+    },
+  ];
+
+  if (!allowOpenRouterModels) {
+    return ensureConfiguredModelChoice(choices, currentModel, false);
+  }
+
+  try {
+    const { pinned, rest } = await fetchModels();
+    if (pinned.length || rest.length) {
+      choices.push({ type: 'separator', line: '── Open Router Models ──' });
+      choices.push(...pinned);
+      choices.push(...rest);
+    }
+  } catch {}
+
+  return ensureConfiguredModelChoice(choices, currentModel, true);
+}
+
+async function promptForModel(cz, choices, currentModel, fallbackModel = CLAUDE_CLI, preferFallback = false) {
+  const currentIdx = choices.findIndex(choice => choice.value === currentModel);
+  const fallbackIdx = choices.findIndex(choice => choice.value === fallbackModel);
+  const defaultIdx = preferFallback
+    ? (fallbackIdx !== -1 ? fallbackIdx : Math.max(currentIdx, 0))
+    : (currentIdx !== -1 ? currentIdx : Math.max(fallbackIdx, 0));
+
+  const answer = await cz.prompt([
+    {
+      type: 'list',
+      name: 'model',
+      message: 'Model:',
+      choices,
+      default: defaultIdx,
+    },
+  ]);
+
+  return answer.model;
 }
 
 async function manualCommit(cz, commit, { type, scope, subject, body, breaking }) {
@@ -457,108 +755,39 @@ module.exports = {
       return;
     }
 
-    const hasApiKey = !!process.env.OPENROUTER_API_KEY;
-    const resolved = resolveSettings();
-    const settings = hasApiKey ? resolved : { ...resolved, model: CLAUDE_CLI, skipModel: false };
+    const hasOpenRouterKey = !!process.env.OPENROUTER_API_KEY;
+    const settings = resolveSettings();
 
-    // Check OpenRouter credits before bothering with the model list
-    // creditStatus: 'yes' = confirmed, 'unknown' = key works but never used, 'no' = none
-    let creditStatus = 'no';
-    if (hasApiKey) {
-      process.stdout.write('\n  Checking OpenRouter credits...');
-      try {
-        creditStatus = await checkOpenRouterCredits();
-        const statusMsg = { yes: ' OK.\n', no: ' no credits remaining.\n', unknown: ' unable to confirm (key never used).\n' };
-        console.log(statusMsg[creditStatus]);
-      } catch {
-        console.log(' failed to check.\n');
-      }
-    }
-
-    // Fetch models whenever we have an API key (can't fetch without one)
-    const modelsPromise = hasApiKey && !settings.skipModel ? fetchModels() : null;
-
-    // Model selection
     let model = settings.model;
-    if (!settings.skipModel) {
-      const choices = [];
-      let defaultIdx = 0;
-
-      if (modelsPromise) {
-        process.stdout.write('  Fetching available models...');
-        try {
-          const { pinned, rest } = await modelsPromise;
-          console.log(` found ${pinned.length + rest.length} models.\n`);
-
-          if (creditStatus === 'yes') {
-            // Credits confirmed — OpenRouter models first, Claude CLI + Manual at bottom of favorites
-            if (pinned.length) choices.push(pinned[0]);
-            choices.push({ value: MANUAL_VALUE, name: 'Manual (no AI)' });
-            choices.push(...pinned.slice(1));
-            choices.push({ value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' });
-            if (rest.length) {
-              choices.push({ type: 'separator', line: '────────────────' });
-              choices.push(...rest);
-            }
-
-            defaultIdx = choices.findIndex(m => m.value === model);
-            if (defaultIdx === -1 && model && model !== CLAUDE_CLI) {
-              choices.unshift({ value: model, name: `${model} (configured)` });
-              defaultIdx = 0;
-            } else {
-              defaultIdx = Math.max(defaultIdx, 0);
-            }
-          } else {
-            // No/uncertain credits — Claude CLI + Manual first, OpenRouter models below
-            choices.push({ value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' });
-            choices.push({ value: MANUAL_VALUE, name: 'Manual (no AI)' });
-            if (pinned.length || rest.length) {
-              choices.push({ type: 'separator', line: '── OpenRouter (may require credits) ──' });
-              choices.push(...pinned);
-              choices.push(...rest);
-            }
-            defaultIdx = 0;
-          }
-        } catch (err) {
-          console.log(` failed (${err.message})\n`);
-          choices.push({ value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' });
-          choices.push({ value: MANUAL_VALUE, name: 'Manual (no AI)' });
-          defaultIdx = choices.findIndex(c => c.value === CLAUDE_CLI);
-        }
-      } else {
-        choices.push({ value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' });
-        choices.push({ value: MANUAL_VALUE, name: 'Manual (no AI)' });
-        defaultIdx = choices.findIndex(c => c.value === CLAUDE_CLI);
+    let modelChoices = null;
+    async function getModelChoices() {
+      if (!modelChoices) {
+        modelChoices = await buildModelChoices(settings.model, hasOpenRouterKey, settings);
       }
-
-      const answer = await cz.prompt([
-        {
-          type: 'list',
-          name: 'model',
-          message: 'Model:',
-          choices,
-          default: defaultIdx,
-        },
-      ]);
-      model = answer.model;
-    } else {
-      console.log(`\n  Model: ${model} (from settings)\n`);
+      return modelChoices;
     }
 
-    if (model === MANUAL_VALUE) {
-      return promptForCommit(cz, commit, null);
+    if (!settings.skipModel) {
+      model = await promptForModel(cz, await getModelChoices(), MANUAL_VALUE);
+    } else {
+      console.log(`\n  Model: ${getModelChoiceLabel(model)} (from settings)\n`);
+    }
+
+    while (true) {
+      if (model === MANUAL_VALUE) {
+        return promptForCommit(cz, commit, null);
+      }
+
+      const missingKeyMessage = getMissingKeyMessage(model);
+      if (!missingKeyMessage) break;
+
+      console.log(`\n  ⚠ ${missingKeyMessage}\n`);
+      model = await promptForModel(cz, await getModelChoices(), model, CLAUDE_CLI, true);
     }
 
     // AI path — ask for motivation then generate
     const diff = getStagedDiff();
     const largeDiff = diff.length > settings.largeDiffThreshold;
-
-    // Auto-size: use bigger model for large diffs
-    if (model === CLAUDE_CLI && largeDiff) {
-      model = CLAUDE_CLI_SONNET;
-    } else if (model === settings.smallModel && largeDiff) {
-      model = settings.largeModel;
-    }
 
     const { motivation } = await cz.prompt([
       {
@@ -569,40 +798,32 @@ module.exports = {
     ]);
 
     let ai = null;
-    const modelLabel = model === CLAUDE_CLI ? 'Haiku' : model === CLAUDE_CLI_SONNET ? 'Sonnet' : model;
-    process.stdout.write(`  Generating AI suggestion (${modelLabel})...`);
-    try {
-      ai = await getAiSuggestion(stat, diff, motivation, model, settings);
-      console.log(` done!\n\n  Suggestion: ${ai.type}${formatScope(ai.scope)}: ${ai.subject}\n`);
-    } catch (err) {
-      console.log(` failed.\n\n  ⚠ ${err.message}\n`);
+    while (!ai) {
+      if (model === MANUAL_VALUE) {
+        return promptForCommit(cz, commit, null);
+      }
 
-      // Offer escalated fallback — if haiku failed offer sonnet, otherwise offer haiku
-      const cliFallback = model === CLAUDE_CLI
-        ? { value: CLAUDE_CLI_SONNET, name: 'Claude Sonnet CLI (larger model)' }
-        : { value: CLAUDE_CLI, name: 'Claude CLI (auto-selects Haiku or Sonnet)' };
+      const missingKeyMessage = getMissingKeyMessage(model);
+      if (missingKeyMessage) {
+        console.log(`\n  ⚠ ${missingKeyMessage}\n`);
+        model = await promptForModel(cz, await getModelChoices(), model, CLAUDE_CLI, true);
+        continue;
+      }
 
-      const { fallback } = await cz.prompt([
-        {
-          type: 'list',
-          name: 'fallback',
-          message: 'AI generation failed. How would you like to proceed?',
-          choices: [
-            cliFallback,
-            { value: MANUAL_VALUE, name: 'Manual (no AI)' },
-          ],
-        },
-      ]);
-
-      if (fallback !== MANUAL_VALUE) {
-        const fallbackLabel = fallback === CLAUDE_CLI_SONNET ? 'Sonnet' : 'Haiku';
-        process.stdout.write(`  Generating AI suggestion via Claude ${fallbackLabel} CLI...`);
-        try {
-          ai = await getAiSuggestion(stat, diff, motivation, fallback, settings);
-          console.log(` done!\n\n  Suggestion: ${ai.type}${formatScope(ai.scope)}: ${ai.subject}\n`);
-        } catch (cliErr) {
-          console.log(` failed.\n\n  ⚠ ${cliErr.message}\n  Falling back to manual commit entry.\n`);
-        }
+      const executionModel = resolveExecutionModel(model, largeDiff, settings);
+      process.stdout.write(`  Generating AI suggestion (${getExecutionModelLabel(executionModel)})...`);
+      try {
+        ai = await getAiSuggestion(stat, diff, motivation, model, settings, executionModel);
+        console.log(` done!\n\n  Suggestion: ${ai.type}${formatScope(ai.scope)}: ${ai.subject}\n`);
+      } catch (err) {
+        console.log(` failed.\n\n  ⚠ ${err.message}\n`);
+        model = await promptForModel(
+          cz,
+          await getModelChoices(),
+          model,
+          getModelChoiceLabel(model) === 'Claude CLI' ? MANUAL_VALUE : CLAUDE_CLI,
+          true
+        );
       }
     }
 
